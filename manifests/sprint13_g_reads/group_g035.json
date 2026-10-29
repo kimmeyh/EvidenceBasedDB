@@ -1,0 +1,1781 @@
+{
+ "papers": [
+  {
+   "record_id": "rodriguez-grasa-2026-pac-bayesian-approach-generalization-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Rodriguez-Grasa-et-al._2026_A-PAC-Bayesian-approach-to-generalization-for-quantum-models__2603.22964.pdf",
+   "title_in_file": "A PAC-Bayesian approach to generalization for quantum models",
+   "version_note": "arXiv:2603.22964v1, 24 Mar 2026; main text pp.1-15, supplementary Appendices A-F pp.16-44.",
+   "pages": 44,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper deriving PAC-Bayesian margin generalization bounds for layered quantum models built from general quantum channels (process matrix, Pauli transfer matrix and equivariant parameterizations), with proof-of-concept simulations on quantum phase classification.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "correlation-with-gap",
+     "verdict": "widened",
+     "note": "Widened: the paper ran 1400 runs for EACH architecture (not 1400 in total), on 6-qubit models with a regularization term added to spread the norms; the dynamic PQC is scored under the PM formalism with its beta term fixed, the QCNN under the PTM formalism; the authors give a hedged reason for the weaker PQC correlation.",
+     "value": "The authors report 1400 independent training runs for the dynamic PQC and 1400 for the QCNN (6-qubit models, trained with a complexity-based regularization term added to widen the range of norms), giving positive Pearson correlations of r = 0.26 (dynamic PQC, PM formalism) and r = 0.46 (QCNN, PTM formalism) between the complexity term and the generalization gap; they state a likely reason for the weaker PQC correlation is that the single-layer design fixes the beta term so only the Frobenius norm varies.",
+     "anchor": "Section III C, Figure 3, p.9; Section V B, p.12",
+     "quotes": [
+      "In total, we conducted 1400 independent training runs for the dynamic PQC and 1400 independent training runs for the QCNN.",
+      "We employ two distinct 6-qubit architectures in our simulations: the dynamic PQC and the QCNN.",
+      "we also included a complexitybased regularization term in the training objective",
+      "For the dynamic PQC evaluated under the PM formalism, we observe a positive linear correlation of r = 0.26 between the theoretical complexity term and the actual generalization error.",
+      "This relationship is more pronounced for the QCNN evaluated under the PTM formalism, which exhibits a stronger correlation of r = 0.46.",
+      "a likely reason for the weaker correlation in Fig. 3(a) compared to Fig. 3(b) is a consequence of our experimental design",
+      "As the single-layer dynamic PQC fixes βPM to a constant, its theoretical complexity relies exclusively on the Frobenius norm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Correlations of 0.26 and 0.46 are weak to moderate; the regularization term was added deliberately to spread the complexity values, so the runs are not an unbiased sample of ordinary training."
+    },
+    {
+     "id": "equivariant-tighter-bounds",
+     "verdict": "narrowed",
+     "note": "Narrowed: the formal statement is Theorem C.18 (restating Theorem 6); its supporting lemmas assume a finite symmetry group (the order |G| enters) and, for the covering net, a uniform parameter count and uniform spectral bound across layers. Where the paper discusses the result itself it says the guarantee 'can be' significantly tighter for highly symmetric problems.",
+     "value": "The paper proves a PAC-Bayes margin bound for equivariant quantum models (Theorem C.18, restating Theorem 6) in which symmetry-adapted quantities (multiplicities, irrep dimensions and equivariant norms) replace the general complexity measures; its supporting lemmas take the order of a finite symmetry group and, for the covering net, assume a uniform parameter count and a uniform spectral bound across all layers; the authors state that for highly symmetric problems the guarantee can be significantly tighter than general bounds would suggest.",
+     "anchor": "Theorem 6, Section III B, p.8; Lemma B.11, p.23; Lemma C.17 and Theorem C.18, pp.39-40",
+     "quotes": [
+      "Theorem C.18 (PAC-Bayes generalization bound for equivariant quantum models (restatement of Theorem 6))",
+      "This bound mirrors the form of the general case but replaces the general complexity measures with symmetry-adapted quantities: multiplicities mλ, irrep dimensions dλ, and the equivariant norms.",
+      "This highlights that for highly symmetric problems, the generalization guarantee can be significantly tighter than what general bounds would suggest.",
+      "let |G| denote the order of the finite symmetry group",
+      "Assume a uniform parameter count Ξl = Ξ and a uniform spectral bound ηl = η across all layers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proved result, but the bound's formula is scrambled in the text layer, so its expression cannot be quoted; its conditions are quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The paper gives no worked example in which the equivariant bound is computed and shown smaller than the general bound; 'provably tighter' in the introduction rests on the norm comparison, not on a stated inequality between the two bounds."
+    },
+    {
+     "id": "experiment-scope",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its experiments, Section III C p.8 and Section V B p.12.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "pac-bayes-bounds-quantum-channels",
+     "verdict": "widened",
+     "note": "Widened: the abstract-level claim is now tied to the formal statements (Theorems C.14 and C.16, restating Theorems 3 and 4), which hold with probability at least 1 minus delta over the training set for any learned parameters; the main-text versions are informal and suppress a term; the proof uses Gaussian prior and posterior and a covering net made feasible by complete positivity and trace preservation.",
+     "value": "The paper derives PAC-Bayesian margin bounds for layered quantum models built from general quantum channels in the PM and PTM parameterizations (formal Theorems C.14 and C.16, restating Theorems 3 and 4), holding with probability at least one minus delta over the training set for any learned parameters; the complexity term grows with the squared layer-amplification factor beta, the maximum sparsity, a log term over layer sparsities and the sum of squared Frobenius norms of the weight matrices, divided by the squared margin times N; the main-text versions abuse O notation to suppress a further, typically non-dominant, term.",
+     "anchor": "Theorems 3 and 4, Section III A, p.6; Theorem C.14, p.28; Theorem C.16, p.33",
+     "quotes": [
+      "Theorem C.14 (PAC-Bayes generalization bounds for quantum models– PM parametrization (restatement of Theorem 3))",
+      "Theorem C.16 (PAC-Bayes generalization bound for quantum models – PTM parameterization (restatement of Theorem 4))",
+      "with probability at least 1 − δ over the training set of size N",
+      "we abuse the O notation to suppress a further (typically non-dominant) term",
+      "we derive the first PAC-Bayesian generalization bounds for a broad class of quantum models by analyzing layered circuits composed of general quantum channels"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved in Appendix C, but the bound's formula is scrambled in the text layer, so its expression cannot be quoted verbatim; the conditions are quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "'First' is the authors' priority claim; the paper's own note added records independent work in preparation on PAC-Bayes bounds for unitary QNNs."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "rg-depolarizing-baseline-definition",
+     "value": "The paper defines each layer by a weight matrix that models the deviation of the channel from the maximally depolarizing channel; a channel whose weight matrix is zero yields the maximally mixed state regardless of the input, and the bounds penalize models by how far they drift from this baseline.",
+     "anchor": "Section II B, p.3",
+     "quotes": [
+      "we characterize the action of ϕj via a weight matrix Wj that models the deviation from the maximally depolarizing channel",
+      "a channel with Wj = 0 yields the maximally mixed state regardless of the input, representing a model with no",
+      "our PAC-Bayes bounds will naturally penalizes models based on how far they drift from this baseline"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of its parameterization, Section II B p.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rg-margin-loss-definition",
+     "value": "The paper defines the expected margin loss as the probability that the probability assigned to the correct class does not exceed that of the most likely incorrect class by at least the margin gamma; setting the margin to zero recovers the standard classification loss.",
+     "anchor": "Section II A, eq.2, p.3",
+     "quotes": [
+      "This loss measures the probability that the probability assigned to the correct class y does not exceed the probability of the most likely incorrect class by at least the margin γ.",
+      "recovers the standard classification loss"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Section II A p.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rg-scope-general-channels",
+     "value": "The authors state that treating each layer as a general quantum channel captures a broader class of architectures than standard PQC analysis, including dissipative dynamics, mid-circuit measurements and feedforward, and that the formalisms are used as mathematical representations of each layer's effective map, not as prescriptions for physical implementation.",
+     "anchor": "Section II B, p.3",
+     "quotes": [
+      "This framework captures a significantly broader class of architectures than standard parameterized quantum circuits (PQCs) analysis, including those with dissipative dynamics, mid-circuit measurements, and feedforward operations.",
+      "we employ these formalisms not as prescriptions for the physical implementation of the circuit, but as mathematical"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its scope, Section II B p.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rg-cited-pac-bayes-lemmas",
+     "value": "The paper takes its foundation from cited results: a PAC-Bayes bound for randomized predictors (Lemma 1, cited to [27]) and a PAC-Bayes margin bound (Lemma 2, cited to [30]) that requires a random perturbation to change the output by less than a quarter of the margin with probability at least one half, and applies to any parameterized predictor, not only neural networks.",
+     "anchor": "Lemmas 1 and 2, Section II C, p.5",
+     "quotes": [
+      "Lemma 1 (PAC-Bayes bound for randomized predictors [27])",
+      "Lemma 2 (PAC-Bayes margin bound [30])",
+      "provides a powerful tool that applies broadly, independently of whether the predictor is a neural network or some other parameterized model"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited results from prior work.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": "The 'quarter of the margin with probability at least one half' condition is read from the garbled statement of Lemma 2 and the appendix's 'perturbation ≤ γ/4'; the fractions are not quoted cleanly."
+    },
+    {
+     "id_suggestion": "rg-proof-strategy",
+     "value": "The authors state the bounds are proved with a Gaussian prior centered at zero and a Gaussian posterior centered at the trained parameters; because the noise scale depends on the learned parameters, they use a covering net over discretized norm values with a union bound, and controlling the covering net size is made feasible by complete positivity and trace preservation of the channels.",
+     "anchor": "Proof sketch of Theorems 3 and 4, Section III A, p.6; Appendix C.1, pp.25-27",
+     "quotes": [
+      "using a Gaussian prior P = N (0, σ2I) and a posterior Q = N (w, σ2I) that introduces a random perturbation around the trained parameters w",
+      "challenge arises from dependence of σ on the learned parameters, which means that P is not a data-independent prior as required in Theorem 2",
+      "controlling the covering net size is made feasible by structural constraints on Wj that arise from complete positivity and trace preservation of the associated quantum channels"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its proof method, p.6 and Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rg-complexity-terms-meaning",
+     "value": "The authors interpret the bound's terms: the beta term measures how much a local parameter perturbation in a layer is amplified through later layers; the Frobenius-norm term measures how far training pulled the model from a completely uninformative, constant-valued baseline; the sparsity term counts active parameters; these terms depend on where the model ends up after training, not on static features such as the number of gates.",
+     "anchor": "Section III A, pp.6-7",
+     "quotes": [
+      "term effectively measures how much a local parameter perturbation in a given layer is amplified as it propagates through the subsequent layers",
+      "away from a completely uninformative, constant-valued physical baseline in order to fit the training data",
+      "represents the number of active parameters across layers, controlling the effective",
+      "these terms do not merely depend on general static features of the model (e.g., the total number of trainable gates or encoding operations), but actually on where the model ends up after training"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' interpretation of their bound.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rg-corollary-data-reuploading",
+     "value": "The paper proves (Corollary 5, restated as Corollary D.19) that the PM and PTM bounds also apply to data re-uploading models that alternate parameter-dependent channels with input-dependent encoding channels, since an encoding channel is contractive in the 1-norm; the authors state this class captures all models commonly studied in variational quantum machine learning.",
+     "anchor": "Corollary 5, p.7; Corollary D.19 and proof, Appendix D, p.41",
+     "quotes": [
+      "Corollary 5 (PAC-Bayes generalization bounds for data re-uploading quantum models)",
+      "The PAC-Bayes generalization bounds established in Theorems 3 and 4 also apply to data re-uploading quantum models of the form",
+      "is an input-dependent quantum channel implementing the data re-uploading step",
+      "is a quantum channel, it is contractive in the 1-norm",
+      "now captures all models commonly studied in variational quantum machine learning"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Corollary D.19 is stated in words with its model form and proved in Appendix D, p.41.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The 'all models commonly studied' sentence is the authors' claim of coverage, not part of the corollary."
+    },
+    {
+     "id_suggestion": "rg-perturbation-lemmas",
+     "value": "The paper proves perturbation bounds (Lemmas 7 and 8, restated as Lemmas A.2 and A.3): for any perturbation whose per-layer entrywise 1,1-norm is at most one over L of the weight matrix's, the change in the model output in the infinity norm is bounded by e times a sum over layers of the perturbation norm times the product of later layers' weight norms (with dimension factors in the PTM case); the 1,1-norm is the sum of absolute values of all matrix entries.",
+     "anchor": "Lemmas 7 and 8, Section V A, p.11; Lemmas A.2 and A.3, pp.17-19",
+     "quotes": [
+      "Lemma 7 (Perturbation bound for quantum models – PM framework)",
+      "Lemma 8 (Perturbation bound for quantum models – PTM framework)",
+      "holds for all j, the change in the output of the quantum model is bounded as",
+      "where the norm ∥A∥1,1 equals the sum of absolute values of all the entries of the matrix A."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved in Appendix A, but the inequality is scrambled in the text layer and cannot be quoted whole.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rg-equivariant-perturbation-lemma",
+     "value": "The paper proves an equivariant perturbation bound (Lemma 9, restated as Lemma A.4) in the equivariant 1-norm, defined as a sum over irreps of the irrep dimension times the trace norm of the block, using that for equivariant channels the diamond norm is bounded by the equivariant 1-norm of the parameters.",
+     "anchor": "Lemma 9, p.11; Lemma A.4, pp.19-20",
+     "quotes": [
+      "Lemma 9 (Perturbation bound for equivariant quantum models)",
+      "with dλ being the dimension of the irreducible representation λ and ∥·∥1 being the trace norm",
+      "For these equivariant channels, the diamond norm is upper bounded by the equivariant 1-norm of the parameters [59]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved in Appendix A, but the inequality is scrambled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rg-perturbation-template",
+     "value": "The paper proves a template lemma (Lemma A.1) for arbitrary layered parameterized channels: if each layer meets two stated assumptions with constants mu and nu independent of the weights and perturbations, and each perturbation's norm is at most one over L of the weight's, the output change is bounded by e times a weighted sum over layers.",
+     "anchor": "Lemma A.1, Appendix A.1, pp.16-17",
+     "quotes": [
+      "Lemma A.1 (Perturbation bound template for layered parameterized channels)",
+      "Suppose that Cw fulfills the following assumptions, for µj, νj real-valued constants independent of Wj and Uj"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved on pp.16-17; the assumptions and the bound are scrambled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rg-pm-structural-bounds",
+     "value": "The paper proves structural properties of the PM weight matrix from complete positivity and trace preservation: its diagonal sums to zero (Observation 1), each diagonal entry is bounded below (Observation 2), and, assuming at most xi non-zero entries, it bounds the entrywise one-to-one norm (Lemma B.5) and the Frobenius norm (Lemma B.6); the squared Frobenius norm of the process matrix lies between the maximally depolarizing channel's value and the unitary channels' value.",
+     "anchor": "Appendix B.1, pp.20-22",
+     "quotes": [
+      "Observation 1 (Vanishing trace of W )",
+      "Observation 2 (Lower bound on diagonal entries)",
+      "Throughout, we assume that W has at most ξ non-zero entries.",
+      "Lemma B.5 (Upper bound on the 1-to-1 norm)",
+      "Lemma B.6 (Upper bound on the Frobenius norm)",
+      "with the lower bound attained by the maximally depolarizing channel and the upper bound by unitary channels"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved in Appendix B.1; the bound expressions are scrambled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rg-equivariant-norm-lemmas",
+     "value": "The paper proves (Lemma B.11) that for a finite symmetry group the equivariant 1-norm is bounded by the fourth root of the group order times the parameter count, times the equivariant Frobenius norm, using that the squared irrep dimensions sum to the group order; Lemma B.12 bounds it through the maximum spectral norm across irrep blocks.",
+     "anchor": "Lemmas B.11 and B.12, Appendix B.3, pp.23-25",
+     "quotes": [
+      "Lemma B.11 (Upper bound on the equivariant 1-norm)",
+      "let |G| denote the order of the finite symmetry group",
+      "From representation theory, we know that for a finite group G, the sum of squared irrep dimensions equals the order of the group",
+      "Lemma B.12 (Spectral upper bound on the equivariant 1-norm)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved in Appendix B.3; the inequalities are partly scrambled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rg-pm-depth-scaling",
+     "value": "The paper shows that in the PM formalism the beta term is at least one and bounded by a geometric expression (Lemma C.13); when the per-layer norm bound C exceeds one, beta grows exponentially with depth L, and when the maximum sparsity is little-o of two to the n, C is little-o of one, beta stays at most linear in L and all depth-dependent contributions enter only through logarithmic factors.",
+     "anchor": "Lemma C.13, p.27; discussion after Theorem C.14, p.28",
+     "quotes": [
+      "Lemma C.13 (Upper and lower bounds on βPM)",
+      "so βPM grows exponentially with L",
+      "we observe that C = o(1) whenever ξmax = o(2n). In this sparsity regime, βPM remains at most linear in L, and therefore all depth-dependent contributions enter only through logarithmic factors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma C.13 is proved on p.27 and the scaling regimes are derived and stated in words on p.28; the text layer prints two to the n flat as 2n.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rg-pm-beats-uniform",
+     "value": "The authors derive new uniform bounds from their perturbation bounds and compare: for the PM formalism, a worst-case (uniform) relaxation of their PAC-Bayes bound beats the uniform bound, up to logarithmic factors, under the sufficient and essentially sharp condition that the maximum sparsity is little-o of two to the n.",
+     "anchor": "Appendix C.2 a, pp.29-31; Section III A, p.8",
+     "quotes": [
+      "We note that this comparison requires us to prove new uniform generalization bounds, tailored to our chosen parameterizations",
+      "a sufficient and essentially sharp condition ensuring that the PAC–Bayesian bound is superior, up to logarithmic factors, is ξmax = o(2n)",
+      "for models evaluated under the PM formalism, there is a distinctly favorable regime where this worst-case PAC-Bayesian bound analytically outperforms the standard uniform bound"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derived comparison carried out up to constants and logarithmic factors; the inequalities are scrambled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer prints two to the n flat as 2n."
+    },
+    {
+     "id_suggestion": "rg-ptm-no-favorable-regime",
+     "value": "The authors state that for the PTM formalism their analysis does not reveal favorable regimes over the uniform bound under the considered sparsity and dimensionality assumptions, attributing this to the conservative worst-case relaxation; the appendix finds an improvement only at alpha equal to zero (constant sparsity across layers) with a small final-layer sparsity.",
+     "anchor": "Appendix C.3 a, p.36; Section III A, p.8",
+     "quotes": [
+      "our analysis for the PTM formalism does not reveal such favorable regimes under the considered sparsity and dimensionality assumptions",
+      "the PAC-Bayes bound improves upon the uniform bound in the regime α = 0 (constant sparsity across layers)",
+      "While we were unable to identify a similarly favorable regime for the PTM formalism under the considered sparsity and dimensionality assumptions"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Appendix C.3 p.36 and Section III A p.8.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The main text says no favorable PTM regime was found, while the appendix names the narrow alpha equal to zero case; the two are consistent only if that edge case is not counted as a regime."
+    },
+    {
+     "id_suggestion": "rg-ptm-qcnn-sparsity-scaling",
+     "value": "For circuits that halve the qubit count at each layer with unital channels (as in QCNNs) and an assumed sparsity model growing exponentially toward earlier layers with rate alpha, the paper shows the PTM beta term scales at most polynomially in n when alpha is at most 3/8, while for alpha above 3/8 an exponential factor appears that makes the complexity term vacuous for any polynomially large training set.",
+     "anchor": "Appendix C.3, pp.33-35, eq.C62",
+     "quotes": [
+      "we model the sparsity at layer ℓ as",
+      "the βPTM exhibits controllable (at most polynomial) scaling with n precisely when α ≤ 3/8",
+      "For α > 3/8 an exp(Θ(n)) factor appears in βPTM, rendering the bound impractical.",
+      "This exponential growth in n makes the PAC-Bayes complexity term vacuous for any polynomially large training set N ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived under an assumed sparsity model (an ansatz), not a theorem; equations are partly scrambled.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rg-dynamic-pqc-zero-main-term",
+     "value": "The paper shows that for the dynamic PQC with two dynamic operations per qubit and a global unitary, unitaries do not change the Frobenius-norm term, the bound can be computed at a cost linear in n, and suitable parameters make each single-qubit channel maximally depolarizing, giving a vanishing main term in the bound.",
+     "anchor": "Section III A, p.7; Appendix C.2 b, pp.31-32",
+     "quotes": [
+      "Consequently, the global unitary (as well as any intermediate unitaries) does not affect",
+      "the corresponding PAC-Bayes bound can be computed with a cost that scales linearly in n",
+      "corresponding to the single-qubit maximally depolarizing channel",
+      "providing an explicit physically implementable example of a vanishing main term in our bound"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived explicitly in Appendix C.2 b, pp.31-32.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "A maximally depolarizing channel cannot fit any data; the vanishing term is a reference point, not a useful trained model."
+    },
+    {
+     "id_suggestion": "rg-qcnn-frobenius-fixed",
+     "value": "The paper shows that for a QCNN built only from global-unitary-plus-partial-trace blocks, the Frobenius norm of the PTM weight matrix does not depend on the learned parameters (only beta does), and this class cannot realize a completely depolarizing channel; adding dissipative blocks makes the norm parameter-dependent.",
+     "anchor": "Appendix C.3 b, pp.37-38; Section III A, p.7",
+     "quotes": [
+      "for a QCNN with only building blocks as described above, the Frobenius norm of W does not depend on the learned parameters",
+      "this class of QCNNs cannot realize a completely depolarizing channel, but can at most approximate it in",
+      "introducing dissipative blocks at each layer renders ∥Wℓ∥2F fully parameter-dependent throughout the circuit"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix C.3 b, eqs. C70-C75, pp.37-38.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rg-kraus-stinespring-uniform",
+     "value": "The paper shows that applying its recipe to the Kraus or Stinespring representations does not give useful bounds: trace preservation fixes the parameter norm independently of the learned parameters, so the Kraus bound is essentially parameter-blind and at best comparable to uniform bounds, and the Stinespring bound is entirely uniform.",
+     "anchor": "Appendix E, pp.41-43; Section IV, p.10",
+     "quotes": [
+      "applying our recipe to the Kraus and Stinespring representations does not lead to useful generalization bounds",
+      "As a consequence, the resulting generalization bound becomes essentially parameter-blind.",
+      "this bound is at best comparable to uniform generalization error bounds in the literature [12]",
+      "the induced PAC-Bayesian generalization bound is entirely uniform"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit of the method, derived in Appendix E.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rg-hybrid-convention-observation",
+     "value": "The authors report that recomputing the QCNN Frobenius norms with an alternative PTM normalization while keeping the main-text beta gives a substantially smaller complexity term with essentially the same correlation, r = 0.46, and state they have no proof of a bound using this combination and no theoretical explanation for it.",
+     "anchor": "Appendix F, Figure F.1, pp.43-44",
+     "quotes": [
+      "this modification leads to a substantially smaller value of the complexity term while preserving essentially the same degree of correlation with the observed",
+      "generalization error, namely r = 0.46.",
+      "Although we have no proof of a generalization bound that uses only the more favorable contributions from the two different",
+      "At present we do not have a theoretical explanation for why this particular combination preserves the empirical correlation"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical observation from one experiment, with no supporting proof.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rg-numerical-setup",
+     "value": "The authors state the dataset samples coupling pairs uniformly in the domain from -4 to 4 for the generalized cluster Hamiltonian with periodic boundary conditions, computes ground states by exact diagonalization, and trains with the Adam optimizer at learning rate 0.005 over 200 epochs with random initialization, using PennyLane.",
+     "anchor": "Section V B, p.12",
+     "quotes": [
+      "we sample coupling pairs uniformly in the domain J1, J2 ∈ [−4, 4]",
+      "we compute the ground state using exact diagonalization",
+      "The models were trained using the Adam optimizer [57] with a learning rate of 0.005 over 200 epochs with random initialization.",
+      "All simulations were performed using the PennyLane [58] library."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its numerical method, Section V B p.12.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rg-dissipation-tradeoff-conclusion",
+     "value": "The authors conclude that the closer the output channel is to maximally depolarizing, the better generalization is to be expected, that a trade-off emerges between expressivity and generalization, and that given two channels with equivalent training performance the more dissipative one is theoretically guaranteed to generalize better; they recommend engineered dissipation and explicit regularization in model design.",
+     "anchor": "Section IV Discussion, p.10",
+     "quotes": [
+      "the closer the output channel is to the maximally depolarizing channel, the better generalization is to be expected",
+      "a fundamental trade-off emerges between expressivity (fitting the data) and generalization (approximating the maximally depolarizing channel)",
+      "given two channels with equivalent training performance, the more dissipative channel is theoretically guaranteed to generalize better",
+      "engineered dissipation—via e.g., mid-circuit measurements and feedforward—and explicit regularization terms should be actively leveraged"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' interpretation of an upper bound; a smaller bound does not by itself guarantee a smaller actual generalization gap.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "What is guaranteed is a smaller upper bound on the gap, not a smaller gap; 'guaranteed to generalize better' overstates what a bound shows."
+    },
+    {
+     "id_suggestion": "rg-curvature-and-outlook",
+     "value": "The authors state that the complexity term captures the curvature of the loss landscape, that this picture does not strictly dictate how to optimize QML models but gives a method to certify a training algorithm's output, and that training strategies promoting robustness to parameter perturbations can lead to better generalization; they name alternative channel representations as future work.",
+     "anchor": "Section IV Discussion, p.10",
+     "quotes": [
+      "the curvature of the loss landscape is captured by the complexity term in Theorems 3, 4 and 6",
+      "while this geometric picture does not strictly dictate how to optimize QML models, it provides a method to certify the quality of the output of a training algorithm",
+      "our results highlight that training strategies promoting robustness to parameter perturbations can lead to better generalization",
+      "the exploration of alternative, perhaps more refined, representations of quantum channels that better align with empirical performance"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' interpretation and outlook.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "roget-2022-quantum-perceptron-revisited-computational-statistical",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2021\\Roget_Di-Molfetta-and-Kadri_2021_Quantum-Perceptron-Revisited-Computational-Statistical__2106.02496.pdf",
+   "title_in_file": "Quantum Perceptron Revisited: Computational-Statistical Tradeoffs",
+   "version_note": "arXiv:2106.02496v3, 20 Jun 2022. The text layer drops the epsilon symbol throughout (for example 'with probability at least 1 − and has a complexity of'), and the complexity formulas are scrambled.",
+   "pages": 13,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper with simulations proposing a hybrid quantum-classical perceptron that runs a Grover-type search over the training set for each of a set of random linear separators, with complexity and expected-risk bounds compared to classical and earlier quantum perceptrons.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "roget-noise-limit",
+     "verdict": "widened",
+     "note": "Widened: the illustration is the success probability of the quantum search for one searched element under bit-flip and depolarization noise, against a fault-free curve that converges to one half; the authors explain the drop as noise accumulating over too many iterations and state the noise depends on circuit design.",
+     "value": "The authors illustrate, for one searched element, the quantum search success probability under bit-flip and depolarization noise: fault-free it converges towards 1/2, while in a faulty environment it decreases rapidly and does not tend to a non-vanishing constant, because too many iterations accumulate noise; they state the noise depends on the circuit design and that a rigorous noise analysis is beyond the scope of the work.",
+     "anchor": "Section 5.2, Figure 3, pp.8-9",
+     "quotes": [
+      "Although a rigorous analysis goes beyond the scope of this work",
+      "The blue one does not account noise while the other two curves have, respectively, bit-flip, and depolarization noise [34].",
+      "the success probability in a fault-free environment converges towards 1/2",
+      "However in a faulty-environment, the success probability decreases rapidly and do not tend to a non vanishing constant",
+      "This decreasing is the result of making too many iterations, thus accumulating noise.",
+      "the quantum noise strictly depends on the quantum circuit design"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An illustrative simulation in one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "roget-quadratic-improvement",
+     "verdict": "narrowed",
+     "note": "Narrowed: the paper itself limits the quadratic claim. In the margin it is quadratic only when the classical perceptron gets the data the same way as the quantum one; against the standard online perceptron the margin improvement is from order (1/gamma) squared to order (1/gamma) ln(1/gamma), which the authors call slightly less than quadratic. The margin improvement comes from the version space approach, not from Grover search.",
+     "value": "The paper proves a complexity that improves on the classical perceptron quadratically in the number of samples, through quantum search over the training set; in the margin, the authors state the improvement is quadratic only if the classical perceptron is supplied data the same way as the quantum one, while against the classical online perceptron it is from order (1/gamma) squared to order (1/gamma) ln(1/gamma), slightly less than quadratic, and it comes from the version space approach rather than Grover search.",
+     "anchor": "Theorem 4 and discussion, Section 4.1, p.6; Section 6, p.9",
+     "quotes": [
+      "The improvement of the statistical complexity is quadratic only if we assume that the data supplied to the classical perceptron are provided the same way that the quantum one.",
+      "the statistical complexity improve from O((1/γ)2) to O(1/γ ln(1/γ)) which is slightly less than quadratic",
+      "The quadratic improvement over the margin is not provided by the Grover's search algorithm but by the version space approach.",
+      "The quadratic improvement in N is, however, obtained by our quantum perceptron using a quantum search over the training set."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Theorem 4 is proved in Appendix A.1, but its complexity formula is scrambled in the text layer (the epsilon is dropped), so the bound cannot be quoted whole.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The authors also state a classical version space perceptron should scale inversely with the margin, so the margin gain is not a quantum effect; only the square-root gain in N is."
+    },
+    {
+     "id": "roget-quadratic-only-if",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 4.1 p.6.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "roget-simulated-experiments",
+     "verdict": "widened",
+     "note": "Widened: the paper adds that the Hard dataset is built to force many classical updates and that the hybrid perceptron performs best on it; Figure 2 reports ratios of operation counts, not wall-clock times.",
+     "value": "The authors state the simulations come from a classical computer simulating a quantum algorithm, and report, as ratios of the number of operations to the classical perceptron's steps, that on the Iris dataset the three quantum perceptrons are about four times slower than the classical perceptron, while on the Hard dataset (built to force the classical perceptron into many updates) all show an improvement and the hybrid quantum perceptron performs best.",
+     "anchor": "Section 5.1, Figure 2, Definition 1, p.8",
+     "quotes": [
+      "The simulations presented here come from a classical computer simulating a quantum algorithm.",
+      "Figure 2 shows the ratio between the number of operations of each quantum perceptron algorithm and the number of steps of the classical perceptron during the learning phase.",
+      "On the Iris dataset, the three quantum perceptrons behave similarly and are about four times slower than the classical perceptron.",
+      "The Hard dataset, however, is specifically build to force the classical perceptron algorithm to perform a large number of updates.",
+      "For the Hard dataset, however, all the quantum perceptron algorithms shows an improvement over the classical one.",
+      "Interestingly, Hybrid quantum perceptron is the one that performs the best"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The Hard dataset is adversarial to the classical online perceptron by construction, so the improvement there says little about typical data."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "roget-hybrid-algorithm-definition",
+     "value": "The paper defines the hybrid quantum perceptron: it draws several linear separators from the normal distribution and, for each separator, performs a quantum search over the training set for a misclassified point, rather than a quantum search over the separators as the version space quantum perceptron does.",
+     "anchor": "Section 4.1, Algorithm 5, pp.6-7",
+     "quotes": [
+      "The idea is also to draw randomly several linear separators following the normal distribution N (0, 1) and then search for one in the version space",
+      "our algorithm will perform a quantum search over the training set for each separator to find a solution, and not a quantum search over the separators"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of its algorithm, Section 4.1 p.6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "roget-theorem4-statement",
+     "value": "The paper proves (Theorem 4) that for a linearly separable sample of N points with margin gamma, the hybrid quantum perceptron finds a perfect separator with high probability, with a complexity of order the square root of N over gamma times logarithmic factors; the proof bounds failure by two causes: no drawn hyperplane separates the classes, or the quantum search errs.",
+     "anchor": "Theorem 4, p.6; proof, Appendix A.1, pp.10-11",
+     "quotes": [
+      "Theorem 4 . Let S be a linearly separable sample of N points of margin γ. Algorithm Hybrid quantum perceptron finds a perfect separator with probability at least 1 − and has a complexity of",
+      "It is possible that none of the hyperplanes wi, i = 1, . . . , K, separate the classes and it is also possible that the quantum search gives a wrong result."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved in Appendix A.1, but the text layer drops the failure probability symbol and scrambles the complexity formula, so the bound cannot be quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Read from Lemma 1 and the proof, the complexity is the square root of N times K times K2, with K of order ln(1/epsilon)/gamma and K2 of order ln(1/(epsilon gamma))."
+    },
+    {
+     "id_suggestion": "roget-theorem5-expected-risk",
+     "value": "The paper proves (Theorem 5) a bound on the expected error of the hypothesis returned by the hybrid quantum perceptron for linearly separable data, scaling with the expected inverse margin over N plus one rather than the inverse squared margin of the classical online perceptron bound; the proof bounds the leave-one-out error. The authors state the guarantee is not a high-probability bound, since it holds only for the expected error.",
+     "anchor": "Theorem 5, p.7; proof, Appendix A.2, pp.11-12",
+     "quotes": [
+      "Theorem 5 . Assume that the data is linearly separable. Let hS be the hypothesis returned by the Hybrid quantum perceptron algorithm after training over a sample S of size N drawn according to some distribution D.",
+      "The proof is based on computing an upper bound of the Leave-one-out error.",
+      "However, the guarantee given is not a high probability bound, since it holds only for the expected error of the hypothesis returned by the algorithm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved in Appendix A.2, but the bound's formula is scrambled in the text layer; the proof's worst case also assumes at least one separating hyperplane exists.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof assumes a separating hyperplane is among the drawn ones, which holds only with probability one minus epsilon."
+    },
+    {
+     "id_suggestion": "roget-first-version-space-generalization",
+     "value": "The authors state that, to their knowledge, Theorem 5 is the first result showing a version space perceptron (classic or quantum) can generalize better than the online perceptron, that there are no expected-risk results for previous quantum perceptrons, and that the same line of proof will not necessarily give an improved bound for the version space quantum perceptron.",
+     "anchor": "Section 6 Discussion, p.9",
+     "quotes": [
+      "To our knowledge, our Theorem 5 is the first result showing that the version space perceptron (classic or quantum) can have a better generalization than the online perceptron algorithm.",
+      "There are no results concerning the expected risk of previous quantum perceptron algorithms.",
+      "So, using the same line of proof as for Theorem 5 will not necessarily result in an improved bound."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's priority claim.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "roget-classical-version-space-margin",
+     "value": "The authors state that, although not known in the literature, a classical version space perceptron should have a complexity bound inversely proportional to the margin, and that there is no mention of a classical version space perceptron in the classical ML literature; by classical perceptron they mean the standard online perceptron.",
+     "anchor": "Section 6 Discussion, p.9",
+     "quotes": [
+      "In this work, by classical perceptron we mean the standard online perceptron.",
+      "There is, to our knowledge, no mention in the classical ML literature to classical version space perceptron.",
+      "although it is not known in the literature, a classical version space perceptron should have a complexity bound inversely proportional to the margin γ"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An unproved statement by the authors.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "If so, the margin part of the claimed quadratic improvement is matched classically; the baseline chosen for the comparison is the online perceptron."
+    },
+    {
+     "id_suggestion": "roget-assumptions-scope",
+     "value": "The authors state they assume linearly separable data, a margin smaller than one (achievable by normalizing the training set), asymptotics in large N and large inverse margin, that all their quantum algorithms rely on the quantum search finding a searched element with probability at least 1/4, and that they consider only linear classification.",
+     "anchor": "Section 2.1, p.2; Section 5.2, p.8; Section 6, p.9",
+     "quotes": [
+      "We assume that the data are linearly separable",
+      "we always assume that the margin is smaller than one (which can be achieved by normalizing the",
+      "All quantum algorithms presented in this paper are based on the assumption that the quantum search finds a searched element with probability at least 1/4.",
+      "In this paper we only considered linear classification."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its assumptions and scope, pp.2, 8 and 9.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "roget-cited-wiebe-perceptrons",
+     "value": "The paper cites Wiebe et al. for two quantum perceptrons: the online quantum perceptron improves complexity in N from linear to square-root through Grover search but not the mistake bound (Theorem 2), and the version space quantum perceptron improves the margin dependence but remains linear in N (Theorem 3).",
+     "anchor": "Section 3, Theorems 2 and 3, pp.5-6",
+     "quotes": [
+      "Theorem 2 [35]. Let S be a linearly separable sample of N points of margin γ.",
+      "However, no improvement in the number of updates made by the perceptron was achieved",
+      "Theorem 3 [35]. Let S be a linearly separable sample of N points of margin γ.",
+      "As we can see, this algorithm does not improve the complexity with respect to the number of the training data"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results attributed to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "roget-complexity-curves",
+     "value": "The authors report plots of complexity bounds counted in operations, at margin 0.01 when varying N and at N = 1000 when varying the inverse margin, in which the hybrid perceptron's slope is lower than the version space perceptron's when N varies and lower than the online perceptron's when the margin varies; they state this confirms lower computational complexity and better statistical efficiency.",
+     "anchor": "Section 5.1, Figure 1, pp.7-8",
+     "quotes": [
+      "Figure 1: Complexity bounds over the number of operations for quantum perceptrons.",
+      "Subplot (a) shows the bounds in function of the number of points N with a margin γ = 0.01. Subplot (b) shows the bounds in function of the inverse of the margin γ with a number of points N = 1000.",
+      "The slope of the curve of Hybrid quantum perceptron is lower than the one of the Version space quantum perceptron when γ is fixed and N varies",
+      "This confirms that our algorithm has a lower computational complexity and also a better statistical efficiency."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A computed illustration of the bounds in one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The curves plot the complexity bounds with constants, so they illustrate the theorems rather than test them independently."
+    },
+    {
+     "id_suggestion": "roget-conclusion-future",
+     "value": "The authors conclude their hybrid algorithm gives a quadratic improvement in computational complexity and statistical efficiency over the classical online perceptron, and name noise-robust quantum perceptron models and nonlinear extensions through classical-to-quantum data encoding as future work.",
+     "anchor": "Section 7 Conclusion, p.10; Section 6, p.9",
+     "quotes": [
+      "This allowed us to obtain a quadratic improvement over the computational complexity and the statistical efficiency compared to the classical online perceptron.",
+      "In the future, it would be valuable to study noise-robust models for quantum perceptron.",
+      "Nonlinear extensions of our work can be carried out by the classical-to-quantum data encoding scheme."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' summary; the paper's own discussion narrows the quadratic claim.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "romero-2017-quantum-autoencoders-efficient-compression-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2016-12_Romero_Quantum-autoencoders-for-efficient-compression-of-quantum-data.pdf",
+   "title_in_file": "Quantum autoencoders for efficient compression of quantum data",
+   "version_note": "arXiv:1612.02806v2, 10 Feb 2017 (dated February 14, 2017). Two-column layout; parts of p.5 interleave the two columns in the text layer.",
+   "pages": 10,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A paper introducing the quantum autoencoder, a parameterized circuit trained by classical optimization to compress a set of quantum states into fewer qubits, with classical simulations on ground states of H2, Hubbard models and H4.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "romero-compression-bound",
+     "verdict": "widened",
+     "note": "Widened: the paper gives a worked example (8 fermionic modes and 4 particles compress to about 7 qubits on particle number alone) and states which systems it expects to be good candidates; it also names the von Neumann entropy as the limit on noiseless compression.",
+     "value": "The authors state that the maximum rate of lossless compression is predetermined by the size of the subspace spanning the training set, so a given set of states might admit only a small or null compression rate; for example, a system with 8 fermionic modes and 4 particles could be compressed on particle number alone to about 7 qubits, further only with an extra symmetry; they expect systems with many more modes than particles to be good candidates, and state that the von Neumann entropy of the ensemble limits noiseless compression.",
+     "anchor": "Section IV, pp.7-8; Section V, p.8",
+     "quotes": [
+      "the maximum rate of lossless compression achievable with a quantum autoencoder is predetermined by the size of the subspace spanning the",
+      "a given set of states might only admit a small or null compression rate",
+      "consider a fermionic system with 8 fermionic modes and 4 particles",
+      "≈ 7 qubits. Compression beyond",
+      "Compression beyond this point could be achieved if an extra symmetry constraint",
+      "we expect fermionic systems where the number of fermionic modes is considerably larger than the number of particles to be good candidates for compression",
+      "limits the number of qubits to which it can be noiselessly compressed"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A theoretical observation stated in the discussion without a proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "romero-model-definition",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Abstract and Section II.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "romero-no-complexity-result",
+     "verdict": "widened",
+     "note": "Widened: the same passage adds that training by classical optimization, with no clear optimal method, further obscures general complexity statements.",
+     "value": "The authors state that, for their construction, any complexity result would depend on the family of unitaries chosen for the learning to be optimized over, and that training by classical optimization algorithms, with no clear optimal learning method, further obfuscates general statements about the model's complexity.",
+     "anchor": "Section V, p.8",
+     "quotes": [
+      "For our construction, it is clear that any complexity result would be dependent upon the family of unitaries that is chosen for the learning to be optimized over.",
+      "this further obfuscates general statements regarding the complexity of the model"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section V p.8.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "romero-two-site-hubbard",
+     "verdict": "widened",
+     "note": "Widened: the stored value omits the threshold and the circuit differences. The threshold is an error of ten to the minus three; only circuit B compresses the two-site Hubbard states to 2 and 1 qubits below it; circuit B reaches below ten to the minus four for H4 from 8 to 7 qubits, while circuit A does not get below ten to the minus three for H4.",
+     "value": "The authors report that ground states of the two-sites Hubbard model compress from 4 to 3 qubits with both circuit types, but only circuit B compresses them from 4 to 2 and 4 to 1 qubits with an error below ten to the minus three; circuit B reaches an error below ten to the minus four for H4 from 8 to 7 qubits while circuit A cannot get below ten to the minus three for H4; for the 4-sites Hubbard model neither circuit got below ten to the minus three. Six ground states were used for training each system.",
+     "anchor": "Section IV, Table II, p.6",
+     "quotes": [
+      "We observe that the ground states of the two-sites Hubbard model can be compressed from 4 to 3 qubits using both circuit types.",
+      "However, only circuit B is able to compress these these states from 4 to 2 qubits and 4 to 1 qubits with an error below 10−3.",
+      "The same circuit-type achieves an error smaller than 10−4 when compressing the ground states of the H4 system from 8 to 7 qubits.",
+      "In contrast, circuit A is unable to obtain errors below 10−3 for H4.",
+      "In the case of the 4-sites Hubbard model, none of the circuit models proposed here was able to obtain errors below 10−3.",
+      "Six ground states were used for training each system."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one classical simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "These are training-set errors of the cost function; no test set is reported for the Hubbard and H4 cases."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "romero-trash-state-training",
+     "value": "The paper shows that perfect fidelity of the full autoencoder is achieved by a unitary if and only if it maps every input to a compressed state times the fixed reference state, so the task can be learned by training only on the fidelity of the trash state with the reference state; the two cost functions are not in general the same (the full-circuit cost is at most the trash-state cost).",
+     "anchor": "Section II, eqs.1-7, p.2",
+     "quotes": [
+      "perfect fidelity (i.e. C1 = 1) can be achieved by a unitary U if and only if, for all i:",
+      "This implies that it is possible to accomplish the learning task of finding the ideal U p by training only on the trash state.",
+      "Note, however, that the cost functions of Eq. (1) and Eq. (7) are not in general the same (in fact, C1 ≤ C2)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section II with the condition stated, p.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "romero-circuit-ansatzes",
+     "value": "The paper requires the number of parameters and gates to scale polynomially with the input qubits, ruling out a general unitary, and uses two programmable circuits: circuit A, all pairings of general two-qubit gates with 15n(n − 1)/2 parameters per unit-cell, and circuit B, all controlled single-qubit rotations plus single-qubit rotations with 3n(n−1)+6n parameters per unit-cell.",
+     "anchor": "Section III, Figure 3, p.3",
+     "quotes": [
+      "the number of parameters and the number of gates in the circuit should scale polynomially with the number of input qubits",
+      "Accordingly, this model requires 15n(n − 1)/2 training parameters per unit-cell.",
+      "our second model comprises 3n(n−1)+6n training parameters per unit-cell"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its circuit models, Section III p.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "romero-hybrid-training-procedure",
+     "value": "The authors describe a hybrid training scheme: the quantum computer prepares the input and reference states (assumed efficient), applies the encoding unitary and measures the trash-reference fidelity by a SWAP test; a classical optimizer minimizes log10 of one minus the cost function.",
+     "anchor": "Section III, Figure 4, pp.3-4",
+     "quotes": [
+      "Our training procedure adopts a quantum-classical hybrid scheme in which the state preparation and measurement are performed on the quantum computer",
+      "Measure the fidelity between the trash state and the reference state via a SWAP test.",
+      "We assume these preparations to be efficient.",
+      "we performed the optimization by minimizing the value of the function log10 (1 − C2)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its training procedure, pp.3-4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "romero-h2-results",
+     "value": "The authors report, from a classical simulation trained on 6 ground states of H2 and tested on 44 others, average fidelity errors after one compression and decompression cycle, as negative log10 of one minus fidelity, of 6.99 on the test set for circuit A compressing to 2 qubits and 3.81 for circuit B compressing to 1 qubit, with decoded energies close to the original values within chemical accuracy.",
+     "anchor": "Section IV, Table I, pp.5-6",
+     "quotes": [
+      "To illustrate the previous idea, we classically simulated a",
+      "6 states were used for training and 44 more were used for testing.",
+      "2 Testing 6.99(6.81-7.21) 6.76(6.18-7.10)",
+      "1 Testing 3.81(3.50-5.38) 3.62(3.35-4.65)",
+      "producing decoded wavefunctions with energies that are close to the original values within chemical accuracy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one classical simulation.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The assignment of the two rows to circuit A (2 qubits) and circuit B (1 qubit) is read from Table I's layout, which the text layer flattens."
+    },
+    {
+     "id_suggestion": "romero-simulation-setup",
+     "value": "The authors state the simulation used a Python script with QuTiP, the SciPy Basin-Hopping algorithm and L-BFGS-B with a numerical gradient, parameters constrained to the range zero to four pi and randomly initialized; Hubbard ground states were taken at six values of t between 0.9 and 1.1 with U = 2.0, and each optimization was repeated three times.",
+     "anchor": "Section IV, pp.5-6",
+     "quotes": [
+      "The classical simulation was performed using a Python",
+      "The optimization was performed using the SciPy implementation of the Basin-Hopping (BS) algorithm [33].",
+      "In the optimization of both circuit models, the parameters were constrained to the range [0, 4π).",
+      "by setting t to six different values equally spaced between 0.9 and 1.1, with U = 2.0",
+      "The optimization process was repeated three times starting at randomly selected values."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its simulation, Section IV pp.5-6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "romero-optimizer-comparison",
+     "value": "The authors report that L-BFGS-B and Basin-Hopping required a similar number of cost function evaluations to reach similar precision on the H2 example, and state that hardware implementations can benefit from gradient-free algorithms with a larger tolerance to noise, such as Basin-Hopping.",
+     "anchor": "Section IV, Figure 7, p.6",
+     "quotes": [
+      "both algorithms required a similar number of cost function evaluations to achieve similar precision",
+      "can benefit from the use of algorithms that do not require gradient evaluations and have a larger tolerance to the presence of noise in the hardware, such as Basin-Hopping"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One simulated example; the noise-tolerance remark is a claim.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "romero-ansatz-matters",
+     "value": "The authors state that the performance differences between the two circuits show how the ansatz impacts the achievable compression, that a dedicated ansatz could compress a given set more easily, and that the two circuits produce different compressed spaces even at high fidelity.",
+     "anchor": "Section IV, pp.6-7; Figure 8",
+     "quotes": [
+      "exemplifies how the ansatz employed for the autoencoder unitary impacts the degree of compression achievable with the autoencoder model",
+      "Compression of a particular set of states could be achieved more easily with a dedicated ansatz designed for that purpose.",
+      "the forms of the compressed space and therefore the forms of the encoding unitaries differ between the two circuit models"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' reading of their simulations.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "romero-fermionic-mapping-redundancy",
+     "value": "The authors state that the standard Bravyi-Kitaev and Jordan-Wigner mappings do not exploit particle-number and spin symmetries and so use more qubits than formally needed, which motivates training an autoencoder to compress fermionic wavefunctions.",
+     "anchor": "Section IV, pp.4-5",
+     "quotes": [
+      "do not exploit these symmetries and thus employ more qubits than formally needed",
+      "a quantum autoencoder could be trained to compress fermionic wavefunctions obtained using a quan"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A motivating statement about other methods.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "romero-state-preparation-application",
+     "value": "The authors propose using the trained decompression unitary for state preparation, and state that in variational algorithms this would require fewer parameters than the original ansatz because only the latent-space state is parameterized.",
+     "anchor": "Section V Discussion, p.8",
+     "quotes": [
+      "A natural application for quantum autoencoders is state preparation.",
+      "the state preparation with autoencoders would require fewer parameters than the original ansatz"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proposed application, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "romero-scope-pure-unitary",
+     "value": "The authors state they define inputs as ensembles of pure states evolving unitarily; mixed inputs can in principle be captured through purification, but the structure as defined cannot completely capture general quantum channels.",
+     "anchor": "Section V Discussion, p.8",
+     "quotes": [
+      "we deﬁne the input states to be an ensemble of pure states, and the evolution of those states to be unitary",
+      "In the case of mixed state inputs, we remark that this formulation can in principle be captured by our model already.",
+      "The autoencoder structure as defined here cannot completely capture the structure for general quantum channels"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its scope and limits, Section V p.8.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "romero-entropy-qszk",
+     "value": "The paper cites that estimating the entropy of a density operator given a circuit that constructs it is in general QSZK-complete, and suggests quantum autoencoders could give some estimate of the entropy.",
+     "anchor": "Section V Discussion, p.8",
+     "quotes": [
+      "even estimating the entropy of ρ is QSZK-complete [37]",
+      "This then opens the possibility for quantum autoencoders to efficiently give some estimate of the entropy of a density operator."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited complexity result plus a suggestion.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "romero-disentangling-hard",
+     "value": "The authors state, citing prior work, that a circuit of exponential depth can always disentangle but doing so in constant or polynomial depth is hard, and that because the choice of unitary families is largely ad hoc it is difficult to say whether one-shot compression and decoupling bounds are meaningful for a quantum autoencoder.",
+     "anchor": "Section II, p.3",
+     "quotes": [
+      "employing a circuit of exponential depth, one is always able to perform a disentangling operation [9], but to perform this operation in constant or polynomial depth is hard",
+      "it is difficult to say if these bounds are meaningful in the context of a quantum autoencoder"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result and an author judgment.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "salmon-2023-provable-advantage-quantum-pac-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Salmon-Strelchuk-Gur_2023_Provable-Advantage-in-Quantum-PAC-Learning__2309.10887.pdf",
+   "title_in_file": "Provable Advantage in Quantum PAC Learning",
+   "version_note": "arXiv:2309.10887v1, 19 Sep 2023. The square-root signs and fractions in the complexity formulas are scrambled in the text layer.",
+   "pages": 15,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A learning theory paper proving that a quantum PAC learner with access to the circuit preparing the quantum sample and its inverse needs, up to polylogarithmic factors, square-root fewer oracle calls in 1/epsilon than classical PAC learning, with an almost matching lower bound.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "salmon-oracle-access-assumption",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own model, Section 1 and Section 2 p.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "salmon-sqrt-advantage",
+     "verdict": "widened",
+     "note": "Widened: Theorem 1.1's statement and conditions are now quoted; the count is of calls to the sample-generating oracle or its inverse, for every epsilon and delta, for any concept class of VC dimension d; it rests on the best known classical equivalence-query learner, which brings a ninth power of log(1/epsilon).",
+     "value": "The paper proves (Theorem 1.1) that for any concept class of VC dimension d and every epsilon and delta greater than zero there is an (epsilon, delta)-quantum PAC learner making at most order (1/square root of epsilon) times (d + log(1/delta)) times log to the ninth of (1/epsilon) calls to an oracle that generates a quantum sample or its inverse, a square-root improvement up to polylogarithmic factors over classical PAC learning; the polylogarithmic factor comes from the best known classical equivalence-query learner it builds on.",
+     "anchor": "Abstract; Theorem 1.1, p.2; Section 5, pp.10-11",
+     "quotes": [
+      "Theorem 1.1 Let C be a concept class with VC dimension d. Then, for every ϵ, δ > 0, there exists a (ϵ, δ)-quantum PAC learner for C that makes at most",
+      "calls to an oracle that generates a quantum sample (Qc) or its inverse (Q†c).",
+      "log9(1/ϵ) , (5)",
+      "Up to polylogarithmic factors, this is a square root improv",
+      "The current best known TE [22] has a worst-case query complexity of"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved in Sections 3 to 5; the statement and conditions are quoted but the bound's expression is scrambled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The advantage is in oracle-call (query) complexity; the reflections it uses may need exponentially sized circuits that are not counted."
+    },
+    {
+     "id": "salmon-tight-lower-bound",
+     "verdict": "narrowed",
+     "note": "Narrowed: Theorem 1.2 holds for a sufficiently small constant delta, for all epsilon; it gives order d over the square root of epsilon, which matches the upper bound only up to polylogarithmic factors (the upper bound also carries a log(1/delta) term).",
+     "value": "The paper proves (Theorem 1.2) that for a sufficiently small constant delta and all epsilon, any quantum (epsilon, delta)-learner for a concept class of VC dimension d makes at least order d over the square root of epsilon calls to the sample-generating oracle or its inverse, matching the upper bound up to polylogarithmic factors; the proof reduces to recovering a bit string with a weak phase-kickback oracle under a perturbed delta-function distribution.",
+     "anchor": "Theorem 1.2, p.3; Section 6, pp.11-13",
+     "quotes": [
+      "Theorem 1.2 Let C be a concept class with VC dimension d. Then, for a sufficiently small constant δ > 0 and for all ϵ > 0, any quantum (ϵ, δ)-learner for C makes at least",
+      "Note that our lower bound matches our upper bound (equation (5)), up to polylogarithmic factors.",
+      "We reduce to a known problem by introducing a weak phase-kickback oracle for the bit string",
+      "We define our distribution D as a perturbed delta-function, the standard distribution used to prove lower bounds in learning"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved in Section 6; the statement and conditions are quoted but the bound's expression is scrambled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "salmon-pac-vc-definitions",
+     "value": "The paper defines an (epsilon, delta)-learner as one that, with probability at least 1 − delta, outputs a hypothesis that differs from the concept with probability at most epsilon, for every concept and distribution; the VC dimension d is the maximum size of a set shattered by the concept class.",
+     "anchor": "Section 1, p.1; Section 2, p.5",
+     "quotes": [
+      "The algorithm A is an (ϵ, δ)-learner if, with probability at least 1 − δ over the random samples, it outputs a ϵ-approximately correct hypothesis.",
+      "the algorithm outputs an ϵ-approximately correct hypothesis, for every possible c and D",
+      "Then, d is the maximum size of a shattered set"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions, pp.1 and 5.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "salmon-learning-complexity-definition",
+     "value": "The paper defines the learning complexity of an algorithm as the total number of queries to the oracle that prepares the quantum sample from a fixed known input state, or to its inverse, and argues the inverse is available when the oracle is given as a circuit of one- or two-qubit gates.",
+     "anchor": "Section 2, p.5",
+     "quotes": [
+      "We define the learning complexity of any algorithm as the total number of queries to Qc or Q†c.",
+      "defined by its action on a fixed known input state |IN⟩ (independent of the underlying concept)",
+      "in this case, Q†c may be constructed by reversing the order of the gates and replacing each with its inverse"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of its model, Section 2 p.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "salmon-cited-classical-and-adw",
+     "value": "The paper cites that the optimal classical PAC sample complexity scales as order one over epsilon times (d plus the log of one over delta), found over 27 years, and that Arunachalam and de Wolf showed quantum samples (copies of the state) have exactly the same asymptotic scaling, ruling out all but constant-factor advantages in the general model.",
+     "anchor": "Section 1, pp.1-2; Section 2, p.5",
+     "quotes": [
+      "Over a period of 27 years [3, 4], the exact asymptotic scaling of the minimum number of samples required by",
+      "who showed that the quantum sample complexity has exactly the same asymptotic scaling as the classical learning complexity, ruling out everything but constant factor prospective advantages"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results attributed to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "salmon-prior-advantages-uniform",
+     "value": "The authors state that earlier quantum PAC advantages (Fourier basis functions, DNF formulae, k-juntas) rely on Fourier sampling and on the distribution being approximately uniform, and that none are generic.",
+     "anchor": "Abstract; Section 1, p.2",
+     "quotes": [
+      "However, such advantages rely on the distributions D being (approximately) uniform.",
+      "Several quantum advantages have been demonstrated in this setting, however, none are generic"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A characterization of other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "salmon-adw-bound-inapplicable",
+     "value": "The authors argue the Arunachalam and de Wolf lower bound does not apply to their model because it assumes the algorithm is a POVM independent of the concept, whereas any algorithm calling the concept-dependent oracle violates that assumption.",
+     "anchor": "Section 1.2, p.3; Section 2, p.5",
+     "quotes": [
+      "The lower bound of [11] does not apply to a model with access to Qc, as it assumes the quantum algorithm is described by a POVM that is independent of the underlying concept c.",
+      "If the POVM describing the algorithm calls the oracle, it, by definition, depends on the underlying concept."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of how its model differs from the prior one, p.5.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The advantage comes from a stronger access model, not from overturning the earlier result."
+    },
+    {
+     "id_suggestion": "salmon-lemma31-grover-operator",
+     "value": "The paper proves (Lemma 3.1) that the Grover operator can be implemented with one call to the oracle and one to its inverse; the concept-independent reflections are implemented without queries by a possibly exponentially sized circuit.",
+     "anchor": "Lemma 3.1, pp.6-7",
+     "quotes": [
+      "Lemma 3.1 One can implement the Grover operator D with one call to Qc and one to Q†c.",
+      "may be implemented by a (possibly exponentially sized circuit) without any queries"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 3.1 is stated and proved on pp.6-7.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The results bound query complexity only; gate complexity may be exponential."
+    },
+    {
+     "id_suggestion": "salmon-theorem32-grover-subroutine",
+     "value": "The paper proves (Theorem 3.2) that its Grover subroutine for an unknown number of items makes order one over the square root of epsilon oracle calls in the worst case, succeeds with probability at least 0.09 whenever the good set has probability at least epsilon, and, conditional on success, outputs examples distributed as the data distribution restricted to the good set.",
+     "anchor": "Theorem 3.2 and proof, pp.7-8",
+     "quotes": [
+      "Theorem 3.2 Let G ⊆ {(x, b) : x ∈ X , b ∈ {0, 1}} be a good subset, ϵ > 0 be a fixed tolerance.",
+      "In the worst case, the algorithm makes O(1/ ϵ) oracle (or inverse oracle) calls",
+      "then the algorithm succeeds, i.e., returns (x, c(x)) ∈ G, with probability at least p = 0.09.",
+      "Conditional on succeeding, the output of the algorithm (X, c(X)) is distributed according to"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3.2 is stated with its conditions and proved on pp.7-8; the square-root sign is dropped in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "salmon-imperfect-equivalence-queries",
+     "value": "The paper defines an imperfect equivalence query, which returns a counterexample with the ideal distribution and, when the hypothesis is at least epsilon from the concept, with some constant probability; classically one costs 1/epsilon random examples, while quantumly it costs order one over the square root of epsilon via Grover search.",
+     "anchor": "Definition 4.2, p.8",
+     "quotes": [
+      "Definition 4.2 An imperfect equivalence query consists of submitting a candidate hypothesis h for the underlying concept c.",
+      "If d(h, c) ≥ ϵ then with some constant probability p we receive a counterexample.",
+      "Classically, we can implement an imperfect equivalence query using 1/ϵ random labelled examples"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, p.8.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "salmon-theorem47-imperfect-eq-learning",
+     "value": "The paper proves that running a classical equivalence-query learner with each query replaced by repeated imperfect queries, under a budget R = 6TE/p + (3/2p2) log(1/δ), outputs a hypothesis within 4 epsilon of the concept with probability at least 1 − 2 delta; if the budget is hit, the weighted majority vote over the time-spent distribution is within 4 epsilon (Lemma 4.6), and with probability at least 1 − delta at most 2TE/p + (1/2p2) log(1/δ) queries go to feasible hypotheses (Lemma 4.5).",
+     "anchor": "Lemmas 4.5 and 4.6, Theorem 4.7, pp.9-10",
+     "quotes": [
+      "then algorithm 2 produces a hypothesis h with d(h, c) ≤ 4ϵ with probability at least 1 − 2δ.",
+      "Set the maximum imperfect equivalence query budget as R = 6TE/p + (3/2p2) log(1/δ).",
+      "Lemma 4.6 Suppose we spend at least 2R/3 imperfect equivalence queries on infeasible hypotheses. Then the weighted majority vote M of the transcript with the time-spent distribution has d(M, c) < 4ϵ.",
+      "Lemma 4.5 With probability ≥ 1−δ the total number of imperfect equivalence queries to feasible hypotheses",
+      "2TE/p + (1/2p2) log(1/δ)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated with conditions and proved on pp.9-10.",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": "The text layer prints p squared flat as p2."
+    },
+    {
+     "id_suggestion": "salmon-cited-equivalence-query-learner",
+     "value": "The paper relies on a cited classical result that PAC learning with equivalence queries gives an exponential advantage over labelled examples, and uses the best known equivalence-query learner, whose complexity carries a log to the ninth of (1/epsilon) factor.",
+     "anchor": "Section 4, p.8; Section 5, p.11",
+     "quotes": [
+      "It was recently shown [22] that PAC learning with equivalence queries gives an exponential advantage over learning with labelled examples.",
+      "The current best known TE [22] has a worst-case query complexity of",
+      "log9 1 ϵ . (42)"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "salmon-lower-bound-lemmas",
+     "value": "For the lower bound the paper cites (Lemma 6.1) that recovering more than 3/4 of the bits of a string with high probability needs order d over eta calls to a weak phase-kickback oracle, and proves (Lemma 6.2) that the PAC state-preparation oracle can be implemented with one call to the controlled phase oracle, one to its inverse and two ancilla qubits.",
+     "anchor": "Lemmas 6.1 and 6.2, pp.11-12",
+     "quotes": [
+      "Lemma 6.1 Let u ∈ {0, 1}d be a bit string, and let Ou be a weak phase-kickback oracle",
+      "Then recovering more than 3/4 of the bits of u with high probability requires at least Ω(d/η) calls to Ou, its inverse or controlled versions of these.",
+      "Lemma 6.2 One can implement Qu using one call to c − Ou, one to c − Ou† and two qubit-ancillae."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 6.2 is stated and proved on pp.11-12; Lemma 6.1 is cited to [20].",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "salmon-k-juntas",
+     "value": "The authors state that applied to k-juntas their learner has a worse scaling in n than earlier algorithms but a better scaling in epsilon, and works for any underlying distribution, whereas earlier work focused on the uniform distribution.",
+     "anchor": "Section 7, p.13",
+     "quotes": [
+      "This has a worse scaling in n than algorihtms presented in [10, 29], but has a better scaling in ϵ and works for any underlying distribution, whereas previous work has focused on the uniform distribution."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derived corollary using a VC-dimension bound, compared against other work.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "salmon-open-problems",
+     "value": "The authors list open problems: removing the polylogarithmic factors and proving a tight lower bound (a different approach is likely required, since their method would need an equivalence-query learner with no epsilon dependence), whether an advantage exists with the oracle but not its inverse, and implications for more practical models such as quantum neural networks.",
+     "anchor": "Section 1.3 Open problems, p.4",
+     "quotes": [
+      "one could attempt to tighten the upper bound (5) to remove polylogarithmic factors and prove a tight matching lower bound",
+      "a different approach is likely to be required",
+      "It is interesting to consider the power of quantum learning algorithms with access to the oracle Qc, but not its inverse Qc†.",
+      "one could consider the implications of this work to generic advantages in more practical models of quantum machine learning, such as quantum neural networks"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of open problems, Section 1.3 p.4.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "sanavio-2024-quantum-circuit-imputation-missing-data",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Sanavio-et-al._2024_Quantum-Circuit-for-Imputation-of-Missing-Data__2405.04367.pdf",
+   "title_in_file": "Quantum Circuit for Imputation of Missing Data",
+   "version_note": "arXiv:2405.04367v1, 7 May 2024. Several formulas (eqs. 6, 7, 19) are scrambled in the text layer and exponents print flat (2N for two to the N).",
+   "pages": 21,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A paper proposing the Quantum Imputation Circuit, a variational circuit with controlled rotations on one target qubit that outputs a missing last bit with a learned conditional probability, whose optimal parameters are found analytically, tested by classical simulation on synthetic distributions.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "sanavio-barren-plateaus",
+     "verdict": "widened",
+     "note": "Widened: Appendix A adds the evidence: the mean and variance of the cost gradient decrease exponentially with the number of qubits for both circuits, while at fixed N = 9 adding parameters does not follow an exponential trend; the authors link this to entanglement entropy. The failed Bayesian optimization is what motivates their analytical solution.",
+     "value": "The authors report that Bayesian optimization of the circuit was compromised by barren plateaus, preventing them from minimizing the cost function; in Appendix A the mean and variance of the cost gradient decrease exponentially with the number of qubits for both the linear and quadratic circuits, while at fixed N = 9 adding parameters does not give an exponential trend, which they relate to the circuit's entanglement entropy; this motivates finding the optimal parameters analytically instead.",
+     "anchor": "Section 2.4, p.9; Appendix A, Figures A1-A3, pp.17-19",
+     "quotes": [
+      "While we attempted to employ Bayesian optimization, its effectiveness was ultimately compromised by the plateaus, preventing us from successfully minimize the cost function.",
+      "In both cases we see the exponential decrease of the variance and of the mean value, in agreement with the expectation.",
+      "we fix the number of qubits to N = 9 and we add C2N OT gates to the linear circuit until it becomes the full quadratic circuit",
+      "Contrary to the behaviour obtained for Figs. A2(a),(b) those curve do not follow an exponential trend.",
+      "In the QIC in fact, the optimal parameters can be found just solving a constrained problem."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "sanavio-gate-complexity",
+     "verdict": "widened",
+     "note": "Widened: the body states the counts behind the abstract's orders: reproducing any distribution needs a circuit with an exponential number of gates; restricting to CNOT-controlled rotations gives N + 1 parameters (linear QIC); adding C2NOTs gives a count quadratic in N (quadratic QIC). They are counts of the constructed ansatz, not a proved approximation result.",
+     "value": "The authors state that a circuit able to reproduce any distribution needs an exponential number of gates, so they restrict it: using only CNOT-controlled rotations gives N + 1 controlled gates and parameters (the linear QIC), and adding C2NOT gates makes the count scale quadratically with N (the quadratic QIC); the abstract gives these as gate complexities of order N and of order N squared for circuits returning the last missing bit of a binary string.",
+     "anchor": "Abstract, p.1; Section 2.1, pp.5-6",
+     "quotes": [
+      "Clearly, this circuit is able to reproduce any possible data distribution but it has",
+      "the negative feature of requiring an exponential number of gates",
+      "N = N + 1,",
+      "that is linear with N . We call this ansatz the linear QIC.",
+      "If we introduce also the C2NOTs, the number of controlled gates scales quadratically with N",
+      "We construct variational quantum circuits with gates complexity O(N ) and O(N 2) that return the last missing bit of a binary string for a specific distribution."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Gate counts of the paper's own ansatz definitions, Section 2.1 pp.5-6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The linear and quadratic circuits cannot represent every distribution; how well they do is the empirical part."
+    },
+    {
+     "id": "sanavio-hellinger",
+     "verdict": "widened",
+     "note": "Widened: the stored value omits the figure. The conclusions give a Hellinger distance in the order of ten to the minus two even for random distributions; Fig. 3(c) reports a plateau below 0.06 for large N over 100 random distributions per N. The optimization is a classical SLSQP minimization of the analytic distance, not training on a device.",
+     "value": "The authors report Hellinger distances in the order of ten to the minus two even for randomly generated distributions, well below their upper bound; over 100 random distributions for each number of input qubits both the linear and quadratic circuits reach a plateau below 0.06 for large N; the parameters were optimized with the classical SLSQP optimizer on the analytic expression of the distance.",
+     "anchor": "Section 3 Conclusions, p.14; Section 2.5.1, Figure 3, p.11",
+     "quotes": [
+      "finding the the optimization goes well below the upper bound limit, reaching values of the Hellinger distance in the order of 10−2 even for randomly generated distributions",
+      "In Fig. 3 (c) we plot the mean value of dH and its standard deviation obtained optimizing the circuit for 100 random distributions for each number of input qubits.",
+      "Generally, both the linear and quadratic QICs reach a plateau value of the Hellinger distance of less than 0.06 for large N .",
+      "using the SLSQP classical optimizer to minimize expression (17)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one classical simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "sanavio-qic-definition",
+     "value": "The paper defines the Quantum Imputation Circuit: for N + 1 binary variables, it acts only on a target qubit controlled by the N input qubits, so that for input n the target ends in cos theta_n |0> + sin theta_n |1>, setting the probabilities of the missing bit to cos squared and sin squared of theta_n; its unitary is block diagonal in the computational basis.",
+     "anchor": "Section 2.1, eqs.1-3, pp.4-5",
+     "quotes": [
+      "Suppose now that we want that our machine returns the value of the (N + 1)-th bit when the values of all the other N bits are given",
+      "The QIC acts on the target qubit, initialized in |0⟩, and modifies its state depending on the values of the other qubits.",
+      "the unitary transformation U (Θ) that represents the QIC expressed in the computational basis is a block diagonal matrix"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of its circuit, Section 2.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sanavio-analytic-form",
+     "value": "The paper derives the circuit's unitary analytically by commuting all rotations to the start of the circuit: each block is a single rotation whose angle is a signed sum of the parameters, with signs set by partial parities of the input bits, possibly followed by an X; it gives the corresponding forms for the quadratic and exponential circuits in Appendix B.",
+     "anchor": "Section 2.2, eqs.8-13, pp.6-7; Appendix B, pp.19-21",
+     "quotes": [
+      "Since the QIC has a well defined structure, we can recover the analytical expression of each θn angle",
+      "we can pull all the Ry rotations at the beginning of the circuit and collect them into a single rotation operator",
+      "where QN , θn and other details of this derivation are in Appendix B along with the exponential circuit analytical form"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived explicitly in Section 2.2 and Appendix B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sanavio-error-upper-bound",
+     "value": "The paper derives, using the Hellinger distance, the maximum over all target distributions of the minimum distance reachable with M parameters, as a function of M and two to the N, and states it gives the maximum error when using the QIC; the conclusions propose it as a red flag for optimization problems if exceeded.",
+     "anchor": "Section 2.3, eqs.16-19, pp.7-9; Section 3, p.14",
+     "quotes": [
+      "Thus, the upper bound we have found in Eq. (19) tells us what is the maximum",
+      "error we can get when we use the QIC.",
+      "This limit can be used as a red flag. If the final Hellinger distance exceeds this upper bound, it signals issues within the optimization process."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived in Section 2.3, but the bound's expression (eq.19) is scrambled in the text layer and cannot be quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The derivation assumes the optimum matches the first M target angles exactly ('without loss of generality'), which the paper does not prove is the minimizer."
+    },
+    {
+     "id_suggestion": "sanavio-no-measurement-optimization",
+     "value": "The authors state that the optimal parameters are found by solving a constrained problem using the circuit's analytical description, avoiding optimization through repeated measurements; this requires pre-processing the dataset so that for each input the two probabilities sum to one over the square root of two to the N, and they acknowledge it is not a standard procedure.",
+     "anchor": "Section 2.4, p.9; Section 3, p.14",
+     "quotes": [
+      "In the QIC in fact, the optimal parameters can be found just solving a constrained problem.",
+      "This is a required pre-processing that we need to do on the dataset.",
+      "We acknowledge that this is not a standard procedure. However, by leveraging the particular circuit ansatz we were able to avoid the optimization through successive measurements."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of its method and its non-standard nature, pp.9 and 14.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The parameters are computed classically from the known conditional probabilities, so the quantum circuit only re-samples a distribution already known classically."
+    },
+    {
+     "id_suggestion": "sanavio-distribution-reproduction",
+     "value": "The authors report, for N = 3 and as N grows, that both circuits reconstruct the Gaussian distribution, while only the quadratic circuit comes close on the majority distribution; for the Gaussian the quadratic circuit is worse than the linear for N > 10 because of optimization errors, and both distances reach a plateau for large N.",
+     "anchor": "Section 2.5.1, Figures 2-3, pp.10-11",
+     "quotes": [
+      "The plots show a number of input qubits N = 3",
+      "in Fig. 2(b) we see that the linear circuit was not able to reproduce the majority distribution, while the quadratic circuit could reach a much more similar output",
+      "The quadratic circuit gives a worse result than the linear circuit for N > 10 because of optimization errors.",
+      "Both the distances reach a plateau for large enough N ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one classical simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sanavio-generalization-mechanism",
+     "value": "The authors state that, unlike a QCBM, the QIC must output a value for any input configuration, so unseen data appear as holes in the target distribution that contribute nothing to the Bhattacharyya coefficient; they compute the Hellinger distance only on the support of the seen data, and state the circuit can generalize to unseen data even when this distance vanishes.",
+     "anchor": "Section 2.6, pp.11-12",
+     "quotes": [
+      "Since the circuit acts only on the target qubit, there has to be an output for any configuration x˜ of the input qubits, even if x˜ is not present in the target distribution.",
+      "In order to encompass this issue, we calculate dH only on the support provided by the seen data.",
+      "even when the Hellinger distance vanishes, the circuit is able to generalize to unseen data"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument from the circuit's structure, supported by the paper's simulations.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The output on unseen inputs is fixed by the shared parameters of the ansatz, so generalization depends on whether the target rule matches the ansatz's parity structure."
+    },
+    {
+     "id_suggestion": "sanavio-gaussian-generalization",
+     "value": "The authors report that after removing 10%, 30%, 50% and 70% of the Gaussian data and optimizing the linear QIC on the rest, the distance on the unseen data decreases with N until a plateau and the curves for different missing fractions converge for larger N; results for the quadratic circuit are similar up to ten to the minus two.",
+     "anchor": "Section 2.6.1, Figure 4, pp.12-13",
+     "quotes": [
+      "we subtract from the target distribution a certain percentage of data (10%, 30%, 50% and 70%) and optimize the QIC with respect to the partial distribution",
+      "The results we have obtained for the quadratic circuit are similar up to 10−2.",
+      "where the distance decreases for larger N , till it reaches a plateau",
+      "The different curves converge to the same value for larger N (Fig. 4)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one classical simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sanavio-majority-generalization",
+     "value": "The authors report that for the majority distribution with 70% of data missing, sampling 1024 outcomes from the optimized circuit, about 90% of outcomes followed the original rule with two to the fourth input data and about 70% with two to the sixteenth; the quadratic circuit reproduces the distribution much better than the linear one.",
+     "anchor": "Section 2.6.1, Figure 5, p.13",
+     "quotes": [
+      "In the figure we show the ratio of the correct outcomes from No = 1024 random extraction from the optimized random distribution",
+      "The results show that even with a 70% of unseen data, about 90% of the outcomes followed the original rule in the case of 24 input data, and about 70% of them in the case of 216 input data.",
+      "For this distribution the results obtained by the linear and quadratic circuits are very different, since the latter is more able to reproduce the original distribution m."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one classical simulation study; the text layer prints the input counts flat (24, 216 for two to the fourth and two to the sixteenth).",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The fraction following the rule falls as the input size grows."
+    },
+    {
+     "id_suggestion": "sanavio-entanglement-entropy",
+     "value": "The authors report that the mean entanglement entropy between the target qubit and the inputs rises with the number of parameters until a plateau when the CNOT count equals the qubit count, that adding C2NOTs does not change it, and that for the linear circuit it follows an exponential function of N fitted with a ≈ 1.2, b ≈ 3.2, c ≈ 0.8.",
+     "anchor": "Appendix A, Figure A3, pp.18-19",
+     "quotes": [
+      "The entanglement increases until it reaches a plateau, when the number",
+      "We see that the addition of the C2NOTs doesn’t change the level of entanglement in the circuit",
+      "with a ≈ 1.2, b ≈ 3.2, c ≈ 0.8, thus following an exponential function of N ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical fit from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sanavio-missing-data-mechanisms",
+     "value": "The paper describes, citing Rubin, three missing-data mechanisms (missing at random, missing completely at random, missing not at random), states that single imputation generally produces biased estimates even in the MCAR case, and that multiple imputation does not aim to impute the missing value but to use incomplete data correctly for the dataset statistics.",
+     "anchor": "Section 1, pp.2-3",
+     "quotes": [
+      "Generally, we can distinguish among three situations [1, 2] that describe when the data are either missing at random (MAR), missing completely at random (MCAR) or missing not at random (MNAR).",
+      "it generally has the negative effect of producing biased estimates [2] even in the MCAR case",
+      "We have to point out that multiple imputation has not the goal to impute the missing value [6]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Background attributed to other work.",
+     "result_type": "cited",
+     "context": "method",
+     "reader_inference": "The paper does not say which missing-data mechanism its experiments assume or test."
+    },
+    {
+     "id_suggestion": "sanavio-conclusions",
+     "value": "The authors conclude that the QIC recovered the true value of missing data even when the available data were a small fraction of the dataset, that the circuit still develops entanglement and barren plateaus despite its analytical solution, and that they believe the results can lead the way to using quantum circuits for imputing classical data.",
+     "anchor": "Section 3 Conclusions, p.14",
+     "quotes": [
+      "We have found that that algorithm was able to recover the true value of the missing data even when the available data were a small fraction of the dataset.",
+      "However, our circuit was still able to develop entanglement.",
+      "We believe these results can lead the way to the use of quantum circuits for the imputation of classical data."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' summary of synthetic-data simulations.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "All tests use synthetic binary distributions in classical simulation; no real dataset, hardware run or classical-baseline comparison is reported."
+    }
+   ]
+  }
+ ]
+}

@@ -19,7 +19,9 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from store.common_names import with_common_names  # noqa: E402
 from store.grading import BASES  # noqa: E402
+from store.ingest import FULL_READ_MARK  # noqa: E402
 from store.quotes import (QUOTE, plain, source_text, stray_quote_marks, unquoted_figures,  # noqa: E402
                           unsupported_by_basis)
 
@@ -93,6 +95,24 @@ def test_a_statement_about_the_field_is_low_and_says_so():
     assert not [i for i, a in got.items() if a.certainty != "low" or a.certainty_reasons != s12.FIELD], got
 
 
+def test_a_measured_result_with_theory_words_is_one_the_coordinator_named():
+    """Sprint 13 Task F, I2: a LOW that says "an empirical result" while
+    its value or quotes name a theorem, a proof or an analytic count is
+    either a theoretical result (THEORY_LOW, with its cause) or named in
+    MEASURED_DESPITE with why. Proven to fail by injection, 2026-10-25:
+    with approx-design-bound-tighter removed from THEORY_LOW, this test
+    named it; with kernel-diminishing-returns removed from
+    MEASURED_DESPITE, it named that. Both restored."""
+    from store.grading import theory_words
+    s12 = _script()
+    bad = {a.id: w for t in TASKS for _, a, _, _ in s12.assertions(t)
+           if a.certainty_reasons == s12.EMPIRICAL and a.id not in s12.MEASURED_DESPITE
+           and (w := theory_words(f"{a.value} {a.citation_context}"))}
+    assert not bad, bad
+    assert not set(s12.MEASURED_DESPITE) & set(s12.THEORY_LOW)
+    assert all(why.strip() for why in s12.MEASURED_DESPITE.values())
+
+
 def test_every_replaced_value_states_only_signs_its_quotes_hold():
     """`require_edit_basis` runs this inside verify(), which needs the source
     text, so CI (live_store deselected) never reached it. The check needs
@@ -111,8 +131,8 @@ def test_every_name_in_the_coordinator_tables_is_an_assertion():
     "coreset-limits" spelled "coreset-limit" in HIGH, this test named it."""
     s12 = _script()
     ids = set(_raw(s12, "F")) | set(_raw(s12, "G"))
-    for name in ("HIGH", "VENDOR_DESCRIPTIONS", "FIELD_STATEMENTS", "VALUE_REPLACE", "EXTRA_QUOTES", "QUOTE_EDITS",
-                 "CONTEXT_FIX", "DROP"):
+    for name in ("HIGH", "VENDOR_DESCRIPTIONS", "FIELD_STATEMENTS", "THEORY_LOW", "THEORY_WITHDRAWN", "MEASURED_DESPITE",
+                 "VALUE_REPLACE", "EXTRA_QUOTES", "QUOTE_EDITS", "CONTEXT_FIX", "DROP"):
         unknown = set(getattr(s12, name)) - ids
         assert not unknown, f"{name}: {sorted(unknown)}"
 
@@ -193,11 +213,14 @@ def test_each_read_is_qualified_and_the_store_matches_the_script(live_conn, task
                                      (rid,)).fetchone()[0] == "read", rid
     bad = []
     for _, a, _, _ in s12.assertions(task):
+        if FULL_READ_MARK in (live_conn.execute("SELECT updated_reason FROM records WHERE id = ?", (a.id,)).fetchone()
+                              or ("",))[0]:
+            continue  # re-read in full by Sprint 13 Task G (F113), whose own tests check it; sync_assertion keeps this script off it
         row = live_conn.execute(
             "SELECT r.value, r.certainty, r.certainty_reasons, r.provenance, f.citation_context, f.claim_type "
             "FROM records r JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (a.id,)).fetchone()
         ctx = [r[0] for r in live_conn.execute("SELECT context_id FROM record_contexts WHERE record_id = ?", (a.id,))]
-        if not row or tuple(row) != (a.value, a.certainty, a.certainty_reasons, a.provenance, a.citation_context,
+        if not row or tuple(row) != (with_common_names(a.value), a.certainty, a.certainty_reasons, a.provenance, a.citation_context,
                                      a.claim_type) or ctx != [a.context]:
             bad.append(a.id)
     assert not bad, bad

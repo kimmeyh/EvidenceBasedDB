@@ -206,7 +206,8 @@ def apply_changes(conn) -> list[str]:
                                  (src["id"],)).fetchone()[0]
             if (row and row[0] != detail) or check != src["checked_against_source"]:
                 conn.execute("UPDATE paper_reads SET detail = ? WHERE record_id = ? AND reader = ? AND read_on = ? "
-                             "AND extent = ?", (detail, src["id"], reader, day, extent))
+                             "AND extent = ? AND detail = ?", (detail, src["id"], reader, day, extent,
+                                                               row[0] if row else detail))
                 conn.execute("UPDATE paper_fields SET checked_against_source = ? WHERE record_id = ?",
                              (src["checked_against_source"], src["id"]))
                 append_updated_reason(conn, src["id"], f"{TODAY} ({TAG}, review): read detail corrected", TODAY)

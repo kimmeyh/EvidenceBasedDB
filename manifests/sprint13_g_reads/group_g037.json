@@ -1,0 +1,2448 @@
+{
+ "papers": [
+  {
+   "record_id": "sharma-2022-trainability-dissipative-perceptron-based-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2020-05_Sharma_Trainability-of-Dissipative-Perceptron-Based-Quantum-Neural-Networks.pdf",
+   "title_in_file": "Trainability of Dissipative Perceptron-Based Quantum Neural Networks",
+   "version_note": "arXiv:2005.12458v2 (10 Jun 2022): a 7-page Letter plus Supplemental Material (Sections A to G) with the proofs.",
+   "pages": 28,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper that bounds the gradient variance of dissipative perceptron-based quantum neural networks (DQNNs) and proves they can exhibit barren plateaus.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "dqnn-deep-global-barren-plateau",
+     "verdict": "confirmed",
+     "note": "Theorems 1 and 2 are now quoted as their own assertions (dqnn-theorem1-*, dqnn-theorem2-parameter-matrix).",
+     "value": "",
+     "anchor": "Introduction p.1; Conclusions p.5",
+     "quotes": [
+      "we here analytically prove that DQNNs are not immune to barren plateaus.",
+      "DQNNs with deep global perceptrons are untrainable despite the dissipative nature of the architecture."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorems 1 and 2 (p.3 to 5, proofs in Supplemental Sections D and E) state the conditions (deep global perceptrons forming independent 2-designs over n + 1 qubits) and the bounds.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof covers perceptrons that form 2-designs; the word 'deep' stands for that condition."
+    },
+    {
+     "id": "dqnn-prior-speculation-no-bp",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Introduction p.1",
+     "quotes": [
+      "based on small scale numerical experiments, it was speculated that dissipative quantum neural networks do not suffer from the barren plateau (vanishing gradient) problem."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A claim of Ref. [37] that this paper reports and then refutes.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "dqnn-results-general-scope",
+     "verdict": "narrowed",
+     "note": "The Conclusions claim full generality, but the Supplemental Material says rigorous proofs are given only for DQNNs with no hidden layers, one output qubit per perceptron and computational-basis tensor-product output states; the hidden-layer and m-output-qubit cases are argued or sketched, and the local-cost generalization for m qubits is only asserted.",
+     "value": "The authors state that their results are completely general for DQNN architectures, covering arbitrary numbers of hidden layers and perceptrons acting on any number of qubits; the Supplemental Material gives rigorous proofs only for DQNNs with no hidden layers and perceptrons acting on one output qubit, argues the hidden-layer case in Section G, and gives only a brief sketch for perceptrons acting on m output qubits.",
+     "anchor": "Conclusions p.5; Supplemental Material p.8, Remark p.9, Section F p.25",
+     "quotes": [
+      "We note that our results are completely general for DQNN architectures, e.g., covering arbitrary numbers of hidden layers and general perceptrons acting on any number of qubits.",
+      "we provide rigorous proofs for the case when there are no hidden layers and later argue in Section G that our results hold for DQNNs with hidden layers.",
+      "Since our theorem statements for this case are generalizable from the existing proofs, we only provide a brief sketch of our proof."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The general cases rest on sketched or argued extensions, not full proofs.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "dqnn-shallow-local-cost-avoids-bp",
+     "verdict": "narrowed",
+     "note": "The shallow-local result holds for two specific perceptron ansatzes (Fig. 3), one of which maps exactly to the layered hardware-efficient ansatz; the bounds are taken from Ref. [19], with polylogarithmic depth for the global-cost barren plateau and logarithmic depth for the local-cost lower bound, under the assumptions of Corollary 2 of [19].",
+     "value": "The authors show that for shallow and local perceptrons, global cost functions lead to barren plateaus while local costs avoid them; this is shown for the specific perceptron ansatzes of Fig. 3, one of which maps exactly onto the layered hardware-efficient ansatz of Ref. [19], and the bounds are taken from Ref. [19]: barren plateaus for a global cost with O(poly(log(n))) layers, and no barren plateau for a local cost with O(log(n)) layers under the assumptions of Corollary 2 of [19].",
+     "anchor": "p.4, Fig. 3, Eqs. (11) and (12); Conclusions p.5",
+     "quotes": [
+      "for shallow and local perceptrons, employing global cost functions leads to barren plateaus, while using local costs avoids them.",
+      "Note that this mapping is not general, but rather valid for the specific architecture in Fig. 3(b).",
+      "if the number is layers is O(poly(log(n))), then the DQNN cost function exhibits barren plateaus as",
+      "if the number of layers is in O(log(n)), then there is no barren plateau [19] as",
+      "Here we remark that (12) was obtained following the same assumptions as those used in Corollary 2 of [19]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The bounds are imported from Ref. [19] through an exact mapping valid only for one ansatz.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "dqnn-definition-dissipative",
+     "value": "The authors define a dissipative QNN (DQNN) as a network where each node is a qubit, connections are quantum perceptrons, ancillary qubits form the output layer and the input-layer qubits are discarded; as a result the width of the DQNN depends on the number of qubits in two adjacent layers.",
+     "anchor": "Introduction p.1; Preliminaries p.2",
+     "quotes": [
+      "In a DQNN each node within the network corresponds to a qubit [31], and the connections in the network are modelled by quantum perceptrons",
+      "The term dissipative refers to the fact that ancillary qubits form the output layer, while the qubits from the input layer are discarded.",
+      "This implies that the width of the",
+      "DQNN depends on the number of qubits in two adja"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of the architecture it analyzes (Introduction and Preliminaries).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dqnn-definition-perceptron",
+     "value": "The authors define a quantum perceptron as an arbitrary unitary operator with m input and k output qubits, and for simplicity consider k = 1, so each perceptron acts on m + 1 qubits.",
+     "anchor": "Preliminaries p.2",
+     "quotes": [
+      "A quantum perceptron is defined as an arbitrary unitary operator with m input and k output qubits.",
+      "For simplicity, we consider the case when k = 1, so that each perceptron acts on m + 1 qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition (Preliminaries).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dqnn-definition-global-local",
+     "value": "The authors define a global cost function as one whose operator acts non-trivially on all qubits of the output layer and a local cost as one whose operator acts non-trivially on a small number of output qubits; a global perceptron acts non-trivially on all qubits of the previous layer, and a local perceptron acts on a number of qubits in O(1), independent of the previous layer's size.",
+     "anchor": "Preliminaries p.2 to 3, Eqs. (3) and (4), Fig. 2",
+     "quotes": [
+      "When Ox acts non-trivially on all qubits of the output layer, we use the term global cost function",
+      "for the cases when the operator Ox acts nontrivially on a small number of qubits in the output layer.",
+      "when the perceptron Vjl acts nontrivially on all qubits in the l-th layer",
+      "a local perceptron is defined as a unitary Vjl acting on a number of qubits m ∈ O(1) which is independent of nl−1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions (Preliminaries, p.2 to 3).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dqnn-local-cost-tensor-product-restriction",
+     "value": "The authors state that since the global cost is a state fidelity, a faithful local cost cannot in general be designed, so they restrict the local cost to target output states that are tensor-product states across the output qubits.",
+     "anchor": "p.3, before Eq. (4)",
+     "quotes": [
+      "in general it will not be possible to design a correspond",
+      "Therefore, we restrict ourselves to the case when"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope statement for its local cost (p.3).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dqnn-zero-mean-gradient",
+     "value": "The paper proves (Supplemental Section C) that the average of the partial derivative of the cost is zero, for both random parameterized circuits (when the parameter's sub-circuits form 1-designs) and the parameter matrix multiplication method (when a perceptron forms a 1-design), so the variance measures how much the gradient concentrates around zero.",
+     "anchor": "p.3; Supplemental Section C, p.10 to 12",
+     "quotes": [
+      "we prove that the average value of the partial derivative of the cost function ∂C is not biased towards any particular value.",
+      "We prove this result for both cases: 1) random parameterized quantum circuits and 2) parameter matrix multiplication method.",
+      "quantifies (on average) how much the"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Supplemental Section C under the stated 1-design condition.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dqnn-theorem1-random-circuits",
+     "value": "Theorem 1: for a DQNN with deep global perceptrons parametrized as random parameterized circuits, whose sub-circuits and perceptrons form independent 2-designs over n + 1 qubits, the paper proves that the variance of the cost partial derivative is upper bounded by a function in O of one over two to the power 2n for the global cost, and by a function in O of one over two to the power n for the local cost.",
+     "anchor": "Theorem 1, p.3 to 4, Eqs. (9) and (10); proof in Supplemental Section E, p.20 to 25",
+     "quotes": [
+      "Consider a DQNN with deep global perceptrons parametrized as in Eq. (5)",
+      "form independent 2-designs over n + 1 qubits",
+      "Then, the variance of the partial derivative of the cost function with respect to θν in Vjl is upper bounded as",
+      "if Ox is the global operator of Eq. (3), and upper bounded as",
+      "when Ox is the local operator in (4)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 with its conditions quoted; proof in Supplemental Section E (bound expressions printed as g(n) ∈ O 1/22n and h(n) ∈ O (1/2n) in the text layer).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer flattens the exponents; the bounds are 1/2^(2n) and 1/2^n."
+    },
+    {
+     "id_suggestion": "dqnn-theorem1-interpretation",
+     "value": "The authors state that Theorem 1 shows DQNNs with deep global perceptron unitaries that form two-designs exhibit barren plateaus for both global and local cost functions.",
+     "anchor": "p.4, after Theorem 1",
+     "quotes": [
+      "Theorem 1 shows that DQNNs with deep global per",
+      "hibit barren plateaus for global and local cost functions."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A restatement of Theorem 1's proved bound.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dqnn-theorem2-parameter-matrix",
+     "value": "Theorem 2: for a DQNN with deep global perceptrons updated by the parameter matrix multiplication method, whose initial perceptrons form independent 2-designs over n + 1 qubits, the paper proves that the variance of the derivative of the cost with respect to the time-step parameter is upper bounded by a function in O of one over two to the power n, for both the global and the local cost; the authors conclude that barren plateaus also arise with this simultaneous-update method.",
+     "anchor": "Theorem 2, p.5, Eq. (14); proof in Supplemental Section D, p.12 to 19",
+     "quotes": [
+      "Consider a DQNN with deep global perceptrons, which are updated via the parameter matrix multiplication of (13).",
+      "form independent 2-designs over n + 1 qubits",
+      "Then the variance of the partial derivative of the cost function with respect to the time-step parameter s is upper bounded as",
+      "when Ox is the global operator of (3), or the local operator in (4).",
+      "Theorem 2 implies that barren plateaus also arise when using the parameter matrix multiplication method."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2 with its conditions quoted; proof in Supplemental Section D (bound printed f (n) ∈ O (1/2n)).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dqnn-parameter-matrix-definition",
+     "value": "The authors describe the parameter matrix multiplication training method of Ref. [37], in which perceptrons are not decomposed into circuits but treated as unitary matrices and all perceptrons are updated simultaneously at each time-step.",
+     "anchor": "p.4, Eq. (13)",
+     "quotes": [
+      "In what follows we analyze the trainability for a method introduced in Ref. [37]",
+      "In this training approach, which we call parameter matrix multiplication, the perceptrons are not explicitly decomposed into quantum circuits, but rather are treated as unitary matrices.",
+      "where at each time-step all perceptrons are simultaneously optimized."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of the training setup it analyzes (p.4).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dqnn-toy-model-shallow",
+     "value": "For the simplest shallow local perceptrons (m = 1, a SWAP followed by a y rotation, Fig. 3(a)), the authors recover the toy model of Ref. [19] and state that DQNNs with simple shallow local perceptrons and global costs are untrainable when randomly initialized.",
+     "anchor": "p.4, Fig. 3(a)",
+     "quotes": [
+      "Let us first consider the simple perceptrons of Fig. 3(a)",
+      "Here m = 1 so",
+      "In this case one recovers",
+      "the toy model example of [19]",
+      "These results suggest that DQNNs with simple shallow",
+      "local perceptrons and global cost functions are untrain"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The variances are taken from the toy model of Ref. [19]; the closed forms are printed garbled in the text layer.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The text layer prints the variances as 1/8 (3/8)^(n-1) for the global cost and 1/(8 n^2) for the local cost."
+    },
+    {
+     "id_suggestion": "dqnn-maps-hardware-efficient",
+     "value": "The authors show that the shallow local perceptron architecture of Fig. 3(b) can be exactly mapped onto a layered hardware-efficient ansatz, two DQNN layers per ansatz layer, and state that hardware-efficient QNNs are special cases of DQNNs; the mapping is valid only for that architecture.",
+     "anchor": "Introduction p.2; p.4, Fig. 3(b)",
+     "quotes": [
+      "we also show that hardware-efficient QNNs are special cases of DQNNs.",
+      "can be exactly mapped into a layered hardware",
+      "Note that this mapping is not general, but rather valid for the specific architecture in Fig. 3(b)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "An exact construction given in the paper (p.4, Fig. 3(b)), with its limit stated.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dqnn-lower-bound-trainability",
+     "value": "The authors state that obtaining a lower bound for the gradient variance implies that DQNN trainability is guaranteed.",
+     "anchor": "p.4, after Eq. (12)",
+     "quotes": [
+      "Note that obtaining a lower bound for the variance implies that the DQNN trainability is guaranteed."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statement of interpretation.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "A non-vanishing variance at initialization is a necessary, not sufficient, condition for successful training in the usual reading."
+    },
+    {
+     "id_suggestion": "dqnn-bp-precision-argument",
+     "value": "The authors argue that exponentially vanishing gradients imply the precision needed to estimate them grows exponentially, so a QNN with such gradients has no hope of polynomial scaling, while polynomially vanishing gradients preserve the hope of quantum speedup.",
+     "anchor": "Introduction p.1",
+     "quotes": [
+      "exponentially vanishing gradients imply that the precision needed to estimate such gradients grows exponentially.",
+      "a QNN with exponentially vanishing gradients has no hope of achieving this goal.",
+      "a QNN with gradients that vanish polynomially means that the algorithm requires a polynomial precision, and hence that the hope of quantum speedup is preserved."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's argument, not proved in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dqnn-proof-scope-pure-basis",
+     "value": "The authors state that, for simplicity, the proofs are derived for output states that are tensor products of computational basis states over n qubits, claimed to generalize trivially to arbitrary tensor-product states, and that the proof techniques invoke the pure-state properties of input and output states.",
+     "anchor": "Supplemental Remark p.9; p.5",
+     "quotes": [
+      "we derive the proofs of our theorems for the case when the output states",
+      "in the training set are tensor product of computational basis states over n qubits.",
+      "We note that our proof techniques invoke the pure state properties of input and output states."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the scope of its proofs (Supplemental Remark and p.5).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dqnn-open-arbitrary-hamiltonian",
+     "value": "The authors speculate that their results can be extended to expectation values of an arbitrary Hamiltonian, since a randomly initialized DQNN's output is close to maximally mixed across any bipartite cut, and leave this for future work.",
+     "anchor": "p.5",
+     "quotes": [
+      "we speculate that our results can be extended to expectation values of the arbitrary Hamiltonian. We leave this question for future work."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own open problem (p.5).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dqnn-supervised-labels-extension",
+     "value": "The authors show (Supplemental Section B) that the formalism extends to supervised learning with classical labels, illustrated for binary classification where labels come from a measurement on the output state, because the resulting operator has the form used in the main text.",
+     "anchor": "Supplemental Section B, p.10",
+     "quotes": [
+      "For simplicity we here consider the case of binary classification",
+      "Thus, the formalism in the main text can",
+      "be directly extended for other supervised learning tasks."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A short argument in the Supplement, not a theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dqnn-m-output-qubits-sketch",
+     "value": "For perceptrons acting on n + m qubits, the authors sketch a bound for the global cost of order one over two to the power (2m-1)n on the squared derivative, assuming each output qubit is acted on by only one perceptron, and assert that the local-cost proof generalizes similarly.",
+     "anchor": "Supplemental Section F, p.25 to 27, Eq. (F24)",
+     "quotes": [
+      "we henceforth assume that each qubit in the (l + 1)-th layers is acted upon by only one perceptron.",
+      "we only provide a brief sketch of our proof.",
+      "(∂sCG)2 f (n, m) ∈ O(1/2(2m−1)n)",
+      "Similarly, one con generalize the proof for local cost functions."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Only a sketch of proof is given; the local-cost case is asserted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dqnn-hidden-layers-generalization",
+     "value": "The authors argue (Supplemental Section G) that with L hidden layers the index constraints reduce to those of the no-hidden-layer case, so the global-cost bound of order one over two to the power two n carries over, and assert the same for local costs.",
+     "anchor": "Supplemental Section G, p.27 to 28, Eqs. (G11) and (G12)",
+     "quotes": [
+      "are exactly like those in Eqs. (E11) and (E12) of Section E.",
+      "Similarly, one con generalize the proof for local cost functions with no hidden layers, to the case when the DQNN has L hidden layers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argued extension; the local-cost case is asserted without proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dqnn-entanglement-induced-bp",
+     "value": "In a note added, the authors state their results can be interpreted as a type of entanglement-induced barren plateau, where much entanglement in a parameterized circuit leads to trainability issues when qubits are discarded and output qubits concentrate around the maximally mixed state.",
+     "anchor": "Note Added, p.5",
+     "quotes": [
+      "our results can also be interpreted as a type of entanglement-induced barren plateau.",
+      "a large amount of entanglement in a parameterized quantum circuit can lead to trainability issues when qubits are discarded"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An interpretation added after publication.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dqnn-first-claim",
+     "value": "The authors state their work is the first rigorous analysis of the scalability of a perceptron-based QNN, and the first to analyze barren plateaus in data science applications.",
+     "anchor": "Abstract p.1; Note Added p.5",
+     "quotes": [
+      "Our work represents the first rigorous analysis of the scalability of a perceptron-based QNN.",
+      "Our work is the first to analyze barren plateaus in the context of data science applications, and also the first to consider perceptron-based quantum neural networks (QNNs)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A priority claim by the authors.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dqnn-future-directions",
+     "value": "The authors name as open directions QNN-specific optimizers, the resilience of QNNs to noise, strategies to prevent barren plateaus, extending the results to mixed input and output states, and architectures beyond DQNNs and hardware-efficient QNNs.",
+     "anchor": "Conclusions p.5",
+     "quotes": [
+      "interesting future research directions are QNN-specific optimizers [54–57], analyzing the resilience of QNNs to noise [22, 41], and strategies to prevent barren plateaus [58–61].",
+      "Another interesting direction is to extend our results to the case when the input and output states are mixed states"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of open problems (Conclusions).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "shastry-2023-shot-frugal-robust-quantum-kernel",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Shastry-et-al._2022_Reliable-quantum-kernel-classification-using-fewer-circuit-evaluations__2210.06971.pdf",
+   "title_in_file": "Shot-frugal and Robust quantum kernel classifiers",
+   "version_note": "arXiv:2210.06971v3 (31 Dec 2023). The file name gives the earlier title 'Reliable quantum kernel classification using fewer circuit evaluations'; the text is the v3 retitled 'Shot-frugal and Robust quantum kernel classifiers'.",
+   "pages": 25,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A paper that bounds the measurement shots a quantum-kernel SVM needs to reproduce the ideal classifier's labels reliably, and derives chance-constrained robust SVM programs (ShofaR) that need far fewer shots.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "shofar-assumption-sampling-noise",
+     "verdict": "narrowed",
+     "note": "The exact-training-matrix assumption (1a) is the setting of Section IV and V A only; the paper relaxes it for the robust program (1b, ShofaR-Est in Section V B) and for both programs with depolarizing device noise (1c, Appendix G). Sampling noise alone is the main-text setting, but Appendix G simulates device noise.",
+     "value": "The authors state that the training kernel matrix is assumed exact (Assumption 1a) for their main results, and that the article's results consider only the fundamental sampling noise; they relax the assumption for the robust program in Section V B (Assumption 1b), and in Appendix G relax it for both the nominal and robust programs while adding depolarizing device noise (Assumption 1c).",
+     "anchor": "Section I.B, Assumptions 1a to 1c, p.2; Section VI, p.15",
+     "quotes": [
+      "Assumption 1a: The training kernel matrix is assumed to be exact (noiseless training phase; see Appendix H for an empirical justification).",
+      "Assumption 1b: We now relax the Assumption 1a for the Robust program but the nominal SVM program still has access to the exact (noiseless) training kernel matrix.",
+      "Assumption 1c: We now relax the Assumption 1b for both the nominal SVM and the Robust programs and additionally include a device noise for both training and classification phases.",
+      "Our results in the article have considered only the fundamental sampling noise",
+      "We show simulations in the presence of the depolarizing noise in Appendix G."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its assumptions (Section I.B) and scope (Section VI).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "shofar-fewer-shots",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section I.B items 2 and 3; Table III, p.14",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Simulated results on four small datasets in one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "shofar-theorem2-shot-bound",
+     "verdict": "widened",
+     "note": "Theorem 2's statement is now quoted: it bounds the classification error of SKC over a dataset of size M by the gamma-margin error of EKC with probability at least 1 minus delta, for N above a bound that grows with the squared norm of beta star and log of M over delta.",
+     "value": "The paper proves (Theorem 2) that for a dataset of size M, the classification error of the stochastic kernel classifier is bounded by the gamma-margin error of the exact kernel classifier, with probability at least 1 − δ, whenever N is at least c squared over two gamma squared, times the squared norm of beta star, times the log of M over delta (c the circuit factor); the bound scales as msv log M/γ2.",
+     "anchor": "Theorem 2, Section IV, p.7, Eqs. (24) and (25); proof in Appendix E, p.21",
+     "quotes": [
+      "Let D ∼ P denote a dataset of size M = |D|.",
+      "The classification error of the stochastic kernel classifier",
+      "is bounded by the γ-margin error of the true classifier",
+      "with probability at least 1 − δ, whenever",
+      "which scales as msv log M/γ2 for a dataset of size M"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2 stated with its conditions (p.7) and proved in Appendix E from Lemma 1, the uncertainty model and the union bound.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The bound's formula is printed flat in the text layer (c2 2γ2 ∥β∗∥2 log M δ)."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "shofar-accuracy-vs-reliability",
+     "value": "The authors report that over 200 independent trials on the Circles training set, the stochastic kernel classifier's average accuracy exceeds 85% at N = 512 while its reliability is 0%, and argue that classification accuracy is not a suitable metric in the presence of noise.",
+     "anchor": "Fig. 1, p.5; Section I.B, p.2",
+     "quotes": [
+      "calculated over Ntrials = 200 independent trials",
+      "Notice that even when the average accuracy is high (> 85% at N = 512), the reliability can be very low (0% at N = 512).",
+      "show that classification accuracy (Definition 4) is not a suitable error metric in the presence of noise"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated result on one dataset.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-definition-reliability",
+     "value": "The authors define reliability as the probability with which the stochastic kernel classifier agrees with the exact kernel classifier, and say the SKC reliably reproduces the EKC when all points in the dataset are reliably classified with high probability 1 − δ.",
+     "anchor": "Definition 5, Section III A, p.5",
+     "quotes": [
+      "We motivate the metric of reliability (Definition 5) which is the probability with which the SKC agrees with EKC.",
+      "We say that SKC reliably reproduces EKC when all points in the dataset are reliably classified, i.e., with high probability 1 − δ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition (Definition 5).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-gates-lower-variance",
+     "value": "The paper shows (Appendix C) that the SWAP test always gives a greater kernel-estimate variance than the GATES (inversion) test for the same N, captured by a circuit-dependent circuit factor; it notes the GATES test needs twice the circuit depth while the SWAP test needs twice the qubits plus controlled SWAPs, so the practical choice can depend on coherence times and gate quality.",
+     "anchor": "Definition 7, Section III B, p.6 to 7; Appendix C, p.19 to 20",
+     "quotes": [
+      "We show in Appendix C that the SWAP test always leads to greater variance for the same N .",
+      "The circuit factor c is a circuit-dependent constant.",
+      "The GATES test requires a circuit whose depth is twice that of the SWAP test, but the SWAP test requires twice the number of qubits as the GATES test and additional controlled SWAP operations.",
+      "The practical choice of the test to use for estimating QEKs can therefore depend on other factors like the coherence times and the quality of the gates available."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix C from the variances of the two binomial estimators (inequality C4).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-theorem1-single-point",
+     "value": "The paper proves (Theorem 1) that, with the margin of classification of the ideal classifier at a point, the stochastic kernel classifier has reliability of at least 1 − δ at that point whenever N exceeds a bound proportional to the squared ratio of c times the norm of beta star to the margin, times log of one over delta; reliability can be made arbitrarily close to 1 by increasing N by at most a logarithmic factor log(1/δ).",
+     "anchor": "Theorem 1, Section III C, p.7, Eq. (21); proof in Appendix E, p.21",
+     "quotes": [
+      "the margin of classification of the ideal classifier EKC for the point (x, y). Then SKC has a reliability of at least 1 − δ, whenever",
+      "where c is the circuit factor.",
+      "Proof. This bound is a direct application of Lemma 1, along with the uncertainty model UM.",
+      "can be made arbitrarily close to 1 by increasing N by at most a logarithmic factor log(1/δ)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 stated with its conditions and proved from Lemma 1 (Appendix E).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer prints the bound as N ≥ 1/2 (c ∥β∗∥/γ(x))^2 log(1/δ)."
+    },
+    {
+     "id_suggestion": "shofar-remark1-unbiased-noise",
+     "value": "The authors state (Remark 1) that the uncertainty model subsumes all other sources of unbiased noise, because quantum kernel values lie between 0 and 1 and so are subgaussian by Hoeffding's lemma; the abstract says the strategy applies to any source of unbiased noise.",
+     "anchor": "Remark 1, Section III B, p.6; Abstract",
+     "quotes": [
+      "Since all quantum kernel distributions 0 ≤ K(x, x′) ≤ 1 have finite support, they are subgaussian due to Hoeffding’s lemma",
+      "Our strategy is applicable to uncertainty in quantum kernels arising from any source of unbiased noise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A short proof given with Remark 1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-biased-noise-separate",
+     "value": "The authors state that kernel estimates that correct for depolarizing error are not unbiased and require separate treatment; with a biased estimate, results must be compared against the biased kernel instead of the ideal one.",
+     "anchor": "Appendix B d, p.18",
+     "quotes": [
+      "These estimates are not unbiased",
+      "and requires separate treatment.",
+      "However, if the noise biases the kernel value, we would need to compare all our results to K instead of K∗."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit on its uncertainty model (Appendix B).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-corollaries-2-1-2-2",
+     "value": "The paper derives Corollary 2.1 (SKC reliably reproduces EKC over the dataset, each point with reliability at least 1 − δ, for N above a bound with the margin gamma star) and Corollary 2.2 (if a maximum margin gamma star > 0 exists at which EKC classifies all points correctly, SKC also classifies all points correctly with probability 1 − δtarget for N at least Nsg).",
+     "anchor": "Corollaries 2.1 and 2.2, Section IV, p.8; proof of 2.1 in Appendix E",
+     "quotes": [
+      "Corollary 2.1. Let EKC have an accuracy",
+      "Corollary 2.2. Over any dataset D of size M",
+      "Then SKC reliably reproduces EKC over D",
+      "If γ∗ > 0 exists, it denotes the maximum margin for which the EKC classifies all datapoints correctly.",
+      "the SKC also classifies all the datapoints correctly, with probability 1 − δtarget, whenever"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Corollaries of Theorem 2 with conditions stated (p.8); Corollary 2.1 proved in Appendix E.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-remark2-support-vectors",
+     "value": "The authors show (Remark 2) that replacing the squared norm of beta star by msv times C squared in the Theorem 2 bound still suffices, where msv is the number of support vectors and C the SVM regularization parameter, and conclude that a good kernel classifies accurately with a large margin, a small C and few support vectors.",
+     "anchor": "Remark 2, Section IV, p.8",
+     "quotes": [
+      "Remark 2. Given any dataset D ∼ P of size M",
+      "is sufficient to ensure that (24) holds with probability at least 1 − δ. Here msv is the number of support vectors in the training set, and C is the SVM regularization parameter PRIMAL.",
+      "A good choice of kernel K∗ should classify accurately with a large margin γ, a small regularization parameter C, and few support vectors msv."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Remark 2 with a short proof from the dual coefficient bound (p.8).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-precise-kernel-scaling",
+     "value": "The paper proves (Theorem 5, Appendix F) that estimating all kernel entries to precision epsilon in Frobenius norm needs a number of shots scaling as msvM/ε2, against the msv log M/γ2 of Theorem 2; the authors state the margin gamma, unlike epsilon, is not vanishingly small, and that they improve the dependence on M exponentially.",
+     "anchor": "Section I.B item 1, p.2; Theorem 5, Appendix F, p.22 to 23",
+     "quotes": [
+      "Theorem 5 (Precise Kernel Estimation).",
+      "Precise kernel evaluations, on the other hand, lead to a shots requirement which scales as msvM/ε2 (see Appendix F for a derivation).",
+      "which scales as msv log M/γ2 for a dataset of size M",
+      "holds with a probability of at least 1 − δ.",
+      "Additionally, we improve the dependence on M exponentially."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5 is proved in Appendix F with a union bound and Lemma 1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-table1-practical-vs-theory",
+     "value": "The authors report (Table I) that the empirical bound Npractical needed for SKC to reproduce EKC over the training set is about 3 − 5 times smaller than the Theorem 2 bound for both circuits, and that GATES needs about 4 times fewer shots than SWAP; several of the needed values exceed the IBMQ default of 4000 shots.",
+     "anchor": "Table I and Section IV, p.9",
+     "quotes": [
+      "The practical bound on N is significantly smaller than the bound implied by Theorem 2.",
+      "We notice that the practical bounds in the table are about 3 − 5 times smaller, for both circuits.",
+      "This looseness of the theoretical bound is expected, since we used a subgaussian bound for the binomial distribution and not its complete information.",
+      "The GATES circuit provides bounds (both theoretical and practical) which are about 4 times smaller than those for the SWAP circuit, consistent with the Definition 7.",
+      "‡ indicates that N exceeds the IBMQ default value 4000."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Simulated results on four small datasets.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-theorem3-program",
+     "value": "The paper proves (Theorem 3) that for a stochastic training kernel matrix inferred from N measurements per entry, the optimal PRIMAL SVM objective is upper bounded, with probability at least 1 − δ1 − δ2, by the optimal value of a Second-Order Cone Program (ShofaR) whose constraints add noise-dependent terms to the hinge loss and the regularization term.",
+     "anchor": "Theorem 3, Section V A, p.10; proof in Appendix E, p.21 to 22",
+     "quotes": [
+      "Theorem 3. (Shot-frugal and Robust Program)",
+      "with probability at least 1 − δ1 − δ2. Here",
+      "is the optimal value of a Second-Order Cone Program (SOCP), whose objective is given by"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3 stated with its conditions and proved in Appendix E.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-table2-savings",
+     "value": "The authors report (Table II) that over the training set the robust classifier reduces the number of circuit evaluations per kernel entry needed for perfect reliability with EKC by a factor of 4 to 64 against the nominal SKC, and that on the Circles dataset the robust classifier reproduces its own exact counterpart even with a single shot; Table V reports a factor of 8 to 64 over the test sets.",
+     "anchor": "Table II, p.12; Section V B 1, p.11; Table V, p.19",
+     "quotes": [
+      "The robust classifier reduces the number of circuit evaluations needed (per kernel entry) by a factor of 4 to 64.",
+      "In particular, R(h(N), h∗) = 1 even with a single measurement shot N = 1.",
+      "The ShofaR Program reduces the number of circuit evaluations needed (per kernel evaluation) by a factor of 8 to 64 in the datasets considered here."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Simulated results on four small 2-qubit datasets.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-reliability-accuracy-tradeoff",
+     "value": "The authors report that for small N the robust exact classifier has low accuracy even though the robust stochastic classifier reproduces it perfectly, because data-independent noise terms dominate the robust objective, and that accuracy rises with N at a slight cost in reliability.",
+     "anchor": "Section V A a, p.11, Fig. 4",
+     "quotes": [
+      "For small N , the classifier h∗ has low accuracy, but h(N) reproduces h∗ perfectly.",
+      "data-independent terms containing δ1, δ2 dominate over the data-dependent terms containing K∗, leading to fixed"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated observation on the Circles dataset.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-theorem4-estimate",
+     "value": "The paper proves (Theorem 4) that with an estimated kernel matrix from T measurements per entry, the optimal ShofaR objective is upper bounded, with probability at least 1 − δ1′ − δ2′, by the optimum of the ShofaR-Est program, which adds a confidence-interval term; Remark 3 gives the confidence interval holding with probability at least 1 − 2δ.",
+     "anchor": "Remark 3 and Theorem 4, Section V B, p.12; proof in Appendix E, p.22",
+     "quotes": [
+      "Theorem 4 (Shot-frugal and Robust program using an Estimated kernel matrix).",
+      "Remark 3. (Confidence Interval)",
+      "Let K denote an Estimated Kernel Matrix using T measurements. The optimal ShofaR objective is upper bounded by",
+      "with probability at least 1 − δ1′ − δ2′ . Here",
+      "with probability of at least 1 − 2δ"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4 and Remark 3 stated with conditions; proofs in Appendix E and with Remark 3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-est-convexity-no-clipping",
+     "value": "The authors state that ShofaR-Est may not be convex because the estimated matrix may have negative eigenvalues, so they make the parameter small enough for the bracketed matrix to stay positive semidefinite, which avoids the spectrum clipping or shifting used by previous studies; with their settings this gives T of about 400 shots for the training matrix.",
+     "anchor": "Section V B a and b, p.12",
+     "quotes": [
+      "may not be convex since K may have negative eigenvalues.",
+      "Previous studies [8, 25] have circumvented",
+      "It thus avoids the clipping",
+      "working backwards gives T ∼ 400 for our training sizes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own program construction and parameter setting (Section V B).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-table3-est-beats-nominal",
+     "value": "The authors report (Table III) that ShofaR-Est, working only with an estimated training kernel matrix, needs far fewer shots than the nominal PRIMAL SVM given the exact training kernel matrix, with marginally larger N than ShofaR; the robust programs generally give large savings in total circuit evaluations Ntot = msvN.",
+     "anchor": "Table III, p.14; Section V B c, p.13",
+     "quotes": [
+      "Importantly, our results (see Table III) show that ShofaR-Est has a far lower requirement on N than the nominal SVM (PRIMAL) even though the latter has an unfair advantage",
+      "The Estimate program ShofaR-Est leads to marginally larger values of N to reliably reproduce EKC but still shows large savings over the nominal PRIMAL SVM.",
+      "The total number of circuit evaluations needed to reliably classify a given datapoint Ntot = msvN .",
+      "in large savings in Ntot, when compared against the nominal SVM"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Simulated results on four small datasets.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-l1-corollaries",
+     "value": "The paper gives Corollaries 3.1 and 4.1, L1-norm relaxations of ShofaR and ShofaR-Est (sufficient because the L2 norm is at most the L1 norm), aimed at greater sparsity of the support vectors.",
+     "anchor": "Corollaries 3.1 and 4.1, Section V C, p.14 to 15",
+     "quotes": [
+      "Corollary 3.1. (L1-norm Shot-frugal and Robust Program)",
+      "Corollary 4.1 (L1-norm Shot-Frugal and Robust Program using an Estimated kernel matrix).",
+      "a relaxation of the L2-norm condition into an L1-norm leads to greater sparsity of the set of support vectors msv ≪ m."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Corollary 3.1 is proved by the norm inequality (p.14); 4.1 follows the same way.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-depolarizing-noise",
+     "value": "In simulations with depolarizing noise (parameter 0.05) and a training matrix from 400 shots, the authors report that the robust classifiers far outperform the nominal classifiers on accuracy and reliability, that error mitigation has no effect on reliability, and that the mitigated robust classifier reproduces EKC at N = 28 (two to the eighth) while the unmitigated one needs N = 210 (two to the tenth).",
+     "anchor": "Appendix G, p.23 to 25, Table VI, Fig. 7",
+     "quotes": [
+      "In our simulations, we set λi = λ = 0.05.",
+      "The training kernel matrix Kˆij = Ki(jT,λ) is measured using T = 400 shots and is fixed.",
+      "Even in the presence of the depolarizing noise, the robust classifiers far outperform the nominal classifiers on both the accuracy of EKC and the reliability of SKC.",
+      "Note that the error mitigation has no effect on the reliability (see Fig. 7a).",
+      "Using the error mitigation and the robust version of the classifier (M-RSKC) reliably reproduces EKC for N = 28",
+      "Without the error mitigation, the robust classifier needs N = 210 measurements to reproduce EKC."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulation with a simple noise model on one dataset.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text layer prints 2^8 and 2^10 as 28 and 210."
+    },
+    {
+     "id_suggestion": "shofar-est-beats-mitigated-nominal",
+     "value": "The authors state that the robust program ShofaR-Est, without modifications or error mitigation, outperforms the nominal SVM on accuracy and reliability even if the nominal SVM has undergone error mitigation.",
+     "anchor": "Section I.B item 4, p.2; Appendix G",
+     "quotes": [
+      "It is noteworthy that the Robust program ShofaR-Est, without any modifications or error mitigation, outperforms the nominal SVM (both on accuracy and reliability) even if the latter has undergone error mitigation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated result with depolarizing noise.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-training-noise-vs-classification",
+     "value": "The authors report that noise in the training kernel matrix affects the EKC's test accuracy (72.2%, 90.8%, 94.4% and 100% for T = 10, 100, 200, 400) but not the reliability of the SKC; EKC with T = 400 reaches 100% accuracy, yet the nominal SKC needs N = 214 (two to the fourteenth) shots to reproduce it, and they conclude shots matter far more in classification than in training.",
+     "anchor": "Appendix H, p.25, Fig. 8; Appendix F, p.23",
+     "quotes": [
+      "The accuracy of EKC for T = 10, 100, 200, 400 are respectively 72.2%, 90.8%, 94.4% and 100%",
+      "Noise during training is clearly seen to affect the accuracy of EKC but does not have an effect on the reliability of SKC (Fig. 8b).",
+      "However, the number of measurements N needed for the nominal SKC to reliably reproduce EKC is N = 214 ≫ 400 (see Table V).",
+      "Our work indicates that the number of measurement shots is far more crucial during the classification phase (for prediction) than during the training phase."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated result on one dataset.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-benchmark-shot-counts",
+     "value": "The authors note that IBM's default measurements per job was 1024 and since 2023 is 4000, and that Ref. [5] (Havlicek et al.) used a much larger 50,000 measurements per kernel entry.",
+     "anchor": "Appendix F 2, p.23",
+     "quotes": [
+      "the default number of measurements per job is set to 1024 (since 2023 it is 4000",
+      "Ref. [5] works with a much larger 50,000 measurements per kernel entry."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Figures cited from other work and vendor defaults.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-scope-small-kernels",
+     "value": "The authors state their kernels are all defined over 2 qubits with no repeated layers and no tunable parameters, on small training sets chosen for near-term devices; the AngleEmbedding kernel is classically simulable, and the study does not concern the quantum advantage debate but the number of measurements needed.",
+     "anchor": "Appendix B a and b, p.18; Table IV",
+     "quotes": [
+      "All of these kernels are defined over 2-qubits (all datasets here are 2-dimensional) with no repeating layers and no tunable circuit parameters.",
+      "We have chosen a smaller number of training samples, keeping in view the restrictions placed by near-term devices [8].",
+      "Note that the AngleEmbedding shown in fig. 6 is a simple quantum embedding circuit which can in fact be simulated efficiently on a classical machine [5, 46].",
+      "However, our study does not directly concern the debate regarding quantum advantage."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its experimental scope (Appendix B).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-training-set-evaluation",
+     "value": "The authors state that the results of Sections IV, V A and Appendix G are presented over the training dataset itself, which shows SKC cannot reliably reproduce even the training labels for small N; Section V B and Appendices B and H use an independent test set.",
+     "anchor": "Section I.C, p.2",
+     "quotes": [
+      "Our results in the main Sections IV, V A and Appendix G are presented over the training dataset itself.",
+      "It shows that SKC is incapable of reliably reproducing even the training labels when N is not large enough."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its evaluation setup (Section I.C).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-socp-classical-cost",
+     "value": "The authors note that the robust classifiers are built by solving a second-order cone program rather than a quadratic program and may therefore need more classical resources.",
+     "anchor": "Footnote [18], p.16",
+     "quotes": [
+      "The robust classifiers are constructed by solving a secondorder cone program rather than a quadratic program and may thus require more classical resources."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (footnote 18).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-poor-kernel-limit",
+     "value": "The authors state that for a poorly chosen kernel the EKC's accuracy will be low and no margin satisfying Corollary 2.2 exists; at best Theorem 2 then guarantees SKC accuracy not worse than EKC's.",
+     "anchor": "Appendix B c, p.18",
+     "quotes": [
+      "For a poorly chosen kernel, the accuracy of EKC will be low and there will not exist a γ∗ satisfying Corollary 2.2."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Appendix B).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-open-questions",
+     "value": "The authors pose as open questions how to find, per problem, the margin that gives the tightest theoretical bound and the lowest N for the robust classifier, and suggest exploring chance constraint programming for quantum neural tangent kernels and robust shadow estimation.",
+     "anchor": "Section VI a and b, p.15 to 16",
+     "quotes": [
+      "Such a value of γ would be problem (dataset + kernel choice) dependent, but can we develop a criterion to identify it?",
+      "It would be interesting to explore the use of chance constraint programming in these topics."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own open problems (Section VI).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-swap-hardware-comment",
+     "value": "The authors suggest that a hardware study (Ref. [49]) finding the SWAP test worse than the GATES test, attributed to controlled-SWAP errors, may have overlooked that the variance inequality (C4) underlies the observation.",
+     "anchor": "Appendix C, p.20",
+     "quotes": [
+      "A recent study [49] on the IBM quantum hardware has shown that SWAP test is a poor choice compared to the GATES test",
+      "While this may be a factor, it appears that the authors may have overlooked that a straightforward inequality (C4) underlies their observation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's comment on other work.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shofar-corollary-2-3-empirical-risk",
+     "value": "The paper states Corollary 2.3: over a training set of size m, the empirical risk of SKC is bounded by the standard margin error of EKC with probability 1 − δ for N above a bound logarithmic in m over delta; the authors stress these N are small compared with what reliable reproduction of EKC needs.",
+     "anchor": "Corollary 2.3, Appendix F 1, p.23",
+     "quotes": [
+      "Corollary 2.3. Over a training set of size m, the empirical risk of SKC",
+      "is bounded by the margin error of EKC, with probability 1 − δ, whenever",
+      "We stress that these values of N are quite small compared to what is needed to ensure reliable reproduction of EKC (green region)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A corollary of Theorem 2 with gamma equal to 1 (Appendix F).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "shivpuje-2024-designing-variational-ansatz-quantum-enabled",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Shivpuje-et-al._2024_Designing-variational-ansatz-for-quantum-enabled-simulation-of-non__2403.04653.pdf",
+   "title_in_file": "Designing variational ansatz for quantum-enabled simulation of non-unitary dynamical evolution- an excursion into Dicke supper-radiance",
+   "version_note": "arXiv:2403.04653v2 (12 Mar 2024).",
+   "pages": 14,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "An application paper that uses the vectorization variant of unrestricted adaptive variational quantum dynamics (UAVQD) to simulate three open quantum systems (amplitude damping, a reduced FMO complex, and Dicke superradiance in a three-atom chain) and compares them with exact solutions.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "uavqd-agrees-with-exact",
+     "verdict": "narrowed",
+     "note": "The agreement is shown on three small systems: a two-level amplitude damping channel, a five-state FMO subsystem on six qubits, and a three-atom chain on six qubits. The body grades it 'align extremely well', 'very good agreement' and 'good quantitative agreements'. The text does not say these ran on quantum hardware. The stored context was qml; this is quantum simulation of open systems, with no ML workload.",
+     "value": "The authors report that their unrestricted-vectorization adaptive variational results agree with exact numerical computations in all three cases: a two-level amplitude damping channel ('align extremely well'), a three-chromophore FMO subsystem on six qubits ('very good agreement'), and Dicke superradiance in a linear chain of three atomic emitters on 6 qubits ('good quantitative agreements').",
+     "anchor": "Abstract p.1; Sections 3.1 to 3.3, p.5 to 11",
+     "quotes": [
+      "all cases the results obtained are in excellent agreement with exact numerical computations which bolsters the effectiveness of this",
+      "The UAVQD results (filled dots) align extremely well with the exact solution.",
+      "The results of the UAVQD simulation for the FMO complex were compared to the exact solution, showing very good agreement as can be seen in Fig.4.",
+      "We selected a linear chain comprising of three atomic emitters",
+      "Our simulation requires 6 qubits in total.",
+      "We see UAVQD procedure can successfully distinguish both the limits and yield results in good quantitative agreements with the exact ones."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Simulated results on three small systems in one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The paper does not state whether the variational circuits were run on hardware or emulated classically; the benchmarks are numerical."
+    },
+    {
+     "id": "uavqd-operator-pool-limit",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 4 Conclusions",
+     "quotes": [],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Section 4).",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "uavqd-polynomial-runtime",
+     "verdict": "narrowed",
+     "note": "The runtime claim rests on an ansatz design assumption made in Section 2 (polynomially many parameters and gates in 2log2(N) qubits), not on a derivation. The improvement to linear scaling in the Appendix needs all-to-all qubit connectivity.",
+     "value": "The authors state that the runtime complexity is polynomially scaled compared with the exponential scaling of classical methods, on the basis that the ansatz is built to need O(poly(2log2(N)) parameters and gates; they state it can be improved to linear scaling, with only O(log2 N ) gates, given all-to-all connectivity in qubits.",
+     "anchor": "Section 2, p.4; Section 4 Conclusions; Appendix",
+     "quotes": [
+      "The runtime complexity of our method is significantly lower, i.e. polynomially scaled compared to the exponential scaling of classical methods.",
+      "which require O(poly(2log2(N)) parameters in total to represent the target state.",
+      "which affords a polynomial run-time complexity as well.",
+      "In the Appendix we have shown that we can improve this to linear scaling with the scheme which can require only O(log2 N ) gates, given all-to-all connectivity in qubits."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim resting on an assumed ansatz size; no derivation of the ansatz size is given.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The claim leaves out the cost of the adaptive operator selection and the number of time steps."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "uavqd-method-vectorization",
+     "value": "The authors describe UAVQD vectorization: the Lindblad equation is recast as an effective Schrödinger equation with a non-Hermitian Hamiltonian, the unitary part is modelled by a variational ansatz, the loss of normalization is tracked through a measurement protocol, and an adaptive scheme keeps the McLachlan distance below a preset threshold by greedily adding operators from a pool.",
+     "anchor": "Introduction p.2; Section 2, p.3 to 4",
+     "quotes": [
+      "The crux of the idea is to cast the Lindblad equation into a form that can be interpreted as an effective Schr",
+      "The loss of normalization of the state at each time instant is accounted through a measurement protocol.",
+      "the McLachlan’s distance is kept below a prefixed threshold, and if it exceeds this threshold, the adaptive procedure is triggered.",
+      "In the unrestricted adaptive variational quantum dynamics (UAVQDS) protocol, a greedy approach is used to select and apply operators from the pool that lower the McLachlan distance"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of the method it uses, from Chen et al. [47] (Section 2).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uavqd-vectorization-doubles-qubits",
+     "value": "The authors state that the vectorization protocol needs twice the number of physical qubits, so the FMO system padded to three qubits needs a six-qubit ansatz.",
+     "anchor": "Section 3.2, p.7",
+     "quotes": [
+      "According to the vectorization protocol,",
+      "which requires twice the number of physical qubits for representation, the ansatz for this system would",
+      "thus involve six qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own encoding (Section 3.2).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uavqd-measurement-count",
+     "value": "The authors state that the number of measurements equals the number of matrix elements of M and V, which is of order O((poly(2log2(N)))2) in the number of parameters.",
+     "anchor": "Section 2, p.4",
+     "quotes": [
+      "and is order O((poly(2log2(N)))2)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's resource estimate resting on the assumed ansatz size.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uavqd-amplitude-damping-run",
+     "value": "For a two-level amplitude damping channel, the authors used a decay rate of γ = 1.52 × 109 s−1 (1.52 times ten to the ninth per second), an adaptive threshold of 10−6, and evolution from 0 ps to 1000 ps with a 40 ps time step, benchmarked against the HOQST package; they report the results align extremely well with the exact solution.",
+     "anchor": "Section 3.1, p.5 to 6, Fig. 2",
+     "quotes": [
+      "We chose a decay rate of γ = 1.52 × 109 s−1",
+      "We set an adaptive threshold of 10−6 for the McLaghlan norm and evolved the system from time t = 0 ps to 1000 ps with a time-step (δt) of 40 ps.",
+      "The solid lines in Fig.2 depict the exact solution derived from the Hamiltonian Open Quantum System Toolkit (HOQST) package [46], serving as benchmarks.",
+      "The UAVQD results (filled dots) align extremely well with the exact solution."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated result on one small system.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uavqd-fmo-run",
+     "value": "For the FMO complex the authors simulate the three-chromophore subsystem plus ground and sink states (cited as faithfully replicating the full seven-chromophore dynamics), with a 1 fs step until 300 fs, an adaptive threshold of 10−3, and dephasing, dissipation and sink rates from Ref. [6]; they report very good agreement with the exact solution.",
+     "anchor": "Section 3.2, p.6 to 8, Eq. (15), Fig. 4",
+     "quotes": [
+      "Here, we consider the three-chromophore subsystem, consisting of chromophores 1-3, the ground state,",
+      "and the sink state, which is known to faithfully replicate the exciton dynamics of the complete seven",
+      "Calculations were performed using a time interval of 1 fs",
+      "until tf = 300 fs.",
+      "The UAVQD method was employed with a timestep of 1 fs, and an adaptive threshold of 10−3.",
+      "For the numerical solution a dephasing rate α = 3.00 × 10−3 fs−1, a dissipation rate β = 5.00 × 10−7 fs−1, and a sink rate γ = 6.28 × 10−3 fs−1 [6].",
+      "The results of the UAVQD simulation for the FMO complex were compared to the exact solution, showing very good agreement as can be seen in Fig.4."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated result on one reduced model.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uavqd-dicke-run",
+     "value": "For Dicke superradiance in a linear chain of three atomic emitters (6 qubits), at lattice spacings d = 0.1λ and 0.9λ, with a timestep of 10−3, operator pool P2 and threshold 10−1, the authors report the emission rate is non-monotonic at d = 0.1λ (an initial increase then an exponentially decaying tail) and a declining exponential at d = 0.9λ, and that UAVQD distinguishes both limits in good quantitative agreement with exact results.",
+     "anchor": "Section 3.3, p.8 to 11, Fig. 5",
+     "quotes": [
+      "We selected a linear chain comprising of three atomic emitters",
+      "Our simulation requires 6 qubits in total.",
+      "lattice spacings (d = 0.1λ, 0.9λ)",
+      "The method was employed with a timestep of 10−3 time unit, utilizing operator pool P2 and an adaptive threshold of 10−1.",
+      "shows a non-monotonic trend characterized by an initial increase followed by an exponentially decaying tail.",
+      "when η vs Γ0t curve registers a declining exponential with a decay-constant",
+      "We see UAVQD procedure can successfully distinguish both the limits and yield results in good quantitative agreements with the exact ones."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated result on a three-atom system.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Three emitters is a size an exact classical solver handles easily; the run is a proof of principle."
+    },
+    {
+     "id_suggestion": "uavqd-dicke-first-claim",
+     "value": "The authors state that, to the best of their knowledge, Dicke superradiance has not been explored by any quantum algorithm before.",
+     "anchor": "Introduction p.2",
+     "quotes": [
+      "a study to the best of our knowledge is hitherto unexplored by any quantum algorithm."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A priority claim by the authors.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uavqd-trajectory-vs-vectorization",
+     "value": "The authors state that Dicke superradiance is extremely difficult to treat with the trajectory variant because the state is not restricted to the single-excitation manifold and needs discontinuous parameter updates, while the vectorization protocol uses only continuous updates, and conclude that vectorization is best suited to such cases.",
+     "anchor": "Section 3.3, p.10; Section 4",
+     "quotes": [
+      "It must be emphasized, that an example like Dicke superradiance is extremely difficult to be",
+      "treated with the trajectory method [47] as the dynamical evolution doesn’t restrict the state space to",
+      "precluded in favor of only continuous updates as characterized by Eq.8.",
+      "we have shown here successfully that the vectorization method is best suited for such continuous update requirement."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's argument; the trajectory method is not run for comparison.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uavqd-gate-decomposition",
+     "value": "The authors give a decomposition of each k-qubit Pauli-rotation gate in the ansatz into CNOT gates and one Rz gate, linear in k, so each k-qubit gate needs O(k) basis gates, implementable across any k qubits given all-to-all connectivity such as on trapped-ion platforms.",
+     "anchor": "Appendix, Fig. 6, p.14",
+     "quotes": [
+      "This decomposition is linearly scalable for k-qubit gates, representing an efficient approach.",
+      "for every k-qubit entangled gate, we can decompose it into O(k) basis gates.",
+      "provided we are using platforms which can successfully prepare all-to-all qubit connectivity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A constructive decomposition given in the Appendix (Fig. 6), with its connectivity condition stated.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "This is the standard Pauli-gadget construction."
+    },
+    {
+     "id_suggestion": "uavqd-operator-pool",
+     "value": "For the FMO and Dicke examples the authors build an operator pool of single-qubit Pauli rotations on all six qubits plus multi-qubit Pauli rotations on two to four qubits.",
+     "anchor": "Section 3.2, p.7, Fig. 3; Section 3.3",
+     "quotes": [
+      "We have developed a comprehensive pool of operators that incorporates single-qubit Pauli operators",
+      "as well as multi-qubit operators ranging from two to four qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own ansatz pool.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uavqd-markovian-scope",
+     "value": "The authors state the work focuses on Markovian evolution, chosen for its simplicity and applicability under weak system-environment coupling.",
+     "anchor": "Introduction p.1",
+     "quotes": [
+      "Of the two mentioned, Markovian evolution is the focus of this work due to its inherent simplicity yet pervasive applicability in understanding many intriguing physical phenomena under weak system-environment coupling [23, 25]."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope statement (Introduction).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uavqd-classical-hardness-dicke",
+     "value": "The authors state that in extended and disordered emitter arrays, where permutational invariance is lost, the state space scales exponentially in the number of emitters, making classical computation hard.",
+     "anchor": "Introduction p.2",
+     "quotes": [
+      "The state space in this regime scales exponentially in the number of emitters as permutational invariance between atoms is lost thereby rendering classical computational efforts hard."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's motivating statement, not shown in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uavqd-other-methods-deep",
+     "value": "The authors state that most other open-system quantum algorithms (dilation, SVD, QSVT, Trotterized Liouvillian and others) need large-depth circuits that are not implementable in the near term.",
+     "anchor": "Introduction p.2",
+     "quotes": [
+      "Most of these techniques require large-depth circuits which are not near-term implementable"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's characterization of other work.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uavqd-future-work",
+     "value": "The authors state there is room to improve the ansatz decomposition and the operator pool selection, and propose refining these and studying more examples where continuous updates are required.",
+     "anchor": "Section 4 Conclusions",
+     "quotes": [
+      "There is room for improvement in our scheme for the decomposition of the ansatz, as well as in the selection of the operator pool.",
+      "Future work could focus on refining these aspects and studying more examples, such as Dicke Superradiance, where continuous updates are a requirement."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of open work (Section 4).",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "shmueli-2024-quantum-algorithms-superposition-spacetimes",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Shmueli_2024_Quantum-Algorithms-in-a-Superposition-of-Spacetimes__2403.02937.pdf",
+   "title_in_file": "Quantum Algorithms in a Superposition of Spacetimes",
+   "version_note": "arXiv:2403.02937v3 (12 May 2024). The paper notes that an earlier version used a stronger oracle definition (Definition 4.6), later shown to solve NP.",
+   "pages": 59,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A complexity-theory paper that defines a quantum computing model with a 'computable order interference' oracle inspired by superpositions of spacetimes, and proves that Graph Isomorphism and a GapCVP variant lie in the resulting class BQP^OI.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "shmueli-exponential-speedup-claim",
+     "verdict": "narrowed",
+     "note": "The speedup holds inside a hypothetical oracle model, BQP^OI, that rests on physical assumptions the paper states but does not test. It is 'exponential' only under the belief that GI and GapCVP at gap O(n√n) are not in BQP. Remark 4.2 adds that a version of the oracle without the phase-alignment restriction, used in an earlier version of the paper, solves all of NP.",
+     "value": "The author states the model is a first example of a natural computational model based on quantum gravity giving an exponential speedup over standard quantum computation under standard hardness assumptions, namely that Graph Isomorphism and GapCVP at gap O(n√n), which the model solves in polynomial time, are believed by experts to be hard for a regular quantum computer; the model is an oracle model resting on stated physical assumptions.",
+     "anchor": "Abstract p.1; Section 1.1 p.3 to 4; Section 1.3 p.6",
+     "quotes": [
+      "In this work we show a first example of a natural computational model based on QG, that provides",
+      "an exponential speedup over standard quantum computation (under standard hardness assumptions).",
+      "are believed by experts to be hard to solve for a regular quantum computer.",
+      "Solving GapCVPO(n√n) means solving the Learning With Errors (LWE) problem [Reg09], the computational hardness of which is the central pillar of post-quantum cryptography."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The speedup rests on unproven hardness beliefs and on a hypothetical oracle model.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The containments are proved; the speedup over BQP is conditional on GI and GapCVP not being in BQP, which is unproven."
+    },
+    {
+     "id": "shmueli-gi-gapcvp-in-bqpoi",
+     "verdict": "widened",
+     "note": "The theorem statements are now quoted: Theorem 1.1 says GI is in BQP^OI. Theorem 1.2 says that for some positive absolute constant c, GapCVP at gap c·n√n is in BQP^OI. They follow from Theorem 5.2 (SISD at logarithmic randomness is in BQP^OI) and the classical reductions of Theorems 6.1 and 7.1.",
+     "value": "The paper proves Theorem 1.1, GI ∈ BQPOI, and Theorem 1.2, that there exists a positive absolute constant c such that GapCVPc·n√n ∈ BQPOI, where BQPOI is the class of problems solvable with bounded error in polynomial time by a quantum algorithm with access to an OI oracle; the proofs combine Theorem 5.2 (SISDpoly,O(log(n)) ∈ BQPOI) with classical reductions from GI and from GapCVP to SISD.",
+     "anchor": "Section 1.3, Theorems 1.1 and 1.2, p.6; Theorem 5.2, p.40; Theorems 6.1 and 7.1, p.42 to 49",
+     "quotes": [
+      "Theorem 1.1. GI ∈ BQPOI.",
+      "Theorem 1.2. There exists a positive absolute constant c ∈ R>0 such that GapCVPc·n√n ∈ BQPOI.",
+      "BQPOI is defined as the class of problems for which there exists a quantum algorithm with access to an OI oracle, such that the algorithm solves the problem (with bounded error) running in polynomial time in the input size.",
+      "Theorem 5.2 (SISDpoly,O(log(n)) ∈ BQPOI)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorems 1.1 and 1.2 are stated with their conditions and proved through Theorems 5.2, 6.1 and 7.1.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The results are relative to the OI oracle, whose physical realizability is not established."
+    },
+    {
+     "id": "shmueli-lwe-significance",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 1.3, p.6",
+     "quotes": [
+      "Solving GapCVPO(n√n) means solving the Learning With Errors (LWE) problem [Reg09], the computational hardness of which is the central pillar of post-quantum cryptography."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A connection the paper cites from Regev [Reg09].",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "shmueli-power-open",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 1.3, p.6",
+     "quotes": [],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open question (Section 1.3).",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "shmueli-oi-model-definition",
+     "value": "The author defines the order interference (OI) state as the sum of the products of m unitaries over all m! execution orders applied to a state (its norm ranges in [0, m!]), and a computable OI oracle whose success probability depends on two properties: the norm of the OI state, which can be amplified by investing a parameter λ in time, and the phase alignment between execution orders, which cannot.",
+     "anchor": "Section 1.2, p.4 to 6; Definitions 4.1 to 4.4, p.25 to 28",
+     "quotes": [
+      "For m unitaries, observe that the norm of the OI state ranges in [0, m!].",
+      "the computational complexity of generating the OI state is determined",
+      "(1) The norm of the OI state, and (2) The amount of phase alignment between execution orders (or spacetimes).",
+      "is intended to restrict the success probability, proportionally to how much the phases of states in different spacetimes (or, unitary evolution orders) are misaligned"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions (Section 4.1).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shmueli-physical-assumptions",
+     "value": "The author states the model assumes quantum gravitational correlations without (full) entanglement, that decoherence and the energy needed to maintain coherence are inversely proportional to the norm of the OI state, and does not assume interference between different spacetimes is identical to quantum interference within one spacetime.",
+     "anchor": "Section 1.1, p.3 to 4",
+     "quotes": [
+      "Assuming quantum",
+      "gravitational correlations without (full) entanglement",
+      "it is numerically intuitive that decoherence will be inversely proportional to the norm of the state, and that energy could be invested to maintain coherence, which should also be inversely proportional to the norm.",
+      "we do not assume that matter-wave interference between different spacetimes to be necessarily identical to quantum interference within a single spacetime"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of the assumptions its model rests on (Section 1.1).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "These are modelling assumptions, not established physics."
+    },
+    {
+     "id_suggestion": "shmueli-no-experiment-gravity",
+     "value": "The author states that, despite considerable efforts, no reproducible experiment yet proves or refutes either gravitational decoherence or gravitationally-induced entanglement, and that experimental physics does not know what happens to the joint system in the thought experiment.",
+     "anchor": "Section 1.1, p.2 to 3",
+     "quotes": [
+      "Up to date and despite considerable efforts, no experiment exists that either proves or refutes gravitational decoherence or gravitationally-induced entanglement",
+      "Experimental physics does not know the answer to this question."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statement of the state of experimental physics.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shmueli-costa-no-go",
+     "value": "The author cites Costa (Quantum 2022) as proving that a model able to generate a superposition of unitary orders cannot produce a valid process matrix, leaving relaxations of the model open; this paper's model is such a relaxation.",
+     "anchor": "Abstract p.1; Section 1.2 p.4",
+     "quotes": [
+      "Costa (Quantum 2022) proves that a model with such power cannot produce a valid process matrix (a generalization of standard quantum processes), and leaves the analysis of any relaxation of the model as an open question."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result cited from other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shmueli-gravitational-correlation-simulable",
+     "value": "The author states that both classical and quantum gravitational correlations (from gravitational decoherence or gravitationally-induced entanglement) are efficiently simulatable in the quantum circuit model, so the paper focuses instead on interference between evolution orders.",
+     "anchor": "Section 1.1, p.3; footnote p.5",
+     "quotes": [
+      "Both classical and quantum gravitational correlations are efficiently simulatable in the quantum circuit model.",
+      "we view not the superposition, but the interference between different evolution orders as a possibly unique idea to quantum gravity."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argued claim described as a basic exercise, without formal proof.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shmueli-lemma4-2-standard-qc",
+     "value": "The paper proves (Lemma 4.2) that a standard quantum polynomial-time algorithm outputs the normalized OI state with probability at least the square of its norm divided by m!, and states that no known way exists in standard quantum mechanics to efficiently amplify this success probability.",
+     "anchor": "Lemma 4.2, Section 4.2, p.33 to 34; Section 1.2, p.5",
+     "quotes": [
+      "Lemma 4.2. There is a quantum polynomial time",
+      "outputs the normalization of the OI state OI {Ui}i∈[m], |ψ with probability at least",
+      "There is no known way in quantum mechanics (and in particular, in the standard quantum circuit model) to generally and efficiently amplify the success probability of executing an OI transformation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 4.2 is proved in Section 4.2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shmueli-difference-is-amplification",
+     "value": "The author states that the only difference between standard quantum computation and computable OI seems to be the oracle's ability to amplify success probability: a single OI call can be simulated efficiently, but for ℓ queries the simulation cost grows exponentially, so the power of computable OI comes from executing OI transformations sequentially.",
+     "anchor": "Section 2.1, p.8; Section 4.2, p.34",
+     "quotes": [
+      "it seems that the only difference is the ability of the OI oracle to amplify the success probability of OI transformations",
+      "while a single call to the OI oracle can be simulated efficiently by a quantum computer, for ℓ ∈ N queries, this complexity increases exponentially.",
+      "One deduction is thus, that the power of computable OI is by executing OI transformations sequentially."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's interpretation; the exponential lower bound for standard simulation is not proved.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shmueli-lemma4-1-amplification",
+     "value": "The paper proves (Lemma 4.1) that setting the amplification parameter to k times m! over the OI state's norm (rounded up) makes the norm component of the oracle's success probability at least one minus one over k.",
+     "anchor": "Lemma 4.1, Section 4.1, p.28 to 29",
+     "quotes": [
+      "Lemma 4.1 (Amplification of Success Probability of OI Transformations)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 4.1 with a short proof (p.28 to 29).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The text layer garbles the formula and the bound 1 − 1/k; the value restates them in words where the quotes do not hold them."
+    },
+    {
+     "id_suggestion": "shmueli-stronger-oracle-np",
+     "value": "The author reports that, as Aaronson and Carolan noted after an earlier version, a strengthened OI oracle without the phase-alignment restriction (Definition 4.6, the main definition in that earlier version) gives a polynomial-time solution for all of NP and even QCMA; the power of the oracles of Definitions 4.6 and 4.7 is left open.",
+     "anchor": "Remark 4.2, Section 4.1, p.29 to 30",
+     "quotes": [
+      "Remark 4.2 (Different versions of the OI oracle).",
+      "This definition was used as the main definition for the OI oracle in an earlier version of this work.",
+      "As noted in [Aar, Car] following an earlier version of this work, a quantum computer with access to a strengthened OI oracle as in Definition 4.6 allows for a polynomial time solution for the entire complexity class NP (and even QCMA).",
+      "We leave it as an open problem what is the computational power of quantum computers with access to oracles as in Definitions 4.6, 4.7."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of how its model was restricted and what remains open (Remark 4.2).",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The phase-alignment restriction was added to keep the model from being overpowered; this weakens the claim that the model is 'natural'."
+    },
+    {
+     "id_suggestion": "shmueli-sisd-definition",
+     "value": "The author defines r-sequential invertibility of a sampler (sampling via a sequence of circuit pairs, each using at most r random bits and invertible for each fixed randomness) and the Sequentially Invertible Statistical Difference problem SISD, and states these notions are classical, independent of any non-classical computation.",
+     "anchor": "Section 2.2, p.9 to 11; Definitions 4.8 to 4.13, p.34 to 36",
+     "quotes": [
+      "Definition 4.12 (The Sequentially Invertible Statistical Difference Problem).",
+      "Our parameterization technique does not rely on any non-classical computation and may be of independent interest.",
+      "These results are in classical computational complexity theory, independent of any non-classical physics or computation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions (Section 4.3).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shmueli-lemma5-1-choice-interference",
+     "value": "The paper proves (Lemma 5.1) that an OI oracle can implement interference of unitary choices (the normalized sum of the unitaries applied to a state) using a counter ancilla, with a success probability of the same form as order interference but scaled by m instead of m!.",
+     "anchor": "Lemma 5.1, Section 5, p.37 to 38",
+     "quotes": [
+      "Lemma 5.1 (Choice interference from order interference)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 5.1 proved in Section 5.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shmueli-claim5-1-norm-bound",
+     "value": "The paper proves (Claim 5.1) that for a state with real non-negative amplitudes and m unitaries mapping classical states to classical states, the norm of the choice interference state is at least the square root of m.",
+     "anchor": "Claim 5.1, Section 5, p.38 to 39",
+     "quotes": [
+      "Claim 5.1 (Minimal norm of choice interference for classical positive operations)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Claim 5.1 proved in Section 5.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shmueli-theorem5-1-state-generation",
+     "value": "The paper proves (Theorem 5.1) that a quantum algorithm with a uniform OI oracle, given an r-invertible circuit sequence of total description size n and amplification parameter δ, runs in time O (δ · poly(n) · 2r) and with probability at least one minus one over δ outputs the sequence's output distribution state.",
+     "anchor": "Theorem 5.1, Section 5, p.39 to 40",
+     "quotes": [
+      "Theorem 5.1 (Quantum State Generation for Invertible Circuit Sequences).",
+      "The algorithm QOI executes in time O (δ · poly(n) · 2r) for some polynomial poly(·)",
+      "The algorithm succeeds (outputs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5.1 stated and proved in Section 5.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The success bound 1 − 1/δ is printed garbled in the text layer; '2r' is two to the power r."
+    },
+    {
+     "id_suggestion": "shmueli-theorem5-2-sisd",
+     "value": "The paper proves (Theorem 5.2) that SISD with inverse-polynomial gap and logarithmic randomness is decided by a quantum polynomial-time algorithm with a uniform OI oracle with error exponentially small in the input size; the oracle is used only to generate many copies of the two output distribution states, and the decision uses swap tests and a Chernoff bound.",
+     "anchor": "Theorem 5.2, Section 5, p.40 to 42",
+     "quotes": [
+      "Theorem 5.2 (SISDpoly,O(log(n)) ∈ BQPOI).",
+      "that for every x ∈ YES, M OI(x) = 1 with probability at least p(x) and for every x ∈ NO, M OI(x) = 0 with probability at least p(x)",
+      "This step of the algorithm is the only one that uses computable order interference and the OI oracle."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5.2 stated and proved in Section 5.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shmueli-theorem6-1-gi-reduction",
+     "value": "The paper proves (Theorem 6.1) a classical deterministic polynomial-time reduction from GI to SISD with logarithmic randomness, using a Fisher-Yates permutation sampler built from invertible swaps; the output distributions are within total variation distance of order n over two to the n of a uniformly random permutation of each graph.",
+     "anchor": "Theorem 6.1, Section 6, p.42 to 44",
+     "quotes": [
+      "Theorem 6.1 (Reduction from GI to SISD",
+      "nomial time Turing machine M that computes the reduction,",
+      "GI ≤p SISDa(n),b(n),r(n)",
+      "The above means that the output distribution of Cb is statistically close"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 6.1 stated and proved in Section 6.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The text layer prints the gap parameters a(n) = n/2^n and b(n) = 1 − n/2^n flat."
+    },
+    {
+     "id_suggestion": "shmueli-theorem7-1-gapcvp-reduction",
+     "value": "The paper proves (Theorem 7.1) that for a positive absolute constant c there is a classical deterministic polynomial-time reduction from GapCVP at gap c·n√n to SISD with randomness 1, built by sampling a random lattice vector and adding an approximate discrete Gaussian made from sums of uniform samples; both circuit sequences are 1-sequentially invertible.",
+     "anchor": "Theorem 7.1, Section 7, p.44 to 49",
+     "quotes": [
+      "Theorem 7.1 (Reduction from GapCVPO(n√n) to SISD",
+      "itive absolute constant c ∈ R>0 and a classical deterministic polynomial time Turing machine M that",
+      "GapCVPc·n√n ≤p SISD(a(n),b(n),r(n))",
+      "Both circuit sequences are shown to be 1-sequentially invertible."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 7.1 stated and proved in Section 7.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The text layer prints the gap parameters a(n) = 1/4 + O(n^-1/4) and b(n) = 3/4 − e^-Ω(n) flat."
+    },
+    {
+     "id_suggestion": "shmueli-lemmas-7-gaussian",
+     "value": "The paper proves Lemma 7.1, that a centered sum of κ i.i.d. discrete uniform samples is within total variation distance of order one over the square root of κ of a discrete truncated Gaussian (via a Berry-Esseen bound from [CGS10]), and Lemma 7.2, a bound on the total variation distance between discrete Gaussians with nearby centers.",
+     "anchor": "Lemmas 7.1 and 7.2, Section 7, p.50 to 53",
+     "quotes": [
+      "Lemma 7.1 (Discrete uniform sum is indistinguishable from discrete Gaussian).",
+      "Lemma 7.2 (Close discrete Gaussians have bounded total variation distance)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemmas 7.1 and 7.2 are proved in Section 7 (7.1 relies on a cited theorem and a cited fact).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shmueli-gap-loss-gaussian",
+     "value": "The author states that no sequentially invertible algorithm was found that samples with negligible distance from the discrete Gaussian, so only an inverse-polynomial approximation is used; this, and the Gaussian's sparsity compared with the uniform ball, is part of why the reduction needs the larger gap O(n√n) rather than the n/O(log(n)) gap of the Goldreich-Goldwasser reduction to SD.",
+     "anchor": "Section 2.4, p.15 to 16",
+     "quotes": [
+      "In fact, we did not find any sequentially invertible algorithm that samples from a distribution with negligible",
+      "which is (part of) the reason that we need a bigger gap"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of a limit of its technique (Section 2.4).",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shmueli-gapcvp-exponential-classical",
+     "value": "The author notes that GapCVP at an exponential gap is solvable in classical polynomial time [AKS01], so the hardness of GapCVP depends on the gap.",
+     "anchor": "Section 2.4 footnote, p.14",
+     "quotes": [
+      "In particular, it is known that for an exponential g(n) ≈ 2n the GapCVP2n problem is solvable in classical polynomial time [AKS01]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result cited from other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shmueli-sd-state-generation",
+     "value": "The author cites [ATS03] as observing that the polynomial-gap Statistical Difference problem could be solved efficiently if one could generate the output distribution states of classical circuits, and states SD is notoriously hard, also for quantum computers.",
+     "anchor": "Section 2.1, p.8 to 9",
+     "quotes": [
+      "It is observed in [ATS03] that the SDpoly",
+      "problem could be efficiently solved if we had the ability to efficiently generate the output distribution",
+      "The SDpoly problem is a notoriously hard problem in computer science (also for"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited observation and an author's hardness statement.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shmueli-process-matrix-caveat",
+     "value": "The author notes that the process matrix formalism is not known to be connected to gravitational interaction or general relativity, and that some theoretical results suggest standard interference dynamics need not hold for a superposition of spacetimes.",
+     "anchor": "Section 1.2 footnotes, p.4",
+     "quotes": [
+      "In particular, the process matrix formalism is not known to be connected to gravitational interaction or general relativity, and is written only in the language of quantum information processing.",
+      "Some theoretical results show evidence that standard interference dynamics is not necessarily the case when considering a superposition of spacetimes"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's caveat citing other work.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shmueli-finite-dimension-assumption",
+     "value": "The author assumes throughout that quantum systems have finite dimensions.",
+     "anchor": "Section 3 Preliminaries, p.19",
+     "quotes": [
+      "In this work we assume that quantum systems have finite dimensions."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own stated assumption (Section 3).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "spencer-2026-adaptive-conformal-prediction-quantum-machine",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Spencer-Nicholls-Caprio_2025_Adaptive-Conformal-Prediction-for-Quantum-Machine-Learning__2511.18225.pdf",
+   "title_in_file": "Adaptive Conformal Prediction for Quantum Machine Learning",
+   "version_note": "arXiv:2511.18225v2 (15 May 2026), published in Transactions on Machine Learning Research (05/2026). The file name gives the year 2025 (v1).",
+   "pages": 27,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A paper that argues time-varying hardware noise breaks the exchangeability of quantum conformal prediction scores, adapts Adaptive Conformal Inference to quantum models (AQCP), tests it on ibm_sherbrooke shot data and a simulator, and proves two sufficient conditions for optimal score functions.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "aqcp-asymptotic-coverage",
+     "verdict": "narrowed",
+     "note": "The guarantee is a bound on the long-run average miscoverage, carried over from Adaptive Conformal Inference (Gibbs and Candès 2021), and it is asymptotic in the number of test points. It needs the online setting: each test response must be revealed before the next prediction. The finite-sample result (Theorem 2) needs a hidden Markov chain assumption that the authors say is unlikely to hold exactly.",
+     "value": "The authors state AQCP provides asymptotic average coverage guarantees under arbitrary hardware noise conditions; the guarantees do not depend on exchangeability but are asymptotic in the number of test points, and AQCP assumes the response for each test point is revealed before the next test point is processed.",
+     "anchor": "Abstract p.1; Sections 4 and 4.1, p.8 to 9",
+     "quotes": [
+      "We introduce Adaptive Quantum Conformal Prediction (AQCP), an algorithm which provides asymptotic average coverage guarantees under arbitrary hardware noise conditions.",
+      "These guarantees do not depend on exchangeability.",
+      "The trade-off for this greater generality is that the guarantees are asymptotic in the number of test points.",
+      "it assumes that the response associated with each test point is revealed before the subsequent test point is processed."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The asymptotic bound is quoted from Gibbs and Candès (2021), not proved in this paper.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The bound concerns average coverage over a stream, not coverage for any single prediction."
+    },
+    {
+     "id": "aqcp-evaluation-limits",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 5.4, p.17",
+     "quotes": [
+      "hardware runs collected over a single day and therefore does not fully characterise longer-term drift or more structured perturbations",
+      "It is therefore not directly applicable in batch prediction settings."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limits (Section 5.4).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "aqcp-hardware-stability",
+     "verdict": "narrowed",
+     "note": "The result is one processor (ibm_sherbrooke), shot data from one day, one regression task, one step size (0.03), against online QCP (QCP with an expanding calibration set). The conclusion says coverage oscillated closely around the target for both methods, and that attributing QCP's larger deviation to non-stationary noise would need further experimentation.",
+     "value": "On ibm_sherbrooke shot data collected on the 18th of April 2025, AQCP with γ = 0.03 showed greater stability around the target coverage than online QCP, though coverage oscillated closely around the target level for both; the authors state that attributing QCP's greater deviation to non-stationary noise would require further experimentation, since fluctuations are expected with finite samples.",
+     "anchor": "Abstract p.1; Section 5.2, p.14 to 16; Section 6, p.17",
+     "quotes": [
+      "All ibm_sherbrooke shot data were collected on the 18th of April 2025.",
+      "The orange lines represent the AQCP algorithm with γ = 0.03.",
+      "coverage was observed to oscillate closely around the target level for both the QCP framework (with an updating calibration dataset) and the AQCP algorithm.",
+      "Notably, AQCP exhibited greater stability around the target coverage level.",
+      "Confidently attributing the greater deviation of QCP from the target coverage level to non-stationary noise would require further experimentation, since fluctuations are expected when testing with finite samples."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured result from one device on one day, with no repeated runs or uncertainty estimate.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "No quantitative stability metric is reported; the evidence is visual (Figures 3 and 4)."
+    },
+    {
+     "id": "stationary-noise-breaks-exchangeability",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 3.2, p.7 to 8",
+     "quotes": [
+      "As a result, the induced scores are inherently time-dependent if the noise of quantum hardware changes across time."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of when Theorem 1's guarantee applies (Section 3.2).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The argument is informal: it shows exchangeability cannot be asserted, not that coverage fails."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qcp-stationary-noise-assumption",
+     "value": "The authors state that the theoretical guarantees of quantum conformal prediction (Park and Simeone) require the simplifying assumption that hardware noise processes remain stationary over time, and that no prior quantum conformal work directly examines how non-stationary model noise affects score exchangeability.",
+     "anchor": "Section 1 and 1.1, p.2",
+     "quotes": [
+      "However, the theoretical guarantees of QCP require a simplifying assumption: that the noise processes within the quantum hardware remain stationary over time.",
+      "none directly examine how non-stationary model noise affects the exchangeability of conformity scores."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's reading of prior work.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcp-scores-should-use-time-dependent-shots",
+     "value": "The authors argue that a score function could in principle drop the time dependence, but the conformity score of any QCP procedure is designed to use the quantum model's shot output and so should use these time-dependent terms.",
+     "anchor": "Section 3.2, p.8",
+     "quotes": [
+      "the conformity score of any QCP procedure is designed to utilise the quantum model’s output, and hence should utilise these time-dependent terms."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's design argument.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hardware-noise-drift-sources",
+     "value": "The authors state that IBM Quantum systems perform hourly and daily recalibrations to mitigate drift, that non-stationary noise sources include temperature fluctuations, control-equipment oscillations and laboratory conditions, and cite McEwen et al. (2022) as showing cosmic rays cause catastrophic multi-qubit errors approximately every ten seconds.",
+     "anchor": "Section 3, p.6",
+     "quotes": [
+      "To mitigate the effects of drift, IBM Quantum systems perform both hourly and daily recalibrations (IBM Quantum, 2025).",
+      "Sources of non-stationary noise are diverse, including temperature fluctuations, oscillations in control equipment, and ambient laboratory conditions (Proctor et al., 2020).",
+      "In more extreme cases, cosmic rays originating from outer space have been shown to cause catastrophic multi-qubit errors approximately every ten seconds (McEwen et al., 2022)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Facts cited from vendor documentation and other papers.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "split-conformal-theorem1",
+     "value": "The authors restate Theorem 1 (Vovk et al. 2005; Lei et al. 2017): if calibration pairs and a new draw are exchangeable, the split conformal set covers the true label with probability at least one minus α, with an upper bound when scores have a continuous joint distribution.",
+     "anchor": "Section 2.1, Theorem 1, p.3",
+     "quotes": [
+      "Theorem 1 (Vovk et al. (2005); Lei et al. (2017)) If (Xi, Yi), i = 1, . . . , n are exchangeable, then for a new exchangeable draw (Xn+1, Yn+1),",
+      "Here, the lower bound arises from Vovk et al. (2005) and the upper bound from Lei et al. (2017)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited theorem.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aqcp-update-rule-bounded",
+     "value": "AQCP updates the miscoverage level after each test point by a step size γ > 0 times the difference between the target α and the observed error; the adaptive level is proven (by Gibbs and Candès) to stay within [−γ, 1 + γ] with probability one, and choosing γ = 0 recovers QCP with an updating calibration set.",
+     "anchor": "Section 4.1, p.9",
+     "quotes": [
+      "Here, γ > 0 is a step size hyperparameter",
+      "Notice that the adaptive parameter αi is proven to remain within a bounded interval [−γ, 1 + γ] with probability one, ensuring the stability of the method.",
+      "Choosing γ = 0 recovers QCP with an updating calibration set."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The algorithm's own definition (Section 4.1, Algorithm 1); the boundedness is cited.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aqcp-step-size-tradeoff",
+     "value": "The authors state that if the step size is too high the coverage becomes too volatile, and if too low the method does not adapt fast enough; they did not run a systematic step-size sensitivity analysis and used a fixed step size.",
+     "anchor": "Section 4.1, p.9; Section 5.4, p.17",
+     "quotes": [
+      "if it is too high, the coverage becomes too volatile; if it is too low, the system will not adapt fast enough to the changes in the distribution.",
+      "The behaviour of AQCP would be further clarified by a systematic step-size sensitivity analysis"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Section 5.4).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aqcp-theorem2-finite-sample",
+     "value": "The paper states Theorem 2, a finite-sample bound on the average miscoverage of AQCP adapted from Gibbs and Candès, for i.i.d. data and a fixed calibration set, assuming test scores are conditionally independent given a hidden Markov chain with a non-zero absolute spectral gap, started at stationarity; the authors state these assumptions are unlikely to hold exactly in their setting.",
+     "anchor": "Section 4.1, Theorem 2, p.10; Appendix C.1, p.25",
+     "quotes": [
+      "Theorem 2 (Finite-Sample Guarantee for AQCP, Adapted from Gibbs & Candès (2021))",
+      "Let (Xi, Yi) be i.i.d., and suppose prediction sets are constructed using the empirical (1 − αi)-quantile of conformity scores computed from a fixed calibration dataset Dcal (Algorithm 1 without the optional step).",
+      "Assume the test conformity scores are conditionally independent given a hidden Markov chain (Bi) with state space B.",
+      "Assume that PB has non-zero absolute spectral gap",
+      "Although the assumptions required by this theorem are unlikely to hold exactly in our setting, we expect the bound to be broadly representative of the algorithm’s empirical behaviour"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2 is stated with its conditions and proved in Appendix C.1 by adapting a cited proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The experiments use Algorithm 1 with the optional update step, so Theorem 2 does not cover the configuration tested."
+    },
+    {
+     "id_suggestion": "aqcp-theorem2-proof-adapted",
+     "value": "The authors state the proof of the finite-sample theorem follows Appendix A.7 of Gibbs and Candès (2021) with the environment chain replaced by the score chain, combining a Hoeffding bound with a Bernstein inequality for Markov chains.",
+     "anchor": "Appendix C.1, p.25",
+     "quotes": [
+      "The argument follows Appendix A.7 of Gibbs & Candès (2021), with the environment chain At replaced by the score chain Bi.",
+      "Combining the two bounds proves the theorem."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A short proof given in Appendix C.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aqcp-shift-from-shots-not-data",
+     "value": "The authors chose to modify Adaptive Conformal Inference because it makes no assumptions about the form of the distribution shift, and note that in their setting the shift is not in the feature-target data but arises from the time dependence of the shots that parametrise the score function.",
+     "anchor": "Sections 4 and 4.1, p.8 to 9",
+     "quotes": [
+      "We choose to modify ACI because it makes no assumptions about the form of the underlying distribution shift.",
+      "This is not directly applicable to our setting, as there is no distributional shift in the feature-target data itself.",
+      "Instead, the shift arises from the time dependence of the shots which parametrise the score function."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own framing of its setting (Section 4).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aqcp-weighted-cp-no-practical-bound",
+     "value": "The authors state that the non-exchangeable weighted conformal method of Foygel Barber et al. gives coverage of at least one minus α minus a correction term, but in QML the size of that correction is unknown in practice, so no practical lower bound on coverage can be given without further assumptions.",
+     "anchor": "Appendix A, p.21 to 22",
+     "quotes": [
+      "However, in QML, the size of this correction is in practice unknown.",
+      "meaning no practical lower bound on coverage can be given without making further assumptions."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's assessment of a cited method.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aqcp-experiment-setup",
+     "value": "The hardware experiment used a hardware-efficient ansatz with Q = 5 qubits and L = 5 layers, trained on a noiseless simulator, and 10,000 samples each run on ibm_sherbrooke for M = 100 shots, with 100 initial calibration points, a rolling window of size 500 and target miscoverage α = 0.1.",
+     "anchor": "Sections 5.1 and 5.2, p.12 to 14",
+     "quotes": [
+      "We implemented the HEA using Q = 5 qubits and L = 5 layers applied sequentially to form the unitary operator",
+      "All training was performed on a noiseless simulator, so we do not condition on shot time in this instance.",
+      "To generate calibration and test data, we drew 10,000 samples from the target distribution.",
+      "on ibm_sherbrooke for M = 100 shots.",
+      "100 initial calibration points are used with a rolling window of size 500, and a target miscoverage of α = 0.1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its experimental setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aqcp-online-qcp-coverage-drift",
+     "value": "On ibm_sherbrooke data with the k-NN score, online QCP over-covered between test points 2,000–3,000 and under-covered around test point 8,500, while AQCP kept the average coverage around the desired 90% target once the rolling window was full.",
+     "anchor": "Section 5.2, Figure 3, p.14",
+     "quotes": [
+      "For example, it over-covers between the 2,000–3,000 test points, and later under-covers around test point 8,500.",
+      "Once the initial rolling window is fully populated, AQCP consistently maintains the average coverage around the desired 90% target level."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured result from one device run, read from a figure.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aqcp-score-function-not-stability",
+     "value": "The authors report that across Euclidean distance, KDE and HDR score functions AQCP kept coverage closer to nominal than online QCP, and conclude the choice of score function does not substantially influence the coverage stability of AQCP.",
+     "anchor": "Section 5.2, Figure 4, p.15 to 16",
+     "quotes": [
+      "This demonstrates that the choice of the score function does not substantially influence the coverage stability achieved by AQCP."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured result from one device run.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aqcp-efficiency-score-functions",
+     "value": "On simulated FakeQuitoV2 shots with γ fixed, the HDR score gave the smallest average set size at M = 1,000; KDE fell faster at medium M but plateaued for M ≥ 100; at M = 1,000 the Euclidean score gave sets approximately 1.5–2 times larger than HDR, both at the 90% target coverage.",
+     "anchor": "Section 5.3, Figure 5, p.16",
+     "quotes": [
+      "Since non-stationary noise is not directly relevant to this analysis, all shots were generated using the FakeQuitoV2 backend.",
+      "SˆHDR achieves the smallest average set size at M = 1,000.",
+      "SˆKDE demonstrates a more rapid decrease in the medium M range but plateaus for M ≥ 100.",
+      "At M = 1,000, SˆEuc yielded prediction sets approximately 1.5–2 times larger than those produced by SˆHDR, despite both achieving the target coverage level of 90%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured result on a simulator for one task.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aqcp-theorem3-marginal-optimality",
+     "value": "The paper proves Theorem 3: under absolute continuity and no-flat-spot assumptions, any score that is a strictly decreasing transformation of the conditional density is optimal for minimal expected prediction set size under marginal coverage.",
+     "anchor": "Appendix B.2, Theorem 3, p.23; proof Appendix C.2, p.26",
+     "quotes": [
+      "Theorem 3 (Sufficient condition for marginal optimality)",
+      "Theorem 3 states that any score function that is a strictly decreasing transformation of the conditional probability density is optimal for producing minimal prediction sets with marginal coverage."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3 is proved in Appendix C.2 using the Neyman-Pearson lemma.",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aqcp-euclidean-score-optimal-when",
+     "value": "The authors state the Euclidean distance score is optimal for marginal coverage whenever the conditional density is radially symmetric about the point prediction with a decreasing radial profile that does not depend on x, and that this generally fails with skewed, anisotropic or heteroscedastic conditional distributions.",
+     "anchor": "Appendix B.2, p.23",
+     "quotes": [
+      "whenever the conditional density is radially symmetric about f (x), with a radial profile that is decreasing as the distance from f (x) increases and does not depend on x.",
+      "it generally fails in the presence of skewed conditional distributions, anisotropy, or heteroscedasticity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A direct consequence of Theorem 3, derived in Appendix B.2.",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aqcp-theorem4-conditional-optimality",
+     "value": "The paper proves Theorem 4: if a score is a strictly increasing function of the conditional probability mass of the high-density level set at the candidate's density, it is optimal for minimal set size under conditional coverage.",
+     "anchor": "Appendix B.3, Theorem 4, p.24; proof Appendix C.3, p.26 to 27",
+     "quotes": [
+      "Theorem 4 (Sufficient condition for conditional optimality)",
+      "Suppose there exists a strictly increasing function ϕ : [0, 1] → R such that"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4 is proved in Appendix C.3.",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": "The value's level-set description is a paraphrase of the formula, which the text layer prints flat."
+    },
+    {
+     "id_suggestion": "aqcp-sample-scores-asymptotic-optimality",
+     "value": "The authors argue that, under suitable consistency conditions, the k-NN and KDE scores asymptotically approach the marginal-optimal class and the HDR score the conditional-optimal class as the number of shots M → ∞, while noting the theory assumes samples from the true conditional distributions.",
+     "anchor": "Appendix B.2 and B.3, p.23 to 24",
+     "quotes": [
+      "this suggests that Sˆk-NN asymptotically approaches a score in the sufficient optimality class as the number of samples M → ∞.",
+      "Under suitable consistency conditions, this score asymptotically approaches a score satisfying the sufficient condition for S2 as M → ∞.",
+      "This theory assumes access to samples taken from the true conditional distributions; however, it provides motivation for the general case."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argued heuristic, not proved.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aqcp-optimality-guidance-only",
+     "value": "The authors state that the score optimality results serve as structural guidance for quantum conformal prediction, not a formal guarantee, and do not quantify how density approximation error, finite measurement effects or calibration variability affect set sizes.",
+     "anchor": "Appendix B.4, p.24 to 25",
+     "quotes": [
+      "Therefore this connection serves as structural guidance in the quantum conformal setting, as opposed to a formal guarantee.",
+      "The analysis does not quantify how approximation error in p(y | x), finite measurement effects, or calibration variability influence the resulting set sizes."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Appendix B.4).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aqcp-new-scores-near-optimal",
+     "value": "The authors report that both newly introduced score functions, KDE-based and HDR-based, obtained near-optimal set sizes with a high number of shots.",
+     "anchor": "Section 6, p.17",
+     "quotes": [
+      "both newly introduced score functions (kernel density estimation-based and high-density regionbased) obtained near-optimal set sizes with a high number of shots."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured result on a simulator for one task.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aqcp-tie-breaking-noise",
+     "value": "When calculating scores the authors added Gaussian noise with σ = 10−4 to break ties, because the discrete grid mapping would otherwise give many equal scores.",
+     "anchor": "Section 5.1.2, p.14",
+     "quotes": [
+      "scores, additional Gaussian noise with σ = 10−4 was added to break ties."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own implementation detail.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

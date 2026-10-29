@@ -6,6 +6,7 @@ citation count; each entry names its target file and why it matters."""
 from __future__ import annotations
 
 import importlib.util
+import json
 import sqlite3
 import sys
 from pathlib import Path
@@ -73,6 +74,18 @@ def test_a_newer_segment_takes_a_record_off():
     assert hdl.on_list("x | y; on the hand-download list").endswith("on the hand-download list")
 
 
+def test_a_slice_with_no_counts_is_read_past(tmp_path):
+    """Task G's slice (F113, Sprint 13) has no cited_by_count field and
+    matches the "*_slice.json" glob. Proven to fail, 2026-10-25: before the
+    fix, this test raised KeyError: 'cited_by_count'."""
+    hdl = _script()
+    (tmp_path / "a_slice.json").write_text(json.dumps({"slice": [{"record_id": "x", "cited_by_count": 7}]}),
+                                           encoding="utf-8")
+    (tmp_path / "b_slice.json").write_text(json.dumps({"slice": [{"record_id": "x"}, {"record_id": "y"}]}),
+                                           encoding="utf-8")
+    assert hdl.slice_counts(tmp_path) == {"x": 7}
+
+
 def test_target_names_follow_the_papers_convention():
     """Intake section 3, as F62 builds it; a book goes to Books."""
     hdl = _script()
@@ -112,8 +125,11 @@ def test_the_live_list(live_conn):
     groups = [item["group"] for item in items]
     assert groups == sorted(groups)
     for g in set(groups) - {0}:
+        # Sprint 13's slice records 389 uncounted records (intake section 51); they come after every counted one.
         counts = [i["cited_by_count"] for i in items if i["group"] == g]
-        assert None not in counts and counts == sorted(counts, reverse=True)
+        counted = [n for n in counts if n is not None]
+        assert counts == counted + [None] * (len(counts) - len(counted)), g
+        assert counted == sorted(counted, reverse=True)
     assert all(i["target"].startswith(("Papers\\", "Books\\")) and i["target"].endswith(".pdf") for i in items)
 
 

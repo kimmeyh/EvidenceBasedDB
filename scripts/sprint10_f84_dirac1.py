@@ -212,7 +212,8 @@ def apply_changes(conn) -> list[str]:
             log.append(f"read   {rid} [Claude, partial]")
         elif have[("Claude", TODAY, "partial")] != COORDINATOR_DETAIL:
             conn.execute("UPDATE paper_reads SET detail = ? WHERE record_id = ? AND reader = 'Claude' "
-                         "AND read_on = ? AND extent = 'partial'", (COORDINATOR_DETAIL, rid, TODAY))
+                         "AND read_on = ? AND extent = 'partial' AND detail = ?",
+                         (COORDINATOR_DETAIL, rid, TODAY, have[("Claude", TODAY, "partial")]))
             log.append(f"update read {rid}")
         if conn.execute("SELECT tier FROM paper_fields WHERE record_id = ?", (rid,)).fetchone()[0] != "read":
             set_tier(conn, rid, "read", checked_against_source=(

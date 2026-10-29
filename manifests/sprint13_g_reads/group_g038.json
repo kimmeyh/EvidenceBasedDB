@@ -1,0 +1,2672 @@
+{
+ "papers": [
+  {
+   "record_id": "sreekumar-2026-performance-guarantees-quantum-neural-estimation",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Sreekumar-Godfield-Wilde_2025_Performance-Guarantees-for-Quantum-Neural-Estimation-of__2511.19289.pdf",
+   "title_in_file": "Performance Guarantees for Quantum Neural Estimation of Entropies",
+   "version_note": "arXiv:2511.19289v2 (14 May 2026), marked as accepted in Quantum 2026-05-12.",
+   "pages": 43,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper that proves non-asymptotic expected-error bounds, sub-Gaussian deviation inequalities and copy-complexity bounds for quantum neural estimators (classical neural net plus parametrized quantum circuit) of the measured relative entropy and measured Renyi relative entropy.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qne-assumptions-and-exponential-worst-case",
+     "verdict": "narrowed",
+     "note": "The body (Section 1.1, p.3) limits the polynomial improvement to a subclass of permutation invariant states that depends on the quantum circuit, within the bounded-Thompson-metric class, not to all permutation invariant states as the concluding sentence reads.",
+     "value": "The authors state the bounds assume the neural net and quantum circuit are sufficiently expressive with bounded statistical complexity, and that the quantum neural estimator has a worst case copy complexity that scales exponentially in the number of qudits, which improves to a polynomial dependence for a subclass (which depends on the quantum circuit) of permutation invariant states within the bounded-Thompson-metric class.",
+     "anchor": "Section 1.1, p.3; Section 6, p.28",
+     "quotes": [
+      "Assuming that the neural net and quantum circuit are sufficiently expressive and have bounded statistical complexity",
+      "although the quantum neural estimator has a worst case copy complexity that scales exponentially in the number of qudits, this improves to polynomial when the underlying states are permutation invariant.",
+      "we show that for a subclass (which depends on the quantum circuit) of permutation invariant states across N qudits within Sd(b), the algorithm",
+      "has a much better polynomial dependence (see Proposition 9)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Propositions 8 and 9 (pp.17-18), proved in Sections 5.5 and 5.6, state the conditions; the assumptions are stated in Section 1.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qne-error-bounds",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Abstract, p.1; Section 1.1, p.3",
+     "quotes": [
+      "This work initiates the study of formal guarantees for QNEs of measured (Rényi) relative entropies in the form of non-asymptotic error risk bounds.",
+      "We further establish exponential tail bounds showing that the error is sub-Gaussian and thus sharply concentrates about the ground truth value."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The abstract's summary; the bounds themselves are entered as separate assertions with their statements.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qne-optimization-error-not-analyzed",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 6, p.28; footnote 2, p.8",
+     "quotes": [
+      "One such issue pertains to the quantification of the optimization error and an analysis of optimization dynamics such as the investigation of barren plateaus and local optima, which was neglected here.",
+      "Hence, we ignore this aspect in our analysis and leave its quantification as part of future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 6 and footnote 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qne-def-measured-relative-entropy",
+     "value": "The paper defines the measured relative entropy as a supremum over all finite sets and positive operator-valued measures, and uses its variational expression (from Berta, Fawzi and Tomamichel) as a supremum over Hermitian operators; the optimizer is unique although no closed form for it is known.",
+     "anchor": "Section 2.1, Eqs. (1)-(2), pp.5-6",
+     "quotes": [
+      "The measured relative entropy between ρ, σ ∈ Sd is defined as [36, 37]",
+      "where the supremum is over all finite sets Z and positive operator-valued measures",
+      "The measured relative entropy can be expressed in terms of the following variational expression [34, Lemma 1]:",
+      "Note that while {Pi⋆,α}di=1 need not be unique in general, Hα⋆(ρ, σ) is unique (see Appendix A).",
+      "although a closed form expression for Hα⋆(ρ, σ) is not known"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition stated in Section 2.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-def-state-class-thompson",
+     "value": "The paper restricts its results to the class Sd(b) of pairs of positive definite density operators whose Thompson metric is at most log b; a bounded Thompson metric keeps the minimal eigenvalues of both states bounded away from zero.",
+     "anchor": "Section 2.2, Eq. (12), p.7; Section 1.1, p.3",
+     "quotes": [
+      "let Sd(b) be the set of density operator pairs (ρ, σ) for a Hilbert space of dimension d, such that their Thompson metric [35] is bounded from above by log b.",
+      "Sd(b) := {(ρ, σ) : 0 < ρ, σ ∈ Sd, T (ρ, σ) ≤ log b} .",
+      "Note that T (ρ, σ) being bounded constrains the minimal eigenvalue of both ρ and σ to be bounded away from zero."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope, defined in Eq. (12).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-def-estimator",
+     "value": "The paper defines the quantum neural estimator (from earlier work by the same group) as a classical neural class combined with a parametrized quantum circuit; in practice it is computed by alternating gradient ascent over the neural net and then over the circuit parameters, and it may apply a fixed pre-processing quantum channel before measurement.",
+     "anchor": "Section 2.3, pp.7-8",
+     "quotes": [
+      "The QNE proposed in [29] has a classical neural class F and parametrized quantum circuit (PQC) U (Θ), indexed by a set Θ.",
+      "are computed via alternating optimization, by performing gradient ascent iteratively over the neural net class f ∈ F (for a fixed θ) followed by that over Θ.",
+      "For flexibility of the framework, we will also allow applying a fixed quantum channel to each copy of ρ and σ before performing measurements using the PQC"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Estimator defined in Section 2.3, Eq. (13).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-error-split-approx-statistical",
+     "value": "The authors split the estimator's error into an approximation component and a statistical component; reducing the approximation error with a more expressive model raises the statistical complexity of the model.",
+     "anchor": "Section 2.3, p.8; Section 3.1, p.11",
+     "quotes": [
+      "we split the error of QNE into two components2: approximation and statistical.",
+      "The approximation error can be made arbitrary small by choosing a sufficiently large hybrid model",
+      "Choosing an expressive model to reduce the approximation error, however, comes at the cost of increased statistical complexity of the model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own analysis framework, Sections 2.3 and 3.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-assumption-neural-class",
+     "value": "The paper's assumption on the neural class requires it to be a closed subset of functions bounded by log b on the embedded points, with a covering-entropy bound whose integral is finite; the authors state this holds for feedforward nets with finite width and depth, bounded parameters and common continuous activations such as ReLU and sigmoid.",
+     "anchor": "Assumption 1, Section 2.5.1, pp.9-10",
+     "quotes": [
+      "The neural class F is a closed subset of Fb and satisfies",
+      "which, in particular, are satisfied by feedforward neural nets with finite width and depth, bounded parameters and common continuous activations such as rectified linear (ReLU) and sigmoid."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Stated as Assumption 1, Section 2.5.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-assumption-pqc-given",
+     "value": "The authors assume an efficient parametrized quantum circuit architecture that delta-covers the optimizer's eigenbasis unitaries is given, since constructing the circuit is not their focus.",
+     "anchor": "Section 2.5.2, p.10",
+     "quotes": [
+      "Since the construction of the PQC is not our focus, we henceforth assume that an efficient parametrized quantum circuit architecture implementing Uα(δ, S) is given."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's stated assumption, Section 2.5.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-theorem1-measured-relative-entropy",
+     "value": "The paper proves (Theorem 1) that for a QNE with a neural class satisfying Assumption 1 and a PQC parametrized by Θ(δ, S) over S ⊆ Sd(b), the worst-case expected absolute error is at most the approximation term ξ, defined as ε(F, S)(b + 1) + 2δ(b + log b), plus a statistical term 48(b + 1)(log b) times κ(F) times n to the power minus one half; and the probability that the error exceeds the approximation term plus a term with constant 128(b + 1) plus z is at most 2e−nz2, for all z ≥ 0.",
+     "anchor": "Theorem 1, Section 3.1, p.11; proof Section 5.1, pp.18-24",
+     "quotes": [
+      "for estimating DM(ρ∥σ) with classical neural net F ⊆ Fb satisfying Assumption 1 and a PQC U (δ, S) parametrized by Θ(δ, S) for S ⊆ Sd(b).",
+      "Setting ξF,S,δ,b := ε(F , S)(b + 1) + 2δ(b + log b), we have",
+      "48(b + 1)(log b)",
+      "Moreover, for all z ≥ 0, we have",
+      "128(b + 1)",
+      "≤ 2e−nz2 . (20)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 with its conditions quoted (p.11), proved in Section 5.1; the displayed bound's layout is split by the text layer, so the statistical term's factors are quoted in pieces.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-effective-copy-complexity",
+     "value": "The authors note that since each inner loop of the QNE consumes n copies of both states, the effective copy complexity achieving the Theorem 1 bound scales as n times the size of the circuit parameter set, and characterizing classes where that size scales benignly is a non-trivial problem tied to which unitaries can be efficiently approximated.",
+     "anchor": "Remark 1, Section 3.1, p.11",
+     "quotes": [
+      "the effective copy complexity of the algorithm that achieves the expected absolute error bound given in Theorem 1 is O n|Θ(δ, S)| .",
+      "However, this turns out to be a non-trivial problem, closely related to that of characterizing the class of unitaries which can be efficiently approximated."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Remark 1 states the limit.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-corollary2-shallow-net",
+     "value": "The paper proves (Corollary 2) that with a shallow ReLU net of d hidden neurons and weights bounded by log b, over S ⊆ Sd(b), the expected absolute error is bounded by 2δ(b + log b) plus 96(log b)(b + 1) times the square root of d times n to the power minus one half, which the authors summarize as O b(log b + 1)(δ + D1/2n−1/2) with D the product of d and the circuit parameter set size.",
+     "anchor": "Corollary 2, Section 3.1, p.12; proof Section 5.2, p.24",
+     "quotes": [
+      "The following hold for S ⊆ Sd(b) with a(δ, b) := 2δ(b + log b):",
+      "96(log b)(b + 1)d",
+      "is O b(log b + 1)(δ + D1/2n−1/2) , where D := d Θ(δ, Sd(b))."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Corollary 2 with conditions, p.12, proved in Section 5.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-minimax-lower-bound-and-d-mismatch",
+     "value": "The authors give a minimax lower bound (sketched from classical results via Le Cam's method) that holds when db ≲ n log d and b ≥ (log d)2 ∨ 2, conclude that the minimax risk over Sd(b) has a parametric rate in n achieved by the QNE with a shallow net, and state a mismatch in the dependence on d between upper and lower bounds, which needs bias correction the QNE does not perform.",
+     "anchor": "Remark 2, pp.12-13; Table 1, p.3; Appendix B, pp.36-38",
+     "quotes": [
+      "lower bound on the expected minimax risk for estimating classical relative entropy which holds when db ≲ n log d and b ≥ (log d)2 ∨ 2:",
+      "the expected minimax risk over Sd(b) has a parametric rate of convergence in n (independent of d), and moreover that it is achieved by the QNE with a shallow net.",
+      "However, there is a mismatch in the dependence on d in (22a) and (23)",
+      "this mismatch is not unexpected as achieving the optimal dependence on d requires explicit bias-correction mechanisms even in the classical case, which is not performed by the QNE.",
+      "The proof of (23) and (32) relies on an application of Le Cam’s two-point method and its generalized version with composite hypothesis"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The lower bound is given only as a proof sketch adapted from cited classical results (Appendix B).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-lower-bound-scope",
+     "value": "The authors state that the upper bound holds for any S ⊆ Sd(b) while the lower bound holds only for classes containing all state pairs in a fixed eigenbasis.",
+     "anchor": "Table 1 caption, p.3",
+     "quotes": [
+      "The upper bound holds for any S ⊆ Sd(b) while the lower bound holds for any S ⊆ Sd(b) containing all state pairs in any fixed eigen-basis"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Scope stated in the Table 1 caption.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-proposition3-polynomial-classes",
+     "value": "The paper proves (Proposition 3) that the polynomial-approximable class equals the whole class Sd(b) when the polynomial degree is at least d − 1 with coefficient bound a ≥ (3e)d log b /(2π) (part i), or for any degree k with a ≥ 2kk! log b and error at least (2d + 0.5) times k to the minus one third times log b (part ii, via Bernstein polynomials).",
+     "anchor": "Proposition 3, Section 3.1, p.13; proof Appendix C, pp.39-42",
+     "quotes": [
+      "For all k ≥ d − 1, a ≥ (3e)d log b /(2π), and ε ≥ 0,",
+      "a ≥ 2kk! log b,",
+      "(2d + 0.5) k− 1 3 log b",
+      "Bernstein polynomials of degree at most k whose coefficients are bounded as given therein."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 3, proved in Appendix C; the part (ii) statement is split by the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-proposition4-deep-net-dimension-free",
+     "value": "The paper proves (Proposition 4) that with a deep ReLU net of width 9 whose depth grows with k times the logarithms of the inverse error, k and a, the error bound is 2(b + 1)ε + 2δ(b + log b) plus a statistical term, independent of the dimension d, but only over the sub-class of state pairs whose optimizer eigenvalues are polynomial-approximable.",
+     "anchor": "Proposition 4, Section 3.1, p.14; proof Section 5.3, pp.24-25",
+     "quotes": [
+      "There exists a constant c > 0 such that setting",
+      "2(b + 1)ε + 2δ(b + log b)",
+      "The advantage of Proposition 4 compared to Corollary 2 is that the bounds are independent of the dimension d, albeit over a sub-class",
+      "F˜NN(Lε,k,a) ≡ F˜NN(Lε,k,a, 9, 1, 1)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 4, p.14, proved in Section 5.3 using a cited approximation result (Elbrachter et al., Proposition III.5) with an unspecified constant c.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-theorem5-renyi",
+     "value": "The paper proves the analogue of its main relative-entropy theorem for the measured Renyi relative entropy of order α in (0, 1)∪(1, ∞), with a statistical term whose constant is 48α bα + b|α−1| times log b times κ(F) times n to the power minus one half, and a sub-Gaussian tail bound 2e−nz2.",
+     "anchor": "Theorem 5, Section 3.2, p.14; proof Section 5.4, pp.25-27",
+     "quotes": [
+      "Let α ∈ (0, 1)∪(1, ∞). Consider a QNE for estimating DM,α(ρ∥σ) with classical neural net F ⊆ Fb satisfying Assumption 1 and a PQC Uα(δ, S) parametrized by Θα(δ, S).",
+      "48α bα + b|α−1|",
+      "≤ 2e−nz2 . (30)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5 with conditions, p.14; proof in Section 5.4 (the tail bound proof is stated as analogous and omitted).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-renyi-minimax-optimal-in-n",
+     "value": "The authors state that, comparing the shallow-net Renyi bound with a minimax lower bound valid when dbα ≲ n log d , b ≥ (log d)2 ∨ 2 and α > 1, the QNE achieves the parametric rate of convergence in n and is minimax optimal for the measured Renyi relative entropy over Sd(b); the Renyi shallow-net and deep-net results are given with their proofs omitted as similar.",
+     "anchor": "Corollary 6 and Eq. (32), p.15; Proposition 7, p.15",
+     "quotes": [
+      "which holds when dbα ≲ n log d , b ≥ (log d)2 ∨ 2 and α > 1:",
+      "it follows that the QNE achieves the parametric rate of convergence in n, meaning it is minimax optimal for estimating measured Rényi relative entropy over Sd(b).",
+      "proof is omitted as it is similar to Corollary 2",
+      "The proof of Proposition 7 follows similarly to the proof of Proposition 4, and hence is omitted."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Optimality is in n only; the lower bound is a proof sketch (Appendix B) and the corollary proofs are omitted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Minimax optimality here refers to the rate in n; the d dependence still mismatches as in Remark 2."
+    },
+    {
+     "id_suggestion": "qne-solovay-kitaev-superexponential",
+     "value": "The authors show via the Solovay-Kitaev theorem that a PQC covering all unitaries exists with a parameter set size super-exponential in the number of qubits N, and state that when S is all state pairs such a dependence on N is unavoidable by a covering argument.",
+     "anchor": "Section 4, p.16; Appendix E, p.43",
+     "quotes": [
+      "there exists a PQC U (δ, S) with |Θ(δ, S)| = O N 24N δ−1 N24N",
+      "The super-exponential dependence of |Θ(δ, S)| on N is a consequence of the requirement that the quantum circuit be able to universally approximate the whole unitary group uniformly.",
+      "when S = Sd × Sd, a lower bound based on a covering argument shows that such a dependence on N is unavoidable"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix E from a cited gate-count result (Ross and Selinger); the unavoidability is cited to Nielsen and Chuang.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-hard-to-characterize-efficient-classes",
+     "value": "The authors state that determining the state classes for which an efficiently realizable PQC suffices is known to be hard, so they instead fix a PQC, as in practice, and consider the classes for which efficient QNEs exist.",
+     "anchor": "Section 4, p.16",
+     "quotes": [
+      "determining the sets S for which (17) holds with an efficiently realizable PQC is known to be a hard problem.",
+      "Given this, a pertinent approach is to fix a PQC U, as is the case in practice, and consider the classes S for which efficient QNEs exist."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Stated limit in Section 4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-proposition8-copy-complexity",
+     "value": "The paper proves (Proposition 8) that with probability at least p, the QNE with a shallow net and a fixed PQC estimates the measured relative entropy within error ϵ over the class whose optimizer eigenbasis the PQC approximates, given a number of copies of order c squared times d times the parameter set size times ϵ to the minus two, where ϵb = ϵ/(4b + 4 log b); the bound is proportional to d, exponential in the number of qudits.",
+     "anchor": "Proposition 8, Section 4, p.17; proof Section 5.5, p.27",
+     "quotes": [
+      "With probability at least p ∈ [0, 1), QNE with shallow net F˜SNN(d, log b) and PQC U estimates DM(ρ∥σ) between (ρ, σ) ∈ S¯d(ϵb, b, U ) within an error of ϵ given O c2b,pd|Θ(U )|ϵ−2 copies each of ρ and σ,",
+      "where ϵb = ϵ/(4b + 4 log b) and cb,p := 1 + − log(1 − p) (b + 1) log b.",
+      "the copy complexity bound of QNE given in Proposition 8 is proportional to d, which scales exponentially in the number of qudits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 8 with conditions, p.17, proved in Section 5.5.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-proposition9-permutation-invariant",
+     "value": "The paper proves (Proposition 9) that for permutation-invariant state pairs in a class tied to a fixed PQC on the reduced Schur-Weyl space, a QNE with the Schur-transform pre-processing channel estimates the measured relative entropy within ϵ with probability at least p from a number of copies proportional to a reduced dimension bounded by (N + 1)m−1N times a power of N, which the authors call an exponential improvement over Proposition 8; the channel preserves the measured relative entropy for permutation-invariant inputs.",
+     "anchor": "Proposition 9, Section 4, p.18; proof Section 5.6, pp.27-28",
+     "quotes": [
+      "With probability at least p ∈ [0, 1), QNE with N = N¯ as given in (36), shallow neural net F˜SNN(d¯m,N , log b) and a PQC U acting on Km,N , estimates DM(ρ∥σ) for (ρ, σ) ∈ Sˆm,N (ϵb, b, U ) within an error ϵ given O c2b,pd¯m,N |Θ(U )|ϵ−2 copies each of ρ and σ",
+      ":= (N + 1)m−1N",
+      "Note that the copy complexity in Proposition 9 is proportional to d¯m,N , which is an exponential improvement over that given in Proposition 8.",
+      "the quantum channel N¯ in (36) preserves the measured relative entropy between two output states when the corresponding inputs are permutation-invariant."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 9 with conditions, p.18, proved in Section 5.6.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The copy count still scales with the circuit parameter set size, which is not bounded in this result."
+    },
+    {
+     "id_suggestion": "qne-abstract-copy-complexity-summary",
+     "value": "The authors summarize that for a sub-class of state pairs with bounded Thompson metric the copy complexity is O(|Θ(U)|d/ϵ2), with minimax optimal dependence on the accuracy, improving to O(|Θ(U)|polylog(d)/ϵ2) for permutation invariant pairs.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "our theory establishes a copy complexity of O(|Θ(U)|d/ϵ2) for QNE with a quantum circuit parameter set Θ(U), which has minimax optimal dependence on the accuracy ϵ.",
+      "we improve the dimension dependence above to O(|Θ(U)|polylog(d)/ϵ2)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Abstract summary of Propositions 8 and 9, which are entered separately with their conditions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-lemma10-eigenvalue-bound",
+     "value": "The paper proves that for state pairs in Sd(b), every eigenvalue of the optimizer Hermitian operator has absolute value at most log b.",
+     "anchor": "Lemma 10, Section 5.1, p.18; proof Appendix D, pp.42-43",
+     "quotes": [
+      "If (ρ, σ) ∈ Sd(b), then |λ| ≤ log b for λ ∈ Λ⋆α(ρ, σ)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 10 proved in Appendix D.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-lemma11-operator-norm",
+     "value": "The paper proves that for Hermitian operators with spectral decompositions H1 = U1Λ1U1† and H2 = U2Λ2U2†, the operator norm of their difference is bounded by the eigenvalue difference norm plus the sum of eigenvalue norms times the unitary difference norm.",
+     "anchor": "Lemma 11, Section 5.1, p.20; proof Appendix F, p.43",
+     "quotes": [
+      "Let H1 and H2 be Hermitian operators with spectral decompositions H1 = U1Λ1U1† and H2 = U2Λ2U2†. Then",
+      "∥H1 − H2∥ ≤ ∥Λ1 − Λ2∥ + ∥Λ1∥ + ∥Λ2∥ ∥U1 − U2∥"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 11 proved in Appendix F.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-proposition13-optimality-condition",
+     "value": "The paper proves that for positive definite ρ and σ the optimal ω in the alternative variational form of the measured relative entropy is unique and determined by an integral equation, with analogous unique optimizers for the Renyi forms; the relative entropy condition is the α → 1 limit of the Renyi condition.",
+     "anchor": "Proposition 13 and Remark 3, Appendix A, pp.35-36",
+     "quotes": [
+      "Suppose ρ, σ > 0. Then the optimal ω > 0 in (7) is unique and determined by the following equation:",
+      "The equation in (67) arises as the limit of (69) as α → 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 13 proved in Appendix A.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-lemma14-bernstein",
+     "value": "The paper states (Lemma 14, cited from Davis) that Bernstein approximation of degree k has sup error at most the Lipschitz norm plus 0.5 times the sup norm, times k to the minus one third, and gives its own Berry-Esseen proof with larger constants, 2 and 6.",
+     "anchor": "Lemma 14, Appendix C, pp.40-42",
+     "quotes": [
+      "Lemma 14 (Error in Bernstein’s approximation, see e.g., [93]).",
+      "∥pk,f − f ∥∞,[0,1] ≤ ∥f ∥Lip,[0,1] + 0.5 ∥f ∥∞,[0,1]",
+      "An independent proof via an application of the Berry-Esseen theorem with the same approximation error rate in terms of k (albeit with slightly larger constants) is provided below",
+      "∥pk,f − f ∥∞,[0,1] ≤ 2 ∥f ∥Lip,[0,1] + 6 ∥f ∥∞,[0,1]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Cited lemma, re-proved in Appendix C with larger constants.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-barren-plateau-susceptibility",
+     "value": "The authors state that the QNE's hybrid parameterization remains susceptible to barren plateaus: a sufficiently deep and unstructured PQC approximates a unitary two-design and gradient variances vanish exponentially in the number of qubits.",
+     "anchor": "Section 1.2, p.4",
+     "quotes": [
+      "it remains susceptible to barren plateaus [62–64].",
+      "In particular, if the PQC is sufficiently deep and unstructured, U (θ) approximates a unitary two-design",
+      "the gradient variances to vanish exponentially in the number of qubits"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited to the barren plateau literature.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-not-classically-simulable-argument",
+     "value": "The authors argue that the QNE framework is not subject to the classical-simulability arguments of Cerezo et al. because it assumes direct access to quantum samples of the states rather than classical descriptions or measurement data.",
+     "anchor": "Section 1.2, p.5",
+     "quotes": [
+      "the QNE framework is not susceptible to the classical-simulability arguments discussed in [69], since it assumes direct access to quantum samples of the states ρ and σ rather than classical descriptions or measurement data."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author argument without proof.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-tomography-baseline-linear-in-dimension",
+     "value": "The authors state (citing prior work) that estimating entropic quantities via full quantum tomography has copy complexity linear in the dimension, that is exponential in the number of qudits.",
+     "anchor": "Section 1.2, p.4",
+     "quotes": [
+      "The copy complexity of this approach is linear in the dimension of the state (or, equivalently, exponential in the number of qudits) [46–49]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-prior-consistency-numerical-only",
+     "value": "The authors state that the earlier QNE paper showed consistency only via numerical simulations, and that this paper provides the first theoretical guarantees for QNE.",
+     "anchor": "Section 1, p.3; Section 1.1, p.3",
+     "quotes": [
+      "In [29], it was shown via numerical simulations that the QNE is consistent.",
+      "In this paper, we provide the first theoretical guarantees for QNE in the form of sharp bounds on the expected absolute error."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A priority claim and a cited result.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-curse-of-dimensionality",
+     "value": "The authors state, from classical results, that entropy estimation in general suffers a curse of dimensionality and is hard in high dimensions without assumptions restricting the class of density operators.",
+     "anchor": "Section 2.2, p.7",
+     "quotes": [
+      "estimating entropies is hard in high dimensions without additional assumptions that restrict the class of density operators."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited classical result (Paninski).",
+     "result_type": "cited",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-open-problem-quantum-relative-entropy",
+     "value": "The authors list as an open question estimating the quantum relative entropy and its Renyi generalizations, such as the sandwiched and Petz-Renyi relative entropies, with quantum neural estimators.",
+     "anchor": "Section 6, p.28",
+     "quotes": [
+      "Also relevant is the question of estimating the quantum relative entropy and its Rényi generalizations such as the sandwiched and Petz–Rényi relative entropies using quantum neural estimators."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Open problem stated in Section 6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-alternative-estimator-omitted",
+     "value": "The authors state that a QNE built on the alternative variational forms could be analyzed similarly, with guarantees differing only in constants depending on b and α, and omit it.",
+     "anchor": "Section 2.3, p.8",
+     "quotes": [
+      "An analysis of this estimator could be performed similarly to that of (13), with the resulting performance guarantees differing only in terms of constants that depend on b and α. Hence, we omit it."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope statement, Section 2.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qne-conclusion-summary",
+     "value": "The authors conclude that they obtained upper bounds on the expected absolute error and exponential deviation inequalities under regularity conditions on the states, the neural class and the PQC, and specialized them to shallow and deep neural nets.",
+     "anchor": "Section 6, p.28",
+     "quotes": [
+      "We obtained upper bounds on its expected absolute error and showed exponential deviation inequalities under regularity conditions on the underlying states, the neural class, and the parametrized quantum circuit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Concluding summary; the results are entered separately with their statements.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "srikumar-2023-kernel-based-quantum-random-forest",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Srikumar-Hill-Hollenberg_2022_A-kernel-based-quantum-random-forest-for-improved-classification__2210.02355.pdf",
+   "title_in_file": "A kernel-based quantum random forest for improved classification",
+   "version_note": "arXiv:2210.02355v2, dated February 21, 2023.",
+   "pages": 33,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A proposal and simulation study of a quantum random forest whose decision-tree split nodes are SVMs with Nystrom-approximated quantum kernels, with generalisation and finite-sampling error bounds and a DLP-based concept class argued to be unlearnable by single-hyperplane quantum kernels.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qrf-beats-qsvm",
+     "verdict": "narrowed",
+     "note": "Section IV and Fig. 3 show the QRF outperforms the QSVM in all cases where the dataset was relabelled (labels constructed to favour the quantum kernel or the QRF); on the original labels the classical learners mostly do better. All results are simulations with shot noise.",
+     "value": "The authors report, from simulations with shot noise, that the quantum random forest outperforms the QSVM in all cases where the dataset has been relabelled (and then also the classical learners), while on the original class labels the classical learners in most cases perform better; they summarize this as the QRF outperforming QSVMs in most cases with identical embeddings while requiring fewer kernel estimations.",
+     "anchor": "Section IV and Fig. 3, p.7; Section V, p.7; Abstract",
+     "quotes": [
+      "We see that the QRF is able to out-perform the QSVM in all cases where the dataset has been relabelled.",
+      "In these cases the QRF also out-performs the other classical learners.",
+      "In most cases the classical learners have a greater performance",
+      "In this Section we provide numerical results (with all results simulated with shot noise)",
+      "numerically with the QRF that is observed to outperform QSVMs in most cases with identical embeddings.",
+      "QRF is able obtain superior performance over QSVMs, while also requiring fewer kernel estimations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study on relabelled data.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The advantage is shown on labels engineered for the quantum kernel or QRF, not on the datasets' own labels."
+    },
+    {
+     "id": "qrf-lower-sampling-complexity",
+     "verdict": "narrowed",
+     "note": "The body gives the argument: Lemma 3 shows M of order N cubed times L shots suffice versus N to the fourth without Nystrom, under the assumption that certain matrix norms do not grow with N and L, with log terms hidden, and without accounting for vanishing kernel elements; the authors also caution that a smaller matrix error does not necessarily give better model performance.",
+     "value": "The authors show (Lemma 3) that with the Nystrom approximation M ∼ O(N 3L) shots suffice to suppress finite-sampling error in the SVM output, against M ∼ O(N 4) without it, assuming the relevant matrix norms do not depend on the system dimension and not accounting for vanishing kernel elements; they also note the split function only uses the sign, so fewer samples are needed in practice.",
+     "anchor": "Section III, Lemma 3, p.5; Appendix B 5 b-c, pp.27-28; Section V, p.8",
+     "quotes": [
+      "doing so, we show that we can achieve lower sampling complexity when compared to QKE.",
+      "Lemma 3 indicates that M ∼ O(N 3L) will suffice to suppress errors from sampling.",
+      "This is in comparison to M ∼ O(N 4) for without the Nystr",
+      "Eq. (B37) assumes that the matrix norms cB, cW −1 , cW −1 do not depend on the system dimension",
+      "However, this does not account for the potentially vanishing kernel elements that we discuss further in B 8.",
+      "However, one should note that the split function takes the sign of the function and therefore such a large number of samples are not required in practice."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derived bound with hidden log terms under stated assumptions on matrix norms; the statement of Lemma 3 is split by the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qrf-original-labels-classical-better",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section IV, discussion of Fig. 3, p.7",
+     "quotes": [
+      "In most cases the classical learners have a greater performance",
+      "it is for this reason we do not attempt to solve the predicament of obtaining useful embeddings, instead emphasising providing proof of concepts through relabeling datasets."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qrf-model-definition",
+     "value": "The paper defines the quantum random forest as an ensemble of quantum decision trees whose split nodes are QSVMs with kernels from quantum kernel estimation, using a low-rank Nystrom approximation of the kernel matrix to limit overfitting; the authors state the model cannot be expressed through a kernel machine because of its discontinuous tree structure.",
+     "anchor": "Abstract; Section I, p.1; Section II, pp.2-4",
+     "quotes": [
+      "In this work we extend the linear quantum support vector machine (QSVM) with kernel function computed through quantum kernel estimation (QKE), to form a decision tree classifier constructed from a decision directed acyclic graph of QSVM nodes",
+      "we further extend the model to employ a low-rank Nystr",
+      "In this work, we propose a quantum random forest (QRF) that fundamentally cannot be expressed through a kernel machine due to its discontinuous decision tree structure."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The model is defined in Section II.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-lemma1-generalisation-margins",
+     "value": "The paper states (a lemma adapted from a perceptron decision tree bound) that a QDT with J split nodes that correctly classifies m instances has, with high probability, a generalisation error bounded in terms of the model complexity at each node rather than the feature-space dimension; the bound depends on the dataset and gives no a priori guarantee of large margins.",
+     "anchor": "Lemma 1, Section III, pp.4-5; proof Appendix B 5 a, pp.23-24",
+     "quotes": [
+      "Let HJ be the hypothesis set of all QDTs composed of J split nodes.",
+      "Given that m instances are correctly classified, with high probability we can bound the generalisation error,",
+      "Crucially, the generalisation bound is not dependent on the dimension of the feature space but rather the margins produced.",
+      "However, the disadvantage is that the bound is a function of the dataset and there are no a priori guarantees that the problem exhibits large margins."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The bound's formula is split by the text layer, and the proof replaces the SVM objective with a kernel ridge regression (MSE) assumption.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-lemma1-proof-mse-assumption",
+     "value": "The authors state that the generalisation lemma's proof assumes minimising a mean-squared-error objective, giving a kernel ridge regression formulation, instead of the SVM's own optimisation, because the dual parameters have no closed form.",
+     "anchor": "Appendix B 5 a, p.24",
+     "quotes": [
+      "we make the assumption of minimising over the following mean-squared-error (MSE) which gives a kernel ridge regression formulation,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The proof's assumption is stated in Appendix B 5 a.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-lemma2-nystrom-sampling-error",
+     "value": "The paper states that when each kernel element is estimated with M Bernoulli trials, the spectral-norm error of the Nystrom-completed N × N matrix is bounded with high probability by a sum of a finite-sampling term and a Nystrom-approximation term, with log terms hidden; to bound it the authors require M ∼ N L, which does not account for vanishing kernel elements.",
+     "anchor": "Lemma 2, Section III, p.5; proof Appendix B 5 b, pp.25-27",
+     "quotes": [
+      "Estimating each matrix element with M Bernoulli trials",
+      "where O hides the log terms.",
+      "We find that to ensure this error is bounded we require M ∼ N L.",
+      "However, this does not account for the potentially vanishing kernel elements that we discuss further in B 8."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The bound's formula is split by the text layer and assumes matrix norms independent of N and L.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-landmark-tradeoff",
+     "value": "The authors state that increasing the number of landmark points L improves the Nystrom approximation but raises the number of estimated elements and so the finite-sampling error, and report simulation behaviour matching this.",
+     "anchor": "Section III, p.5; Section IV, p.6",
+     "quotes": [
+      "Increasing the number of landmark points L reduces the number of elements estimated and hence the error introduced by finite sampling noise.",
+      "Hence, results exhibit behaviour that were identified theoretically in Lemma 2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derived trade-off and one study's simulations.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The first quoted sentence as printed appears to say the opposite of what is meant (fewer L means fewer estimated elements); the surrounding text makes the intended trade-off clear."
+    },
+    {
+     "id_suggestion": "qrf-kernel-estimation-count",
+     "value": "The authors state that the QRF no longer requires estimating O(N 2) kernel elements as QSVMs do, though datasets may require L = O(N ), and that the number of estimations never exceeds N 2 because estimates are stored across trees; the sampling complexity of the QRF is always smaller than that of QKE.",
+     "anchor": "Section III, p.5; Appendix B 4, pp.22-23",
+     "quotes": [
+      "The main result here is that we are no longer required to estimate O(N 2) elements, as is the case for QSVMs.",
+      "it should be noted that datasets may require L = O(N ).",
+      "Nonetheless, the number of estimations will never be greater than N 2, on the basis that kernel estimations are stored in memory across trees.",
+      "Finally, since there are at most N 2 inner products between the N instances, the sampling complexity of the QRF is always smaller than that of QKE with O(N 2)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A complexity count argued in Appendix B 4; the support-vector approximation relies on an observation from cited work.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-training-sampling-complexity",
+     "value": "The authors give an upper bound on the QRF training sampling complexity of O T L(d − 1)N −2 (with ε the kernel-estimate error), against O(N 2 −2) for training regular QKE; they approximate the number of support vectors by N, citing an observation that most training points persisted as support vectors.",
+     "anchor": "Appendix B 4, p.23",
+     "quotes": [
+      "we can give an upper bound sampling training complexity of O T L(d − 1)N −2",
+      "Comparatively, the regular QKE algorithm requires sampling complexity of O(N 2 −2) and O(S −2) for training and testing respectively",
+      "In [13], it was found that a majority of the training points in SVMs with quantum kernels, persisted as support vectors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A complexity count; the epsilon symbols are lost in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-matrix-error-not-performance",
+     "value": "The authors caution that a smaller kernel-matrix error or model-output error does not necessarily give greater model performance.",
+     "anchor": "Section III, p.5",
+     "quotes": [
+      "A caveat to also consider is that it is not necessarily true that a smaller"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited caveat (Bach).",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-dlp-concept-class",
+     "value": "The authors construct, by extending the DLP concept class of Liu et al. to two dimensions, concepts that split the log-space torus into four regions not separable by a single hyperplane, and argue the class is unlearnable by linear QNNs and quantum kernel machines and by classical learners (assuming DLP hardness), while a QDT hypothesis can emulate a concept; they claim only that it is unlearnable by QSVMs and potentially learnable by a QRF, not that the QRF algorithm finds the hypothesis.",
+     "anchor": "Section III, p.5; Appendix B 7, pp.31-32",
+     "quotes": [
+      "We construct concepts that separate the 2D log-space (torus) into four regions that can not be differentiated by a single hyperplane.",
+      "Hence, the class is unlearnable by linear QNNs and quantum kernel machines – even with an appropriate DLP quantum feature map.",
+      "Classical learners are also unable to learn such concepts due to the assumed hardness of the DLP problem.",
+      "Finally, it important to note that we are only claiming that the concept class CQRF is unlearnable by QSVMs and potentially learnable by a QRF.",
+      "However, this does not say anything about the ability of the QRF algorithm to obtain hc with a particular training set sampled from c."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argued construction resting on assumed DLP hardness and cited results; no formal theorem is stated.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The DLP feature map needs a fault-tolerant quantum computer (Shor's algorithm), per Appendix B 7."
+    },
+    {
+     "id_suggestion": "qrf-numerical-setup",
+     "value": "The authors report that the hyperparameter studies use the Fashion MNIST dataset with a 3 : 2 training/testing split over 300 randomly sampled instances, an IQP-style embedding over 7 qubits unless stated otherwise, simulated with shot noise, with points averaged over repeated trials.",
+     "anchor": "Fig. 2 caption, p.6; Section IV, p.6; Appendix B 6, p.29",
+     "quotes": [
+      "All numerical results in this Figure use the DFM dataset with a 3 : 2 training/testing split over 300 randomly sampled instances over a quantum kernel with ΦIQP embedding",
+      "The embedding is over 7 qubits, unless otherwise stated.",
+      "In this Section we provide numerical results (with all results simulated with shot noise)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup, Fig. 2 caption.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-tree-marginal-benefit-relabelled",
+     "value": "The authors report that with large enough L the tree structure has marginal benefit, largely because instances were relabelled to be optimal for the quantum kernel.",
+     "anchor": "Fig. 2(e) caption, p.6",
+     "quotes": [
+      "indicates with large enough L, the tree structure has marginal benefit.",
+      "This is largely a consequence of relabelling instances to be optimal for the quantum kernel."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One study's simulation result.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-trees-and-depth-effects",
+     "value": "The authors report that increasing the number of trees has a significant impact on performance while partition size only modestly increases accuracy, and that greater depth compensates for the approximation error of fewer landmark points.",
+     "anchor": "Section IV, Figs. 2e-2f, pp.6-7",
+     "quotes": [
+      "Furthermore, increasing the number of trees in the forest is seen to have a significant impact on the learner’s performance, with the number of instances randomly sampled for each tree (partition size) only modestly increasing model accuracy.",
+      "Increasing the depth of the tree is seen to compensate the approximation error introduced by selecting a smaller subset of landmark"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One study's simulation result.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-multiclass-even-split",
+     "value": "The authors report that for multi-class problems the even-split partition strategy performs far better than one-against-all, reaching similar accuracy on the four-class problem as on the binary problem; the two strategies are identical when |C| ≤ 3, and these results are over a single tree.",
+     "anchor": "Section IV, Fig. 2g, p.7; Appendix B 3 and Fig. 6, pp.22-23",
+     "quotes": [
+      "The latter performs far better, with the QRF able to achieve similar accuracy on the four-class problem as with the binary problem.",
+      "The two strategies are identical when |C| ≤ 3 and the performance diverges as the size of the set of class increases.",
+      "with the ES partition strategy easily outperforming OAA. It should be stressed that these results are over a single tree – not an ensemble."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One study's simulation result.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-depth-conjecture-multiclass",
+     "value": "The authors conjecture that the required tree depth grows sub-linearly with the number of classes, d = O(poly(log |C|)).",
+     "anchor": "Section IV, p.7",
+     "quotes": [
+      "we conjecture a required sub-linear growth in depth, d = O(poly(log |C|))."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A stated conjecture without proof.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-fig3-hyperparameters",
+     "value": "The authors report that the main model comparison used QRF hyperparameters (T, M, L, d) = (5, 2048, 10, 4) for the first three datasets and T = 10 for Fashion MNIST, over four datasets, two embeddings and three labelling strategies, with σ the ratio of kernel estimations required by the QRF against the QSVM.",
+     "anchor": "Fig. 3 caption, p.7",
+     "quotes": [
+      "QRF models have the following hyperparameters, (T, M, L, d) = (5, 2048, 10, 4) for the first three datasets and we increase to T = 10 for the larger DFM dataset.",
+      "Hence, σ states the ratio between kernel estimations required by QRF against QSVM."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Experimental setup stated in the Fig. 3 caption.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-no-general-embedding-limit",
+     "value": "The authors state a limitation of quantum kernel methods: there exists no general embedding whose kernel produces a favourable higher-dimensional map for classical datasets, and constructions showing advantage lack evidence of benefit on real-world data.",
+     "anchor": "Section IV, p.7; Appendix B 8, p.32",
+     "quotes": [
+      "Hence we reach a limitation of quantum kernel methods: there exist no general Φ for which the kernel function produces a favourable higher dimensional map for classical datasets.",
+      "there is a lack of evidence that it provides any benefit when dealing with real-world data."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim, partly cited.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-vanishing-kernel-elements",
+     "value": "The authors state that kernel elements are exponentially suppressed with the number of qubits, so for kernel elements of order two to the minus n one needs M ∼ O(2n) shots to distinguish them from zero, and that generalisability seems unlikely given the exponential growth of the Hilbert space.",
+     "anchor": "Appendix B 8, p.32",
+     "quotes": [
+      "This results in kernel matrix elements being exponentially (with respect to the number of qubits) suppressed to zero.",
+      "This means that for k ∼ 2−n we are required to have M ∼ O(2n) to distinguish elements from zero.",
+      "Therefore, generalisability seems to be unlikely with the exponential growth of the Hilbert space with respect to the number of qubits."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argued limitation drawing on cited work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-noise-robustness-n4-impractical",
+     "value": "The authors state, citing Liu et al., that the noisy halfspace learning problem is robust to noise with M ∼ O(N 4) shots, which very quickly becomes impractical for even medium-size datasets.",
+     "anchor": "Appendix B 8, p.32",
+     "quotes": [
+      "It is shown that the noisy halfspace learning problem is robust to noise with M ∼ O(N 4).",
+      "However, this is an extremely large number of shots that very quickly becomes impractical for even medium-size datasets."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result with an author judgment.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-relabelling-quantum-kernel",
+     "value": "The authors describe relabelling datasets to maximise the classical-to-quantum model complexity ratio (following Huang et al.), with the radial basis function kernel as the classical kernel, assigning each label from the optimal eigenvector sign with probability 0.9 and at random otherwise; the QRF relabelling is built so a division in quantum feature space is hard for both classical learners and QSVMs.",
+     "anchor": "Appendix B 6 b-c, pp.29-31",
+     "quotes": [
+      "In this work, the radial basis function kernel is used as the classical kernel",
+      "selecting the label – for a given data point xi – as yi = sign(φi) with probability 0.9 and randomly assigning yi = ±1 otherwise.",
+      "Therefore we have a labelling scheme that is in general both hard for classical learners as well as QSVMs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own relabelling procedure, Appendix B 6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Both relabelling schemes build the advantage into the labels, which bounds what the Fig. 3 comparison can show."
+    },
+    {
+     "id_suggestion": "qrf-qrf-relabel-slight-advantage",
+     "value": "The authors state that in high dimension points become sparsely separated, resulting in only slight advantage of the QRF against other learners under the QRF relabelling.",
+     "anchor": "Fig. 7 caption, p.31",
+     "quotes": [
+      "Note, in high dimension points become sparsely separated, resulting in only slight advantage of the QRF against other learners."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An observation from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-pca-confound",
+     "value": "The authors state that the performance degradation with more qubits on Fashion MNIST should not be read as ineffectiveness of quantum kernels, since it misses the effect of the PCA pre-processing step, and that 300 points are sampled for training and testing for tractable computation.",
+     "anchor": "Appendix B 6 and B 6 a, p.29",
+     "quotes": [
+      "Though it may seem as though we can make a statement about the ineffectiveness of quantum kernels with increasing qubit numbers, this misses the effect of PCA in the pre-processing step.",
+      "To ensure the analysis has tractable computation, 300 points are sampled for each training and testing (unless otherwise stated)"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's stated caveat on its own experiments.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-c-sensitivity",
+     "value": "The authors report that the SVM penalty parameter C is sensitive to the embedding and the dataset dimension, so C must be optimised for each problem; they posit increasing C down the tree helps and leave demonstrating it to future work.",
+     "anchor": "Fig. 5 caption and Appendix B 2, p.22",
+     "quotes": [
+      "These numeric simulations indicate that the dimension of the dataset does also affect where optimal C occurs.",
+      "We posit that the increase of C down the tree allows for wider margins at the top of the tree",
+      "Demonstration of this is left for future work."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One study's simulations and a posited, untested idea.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-nystrom-classical-bounds-not-sharp",
+     "value": "The authors state that the cited Nystrom error bounds they use (Drineas and Mahoney) are clearly not sharp, and that they sample landmark columns at random, leaving other selection strategies to future work.",
+     "anchor": "Appendix A 4, p.19",
+     "quotes": [
+      "The bounds in Theorem 7 and Corollary 1 are clearly not sharp.",
+      "In this work we randomly sample columns and it is left for future work whether the exist any advantages to do otherwise with regards to the quantum case."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Stated limits in Appendix A 4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-ensemble-correlation-theorem",
+     "value": "The paper states (cited from Wolf's lecture notes) that the L2 risk of an averaged hypothesis equals the mean individual risk minus the variance across hypotheses, so highly correlated trees give little benefit from the ensemble.",
+     "anchor": "Theorem 8, Appendix B, p.20",
+     "quotes": [
+      "The theorem highlights the fact that highly correlated trees do not take advantage of the other trees in the forest"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited theorem; its formula is not quotable from the text layer.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-conclusion-probabilistic-multiclass",
+     "value": "The authors conclude that the QRF produces a probabilistic output over class labels, so multi-class problems need no structural change in the model.",
+     "anchor": "Section V, pp.7-8",
+     "quotes": [
+      "This further allows for multi-class problems to be addressed with no structural change in the model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Follows from the model definition (leaf nodes output a class distribution), Section II.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "stokes-2020-quantum-natural-gradient",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2019-09_Stokes_Quantum-Natural-Gradient.pdf",
+   "title_in_file": "Quantum Natural Gradient",
+   "version_note": "arXiv:1909.02108v3 (14 May 2020), marked as accepted in Quantum 2020-05-08.",
+   "pages": 15,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A paper that defines quantum natural gradient descent for variational circuits as steepest descent in the Fubini-Study metric (real part of the quantum geometric tensor), gives a circuit method for its block-diagonal approximation, and compares it with gradient descent, Adam and gradient-free optimizers in simulation.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qng-beats-gd-adam-sim",
+     "verdict": "narrowed",
+     "note": "Section 3 limits the result: one circuit (from McClean et al.) with a Z1Z2 target observable, simulated with 8192 samples per expectation value, compared in oracle complexity, and the Adam comparison is stated for 'this particular circuit'.",
+     "value": "The authors report, in simulations of one circuit (an initial Ry(π/4) layer followed by L layers of parametrized Pauli rotations and controlled-Z ladders, with target observable Z1Z2) for n = 7, 9, 11 qubits, L = 5 layers and 8192 samples per expectation value, that vanilla gradient descent fails to find the minimum while Quantum Natural Gradient finds it in a small number of iterations, and that in this particular circuit Adam finds the minimum but requires a larger number of iterations than Quantum Natural Gradient.",
+     "anchor": "Section 3 Numerical Experiments and Fig. 1, pp.6-7",
+     "quotes": [
+      "The results are shown in Fig. 1 for n = 7, 9, 11 qubits, L = 5 layers, and with the optimization performed using 8192 samples per expectation value.",
+      "which consists of an initial fixed layer of Ry(π/4) gates acting on n qubits, followed by L layers of parametrized Pauli rotations interwoven with 1D ladders of controlled-Z gates",
+      "target Hermitian observable chosen to be the same two-Pauli operator Z1Z2 acting on the first and second qubit which has a ground state energy of −1.",
+      "In all cases the vanilla gradient descent fails to find the minimum of the objective function, while the Quantum Natural Gradient descent finds the minimum in a small number of iterations, in both block-diagonal and strictly diagonal approximation.",
+      "In this particular circuit, Adam is capable of finding the minimum but requires a larger number of iterations than the Quantum Natural Gradient."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result on one circuit.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qng-evaluations-per-step",
+     "verdict": "widened",
+     "note": "The paper gives the breakdown: L quantum evaluations for the block-diagonal metric tensor (one per layer) plus 2d for the parameter-shift gradient; the linear system is then solved classically.",
+     "value": "The authors state that each optimization step of their Quantum Natural Gradient optimizer requires 2d + L quantum evaluations: L for the block-diagonal metric tensor (a single quantum evaluation per layer) and 2d for the analytic gradient via the parameter shift rule, with the parameter update found by classically solving a linear system.",
+     "anchor": "Section 3, pp.6-7",
+     "quotes": [
+      "This optimizer computes the block-diagonal metric tensor g(θ) at each optimization step (L quantum evaluations), as well as the analytic gradient of the objective function ∇L(θ) via the parameter shift rule [25] (2d quantum evaluations)",
+      "As a result, each optimization step requires 2d + L quantum evaluations.",
+      "Thus, to evaluate the block-diagonal approximation of the Fubini-Study metric tensor on quantum hardware, a single quantum evaluation is performed for each layer in the parametrized quantum circuit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A cost count of the algorithm as the paper defines it, Section 3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qng-pure-states-only",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 4 Discussion, p.7",
+     "quotes": [
+      "Finally, this paper only considered the relevant geometry for idealized systems described by pure quantum states.",
+      "In near-term noisy devices it may be of interest to study the relevant geometry for density matrices."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qng-definition-fubini-study",
+     "value": "The paper defines quantum natural gradient descent as steepest descent with respect to the quantum information geometry, the real part of the Quantum Geometric Tensor, known as the Fubini-Study metric tensor, and presents an efficient algorithm for a block-diagonal approximation to it.",
+     "anchor": "Abstract, p.1; Section 2.1, p.3; Section 2.2, p.3",
+     "quotes": [
+      "The optimization dynamics is interpreted as moving in the steepest descent direction with respect to the Quantum Information Geometry, corresponding to the real part of the Quantum Geometric Tensor (QGT), also known as the Fubini-Study metric tensor.",
+      "An efficient algorithm is presented for computing a block-diagonal approximation to the Fubini-Study metric tensor for parametrized quantum circuits",
+      "where gij(θ) = Re[Gij(θ)] is the Fubini-Study metric tensor"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The method is defined in Sections 2.1-2.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qng-reparametrization-invariance",
+     "value": "The authors state that introducing a Riemannian metric tensor on the space of quantum states makes the descent direction invariant under reparametrizations by construction, and that the noise-free space of quantum states is a complex projective space with a unique unitarily-invariant metric, the Fubini-Study metric.",
+     "anchor": "Section 1 contributions, p.2",
+     "quotes": [
+      "We point out that the demand of invariance with respect to arbitrary reparametrizations can be naturally fulfilled by introducing a Riemannian metric tensor on the space of quantum states",
+      "In fact, in the absence of noise, the space of quantum states is a complex projective space, which possesses a unique unitarily-invariant metric tensor called the Fubini-Study metric tensor."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Standard geometric facts stated, not proved, in the paper.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qng-reduces-to-classical-natural-gradient",
+     "value": "The paper shows that for states of the form of amplitude-encoded probability distributions the Berry connection vanishes and the quantum geometric tensor equals one quarter of the classical Fisher information matrix, so the method is a quantum analogue of the classical natural gradient that reduces to it in that limit; not all quantum states are of this form because of complex phases.",
+     "anchor": "Section 2.1, p.3; Appendix A.4, pp.10-11",
+     "quotes": [
+      "We show that the resulting gradient descent algorithm is a direct quantum analogue of the Natural Gradient in the statistics literature, and reduces to it in a certain limit.",
+      "we have Gij(θ) = 1 4 Iij (θ).",
+      "Thus the Berry connection for this family of states vanishes",
+      "tum states are of this form due to the possibility of complex phases."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix A.4.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qng-imaginary-time-limit",
+     "value": "The authors show that in the continuous-time limit of vanishing step size the quantum natural gradient dynamics is equivalent to imaginary-time evolution within the variational subspace, and state that, unlike the classical case, there is no direct relationship between the quantum Fisher information and the curvature of the objective.",
+     "anchor": "Section 2.2, p.3; Section 2.3, p.4; Appendix A.2, p.9",
+     "quotes": [
+      "In the continuous-time limit corresponding to vanishing step size η → 0, the dynamics (10) is equivalent to imaginary-time evolution within the variational subspace according to the Hamiltonian H",
+      "In the quantum optimization problem however, there is no direct relationship between the quantum Fisher Information and the curvature of the objective, and the quantum natural gradient is more naturally interpreted as constrained imaginary-time evolution."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix A.2 (to the stated Taylor order).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qng-fisher-hessian-approximation-bound",
+     "value": "The paper derives that in the classical setting the difference between the loss Hessian and the Fisher information matrix is controlled by the loss deficit and the curvature of the likelihood function.",
+     "anchor": "Appendix A.3, pp.9-10",
+     "quotes": [
+      "Thus the error in approximation is controlled by the loss deficit L(θ) − S(p) ≥ 0 and the curvature of the likelihood function."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix A.3 via Holder's and Pinsker's inequalities.",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qng-linear-system-not-pseudoinverse",
+     "value": "The authors state that in practice they avoid forming the pseudo-inverse of the metric tensor and solve the linear system directly, which is more efficient and more numerically stable.",
+     "anchor": "Section 2.2, p.3",
+     "quotes": [
+      "In practice, however, we avoid materializing the pseudo-inverse by directly solving the linear system (12) which is both more efficient and more numerically stable."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An implementation claim without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qng-block-diagonal-from-subcircuits",
+     "value": "The paper shows that, for layered circuits whose parametric gates within a layer commute, each block of the Fubini-Study metric tensor is given by expectation values of Hermitian observables on states prepared by subcircuits of the full circuit, so it is experimentally realizable.",
+     "anchor": "Sections 2.4-2.5, pp.4-5",
+     "quotes": [
+      "In particular, all parametric gates within a given layer are assumed to commute.",
+      "The lth block of the Fubini-Study metric tensor can be evaluated in terms of quantum expectation values of Hermitian observables.",
+      "The states ψl defining the quantum expectation values are prepared by subcircuits of the full quantum circuit and are thus experimentally realizable."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 2.5 under the stated layer assumption.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qng-pauli-single-measurement",
+     "value": "The authors show that for layers of single-qubit Pauli rotations the required observables all commute, reducing the number of state preparations for a block from n(n + 1)/2 to a single measurement.",
+     "anchor": "Section 2.6, pp.5-6",
+     "quotes": [
+      "the number of state preparations is reduced from the naive counting |Sl| = n(n + 1)/2 to just a single measurement."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows from the Pauli algebra shown in Section 2.6.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qng-oracle-complexity-caveat",
+     "value": "The authors state that their main experiments compare oracle complexity assuming access to gradient and Fubini-Study tensor information, a model they call unrealistic because it ignores per-iteration query cost, and that supplementary experiments show the advantage persists in wall time and number of quantum evaluations.",
+     "anchor": "Section 3, p.6",
+     "quotes": [
+      "we present in this section numerical experiments comparing the analytical complexity of QNG, assuming oracle access to local data including gradient and Fubini-Study tensor information.",
+      "Although the oracle model of complexity is unrealistic because it ignores the added per-iteration complexity of querying the oracle",
+      "which demonstrate that the advantage persists when optimizers are compared in terms of both wall time and number of required quantum evaluations."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit of its comparison, Section 3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qng-advantage-qubits-depth",
+     "value": "The authors report that the improvement from Quantum Natural Gradient appears more significant with increasing qubit number and is retained with circuit depth from 3 to 6 layers at n = 9 qubits; the block-diagonal approximation was not run at n = 11 because of classical overhead in computing the shared eigenbasis.",
+     "anchor": "Section 3, Figs. 1-2, pp.6-7",
+     "quotes": [
+      "Furthermore, the improvement afforded by the Quantum Natural Gradient optimizer appears more significant with increasing qubit number.",
+      "highlighting that the Quantum Natural Gradient optimizer retains its advantage with increasing circuit depth.",
+      "Note that for n = 11, we do not include the block-diagonal approximation, due to the increased classical overhead associated with numerically computing the shared eigenbasis for each parametrized layer.",
+      "The cost function value for n = 9 qubits and l = 3, 4, 5, 6 layers as a function of training iteration"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One study's simulations on one circuit.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qng-supplementary-wall-time-gradient-free",
+     "value": "The authors report in supplementary experiments that QNG continues to outperform vanilla gradient descent and Adam; the diagonal approximation gives results comparable to the block-diagonal one with much lower wall time; the gradient-free COBYLA and Nelder-Mead failed to find the local minimum within the same number of iterations but used significantly fewer quantum evaluations; and Adam using the natural gradient converged in fewer iterations than standard Adam.",
+     "anchor": "Appendix A.5, Figs. 3-4, pp.11-13",
+     "quotes": [
+      "The Quantum Natural Gradient continues to outperform both vanilla gradient descent and Adam optimization.",
+      "however the diagonal approximation results in significantly reduced overall wall time—comparable to vanilla gradient descent—due to the decrease in classical processing overhead.",
+      "within the same number of iterations, both gradient-free techniques failed to find the local minimum. However, COBYLA and NelderMead required significantly fewer number of quantum evaluations over these iterations.",
+      "with the modified Adam optimizer converging to the local minimum in fewer iterations than the standard Adam optimizer."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One study's simulations.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qng-supplementary-shots-setup",
+     "value": "The authors report that the shot-count study used n = 9 qubits and 6 layers with analytic expectation values, 1024 shots and 8192 shots per expectation value, and a learning rate of 0.01 where applicable.",
+     "anchor": "Fig. 4 caption, p.13",
+     "quotes": [
+      "The optimization is performed using analytic expectation values (left), 1024 shots (samples) per expectation value (center), and 8192 shots per expectation value (right). The learning rate is 0.01 where applicable.",
+      "The cost function value for n = 9 qubits, l = 6 layers as a function of training iteration"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Experimental setup stated in the Fig. 4 caption.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qng-complementary-to-adam-future-work",
+     "value": "The authors state that, unlike Adam, the QNG preconditioner does not depend on the choice of loss function but reflects local state-space geometry, expect the benefits to be complementary to methods such as Adam, and leave a detailed ablative study combining them to future work.",
+     "anchor": "Section 4 Discussion, p.7",
+     "quotes": [
+      "the preconditioning matrix suggested by quantum information geometry does not depend on the specific choice of loss function (Hermitian observable).",
+      "It is therefore of interest to perform a detailed ablative study combining these methods, which we leave to future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "An open problem stated in Section 4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qng-bures-metric-candidate",
+     "value": "The authors name the Bures metric as the most promising candidate geometry for density matrices on noisy devices, since it is the only monotone metric that reduces to the Fubini-Study metric for pure states and to the Fisher information matrix for classical mixtures.",
+     "anchor": "Section 4 Discussion, p.7",
+     "quotes": [
+      "The most promising candidate is the Bures metric",
+      "it is the only monotone metric which reduces to both the Fubini-Study metric for pure states and the Fisher information matrix for classical mixtures [28]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited fact (Petz) and an author judgment.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qng-equivalent-to-yuan-pure-states",
+     "value": "The authors state that the variational density-matrix evolution of Yuan et al., restricted to pure state projectors, gives an algorithm equivalent to theirs, and that earlier variational imaginary-time work used the unit sphere geometry rather than complex projective space.",
+     "anchor": "Section 2.3, p.4",
+     "quotes": [
+      "By restricting their proposal to pure state projectors (elements of CPN−1) they find an algorithm equivalent to ours."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement about cited work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qng-l1-geometry-prior-work",
+     "value": "The authors cite Harrow and Napp as showing that, under strong convexity, the l2 geometry is sub-optimal in some situations compared to the l1 geometry, and position QNG as a parametrization-independent alternative.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "it was shown that under the assumption of strong convexity, the l2 geometry is sub-optimal in some situations compared to the l1 geometry [13]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "strobl-2025-fourier-fingerprints-ansatzes-quantum-machine",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Strobl-et-al._2025_Fourier-Fingerprints-of-Ansatzes-in-Quantum-Machine-Learning__2508.20868.pdf",
+   "title_in_file": "Fourier Fingerprints of Ansatzes in Quantum Machine Learning",
+   "version_note": "arXiv:2508.20868v1, 28 Aug 2025.",
+   "pages": 21,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A numerical study arguing that efficiently-trainable quantum Fourier models must have correlated Fourier coefficients, defining a Fourier coefficient correlation (FCC) metric and 'Fourier fingerprint' per ansatz, and testing whether the FCC predicts ansatz performance on random Fourier series and a high-energy-physics jet dataset in simulation.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "fcc-correlation-imbalance",
+     "verdict": "widened",
+     "note": "Section 2.1 gives the reasoning: the number of Fourier terms grows exponentially while efficient training needs polynomially many parameters (training time is linear in the parameter count), so asymptotically there is no injective map from parameters to coefficients and coefficients must share parameters.",
+     "value": "The authors argue that typical encodings give quantum Fourier models with O(exp(n)) Fourier basis functions while efficient trainability needs O(poly(n)) parameters, since training time is linear in the parameter count; so in the asymptotic limit there is no injective map between Fourier coefficients and parameters, the coefficients must depend on shared parameters, and this implies correlations between Fourier modes that depend on the circuit structure.",
+     "anchor": "Abstract, p.1; Section 2.1, p.3",
+     "quotes": [
+      "Typical schemes to encode classical data in variational quantum machine learning (QML) lead to quantum Fourier models with O(exp(n)) Fourier basis functions in the number of qubits.",
+      "Despite this, in order for the model to be efficiently trainable, the number of parameters must scale as O(poly(n)).",
+      "This imbalance implies the existence of correlations between the Fourier modes, which depend on the structure of the circuit.",
+      "since the time complexity of training is linear in |θ|.",
+      "it is immediately apparent that in the asymptotic limit there is no injective map between the set of Fourier coefficients cω and θ.",
+      "Therefore, the coefficients cω(θ) must depend on a shared set of ansatz parameters, which implies the existence of correlations between the coefficients of different terms in the Fourier series."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An informal counting argument; the paper's appendix proposition is stated without a full proof, and the authors note the guarantee is only asymptotic for feature maps with exponentially many unique frequencies.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "A non-injective map shows coefficients cannot all be set independently; that this appears as nonzero Pearson correlation over random parameters is shown numerically, not proved."
+    },
+    {
+     "id": "fcc-limits",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 4 Conclusion and discussion, p.9",
+     "quotes": [
+      "we note that correlations between the Fourier coefficients of efficientlytrainable QFMs are only asymptotically guaranteed for feature maps that produce exponentially many unique frequencies.",
+      "Finally, in this work, we studied only one instance of a real-world dataset."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limits, Section 4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "fcc-predicts-ansatz-performance",
+     "verdict": "narrowed",
+     "note": "Section 3.1 shows the 1D relation is almost linear, but in 2D Circuit 15 is an outlier (it lacks imaginary coefficients under the RX feature map), and the target series' frequencies were set equal to the model's own frequencies. The conclusion's 'consistently' is stronger than the 2D figure.",
+     "value": "The authors report, in simulations with 100 runs per ansatz, that for learning random Fourier series whose frequencies were set to match the models' own frequencies, the FCC correlates almost linearly with the MSE in 1D and that models with lower average FCC perform better in 1D and 2D, except that in 2D Circuit 15 is an outlier; the expressibility metric fails to predict the order of the MSE.",
+     "anchor": "Section 3.1, Fig. 3, pp.5-6; Section 4, p.9",
+     "quotes": [
+      "The frequencies of the dataset Ωˆ are explicitly set to the same frequencies as those generated by the FM of the QFM models Ω.",
+      "Specifically, we use 10 different model initialization and 10 different dataset seeds, yielding a total of 100 runs per ansatz.",
+      "we observe that, overall, the FCC correlates almost linearly with the MSE, with the lowest and highest values of the FCC being 4.57 × 10−3 (Circuit 15 ) and 0.323 (Circuit 18 ), respectively.",
+      "Here, one can see that Circuit 15 is now an outlier in the otherwise almost linear relationship between MSE and FCC.",
+      "In Sec. 3.1, we showed how, for the task of learning random Fourier series, models with lower average FCC consistently perform better for both 1D and 2D inputs.",
+      "The expressibility, in contrast, does not allow for a conclusive statement and fails to correctly predict the order of the final MSE for every ansatz."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study over eight ansatzes.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "fcc-term-count-exponential",
+     "value": "The authors state that, whatever the degeneracy of the feature-map spectrum, the absolute number of terms in the model's Fourier series always grows as |Ω˜ | ∼ O(2nD), and that in practice QFMs cannot independently control each frequency.",
+     "anchor": "Section 2.1, p.3; Fig. 1 caption, p.2",
+     "quotes": [
+      "the absolute number of terms in the Fourier series always grows as |Ω˜ | ∼ O(2nD).",
+      "Practically, this implies that QFMs cannot independently control each frequency."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A counting statement in the paper's setup; the 'cannot control' consequence is argued, not proved.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcc-contrast-classical-fourier",
+     "value": "The authors state that this constraint contrasts with classical Fourier regression, where modes are tuned independently.",
+     "anchor": "Section 2.1, p.4",
+     "quotes": [
+      "Furthermore, this is in contrast to classical approaches to Fourier regression, where modes are tuned independently [3, 11]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A comparison with cited work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcc-definition-and-method",
+     "value": "The paper defines the Fourier coefficient correlation as the average absolute Pearson correlation between Fourier coefficients over randomly sampled ansatz parameters, computed by FFT of the model output on Nyquist-sampled inputs, using 500 · |θ| · 2n · D samples; the fingerprints were computed for an n = 6, L = 1 model.",
+     "anchor": "Section 2.2, Eqs. (4)-(5), pp.4-5",
+     "quotes": [
+      "We compute this correlation specifically for an n = 6, L = 1 QFM with the 1D feature map",
+      "In this work, we use 500 · |θ| · 2n · D samples to compute the correlations to high accuracy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The metric and method are defined in Section 2.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcc-fingerprints-differ-by-ansatz",
+     "value": "The authors report that the distribution of coefficient correlations differs significantly between ansatzes: the hardware-efficient ansatz has significantly larger correlations between high-frequency indices, whereas Circuit 15 has minimal correlation across all coefficients.",
+     "anchor": "Section 2.2, Fig. 2a, p.4",
+     "quotes": [
+      "It can be observed, that e.g. the hardware-efficient ansatz (HEA) results in a QFM with significantly larger correlations between high-frequency indices whereas Circuit 15 has a minimal correlation across all coefficients."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical observation from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcc-expressibility-misranks",
+     "value": "The authors report that in both the one- and two-dimensional Fourier series experiments the widely-used expressibility metric incorrectly identifies which ansatzes would perform best.",
+     "anchor": "Section 3.1, p.6",
+     "quotes": [
+      "Importantly, in both sets of experiments, the widely-used expressibility metric incorrectly identifies which ansatzes would perform the best."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcc-circuit15-rx-no-imaginary",
+     "value": "The authors explain the two-dimensional outlier by Circuit 15 lacking the imaginary part of its coefficients under a Pauli-RX feature map; only Circuit 15 and Circuit 19 had coefficient variance above 10−10 at all evaluated frequencies.",
+     "anchor": "Section 3.1, p.6; Appendix C, p.13",
+     "quotes": [
+      "This outlier can be explained by the fact that Circuit 15 lacks the imaginary part of the coefficients when being joint by a Pauli-RX feature map",
+      "Here, specifically, we find that only Circuit 15 and Circuit 19 are exhibiting Var(|cω|) > 10−10 for all frequencies evaluated."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical observations from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcc-cheaper-than-expressibility",
+     "value": "The authors state that the FCC is cheaper to compute than expressibility: expressibility costs O(M N 3) via density matrices and can only be computed in simulation (needing full-state tomography on hardware), while the FCC needs only expectation values in a single measurement basis plus an FFT, and is easier to compute in the limit of n.",
+     "anchor": "Section 3.1, p.6; Appendix H, pp.17-18",
+     "quotes": [
+      "Here we find that computing the FCC incurs a lower overhead both on classical and quantum hardware, making it a more scalable metric for comparing ansatzes.",
+      "Therefore, the overall complexity is at O(M N 3) (matrix-matrix multiplication)",
+      "Furthermore, the expressibility can only be calculated in simulation, as access to the density matrix is naturally not available on real hardware.",
+      "In contrast, the expressibility requires full-state tomography which is exponentially costly in the number of qubits, whereas the FCC requires only a single measurement basis.",
+      "To summarize, a comparison with the expressibility complexity O(M 23n) shows that in the limit of n, the FCC with O(M N 2(max(Ω))D log(max(Ω))) is easier to compute"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A complexity argument in Appendix H without a formal proof; the FCC's own sample requirement (Appendix J) grows exponentially if high-frequency accuracy is required.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcc-sampling-requirements",
+     "value": "The authors state that the number of samples needed to measure the correlation to a fixed error does not need to grow exponentially with n (by a Hoeffding argument), but that the FCC error implies an exponential requirement on the number of parameter samples M if high frequency accuracy is required.",
+     "anchor": "Section 2.2, p.4; Appendix J, pp.20-21",
+     "quotes": [
+      "However, we stress that to measure the correlation to a fixed error, the number of samples does not need to grow exponentially with n as shown in App. J.",
+      "To show that M does not have to scale exponentially with n, we consider an average expectation value",
+      "This result implies an exponential requirement on M already, if high frequency accuracy is required."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Rough estimates in Appendix J; the Hoeffding step bounds the average output, not the correlation estimate directly.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The two quoted statements pull in opposite directions; the 'no exponential growth' claim rests on bounding the averaged model output."
+    },
+    {
+     "id_suggestion": "fcc-variance-decay-handled",
+     "value": "The authors state that for their feature maps the coefficient variance decays exponentially towards higher frequencies, and show with a Gaussian sanity check that this does not produce spurious correlations in the normalized FCC; the coefficient means were observed to be zero.",
+     "anchor": "Section 2.2, p.4; Appendix C, pp.12-13",
+     "quotes": [
+      "For the feature maps (FMs) studied in this work, this means that the variance of the coefficients decays exponentially towards higher frequencies.",
+      "which are shown in Fig. 8 and can be seen to be all-zero, as expected.",
+      "Notably, we observe that the mean value of the coefficients remains zero"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical checks from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcc-weighted-variant",
+     "value": "The authors report that a frequency-weighted FCC with RX encoding made the FCC-MSE relation more linear in general, while identical experiments with RY encoding showed a less prominent effect and were omitted.",
+     "anchor": "Appendix D, Fig. 10, pp.13-14",
+     "quotes": [
+      "such that the relation to the mean squared error (MSE) becomes more linear in general.",
+      "Identical experiments with Pauli-RY encoding showed a less prominent effect and are therefore omitted in this section."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One study's simulation result.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcc-appendix-proposition-shared-basis",
+     "value": "The paper states a proposition (building on cited exact-coefficient formulas) that, with parameters fixed across frequencies, coefficients of different frequencies can be correlated even with disjoint supports because they depend on shared trigonometric basis functions of the parameters, and that an ansatz with no correlation would need an exponential number of parameters, making it untrainable in practice.",
+     "anchor": "Appendix E, pp.14-15",
+     "quotes": [
+      "Then, even if p(s, c, ω) and p (s, c, ω′) have disjoint supports, the functions cω(θ) and cω′ (θ) can exhibit nonzero correlation due to their dependence on the shared basis functions",
+      "an ansatz with absolutely no correlation would be required to have an exponential number of parameters to account for the equally sized number of coefficients, rendering it untrainable in practice."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The proposition says correlations 'can' exist and is given without a proof in the text.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcc-loss-linear-derivation",
+     "value": "The authors derive, assuming the target frequencies equal the model's, zero-mean coefficients and a weighting by coefficient standard deviations, that the expected MSE loss of learning a Fourier series is linearly dependent on the weighted FCC; they note the frequency assumption does not hold in general.",
+     "anchor": "Appendix G, Eqs. (10)-(14), pp.15-17",
+     "quotes": [
+      "the loss of learning a QFM on a Fourier series with the same number of frequencies is linearly dependent on the (weighted) FCC, i.e. the correlation between the frequency components of the QFM.",
+      "It should be noted that we assume the frequencies in the target function are equal to those of the QFM, which is not the case in general but suffices for the study in this work.",
+      "in (2) we assume zero mean based on App. C"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A heuristic derivation in which the weighting is set 'forcefully' to make the FCC appear; the assumptions are stated.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcc-hep-mlp-baseline",
+     "value": "The authors report that a classical MLP with 2 hidden layers of 8 neurons (105 trainable parameters, more than the QFMs tested), trained on 200 000 events, reached a KL divergence of 0.163 ± 0.049 averaged over 10 models, or 0.035 ± 0.005 for the 10 best of 30, and that other engineering tactics did not improve it.",
+     "anchor": "Section 3.2, p.7",
+     "quotes": [
+      "We train a classical multi-layer perceptron (MLP) consisting of 2 hidden layers and 8 neurons per layer, resulting in 105 trainable parameters",
+      "While being small in size, the number of parameters of this classical model still exceeds those of the QFM tested in this work.",
+      "Training is performed on 200 000 events with a ratio of 80% for training, 10% for validation and 10% for testing.",
+      "On average, across 10 random models, the classical MLP obtained a KL divergence score of 0.163 ± 0.049.",
+      "However, selecting the 10 best-performing models from a pool of 30 improved the result significantly, yielding a KL divergence of 0.035 ± 0.005.",
+      "Despite trying multiple engineering tactics - including varying model architecture, model size, and learning strategies - performance did not improve."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One study's classical baseline.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcc-hep-qfm-vs-mlp",
+     "value": "The authors report that on the jet-reconstruction task (dataset reduced to 40 000 events) both models achieve a low mean deviation of 0.382 (MLP) and 0.050 (QFM), with the QFM's standard deviation of absolute differences 3.61 against 6.13 for the MLP, and conclude the problem is non-trivial for a standard MLP and the QFM is a competitive benchmark.",
+     "anchor": "Section 3.2, Fig. 5a, pp.7-8",
+     "quotes": [
+      "we reduce the dataset size to 40 000 with a ratio of 80% for training, 10% for validation and 10% for testing",
+      "Here, we observe that both models achieve a low mean deviation of 0.382 and 0.050 for the MLP and QFM, respectively.",
+      "However, the standard deviation of the absolute differences is lower for the QFM with a standard deviation of 3.61 compared to 6.13 for the MLP.",
+      "Overall, our results validate that the problem is non-trivial to solve with a standard MLP, and that our trained QFM produces a competitive benchmark."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One study's simulation on one synthetic dataset; the MLP was small and selected for simplicity.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The MLP and QFM used different losses and scalers, so the comparison is a benchmark, not a controlled test."
+    },
+    {
+     "id_suggestion": "fcc-hep-ansatz-prediction",
+     "value": "The authors report that on the jet task the lowest and highest FCC ansatzes (Circuit 15 and Circuit 18) had the lowest and highest MSE, but Circuit 17 and the hardware-efficient ansatz were outliers and the order was not perfectly predicted; expressibility predicted the same clusters; for the KL divergence both FCC and expressibility failed as predictors, while Huber loss results matched the MSE.",
+     "anchor": "Section 3.2, Fig. 5b, p.8; Appendix I, Fig. 11, p.19",
+     "quotes": [
+      "When observing the FCC, Circuit 17 and the “Hardware Efficient Ansatz” can be identified as outliers.",
+      "The ansatz with the lowest and highest FCC, Circuit 15 and Circuit 18, correlate to the lowest and highest MSE, respectively.",
+      "Although the order of MSEs is not perfectly predicted by the FCCs here, we observe a clear overall trend linking correlation and performance.",
+      "Compared to expressibility, both metrics successfully predict the same clusters of ansatzes while the FCC is computationally less expensive",
+      "For the KL-divergence, the FCC and expressibility both fail as predictors, although Circuit 15 and Circuit 18 still represent the best and worst performing circuits",
+      "In contrast, the results for the Huber loss are almost identical with the results for the MSE"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One study's simulation on one dataset.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "On the real-world task the FCC did not outperform expressibility as a predictor; its stated advantage there is cost."
+    },
+    {
+     "id_suggestion": "fcc-hep-frequency-mismatch",
+     "value": "The authors state that for the HEP task the assumption that dataset frequencies match the model's cannot be guaranteed, making the problem potentially harder to learn.",
+     "anchor": "Section 3.2, p.7",
+     "quotes": [
+      "our assumption that the frequencies of the dataset match those of the QFM can’t be guaranteed in this case, making this problem potentially harder for the model to learn."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Stated limit in Section 3.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcc-numerical-errors-low",
+     "value": "The authors report that the standard deviations of the mean expressibility, FCC and MSE across seeds are low and consistent for all ansatzes in the one-dimensional, two-dimensional and HEP experiments.",
+     "anchor": "Appendix F, Tables 1-3, p.15",
+     "quotes": [
+      "For all scenarios, we observe a low standard deviation consistent for all ansatzes and measurements."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One study's reported variability; values are in Tables 1-3.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcc-degenerate-maps-independent-coefficients-open",
+     "value": "The authors state that their feature maps give exponentially many basis functions but only a linear number of unique modes because of eigenspectrum degeneracy, so an ansatz with fully independent coefficients may be possible with a degenerate feature map; whether such an ansatz exists and is efficiently implementable is an open question.",
+     "anchor": "Section 4, p.9",
+     "quotes": [
+      "Whilst the feature maps used in this work produce QFMs with exponentially many basis functions, in contrast, there are only a linear number of unique modes due to degeneracy in the eigenspectrum.",
+      "This implies that it may be possible to design an ansatz that, in combination with a degenerate feature map, could have fully independent Fourier coefficients.",
+      "Understanding what such an ansatz would look like, and if it is efficiently implementable, remains an interesting open question."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Stated limit and open problem, Section 4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcc-trainability-open",
+     "value": "The authors state that, given that highly expressive ansatzes are very unlikely to be trainable (Ragone et al.), it cannot be ruled out that ansatzes with low FCC, that is highly independent coefficients, are generally not trainable.",
+     "anchor": "Section 4, p.9",
+     "quotes": [
+      "Ragone et al. [26] showed that ansatzes with high expressibility are very unlikely to be trainable",
+      "Therefore, it cannot be ruled out that a lower FCC, i.e. ansatzes with highly-independent coefficients, are generally not trainable."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Stated open problem, Section 4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcc-inductive-bias-caveat",
+     "value": "The authors state that the low-FCC heuristic assumes the dataset's frequencies are themselves independent; if not, the best model may purposely have large correlations tied to the data, so the FCC may be better thought of as an inductive bias than a metric to always minimize.",
+     "anchor": "Section 4, p.9",
+     "quotes": [
+      "In particular, this heuristic has the underlying assumption that the frequencies of the dataset are themselves independent.",
+      "the FCC may be better thought of as an inductive bias to encode into QFMs, instead of as a metric to always minimize."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Stated assumption and caveat, Section 4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "sun-2026-quantum-perceptron-learning-quantum-search",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Sun-et-al._2025_On-Quantum-Perceptron-Learning-via-Quantum-Search__2503.17308.pdf",
+   "title_in_file": "On Quantum Perceptron Learning via Quantum Search",
+   "version_note": "arXiv:2503.17308, revised version with Declarations and a Section 5.2 on practical limitations (cites Apers and Gribling 2026).",
+   "pages": 36,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper that corrects the sampling-probability claim behind the quantum version space perceptron of Kapoor et al. (worst-case bound exponential in dimension), and proposes two quantum-enhanced cutting-plane perceptron algorithms (hybrid HCP-RW and fully quantum QCP-QW) with query and arithmetic complexity analyses under idealised noise-free oracle models.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "cutting-plane-improved-bounds-idealised",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Abstract, p.1; footnote 3, p.3",
+     "quotes": [
+      "Our results establish improved complexity bounds under an idealised implementation framework and noise-free quantum computational models",
+      "as the complexities under idealised, noise-free quantum computational model, which should not be interpreted as real-device performances."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A summary of derived bounds; the bounds themselves are entered as separate assertions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "no-near-term-practical-speedup",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 5.2, p.24",
+     "quotes": [
+      "Taken together, these observations suggest that our results should be viewed as conceptual, asymptotic improvements, rather than immediately realisable practical speedups on either NISQ or fault-tolerant quantum platforms."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 5.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qvsp-dimension-dependent-correction",
+     "verdict": "narrowed",
+     "note": "The correction is a worst-case lower bound: Theorem 3 gives Pr[w in VS] = Omega(gamma^D) as gamma goes to zero for constant D, instead of the Theta(gamma) stated by Kapoor et al.; Section 3.3 and Remark 4 say this bound could be too loose and likely depends on the data-matrix rank for low-rank data.",
+     "value": "The authors show that, in the worst case, the probability that a hyperplane sampled from a standard normal distribution perfectly classifies the data scales as Ω(γD) (gamma to the power D) rather than Θ(γ) as stated by Kapoor et al., so the query complexity of the quantum version space perceptron is dimension-dependent; they state that this worst-case bound could be too loose for some datasets, especially low-rank ones, where the governing dimension is likely the rank.",
+     "anchor": "Abstract, p.1; Section 1.1, p.3; Section 3.1-3.3, pp.6-9; Remark 4, pp.9-10",
+     "quotes": [
+      "We show that the query complexity of the algorithm is dimensiondependent, which has significant implications for its behaviour in high-dimensional regimes under worst-case scenarios.",
+      "that perfectly classifies the data scales as Ω(γD) in the worst case, rather than Θ(γ), where γ is the geometric margin.",
+      "It is worth noting that the lower bound of Ω(γD) corresponds to a worst-case scenario, which could be too loose for certain datasets, where a small margin does not necessarily imply a small version space.",
+      "Therefore, the variable governing the small-margin behaviour of Pr[w ∈ VS] is r, rather than the ambient dimension D."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3 (Section 3.2) states and proves the worst-case bound with its conditions; Section 3.3 and Remark 4 state its scope.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "speedups-asymptotic-idealised-only",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 1.1, p.3",
+     "quotes": [
+      "the reported speedups should be viewed as characterising the asymptotic potential of quantum perceptron models under idealised setup",
+      "rather than guarantees of real-time performance",
+      "defer simulations, small-scale tests, and fault-tolerant schemes to future work"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope statement, Section 1.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "kapoor-qvsp-necessary-not-sufficient",
+     "value": "The authors state that Kapoor et al. treated the margin condition on a perturbed vector as equivalent to membership in the version space, but that it is only a necessary condition, so Kapoor et al.'s statement that the probability of version-space membership is Θ(γ) is not true.",
+     "anchor": "Section 3.1, p.6",
+     "quotes": [
+      "However, we point out that this is incorrect as the former is merely a necessary condition for the latter.",
+      "the statement of (Kapoor et al. 2016, Theorem 2) that Pr[w ∈ VS] = Pr[0 < lk < 2γ] = Θ(γ) is not true."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The flaw is argued from the definition of the version space in Section 3.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qvsp-correction-extends-to-later-works",
+     "value": "The authors state that the correction rests on a critical assumption of Kapoor et al. and extends to subsequent quantum perceptron works by Roget et al. and Liao et al.; they state the flawed assumption fails in feature-space dimensions above two.",
+     "anchor": "Section 1.1, p.2-3",
+     "quotes": [
+      "This correction is based on a critical assumption of Kapoor et al. (2016) and extends to subsequent works in the quantum perceptron literature (Roget et al. 2022; Liao et al. 2024).",
+      "which is theoretically flawed in higher feature space dimensions D > 2."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statement about other works; the extension is not proved separately for each.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qvsp-lemma-sufficient-angular-condition",
+     "value": "The paper proves (its first lemma) that a sufficient condition for a vector to lie in the version space is that its angular distance to the maximal margin separator is less than arcsin γ.",
+     "anchor": "Lemma 1, Section 3.2, p.6",
+     "quotes": [
+      "Lemma 1 The sufficient condition for w ∈ VS in RD is that the angular distance between the hyperplane w and the maximal margin separator u satisfies ∡(w, u) < arcsin γ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 1 is stated and proved in Section 3.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qvsp-theorem-worst-case-sampling-probability",
+     "value": "The paper proves (its third theorem) that for data separated by maximal geometric margin γ in D dimensions, the probability that a vector sampled from a standard normal distribution perfectly separates the data equals the ratio of the version-space volume to the unit-ball volume and is Ω(γD) as γ goes to zero when D is a constant of at least two.",
+     "anchor": "Theorem 3, Section 3.2, p.7; Appendix A, pp.25-26",
+     "quotes": [
+      "Theorem 3 Given a training dataset {(xi, yi)i∈[N]} separated by a maximal geometric margin of γ in RD, the probability of sampling a D-dimensional vector w ∼ N (0, 1) which perfectly separates the data",
+      "can be geometrically defined as the quotient of the volumes of version space and the D-dimensional unit ball B1, such that",
+      "Ω(γD), when γ → 0, D ≥ 2 is a constant;"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3 is stated with its conditions and proved in Section 3.2 and Appendix A.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The theorem also gives a second regime as D grows without bound; its formula is garbled in the text layer and is not entered here."
+    },
+    {
+     "id_suggestion": "qvsp-negative-result-high-dimension",
+     "value": "The authors state that this is a negative result suggesting the quantum version space perceptron algorithm can be ineffective on high-dimensional data with small margins.",
+     "anchor": "Section 3.2, p.8",
+     "quotes": [
+      "This is a negative result that suggests that the QVSP algorithm can be ineffective when applied to high-dimensional data with small margins."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's interpretation of a worst-case bound.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qvsp-margin-decay-simulation",
+     "value": "The authors report a simulation on an artificially designed hard dataset from Mohri et al. with exponentially small margin, which they state is a concrete counterexample to the earlier Θ(γ) claims and confirms the worst-case Ω(γD) lower bound.",
+     "anchor": "Section 3.3 and Fig. 1, p.8",
+     "quotes": [
+      "We present in Figure 1 a simulation result on an artificially designed hard dataset (Mohri et al. 2018; Roget et al. 2022) that has an exponentially small margin with data dimension.",
+      "It works as a concrete counterexample to show that the prior claims of Θ(γ) fail.",
+      "the probability of sampling a perfect classifier from a standard normal distribution is lower bounded by Ω(γD) in the worst case."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulation on one artificial dataset.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qvsp-low-rank-speculation",
+     "value": "The authors state that for a low-rank data matrix the sampling probability is likely Ω(γr) with r the rank, and they speculate that the quantum version space perceptron could have much lower query complexity on low-rank datasets.",
+     "anchor": "Remark 4, Section 3.3, pp.9-10",
+     "quotes": [
+      "Thus, this indicates that the probability is likely Pr[w ∈ VS] = Ω(γr), up to dimension-dependent constants.",
+      "Particularly, we speculate that a much lower query complexity could be incurred for QVSP with low-rank datasets"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated by the authors as likely and speculative; not proved.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qvsp-practical-effectiveness-not-characterised",
+     "value": "The authors state that, because their goal is to demonstrate the corrected bound, they do not fully characterise the practical effectiveness of the version space sampling method.",
+     "anchor": "Section 3.3, p.10",
+     "quotes": [
+      "Nevertheless, since our goal here is to demonstrate the corrected bound, we do not fully characterise the practical effectiveness of the version space sampling method."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 3.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "weak-online-learning-definition",
+     "value": "The paper defines weak online learning as online learning in which each example is sampled uniformly at random from a fixed dataset through a black-box interface, the learner never having the full dataset at once; in the quantum version the black box is a Grover search subroutine.",
+     "anchor": "Section 4.1, pp.10-11",
+     "quotes": [
+      "However, it differs in that it assumes each example is sampled uniformly at random from a fixed dataset",
+      "Instead, interaction occurs through a black-box interface that returns a training example upon request.",
+      "This relaxed weak online learning assumption naturally extends to a quantum weak online learning setting, where the black-box is a quantum Grover’s sea"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The learning model is defined in Section 4.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cutting-plane-optimal-update-bound",
+     "value": "The authors state, citing Nemirovskij and Yudin and Jiang et al., that cutting-plane methods have optimal update bounds of order D among feasibility algorithms, and, citing van Apeldoorn et al., that quantum algorithms cannot improve this lower bound under a black-box interface.",
+     "anchor": "Section 4.2, p.11; Section 4.3, p.14",
+     "quotes": [
+      "as the CP methods have an optimal update bounds of O∗(D) (Nemirovskij and Yudin 1983; Jiang et al. 2020) among all feasibility algorithms.",
+      "Remarkably, it has also been shown by van Apeldoorn et al. (2020) that quantum algorithms cannot improve this lower bound under a black-box interface."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited results.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hcp-rw-complexity",
+     "value": "The paper derives for the hybrid HCP-RW algorithm a quantum query complexity of order D log(1/γ) times (the square root of N plus D to the power 4.5 times log(1/γ)), and arithmetic complexity of order D to the power 7 times log(1/γ).",
+     "anchor": "Section 4.2, pp.13-14",
+     "quotes": [
+      "O∗(D log (1/γ) · ( N + D4.5 · log(1/γ). Additionally, in both HCP-RW and CP-",
+      "= O∗(log2 N · log(1/γ) · D6) = O∗(D7 log(1/γ))."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derived complexity under an idealised oracle model; the square-root symbol is garbled in the text layer, so the statement cannot be quoted cleanly.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcp-qw-speedup-over-hcp-rw",
+     "value": "The authors state that the fully quantum QCP-QW algorithm keeps a margin dependence of order D log(1/γ) and gives a speedup of order D to the power 1.5 in both query and arithmetic complexity over HCP-RW, because sampling is done quantumly instead of classically; its arithmetic complexity is of order D to the power 5.5 times log(1/γ) against D to the power 7 times log(1/γ) for HCP-RW.",
+     "anchor": "Section 1.1, p.3; Section 4.3, p.15; Section 4.3.4, p.21",
+     "quotes": [
+      "Furthermore, the QCPQW algorithm provides improved complexity scaling by O∗(D1.5) speedup in both the number of queries2 and arithmetic operations compared with the HCP-RW.",
+      "Compared with the HCP-RW algorithm, the sampling process is done quantumly instead of classically, which is the fundamental reason for gaining an extra speedup of O∗(D1.5).",
+      "On one hand, it preserves the strengths of the CP method, achieving a margin dependence of O∗(D log(1/γ)).",
+      "= O∗(D5.5 log(1/γ)). In comparison, both the Hit-and-Run CP-RW and HCP-RW algorithms (see Section 4.2) has O∗(D7 log (1/γ)) arithmetic operations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derived bound that depends on implementation assumptions the paper frames as may be realizable.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcp-qw-table-query-complexity",
+     "value": "The authors summarise that all the quantum-enhanced perceptron algorithms they examine achieve some speedups under idealised quantum computing models, and that the QCP-QW query complexity in their table, which scales with the square root of N plus a cubic term in D, is derived under the implementation assumptions of the feasibility section.",
+     "anchor": "Section 4.3.4 and Table 1, pp.21-22",
+     "quotes": [
+      "As we can see, all the quantum-enhanced algorithms achieve some speedups under idealised quantum computing models.",
+      "This complexity is derived under the implementation assumptions discussed in the feasibility section."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derived bound under stated implementation assumptions; the table formula is garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hit-and-run-quantum-walk-theorem",
+     "value": "The paper proves (its fifth theorem) that for an ergodic symmetric Markov chain defined by the hit-and-run algorithm, if mixing-time, warmness and overlap conditions hold, a state close to the next stationary state can be prepared with a number of quantum walk operator calls of order the square root of the mixing time times log of the inverse error; it also proves that its algorithm meets the overlap and warmness conditions.",
+     "anchor": "Theorem 5, Lemmas 6 and 7, Section 4.3.1, pp.18-19; proof in Appendix C.1, pp.26-29",
+     "quotes": [
+      "Theorem 5 (Hit-and-Run Quantum Walk) Let Pt be an ergodic symmetric Markov chain defined by the Hit-and-Run algorithm as in Section 4.2 with stationary uniform distribution πt on the support Pt.",
+      "Lemma 6 In our QCP-QW algorithm, the overlap condition |⟨πt|πt+1⟩| = Ω(1) is met.",
+      "Lemma 7 In our QCP-QW algorithm, the warmness conditions ∥πt+1/πt∥ = O(1) is met.",
+      "calls to the quantum walk operators Wt."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5 is stated with its three conditions and proved in Appendix C.1; Lemmas 6 and 7 are proved in Section 4.3.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "walk-update-unitary-lemma",
+     "value": "The paper states (its thirteenth lemma, following Chakrabarti et al. and Li and Zhang) that the hit-and-run quantum-walk-update unitary can be built with a constant number (up to log factors) of membership-oracle uses and gate complexity of order D.",
+     "anchor": "Lemma 13, Appendix C.3, pp.30-31",
+     "quotes": [
+      "Lemma 13 The hit-and-run quantum-walk-update unitary U (Pt) can be achieved with O∗(1) uses of membership oracles OPt and O∗(D) gate complexity, in both discrete and continuous quantum computers."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The proof defers to constructions in cited work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcp-qw-mean-estimation-may-be-realizable",
+     "value": "The authors state that a non-destructive multivariate mean-estimation subroutine may be realizable with a constant number of state copies, which would require of order D to the power 2.5 calls to controlled quantum walk gates; they state the non-destructive estimation circuit takes of order D to the power 1.5 such calls per copy.",
+     "anchor": "Section 4.3.2, pp.19-20; Appendix C.2, pp.29-30",
+     "quotes": [
+      "Taken together, these results suggest that a non-destructive multivariate meanestimation subroutine Utmean may be realizable using O∗(1) copies of |π˜t−1⟩",
+      "the resulting circuit Utmean would require O∗(D · D1.5) = O∗(D2.5) calls to controlled-W (Pt∈[r]) gates.",
+      "As a result, on each copy, the non-destructive estimation circuit takes O∗(D1.5) calls of the controlled-Wt−1 gates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Framed by the authors as a suggestion under an interpretation, not a proved result.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "walk-update-unitary-not-on-hardware",
+     "value": "The authors state that components such as the quantum-walk-update unitary can be very difficult to implement in practice and, as far as they know, have not been made available on current quantum hardware, so they frame their results as theoretical upper bounds in an idealised, decoherence-free setting.",
+     "anchor": "Section 4.3.3, p.20",
+     "quotes": [
+      "can be very difficult to implement in practice, and as far as we know, it has not been made available on current quantum hardware.",
+      "we frame our results as theoretical upper bounds in an idealised, decoherence-free setting"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 4.3.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "complexities-idealised-not-real-device",
+     "value": "The paper states that throughout, query, computational and arithmetic complexities are complexities under an idealised, noise-free quantum computational model and should not be interpreted as real-device performances.",
+     "anchor": "Footnote 3, p.3",
+     "quotes": [
+      "we phrase the terms of \"query complexity\", \"computational complexity\" and \"arithmetic complexity\" etc., as the complexities under idealised, noise-free quantum computational model"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope statement, footnote 3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "margin-advantage-from-classical-lp",
+     "value": "The authors state that their cutting-plane algorithms improve margin dependence over OQP and QVSP in the worst case at the cost of a higher, polynomial dimensional dependence than OQP, and that the dominant margin advantage comes from classical linear programming rather than from an intrinsic statistical advantage of quantum computation.",
+     "anchor": "Section 5.1, p.22",
+     "quotes": [
+      "offer improved margin dependence compared with the OQP and the QVSP algorithms in the worst case, though it comes at the cost of higher dimensional dependence of polyD relative to the OQP algorithm.",
+      "However, it is worth noting that the dominant advantage concerning margin O∗(D log(1/γ)) is offered by classical LP rather than an intrinsic statistical advantage from quantum computation."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of where its advantage comes from, Section 5.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "perceptron-algorithm-favourable-regimes",
+     "value": "The authors state that the quantum perceptron algorithms have different favourable regimes: QVSP favours a low-rank data matrix, OQP favours a large-margin dataset, and the cutting-plane method could perform well with small margins and moderate feature dimension.",
+     "anchor": "Section 5.1, p.22",
+     "quotes": [
+      "For example, QVSP favours a low-rank data matrix, OQP favours a large-margin dataset, and the CP method could perform well in regimes of small-margin and moderate feature dimension D."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's comparison drawn from asymptotic bounds; not tested.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lp-black-box-lower-bound-cited",
+     "value": "The authors cite van Apeldoorn et al. for a lower bound on the number of queries needed to solve linear programs in the black-box setting, and Apers and Gribling for a conjectured tight white-box lower bound, and state this motivates the open question of the most efficient algorithmic framework for the perceptron problem.",
+     "anchor": "Section 5.1, p.23",
+     "quotes": [
+      "It has been shown that solving LPs in the black-box setting requires at least",
+      "while in the white-box model, a tight lower bound of",
+      "And this naturally motivates the open question of identifying the most efficient algorithmic framework for the perceptron problem."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited results; the bound formulas are garbled in the text layer.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "version-space-volume-open-problem",
+     "value": "The authors state that whether the version space volume problem can be solved efficiently with quantum superposition remains an open problem, and that a general efficient solution to such sampling tasks could have complexity-theoretic implications possibly relating to the classes SZK and BQP.",
+     "anchor": "Section 5.1, p.23",
+     "quotes": [
+      "From a complexity-theoretic perspective, whether the version space volume problem could be resolved efficiently using quantum superposition remains an open problem.",
+      "A general and efficient solution to such sampling tasks could have significant complexity-theoretic implications, potentially relating to the complexity classes SZK and BQP"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An open problem stated by the authors.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "contributions-algorithm-efficiency-only",
+     "value": "The authors state that their contributions focus only on algorithm efficiency, not on the fundamental limitations of quantum computing.",
+     "anchor": "Section 5.1, p.23",
+     "quotes": [
+      "We would like to emphasise that our contributions presented in this work only focus on the perspective of algorithm efficiency, rather than the fundamental limitations of quantum computing."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope statement, Section 5.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "data-access-qram-io-limit",
+     "value": "The authors state that the square-root-of-N speedup over the classical linear-in-N baseline requires an efficient data access oracle or QRAM, which can be expensive and limited by data movement and I/O bandwidth, citing Hoefler et al. that a slowdown of four orders of magnitude in I/O bandwidth is possible on a hypothetical perfect fault-tolerant quantum computer.",
+     "anchor": "Section 5.2, p.24",
+     "quotes": [
+      "requires an efficient data access scheme (oracle) or QRAM (Aaronson 2015). However, in practice, implementing such access can be computationally expensive and may be limited by hardware constraints such as data movement and I/O bandwidth.",
+      "that a 104 slowdown is possible in I/O bandwidth (Hoefler et al. 2023)."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited hardware cost estimate.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "oracle-imperfection-decoherence-limit",
+     "value": "The authors state that both cutting-plane algorithms rely on a strong oracle model, that Grover-type speedups degrade significantly with oracle imperfections, and that the required number of Grover repetitions can give substantial circuit depth and decoherence on NISQ devices.",
+     "anchor": "Section 5.2, p.24",
+     "quotes": [
+      "Both algorithms are based on a strong oracle model (as in Eqn(2)).",
+      "It is well-known that Grover-type speedups degrade significantly in the presence of oracle imperfections",
+      "which can result in substantial circuit depth and cause decoherence for NISQ devices."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 5.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fault-tolerant-throughput-gap",
+     "value": "The authors state, citing Hoefler et al., that a constant-factor operation-throughput gap of about ten orders of magnitude between a classical GPU and a fault-tolerant quantum computer is representative, so each oracle would need a constant number of arithmetic operations for practical advantage, which is highly restrictive here because each oracle evaluation needs at least of order D operations.",
+     "anchor": "Section 5.2, p.24",
+     "quotes": [
+      "a constant-factor gap of ∼ 1010 operation throughput between a classical GPU and a fault-tolerant quantum computer is representative (Hoefler et al. 2023).",
+      "In our setting, this requirement is highly restrictive, since each oracle evaluation requires at least Ω(D) operations to compute vector inner products"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 5.2, resting on a cited hardware estimate.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcp-qw-conceptual-upper-bound",
+     "value": "The authors state that QCP-QW relies on a very strong oracle model and should be interpreted primarily as a conceptual upper bound rather than a near-term implementable scheme, and that extending it to general optimisation would need a more complete implementation of the underlying quantum subroutines.",
+     "anchor": "Section 6, p.25",
+     "quotes": [
+      "Although the QCP–QW algorithm relies on a very strong oracle model and should therefore be interpreted primarily as a conceptual upper bound rather than a nearterm implementable scheme",
+      "extending the present framework to general optimisation settings would require a more complete implementation of the underlying quantum subroutines"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bayes-point-machine-open-question",
+     "value": "The authors state that the classifier produced by the classical CP-RW method corresponds to a Bayes point machine solution, and that whether similar generalisation properties hold in their quantum-enhanced frameworks remains an open question.",
+     "anchor": "Section 6, p.25",
+     "quotes": [
+      "we note that the classifier produced by the CP-RW method corresponds to a Bayes point machine (BPM) solution",
+      "Exploring whether similar properties can be realised within the proposed quantum-enhanced frameworks, under suitable implementation assumptions, remains an open question for future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of an open question, Section 6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "future-advantage-possible",
+     "value": "The authors state that current practical constraints do not preclude meaningful quantum advantage in future settings, which may arise from alternative problem regimes such as structured inputs, improved algorithmic frameworks, or advances in quantum hardware.",
+     "anchor": "Section 6, pp.24-25",
+     "quotes": [
+      "they do not preclude the possibility of meaningful quantum advantage",
+      "Such advantages may arise from alternative problem regimes (e.g., structured inputs), improved algorithmic frameworks achieving higher-order speedups, or advances in quantum hardware and system architectures."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's outlook without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

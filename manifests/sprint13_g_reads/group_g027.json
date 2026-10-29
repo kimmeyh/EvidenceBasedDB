@@ -1,0 +1,2198 @@
+{
+ "papers": [
+  {
+   "record_id": "mandl-2025-loss-behavior-supervised-learning-entangled",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Mandl-et-al._2025_Loss-Behavior-in-Supervised-Learning-with-Entangled-States__2509.10141.pdf",
+   "title_in_file": "Loss Behavior in Supervised Learning with Entangled States",
+   "version_note": "arXiv:2509.10141v1, 12 Sep 2025.",
+   "pages": 42,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory-plus-simulation paper showing that, when learning a unitary with a maximally entangled training sample, the distance to a global minimum is larger and the loss improvement in a bounded neighborhood is exponentially smaller than with a separable sample, with simulated PQC experiments and a study of non-maximally entangled samples.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "entangled-training-loss-improvement-limited",
+     "verdict": "narrowed",
+     "note": "The Discussion's summary is right, but the proved form (Theorem 2) compares maximally entangled and separable samples only at starting points of equal loss and for radii below the separable zero-loss radius; the authors say the equal-loss assumption restricts the result. The bound on the entangled factor is R over the square root of d, so the ratio is of order one over two to the power n over two.",
+     "value": "The authors state that, in their simplified setting (optimization over all unitaries with the phase-corrected Frobenius-norm metric), the possible improvement of the loss in a constrained neighborhood scales inversely with the dimension of the state space. The proved form (Theorem 2) assumes the separable and maximally entangled starting points have the same loss L and that the radius is no larger than the radius at which the separable case reaches zero loss; under it an optimizer exhaustively examining such neighborhoods obtains exponentially larger improvement in the separable case. The authors state that the equal-loss assumption restricts the result's applicability.",
+     "anchor": "Section 4.2, Theorem 2, p.12; Appendix B, p.38; Section 6 Discussion, p.19",
+     "quotes": [
+      "The possible improvement of the loss function value (Section 4.2) in a constrained neighborhood scales inversely with the dimension of the state space.",
+      "Theorem 2. Let U ∈ U(d) with d = 2n be the target operator for the supervised learning problem and let Vψ, VΦ ∈ U (d) be intermediate optimization solutions with",
+      "Thus, if an optimization algorithm exhaustively examines constrained neighborhoods of radius R around unitary operators that have the same loss L with respect to the used training sample, it will obtain exponentially larger improvement in the separable case.",
+      "as this is the radius required to obtain a solution of zero loss for the separable case according to Lemma 2.",
+      "Of course, the assumption that the loss function values match for both training samples restricts the"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2 (p.12, proof Appendix B pp.38-40) states the result and its conditions (equal loss L, bounded radius); the text layer flattens the radius bound and the order term, so these are summarized in words.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The theorem's order term is one over the square root of the dimension, so 'inversely with the dimension' in the Discussion is looser than the proved rate."
+    },
+    {
+     "id": "nme-states-better-landscape",
+     "verdict": "narrowed",
+     "note": "The NME experiment is narrow: one PQC (CZ-entanglement) at 4 and 8 layers on 3 qubits; the entropy dependence was clear only at 8 layers.",
+     "value": "The authors report from simulated PQC training that non-maximally entangled states, even those of maximal Schmidt rank, might lead to a more favorable loss landscape structure than maximally entangled states. The experiment trained the CZ-entanglement PQC with l = 4 and l = 8 layers on n = 3 qubits, and the decrease of improvement with entanglement entropy was less pronounced at l = 4.",
+     "anchor": "Section 5.2.2, pp.17-18; Section 8 Conclusion, p.22",
+     "quotes": [
+      "NME states, even those of maximal Schmidt rank, might lead to a more favorable structure of the loss landscape than maximally entangled states.",
+      "In this section, we train CZ-entanglement with l = 4 and l = 8 layers using the approach described in Section 5.1 for n = 3 qubits.",
+      "For l = 4, this effect is less pronounced."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one small simulated study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "pqc-vs-idealized-model-gap",
+     "verdict": "widened",
+     "note": "The paper names two differences between its idealized model and PQC training; the stored value gives only the second.",
+     "value": "The authors state that their analytical results model learning as exploring the entire set of phase-equivalent unitaries uniformly, and that PQC training differs from this in two ways: (i) a PQC generally cannot represent the complete set of unitary operators, and (ii) the exploration of the accessible subset of unitaries is not guaranteed to be uniform.",
+     "anchor": "Section 6 Discussion, p.20",
+     "quotes": [
+      "In our analytical results, supervised learning algorithms are modeled as processes that explore the entire space PU(d) uniformly in search",
+      "(i) a PQC generally cannot represent the complete set of unitary operators in PU (d), and (ii) the exploration of the accessible",
+      "subset of unitaries is not guaranteed to be uniform."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit of its model, Section 6, p.20.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "loss-and-risk-definitions",
+     "value": "The paper defines the training loss for a sample as one minus the fidelity between the target's output and the hypothesis's output (with the hypothesis applied to the system only when a reference system is used), and the risk as the expected loss over Haar-random input states.",
+     "anchor": "Section 2.2, Equations 4-6, p.4",
+     "quotes": [
+      "As the loss function, a measure of dissimilarity between training sample output U |α⟩ and hypothesis output V |α⟩ given by the complement of the fidelity",
+      "The generalization error is captured by the risk function [15, 17] defined as",
+      "Herein, the expectation value is taken with respect to the Haar measure [31, 32] on the set of quantum states"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions, Section 2.2, p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sharma-entangled-nfl-cited",
+     "value": "The authors cite Sharma et al. for a bound showing that increasing the Schmidt rank of the training samples lowers the lower bound on the risk in the same way as adding training samples, and that with zero training loss and a sample of maximal Schmidt rank (r = d) the risk is zero.",
+     "anchor": "Section 2.2, Equation 7, p.4",
+     "quotes": [
+      "This result implies that increasing the Schmidt rank of the training samples reduces the lower bound for the risk in the same way as increasing the number of training samples does.",
+      "In particular, if the training loss of the hypothesis V is zero and a training sample of maximal Schmidt rank (r = d) is used, then RU (V ) = 0,"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to reference 15.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "max-entangled-loss-tracks-frobenius-distance",
+     "value": "The paper derives that, for a maximally entangled training sample, the fidelity equals the squared absolute trace of U-dagger V divided by d squared, so the loss fixes the phase-corrected Frobenius distance to the target, and a global minimum occurs exactly for operators equal to the target up to a global phase.",
+     "anchor": "Section 2.3, Equations 20-26, pp.5-6",
+     "quotes": [
+      "Thus, a reduction in the Bures angle",
+      "between expected output and actual output when training with a maximally entangled state implies a reduction in the Frobenius norm distance between U",
+      "Thus, when training with a maximally entangled state, a global minimum occurs exactly for the operators V that match the target operator U up to a global phase."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Equations 20-26, Section 2.3, pp.5-6.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma1-separable-distance-constant",
+     "value": "The paper proves (Lemma 1) that for a separable training state, a target U and a current hypothesis V, the minimal phase-corrected Frobenius distance from V to any operator with a fixed target fidelity equals four times one minus the cosine of the difference of the two Bures angles; this distance does not depend on the dimension, so a global minimum for a separable sample lies within a constant distance of any point of the landscape.",
+     "anchor": "Lemma 1, Section 4.1, p.10; proof Appendix A, pp.26-30",
+     "quotes": [
+      "Lemma 1. Let |ψ⟩ ∈ HX ⊗ HR be a separable state with dim(HX ) = d, let U ∈ U (d) be the target operator, and V ∈ U (d) the current hypothesis operator",
+      "= 4(1 − cos(γU,ψ(V ) − γU,ψ(W ))), (31)",
+      "The distance to this operator is independent of the dimension d of the Hilbert space.",
+      "Lemma 1 shows that one of these minima must lie within a constant distance of any point in the loss landscape."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 1 stated p.10 with its conditions and proved in Appendix A (uses Theorem 1 of ref 56 on diagonal elements of unitaries).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma3-entangled-distance-scales-with-d",
+     "value": "The paper proves (Lemma 3) a lower bound of the same form for a maximally entangled training state, except that it carries the dimension of the Hilbert space as a factor (two times d instead of four), so at equal fidelity the distance to a minimum is exponentially larger with the maximally entangled sample.",
+     "anchor": "Lemma 3, Appendix A, pp.31-33",
+     "quotes": [
+      "Lemma 3. Let |Φ⟩ ∈ HX ⊗HR be a maximally entangled state with dim(HX ) = d, let U ∈ U (d) be the target operator",
+      "In the latter case, for |Φ⟩, we provide a similar lower bound, which differs, however, in that it contains the dimension of the Hilbert space as a factor (Lemma 3).",
+      "the distance to a minimum is exponentially larger when |Φ⟩ is used."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 3 stated and proved in Appendix A, pp.31-32.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem1-distance-to-global-minimum",
+     "value": "The paper proves (Theorem 1), for a separable and a maximally entangled sample on n qubits with d equal to two to the n: (i) the distance from V to the nearest zero-loss operator for the separable sample is never larger than for the maximally entangled sample; (ii) if the maximally entangled loss is bounded below by an inverse polynomial in n, the ratio of these distances is of order one over two to the power n over two; (iii) if the ratio is bounded below by an inverse polynomial, V is already exponentially close to U.",
+     "anchor": "Theorem 1, Section 4.1, pp.10-11; proof Appendix A, pp.33-34",
+     "quotes": [
+      "Theorem 1. Let |ψ⟩ ∈ HX ⊗ HR be a separable and |Φ⟩ ∈ HX ⊗ HR a maximally entangled training sample for dim(HX ) = d = 2n for n qubits.",
+      "The first statement emphasizes that the distance to a global minimum generally does not decrease if entangled training samples are used.",
+      "as long as the loss for the maximally entangled sample is polynomially bounded from below in the number of qubits n, the ratio between the distances to a minimum for the investigated training samples is exponentially small.",
+      "the only situation where we can ensure that the distance to a global minimum for |Φ⟩ is not exponentially large when compared to the distance to a global minimum for separable |ψ⟩ is when V is already exponentially close to U ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 stated with its conditions on pp.10-11 and proved in Appendix A; the order terms are flattened by the text layer and given in words.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma2-max-fidelity-in-ball",
+     "value": "The paper proves (Lemma 2) the maximal fidelity reachable within a ball of radius R around V: exactly for a separable sample, and as an upper bound for a maximally entangled sample; above a critical radius the ball holds an optimum, and below it the reachable change of Bures angle is set by an angle that, in the entangled case only, depends on the dimension and approaches zero as d grows.",
+     "anchor": "Lemma 2, Section 4.2, pp.11-12; proof Appendix B, pp.35-37",
+     "quotes": [
+      "Lemma 2. Let B(V, R) := { W ∈ PU (d) | d′F (V, W ) ≤ R } be a ball in PU(d) centered at the current hypothesis V with radius R.",
+      "This result specifies the best possible solution in a neighborhood around V for the separable state, and it defines an upper bound for its equivalent for the maximally entangled case.",
+      "In the entangled case, βent additionally depends on the dimension of the state space. As d increases, βent approaches zero."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 2 stated pp.11 and proved in Appendix B pp.35-37.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "improvement-bound-equation-43",
+     "value": "The paper derives that the loss improvement in a ball is at most sin(2γ − β) sin(β) for both sample types, with equality for the separable sample, and that because sin(βent) is bounded by R over the square root of d, the obtainable improvement in the ball is exponentially small for maximally entangled states.",
+     "anchor": "Section 4.2, Equation 43, p.12; Appendix B, Equations 190-197, pp.37-38",
+     "quotes": [
+      "function is Λx(U, V, R) ≤ sin(2γ − β) sin(β), (43)",
+      "Furthermore, for the separable state |x⟩ = |ψ⟩, this bound is an equality.",
+      "implies that the obtainable improvement in B(V, R) is exponentially small for maximally entangled states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived from Lemma 2 in Appendix B, Equations 180-197.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "one-qubit-motivating-example",
+     "value": "The authors show, for a two-parameter one-qubit PQC of X and Z rotations, that a neighborhood of the same starting point has less loss variation and a more distant closest global minimum with a maximally entangled training sample than with a separable one.",
+     "anchor": "Section 3, Figure 1, pp.7-8",
+     "quotes": [
+      "Herein, a two-parameter PQC V (θ1, θ2), consisting only of a parameterized X- and Z-rotations on one qubit, is optimized.",
+      "For the separable training sample, the neighborhood delimited by a white circle around this point exhibits more variation in the loss function value than for the maximally entangled training sample.",
+      "Additionally, the distance to the closest global minimum on the loss landscape is larger for the maximally entangled training sample, as shown by the dotted arrows."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An illustrative computed example.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "experiment-setup",
+     "value": "The authors' experiments simulate constrained optimization of four PQCs from Sim et al. (Circuits 1, 4, 9 and 15) with l in {1, 4, 8, 12, 16} layers on n = 5 qubits, in Pytorch with the SLSQP optimizer from Scipy, restricting parameters to a two-norm ball around a random start; the target is the PQC at a random parameter assignment so zero loss is reachable, and each run is repeated 24 times.",
+     "anchor": "Section 5.1, pp.13-14; Section 5.2, p.15",
+     "quotes": [
+      "(Circuit 4 and Circuit 9 in [36])",
+      "On the one hand, we use Circuit 1, which solely uses single-qubit gates, and we refer to it as no-entanglement. On the other hand, we use Circuit 15",
+      "we perform all experiments for l ∈ {1, 4, 8, 12, 16} ansatz layers and n = 5 qubits.",
+      "To simulate the loss function calculation of the PQCs, we implement the PQCs in Pytorch [50].",
+      "we use the optimizer based on Sequential Least Squares Programming (SLSQP) [51] implemented in Scipy [52].",
+      "we perform 24 repetitions for each run of the experiment in Figure 3",
+      "To achieve this, we select the target operator by randomly sampling a parameter-assignment"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experiment setup, Section 5.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "example-run-improvement-055-vs-01",
+     "value": "The authors report, for one example PQC run, improvements of about 0.55 with a separable sample and about 0.1 with a maximally entangled sample at R = 1, and a zero-loss minimum for the separable sample at a parameter distance of about 2.3 where none was yet found for the maximally entangled sample.",
+     "anchor": "Section 5.2, Figure 4, pp.14-15",
+     "quotes": [
+      "find that the improvement for the separable state is considerably larger than for the maximally entangled state with improvements Λψ(U, V (θ⃗0), R = 1) ≈ 0.55",
+      "and ΛΦ(U, V (θ⃗0), R = 1) ≈ 0.1.",
+      "At a distance of ∥θ⃗ − θ⃗0∥2 ≈ 2.3, an optimum for the separable state is found (dashed line), while no optimum is yet found for"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A single simulated run.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "separable-distance-falls-with-parameter-dimension",
+     "value": "The authors report that for the separable sample a global minimum was consistently found within their maximal evaluation radius, and that adding layers decreased the distance to a minimum even after expressivity had saturated, which they connect to the larger parameter-space dimension.",
+     "anchor": "Section 5.2.1 Evaluation 1, Figure 5, pp.15-16",
+     "quotes": [
+      "For this setting, a global minimum for the separable state is",
+      "For the deep PQCs in our experiments, increasing the number of layers of the PQC decreases the distance required to find a minimum when a separable state is used for training.",
+      "This suggests that the decrease in the measured distances to the loss minimum is connected to the increased dimension p of the parameter space."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "entangled-improvement-gap-grows-with-layers",
+     "value": "The authors report that the improvement in the neighborhood was consistently close to 1 for the separable sample and mostly lower for the maximally entangled sample, with the gap growing as layers increase; the single-qubit-gate PQC (no-entanglement) was a noteworthy exception, which they explain by its ability to reach the target with small parameter changes.",
+     "anchor": "Section 5.2.1 Evaluation 2, Figure 6, p.17",
+     "quotes": [
+      "Figure 6 is consistently close to 1 for the separable training sample as indicated by the blue boxes.",
+      "the improvement of the loss function is mostly lower when a maximally entangled training sample is used (red boxes).",
+      "Particularly when the number of layers increases, the difference between the improvement for the separable and the maximally entangled state increases.",
+      "A noteworthy exception to this observation is no-entanglement."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nme-improvement-falls-with-entropy",
+     "value": "The authors report that, for the 8-layer CZ-entanglement PQC, the improvement in a fixed neighborhood decreases as the entanglement entropy of the training sample increases, and that high-entropy states show larger variance in improvement.",
+     "anchor": "Section 5.2.2, Figure 7, p.18",
+     "quotes": [
+      "For the larger PQC with l = 8 layers, a dependence of the improvement on the entanglement entropy of the training sample is apparent.",
+      "As the entanglement entropy increases from the separable state to the maximally entangled state, the improvement of the loss function in a fixed neighborhood decreases.",
+      "However, the states of high entanglement entropy show a larger variance in their improvement value when compared to states of low entanglement entropy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one small simulated study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nme-schmidt-rank-not-predictor",
+     "value": "The authors report no clear connection between Schmidt rank and improvement: with l = 8 a state of high Schmidt rank had improvement of about 0.75 (state 3) while a state of Schmidt rank 4 had about 0.5 (state 10); they conclude the decrease is driven by entanglement entropy rather than Schmidt rank.",
+     "anchor": "Section 5.2.2, Figure 8, pp.18-19; Section 6.2, p.20",
+     "quotes": [
+      "In contrast to Figure 7, we find no clear connection between the Schmidt rank and the improvement.",
+      "states of high Schmidt rank, with large improvement (≈ 0.75 for state 3 using CZ-entanglement with l = 8), and there are states with low Schmidt rank with comparably small improvement (≈ 0.5 for state 10 with Schmidt rank 4).",
+      "However, this decrease in improvement was not directly caused by the increase in the Schmidt rank of the training samples,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one small simulated study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "high-rank-low-entropy-proposal",
+     "value": "The authors suggest that it is theoretically beneficial to train with states of high Schmidt rank and low entanglement entropy, but suspect such states might introduce local minima, and propose NME or separable states as a warm start before fine-tuning with high-entropy states.",
+     "anchor": "Section 6.2, pp.20-21",
+     "quotes": [
+      "This suggests that, theoretically, it is beneficial to use states of high Schmidt rank and low entanglement entropy for training.",
+      "we suspect that training with such states might introduce local minima in the loss function",
+      "NME states or separable states could serve as a warm start [7, 54] for the optimization process."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' proposal, not tested.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "small-gradient-and-noise-consequence",
+     "value": "The authors state that exponentially small loss differences imply exponentially small gradients, needing more precise gradient approximations, and that such variations could be overshadowed by noise on quantum hardware.",
+     "anchor": "Section 6 Discussion, p.19",
+     "quotes": [
+      "On the one hand, an exponentially small difference in loss function values implies that the gradient is exponentially small.",
+      "these exponentially small variations in the loss function values could be overshadowed by noise on the quantum hardware."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' argued consequence, not shown.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "restricted-circuits-preferable-if-solution-modeled",
+     "value": "The authors state that using circuits that model only a small subset of unitaries is preferable if the circuit can be ensured to model the solution, and that entanglement in training data is detrimental to the optimizer's performance when highly expressive circuits are used.",
+     "anchor": "Section 6.1, p.20",
+     "quotes": [
+      "Therefore, using circuits that only model a small subset of the set of unitary operators is preferable if it can be ensured that the circuit models the solution.",
+      "This reinforces the observation that the entanglement in the training data is detrimental to the optimizer’s performance if highly expressive"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' interpretation of one simulated study.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "separable-training-may-be-classically-simulable",
+     "value": "The authors cite Cerezo et al. that the absence of barren plateaus implies use of only a polynomially large subspace and classical simulability, and state that this suggests training with separable states could be classically simulable.",
+     "anchor": "Section 7 Related Work, p.21",
+     "quotes": [
+      "the absence of barren plateaus implies that the algorithm only makes use of a polynomially large subspace of the Hilbert space and is thus also classically simulable [55].",
+      "Thus, applied to the results in this work, this suggests that training with separable states could be classically simulable."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result and the authors' extrapolation.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "related-entanglement-trainability-cited",
+     "value": "The authors cite Thanasilp et al. that entanglement of the training sample harms the loss landscape even for local observables, Leone et al. that high entanglement entropy leads to loss concentration, and Wang et al. that a limited number of measurements harms the risk after training with highly entangled samples.",
+     "anchor": "Section 7 Related Work, pp.21-22",
+     "quotes": [
+      "Thanasilp et al. [23] showed that even for local observables, entanglement of the training sample negatively affects the loss landscape.",
+      "they show that a high entanglement entropy leads to concentration of the loss function values.",
+      "They find that a limited number of measurements is detrimental to the risk after training when highly entangled training samples are used"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results attributed to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "expressivity-measurement-results",
+     "value": "The authors estimate expressivity as a KL divergence from the Haar fidelity distribution using 5000 samples and Nbins = 75 bins, and report that CRX- and CZ-entanglement reach values near zero at l ≥ 4, no-entanglement saturates at about 0.25, and circular-entanglement saturates at about 0.1.",
+     "anchor": "Appendix C, Figures 10-11, pp.40-42",
+     "quotes": [
+      "We classify the results into Nbins = 75 equally sized bins",
+      "we use 5000 samples each for the evaluation of the expressivity of the PQCs in our work.",
+      "-entanglement and CZ-entanglement exhibit high expressivity at l ≥ 4 with values close to zero, while no-entanglement has lower expressivity and saturates at Expr ≈ 0.25.",
+      "improve its expressivity as it saturates at Expr ≈ 0.1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Measured estimates from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "metric-choice-limit",
+     "value": "The authors state that the Frobenius-norm metric used for neighborhoods need not capture closeness in the loss landscape when PQCs are the model, that the most appropriate metric depends on the specific PQC, and that extending the analysis to other metrics is future work.",
+     "anchor": "Section 8 Conclusion, p.22",
+     "quotes": [
+      "This metric does not necessarily have to capture closeness relations in the loss landscape when PQCs are used as the supervised learning model.",
+      "the most appropriate metric for capturing the loss landscape depends on the specific PQC used.",
+      "an important direction for future work is to extend our analysis by evaluating the loss landscape under different metrics."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 8, p.22.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "open-problems-pretraining-expressivity",
+     "value": "The authors state that it is unclear whether a pretraining approach using NME states could guide the optimizer to local minima, and that their expressivity measure could not fully predict the observed improvement in distance, so other expressivity measures should be investigated.",
+     "anchor": "Section 8 Conclusion, p.22",
+     "quotes": [
+      "Especially, it is unclear whether a pretraining approach that utilizes NME states could guide the classical optimizer to local minima.",
+      "Thus, in this case, the used expressivity measurement could not fully predict the improvement in distance that was observed."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Open problems the paper states, Section 8, p.22.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-entanglement-adds-training-complexity",
+     "value": "The authors conclude that entanglement with a reference system, though beneficial for low-risk approximations, might add training complexity, seen as lower loss variation in constrained neighborhoods and a larger distance to a global minimum, and that their PQC experiments generally confirmed this with highly expressive PQCs showing a larger decrease in loss variation.",
+     "anchor": "Section 8 Conclusion, p.22",
+     "quotes": [
+      "Although the introduction of entanglement with a reference system is beneficial for low-risk approximations in supervised learning, it might introduce additional complexity in the training process.",
+      "These experiments generally confirmed the analytical observation.",
+      "Highly expressive PQCs typically exhibited a larger decrease in loss function variation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper's conclusion mixing proved results and one simulated study.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "mansky-2024-constant-measurement-quantum-algorithm-graph",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Balthasar-et-al._2024_A-Constant-Measurement-Quantum-Algorithm-for-Graph-Connectivity__2411.15015.pdf",
+   "title_in_file": "A Constant Measurement Quantum Algorithm for Graph Connectivity",
+   "version_note": "arXiv:2411.15015v2, dated December 5, 2024. Authors in the file are Maximilian Balthasar Mansky, Chon-Fai Kam and Claudia Linnhoff-Popien; the file name's 'Balthasar' is the first author's middle name.",
+   "pages": 13,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A proposed quantum algorithm that maps graph nodes to qubits and edges to non-unitary two-qubit ZX-calculus Z spiders, so each connected component becomes a GHZ state that two measurements can test, with depth bounds, a state-decay analysis and a Julia/Yao simulation.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "constant-measurement-graph-connectivity",
+     "verdict": "narrowed",
+     "note": "The constant-measurement claim holds only when the state decay caused by the non-unitary spiders is removed with ancilla qubits (up to one per edge) or ignored; without ancillas the paper states exponentially many measurements are needed (Table II gives order two to the n). The three-quarters figure is the worst case of two fragments with two measurements.",
+     "value": "The authors introduce a quantum algorithm for determining graph connectedness using a constant number of measurements, and state that it needs only two measurements to compute the result with a certainty of p = 3/4 (the worst case of two graph fragments). They also state that the non-unitary operations cause a state decay that either requires an exponential number of measurements as the number of qubits grows or needs ancilla qubits.",
+     "anchor": "Abstract p.1; Section IV.B, p.4; Section IV.D-E, pp.6-7; Section V Discussion, p.7",
+     "quotes": [
+      "We introduce a novel quantum algorithm for determining graph connectedness using a constant number of measurements.",
+      "needing only two measurements to compute the result with a certainty of p = 3/4.",
+      "In the worst case of two graph fragments, the connectedness can be determined after two measurements with probability",
+      "This state decay either requires an exponential number of measurements as the number of qubits increases or necessitates the use of ancilla qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derived algorithmic property with no theorem; the measurement count depends on unquantified ancilla use.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Without ancillas the measurement cost is exponential, so the 'constant measurement' headline depends on the ancilla construction, which the paper does not build or simulate."
+    },
+    {
+     "id": "no-hardware-implements-nonunitary-gate",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section IV.F Experimental verification, p.7",
+     "quotes": [
+      "To best of our knowledge, there is no quantum computer that implements the required non-unitary operation."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section IV.F, p.7.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "state-decay-needs-ancillas",
+     "verdict": "widened",
+     "note": "The paper also gives an upper bound: without ancilla reuse, at most one ancilla per edge, for a total of order n plus m qubits.",
+     "value": "The authors state that how many ancillas are necessary is unknown, and that without ancilla reuse the upper bound for ancillas is the number of edges m, for a total qubit cost of order n plus m.",
+     "anchor": "Section IV.D, p.6; Section IV.E, p.7; Section V Discussion, p.7",
+     "quotes": [
+      "How many ancillas are necessary is unknown. Without ancilla reuse, the upper bound for ancillas is the number of edges, m.",
+      "The upper limit of ancillas necessary to preserve the state and prevent dissipation is the number of edges m, for total cost of qubits as O(n + m)."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open question and bound, Section V, p.7.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "edge-gate-requirements",
+     "value": "The authors state that, because the edge list is unsorted, the entangling edge operations must be abelian, all of the same type, and 'nilpotent' (written as N squared equals N) so that loops and repeated edges do not cancel, which rules out building the entanglement with CNOT gates.",
+     "anchor": "Section II Requirements, p.2",
+     "quotes": [
+      "The entangling operations have to be abelian, as the list of edges is generally unsorted.",
+      "This requirement rules out the obvious alternative to the present approach, creating entanglement using CNOT gates.",
+      "The gate representing an edge also needs to be nilpotent, N 2 = N . Otherwise, loops or repeated edges will cause cancellations that destroy the information of connectedness."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own design requirements, Section II, p.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The stated condition N squared equals N defines an idempotent operator (a projector), not a nilpotent one."
+    },
+    {
+     "id_suggestion": "z-spider-success-on-ghz-subspace",
+     "value": "The authors state that the Z spider acts as a projector: for a non-GHZ-like state the operation surely fails, while on the parameterized GHZ state it succeeds with probability 1, which is sufficient for the algorithm because it works within the span of the all-zero and all-one states.",
+     "anchor": "Section III.C Non-unitary gates, p.3",
+     "quotes": [
+      "This means that for non GHZ-like state, the operation surely fails,",
+      "the Z spiders have a success probability of 1.",
+      "This state space is sufficient for the presented algorithm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation stated without a theorem.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "construction-ghz-per-component",
+     "value": "The authors' construction maps each node to a qubit and each edge to a two-qubit Z spider; by the ZX fusion rule the spiders of a connected component are equivalent to one large spider, so each connected component ends in a GHZ state whose qubits measure in the same state.",
+     "anchor": "Section IV.A Construction, pp.3-4; Figure 5, p.5",
+     "quotes": [
+      "In the construction of our algorithm, each node ni of the graph G is mapped to a qubit qi.",
+      "The two-qubit spiders are mathematically equivalent to large spiders that connect all qubits corresponding to a connected component. Its action creates a large GHZ state for each connected component.",
+      "Since all qubits corresponding to a connected component of the graph are in a GHZ state, upon single qubit measurements they can be measured to be in the same state."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own algorithm construction, Section IV.A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "connected-components-measurements",
+     "value": "The authors state the algorithm can be extended to identify connected components, which can be found in M = 2|Gk| measurements, with probability of knowing all components correctly at least three quarters.",
+     "anchor": "Section IV.B.2 Connected components, p.5",
+     "quotes": [
+      "the groups of qubits and therefore the connected components can be found in M = 2|Gk| measurements and therefore in sublinear time.",
+      "the probability of knowing all connected components correctly is at least p ≥"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derived property without a theorem, and subject to the same state-decay caveat.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The paper calls this count sublinear, while the abstract calls it a linear number of measurements."
+    },
+    {
+     "id_suggestion": "circuit-depth-bounds",
+     "value": "The authors state the depth is variable: assuming two-qubit operations on distinct nodes can be parallelized, the best case is a brickwork arrangement (order m over n) and the worst case a linear stack (order m); for a simple graph the maximum is the complete graph's edge count, and the total number of operations is always m.",
+     "anchor": "Section IV.C Depth, p.5; Section IV.E, p.7",
+     "quotes": [
+      "We assume that two-qubit operations acting on distinct nodes can be parallelized.",
+      "The best and worst case are given by a brickwork structure of edges and a linear stack, respectively.",
+      "For a simple graph with no self-loops and no repeating edges, the maximum depth is the number of edges of a complete graph,",
+      "Overall, the number of parallel and serial operations used the algorithm is always m, as the algorithm constructs the graph explicitly."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Bounds argued without a theorem.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "average-depth-integer-partition-bound",
+     "value": "The authors derive an analytical upper bound on the average depth by an integer-partition argument that ignores nested edges; for n = 5 vertices and m = 10 edges the weighted mean is 8.14.",
+     "anchor": "Section IV.C, p.6; Appendix B.1, pp.8-10, Figure 8",
+     "quotes": [
+      "In this case the nesting of the edges within each other is ignored, leading to a strict upper bound to the depth.",
+      "= 8.14, which gives the upper bound for the depth of an arbitrary graph with n = 5 vertices and m = 10 edges."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A combinatorial derivation and worked example, no theorem.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "numerical-depth-erdos-renyi",
+     "value": "The authors report from simulation of shuffled Erdos-Renyi graphs with n = 1000 that the 499,500 edges of the complete graph give an average depth below 4000 sequential two-qubit operations, that depth falls as nodes increase at fixed m, and that their fitted numerical lower bound underestimates large n.",
+     "anchor": "Appendix B.2 Numerical approximation, pp.10-12, Figures 9-10",
+     "quotes": [
+      "An example for n = 1000 is shown in figure B 2.",
+      "the 499,500 edges present in the complete in the graph correspond to a depth of the quantum circuit of less than 4000 sequential two-qubit operations on average.",
+      "As the number of nodes increases for a constant m, the depth decreases.",
+      "This fit still underestimates the behavior for large n but provides a reasonable lower bound."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sorted-graphs-depth",
+     "value": "The authors state that for sorted edge lists the depth upper bound is of order 2n because edges nest, but that sorting the edges classically needs order m log m operations, longer than classical breadth-first search.",
+     "anchor": "Section IV.C, p.6; Appendix B.3, p.11",
+     "quotes": [
+      "For sorted graphs, the upper bound in depth with no repeated edges and no self-loops is O(2n),",
+      "using a classical sorting algorithm requires O(m log m) operations, longer than the standard breadth first search approach of classically solving the problem."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argued bound without a theorem.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "state-decay-exponential",
+     "value": "The authors state that the projective non-unitary operations make the state decay, in the naive implementation as one over (two to the n minus two) in the worst case, so that exponentially many measurements are needed, and that ignoring this information loss can lead to nonsensical results such as polynomial-time NP solutions.",
+     "anchor": "Section IV.D State decay, p.6",
+     "quotes": [
+      "In the direct naive implementation, this leads to a decay as 1/(2n − 2), where in the worst case only two entries in the state vector, expressing the GHZ state, remain.",
+      "This decay in turn necessitates exponentially many measurements to find the state exactly.",
+      "Ignoring this information loss can lead to nonsensical results."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit of its algorithm, Section IV.D, p.6.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ancilla-tradeoff",
+     "value": "The authors state a trade-off between order two-to-the-n calls to the algorithm with the direct two-qubit spiders on n qubits, or order one calls with m ancilla qubits, for a worst-case total size of order n plus m; each two-qubit gate can be built as a three-qubit construction with an ancilla measured in the GHZ basis.",
+     "anchor": "Section IV.D, p.6; Table II, p.7",
+     "quotes": [
+      "Hence there is a trade-off of using O(2n) calls to the algorithm for the direct two-qubit spider operation with n qubits involved or O(1) calls but with m ancilla qubits involved, with a worst case total size of the algorithm as O(n + m).",
+      "An upper limit on the number of necessary ancillas can be given by constructing each two-qubit gate as a three-qubit pair of the two initial qubit together with an ancilla qubit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argued construction, not built or simulated.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ancilla-version-possible-on-current-hardware",
+     "value": "The authors state that any non-unitary operation can be achieved with unitary operations and projective measurements, that GHZ construction via a Bell measurement on a third qubit has been verified on hardware, and that the algorithm with ancilla qubits is therefore possible on current hardware already.",
+     "anchor": "Section IV.F Experimental verification, p.7",
+     "quotes": [
+      "However, any non-unitary operation can be achieved using unitary operations and projective measurements [41].",
+      "GHZ states via a Bell measurement on a third qubit has been proposed and experimentally verified on quantum computing hardware [56].",
+      "The construction of the algorithm with ancilla qubits is therefore possible on current hardware already."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' claim resting on cited work; no hardware run in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The paper runs nothing on hardware; the claim is an inference from cited constructions."
+    },
+    {
+     "id_suggestion": "cz-cannot-replace-spider",
+     "value": "The authors state that a replacement of the spider with the similar-looking CZ gate is not possible, as CZ lacks the key contractive feature.",
+     "anchor": "Section IV.F, p.7",
+     "quotes": [
+      "A replacement with the similar-looking CZ is not possible, as they lack the key contractive feature."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' statement without proof.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "simulation-setup-julia-yao",
+     "value": "The authors simulate the algorithm in Julia with the Yao package, without ancilla qubits and ignoring state decay, taking measurement samples from the remaining state.",
+     "anchor": "Appendix A Simulation results, p.8",
+     "quotes": [
+      "We implement our system in Julia [57] and its quantum simulation package Yao [58].",
+      "The circuit is implemented without ancilla qubits and ignores state decay, as measurement samples are taken from the remaining state."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own simulation setup, Appendix A, p.8.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The simulation ignores the state decay that the paper itself identifies as the main cost."
+    },
+    {
+     "id_suggestion": "classical-and-prior-quantum-baselines",
+     "value": "The authors state that graph connectivity can be solved classically in linear time by breadth-first search, and cite Durr et al.'s Grover-based matrix-query and array-query algorithms (order n to the three halves and order n), which do not terminate if the graph is not connected.",
+     "anchor": "Section I, p.1; Section IV.B, p.4; Table I, p.5",
+     "quotes": [
+      "The graph connectivity problem can be solved classically in linear time by using a breadth-first approach.",
+      "as they do not terminate if the graph is not connected.",
+      "to their achieved O(n3/2) and O(n) for the matrix and array query"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results attributed to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "depth-optimization-costs-more-than-classical",
+     "value": "The authors state that optimization can reduce the circuit depth, but that this optimization on a classical computer likely requires more steps than solving the problem classically.",
+     "anchor": "Section V Discussion, p.7",
+     "quotes": [
+      "Optimization can reduce the depth of the circuit, but this optimization on a classical computer likely requires more steps than solving the problem classically."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section V, p.7.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scope-contractible-statements",
+     "value": "The authors state that the current structure of the edge gates limits the algorithm to contractible global statements about graphs, and that harder problems such as bipartiteness or strong connectivity have different requirements, for which they believe suitable non-unitary gates can be found.",
+     "anchor": "Section V Discussion, p.8",
+     "quotes": [
+      "The current structure of the edge gates limits the applicability of the algorithm to contractible global statements about graphs.",
+      "The next more difficult graph problems such as bipartiteness or strong connectivity [28] have different requirements on the global structure.",
+      "We believe it is possible to find non-unitary gates that fulfil the global requirements to solve the problem."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own stated scope, Section V, p.8.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "marcandelli-2026-continuous-variable-quantum-fourier-layer",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Marcandelli-et-al._2026_A-Continuous-Variable-Quantum-Fourier-Layer-Applications-to-Filtering__2603.17847.pdf",
+   "title_in_file": "A Continuous-Variable Quantum Fourier Layer: Applications to Filtering and PDE Solving",
+   "version_note": "arXiv:2603.17847v1, 18 Mar 2026.",
+   "pages": 26,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A continuous-variable photonic construction that encodes a real matrix into the cross-covariance block of a bipartite Gaussian state (via SVD, two-mode squeezing and interferometers) and applies a Cooley-Tukey butterfly network of phase rotations and beam splitters to each register to obtain the 2D DFT, tested in Strawberry Fields Gaussian simulation on low-pass filtering and the 2D heat equation.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "cv-qfl-gate-complexity",
+     "verdict": "narrowed",
+     "note": "The O(m log m + n log n) figure counts only the Fourier stage. The paper's own Appendix B.2 gives an encoding stage of order m squared plus n squared optical gates and a classical SVD of order mn min(m, n), and states that the encoding's main value is not a speedup for classical data loading.",
+     "value": "The authors state that the bipartite CV implementation of the two-dimensional Fourier transform has gate count O(m log m + n log n) and depth O(log(mn)) for an m by n domain, against O(mn log(mn)) for a classical two-dimensional FFT. This counts the Fourier stage only: the paper states the encoding circuit has an optical gate count of order m squared plus n squared, that the SVD must be computed classically in advance with complexity O(mn min(m, n)), and that the encoding's main value is not an immediate speedup for arbitrary classical data loading.",
+     "anchor": "Section 2.3, Equation 20, p.10; Section 5, p.17; Appendix B.2, p.20",
+     "quotes": [
+      "Since the two registers are disjoint, the two circuits run in parallel, giving gate count: O(m log m + n log n), depth: O(log(mn)).",
+      "scales as O(m log m + n log n), in contrast to the classical O(mn log(mn)), resulting in a more resource-efficient circuit for an m × n",
+      "The total encoding circuit is therefore dominated by the interferometric stages, yielding an overall optical gate count of O(m2 +n2)",
+      "must be computed classically in advance, with complexity O(mn min(m, n)), which constitutes a significant preprocessing overhead and a potential computational bottleneck for large inputs.",
+      "its main value is not to provide an immediate computational speedup for arbitrary classical data loading"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derived gate count without a theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The comparison sets an optical gate count against classical arithmetic operations, and the paper also states the whole circuit is Gaussian and efficiently simulable classically, so the lower gate count is not a computational advantage."
+    },
+    {
+     "id": "cv-qfl-gaussian-no-advantage",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 4 Discussion, p.16",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 4, p.16.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "cv-qfl-machine-precision",
+     "verdict": "narrowed",
+     "note": "All results are classical simulations on Strawberry Fields' Gaussian backend, not hardware, and the machine-precision match for filtering is against a classical reference using the same rectangular mask.",
+     "value": "The authors report, from simulation on Strawberry Fields' Gaussian backend, that the CV-QFL output matches the classical reference to machine precision on spectral low-pass filtering (maximum pointwise error 3.8 × 10−15 against a classical reference with the same rectangular mask) and on Fourier-domain integration of the heat equation, and that the filtering circuit improves the signal-to-noise ratio by +9.4 dB against +10.7 dB for the classical pipeline with a circular mask.",
+     "anchor": "Abstract p.1; Section 3.1, Table 1, p.13; Section 3.2, Table 2, pp.14-15; Appendix B.4, p.22",
+     "quotes": [
+      "In both cases, the results match the classical reference to machine precision.",
+      "The CV circuit improves the signal-to-noise ratio by +9.4 dB, close to the +10.7 dB achieved by the classical pipeline.",
+      "mask, the maximum pointwise error is 3.8 × 10−15, i.e. at machine precision.",
+      "The covariance matrix of the resulting Gaussian state is computed by running the circuit on the Gaussian backend:",
+      "In both cases the computation is carried out entirely inside the photonic circuit using StrawberryFields."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Machine-precision agreement in a Gaussian simulator shows the construction is mathematically exact; it says nothing about photonic hardware noise or loss."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "svd-tms-bipartite-encoding",
+     "value": "The authors show that an entry-wise two-mode-squeezing encoding is not implementable because squeezing gates on shared modes do not commute, and instead encode the singular values with independent two-mode squeezers and apply interferometers U and V to the two registers, so that a real data matrix D is encoded exactly in the x-quadrature cross-block of the bipartite covariance matrix (the p-quadrature block holds minus D).",
+     "anchor": "Section 2.1, Equations 3-8, pp.5-6",
+     "quotes": [
+      "However, such an entry-wise construction is not implementable in practice: two-mode squeezing gates acting on shared modes do not commute,",
+      "To overcome this limitation, the encoding is performed in a decoupled basis obtained via the Singular Value Decomposition",
+      "The data matrix D is therefore encoded exactly in the x-quadrature cross-block of the bipartite covariance matrix,",
+      "The cross-block σpr1 pr2 = −D acquires the opposite sign, while all x-p cross-correlations vanish identically."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Equations 1-8, Section 2.1, pp.5-6.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "butterfly-as-rotation-plus-beamsplitter",
+     "value": "The authors show that each Cooley-Tukey butterfly maps onto a phase rotation on one mode followed by a balanced beam splitter BS(π/4, 0), reproducing the classical butterfly up to a normalisation per stage that arises from the beam splitter's unitarity.",
+     "anchor": "Section 2.2, Figure 2 and Equation 9, pp.7-8; Appendix B.4 code, p.22",
+     "quotes": [
+      "In the CV circuit, each butterfly cross is replaced by a sequence of two optical gates acting on a pair of modes",
+      "normalisation per stage arises automatically from the unitarity",
+      "Rgate(phase + np.pi) | q[j] # phase on odd wire BSgate(np.pi/4, 0) | (q[i],"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 2.2, pp.7-8.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "2d-dft-read-from-covariance",
+     "value": "The authors derive that after Fourier matrices are applied to both registers, the two-dimensional DFT of D equals the xx cross-block plus i times the xp cross-block of the output covariance matrix, read without further processing, and state that both blocks are directly accessible via homodyne measurements on the two registers.",
+     "anchor": "Section 2.3, Equations 11-19, pp.9-10",
+     "quotes": [
+      "The two-dimensional DFT of D is therefore obtained directly from the second moments of the bipartite Gaussian state, without any additional processing:",
+      "Both blocks are entries of the physical covariance matrix and are directly accessible via homodyne measurements on the two registers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Equations 11-19, Section 2.3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Estimating covariance entries by homodyne detection needs repeated shots; the paper gives no shot count or estimation error, since its simulator reads the covariance matrix exactly."
+    },
+    {
+     "id_suggestion": "encoding-circuit-complexity",
+     "value": "The authors state that the encoding uses k = min(m, n) two-mode squeezing gates in one parallel layer of depth one, then Clements interferometers for U and V executed simultaneously, for an overall optical gate count of order m squared plus n squared and depth O(max(m, n)) on m + n modes.",
+     "anchor": "Appendix B.2 Circuit Complexity of the Encoding, p.20",
+     "quotes": [
+      "First, the k = min(m, n) two-mode squeezing (TMS) gates act on disjoint mode pairs and are therefore mutually independent.",
+      "They can be applied in a single parallel layer, contributing k Gaussian entangling gates with circuit depth equal to one.",
+      "yielding an overall optical gate count of O(m2 +n2) and a circuit depth of O(max(m, n)) on m + n modes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derived resource count without a theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "encoding-scope-native-optical-data",
+     "value": "The authors state that the encoding's main value is to identify a structured CV optical representation for native Fourier-domain processing rather than a speedup for classical data loading, and that the framework is more naturally suited to native photonic data than generic classically stored matrices.",
+     "anchor": "Appendix B.2, pp.20-21",
+     "quotes": [
+      "rather to identify a structured CV optical representation in which Fourierdomain processing can be implemented natively.",
+      "making the framework more naturally suited to native photonic data rather than generic classically stored matrices."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its encoding's scope, Appendix B.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "entanglement-set-by-singular-values",
+     "value": "The authors state that the entanglement spectrum of the encoded bipartite Gaussian state is directly determined by the singular value spectrum of the data, and that the local interferometers leave the inter-register entanglement invariant.",
+     "anchor": "Appendix B.1 Bipartite Entanglement, pp.19-20",
+     "quotes": [
+      "The entanglement spectrum of the resulting bipartite Gaussian state is thus directly determined by the singular value spectrum of Σ,",
+      "correspond to local symplectic transformations and therefore leave the inter-register entanglement invariant [14, 32, 43]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Argued from standard cited results, without a theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "filtering-setup",
+     "value": "The authors' filtering test uses a 64 × 64 image of three low-frequency cosine components with additive white Gaussian noise of unit standard deviation (input SNR −3.0 dB), whose signal energy lies on 8 Fourier bins; the CV circuit filters with LossChannel transmissivities of 0 or 1 per row and column mode, a separable rectangular mask, while the classical pipeline uses a circular mask.",
+     "anchor": "Section 3.1, pp.11-13",
+     "quotes": [
+      "We consider a 64 × 64 test image composed of three known low-frequency components,",
+      "corrupted by additive white Gaussian noise with unit standard deviation, yielding an input SNR",
+      "(signal-to-noise ratio) of −3.0 dB.",
+      "Thus, the signal energy is concentrated on only 8 Fourier bins associated with the prescribed low-frequency components,",
+      "To realize a low-pass filter, we choose binary transmissivities Ti, Tj ∈ {0, 1} so that only modes within the desired frequency range are preserved,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experiment setup, Section 3.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "losschannel-phase-insensitive-scaling",
+     "value": "The authors state that LossChannel is phase-insensitive, so applying it to row and column modes rescales each complex Fourier coefficient by the product of the two transmissivities without altering its phase.",
+     "anchor": "Section 3.1, Equations 23-25, p.12",
+     "quotes": [
+      "A key property of LossChannel is that it",
+      "is phase-insensitive: both quadratures of a mode are attenuated by the same factor",
+      "This is essential, since it suppresses selected Fourier amplitudes without altering their phase."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation stated without a theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "filtering-table-results",
+     "value": "The authors report that the classical circular mask retained 317 of 4096 bins (7.7%) and gave output SNR 7.7 dB (+10.7 dB), while the CV rectangular mask retained 441 of 4096 bins (10.8%) and gave output SNR 6.4 dB (+9.4 dB), the gap being explained by the larger rectangular mask retaining more noise.",
+     "anchor": "Section 3.1, Table 1, p.13",
+     "quotes": [
+      "circular 317 / 4096 (7.7%) −3.0 7.7",
+      "+10.7 — rectangular (separable) 441 / 4096 (10.8%) −3.0 6.4 +9.4",
+      "The small gap is explained by the larger rectangular mask, which retains slightly more noise power than the circular classical one."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated test.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "heat-equation-results",
+     "value": "The authors report, for the 2D heat equation with α = 0.05 on a 32 × 32 grid evolved in four steps of ∆t = 0.2 to t = 0.8, that LossChannel transmissivities set to the exact spectral propagator give a maximum absolute error against a NumPy pseudospectral solver of at most 6.4 × 10−16 over all time steps.",
+     "anchor": "Section 3.2, Equations 26-29, Table 2, Figure 6, pp.13-15",
+     "quotes": [
+      "We consider the two-dimensional heat equation ∂u = α∇2u, α = 0.05.",
+      "In this example, we consider a 32 × 32 spatial grid, with an initial condition given by the superposition of two localized Gaussian peaks.",
+      "evolved for four time steps of size ∆t = 0.2 up to a final time t = 0.8,",
+      "0.0 × 100 4.4 × 10−16 5.0 × 10−16 5.6 × 10−16 6.4 × 10−16",
+      "Top row : classical pseudospectral solver (NumPy)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated test.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gaussian-backend-polynomial",
+     "value": "The authors state that the Strawberry Fields Gaussian backend propagates only first and second moments, giving runtimes that scale polynomially with the number of modes, and that the covariance matrix can be differentiated with respect to circuit parameters by automatic differentiation.",
+     "anchor": "Appendix B.4 Code implementation, p.22",
+     "quotes": [
+      "The Gaussian backend does not simulate the full quantum state vector; instead, it propagates only the first and second moments of",
+      "This results in runtimes that scale polynomially with the number of modes,",
+      "the covariance matrix can be differentiated with respect to the circuit parameters (squeezing strengths, beamsplitter angles) via"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its simulation method, Appendix B.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "first-cv-qfl-claim",
+     "value": "The authors state that, to the best of their knowledge, this is the first CV-QFL that explicitly integrates CV quantum circuits with the Cooley-Tukey Fourier-transform framework.",
+     "anchor": "Section 1 Introduction, p.4",
+     "quotes": [
+      "To the best of our knowledge, this is the first CV– QFL that explicitly integrates CV quantum circuits with the CT Fourier-transform framework."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A priority claim by the authors.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "native-optical-and-quantum-uses-claimed",
+     "value": "The authors claim that natively optical signals can be processed directly without a classical-to-quantum encoding step, and that for natively quantum problems encoded in multi-mode covariance matrices the CV-QFL can address tasks beyond the efficient reach of classical computers and demonstrate a natural quantum advantage.",
+     "anchor": "Section 4 Discussion, pp.15-16",
+     "quotes": [
+      "In these settings, the input is already carried by optical modes and can be processed directly within the photonic circuit, bypassing the need for explicit classical-to-quantum encoding steps.",
+      "quantum-specific tasks that lie beyond the efficient reach of classical digital computers.",
+      "This provides a robust foundation for future research into fully quantum-native frameworks where the CV-QFL can demonstrate a natural quantum"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' claim without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "This sits against the paper's own statement that the architecture is entirely Gaussian and efficiently simulable classically; Gaussian operations on Gaussian states are classically simulable, so the advantage claim would need the non-Gaussian extension the authors list as future work."
+    },
+    {
+     "id_suggestion": "encoding-bottleneck-classical-data",
+     "value": "The authors state that achieving a definitive quantum advantage for purely classical problems remains challenging, since even efficient Quantum Neural Operators are constrained by the classical-to-quantum data encoding bottleneck, so outperforming classical architectures on purely classical datasets remains very challenging.",
+     "anchor": "Section 4 Discussion, p.16",
+     "quotes": [
+      "However, achieving a definitive quantum advantage for purely classical problems remains challenging.",
+      "Neural Operators are fundamentally constrained by the classical-to-quantum data encoding bottleneck,",
+      "Consequently, outperforming classical architectures on purely classical datasets remains very challenging."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 4, p.16.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "framework-limitations",
+     "value": "The authors state that the cross-covariance encoding is intrinsically two-dimensional, so higher-dimensional or spatio-temporal fields need new register structures; that adding non-Gaussian resources would cost substantially greater experimental complexity; and that the implementation relies on separable mode-by-mode spectral processing.",
+     "anchor": "Section 4 Discussion, p.16",
+     "quotes": [
+      "First, the proposed cross-covariance encoding is intrinsically two-dimensional, so extending it to higher-dimensional or spatio-temporal fields will require new register structures.",
+      "although at the price of substantially greater experimental complexity.",
+      "present implementation relies on separable modeby-mode spectral processing;"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limits, Section 4, p.16.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-and-future-work",
+     "value": "The authors conclude that the CV-QFL provides a native spectral primitive for CV photonic platforms and, while the Gaussian implementation remains classically simulable, a foundational building block for quantum neural operators, with future work on higher-dimensional domains and non-Gaussian resources for problems such as many-body Hamiltonian dynamics.",
+     "anchor": "Section 5 Conclusions, p.17",
+     "quotes": [
+      "this CV-QFL constitutes the core contribution of the paper and provides a native spectral primitive for CV photonic platforms.",
+      "While the current Gaussian implementation remains classically simulable, it establishes a foundational building block for natively quantum neural operators.",
+      "Future work will focus on extending this framework to higherdimensional domains and integrating non-Gaussian resources"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusion and plans.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "markovich-2026-nonparametric-learning-non-gaussian-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Markovich-Liu-Tura_2025_Nonparametric-Learning-Non-Gaussian-Quantum-States-of-Continuous__2508.06431.pdf",
+   "title_in_file": "Nonparametric Learning Non-Gaussian Quantum States of Continuous Variable Systems",
+   "version_note": "arXiv:2508.06431v2, dated March 17, 2026 (16 Mar 2026 stamp); a 5-page letter followed by Supplemental Material (pp.7-36). The main text calls the trace-distance lower bound Theorem 2, the Supplemental Material Theorem 6.",
+   "pages": 36,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A nonparametric kernel quantum state estimation (KQSE) method for continuous-variable states that estimates the symplectic tomogram by KDE and its characteristic function by a kernel estimator (KCFE) with a noise-deconvolution step, with convergence theorems, simulations on a three-component coherent cat state and a test on experimental Schrodinger-kitten homodyne data.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "kqse-beats-mle-misspecified",
+     "verdict": "narrowed",
+     "note": "In the Supplemental Material the experimental tomogram reconstruction is not lowest for KDE: the two-component MLE had lower ISE (7.037e-3 vs 7.430e-3). KQSE/KCFE was lowest for the experimental CF and density-matrix kernel. The experimental errors are measured against a theoretical model the authors call only an approximate reference, from one dataset.",
+     "value": "The authors report that KQSE consistently gives the lowest reconstruction errors on simulated and experimental data and outperforms MLE-based approaches under model mismatch and noise. In the Supplemental Material, on the single experimental kitten-state dataset, the KDE tomogram had integrated squared error 7.430 × 10−3 against 7.037 × 10−3 for a two-component Gaussian-mixture MLE, while the KCFE and KQSE gave the lowest errors for the characteristic function and the density-matrix kernel; the authors state the theoretical reference there is approximate rather than exact ground truth.",
+     "anchor": "Main text, Simulation Study, p.5; Supplemental Material S4.2, pp.34-35",
+     "quotes": [
+      "KQSE consistently yields the lowest reconstruction errors for both simulated and experimental data, outperforming MLE-based approaches in the presence of model mismatch and noise.",
+      "ISEKDE = 7.430 × 10−3, ISEGMM=2 = 7.037 × 10−3, ISEGMM=1 = 2.242 × 10−2.",
+      "The numerical values of the ISE indicate that the KDE-based reconstruction and the MLE with a two-component Gaussian mixture model yield comparable performance,",
+      "the theoretical tomogram should be regarded as an approximate reference rather than an exact ground truth in this case."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, with one experimental dataset.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The main-text word 'consistently' is not borne out for the experimental tomogram, where the two-component MLE scored slightly better."
+    },
+    {
+     "id": "kqse-bound-not-tight",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Main text, after Theorem 2, p.3",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, main text p.3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "kqse-near-optimal-rate",
+     "verdict": "narrowed",
+     "note": "The Supplemental Material derivation estimates the tails of the integrals parametrically from prior knowledge of the theoretically prepared state, needs a Gaussian-tail decay parameter of at least one half, and treats the noise model as known; it also states the cutoff cannot grow with n in practice, leaving a constant truncation shift. So 'no prior information' does not hold for the derivation as given.",
+     "value": "The authors state that KQSE reaches a near-optimal convergence rate in squared distance of order one over T up to log factors, without assuming Gaussianity or using prior information. The Supplemental Material derivation, however, estimates the central part of each integral nonparametrically and the tail components parametrically using prior knowledge of the theoretically prepared state, relies on Gaussian-tailed distributions (decay parameter above one half), assumes the noise characteristic function known from the noise model, and notes that in realistic settings the cutoff cannot grow with n, so truncation gives a constant shift.",
+     "anchor": "Main text p.2 and Conclusions p.5; Supplemental Material S2.3 p.17, S3 pp.18-22",
+     "quotes": [
+      "Our estimator achieves a near-optimal convergence rate in squared distance",
+      "we do not assume Gaussianity or use any prior information, only measurement data, reaching the same rate of convergence.",
+      "components ρtail±(y, y′) parametrically using the prior knowledge of the theoretically prepared state.",
+      "Since we deal with the Gaussian tailed PDFs, the τ can be always selected bigger than 1/2.",
+      "is assumed to be known from the noise model",
+      "As we mentioned before, we can’t increase the µmax with n in realistic scenarios.",
+      "will give us a constant shift because of the truncation"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A theorem whose conditions differ between the main text and the Supplemental Material derivation.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The 'no prior information' claim in the main text conflicts with the parametric tail correction the Supplemental Material uses to control truncation error."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "theorem1-kqse-convergence",
+     "value": "The paper states (Theorem 1) that KQSE estimators of the density-matrix kernel and of the overlap, built from Tµ = nNµ and Tµ,ν = nNµNν state preparations with n samples per setting, reach a supremum mean squared error for the kernel of order one over Tµ and a mean squared error for the overlap of order one over Tµ,ν, up to log factors; for a pure state the squared trace distance has the same rate, and by Chebyshev's inequality the probability of a squared distance above δ decays as one over Tµ,ν δ squared, up to log factors.",
+     "anchor": "Theorem 1, main text p.2, Equation 1; Supplemental Material S3, Equations 121-122 and 138-142, pp.21-24",
+     "quotes": [
+      "Theorem 1. (Convergence of KQSE) Let ρ(y, y′) and tr(ρ1ρ2) denote the KQSE estimators of the density matrix ρ(y, y′) and the overlap tr(ρ1ρ2), respectively, constructed from Tµ = nNµ and Tµ,ν = nNµNν",
+      "quantum state preparations, where n samples are collected per setting {µi, νj}, Nµ, Nν = log n.",
+      "The MSE of the estimate of the squared trace distance is exactly equal to the MSE of the overlap estimator:",
+      "Apply Chebyshev’s inequality, we get"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The rate expressions are flattened by the text layer, and the derivation's conditions (parametric tail, Gaussian tails, known noise) differ from the main-text statement.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The theorem sets Nµ to log n, but the Supplemental Material derivation takes Nµ of about µmax log n with µmax of about log n, giving Tµ = n(log n) squared."
+    },
+    {
+     "id_suggestion": "theorem2-tv-lower-bounds-trace-distance",
+     "value": "The paper proves (Theorem 2 in the main text, Theorem 6 in the Supplemental Material) that the trace distance between any two CV quantum states is lower bounded by the total variation distance between their tomograms, using the POVM property of the dequantizer, and states that unlike earlier Gaussian-only results the inequality holds for arbitrary states.",
+     "anchor": "Theorem 2, main text p.3; Theorem 6 and proof, Supplemental Material S1.2, p.9",
+     "quotes": [
+      "Theorem 2. (Lower bound to closeness of any states) The trace distance D(ρ1, ρ2) between two CV quantum states is lower bounded by the total variation T (W1, W2) between their tomograms.",
+      "Theorem 6. The trace distance D(ρ1, ρ2) = 1 2 tr|ρ1 − ρ2|",
+      "where we used the POVM properties of the dequantizer.",
+      "our inequality holds for arbitrary quantum states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem stated p.3 and proved in Supplemental Material p.9.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem3-kde-sample-count",
+     "value": "The paper states (Theorem 3) that the number of copies needed to estimate an unknown state by the KDE method with precision ε in trace distance must scale at least as ε to the minus five halves; the Conclusions state this gives a lower bound on the trace distance with precision ε from n of that order samples at one setting.",
+     "anchor": "Theorem 3, main text p.3; Conclusions p.4",
+     "quotes": [
+      "Theorem 3. Let ρ be an unknown state. The number of copies n of ρ required to estimate it by the KDE method with precision ε in trace distance has to scale at least as",
+      "given a single set of tomographic parameters µ, ν and n = O(ε−5/2) samples, one can obtain a lower bound on the trace distance with precision ε."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "No proof of Theorem 3 is given in the file; it follows from a cited KDE L1 rate.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "What the KDE estimates is the total variation, a lower bound on the trace distance, not the trace distance itself."
+    },
+    {
+     "id_suggestion": "kde-rates-vs-histogram-mle",
+     "value": "The authors state that for second-order kernels KDE converges in the L1 distance at rate n to the minus two fifths and in MISE at n to the minus four fifths, better than the optimal histogram rate of n to the minus two thirds but slower than the parametric MLE rate of n to the minus one, the trade-off for requiring only smoothness of the density.",
+     "anchor": "Main text p.3; Supplemental Material S2, Equations 52-59, pp.13-14",
+     "quotes": [
+      "For the L2 distance (i.e., mean integrated squared error (MISE)), KDE achieves a rate of O(n−4/5) (see Supplemental Material), outperforming the",
+      "optimal histogram rate of O(n−2/3), but remaining slower than the parametric MLE rate of O(n−1) [37].",
+      "For such kernels the rate of convergence in L1- norm is O(n−2/5)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Classical KDE results attributed to references 37 and 69.",
+     "result_type": "cited",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem4-cf-validity-conditions",
+     "value": "The paper states (Theorem 4) that the reconstruction integral defines the density operator of a quantum state if and only if the tomogram's characteristic function satisfies Hermiticity, normalization and positivity conditions; the conditions were formulated in the authors' earlier work (ref 39) and are given here in an equivalent integral form.",
+     "anchor": "Theorem 4, main text p.3",
+     "quotes": [
+      "Theorem 4. (Hermiticity, Normalization, Positivity) The integral (2) defines the density operator corresponding to a quantum state if and only if the CF of the tomogram satisfies:",
+      "In Ref. [39], we formulated conditions on the CF ensuring ρ reconstruction. Here, we present its equivalent integral formulation:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The conditions are flattened by the text layer and the proof is in the authors' earlier paper, not this one.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cf-determines-trace-quantities",
+     "value": "The authors show that the tomogram's characteristic function coincides with that of the Wigner function and satisfies a noncommutative Parseval relation giving the overlap of two states, so purity, higher moments, overlap and, for pure states, the trace distance are all determined by the characteristic functions.",
+     "anchor": "Main text p.2-3, Equations 5-6; Supplemental Material S1.3-S1.6, pp.10-13",
+     "quotes": [
+      "We show that this CF coincides with that of the Wigner function [8, 29].",
+      "We show that the density matrices ρ1 and ρ2 of two quantum states satisfy the noncommutative Parseval relation:",
+      "In this case the knowledge of the CFs can provide the trace distance between two pure quantum states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derivations given without a numbered theorem; formulas flattened by the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem5-kcfe-convergence",
+     "value": "The paper states (Theorem 5) that the kernel characteristic function estimator from n i.i.d. measurements of one quadrature, with bandwidth of order n to the minus one half, has mean squared error of order one over n; the Supplemental Material derives this for a Gaussian kernel when the characteristic function's modulus is below one and n is large enough, and states the KCFE is asymptotically as efficient as parametric MLE.",
+     "anchor": "Theorem 5, main text p.4; Supplemental Material S2.2, Equations 69-77, pp.15-16",
+     "quotes": [
+      "Theorem 5. (Convergence of KCFE) Let ϕˆX,nh(t; µ, ν) be the",
+      "KCFE of ϕ(t; µ, ν), constructed from n i.i.d. measurements of a fixed quadrature Xµ,ν (or Zµ,ν in the noisy case).",
+      "For |ϕ(t; µ, ν)| < 1 the optimal bandwidth parameter is",
+      "In practice, for big enough n it is always the case.",
+      "The KCFE is asymptotically as efficient as the parametric maximum likelihood estimator (MLE)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated in the main text p.4 and derived in Supplemental Material S2.2 with its conditions (Gaussian kernel, modulus below one, large n); the rate symbols are flattened by the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noise-model-and-deconvolution-scope",
+     "value": "The authors model detection noise as Z equal in distribution to κX plus (1 − κ)Y with independent noise Y, filter it by dividing the characteristic function by the noise's characteristic function, which must not vanish and is assumed known from the noise model, and state that nonlinear signal-noise interaction and non-Gaussian noise are beyond the paper's scope.",
+     "anchor": "Main text p.3-4, Equations 8-9; Supplemental Material S2.3, pp.16-17",
+     "quotes": [
+      "Z ≡d κX + (1 − κ)Y, 0 < κ < 1, (8)",
+      "While the true signal-noise interaction may be nonlinear and the noise non-Gaussian, the analysis of such models lies beyond the scope of this paper.",
+      "If ϕY (t) were to vanish at some points, the inversion process would become unstable or even impossible due to division by zero.",
+      "is assumed to be known from the noise model"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own stated noise model and scope, main text p.3 and Supplemental Material S2.3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "parametric-tail-correction-limit",
+     "value": "The authors state that measurement data cover only a finite parameter window, so they estimate the tail parts of the integrals parametrically (using the harmonic-oscillator ground-state characteristic function), and that they cannot estimate how much this parametric correction reduces the error since it depends on how well the parametric model was guessed.",
+     "anchor": "Supplemental Material S3, pp.18 and 22",
+     "quotes": [
+      "That means that no measurement data is available to directly estimate (90).",
+      "In [39] we show that for the ground state of the HO the CF is (26).",
+      "We cannot estimate how the parametric correction will reduce the error, since it is fully dependent on how well we guessed our parametric model."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Supplemental Material S3, p.22.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "error-bound-not-tight-fig4",
+     "value": "The authors report that the Cauchy-Schwarz upper bound on the KCFE error is not tight: for the coherent cat state the observed ratios of bound to error were 46.07 and 55.37 for n from 100 to 2000, and 4.88 × 102 for the kernel error against its bound, while the actual error kept the order one over n rate.",
+     "anchor": "Supplemental Material S3.1, Figure 4, pp.21-22",
+     "quotes": [
+      "The reason of this difference is that the upper bound provided by the Cauchy-Schwarz inequality is not tight.",
+      "Observed ratios: 46.07 and",
+      "55.37. (b) Comparison between ερ (Eq. (97)) and its upper bound (Eq. (121)) as a function of T ∈ [104, 105].The observed ratio is 4.88 × 102.",
+      "as a function of n ∈ [100, 2000] for Nµ = 50, µmax = 6, (y, y′) = (1.5, 1.0)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical result from one simulated state.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "simulation-setup-cat-state",
+     "value": "The authors' simulation draws samples by importance sampling from the analytic tomogram of a coherent cat state built from three coherent states with a = 1 + 0.5i at µ = 0.8, ν = 1.2, uses Gaussian-kernel KDE with cross-validated bandwidth, Epanechnikov KDE with Silverman's rule and Freedman-Diaconis histograms, compares two- and three-component Gaussian-mixture MLE, uses n in {500, 1000, 2000} averaged over L = 103 realizations, and models noise as N(0, 1) with κ = 0.85.",
+     "anchor": "Main text p.4; Supplemental Material S4 and S4.1, pp.25-29",
+     "quotes": [
+      "synthetic measurement data are generated using importance sampling.",
+      "The KDE estimation is performed using: Gaussian kernels with the bandwidth selected via cross-validation (GridSearchCV), as well as Epanechnikov",
+      "with the bin width chosen according to the Freedman– Diaconis rule.",
+      "The study is performed for three sample sizes, n = {500, 1000, 2000}.",
+      "The results are averaged over L = 103 independent realizations. The tomographic parameters are fixed to µ = 0.8, ν = 1.2, a = 1 + 0.5i.",
+      "noise component Y is a normally distributed random variable with N (0, 1), and we fix κ = 0.85."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own simulation setup, Supplemental Material S4.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "L = 103 is the text layer's flattening of ten to the third."
+    },
+    {
+     "id_suggestion": "cat-tomogram-mise-kde-vs-gmm",
+     "value": "The authors report that for the simulated cat-state tomogram the Gaussian KDE had the lowest MISE at every sample size, for example at n = 2000 about 7.556 × 10−4 against 1.975 × 10−3 for three-component and 1.599 × 10−2 for two-component Gaussian-mixture MLE, and that MLE was highly sensitive to the assumed number of components.",
+     "anchor": "Supplemental Material S4.1, Table III, p.27",
+     "quotes": [
+      "2000 1.599 × 10−2 1.975 × 10−3 7.556 × 10−4",
+      "consistently outperforms both MLE-based reconstructions. Notably, the performance of the MLE is highly sensitive to the assumed number of mixture components,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated result for one state.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cat-cf-kcfe-vs-gmm",
+     "value": "The authors report that for the simulated cat state the KCFE gave a lower characteristic-function MSE than Gaussian-mixture MLE with two or three components at every sample size, that MLE with two components failed to reproduce the true characteristic function, and that the built-in noise correction gave results nearly identical to the noiseless case.",
+     "anchor": "Supplemental Material S4.1, Tables IV-V, Figures 9-10, pp.28-29 (table digits flattened by the text layer, so values are not restated)",
+     "quotes": [
+      "For all considered values of n, the KCFE consistently outperforms the MLE-based estimators with both GM M = 2 and GM M = 3.",
+      "The MLE reconstruction with GM M = 2 fails to reproduce the true CF,",
+      "One can see that our correction build in the kernel CF estimation provides the results nearly identical to the noiseless case."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated result for one state.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noise-correction-recovers-noiseless",
+     "value": "The authors report that with κ = 0.85 Gaussian noise and n = 500, µmax = 8, Nµ = 160, the KQSE kernel supremum error was 1.667 × 10−4 on noiseless data, 1.279 × 10−2 on noisy data without correction and 1.747 × 10−4 with correction, so the noise-corrected values closely match the noiseless benchmarks; increasing n or Nµ gave over threefold error reduction, µmax a weaker effect.",
+     "anchor": "Supplemental Material S4.1, Table VII, pp.29-32",
+     "quotes": [
+      "Noiseless 1.667 × 10−4 5.446 × 10−5 7.352 × 10−3 500 Noisy 1.279 × 10−2 1.195 × 10−2 1.093 × 10−1 Corrected 1.747 × 10−4 6.099 × 10−5 7.744 × 10−3",
+      "and number of measurement settings Nµ, with fixed κ = 0.85.",
+      "When not varied, the default values are µmax = 8,",
+      "Nµ = 160, and n = 500.",
+      "yielding over threefold reduction in the supremum norm error, while the effect of increasing µmax is slightly weaker but still significant.",
+      "In all cases, the noise-corrected values closely match the noiseless benchmarks,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated result for one state with a known noise model.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The correction is tested only with the same Gaussian noise model it assumes."
+    },
+    {
+     "id_suggestion": "experimental-kitten-dataset",
+     "value": "The authors test KQSE on one experimental homodyne dataset of a Schrodinger kitten state (Lvovsky and Mlynek) with T = 14153 data points, folded into [0, π) and split into Nθ = 20 phase bins of about 700 points, modeling the state as a vacuum admixture with p = 0.6810463 chosen from the reported purity of 0.77.",
+     "anchor": "Supplemental Material S4.2, pp.31-34",
+     "quotes": [
+      "The experimental dataset consists of T = 14153 raw homodyne",
+      "dividing the interval [0, π) into Nθ = 20 subintervals of the same size, each containing approximately the same number of data points (n ∼ 700).",
+      "In Ref. [54], for α = 0.3 the purity is reported to be trρ2 = 0.77, which leads to two possible values, p = {0.3189537, 0.6810463}.",
+      "Since only a single experimental dataset is available,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its experimental test, Supplemental Material S4.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "experimental-cf-and-kernel-errors",
+     "value": "The authors report on the experimental dataset that the KCFE gave the smallest characteristic-function squared error (4.075 × 10−3, against 4.489 × 10−3 for two-component and 1.276 × 10−2 for one-component MLE) and KQSE the smallest kernel L-infinity error (1.012 × 10−2, against 1.372 × 10−2 and 3.424 × 10−2).",
+     "anchor": "Supplemental Material S4.2, Figures 14-15, p.35",
+     "quotes": [
+      "The KCFE yields the smallest error, SEKCFE = 4.075 × 10−3, followed by the MLE with a twocomponent Gaussian mixture model, SEGMM=2 = 4.489 ×",
+      "In contrast, the single-component MLE exhibits a substantially larger error, SEGMM=1 = 1.276 × 10−2.",
+      "errors are L∞,GMM=1 = 3.424 × 10−2, L∞,GMM=2 = 1.372 × 10−2, and L∞,KQSE = 1.012 × 10−2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One experimental dataset compared against an approximate theoretical reference.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kde-limitations",
+     "value": "The authors state that KDE can perform poorly at the boundaries of the domain and can be computationally intensive for large datasets, since it sums over all data points for each evaluation.",
+     "anchor": "Supplemental Material S2, p.14",
+     "quotes": [
+      "KDE can perform poorly at the boundaries of the domain, as kernels may be only partially within the data range.",
+      "for large datasets, KDE can be computationally intensive, as it requires summing over all data points for each evaluation of the PDF."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limits of its method, Supplemental Material p.14.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ho-superpositions-gaussian-tails",
+     "value": "The authors derive that any quantum state formed as a superposition of harmonic-oscillator eigenstates has Gaussian tails in its wavefunction and in its tomogram's characteristic function.",
+     "anchor": "Supplemental Material S1.2, Example 1, p.9",
+     "quotes": [
+      "We conclude that any quantum state formed as a superposition of HO eigenstates exhibits Gaussian tails, both in its wavefunction and in the corresponding CF with respect to"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation from an example, not a theorem.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "universality-claim-and-future-work",
+     "value": "The authors claim the method is universal and robust for any light-tailed distribution (and heavy-tailed ones with a proper kernel), independent of the shape of the tomographic distribution, and state that future work will extend KQSE to multivariate states.",
+     "anchor": "Conclusions, main text p.5",
+     "quotes": [
+      "The method is universal: it performs reliably for arbitrary states, including non-Gaussian multimodal ones,",
+      "In contrast to existing methods, our approach is independent of the shape of the tomographic distribution.",
+      "Our future work will address the extension of KQSE to multivariate states"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' claim; tested on one simulated and one experimental single-mode state.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The method is single-mode as presented; multimode states are future work."
+    }
+   ]
+  },
+  {
+   "record_id": "masot-llima-2025-prospects-quantum-advantage-machine-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Masot-Llima-et-al._Prospects-for-quantum-advantage-in-machine-learning-from-the__2512.15661.pdf",
+   "title_in_file": "Prospects for quantum advantage in machine learning from the representability of functions",
+   "version_note": "arXiv:2512.15661v2, 22 Dec 2025.",
+   "pages": 21,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A perspective paper that classifies parametrized quantum circuits by whether their output function families are classically evaluatable (Property 1) and identifiable from parameters (Property 2), maps shallow, low-doping, free-fermionic and flipped architectures onto three nested classes, and proves that ERM over the relaxed Class 2 family is classically easy while ERM over the quantum-parametrized family is QCMA-complete in the worst case.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "dequantization-building-blocks",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section V Conclusions and Outlook, p.13",
+     "quotes": [],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' reading of the literature.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "flipped-model-erm-no-advantage",
+     "verdict": "narrowed",
+     "note": "The paper's result (Proposition 1, proved in Appendix B) is for the mean-squared-error loss and lets the classical learner optimize over the larger linear span F′ of a polynomial-sized basis, which contains the quantum family; the authors also note an example outside the structural PQC assumptions (the Discrete Cube Root task) where ERM in Class 2 may be classically hard.",
+     "value": "The authors state that no quantum advantage is possible for empirical risk minimization with partially simulable flipped models within constructive PQC examples, because the problem relaxes to a convex quadratic optimization over a fixed, polynomial-sized basis. This holds for the mean square error loss with the classical learner optimizing over the larger linear-combination family F′, which they prove is solvable classically in polynomial time (Proposition 1); they note an example outside the structural PQC assumptions where ERM within Class 2 is expected to be classically hard.",
+     "anchor": "Section IV A, Proposition 1, pp.10-11; Appendix B, pp.18-19; Section V, p.13",
+     "quotes": [
+      "Here, we have demonstrated that no quantum advantage is possible for this task within constructive PQC examples; under these structural constraints, the problem relaxes to a convex quadratic optimization over a fixed, polynomial-sized basis, which acts as an efficient classical surrogate.",
+      "We specialize ERM to the mean square error loss",
+      "Proposition 1 (Informal). The ERM task with respect to the larger hypothesis family F′ can be solved efficiently on a classical computer.",
+      "For completeness, we also remark an example, outside of the structural PQC assumptions, where quantum advantage is possible in ERM within Class 2."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 1 rigorously restated and proved in Appendix B, pp.18-19, with its conditions (MSE loss, polynomially many efficient basis functions).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The classical and quantum learners solve ERM over different families; the authors note this themselves when reconciling Propositions 1 and 2."
+    },
+    {
+     "id": "framework-no-practical-advantage-claim",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section I Introduction p.1; Section V p.13",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope, Introduction p.1 and Conclusions p.13.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "advantage-and-dequantization-definitions",
+     "value": "Following earlier work, the paper defines quantum advantage relative to a learning task as an efficient QML model achieving, with high probability over training sets, a significantly (ideally superpolynomially) lower expected risk than the best efficient classical learning model, and dequantization as a classical model achieving similar or better performance.",
+     "anchor": "Section II B, pp.2-3",
+     "quotes": [
+      "We say that an efficient QML model (F, A) exhibits quantum advantage if it yields significantly better performance on the task compared to any efficient classical learning model.",
+      "there exists a significant (ideally superpolynomial) gap in the expected risks of the resulting",
+      "Conversely, we say the QML model admits dequantization if a classical model achieves similar or better performance, satisfying"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions, Section II B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evaluation-identification-classes",
+     "value": "The paper defines efficient evaluation (Property 1: for every parameter choice a polynomial-time classical algorithm computes the function, possibly different per parameter) and efficient identification (Property 2: one polynomial-time algorithm computes the joint map from input and parameters), and three nested classes: Class 1 satisfies both (classically simulable), Class 2 satisfies Property 1 (classical surrogates), and Class 3 is all quantum circuits, whose functions may lack succinct classical representations under the assumption BQP ≠ BPP.",
+     "anchor": "Section II C, Properties 1-2 and Classes 1-3, p.3",
+     "quotes": [
+      "Class 3 (Quantum functions).",
+      "The functions fϑ(x) ∈ F are classically efficiently evaluatable if, for every choice of ϑ, there exists a polynomial-time classical algorithm that computes the map x → fϑ(x) for any input x ∈ X .",
+      "The functions fϑ(x) ∈ F are classically efficiently identifiable if there exists a polynomial-time classical algorithm that computes the joint map (x, ϑ) → fϑ(x) for any x ∈ X and ϑ ∈ Θ.",
+      "Class 1 includes circuits that can be classically simulated. Class 2 relates to the classical surrogates mentioned above.",
+      "assumption BQP ≠ BPP). Notice that the classes are nested, i.e. each class is contained in the subsequent ones."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions, Section II C, p.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scope-variational-poly-depth",
+     "value": "The authors restrict their analysis to variational data re-uploading PQCs of total depth at most polynomial in n, exclude quantum kernel methods unless stated, assume the training algorithm is classically efficient, define simulation as computing expectation values to additive precision in time polynomial in n and the inverse precision, and state that they claim no technical novelty for the underlying methods.",
+     "anchor": "Section II A, p.2; Section III A-B, pp.3-5; Section I, p.1",
+     "quotes": [
+      "For conceptual clarity, we exclude quantum kernel methods from the following analysis unless explicitly mentioned.",
+      "the training subroutine is assumed to be classically efficient, using black-box access to the hypothesis family and its derivatives.",
+      "restrict our consideration to circuits with total depth at most",
+      "A simulation is deemed efficient if the runtime of this computation scales polynomially with both the number of qubits n and the",
+      "While we do not claim technical novelty regarding the underlying methods,"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own stated scope, Sections I-III.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "simulation-methods-resource-costs",
+     "value": "The authors summarize that stabilizer methods with t non-Clifford gates cost of order four to the t and are efficient for t of order log n, that MPS methods are efficient for one-dimensional circuits of at most logarithmically many layers, and cite a result that, for gates generated by Pauli operators, the only polynomial-dimensional dynamical Lie group is the free-fermionic one.",
+     "anchor": "Section III B, pp.5-6",
+     "quotes": [
+      "It follows that if t = O(log(n)) this type of algorithm is efficient.",
+      "Circuits where the entanglement is guaranteed to remain limited are specifically the ones with a shallow depth, i.e. with at most O(log(n)) layers of local nearest neighbor gates",
+      "the only dynamical Lie group with dimension poly(n) that can arise is the free-fermionic one [47]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Known results attributed to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "observation1-shallow-circuits-class1",
+     "value": "The authors state (Observation 1) that one-dimensional circuits of local gates whose total encoding and training depth is at most logarithmic in system size are in Class 1, fully simulable with MPS methods, and that there is no known way to exploit shallowness of only the encoding or only the trainable layers.",
+     "anchor": "Section III D 1, Observation 1, p.7; Appendix A 1, pp.16-17",
+     "quotes": [
+      "One-dimensional circuits of local gates, where the total depth of encoding and training layers is at most logarithmic in the system size, are in Class 1.",
+      "There is not any known way to exploit this partial shallowness."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An Observation argued from cited MPS methods, with a construction sketched in Appendix A 1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "observation2-low-doping-class1",
+     "value": "The authors state (Observation 2) that circuits in which each encoding and training layer, and their combined action, maps a Pauli observable to at most polynomially many Pauli strings are in Class 1, simulable by Pauli back-propagation, and that this covers circuits with logarithmically many non-Clifford gates, many noisy circuits, and average-case random noiseless circuits.",
+     "anchor": "Section III D 2, Observation 2, pp.7-8; Appendix A 2, p.18",
+     "quotes": [
+      "Observation 2 (Low doping circuits).",
+      "maps (in Heisenberg picture) a Pauli observable to a linear combination of at most poly(n) Pauli",
+      "strings, are in Class 1. They can be fully simulated in terms of the training and encoding parameters using Pauli back-propagation methods.",
+      "However, also many types of noise lead to a total action of the noisy circuit which can be approximated to a good precision by a sparse outcome"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An Observation argued from cited Pauli-propagation results.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "observation3-flipped-low-doping-class2",
+     "value": "The authors state (Observation 3) that flipped-architecture circuits whose final encoding block maps a Pauli observable to at most polynomially many Pauli strings are in Class 2: the output is a polynomial linear combination of efficient functions of x, but the coefficients, expectation values of the trained state, need not be efficiently computable; the reversed encoding-first case gives neither Class 1 nor Class 2 structure.",
+     "anchor": "Section III D 3, Observation 3, pp.8-9",
+     "quotes": [
+      "Observation 3 (Partially low doping flipped circuits).",
+      "Circuits with a flipped architecture, where the encoding block maps (in Heisenberg picture) a Pauli observable to a linear combination of at most poly(n) Pauli strings, are in Class 2.",
+      "However, it is not necessarily efficiently identifiable (Property 2), as the coefficients Ck(ϑ) = Tr [ρ(ϑ)Pk] cannot be efficiently computed without making",
+      "so fϑ(x) of this form does not have the efficient structures of Class 1, nor of Class 2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An Observation with a short derivation, not a theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "observation4-free-fermionic",
+     "value": "The authors state (Observation 4) that circuits whose total action is free-fermionic, with an observable that is a low-degree Majorana monomial, are in Class 1, and flipped circuits whose encoding block is free-fermionic are in Class 2.",
+     "anchor": "Section III D 4, Observation 4, p.9",
+     "quotes": [
+      "Observation 4 ((Partially) free-fermionic",
+      "Circuits where the total action of encoding and training layers is a free-fermionic evolution and the observable is a low-degree monomial of Majorana",
+      "operators are in Class 1. Circuits with a flipped architecture, where the encoding block is a free fermionic evolution, are in Class 2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An Observation argued from cited free-fermion simulation results.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "general-circuits-class3-known-methods-limit",
+     "value": "The authors state that all other combinations of the structures they define are in Class 3, that this rests on currently known simulation approaches and bases so new techniques cannot be ruled out, and that fine-tuned architectures or parameter choices (for example very small rotation angles) can still be classically easy.",
+     "anchor": "Section III D 5 General circuits, pp.9-10",
+     "quotes": [
+      "They are, therefore, in Class 3.",
+      "We conclude by observing that all other combinations of the quantum circuit structures defined in Section III A produce circuits that satisfy neither Property 1",
+      "Note that this analysis is based on using the currently known circuit simulation approaches and corresponding functional bases.",
+      "One cannot rule out that novel simulation techniques may be discovered",
+      "For example, rotations with very small angles are known to introduce little nonstabilizerness to the circuit, which would make the circuit"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit of its classification, Section III D 5, pp.9-10.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "class1-no-erm-advantage",
+     "value": "The authors state that for Class 1 circuits, assuming a classically efficient training algorithm, no quantum advantage for ERM is possible because every step can be replicated classically, a complete dequantization, and that such learners lie within P/poly.",
+     "anchor": "Section IV A, p.10; Section IV B, pp.11-12",
+     "quotes": [
+      "The analysis for Class 1 is straightforward.",
+      "Assuming the training algorithm A used by the quantum learner is also classically efficient, no quantum advantage for ERM is possible.",
+      "This yields a complete dequantization.",
+      "placing this quantum learners within the complexity class P/poly (polynomial-time algorithms with"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument from the class definitions, without a numbered result.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "proposition1-erm-convex-classically-easy",
+     "value": "The paper proves (Proposition 1) that ERM with the mean squared error over linear combinations of m = poly(n) efficiently computable basis functions is a convex quadratic problem in the coefficients, with a positive semidefinite kernel-matrix Hessian, solvable classically in polynomial time (equivalently by kernel ridge regression with a polynomial-sized kernel).",
+     "anchor": "Proposition 1, Section IV A, p.10; Appendix B, pp.18-19",
+     "quotes": [
+      "defined as linear combinations of m = poly(n) basis functions Tk(x) as m fC (x) = CkTk(x) , k=1 (B1)",
+      "We assume each basis function Tk(x) is efficiently computable.",
+      "The minimization of this quadratic form can be solved classically in polynomial time.",
+      "Because kernel problems are positive semi-definite (PSD), the Hessian will also be PSD, hence it is a convex problem and efficiently solvable."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 1 rigorously restated and proved in Appendix B, pp.18-19.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "proposition2-erm-qcma-complete",
+     "value": "The paper proves (Proposition 2) that ERM with the mean squared error over the hypothesis class of a flipped-architecture PQC is equivalent to minimizing the energy of a 2n-qubit Hamiltonian built from the training data over states the PQC can prepare, and that this problem is QCMA-complete, by reduction from the low-complexity low-energy-states problem with a single data point and label zero; the authors conclude ERM with Class 2 circuits is worst-case quantum hard, while not ruling out specific model-task pairs where it is quantum efficient.",
+     "anchor": "Proposition 2, Section IV A, p.11; Appendix C, pp.19-21",
+     "quotes": [
+      "Proposition 2 (Informal). The ERM task with respect to the restricted hypothesis family F cannot be solved efficiently by a quantum computer in the worst case.",
+      "The quantum learning task of finding finding the",
+      "state ρ(ϑ∗) that minimizes the energy of a corresponding 2n-qubit Hamiltonian H(S)",
+      "Since the problem is in QCMA and is QCMA-hard, it is QCMA-complete.",
+      "this worst-case result does not preclude the existence of specific model-task pairs where ERM is quantum efficient."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 2 rigorously restated and proved in Appendix C, pp.19-21.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The reduction squares the energy thresholds, which preserves their order only when the energies are nonnegative; the proof does not state that condition. The hardness instance uses all circuits of at most k gates as the PQC family and a single data point, so it shows worst-case hardness of the general family rather than of typical flipped models."
+    },
+    {
+     "id_suggestion": "propositions-reconciled-nonconvexity",
+     "value": "The authors state that Propositions 1 and 2 only seem contradictory because the classical and quantum learners optimize over different hypothesis families; it is the non-convexity of the quantum family that makes its ERM harder, so without additional structural assumptions Class 2 circuit families cannot yield quantum advantage in ERM.",
+     "anchor": "Section IV A, p.11",
+     "quotes": [
+      "Nonetheless, the implication is clear: ERM with Class 2 circuits is worst-case quantum hard. Note that Propositions 1 and",
+      "The subtlety lies here in the definition of the search space.",
+      "Ultimately, it is the non-convexity of the set F that makes the problem more complex, independently of the quantum learner’s ability to efficiently",
+      "Thus, without additional structural assumptions, circuit families in Class 2 cannot yield quantum advantage in ERM."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument combining the two propositions, not itself proved.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dcr-example-outside-structure",
+     "value": "The authors cite a learning task from Refs 26 and 27 where low empirical risk is expected to be hard for a classical learner by reduction to the Discrete Cube Root problem, using an efficiently evaluatable hypothesis family not of the convex form from generic PQC architectures.",
+     "anchor": "Section IV A, p.11",
+     "quotes": [
+      "Refs. [26, 27] is a learning task where achieving a low empirical risk",
+      "is a learning task where achieving a low empirical risk is expected to be hard for a classical learner, due to a reduction to the Discrete Cube",
+      "This case differs from the previous ones in that it uses an efficiently evaluatable hypothesis family that is not of the convex form (12)"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to other work, resting on a cryptographic assumption.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "class3-erm-advantage-possible",
+     "value": "The authors state that efficient classical learners for ERM can generally be ruled out for Class 3, that known examples of quantum advantage in ERM exist in quantum kernel methods and variational QML, and that advantage would become impossible if the associated kernel were classically efficient, as for entangled tensor kernels, which is not true of Class 3 in general.",
+     "anchor": "Section IV A, p.11",
+     "quotes": [
+      "Finally, we consider Class 3, which comprises circuits whose hypothesis families are not classically evaluatable",
+      "known examples of quantum advantage in ERM exist, both in quantum kernel methods [67] and in variational QML [12].",
+      "If the kernel function K(x, x′) = k Tk(x)Tk(x′) were classically efficient to compute, then a similar version of Proposition 1",
+      "Therefore, the potential for quantum advantage in ERM remains valid for this class."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Examples attributed to other work and an argument.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "learning-separations-by-class",
+     "value": "The authors state that beyond ERM, Class 2 models may still show advantage through a generalization-favoring inductive bias or quantum advice, with function families in BPP/qgenpoly and shadow models as a subclass whose separations often rely on cryptographic assumptions, while Class 3 is the most straightforward path, requiring function families in BQP but outside P/poly.",
+     "anchor": "Section IV B Learning separations, pp.11-12",
+     "quotes": [
+      "Finally, task-model pairs based on circuit families in Class 3 offer the most straightforward path to quantum advantage.",
+      "Conversely, the quantum learner, restricted to the subset F, may benefit from an inductive bias that favors generalization.",
+      "In terms of computational complexity, function families in Class 2 are contained in BPP/qgenpoly",
+      "Examples of learning separations with shadow models often rely on cryptographic hardness assumptions,",
+      "Formally, achieving quantum advantage requires identifying function families that lie within BQP but outside P/poly [68]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' perspective with cited results.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "approximate-randomized-dequantization",
+     "value": "The authors interpret recent dequantization results as an effective collapse from Class 3 into Classes 1 and 2: under a parameter distribution, functions from barren-plateau architectures concentrate around zero so a classical learner outputting 0 replicates them with probability approaching 1, and Pauli-propagation methods handle concentration around non-trivial simulable families.",
+     "anchor": "Section IV C Approximate randomized dequantization, p.12",
+     "quotes": [
+      "Recent developments in dequantization can be interpreted as the effective collapse from Class 3 into Classes 1 and 2 in some settings.",
+      "This concentration of measure leads to a trivial “dequantization” strategy where the classical learner simply ignores the circuit structure and outputs 0.",
+      "this strategy successfully replicates the performance of quantum models suffering from barren plateaus with probability approaching 1."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An interpretation of cited work.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "design-must-avoid-dequantizable-blocks",
+     "value": "The authors argue that because efficient representations cannot typically be found by black-box optimization, reliable quantum advantage must be predicated on known structural hardness, that future QML designs must avoid the dequantizable building blocks they catalog, and that Class 3 is the primary, though not exclusive, candidate for quantum advantage.",
+     "anchor": "Section V Conclusions and Outlook, p.13",
+     "quotes": [
+      "Ultimately, our analysis positions Class 3",
+      "Furthermore, we argue that because efficient representations cannot typically be found via black-box optimization, reliable quantum advantage must be predicated on known structural hardness.",
+      "our perspective suggests that future QML designs must explicitly avoid the “dequantizable building blocks” we have cataloged.",
+      "as the primary, though not exclusive, candidate for quantum advantage."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' recommendation.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "average-case-future-work",
+     "value": "The authors state that their framework primarily uses worst-case simulation hardness, that average-case simulation is relevant for dequantizing QML in practice, and propose as future work relating Classes 1 and 2 to average-case simulable families and testing whether practical training setups collapse from Class 3 to Class 1.",
+     "anchor": "Section V Conclusions and Outlook, p.13",
+     "quotes": [
+      "However, recent research has highlighted the relevance of average-case simulation for dequantizing",
+      "Looking forward, we propose bridging these perspectives by analyzing how PQCs in Classes 1 and 2 relate to function families",
+      "Investigating whether the “effective” function families generated by practical training setups collapse from Class 3 to"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit and open problem, Section V, p.13.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

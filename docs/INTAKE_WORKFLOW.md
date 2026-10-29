@@ -1801,3 +1801,633 @@ runs; each later step adds its bullet before it runs.
     values only inside `verify()`, which needs the source text, so CI
     never ran it. A test now runs it on every replaced value from the
     quotes alone.
+
+## 48. Applied 2026-10-25: the ".;" joins, and the LOW reasons of theoretical results (Sprint 13 Task A, F107)
+
+Every count is a snapshot as of its own date. Written before the apply.
+
+- **The joins.** A script that appended "; Local copy ..." to evidence
+  text already ending in a full stop left ".;". Sprint 12 Task A
+  corrected the papers its own apply touched; on 2026-10-25 the store
+  holds 16 more in `paper_fields.evidence`, every one before "Local
+  copy". `scripts/sprint13_f107_joins.py` drops the full stop and keeps
+  the separator, as Sprint 12 did; its dry run printed each of the 16 in
+  context and all are sentence ends. Two ".;" elsewhere are the source's
+  own text and stay: a `paper_reads` detail quoting an arXiv title that
+  ends "...", and a `paper_probes` affiliation list after "Quantum
+  Computing Inc.".
+- **The LOW reasons: 5, not 3.** Sprint 12's section 47 counted 3
+  theoretical results kept LOW that stored "an empirical result"; it
+  named no ids. The reading script's own notes name 5 LOW grades whose
+  cause is not a measurement, and all 5 store that reason:
+  `larson-convergence-proved` (the statement cut short in the text layer,
+  no theorem read), `swaptest-qnn-two-layer-equivalent` (Proposition 6
+  holds only up to an error the value does not carry),
+  `ld-daqc-unit-overlap-epsilon` (an unnumbered derivation the paper calls
+  idealized), `tree-unitarity-tradeoff-butterfly-velocity` (a fragment of
+  the paper's statement) and `qcc-bounds-bures-entanglement-distance`
+  (the authors' interpretation of their Theorems 1 and 2). Each now
+  stores "a theoretical result (proof, derivation or proposition) not
+  checked in full by the reader" with its cause; every grade stays LOW.
+  The correction is a table in `scripts/sprint12_reading.py`
+  (`THEORY_LOW`), applied through its own path, so its live test, which
+  compares the store with the script, keeps holding. Other LOW grades
+  with a wrong reason type, if any, are not found by this: the coordinator
+  named only these. F57's I2 (Sprint 13 Task F) makes every new LOW name
+  its reason.
+- **The guard.** A `live_store` test fails on a ".;" join in
+  `paper_fields.evidence`.
+
+## 49. Applied 2026-10-25: every LOW names its reason; Sprint 12's theoretical results corrected (Sprint 13 Task F, F112, I2)
+
+Every count is a snapshot as of its own date. Written before the apply.
+
+- **Section 48's premise was wrong.** It said the 5 were all the coordinator
+  named and others "are not found by this". The fresh-eyes review of
+  6c6f0ac found 8 more by reading, so the class is wider: a reader's kind
+  "shown" took "an empirical result" by default, whether the paper
+  measured the result or proved it.
+- **The rule (Sprint 12 retrospective I2).** `store/grading.py` names
+  every LOW reason (`low_grade`: measured result, theoretical result,
+  field statement, authors' claim, cited claim). The texts are the ones
+  the store already holds, so a script moved onto it writes nothing new. A
+  theoretical result must say why it was not upgraded. `store/write_path.py`
+  refuses a reading script that writes assertions without `low_grade` or
+  with a "Started LOW" text of its own. `theory_words` is a guard, not a
+  grader: a reading script's test requires every "measured result" whose
+  value or quotes name a theorem, a proof, a derivation or an analytic
+  count to be named by the coordinator, either as a theoretical result or
+  in `MEASURED_DESPITE` with why.
+- **Sprint 12, corrected.** On 2026-10-25 the store holds 604 Sprint 12
+  LOW assertions stored as "an empirical result". A Sonnet 5.5 classifier
+  read each one's value and quotes and proposed 33 as theoretical or
+  mixed; the review named 8 (7 of them among the 33). The coordinator read
+  every candidate's quotes and took 29: their reasons become "a
+  theoretical result (proof, derivation or proposition)" with a cause that
+  says only what the quotes show (for example "a bound from Theorem 11,
+  not checked by the coordinator"). Five stay as measured: four whose
+  value joins analysis with numerics (`tomesh-decomposition-on-scaling`,
+  `iaconis-log-scaling`, `msqw-outperforms-qaoa-evidence`,
+  `qnn-gp-wide-deep`) and `krylov-limiting-distribution`, whose quote does
+  not show how the relationship was established. Every grade stays LOW.
+  The classifier called 63 more "other" (the quotes do not show the
+  method); some may be theoretical in the paper, and are not checked here.
+- **Task A's 5, reworded.** Their reasons said "not checked in full by the
+  reader", which did not fit 3 of them (the review): the prefix now names
+  only the kind, and each cause carries the specific. The history note a
+  sync writes is now `THEORY_NOTE`, naming this correction, so no later
+  sync is dated as Task A's. `tree-unitarity-tradeoff-butterfly-velocity`
+  keeps fidelity "exact": fidelity is the quote's, which is verbatim; its
+  reason says the value is a fragment of the statement.
+- **Before Sprint 12: counted, not corrected.** The same classifier read
+  the 499 LOW assertions from Sprints 9 to 11 stored as "an empirical
+  result" and proposed 13 as theoretical and 14 as mixed. They are not
+  corrected here: their reading scripts have run and stay as they are
+  (`store/write_path.py` LEGACY and GRADING_LEGACY), and the coordinator
+  has not checked them. Carded on F57 for a later release.
+- **A second apply, after the fresh-eyes review of dd620c7 (written
+  before it).** The review read the PDFs; the coordinator checked each
+  claim in the text layer before acting.
+  - **4 more theoretical results**, each confirmed in its PDF:
+    `apr-marking-equals-absorbing` ("we make the proof for general
+    graphs"), `qkm-scalable-features` (Theorems 1 to 3),
+    `hintons-layers-as-unitaries` (Theorem 6.2) and
+    `krylov-limiting-distribution` (Section III). Keeping the last as
+    measured, above, was wrong on the paper: its quote alone hid the
+    method.
+  - **2 moved back**: `mohseni-resource-estimate-chemistry` rests on
+    simulation and benchmarking (a measured result again), and
+    `pqc-gradient-cost-linear` is a textbook's statement about the field.
+    Each sync writes its own dated note, not Sprint 12's.
+  - **The guard was weak.** `theory_words` found 15 of the 34; it now
+    reads "we show", "prove", "analytic", "theoretical", "bound" (as a
+    whole word, not "boundary"), "scales as", "closed-form", a bare
+    "complexity" and Omega, and finds 27 of the 36. The other 9 state a
+    count or a speed-up with no such word: the guard catches the words,
+    and the coordinator's read catches the rest. It flags 30 more stored
+    measured results, each read and named in `MEASURED_DESPITE` with why.
+  - **The write-path rule was easy to bypass**: `"Started " + "LOW"` and
+    a bare `("low", reason)` passed. A literal `"low"` is now refused as a
+    literal `"high"` is; the vendor LOW goes through `low_grade("vendor
+    claim")`; an aliased import of `low_grade` counts.
+  - **Corrected 2026-10-25 (the fresh-eyes review of cec6020).** The
+    bullet above says more than the rule does. The concatenation case
+    was caught by the literal `"low"` beside it, not by the concatenation:
+    `"LO" + "W"` or `"LOW".lower()` with no quoted `"low"` still passes.
+    And the rule had got weaker: matching the bare name `low_grade` let
+    the import line alone pass. It now requires a call, of `low_grade` or
+    of the name it is imported as (proven by injection). A reading script
+    that compares a literal `"low"`, as a count would, is refused: a known
+    false positive, recorded in `store/write_path.py`.
+  - **A count corrected**: of the 499 rows from Sprints 9 to 11, one
+    (`kimmeyh-headline-null-cvqboost-trails`) does not hold the exact
+    text, so 498 store it exactly. The classifier's 13 and 14 stand.
+
+## 50. Applied 2026-10-25: Phase 2's later Sprint 28 work, F162 and three corrected values (Sprint 13 Task E, F108)
+
+Every count is a snapshot as of 2026-10-25. Written before the apply.
+
+- **What is read, and at which commit.** The plan named 9993ab6. By the
+  task's start Phase 2 had merged PR #46, whose head is 9cbe5ba, now the
+  local HEAD; no file under `docs/phase2/` changed between the two, so
+  the read is at 9cbe5ba. Read only (F79): `git show` and the GitHub API,
+  no fetch. Changed since F102's read at 10086da: F110, F111, F114, F151,
+  F153, F154, `PHASE2_POC_PLAN.md`, and F162 (new).
+- **F162 entered**: one reference record and 2 SIM assertions, HIGH, the
+  project's own measurement: the proxy is not reliably above HGB or
+  XGBoost inside the SPECTRA pocket on any of three cells, and is
+  reliably below XGBoost on two; FourierWall2's single-run in-pocket wins
+  do not repeat over ten seeds. **Context `hsbc-2026`, not the plan's
+  `ml`**: section 43's rule files a result about the project's own
+  CVQBoost lanes under `hsbc-2026`; of the B4 device claims on the same
+  cells, `cvqboost-device-below-classical-bar-spectra-b4` is under
+  `hsbc-2026` and the other two under `platform:dirac-3` (this line first
+  said all three were under both; corrected after the fresh-eyes review
+  of 88bd065).
+- **No relation linked (ADR-0004 A8 (b)).** F162 measures the proxy, not
+  the device, so it confirms none of the three B4 claims whole, and its
+  FourierWall2 finding is about a different model and bar from
+  `fourier-wall-incomplete-bar-manufactures-advantage`. Each reason names
+  the claims it bears on.
+- **Three F102 values corrected**, each against its document at 9cbe5ba:
+  - `f110-proxy-solve-flat-paper-2s-not-like-for-like`: the 91-variable
+    solve could not be read because a separately timed J build was
+    subtracted and 9 of 20 solves clamp, not because of the timer's
+    resolution (Phase 2's own correction, 2026-10-23).
+  - `f114-calibrated-plugin-misses-known-ceiling`: calibration moved no
+    estimate on the main arm only; on the other two arms it moves some;
+    the overestimate is 3% to 13% calibrated and 4% to 14% uncalibrated.
+  - `f111-cvqboost-knn-lane-below-published-value-under-loke-protocol`:
+    the range's top is 0.828, not 0.829.
+  Each paper gets a second read row for the re-read.
+- **Confirmed by name, unchanged**: the other 9 F102 values. F111's run
+  time (now 82.5 minutes of recorded lane time) and its "not dominated by
+  an exact match" reason (now unverified) were never stored; F151's dose
+  wording and range-threshold note, F153's ridge-rule reading and F154's
+  closest-cell configuration change no stored value.
+- `scripts/sprint13_f108_phase2.py` holds F162 and the corrections; the
+  Sprint 12 script stays the record of the read at 10086da, and its store
+  test takes the three corrected ids from the Sprint 13 script.
+- **A second apply, after the fresh-eyes review of 88bd065 (written
+  before it).**
+  - **The three paper records pointed at the old blob.** Their `access`,
+    `evidence` and `checked_against_source` named 10086da, whose text says
+    0.829, while the corrected values quote 9cbe5ba. Each is repointed at
+    9cbe5ba, with the earlier read and its blob SHA-256 kept in the
+    evidence. Every stored quote from these three documents is verbatim
+    at 9cbe5ba (the review ran the check on all of them).
+  - **F162's first value left out four qualifiers**, now carried: the
+    energy_steel HGB case (an interval excluding zero, but p = 0.0098
+    above the family level, so the rule reads no reliable difference),
+    the 46 to 58 frauds per seed, Phase 2's inference that a telecom-only
+    entry would decide telecom_churn, and the label limit. "Overall" now
+    says it means the whole test set.
+
+## 51. The F57 release for Sprint 13: every readable `qml` record (Sprint 13 Task F, F112)
+
+Every count is a snapshot as of 2026-10-25. Written before the apply;
+the read's own bullets follow before its apply.
+
+- **The slice** (`scripts/sprint13_f112_slice.py`, written to
+  `manifests/sprint13_f112_slice.json`): plan Q1 = 1, all 806 `qml`
+  records at `seen` or `screened` with no read row whose access names an
+  arXiv id or a DOI, nothing being unread under `hsbc-2026` or the Dirac
+  platforms. The 24 records of the three earlier slices with no free copy
+  are left out. Not candidates, and NOT read this sprint (the fresh-eyes
+  review of e621771): 166 GitHub repositories and 11 records whose access
+  names only a local file that exists; both are carded on F57. OpenAlex
+  counted 417 (364 by the record's own identifier: 362 arXiv DOIs and 2
+  journal DOIs; 53 by the journal version of an arXiv record), every one
+  at 0 or 1 citations:
+  Sprint 12 took the slice down to 1. The other 389 are not counted and
+  come last, by id; the release reads them too, so a stop cuts the
+  uncounted first and then the least cited.
+- **The fetch** (`scripts/sprint13_f112_downloads.py`, Sprint 10's rules):
+  33 arXiv PDFs (the plan said 32), serial at 18 s through the paced
+  fetcher; 6 papers have no free copy OpenAlex knows (two closed, four
+  Zenodo records), and go to the ledger's `no_copy` with that reason.
+  The fetch saved 28; arXiv returned 404 for 5 (one of them
+  mahroo-2023, the paper section 46 found withdrawn). One saved file had
+  no arXiv stamp (farrelly-2019); its first page, read by the
+  coordinator 2026-10-25, carries the record's title and authors.
+- **The ledger** (`scripts/sprint13_read_ledger.py`, written to
+  `manifests/sprint13_read_ledger.json`, Sprint 11's rules): 795 records
+  in 100 groups of at most 8 (g01 to g100), and 11 in `no_copy`, each with
+  its own reason read from the fetch log (the 5 fetch failures, the 6 with
+  no free copy) instead of Sprint 11's one reason for all.
+  `tests/test_sprint13_read_ledger.py` fails if a record is held twice
+  or a no-copy reason is that one reason.
+- **The reader prompt** (`manifests/sprint13_reads/READER_PROMPT.md`):
+  Sprint 12's, with one new field, `result_type` (measured, theoretical,
+  field, claim, cited, vendor, setup), the reader's suggestion of the LOW
+  reason section 49 requires. The coordinator decides it.
+- **Half 1, the read (g01 to g50, 400 records; written before its
+  apply).** Sonnet 5.5 readers, at most 5 at once, each one group, each
+  writing its file outside the tree; the coordinator copied each file into
+  `manifests/sprint13_reads/` when it reviewed it. The dry run of
+  2026-10-25: 1360 assertions from 400 records (10 with none), 542 HIGH
+  and 818 LOW, contexts 934 `qml`, 346 `qc`, 57 `ml` and 23 `world`;
+  every quote verbatim in its source, every figure in its own quotes.
+  - **The coordinator's tables**, each entry read against its quotes:
+    155 values trimmed to what their quotes say (`VALUE_REPLACE`), 29
+    quote edits and 32 added quotes on named passages, 11 contexts fixed
+    (a reader wrote "method" or "setup", which are not contexts), 46
+    statements about the field, 128 theoretical results kept LOW with
+    their cause (a theorem is HIGH only when its statement and its
+    conditions are quoted) and 40 measured results whose words name a
+    proof or a bound, each with why it is measured.
+  - **What a read covered.** 236 records are marked `partial` with the
+    sections read; 164 `full`. 113 of the 164 also list a few sections
+    (abstract, introduction, results, conclusion), so the script enters
+    those as "the parts the reader lists" instead of "the whole source":
+    the reader's list, not its mark, is what the record says was read.
+    24 files are another version or title of the record's paper, named
+    in the read's `version_note`.
+  - **One id renamed.** g03 and g42 both returned `review-scope`. The
+    script refuses a duplicate id at run time, but a duplicate key in a
+    coordinator table is silently the last one, so g42's file copy names
+    it `singh-qml-review-scope`. `tests/test_sprint13_reading.py` now
+    fails on a table key held twice and on a listed read entered as the
+    whole source (both proven by injection, 2026-10-25).
+  - **Kept out of values.** Figures the text layer garbled (an exponent
+    lost, as in "217" for 2 to the 17th) and paper inconsistencies a
+    reader flagged stay in the reader's inference, not in a value.
+- **Corrections after the fresh-eyes review of cec6020** (snapshot
+  2026-10-25; written before the apply that makes them). The review
+  checked the counts above and found them right, and found the store
+  matching the script. It found the grading applied unevenly, and two
+  claims above false:
+  - **26 of half 1's 542 HIGH are now LOW** (516 HIGH, 844 LOW):
+    - 18 theorems whose quotes are the abstract's "we prove" or a
+      paraphrase, not the statement with its conditions, now in
+      `THEORY_LOW` with the cause, like siblings in the same papers
+      already were (g30 Ma, g37 Pirnay, g29, g01, g05 and others).
+    - 8 "stated limits" that are the paper's own measured results ("Q-NAS
+      can achieve a higher accuracy", "did not improve robustness"); a
+      measured result, even a negative one, stays LOW.
+  - **7 stated limits keep HIGH without their measured clause**: the
+    clause's quote is dropped and the value trimmed (for example
+    `mcquack-stated-limitations` no longer carries "does not outperform
+    simple classical baselines").
+  - **Retracted: "Kept out of values."** 12 values carried an exponent the
+    text layer printed flat ("O(n2.455)" for n to the 2.455, "10−13" for
+    10 to the −13), and two (`patel-qbm-convergence-proof`,
+    `fonseca-vqe-complexity`) were the coordinator's own replacements. The figure check cannot see this: the
+    garble is the same in the quote and the value. Each now says the
+    figure in words or says the exponent is lost, and
+    `test_no_value_carries_a_figure_the_text_layer_garbled` fails on the
+    pattern. g38 Roga's "2k" and "2(n + 2k) + 6" are not garbled: the
+    paper's program register has 2k qubits for k training points.
+  - **5 HIGH values said more than their quotes** (`single-shot-definition`,
+    `exact-learning-definition-threshold`, `gross-memory-limit-large-n`,
+    `open-problem-limit`, `stationary-noise-breaks-exchangeability`); each
+    now has the passage it rests on, or is trimmed.
+  - **Retracted: "113 of the 164 also list a few sections."** At least 7
+    of the 113 say the whole paper was read ("Whole paper", "Read the full
+    paper (7 pages)", "Abstract through conclusion"). `read_detail` now
+    enters those as the whole source.
+  - **Retracted: "`tests/test_sprint13_reading.py` now fails on...".** The
+    tests were written and proven, but the file was not committed with
+    cec6020: it partitions the whole slice, so it waits for half 2. It
+    lands with half 2.
+  - The same rules, applied to half 2's g51 to g69 before its apply, take
+    2 more stated limits out of HIGH (`qcd-gym-insufficient-performance`,
+    `arceci-limits`) and trim 5.
+- **The hand-download list's order changed with half 1** (cec6020): the
+  389 uncounted records (no OpenAlex count at selection) sort after every
+  counted one in their group, not among the zeros, and a slice's
+  uncounted row no longer hides another slice's count.
+- **Corrections after the fresh-eyes review of f782e53** (snapshot
+  2026-10-25; written before the apply that makes them). The review found
+  the first correction pass still uneven, and the coordinator checked
+  each case in the text layer before acting:
+  - **14 more of half 1's HIGH are LOW** (now 502 HIGH, 858 LOW):
+    - 8 theorems whose quotes are only the abstract's or introduction's
+      "we prove", "we show" or "we find": `pbtmax-breaks-classical-threshold`,
+      `damped-oscillator-bqp-hard`, `vqa-constrained-loss-global-minimum`,
+      `classical-verification-sparse`, `not-random-generatable`,
+      `kcm-succinctness-incomparable`, `kcm-fidelity-intractable`,
+      `robust-training-query-cost`. The rule is now applied the same way
+      everywhere: a theorem's own statement, formal or informal, quoted
+      with its conditions is HIGH; an abstract's sentence about it is not.
+      By that rule `coyle-density-qnn-gradient-overhead` (Corollary 1),
+      `shah-quantum-kmeanspp-guarantee` (Theorem 1, checked in the text),
+      `qgp-no-gp-gaussian-pauli`, `graph-stabilizer-code-bijection` and
+      `shadow-advantage-theorem` keep HIGH.
+    - 5 "stated limits" that are measured results: `qenn-stated-limitations`,
+      `radar-cost-limit`, `hyperparameter-sensitivity`,
+      `quso-qaoa-not-near-optimal`, `vdd-struggles-tfim-disordered`.
+    - `qaoa-hybrid-definition`, a definition that lecture notes cite: HIGH
+      is never given to a cited claim. The review did not find it; the
+      test that bars it did, the first time the held test file ran.
+  - **4 half 1 limits keep HIGH without their measured clause**
+    (`qpinn-limits-transfer-generality`, `variational-symmetry-and-depth-limits`,
+    `preliminary-evidence-limit`, `singh-pokhrel-preliminary`): the
+    clause's quote is dropped or cut to the limit, and the value trimmed.
+  - **Values.** `open-problem-limit` no longer says "unknown ... matrix";
+    `hamiltonian-paths-4n-minus-6` no longer names a proof by induction;
+    four flat-printed exponents are said in words (`mm-vqe-ising-speedup`
+    N squared, `lejarza-clustering` N cubed to N squared log N,
+    `galvis-gpq-classical-baseline` M cubed, `fonseca-vqe-complexity` k
+    times N cubed and N to the 7th), with "printed flat in the text
+    layer"; "the exponent is lost" is kept only where the flat print has
+    more than one reading (`tqnn-kjunta-query-complexity`'s "n22k").
+  - **The garbled-figure guard's pattern** flagged "(H2)" and "(B0)", a
+    molecule and a field; a lower-case letter and digit now count only
+    inside O(...). "R2" and "D2-sampling" are left on purpose: each is
+    the field's usual flat spelling of a name (R squared, D squared
+    sampling), not a figure. Proven red again by injection, 2026-10-25.
+  - **Corrected: "At least 7 of the 113"** above: 8 say the whole paper
+    was read.
+  - **`store/write_path.py` has two more known bypasses**, recorded in its
+    comment and not closed: `low_grade(` inside a string or a docstring
+    counts as a call, and so does a call to a `low_grade` the script
+    defines for itself.
+  - **Half 2's g51 to g69, by the same rules**: 7 more out of HIGH
+    (`caro-classical-verification-parity` to `THEORY_LOW`; the measured
+    `galvis-variance-distant`, `galvis-time-parameter-sensitivity`,
+    `cimini-limits-quantumness-simulability`, `qopf-hardware-limits`,
+    `chaudhary-mode-collapse`; and `photonic-classifier-limit-below-10-photons`,
+    whose limit is its measured drop, so it keeps both quotes as a
+    measured result); 3 trimmed (`quantumgep-quantum-chemistry-limit`,
+    `qite-classically-simulable`, `altgraph-mse-limit`); 3 values fixed
+    (`oliveira-setup-simulator-two-devices` gains its simulator,
+    `qcdge-calculation-levels` loses an orphan quote,
+    `halder-rbm-ansatz-accuracy` names what "the accuracy" is).
+  - **The LOW test was wrong for vendors.** A vendor's result starts
+    MODERATE and is downgraded one level through `low_grade("vendor
+    claim")`, so its reason does not start "Started LOW". The test now
+    holds each vendor LOW to that text and every other LOW to "Started
+    LOW" (proven red by injection, 2026-10-25).
+- **Half 2, the read (g51 to g100, 395 records; written before its
+  apply).** The same readers and the same rules as half 1, with the
+  corrections above applied throughout. The dry run of 2026-10-25: 1350
+  assertions from 395 records (2 with none: `beggs-2023` and
+  `yusupov-2023` study quantum graphs in mathematics, with no computing
+  or learning workload), 462 HIGH and 888 LOW, contexts 958 `qml`, 340
+  `qc`, 37 `ml` and 15 `world`; every quote verbatim in its source, every
+  figure in its own quotes, no value carrying a flat-printed figure.
+  - **The coordinator's tables, half 2's share**: 127 values trimmed, 26
+    quote edits, 11 added quotes, 9 contexts fixed (a reader wrote
+    "method" or "setup"), 57 statements about the field, 132 theoretical
+    results kept LOW with their cause, 51 measured results whose words
+    name a proof or a bound, each with why.
+  - **What a read covered.** 315 records are `partial` with the sections
+    read; 80 `full`. 46 files are another version or title of the
+    record's paper, named in the read's `version_note`.
+  - **One id renamed.** g65 and g82 both returned
+    `noiseless-simulation-only`; g82's file copy names it
+    `nagano-noiseless-simulation-only`, as g42's was renamed in half 1.
+  - **One assertion not entered.** `qwiener-advantage-open` (g56): its
+    quotes do not hold the open question its value states (`DROP`).
+  - **Reader-flagged figures and conflicts** (g88 Renaud's lost figures,
+    g90 Sanavio's and Schetakis's, g91 Shaydulin's and Shang's, g94
+    Tibaldi's inconsistency, g95 and g96 Wang's conflicts, g98 Yang's,
+    g100 Ziiatdinov's) stay in the reader's inference; where one reached
+    a value, the value is trimmed or the figure said in words.
+- **Corrections after the fresh-eyes review of ce2412e** (snapshot as of
+  2026-10-25; written before half 2's re-apply). Half 1 is unchanged.
+  - **Two claims in the bullet above were false.** "No value carrying a
+    flat-printed figure": `qaoa-qmf-best-empirical-scaling` (g91) said
+    "grows as 1.46N", which is 1.46 to the power N; and g91 Shaydulin's
+    figure had reached that value without being said in words. It now
+    is, and the garble guard gains a branch for a decimal before N or n
+    (proven red by injection).
+  - **Out of HIGH:** `nghiem-exponential-copies-in-r` (a limit drawn
+    from Theorem 2, whose statement is not quoted) and
+    `dqnn-results-general-scope` (the generality of results whose own
+    entries are LOW) go to the theoretical LOWs;
+    `qnpg-outer-loop` (its "limitation" is the literature's) is a LOW
+    authors' claim. **Into HIGH:** `scala-lazy-regime-limit`, filed as a
+    field statement, is the paper's own stated limit on its own formal
+    results. Half 2 is now 460 HIGH and 890 LOW.
+  - **Cited or derived clauses left out of a HIGH:** a cited clause in
+    `bounds-scope-query-count-only` ("[80]") and
+    `schuld-speedup-caveat` ("[1, 9]"); the "almost all" clause of
+    `connectivity-1d-chain-no-overhead`, which rests on a cited lower
+    bound; the abstract's "we show" in `jeffery-subspace-graph`, a
+    definition.
+  - **A value that said the opposite of its quote:**
+    `qucnn-no-network-trained` quoted "providing immediate computational
+    advantage" without the negation the source prints just before it.
+    The quote now carries it.
+  - **Values that said more than their quotes:**
+    `khoo-simulation-scope`, `facial-quantum-walk-model-scope`,
+    `nagano-noiseless-simulation-only`, `nghiem-exponential-copies-in-r`
+    and `qnpg-outer-loop` trimmed or given the passage; `wolf-field-state`
+    had dropped the paper's "or" alternative, now restored.
+  - **Locations:** 12 HIGH locations named no place in the paper, or the
+    wrong one (`grb-dataset-setup` and `grb-simulation-limit` named
+    Section V.C; the quotes are in VI). Each now names its section, read
+    in the source.
+  - **Half 2's share of the tables, corrected:** 134 values trimmed, 31
+    quote edits, 15 added quotes, 9 contexts fixed, 56 statements about
+    the field, 134 theoretical results kept LOW, 51 measured results.
+  - **Guards.** Two checks in the HIGH test could not fail (the reason
+    text is built from the basis; a vendor claim is graded before HIGH is
+    consulted) and are removed. New: no id in HIGH and in THEORY_LOW or
+    MEASURED_DESPITE (`certainty()` would let HIGH win silently); the
+    store holds no Sprint 13 assertion the script no longer makes. Each
+    proven red by an in-memory injection named in its docstring.
+  - **write_path:** a third bypass recorded, not closed: comments are
+    stripped with `#.*` before the LOW checks, so a `#` inside a string
+    hides the rest of its line.
+- **Corrections after the fresh-eyes review of 6cfc137** (snapshot as of
+  2026-10-25; written before half 2's re-apply). Grades unchanged at 460
+  HIGH and 890 LOW.
+  - **The bullet above was wrong twice.** `qnpg-outer-loop` was not a
+    LOW authors' claim: its kind made it "an empirical result". It
+    explains a limitation the literature suggests, so it is now a
+    statement about the field, with that passage quoted. And "6 values
+    trimmed" in the CHANGELOG was 5 trimmed and 1 restored (`wolf`).
+  - **`nghiem-exponential-copies-in-r`** said the state's symbol was
+    lost in the text layer; it is not ("copies of ρ required"), and the
+    quote now carries it.
+  - **Reader anchors corrected in the stored provenance (new table
+    `ANCHOR_FIX`):** a HIGH location corrected alone left the record
+    naming the reader's wrong section beside it. `qneuron-simulation-only`
+    (III.B), `slack-free-setup` (IV), `qumode-benchmark-setup` (IV.A and
+    the Abstract), `stvqc-device-setup` (the Introduction: only its
+    sentence has the quoted comma) and `ma-not-tested-on-hardware` (III).
+    HIGH locations: `kqse-bound-not-tight` is p.3, after Theorem 2;
+    `zhang-quantum-troenpy-not-developed` spans pp.13-14.
+  - **Values:** `scala-lazy-regime-limit` says "most of the formal
+    results", the paper's own, not "most formal results";
+    `schuld-speedup-caveat` no longer uses "speedup" as its own word (the
+    source puts it in quotation marks).
+  - **Half 2's share of the tables, corrected again:** 135 values, 31
+    quote edits, 15 added quotes, 9 contexts, 57 statements about the
+    field, 134 theoretical LOWs, 51 measured results; 5 anchors.
+- **Corrections after the fresh-eyes review of 7ea56e7** (2026-10-25;
+  written before half 2's re-apply). Grades unchanged.
+  - **One anchor "corrected" wrongly.** The reader's "Section III and
+    Section IV" for `ma-not-tested-on-hardware` was right; 6cfc137 gave
+    it the HIGH location "Section III, Results (Cases I and II)" and
+    7ea56e7 wrote the same into `ANCHOR_FIX` (its bullet above says
+    "(III)"). In
+    reading order its first quote follows IV. CONCLUSION and its second
+    is in III.A (Case I). Anchor and HIGH location now say so.
+  - **`qnpg-outer-loop`** keeps the source's "likely".
+  - **The CHANGELOG's "3 HIGH locations made exact"** was 4: kqse and
+    zhang above, and qumode and stvqc, listed above with the anchors.
+
+## 52. Applied 2026-10-25: the common name after a source's spelling (Sprint 13 Manual Validation Q4)
+
+Team lead, 2026-10-25: "keep how the paper does them and then put in
+parenthasses the more common name for them so that we can query the
+database and still find all occurances of R2, R squared". Written before
+the apply that makes it (snapshot as of 2026-10-25).
+
+- **The rule.** `store.common_names.with_common_names` adds the common
+  name in parentheses after a source's own spelling: "R2 (R squared)",
+  "D2-sampling (D squared sampling)". `store.ingest` applies it to every
+  value it inserts or syncs, so every reading script, past and future,
+  gets it with nothing of its own, and a second apply writes nothing.
+  Quotes are never touched; they stay verbatim.
+- **The 18 values.** 17 carry "R2" (15 LOW; `tn-state-r2-threshold` and
+  `shah-dequantized-qi-kmeanspp` HIGH) and 1 "D2-sampling" (the same
+  shah value). They belong to four scripts: `sprint9_f78_ceiling_reading.py`
+  (1), `sprint11_reading.py` (3), `sprint12_reading.py` (2) and
+  `sprint13_reading.py` (12). Each script is re-applied, first against a
+  copy of the store to show that these values are the only change.
+- **Left as is.** `otgonbaatar-cp-decomposition-hsi` spells "R-squared",
+  already the common name in words.
+
+## 53. Sprint 13 Task G (F113): every paper read in full, with no budget
+
+Team lead, 2026-10-25, at Manual Validation: "fully read all the papers
+that are not marked 'read' and update all conclusions. That includes this
+sprints 551 adn 109 and any from prior runs ... remove the budget ... It
+is far more important to read them all, get all the conclusions, profs,
+assertions... than some budget". Written before any read is applied
+(snapshot as of 2026-10-25).
+
+- **The slice** (`scripts/sprint13_g_slice.py`,
+  `manifests/sprint13_g_slice.json`): every paper record not read in
+  full. A read is full only when a `paper_reads` row says `full`, or a
+  first-pass reader marked the paper `full` and listed no parts (or said
+  the whole paper was read). A reader's `full` that listed sections is
+  not full: 161 such in Sprints 11 and 12 and 121 in Sprint 13, many
+  stored as "the whole source". Of 2,335 papers, 1,991 are not read in
+  full:
+  - 1,309 at `read` with a local copy; 1 at `read` with only a DOI
+    (`emami-2026`); 1 at `read` that is a GitHub repository;
+  - 160 at `seen` or `screened` with a local copy, 347 with only an
+    arXiv id or a DOI, 173 GitHub repositories.
+- **The downloads** (`scripts/sprint13_g_downloads.py`, Sprint 10's
+  rules): the dry run planned 210 free copies (164 from arXiv, serial at
+  18 s inside F52's cap, and 46 open-access PDFs OpenAlex lists) and
+  found no free copy for 138. A paywalled paper is listed, never
+  fetched; those go to the hand-download list with their reason.
+- **The ledger** (`scripts/sprint13_g_ledger.py`,
+  `manifests/sprint13_g_ledger.json`): one record, one group, one reader,
+  at most 5 readers at once; groups of 5 papers. First the records whose
+  stored assertions hold a theoretical result kept LOW for want of its
+  statement, then the records not yet at `read`, then the rest. Each
+  group's brief carries the record's stored assertions for its reader to
+  judge; the briefs are store content and stay outside git.
+- **The reader prompt** (`manifests/sprint13_g_reads/READER_PROMPT.md`):
+  every page, every appendix and proof; no cap on assertions; a verdict
+  on every stored assertion (confirmed, corrected, narrowed, widened,
+  contradicted, not in the paper); each theorem with its statement and
+  conditions quoted. `scripts/sprint13_g_check.py` is the reader's own
+  check (the write path's quote and figure checks, and the shape).
+- **GitHub repositories (174)** are not papers with a text layer; how
+  they are read is the team lead's decision, asked at the end of the
+  task.
+- **Corrections after the fresh-eyes review of a3b8074** (2026-10-25;
+  written before any Task G read is applied):
+  - **The slice is 1,997, not 1,991.** A whole-paper note with an
+    exception ("Whole paper read except related-work equations") and
+    three e-mail reads marked `full` whose older thread was "not read"
+    no longer count as full. F113's card had counts from an earlier run
+    (1,141 and 682); it now matches the slice.
+  - **The reader's check** now refuses a `full` read that names a part
+    not read, a changed verdict with no value, a paper bearing on no
+    context with no reason, a HIGH suggestion with no location or on a
+    measured result, and a file that is not the brief's.
+  - **The ledger only appends.** A re-run keeps every group a reader
+    already holds and writes briefs only for new groups; the downloads'
+    saved copies are found through their log (they carry author and
+    title, not the record id). 66 fetched records and the 6 above joined
+    as groups g295 to g309.
+- **After the downloads finished** (2026-10-25; written before any Task
+  G read is applied; counts are a snapshot as of that date):
+  - **The run saved 165 copies and failed 45** (HTTP 403 or 404, two TLS
+    failures, and publisher pages that were not a PDF). No failure was
+    retried or fetched around. With the 138 that have no free copy, 183
+    fetch-bucket records have no local copy. They are listed with their
+    reason in `manifests/sprint13_g_no_copy.json`, and Task G's apply
+    marks each for the hand-download list.
+  - **The slice was re-run with the download log**: of 1,997 not read
+    in full, 1,315 are at `read` with a local copy, 325 are at `seen` or
+    `screened` with a local copy, 183 have no local copy (1 of them at
+    `read`), and 174 are GitHub repositories.
+  - **The ledger appended 99 records as groups g310 to g329**, which
+    makes 329 groups and 1,640 records, every one with a local copy.
+  - **The reader prompt was clarified** after groups g001 to g005 ran:
+    a plot or drawing whose caption and surrounding text were read is not
+    `not_read`, and a text layer that holds the paper twice is read from
+    its first copy. The coordinator grades the earlier groups'
+    figure-only gaps as `full` where every page of text was read.
+- **Applied 2026-10-27: groups g001 to g042** (written before the apply;
+  counts are a snapshot as of 2026-10-27). Team lead, 2026-10-26: "pause
+  after the 5 current agents complete and backlog the remaining"; groups
+  g043 to g329 are F114.
+  - **What enters.** 210 records, read by a first-pass subagent (208
+    whole, 2 with named exceptions: chatterjee-2024, table numbers lost
+    in the text layer; perrier-2024, three scanned pages) and reviewed
+    group by group by the coordinator
+    (`manifests/sprint13_g_reviews/g001.json` to `g042.json`): 5,489
+    assertions entered or changed, 1,987 HIGH and 3,502 LOW. Every quote
+    is verbatim in its source, every edit rests on named passages, and
+    every figure is in its quotes.
+  - **Tried first on a copy of the store.** Records 8,017 to 13,070,
+    assertions 5,682 to 10,735, HIGH assertions 2,125 to 4,059; 306 new
+    `paper_reads` rows (a subagent row and a coordinator row for each of
+    153 records) and 114 `update read` lines. A second apply wrote
+    nothing. The 114 updates were not questioned before the real apply,
+    and they were a defect (below).
+  - **A store defect the trial found, fixed before the apply.**
+    `store.ingest.sync_assertion` wrote a changed assertion one column
+    at a time. The table's CHECK requires a search scope on every
+    absence claim, so a stored claim moving to `absence` failed on the
+    `claim_type` step before its `search_scope` was written. The sync now
+    writes every changed column in one statement; a test in
+    `tests/test_quotes_and_sync.py` was proven red by putting the old
+    loop back.
+  - **A second defect, found by the full suite after the apply and
+    repaired 2026-10-28.** Task F (F112) read 57 of these papers on
+    2026-10-25, which is also a Task G review day, under the same reader
+    names. Task G's apply matched read rows by reader, day and extent
+    only, took Task F's 114 rows (57 subagent, 57 coordinator) for its own
+    and rewrote their detail. Both scripts now match a read row by their
+    own wording (`is_mine` in `scripts/sprint13_g_reading.py`; the group
+    marker in `scripts/sprint13_reading.py`), and a test in
+    `tests/test_sprint13_g_apply.py` was proven red by making every row
+    count as Task G's. The repair re-ran Task F's apply, which put its 114
+    rows back with their original detail, then Task G's, which wrote no
+    read row. Diffed against the pre-apply backup
+    (`evidence-20261027T233851286095-...`), no `paper_reads` row is
+    missing.
+  - **How a read is recorded.** At the apply, as in Sprints 11 and 12, a
+    subagent's read was a `paper_reads` row with extent `subagent`, its
+    detail "first pass, the whole paper, every page and appendix (Sonnet
+    5.5 reader, Sprint 13 Task G, F113, group gNNN)", or "first pass, the
+    whole paper except: ..." for the 2 exceptions, beside the
+    coordinator's `partial` row. F113's acceptance says `full`.
+  - **Extent changed to `full`, 2026-10-28 (written before the apply).**
+    Team lead, Manual Validation Q7 = 2: Task G's whole-paper reads are
+    stored as `full`, the 2 reads with a named exception as `partial`;
+    the reader's name ("Claude Sonnet 5.5 (first-pass subagent)") still
+    says who read. Sprints 11 and 12 keep `subagent`. The apply moves the
+    210 rows in place (`read_extent` and `write_reads` in
+    `scripts/sprint13_g_reading.py`; a test proven red with the old
+    extent), so no `subagent` row of Task G's is left beside its
+    replacement. `scripts/sprint13_g_slice.py` counts a `full` row as a
+    read in full only when its detail names no exception. 200 of the 208
+    pass on the store alone. The other 8 (aaronson-2023, abbas-2023,
+    ahmed-2025, akande-2025, albino-2023, boulebnane-2024, boy-2025,
+    chan-2024) carry the reader's version note, which says the
+    bibliography was "skimmed" or "skipped", so they leave a later slice
+    only through their reader files (fresh-eyes review of 2bab87b).

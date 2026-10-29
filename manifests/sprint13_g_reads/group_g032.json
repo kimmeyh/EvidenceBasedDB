@@ -1,0 +1,2987 @@
+{
+ "papers": [
+  {
+   "record_id": "patel-2025-quantum-boltzmann-machine-learning-ground",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Patel-et-al._2024_Quantum-Boltzmann-machine-learning-of-ground-state-energies__2410.12935.pdf",
+   "title_in_file": "Quantum Boltzmann machine learning of ground-state energies",
+   "version_note": "arXiv:2410.12935v3, dated November 26, 2025.",
+   "pages": 39,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper that proposes a hybrid quantum-classical stochastic-gradient algorithm (QBM-GSE) that uses parameterized thermal states (quantum Boltzmann machines) to approximate ground-state energies, with a quantum gradient estimator and a polynomial sample-complexity proof.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "patel-qbm-barren-plateau-open",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section VIII, Conclusion and outlook, p.6",
+     "quotes": [
+      "it is a pressing open question to determine whether the landscape of the objective function f (θ) suffers from the barren-plateau problem"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this open question as its own limit in Section VIII.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "patel-qbm-convergence-proof",
+     "verdict": "narrowed",
+     "note": "The stored value gives the abstract's summary. Theorem 1 and Theorem 22 hold only for Hamiltonians of the form in Eq. (1) (a positive combination of local terms with norm at most one, efficiently measurable), for epsilon in (0, 1), with learning rate one over the smoothness parameter, and the guarantee is on the minimum over iterations of the EXPECTED gradient norm. The value is narrowed to these conditions, quoted from Section VI and Section VIII.",
+     "value": "The paper proves (Theorem 1) that the QBM-GSE algorithm, run with a fixed epsilon in (0, 1), learning rate one over the smoothness parameter, and a number of iterations M at least a stated multiple of the inverse square of epsilon, converges to an epsilon-stationary point of the energy function in the sense that the minimum over iterations of the expected gradient norm is at most epsilon. The authors state that, for Hamiltonians of the form in their Eq. (1), the sample complexity is polynomial in the inverse of epsilon, the number of parameters J, and the 1-norm of the Hamiltonian's coefficient vector.",
+     "anchor": "Algorithm QBM-GSE and Theorem 1, Section VI, p.5; Section VIII, p.6",
+     "quotes": [
+      "Algorithm (QBM-GSE). Fix ε ∈ (0, 1). The algorithm for converging to an ε-stationary point of f (θ) in (8) consists of the following steps:",
+      "Theorem 1. The QBM-GSE algorithm converges to an ε-stationary point of f (θ) in (8), i.e., such that",
+      "Note that θm in Theorem 1 is a random variable, as given in the QBM-GSE algorithm, and the expectation in (35) is with respect to the randomness associated with generating θm.",
+      "Namely, for Hamiltonians of the form in (1), we have proven that the sample complexity of the algorithm is polynomial in ε−1, J, and ∥α∥1, where ∥α∥1 is defined in (2)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 (Section VI) with the algorithm's conditions quoted, proved in Appendix B 8 as Theorem 22.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The convergence is to a stationary point, not to the ground-state energy; the paper itself notes the objective is non-convex."
+    },
+    {
+     "id": "patel-qbm-scope-thermal-states",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section VII, Discussion, p.6",
+     "quotes": [
+      "Our algorithm is most pertinent for the situation in which low-temperature thermal states of H are computationally difficult to generate but thermal states of G(θ) are not."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the scope of its algorithm, Section VII.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "patel-qbm-setup-hamiltonian-form",
+     "value": "The authors state their setup: the Hamiltonian H acts on n qubits and is a sum of K terms, each a positive coefficient times a local Hamiltonian acting on a constant number of particles with norm at most one, so that the norm of H is at most the 1-norm of the coefficient vector; H is assumed efficiently measurable and the 1-norm of the coefficients polynomial in n (Assumption 1).",
+     "anchor": "Section II, Eqs. (1)-(2), p.2; Assumption 1, Appendix B 2, p.13",
+     "quotes": [
+      "where, for all k ∈ [K], the coefficient αk ∈ R and Hk is a local Hamiltonian acting on a constant number of particles.",
+      "Without loss of generality, we assume that ∥Hk∥ ≤ 1 by absorbing the norm of Hk into αk, so that",
+      "Assumption 1. The Hamiltonian H, defined in (B1), can be efficiently measured on a quantum computer, and ∥α∥1 = O(poly(n))."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own setup, Section II and Assumption 1 in Appendix B 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-setup-ansatz",
+     "value": "The authors state that the ansatz is a parameterized thermal state of a trial Hamiltonian that is a linear combination of J local Hamiltonians with real parameters, that J is chosen polynomial in n using knowledge of the problem, that samples of the thermal state are assumed available for every parameter choice, and that the model has only visible units and no hidden units.",
+     "anchor": "Section II, Eqs. (3)-(6), pp.2-3",
+     "quotes": [
+      "and each Gj a Hamiltonian that acts locally on a constantsized set of qubits. We assume that we have some knowledge of the problem at hand and that therefore we can appropriately choose a subspace of parameters such that J = poly(n).",
+      "are available, for every possible choice of θ ∈ RJ . As such, the QBM model that we employ here has only visible units and no hidden units, using the terminology of [28, 30]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its model and access assumptions, Section II.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-variational-upper-bound",
+     "value": "The authors state that, by the variational principle, the true ground-state energy is bounded from above by the minimal energy of H over every trial thermal state, and that the full problem over all states is equivalent to the parameterized one only with exponentially many parameters, so they restrict J to be polynomial in n.",
+     "anchor": "Section II, Eq. (7), p.3; Appendix B 2, Eqs. (B6)-(B7), p.13",
+     "quotes": [
+      "The inequality in (7) indicates that the true ground-state energy is bounded from above by the minimal energy of the Hamiltonian H over every possible trial state ρ(θ).",
+      "This means that the dimension J of the parameterized search space is exponential in the number of qubits since the dimension of the original search space (the set of quantum states, D) is also exponential in the number of qubits.",
+      "To address this computational difficulty, we assume some knowledge about the problem structure, allowing us to reduce the parameterized search space such that J is O(poly(n))."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own problem setup, Appendix B 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-nonconvex-objective",
+     "value": "The authors state that the energy function over the parameters is generally non-convex, show (by a plotted landscape) that even a basic single-qubit instance with trial Hamiltonian built from Pauli X and Pauli Y is non-convex, and therefore aim for an epsilon-stationary point rather than a global minimum, which they call essentially the best one can hope for with this approach.",
+     "anchor": "Section II, Eq. (9), p.3; Appendix B 2, Fig. 2 and Eq. (B8), p.14",
+     "quotes": [
+      "Since the function θ → f (θ) is generally non-convex, finding an ε-stationary point (local minimum), rather than a global minimum, is essentially the best that one can hope for when using this approach.",
+      "Moreover, due to this reduction, the function f (θ) is now a non-convex function. Indeed, one can check that even the following basic instance of f (θ) is non-convex (refer to Figure 2):",
+      "Given the difficulty of finding the globally optimal point, in this paper, we focus instead on finding an ε-stationary point of Tr[Hρ(θ)]."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit on what its method can guarantee, Section II and Appendix B 2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-def-epsilon-stationary",
+     "value": "The paper defines an epsilon-stationary point of a differentiable function as a point where the norm of the gradient is at most epsilon (Definition 6).",
+     "anchor": "Definition 6, Appendix A 2, p.10",
+     "quotes": [
+      "Definition 6 (ε-Stationary Point). Let f : Rn → Rm be a differentiable function, and let ε ≥ 0. A point x ∈ Rn is an ε-stationary point of f if ∥∇f (x)∥ ≤ ε."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 6, Appendix A 2.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-def-learning-problem",
+     "value": "The paper defines QBM learning of ground-state energy (Definition 9): given a Hamiltonian satisfying Assumption 1 and a positive integer J polynomial in n, find an epsilon-stationary point of the infimum over parameters of the energy of the parameterized thermal state, given access to multiple copies of the thermal state for every parameter vector; cost is measured as the number of thermal-state samples.",
+     "anchor": "Definition 9, Appendix B 2, pp.14-15",
+     "quotes": [
+      "Definition 9 (QBM Learning of Ground-State Energy). Let n be the number of qubits. Given a Hamiltonian H ∈ C2n×2n as defined in (B1) such that it satisfies Assumption 1 and",
+      "learning of ground-state energy is to find an ε-stationary point of the above optimization problem, given access to multiple copies of ρ(θ), for all θ ∈ RJ .",
+      "We refer to this metric as the sample complexity of our algorithm, which we analyze in more detail in Section B 8."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 9, Appendix B 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-lemma10-matrix-exponential-derivative",
+     "value": "The paper proves (Lemma 10, a derivation it says is not original and follows prior work) that the partial derivative of the exponential of minus the trial Hamiltonian with respect to a parameter equals minus one half the anticommutator of the channel output for that parameter's local term with that exponential, where the channel averages time evolutions under the trial Hamiltonian over a probability density whose Fourier transform is tanh of half the frequency divided by half the frequency.",
+     "anchor": "Lemma 10, Appendix B 3, Eqs. (B12)-(B14), p.15; proof pp.15-17",
+     "quotes": [
+      "Lemma 10 (Partial Derivatives of the Matrix Exponential [40, 42, 44–46]). Let J ∈ N, and let θ ∈ RJ be a parameter vector, and let G(θ) be the corresponding parameterized QBM Hamiltonian as defined in (B4).",
+      "Note that this derivation is not original, and it follows from the developments in [44], [40, Appendix B], and [42, Lemma 5]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proved lemma attributed to prior work; the formula itself is printed in display math the text layer scrambles, so only its statement's conditions are quoted.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-belief-propagation-is-channel",
+     "value": "The authors observe that the map prior work calls the quantum belief propagation superoperator is a quantum channel (completely positive and trace preserving), because the high-peak-tent function p(t) is a probability density function; they note this was remarked without proof in earlier work.",
+     "anchor": "Section II, Eqs. (15)-(16), p.3; Remark 11, Appendix B 3, pp.17-18",
+     "quotes": [
+      "Prior work [40, 42, 44] refers to the map Φθ as the quantum belief propagation superoperator. Here we observe that it is in fact a quantum channel (completely positive, tracepreserving map), due to the fact that p(t) is a probability density function.",
+      "Note that this is remarked upon (without proof) in [45, Footnote 32].",
+      "Furthermore, it is important to note that p(t) is indeed a probability density function because p(t) > 0, for all t ∈ R, and"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Shown in Remark 11 and Lemma 12 (Appendix B 3), with positivity and normalization of p(t) argued in the text.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-lemma12-fourier-transform",
+     "value": "The paper proves (Lemma 12, with two different proofs) that the Fourier transform of the high-peak-tent density, two over pi times the log of the absolute hyperbolic cotangent of pi t over two, equals tanh of half the frequency divided by half the frequency.",
+     "anchor": "Lemma 12, Appendix B 3, Eq. (B36), pp.18-20",
+     "quotes": [
+      "Lemma 12 (Fourier transform of high-peak-tent probability density). The following equality holds:",
+      "Proof. We provide two different proofs of this lemma.",
+      "p(t) := 2 π ln |coth(πt/2)| (16)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proved lemma, but its displayed equality is scrambled by the text layer, so the statement itself cannot be quoted whole.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-prop13-gradient-formula",
+     "value": "The paper proves (Proposition 13) that, for H as defined in (B1) and the parameterized thermal state as defined in (B5), the partial derivative of the energy with respect to a parameter equals minus one half the expectation of the anticommutator of H with the channel output for that parameter's term, plus the product of the expectations of H and of that term; a second equivalent form resembles an entry in a covariance matrix.",
+     "anchor": "Proposition 13, Appendix B 3, Eqs. (B61)-(B62), p.20; Eq. (10), p.3; Remark 14, p.22",
+     "quotes": [
+      "Proposition 13 (Partial Derivatives). Let H be a Hamiltonian as defined in (B1). Let J ∈ N, let θ ∈ RJ be a parameter vector, and let ρ(θ) be the corresponding parameterized thermal state as defined in (B5).",
+      "∂jf (θ) = − 1 2 ⟨{H, Φθ (Gj )}⟩ + ⟨H ⟩ ⟨Gj ⟩ (10)",
+      "The purpose of stating the second equality is to illustrate that it resembles an entry in a covariance matrix."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 13 with its conditions and formula quoted, proved in Appendix B 3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-prop15-gradient-bound",
+     "value": "The paper proves (Proposition 15) that, for H as defined in (B1), every parameter vector and every j, the absolute value of the partial derivative of the energy is at most 2 times the norm of H times the norm of the j-th local term, so the gradient is not arbitrarily large at any point.",
+     "anchor": "Proposition 15, Appendix B 3, Eq. (B85), p.22",
+     "quotes": [
+      "Proposition 15 (Bounds on Partial Derivatives). Let H be a Hamiltonian as defined in (B1). Let J ∈ N, let θ ∈ RJ be a parameter vector, and let ρ(θ) be the corresponding parameterized thermal state as defined in (B5).",
+      "|∂j Tr[Hρ(θ)]| ≤ 2 ∥H∥ ∥Gj∥ .",
+      "This demonstrates that the gradient is not arbitrarily large at any given point."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 15 with its conditions and bound quoted, proved in Appendix B 3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-prop16-hessian",
+     "value": "The paper derives (Proposition 16) an explicit expression for the matrix elements of the Hessian of the energy as a sum of six terms built from anticommutators, the channel, and its parameter derivative, and states the Hessian can also be estimated efficiently on a quantum computer but is used mainly to get a Lipschitz constant for the gradient.",
+     "anchor": "Proposition 16, Appendix B 4, Eqs. (B94)-(B95), p.23; Section III, p.4",
+     "quotes": [
+      "Proposition 16 (Hessian). Let H be a Hamiltonian as defined in (B1). Let J ∈ N, let θ ∈ RJ be a parameter vector, and let ρ(θ) be the corresponding parameterized thermal state as defined in (B5). Then the matrix elements of the Hessian of Tr[Hρ(θ)] are given by",
+      "we mainly use it to determine a Lipschitz constant for the gradient ∇θf (θ), which in turn implies rigorous statements about the convergence of SGD, as previously mentioned."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proved proposition whose six-term formula is scrambled by the text layer, so the formula itself cannot be quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-prop17-hessian-bound",
+     "value": "The paper proves (Proposition 17) that, for H as defined in (B1) and all j and k, the absolute value of each Hessian element of the energy is at most 8 times the norm of H times the norms of the j-th and k-th local terms.",
+     "anchor": "Proposition 17, Appendix B 4, Eq. (B112), pp.24-26; Eq. (24), p.4",
+     "quotes": [
+      "Proposition 17 (Bounds on the Hessian Elements). Let H be a Hamiltonian as defined in (B1). Let J ∈ N, let θ ∈ RJ be a parameter vector, and let ρ(θ) be the corresponding parameterized thermal state as defined in (B5).",
+      "|∂k∂j Tr[Hρ(θ)]| ≤ 8 ∥H∥ ∥Gj∥ ∥Gk∥ ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 17 with its conditions and bound quoted, proved in Appendix B 4.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-prop18-smoothness",
+     "value": "The paper proves (Proposition 18) that the energy objective is smooth, with smoothness parameter 8J times the norm of H times the maximum over k of the squared norm of the k-th local term; for H of the form in Eq. (1), the norm of H is replaced by the 1-norm of the coefficient vector, which makes the SGD sample complexity polynomial in J and that 1-norm.",
+     "anchor": "Proposition 18, Appendix B 5, Eq. (B125), p.26; Section IV, Eq. (26), p.4",
+     "quotes": [
+      "Proposition 18 (Smoothness). Let H be a Hamiltonian as defined in (B1). Let J ∈ N, let θ ∈ RJ be a parameter vector, and let ρ(θ) be the corresponding parameterized thermal state",
+      "as defined in (B5). Then, the objective function Tr[Hρ(θ)] is ℓ-smooth, where",
+      "ℓ = 8J ∥H∥ max ∥Gk∥2 k .",
+      "If the Hamiltonian H is of the form in (1), then a Lipschitz constant ℓ for the gradient ∇θ Tr[Hρ(θ)] is as follows:",
+      "implies that the sample complexity of SGD is polynomial in J and ∥α∥1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 18 with its conditions and constant quoted, proved in Appendix B 5.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-gradient-estimator",
+     "value": "The authors give a quantum algorithm, the quantum Boltzmann gradient estimator, that outputs an unbiased estimate of the gradient by combining classical random sampling of a Hamiltonian term and a time, Hamiltonian simulation, and the Hadamard test, assuming the local terms are unitaries such as Pauli strings; they state it generalizes to block-encoded terms.",
+     "anchor": "Section V, Fig. 1, pp.4-5; Appendix B 6, Algorithms 1-3, pp.27-31",
+     "quotes": [
+      "If Hk and Gj are also unitaries (which occurs in a rather standard case that they are Pauli strings, i.e., tensor products of Pauli matrices), then we can estimate the first term in (10) by a combination of classical sampling, Hamiltonian simulation [54, 55], and the Hadamard test [56].",
+      "This is the key insight behind the quantum Boltzmann gradient estimator.",
+      "We finally note that this construction can straightforwardly be generalized beyond the case of Hk and Gj being Pauli strings, if they instead are block encoded into unitary circuits [57, 58].",
+      "this algorithm estimates the full gradient ∇θ Tr[Hρ(θ)] and outputs an estimator g, the latter of which can be easily verified to be an unbiased estimator of ∇θ Tr[Hρ(θ)]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Unbiasedness of the first-term estimator is derived in Appendix B 6 a, Eqs. (B150)-(B154); the second term and full gradient are stated as easily verified.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-lemma20-algorithm1-samples",
+     "value": "The paper proves (Lemma 20, by Hoeffding's inequality) that Algorithm 1 uses N1 samples of the thermal state, equal to 2 times the squared 1-norm of the coefficients times ln(2 over delta1) divided by epsilon1 squared, to produce an epsilon1-close estimate of the first gradient term with success probability at least 1 minus delta1.",
+     "anchor": "Lemma 20, Appendix B 8 a, Eq. (B159), pp.32-33; Section V, p.5",
+     "quotes": [
+      "Lemma 20 (Sample Complexity of Algorithm 1). Let ε1 > 0, J, K ∈ N, δ1 ∈ (0, 1), θ ∈ RJ ,",
+      "Then, the number of samples, N1, of ρ(θ) used by Algorithm 1 to produce an ε1-close estimate of",
+      "than 1 − δ1 is N1 = 2 ∥α∥12 ln(2/δ1) ε21"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 20 with conditions quoted, proved by Hoeffding's inequality in Appendix B 8 a.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-lemma21-algorithm2-samples",
+     "value": "The paper proves (Lemma 21) that Algorithm 2 uses N2 samples of the thermal state, equal to 2 times the squared 1-norm of the coefficients times ln(2 over delta2) divided by epsilon2 squared, to produce an epsilon2-close estimate of the product of the expectations of H and the j-th term with success probability at least 1 minus delta2.",
+     "anchor": "Lemma 21, Appendix B 8 a, Eq. (B165), pp.33-34",
+     "quotes": [
+      "Lemma 21 (Sample Complexity of Algorithm 2). Let ε2 > 0, J, K ∈ N, δ2 ∈ (0, 1), θ ∈ RJ ,",
+      "Then, the number of samples, N2, of ρ(θ) used by Algorithm 2 to produce an ε2-close estimate of ⟨H⟩ρ(θ) ⟨Gj⟩ρ(θ) with a success probability not less than 1 − δ2 is"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 21 with conditions quoted, proved in Appendix B 8 a.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-thm22-sample-complexity",
+     "value": "The paper proves (Theorem 22) an explicit sample complexity N for QBM-GSE to reach an epsilon-stationary point, for H as defined in (B1) with nonnegative coefficients, epsilon greater than 0 and J a natural number, depending on J, the smoothness parameter, the initial gap Delta, epsilon and the 1-norm of the coefficients; the authors state it is polynomial in the inverse of epsilon, J and that 1-norm, and so polynomial in n when J and the 1-norm are.",
+     "anchor": "Theorem 22, Appendix B 8 b, Eq. (B171), pp.34-36; Section VI, Eq. (36), p.6",
+     "quotes": [
+      "Theorem 22 (Sample Complexity of QBM-GSE). Let H be a Hamiltonian as defined in (B1), and let α ∈ RK≥0 be the coefficients vector of H. Let ε > 0 and J ∈ N.",
+      "Then the sample complexity, N , of the QBM-GSE algorithm (Algorithm 4) to reach an ε-stationary point of the optimization problem (B9) is given by",
+      "As such, the sample complexity of our algorithm is polynomial in ε−1, J, and ∥α∥1, as claimed. Thus, if J and ∥α∥1 are polynomial in n (the number of qubits), then the sample complexity of the QBMGSE algorithm is also polynomial in n."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 22 with its conditions quoted, proved in Appendix B 8 b.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-sgd-variance-constants",
+     "value": "In the proof of Theorem 22 the authors show the stochastic gradient satisfies the SGD variance condition with constants A = 0 and B = 1 and C set by the estimator precisions and failure probabilities, and choose those so that the learning rate is one over the smoothness parameter, which needs epsilon between 0 and 1.",
+     "anchor": "Proof of Theorem 22, Appendix B 8 b, Eqs. (B174)-(B192), pp.35-36",
+     "quotes": [
+      "Now comparing the second inequality with the condition given by (A10), we obtain the constants for our case: A = 0, B = 1, and C = J ε12 + ε22 + (δ1 + δ2) ∥α∥21 .",
+      "Now, if we have that 0 < ε < 1, then this condition along with the condition given by (B187) implies the following:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in the proof of Theorem 22, Appendix B 8 b.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-lemma8-sgd-convergence",
+     "value": "The paper restates, as Lemma 8, a known SGD convergence result (Khaled and Richtarik, Corollary 1): for a smooth function and an unbiased stochastic gradient satisfying a variance condition with constants A, B, C, with a stated step size and enough iterations, the minimum over iterations of the expected gradient norm is at most epsilon.",
+     "anchor": "Lemma 8, Appendix A 3, Eqs. (A10)-(A12), p.11",
+     "quotes": [
+      "Lemma 8 (SGD Convergence). Let M be the total number of iterations of the SGD algorithm",
+      "This lemma is a restatement of [51, Corollary 1], and we include it here for completeness.",
+      "the SGD algorithm converges in such a way that min E[∥∇f (xm)∥] ≤ ε,"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result restated from other work.",
+     "result_type": "cited",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-lemmas4-5-lipschitz",
+     "value": "The paper restates, from the authors' earlier work, Lemma 4 (a differentiable multivariate function with bounded partial derivatives has a Lipschitz constant equal to the square root of n times the largest supremum of a partial derivative) and Lemma 5 (a Lipschitz constant for a vector-valued function from its components' constants).",
+     "anchor": "Lemmas 4 and 5, Appendix A 2, p.10",
+     "quotes": [
+      "Lemma 4 (Lipschitz Constant for a Multivariate Function). Let f : Rn → R be a differentiable multivariate function with bounded partial derivatives. Then the value",
+      "Lemma 5 (Lipschitz Constant for a Multivariate Vector-Valued Function). Let f : Rn → Rm be a differentiable multivariate vector-valued function such that each of its components, fi, is Li-Lipschitz continuous.",
+      "Proof. See [53, Appendix A.1]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited lemmas whose proofs are in other work.",
+     "result_type": "cited",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-prop23-ratio-estimate",
+     "value": "The paper proves (Proposition 23) that, in QBM generative learning with log-likelihood loss, the gradient ratio term can be estimated with error at most epsilon2 over (r minus epsilon2) times r, plus epsilon1 over r, assuming unbiased numerator and denominator estimates within epsilon1 and epsilon2, a lower bound r on the measurement probability, each Gj a Pauli string, and epsilon2 less than r; the authors claim this overcomes the obstacle earlier work saw to efficient QBM gradient estimation.",
+     "anchor": "Appendix C, Proposition 23, Eq. (C10), pp.37-39",
+     "quotes": [
+      "We also assume that there exists a scalar r > 0, such that Tr [Λvρ(θ)] ≥ r.",
+      "Finally, we assume that each Gj is a Pauli string, and that ε2 < r for guaranteeing numerical stability of the ratio estimator.",
+      "Proposition 23. The following inequality holds:",
+      "(r 1 ε2 − ε2) r + ε1 . r",
+      "Previous works suggested that efficient gradient estimation was infeasible due to the apparent computational difficulty in evaluating the numerator of the first term."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 23 with its assumptions quoted from Appendix C; the bound's display is flattened by the text layer but its terms are recoverable.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-overcomes-gradient-obstacle",
+     "value": "The authors state that by giving an efficient unbiased gradient estimator they overcome a key obstacle in QBM learning going back to Amin et al., where it was previously thought that estimating the gradient could not be done efficiently.",
+     "anchor": "Section II, p.3; Appendix C, p.37",
+     "quotes": [
+      "By doing so, we have thus overcome a key obstacle in QBM learning going back to [28, Section II], in which it was previously thought that estimating the gradient could not be done efficiently"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' characterization of their contribution relative to prior work.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-hessian-estimation-future",
+     "value": "The authors state that because the function |t| p(t) is normalizable (its integral is approximately 0.2714), a quantum algorithm for the Hessian elements could be devised and used in a second-order stochastic Newton method, and leave this for future work.",
+     "anchor": "Remark 19, Appendix B 6 c, p.31",
+     "quotes": [
+      "along with the fact that the function |t| p(t) is normalizable as a probability density function (i.e., dt |t| p(t) ≈ 0.2714),",
+      "This quantum algorithm for estimating the matrix elements of the Hessian can be used in a second-order stochastic Newton search method, thus extending the SGD algorithm used in our paper. We leave the detailed exploration of this approach for future work."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of work left open, Remark 19.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-other-contexts-future",
+     "value": "The authors suspect that similar polynomial sample-complexity claims can be made when QBMs replace parameterized circuits in semidefinite programming, constrained Hamiltonian optimization and entropy estimation, but state this remains for future investigation.",
+     "anchor": "Section VIII, p.6",
+     "quotes": [
+      "We suspect that claims similar to those made here, regarding polynomial sample complexity for convergence to an ε-stationary point, can be made in these contexts; however, it remains a topic for future investigation."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of an open direction, Section VIII.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-viability-conditional",
+     "value": "The authors state that if the objective landscape does not suffer from barren plateaus, then this, together with their algorithm and further progress on thermal state preparation, would imply QBMs are a viable path toward ground-state energy estimation, and that in the Discussion they call QBMs a more promising route than VQE because they are not known to suffer from barren plateaus.",
+     "anchor": "Section VIII, p.6; Section VII, p.6",
+     "quotes": [
+      "If the landscape of the objective function f (θ) does not suffer from the barren-plateau problem, this, along with our algorithm and further progress on thermal state preparation, would imply that QBMs are a viable path toward ground-state energy estimation",
+      "However, as emphasized previously, in contrast to VQE, QBMs are not known to suffer from the barren-plateau problem, and there is evidence that they do not in certain contexts [42]. As such, they appear to offer a more promising route for ground-state energy estimation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conditional judgment by the authors, not shown in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-barren-plateau-prior-results",
+     "value": "The authors cite prior work that QBMs with hidden units can suffer from barren plateaus under a particular random construction of thermal states, which they say does not apply to QBMs with visible units only, and that QBMs with visible units were proven not to suffer from barren plateaus in generative modeling and to converge using a number of thermal-state samples polynomial in the number of qubits.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "In this context, we should also note that [43] proved that QBMs with hidden units can suffer from the barren plateau problem, assuming a particular approach to generating parameterized thermal states randomly; however, this statement is not applicable to QBMs with visible units only",
+      "Indeed it was proven in [42] that QBMs with visible units do not suffer from the barren plateau problem when used in the context of generative modeling, and much more so, they provably converge in this setting, using a number of thermal state samples polynomial in the number of qubits."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results attributed to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-vqe-bottlenecks-cited",
+     "value": "The authors state, citing a review, that later research pointed out bottlenecks of VQE that will likely preclude it from practical quantum advantage in the near term, chief among them barren plateaus, where an exponential number of measurements is needed to choose the next optimization step.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "While the VQE approach at first seemed promising, later research pointed out a number of bottlenecks associated with it [21], which will likely preclude VQE from achieving practical quantum advantage in the near term.",
+      "so that a costly (exponential) number of measurements is required to determine which direction the optimizer should proceed to next, at any given iteration of the algorithm."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A view attributed to cited work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-ground-state-hardness-cited",
+     "value": "The authors state, citing prior work, that the worst-case complexity of calculating ground-state energies of physically relevant Hamiltonians has been rigorously proven computationally difficult even for a quantum computer, and that finding a global optimum of a non-convex function is generally NP-hard.",
+     "anchor": "Section I, p.1; Appendix A 2, p.10",
+     "quotes": [
+      "it has been rigorously proven that the worst-case complexity of doing so for physically relevant Hamiltonians is computationally difficult in principle, even for a quantum computer [5–7].",
+      "In optimization theory, it is well known that finding a globally optimal point of a non-convex function is generally intractable (NP-hard) [62, Section 2.1]."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results attributed to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-contrast-harrow-napp",
+     "value": "The authors contrast their result with an analytical study of VQE convergence that was restricted to non-interacting Hamiltonians, and state that their analysis applies to all Hamiltonians efficiently measurable on quantum computers.",
+     "anchor": "Section II, pp.3-4",
+     "quotes": [
+      "However, their analysis was restricted to non-interacting Hamiltonians, for which one can actually calculate the ground-state energy by hand;",
+      "In contrast, our analysis applies to all Hamiltonians that are efficiently measurable on quantum computers, thus encompassing a significantly wider class of Hamiltonians."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the scope of its analysis, Section II.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "patel-qbm-algorithm2-samples-main-text",
+     "value": "The authors state that the second gradient term is estimated by preparing two copies of the thermal state and measuring H tensor Gj, and that each of Algorithms 1 and 2 needs a number of thermal-state samples of order the squared 1-norm of the coefficients times the inverse square of epsilon times the log of the inverse failure probability.",
+     "anchor": "Section V, Eq. (28), pp.4-5",
+     "quotes": [
+      "a procedure for estimating it is to generate the state ρ(θ) ⊗ ρ(θ) and then measure the observable H ⊗ Gj on these two copies.",
+      "the result of which is that O(∥α∥12 ε−2 ln δ−1) samples of ρ(θ) are required to have an accuracy of ε > 0 with a failure probability of δ ∈ (0, 1), when H is of the form in (1)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Main-text summary of Lemmas 20 and 21, proved in Appendix B 8 a.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "perelshtein-2021-large-scale-quantum-hybrid-solution",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2020\\Perelshtein-et-al._2020_Large-scale-quantum-hybrid-solution-for-linear-systems-of-equations__2003.12770.pdf",
+   "title_in_file": "Large-scale quantum hybrid solution for linear systems of equations",
+   "version_note": "arXiv:2003.12770v3, dated July 1, 2021. The text layer prints powers flat: 217 is two to the seventeenth, 1014 is ten to the fourteenth, 247 is two to the forty-seventh, 105 runs is ten to the fifth.",
+   "pages": 8,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "An experimental paper that runs a hybrid Harrow-Hassidim-Lloyd (H-HHL) linear-system algorithm on a noisy simulator and on IBMQ 5, 15 and 20 qubit processors for specially constructed gate-based matrices, and compares its runtime at equal fidelity with classical circuit simulation on historical supercomputers.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "hhl-advantage-claim",
+     "verdict": "narrowed",
+     "note": "The paper's own benchmark (Fig. 4, Discussion) compares the 20-qubit QPU at 0.04% fidelity with an equal-fidelity Schrodinger-Feynman simulation, and states that present supercomputers Tianhe-1 and Summit surpass the IBMQ QPU; only twentieth-century supercomputers and laptops are slower. The authors also say they compared against the most straightforward simulations, and that tensor networks may solve it in poly-logarithmic time. The advantage claim is narrowed to these conditions.",
+     "value": "The authors state that their quantum solution of a problem of dimension two to the seventeenth, a record for linear systems on quantum computers, demonstrates algorithmic quantum advantage over classical solutions; their own benchmark compares the IBMQ Johannesburg processor at 0.04% fidelity with an equal-fidelity straightforward Schrodinger-Feynman simulation, and finds twentieth-century supercomputers and modern laptops slower but present supercomputers Tianhe-1 and Summit faster than the QPU.",
+     "anchor": "Conclusion, p.6; Discussion and Fig. 4 caption, p.5",
+     "quotes": [
+      "The implemented quantum solution of a 217-dimensional problem, which is a record for a linear system solution on quantum computers, demonstrates algorithmic quantum advantage over classical solutions.",
+      "The fidelity level of a IBMQ Johannesburg processor, which solves the problem in 200 µs (dashed green line), is 0.04%.",
+      "While XXth century devices are inferior to the 20-qubit quantum computer, present supercomputers Tiahne-1 (2010) and Summit (2020) surpass the IBMQ QPU. Nonetheless, regular modern laptops (10 GFLOPS) are less efficient than the quantum processor.",
+      "We want to emphasize that our comparison was made with the most straightforward simulations that include matrix multiplications."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' claim of advantage, which their own Fig. 4 limits to old hardware and a straightforward simulator.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The paper's own data show the QPU slower than present supercomputers at equal fidelity, so the 'advantage' is in asymptotic scaling for a matrix class chosen to be efficiently simulable, not a demonstrated wall-clock advantage."
+    },
+    {
+     "id": "hhl-depth-reduction",
+     "verdict": "narrowed",
+     "note": "The depth reduction comes from eliminating one of three phase qubits, which the authors can do because they fix the matrix spectrum themselves with a correcting gate; the value is narrowed to that condition.",
+     "value": "The authors state that, because they control the matrix spectrum with a correcting gate (eigenvalues fixed at one, three, five and seven eighths), the hybrid part lets them use 2 instead of 3 phase qubits, which significantly reduces circuit depth, by an order of magnitude for the 50-qubit scheme.",
+     "anchor": "Results, Benchmarking problem, p.3; Fig. 1c",
+     "quotes": [
+      "Leveraging the full control over the matrix spectrum via the correcting gate Uˆ c, we immediately eliminate the unnecessary phase qubits without the iterative phase estimation algorithm",
+      "hybrid part allows us to utilize only p = 2 instead of 3 phase qubits in",
+      "Such a technique allows us to significantly reduce the depth of the circuit, by an order of magnitude for the 50-qubit scheme."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A circuit-depth estimate shown in Fig. 1c for a constructed matrix class; no derivation is given.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "hhl-hardware-scale",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Conclusion, p.6",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own setup, Conclusion.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "hhl-restricted-matrices",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Results, Hybrid quantum algorithm, p.1",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the matrices it considers.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "hhl-hybrid-method",
+     "value": "The authors state that their hybrid HHL uses prior classical knowledge of the matrix: phase qubits that correspond to eigenvalue bits identical for every eigenvector are treated as classical bits and removed, reducing circuit width and depth; they also omit the amplitude amplification step.",
+     "anchor": "Results, Hybrid quantum algorithm, pp.1-2",
+     "quotes": [
+      "We treat such phase qubits as classical bits and exclude them from the computational scheme",
+      "yielding a reduction in the width and in the depth of a circuit.",
+      "Here, we omit the quantum amplitude amplification step 6 that improves the complexity in terms of the conditional number, which is fixed."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its method, Results.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-matrix-classes",
+     "value": "The authors define three classes of gate-based matrices: TP1, a tensor product of single-qubit gates that does not entangle qubits; TP2, a tensor product of two-qubit operators giving entangled two-qubit clusters; and NTP, not a tensor product, which entangles all qubits; the controlled single-qubit gates are restricted to a subset implementable with one CNOT.",
+     "anchor": "Results, Benchmarking problem, p.3; Methods, p.6",
+     "quotes": [
+      "TP1: Uˆ TP1 is the Tensor Product of single-qubit gates Uˆ s resulting in dim(Ui) = 2: this operator does not entangle qubits.",
+      "NTP: Uˆ NTP is Not a Tensor Product of single- or two-qubit gates that leads to dim(Ui) = dim(A): this operator entangles all qubits.",
+      "Thus, we consider the continuous subset of singlequbit gates Uˆ s in a way that the control-Uˆ s is implemented via a single CNOT resulting in a dramatic simplification of the algorithm circuit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions of its matrix classes, Results and Methods.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-spectrum-fixed",
+     "value": "The authors state that they add a correcting gate because the logarithms of their matrices have zero eigenvalues, which is unacceptable for HHL, and that this fixes the spectrum of all matrix types so that the last binary digit of every eigenvalue is 1, letting them eliminate one phase qubit and use n = [log N] + 3 qubits in total.",
+     "anchor": "Methods, Linear system construction, p.6",
+     "quotes": [
+      "Unfortunately, it leads to another problem: studied log(Uˆ TP1 ), log(Uˆ TP2 ), log(Uˆ NTP) matrices have zero eigenvalues, which is unacceptable for the HHL algorithm6.",
+      "It is easy to show that the last bit of all eigenvalue is 1 if we write down four eigenvalues in binary representation:",
+      "Hence, we can utilize n = [log N] + 3 qubits overall for each matrix type."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own construction of its test matrices, Methods.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-small-scale-tomography",
+     "value": "The authors report full state tomography for circuits of 4 to 7 qubits, 140 transpiled random circuits per matrix type and size, each experiment of 8912 runs, on IBMQ Burlington, Yorktown, Melbourne and Johannesburg; for one two-dimensional example the Johannesburg density matrix's top eigenvector matched the solution with 97.5% precision.",
+     "anchor": "Results, Small-scale quantum algorithm implementation, p.3; Fig. 2a",
+     "quotes": [
+      "Primarily, we consider a low number of qubits case where n ∈ [4, 7],",
+      "8912 runs. We investigate all matrix types TP1, TP2, and NTP by analyzing 140 transpiled random quantum circuits (RQCs) for every type for",
+      "eigenvalue, which is the solution with a | x|x |2 = 97.5% precision."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-quantum-volume-fidelity",
+     "value": "The authors report that tomographic fidelity averaged over 70 random NTP matrices was similar on Burlington, Yorktown and Melbourne, which share quantum volume 8, and slightly higher on Johannesburg, whose measured quantum volume is 16.",
+     "anchor": "Fig. 2b caption, p.3; Results, p.4",
+     "quotes": [
+      "The fidelity FTOM of the algorithm circuit that was averaged over 70 NTP RQCs. Since the quantum volume of Burlington, Yorktown and Melbourne processor is the same VQ = 8, the fidelity level is similar. However, Johannesburg posses slightly higher VQ = 16, which is reflected in the fidelity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-xeb-fidelity-definition",
+     "value": "The authors define a cross-entropy fidelity for large circuits, from one experiment with Z-projective measurement, as the averaged proximity of the measured outcome distribution to the ideal one rather than to the uniform distribution, normalized, and use it because full tomography needs a number of experiments exponential in n.",
+     "anchor": "Results, Large-scale implementation, Eq. (6), p.4; Supplementary Information, p.8",
+     "quotes": [
+      "Since the full state tomography requires 3n experiments for n-qubit circuit, it is not possible to obtain tomographical fidelity in a reasonable time.",
+      "The introduced metric shows averaged proximity of the experimentally obtained outcomes distribution pe to the ideal outcomes distribution pt rather than to a uniform distribution"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of its metric, Eq. (6) and Supplementary Information.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-dem-fails-on-hardware",
+     "value": "The authors report that the digital error model describes the fidelity on the simulator with an uncorrelated depolarizing noise model, but fails to predict performance on the IBMQ processors, where the measured fidelity is almost independent of matrix type; they attribute this to correlated control errors specific to IBMQ devices. Each point averages 140 random circuits.",
+     "anchor": "Results, Large-scale implementation, Fig. 3, pp.4-5",
+     "quotes": [
+      "However, for the experiment conducted on IBMQ QPUs, we find that the DEM fails in predictions of the algorithm performance.",
+      "It becomes clear from Fig. 3(b,d) that the measured fidelity is almost independent on the matrix type despite the significant changes in corre-",
+      "The experimental results are not fitted by DEM by reason of correlations of control errors, which are specific to IBMQ devices.",
+      "Each point is the fidelity that is averaged over 140 RQCs,"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the attribution to correlated errors is the authors' interpretation.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-record-and-prior",
+     "value": "The authors state that they experimentally find the quantum state projection solving a linear system of size two to the seventeenth, which appears to be a record for matrix inversion on a gate-based QPU, and cite earlier solutions of an 8 by 8 problem on a four-qubit NMR device and a 32 by 32 problem with a variational solver on Rigetti's 16-qubit chip.",
+     "anchor": "Results, p.5",
+     "quotes": [
+      "which appears to be a record in matrix inversion on a gate-based QPU.",
+      "Previously, the 8 × 8 problem was solved with an adiabatic-inspired quantum algorithm 19 on a four-qubit nuclear magnetic resonance device 20,",
+      "and the 32 × 32 problem was tackled with variational quantum linear solver21 using Rigetti's 16-qubit superconducting chip."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' claim of a record; prior results are cited.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "A projection at 0.04% fidelity is what is called the solution here; full readout of the solution vector is not performed."
+    },
+    {
+     "id_suggestion": "hhl-classical-cost-claim",
+     "value": "The authors state that classical solution of their N by N system costs no less than order N squared regardless of the fixed spectrum and sparsity, while the hybrid quantum algorithm scales as order log N; they also state that straightforward circuit emulation scales as order N log N, faster than direct solution.",
+     "anchor": "Discussion, Classical solution and Quantum algorithmic advantage, p.5",
+     "quotes": [
+      "The classical computational cost of solving the system with N × N matrix using advanced numerical methods is no less than O(N2) regardless of mentioned assumptions.",
+      "while the runtime of the classical algorithms that solves NxN linear system is O(N2), the runtime of the hybrid quantum algorithm has O(log N) scaling.",
+      "Besides, we find that the high-performance circuit emulation4 is considerably faster than the direct solution: O(N2) vs O(N log N)"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A complexity claim argued informally, without proof, and omitting readout of the solution.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The quantum O(log N) figure omits state preparation and solution readout, which the paper itself sets aside."
+    },
+    {
+     "id_suggestion": "hhl-historical-supercomputer-runtimes",
+     "value": "The authors estimate, by scaling a simulation runtime by fidelity, that an equal-fidelity classical solution of the NTP problem would take 17 minutes on Atlas (1962), 30 seconds on CDC 7600 (1969), 6.3 and 0.9 seconds on Cray-1 and Cray-2, and 1.2 ms on ASCI Red (1997), against the 20-qubit QPU's 200 µs; they state the QPU's net time does not exceed 1 ms.",
+     "anchor": "Fig. 4 caption, p.5; Discussion, p.5",
+     "quotes": [
+      "The Atlas supercomputer (1962) would solve the system with the same fidelity in 17 minutes, CDC 7600 (1969) in 30 seconds, Cray-1 (1976) and Cray-2 (1985) in 6.3 seconds and 0.9 seconds, respectively, Intel ASCI Red (1997) in 1.2 ms.",
+      "While XXth century devices are inferior to the 20-qubit quantum computer,",
+      "which solves the problem in 200 µs (dashed green line)",
+      "While the net calculation time on a quantum device with 0.04% fidelity does not exceed 1 ms"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An estimate built on fitted constants and an assumed linear fidelity scaling, from one study.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-benchmark-limits",
+     "value": "The authors state limits on their benchmark: simulation estimates are over-evaluated for supercomputers without enough memory, the final vector recreation runtime is omitted because it is hard to estimate, and more advanced simulation such as tensor networks may allow a solution in poly-logarithmic time, which is left to future work.",
+     "anchor": "Discussion, Quantum algorithmic advantage, p.5",
+     "quotes": [
+      "Note that the estimations for the simulation performance are over evaluated for supercomputers that do not have enough memory to process the whole circuit.",
+      "We thus omit the final vector recreation runtime since the estimation of such an operation is a highly complicated task.",
+      "However, we expect that more advanced quantum simulation approaches, such as tensor networks27,28, may allow for a solution in poly-logarithmic time."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of the limits of its comparison, Discussion.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-evidence-surpass-claim",
+     "value": "The authors state that the speed increase is experimental evidence that hybrid quantum computing will surpass the classical computing industry of the twentieth century, and that persistent improvement of quantum software allows hybrid approaches to consistently outperform classical solutions.",
+     "anchor": "Discussion, p.5",
+     "quotes": [
+      "Such a dramatic increase in speed is an experimental evidence that the hybrid quantum computing will surpass the classical computing industry that reigned in the XXth century.",
+      "persistent enhancement of quantum software allows hybrid quantum approaches to consistently outperform classical solutions."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim beyond what was measured.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-low-fidelity-better-than-random",
+     "value": "The authors state that although the fidelity level is low, the algorithm still gives the solution with a much higher probability than a random guess, and propose applications in Markov processes, control theory, partial differential equations and Bayesian deep learning.",
+     "anchor": "Discussion, Near-term applications, pp.5-6",
+     "quotes": [
+      "Despite the fact that the fidelity level is low, the quantum algorithm still provides the solution with a tremendously higher probability than a random guess.",
+      "in the context of Markov processes, one could obtain the generator of a known stochastic P matrix"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim about applications, not tested.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-50-qubit-projection",
+     "value": "The authors state that with a state-of-the-art 50-qubit processor one could invert a matrix of size ten to the fourteenth, far beyond present supercomputers, because the system size grows exponentially with the number of qubits.",
+     "anchor": "Conclusion, p.6",
+     "quotes": [
+      "The size of the linear system grows exponentially with the increasing number of qubits. Using the state-of-art 50 qubits processor, one can invert the 1014 × 1014 matrix, which is far beyond the capabilities of the present state-of-the-art supercomputers."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A projection by the authors, not tested.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-correlated-errors-outlook",
+     "value": "The authors cite earlier evidence that gate errors are correlated in some IBM superconducting processors, and expect that advanced equipment with precautions such as Purcell filters will give fidelity behavior that follows the digital error model.",
+     "anchor": "Results, p.5",
+     "quotes": [
+      "Indeed, it was confirmed earlier that gate errors are correlated in some of the IBM superconducting processors18.",
+      "Nonetheless, we expect that an advanced equipment combined with the necessary precautions against the correlated errors, e.g. Purcell filters, will provide the fidelity behaviour according to the digital error model"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result and an author's expectation.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-transpile-depth",
+     "value": "The authors report that a 53-qubit circuit needs about one thousand or more entangling gates on IBMQ Rochester for TP1 and about 3 and 6 thousand for TP2 and NTP, that Google Sycamore's topology allows a 26% reduction, and that they search dozens of transpile options by brute force because the optimal transpiling is NP-hard.",
+     "anchor": "Supplementary Information, Fig. S1, p.8",
+     "quotes": [
+      "While the 53-qubit circuit implemented on the all-to-all coupling map consists of",
+      "the circuit implemented on the IBMQ Rochester device requires ≥ 103 entangling gates for TP1, ∼ 3 · 103 for TP2 and ∼ 6 · 103 for NTP matrices.",
+      "Google Sycamore's topology allows for a 26% reduction in circuit depth compared to the Rochester QPU",
+      "Unfortunately, finding the best transformation is an NP-hard problem, therefore we use a brute force search over dozens of transpile options and pick the best circuit decomposition."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Measured transpiled-circuit counts from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-quantum-volumes",
+     "value": "The authors report measured quantum volumes of 8 for all 5-qubit IBMQ devices, Melbourne (15 qubits) and Rochester (53 qubits), 16 for Johannesburg (20 qubits), and an estimated 32 for Google Sycamore, and that two-qubit gate error is an order of magnitude higher than single-qubit error.",
+     "anchor": "Supplementary Information, p.8; Fig. S2",
+     "quotes": [
+      "We find that all 5-qubit IBMQ devices, 15-qubit Melbourne, and 53-qubit Rochester processors, have VQ = 8, the 20-qubit Johannesburg has VQ = 16 and the Google Sycamore processor has VQ = 32.",
+      "We measure the quantum volume of the IBM processors and estimate such a metric for the Sycamore machine.",
+      "The error of a two-qubit gate is an order of a magnitude higher than for a single-"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Measured device figures from one study; Sycamore's is an estimate.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-simulation-constants",
+     "value": "The authors fit the single Schrodinger-simulation runtime constant on a POWER8 processor with 160 cores and 512 Gb of RAM, and assume linear scaling to about 100K cores and that a 3 PB supercomputer can hold a vector of dimension two to the forty-seventh, to estimate classical runtimes.",
+     "anchor": "Methods, Circuit emulation, p.6",
+     "quotes": [
+      "We exploit a POWER8 processor with 160 cores and 512 Gb of RAM31 in order to estimate the time constant C",
+      "Since modern supercomputers have roughly 100K cores,",
+      "For memory estimates, while the state-of-the-art supercomputers have 3 PB of RAM, we suppose that one can store a 247-dimensional vector using 8 bytes to encode single complex number."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of the assumptions behind its classical estimates, Methods.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-outlook",
+     "value": "The authors state they intend to probe the hybrid HHL algorithm on low-noise QPUs and high-performance simulators, and envision the planned experiments stimulating industry to demonstrate quantum advantage.",
+     "anchor": "Conclusion, p.6",
+     "quotes": [
+      "We intent to probe the HHHL algorithm both on the cutting edge low-noise QPUs and on highperformance classical simulator machines."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement of intent.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "perez-guijarro-2023-relation-between-quantum-advantage-supervised",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Perez-Guijarro-Pages-Zamora-Fonollosa_2023_Relation-between-quantum-advantage-in-supervised__2304.06687.pdf",
+   "title_in_file": "Relation between quantum advantage in supervised learning and quantum computational advantage",
+   "version_note": "arXiv:2304.06687v2, 1 Jul 2023.",
+   "pages": 31,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A complexity-theory paper that defines learning and computational quantum speed-ups and proves they coincide for functions whose training sets can be generated efficiently by a classical algorithm, then applies this to learning tasks built on prime factorization.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "pg-equivalence-classical-generable",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Theorem 1, Section 3, p.5; proof Appendix B.1, pp.15-16",
+     "quotes": [
+      "Theorem 1. A quantum speed-up computing function f (x) is equivalent to a quantum speed-up learning f (x) for a sequence of distributions D if the function is classical generable for sequence D, i.e.,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1, Section 3, proved in Appendix B.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "pg-factoring-speedup",
+     "verdict": "narrowed",
+     "note": "Theorem 2 holds only on the domain of integers with at most K distinct prime factors (K at least 2), under the conjecture that factoring integers with two distinct prime factors is classically intractable, for error trends that are polynomial in m, and for distribution sequences for which the function is classically generable; for f2 and f3 it gives only that at least one of the two has the speed-up. The value is narrowed to these conditions.",
+     "value": "The paper proves (Theorem 2) that, on the domain of integers with at most K distinct prime factors (K a constant of at least 2), and under the conjecture that prime factorization is classically intractable for integers with two distinct prime factors, the sum of the distinct prime factors has a quantum learning speed-up for a distribution sequence for every polynomial error trend, as long as it is classically generable for that sequence; at least one of two other prime-based functions has the same speed-up; and at least one sequence satisfying their condition (5) makes all three functions classically generable.",
+     "anchor": "Theorem 2, Section 3, p.6; proof Appendix E, pp.21-31",
+     "quotes": [
+      "Theorem 2. Let X = {x ∈ N : ω(x) ≤ K} be the domain of functions {fl(x)}3l=1, where ω(x) is the number of distinct prime factors of x, which are denoted by {pi}iω=(x1), and K is a constant greater than or equal to 2.",
+      "Under the conjecture that the prime factorization problem is classically intractable for integers with two distinct prime factors:",
+      "where u ∈ R+, as long as f1 ∈ GC(D).",
+      "belongs to LQη (D)\\LCη (D) for all η(m) of the form mu, as long as f2, f3 ∈ GC(D). Moreover, there exists at least a sequence D that satisfies (5) for which fl(x) ∈ GC(D) for all l ∈ {1, 2, 3}."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2 with its domain, conjecture and generability conditions quoted, proved in Appendix E.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The speed-up is conditional on an unproven hardness conjecture, as all such separations are."
+    },
+    {
+     "id": "pg-open-questions",
+     "verdict": "widened",
+     "note": "The stored value omits what the set is and the other open question. The paper names the set as G-tilde(D) of Proposition 2 and its relation with the classically and quantumly generable sets, and also leaves open whether error trends other than polynomial ones give non-equivalence under BQP different from BPP.",
+     "value": "The authors state two open questions: whether error trends other than polynomial ones also make the learning and computational speed-up sets differ under the conjecture that BQP differs from BPP; and the characterization of the set G-tilde(D) of Proposition 2 and its relation with the classically and quantumly generable sets, which would help identify learning tasks with a quantum speed-up whose training set a quantum algorithm can generate efficiently.",
+     "anchor": "Section 5, Conclusions, p.9",
+     "quotes": [
+      "For instance, it is not clear whether functions η(m) different from η(m) = mu satisfy the relation LQη \\LCη ≠ PQη\\PCη under the conjecture that BQP̸=BPP.",
+      "Another problem that remains open is the characterization of the set G˜(D), appearing in Proposition 2, and its relation with the sets GC(D) and GQ(D).",
+      "A solution to this problem would help to identify learning tasks for which there is a quantum speed-up, and a quantum algorithm can generate the training set efficiently."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open problems, Section 5.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "pg-setup-complexity-framework",
+     "value": "The authors state their setup: the target function is deterministic, inputs are drawn from an unknown distribution over a countably infinite domain, learning procedures are restricted to those running in time polynomial in the input size, the training-set size n is restricted to a polynomial in the maximum input bit length m, and they adopt a complexity-theory view rather than the statistical learning framework.",
+     "anchor": "Section 1, pp.2-3; Introduction, p.2",
+     "quotes": [
+      "setup, f (x) is a deterministic function, xi ∈ X are realizations of a random variable (r.v.) X ∼ D, which distribution D is unknown, and the domain is countably infinite",
+      "we restrict our attention to classical or quantum efficient learning procedures, defined as mappings M (x, Tn) = fˆ(x) where the running time of the procedure is polynomial in the input size",
+      "Therefore, hereafter we restrict n to be a polynomial in m.",
+      "we depart from the traditional statistical learning framework, typically employed in supervised learning, and adopt a complexity theory perspective."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own setup, Section 1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pg-def-eta-learnable",
+     "value": "The paper defines (Definition 1) a function as classical (quantum) eta-learnable if some classical (quantum) learning procedure, distribution sequence and polynomial number of samples let it compute, in time polynomial in m, an estimate within c times eta(m) of the true value with probability greater than 1 minus delta, for some positive constant c and a constant delta below one half, for every input in the support.",
+     "anchor": "Definition 1, Section 2, p.4",
+     "quotes": [
+      "Definition 1. A function f (x) is classical (quantum) η-learnable, denoted as f ∈ LCη (LQη ), where η : N → R+, iff there exists a classical (quantum) learning procedure, a sequence of distributions D = {Dm}m∞=1, and a polynomial p(m) such that:",
+      "Prob |fˆ(x) − f (x)| < c η(m) > 1 − δ.",
+      "Therefore, if a function is η-learnable, then it can be estimated with an error O(η(m)) with at least probability 1/2 given a training set with a polynomial number of samples."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 1, Section 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pg-def-learning-speedup",
+     "value": "The paper defines (Definition 2) a quantum speed-up learning a function as the existence of an error trend for which the function is quantum eta-learnable but not classical eta-learnable, and notes that a speed-up for one distribution sequence does not imply a speed-up in this sense.",
+     "anchor": "Definition 2 and Eq. (2), Section 2, p.4",
+     "quotes": [
+      "Definition 2. There is a quantum speed-up learning a function f (x) if there exists a function η : N → R+ such that f (x) is quantum η-learnable but it is not classical ηlearnable",
+      "Interestingly, there might be functions for which there is no quantum advantage following Definition 2, and still, these functions can be efficiently learned by a quantum procedure but not by a classical one using sequence D."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 2, Section 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pg-def-computable-and-speedup",
+     "value": "The paper defines (Definitions 3 and 4) a function as classical (quantum) eta-computable if an algorithm outputs, in time polynomial in the input's bit length, an estimate within c times eta of the bit length with probability greater than one minus delta, and a quantum computational speed-up as quantum but not classical eta-computability.",
+     "anchor": "Definitions 3 and 4, Section 3, pp.4-5",
+     "quotes": [
+      "Definition 3. A function is classical (quantum) η-computable, denoted as f ∈ PCη (PQη), where η : N → R+, iff there exists a classical (quantum) algorithm that, for any input x ∈ X , outputs an estimate fˆ(x) in polynomial time in b(x) such that",
+      "Definition 4. There is a quantum speed-up computing a function f (x) if there exists a function η : N → R+ such that f (x) is quantum η-computable but it is not classical η-computable"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definitions 3 and 4, Section 3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pg-def-generable",
+     "value": "The paper defines (Definition 5) a function as classical (quantum) generable for a distribution sequence if a classical (quantum) algorithm, on input m, generates with high probability and in time polynomial in m a training set of polynomially many labeled samples drawn from that sequence.",
+     "anchor": "Definition 5, Section 3, p.5",
+     "quotes": [
+      "Definition 5. A function f (x) is classical (quantum) generable for a sequence D, denoted as f ∈ GC(D) (GQ(D)), iff there exists a classical (quantum) algorithm that for any input m generates a training set",
+      "in polynomial time in m with high probability, where xi ∼ Dm and n is a polynomial in m."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 5, Section 3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pg-prop1-not-equivalent-general",
+     "value": "The paper proves (Proposition 1, a rephrasing of Huang et al.'s result) that, under the conjecture that BQP differs from BPP, the set of quantum 1-learnable functions with a quantum learning speed-up differs from the analogous computational set; so equivalence cannot be guaranteed for an arbitrary error trend. Appendix A.4 generalizes this to polynomial error trends.",
+     "anchor": "Proposition 1, Section 3, p.5; proof Appendix A, pp.12-14",
+     "quotes": [
+      "Proposition 1. Under the conjecture that the complexity class Bounded-error quantum polynomial time (BQP) is different from the class Bounded-error probabilistic polynomial time (BPP),",
+      "the subset of quantum 1-learnable functions for which a quantum speed-up exists differs from the analogous computational set",
+      "Therefore, an equivalence between LQη \\LCη and PQη\\PCη can not be guaranteed for an arbitrary error trend η : N → R+.",
+      "The result introduced in Proposition 1 can be generalized with an analogous argument for the case η(m) = mu with u ∈ R+."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 1 with its BQP-versus-BPP condition quoted, proved in Appendix A.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pg-prop1-construction",
+     "value": "The authors construct the separating function as the input length times the expectation of Z on the first qubit after a hard unitary acting on an amplitude-encoded input, and show it is quantum one-computable, not classical one-computable if BQP differs from BPP, yet classically one-learnable by least squares from a training set of order the cube of the input length samples.",
+     "anchor": "Appendix A.1-A.3, Eqs. (A.2)-(A.12), pp.12-14",
+     "quotes": [
+      "This is done by constructing a function for which there is a computational speed-up, but there is no learning speed-up.",
+      "This implies that vM (ℓ) can be computed solving a least squares problem",
+      "Note that to estimate f (x) for all x such that ℓ(x) ≤ ℓ, it is necessary O(ℓ3) samples"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Shown step by step in Appendix A.1 to A.3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pg-prop4-cited-huang",
+     "value": "The paper restates, as Proposition 4, a result of Huang et al.: if a randomized classical algorithm could compute the expectation of an observable after a unitary on an amplitude-encoded input up to 0.15 error with high probability, for any number of qubits, unitary and observable, in polynomial time, then BQP would equal BPP.",
+     "anchor": "Proposition 4, Appendix A, p.12",
+     "quotes": [
+      "Proposition 4. [18] Consider input vector x ∈ Rp encoded into a k-qubit state",
+      "up to 0.15-error with high probability over the randomness in the classical algorithm for any k, U , and O in a time polynomial to the description length of U and O, the input vector size p, and the qubit system size k, then BQP=BPP."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pg-lemma1-identities",
+     "value": "The paper proves (Lemma 1) that classically (quantumly) computable functions are learnable for any sequence, that a function both generable and learnable by the same kind of machine is computable by it, and that the classically generable functions that are quantumly learnable for a sequence are exactly the classically generable functions that are quantumly computable.",
+     "anchor": "Lemma 1, Appendix B, p.15",
+     "quotes": [
+      "Lemma 1. The following identities hold:",
+      "The identities PCη ⊆ LCη (D) and PQη ⊆ LQη (D) follow trivially as the learning procedure introduced in Definition 6 may not use the additional information given by the training set Tn.",
+      "(e) GC(D) ∩ LQη (D) = GC(D) ∩ PQη"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 1 stated and proved in Appendix B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pg-factoring-instance-nonempty",
+     "value": "The authors state that, under the conjecture that prime factorization is classically intractable, the set of classically generable functions with a computational (and so a learning) speed-up is non-empty for polynomial error trends and for at least one distribution sequence that puts at least a polynomial fraction of the uniform probability on every input; they assume the stronger conjecture that integers with two prime factors raised to powers cannot be factorized efficiently, and note that otherwise RSA could be broken classically.",
+     "anchor": "Section 3, Eq. (5), pp.5-6",
+     "quotes": [
+      "Under the conjecture that the prime factorization problem is classically intractable, the set PQη\\PCη ∩ GC(D), and therefore, also LQη (D)\\LCη (D) ∩ GC(D), differs from the empty set for η(m) = mu, and for at least a sequence D satisfying",
+      "Note that if the latter were false, then the RSA protocol [20] could be broken with a classical"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved as Theorem 2 in Appendix E, under the stated conjecture.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pg-thm2-proof-route",
+     "value": "The authors' proof of Theorem 2 reduces factoring to classically computing the prime-based functions with polynomial error, uses Shor's algorithm to show the functions are quantum computable, applies Theorem 1, and gives a classical three-step sampler (number of distinct primes, the primes, their multiplicities) that generates training sets from a nearly uniform distribution in polynomial time, with rejection probability bounded by a constant.",
+     "anchor": "Sketch of proof of Theorem 2, pp.6-7, Fig. 1; Appendix E.1-E.2, pp.21-31",
+     "quotes": [
+      "This section shows some details of the proof of Theorem 2.",
+      "The first part of the proof uses a reduction argument.",
+      "On the other hand, note that the prime factors of x, {pi}iω=(x1), can be computed in polynomial time with high probability using Shor's algorithm [4].",
+      "That is, the probability of rejection is bounded by a constant w.r.t. m.",
+      "In a nutshell, the proposed algorithm runs in polynomial time in m, and the distribution satisfies"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proof given in Appendix E.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pg-prop2-quantum-generable",
+     "value": "The paper proves (Proposition 2) that, for any error trend and distribution sequence, there is a set G-tilde(D) lying between the classically and quantumly generable sets such that the quantumly generable functions with a learning speed-up are exactly the functions in G-tilde(D) with a computational speed-up; Appendix B.3 characterizes G-tilde(D) as the classically generable set together with the quantum-but-not-classically generable functions that are classically learnable.",
+     "anchor": "Proposition 2, Section 3, p.7; Appendix B.2-B.3, pp.16-17",
+     "quotes": [
+      "Proposition 2. For any error trend η(m) and sequence of distributions D, there exists",
+      "Similarly to the result of Theorem 1, Proposition 2 shows that learning and computational advantage are related when a quantum algorithm can efficiently generate the training set.",
+      "Therefore, G˜(D) = GC(D)∪ GQ(D)\\GC(D) ∩ LCη (D) ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 2 proved in Appendix B.2, with the set characterized in B.3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Appendix B.3 gives a formula for G-tilde(D), yet the Conclusions still list its characterization as open; the open part is presumably the relation of the quantum-only generable set to classical learnability."
+    },
+    {
+     "id_suggestion": "pg-def-invariance",
+     "value": "The paper defines (Definition 7) the classical (quantum) invariance property: the inputs up to m bits can be covered by polynomially many equal-size subsets such that, whenever one training set has, with high probability, at least as many distinct points in every subset as another, any efficient learning procedure on the second can be matched by one on the first that errs no more with high probability; informally, points in the same subset are equally informative.",
+     "anchor": "Section 4, p.8; Definition 7, Appendix C, p.17",
+     "quotes": [
+      "Definition 7. A function f (x) satisfies the classical (quantum) invariance property if there exists a cover",
+      "we say that a function f (x) is invariant or satisfies the invariance property if the set {x ∈ X : b(x) ≤ m} can be divided into a polynomial number of subsets with similar cardinality,",
+      "such that when x and x′ belong to the same subset Rj, then both pairs (x, f (x)) and (x′, f (x′)) are equally informative about function f (x).",
+      "An important caveat of the formal definition shown in Appendix C is its dependence on the type of learning procedure employed, whether classical or quantum."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 7 in Appendix C and its informal statement in Section 4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pg-prop3-invariance-any-distribution",
+     "value": "The paper proves (Proposition 3) that if a function is classical (quantum) eta-learnable and has the classical (quantum) invariance property, it is classical (quantum) eta-learnable using any distribution sequence that gives every input at least the uniform probability divided by a polynomial q(m).",
+     "anchor": "Proposition 3 and Eq. (9), Section 4, p.8; proof Appendix C, pp.17-20",
+     "quotes": [
+      "Proposition 3. If f (x) is classical (quantum) η-learnable and satisfies the classical (quan-",
+      "tum) invariance property, then f (x) is classical (quantum) η-learnable using any sequence of distributions D = {Dm}m∞=1 such that",
+      "for all x ∈ {x ∈ X : b(x) ≤ m}, where q(m) is a polynomial, and Um denotes the uniform distribution over {x ∈ X : b(x) ≤ m}."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 3 with its conditions quoted, proved in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pg-lemma2-error-transfer",
+     "value": "The paper proves (Lemma 2) that if one estimate errs no more than another with probability at least one minus phi, then its probability of error below c times eta(m) is at least the other's minus phi.",
+     "anchor": "Lemma 2, Appendix C, pp.17-18",
+     "quotes": [
+      "Next, we prove the following auxiliary result. Lemma 2. If estimates fˆ(x) = M (x, Tn(Dm)) and fˆ′(x) = M ′(x, Tn′(Dm′ )) satisfy",
+      "ProbTn′(Dm ′ )(|fˆ′(x) − f (x)| < c η(m)) ≥ ProbTn(Dm)(|fˆ(x) − f (x)| < c η(m)) − ϕ (C.3) for any η(m) and c ∈ R+."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 2 stated and proved in Appendix C.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pg-thm3-invariant-functions",
+     "value": "The paper proves (Theorem 3) that, for functions classically generable for some sequence that gives every input at least a polynomial fraction of the uniform probability, a computational speed-up implies a distribution-independent learning speed-up for classically invariant functions, the converse holds for quantumly invariant functions, and the two speed-up sets coincide on functions that are both classically and quantumly invariant.",
+     "anchor": "Theorem 3, Section 4, Eqs. (10)-(12), p.8; proof Appendix D, p.20",
+     "quotes": [
+      "Theorem 3. Let IC and IQ denote the set of classical and quantum invariant functions,",
+      "and GC the set of functions that are classical generable for some sequence D that satisfies",
+      "PQη \\PCη ∩ (GC ∩ IC ∩ IQ) = LηQ\\LCη ∩ (GC ∩ IC ∩ IQ)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3 with its conditions quoted, proved in Appendix D.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pg-corollary1-distribution-free",
+     "value": "The paper derives (Corollary 1) that, under the conjecture that factoring integers with two prime factors is classically intractable, and assuming the three prime-based functions have the classical invariance property, the sum of prime factors and at least one of the other two have a distribution-independent quantum learning speed-up for every polynomial error trend; so proving the invariance property would show they cannot be classically learned under any distribution.",
+     "anchor": "Corollary 1, Section 4, p.9",
+     "quotes": [
+      "Corollary 1. Under the conjecture that the prime factorization problem is classically intractable for integers of the form x = p1r1 · p2r2, and assuming that functions {fl(x)}3l=1 satisfy the classical invariance property,",
+      "Therefore, proving the classical invariance property for these functions implies that they cannot be classically learned independently of the distribution used."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Corollary 1 with its assumptions quoted, derived from Theorem 2 and Proposition 3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The invariance property for these functions is assumed, not proved, so the distribution-free speed-up remains conditional on it."
+    },
+    {
+     "id_suggestion": "pg-lemma3-prime-count",
+     "value": "The paper proves (Lemma 3) that the number of integers below two to the m whose distinct prime factors are a given set of omega primes grows asymptotically as m to the omega over omega factorial times the product of the reciprocals of the logs of the primes, omitting sub-polynomial factors, by counting lattice points in a simplex.",
+     "anchor": "Lemma 3, Appendix E.2.2, Eq. (E.8), pp.24-25",
+     "quotes": [
+      "Lemma 3. The number of integers smaller than 2m, whose prime factors are p1, · · · , pω, i.e., |Np1,··· ,pω (2m)|, satisfies,",
+      "Factors with a sub-polynomial growth in m are omitted.",
+      "and since the volume of the surface grows slower than the volume of the simplex,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proved lemma whose asymptotic formula is scrambled by the text layer, so the formula cannot be quoted whole.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pg-cited-prior-advantage",
+     "value": "The authors state, citing prior work, that HHL and quantum PCA seemingly give exponential advantage but the end-to-end advantage is arguable given dequantization; that Grover-based optimization speed-ups are of quadratic order; that an exponential learning advantage has been proved assuming discrete logarithms are classically hard; and that Huang et al. showed by counter-example that a quantum speed-up computing a function does not in general give one learning it.",
+     "anchor": "Introduction, pp.1-2",
+     "quotes": [
+      "seemingly provide an exponential advantage, but the end-to-end advantage is arguable considering the dequantization procedure proposed in [14].",
+      "This technique usually relies on Grover's algorithm [5], and therefore, the advantage is of quadratic order.",
+      "In [17], an exponential quantum advantage for a learning task is proved under the widely accepted assumption that a classical algorithm cannot solve the discrete-logarithm problem efficiently.",
+      "However, as shown in [18] through a counter-example, this statement is not true in general."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results attributed to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pg-conclusion",
+     "value": "The authors conclude that the work helps unravel the relation between quantum advantage in supervised learning and in computational tasks, with emphasis on the practical scenario where an algorithm can efficiently generate the training set.",
+     "anchor": "Section 5, Conclusions, p.9",
+     "quotes": [
+      "This work contributes to unraveling the relationship between quantum advantage in supervised learning and quantum advantage in computational tasks. With a particular emphasis on the practical scenario where the training set can be efficiently generated by an algorithm,"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' summary judgment of their contribution.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "perez-salinas-2021-one-qubit-as-universal-approximant",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2021-02_Perez_One-qubit-as-a-Universal-Approximant.pdf",
+   "title_in_file": "One qubit as a Universal Approximant",
+   "version_note": "arXiv:2102.04032v2, 13 Jul 2021.",
+   "pages": 17,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A paper that proves, by a Fourier-series route and a Universal-Approximation-Theorem route, that a single-qubit circuit with data re-uploading can approximate bounded complex functions, benchmarks both in simulation against classical counterparts, and runs the circuits on one superconducting transmon qubit.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "ps-errors-dominate",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section I, Introduction, p.1",
+     "quotes": [
+      "Experimental results confirms the trend of simulations up to a point where the accumulation of errors dominates the experiment."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "ps-hardware-trend",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section VI, Conclusions, p.8",
+     "quotes": [
+      "Experimental results implemented using a superconducting trasmon qubit confirm the same trend obtained with the classical simulations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Section V adds that the experimental chi-squared degrades more as layers are added; see the separate assertion on experimental degradation."
+    },
+    {
+     "id": "ps-single-qubit-universal",
+     "verdict": "narrowed",
+     "note": "The abstract's 'any bounded complex function' is limited by the two theorems' own conditions: Theorem 2 (quantum Fourier series) covers single-variable functions with a finite number of finite discontinuities, integrable on a finite interval; Theorem 4 (quantum UAT) covers continuous functions on the unit cube. Both are existence results that need specific parameters, found variationally in practice. The value is narrowed to these conditions.",
+     "value": "The paper proves two universality theorems for a single-qubit circuit with re-uploading: Theorem 2 (quantum Fourier series) says that for any modulus-phase pair whose complex function has a finite number of finite discontinuities and is integrable on an interval of length P, there are parameters so that N Fourier gates output the N-term Fourier series; Theorem 4 (quantum UAT) says that for any such pair whose complex function is continuous on the m-dimensional unit cube, there are an integer N and parameters making the circuit output within any epsilon of it.",
+     "anchor": "Theorems 2 and 4, Section II B, pp.3-4; proofs Appendix A, pp.12-14",
+     "quotes": [
+      "Theorem 2. Quantum Fourier series Let f, φ be any pair of functions f : R → [0, 1] and φ : R → [0, 2π) , such that z(x) = f (x)eiφ(x) is a complex function with a finite number of finite discontinuities integrable within an interval [a, b] ∈ R of length P .",
+      "with zN (x) the N -terms Fourier series.",
+      "Theorem 4. Quantum UAT Let f, φ be any pair of functions f : Im → [0, 1] and φ : Im → [0, 2π) , such that z(x) = f (x)eiφ(x) is a complex continuous function on Im, with Im = [0, 1]m. Then there is an integer N and a set of parameters"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorems 2 and 4 with their conditions quoted, proved in Appendix A.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Both are existence results: they say nothing about how many layers a given accuracy needs or whether training finds the parameters."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "ps-setup-encoding",
+     "value": "The authors state that the most general single-qubit state stores a single complex number, and encode a target complex function in its amplitude modulus f in [0, 1] and phase in [0, 2pi), reading it from the amplitude of the one state after the circuit; real functions are covered by setting the phase to zero.",
+     "anchor": "Section II A, Eqs. (1)-(2), p.2",
+     "quotes": [
+      "The most general representation of a single-qubit quantum state stores a single complex number.",
+      "with f, φ real numbers and f ∈ [0, 1], φ ∈ [0, 2π).",
+      "In addition, approximating a complex function includes real-valued functions by either setting φ(x) = 0 or relating the realvalued function to the modulus of other complex functions."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own problem setup, Section II A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-def-approximating-circuit",
+     "value": "The paper defines (Definition 1) the k-th approximating circuit as the product of k fundamental single-qubit gates, each taking the input variable and its own parameters, so the input is re-uploaded in every gate; the parameters are found by minimizing a loss, making the method a hybrid quantum-classical variational algorithm.",
+     "anchor": "Definition 1, Section II A, Eq. (3)-(4), p.2; Fig. 1, p.3",
+     "quotes": [
+      "Definition 1. The k-th approximating circuit is defined as",
+      "The expected behavior of this quantity Uf(k,φ),s is that the approximation from Eq. (2) will improve as the number k increases, that is, as the independent variable is re-uploaded multiple times.",
+      "Therefore, the proposed quantum procedure for storing functions within the output state of a given circuit belongs to the class of hybrid quantum-classical variational algorithms."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 1, Section II A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-def-fourier-gate",
+     "value": "The paper defines (Definition 2) the fundamental Fourier gate as a product of Z and Y rotations with five real parameters, one of which multiplies the input as a frequency; the authors note a unitary has three degrees of freedom here fixed by 5 parameters.",
+     "anchor": "Definition 2, Eq. (8), p.3; Appendix A 1, p.12",
+     "quotes": [
+      "Definition 2. Let the fundamental Fourier gate U F be",
+      "Intuitively, α, β, ϕ, λ are related to the coefficients of a single Fourier step, while ω may be identified as the corresponding frequency.",
+      "Note also that a unitary matrix has three degrees of freedom, which are here fixed by 5 parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 2, Section II B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-def-uat-gate",
+     "value": "The paper defines (Definition 3) the fundamental UAT gate as a Y rotation by twice a coefficient angle after a Z rotation by twice (a weight vector dotted with the input plus a bias), the weight and bias playing the roles they have in a neural network.",
+     "anchor": "Definition 3, Eq. (12), p.4",
+     "quotes": [
+      "Definition 3. Let the fundamental UAT gate U UAT be",
+      "U UAT(x; ω, α, ϕ) = Ry(2ϕ)Rz(2ω · x + 2α), (12)",
+      "Intuitively, ω and α are equivalent to the weights and bias in a neural network, while ϕ plays the role of the coefficient."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 3, Section II B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-thm5-fourier-induction",
+     "value": "The paper proves (Theorem 5, by induction) that a series of k Fourier gates gives a unitary whose coefficients are all Fourier series: the first gate with zero frequency gives the constant term, and each added gate adds one Fourier term, with frequencies chosen as (2n + 1) times pi over 2.",
+     "anchor": "Theorem 5, Appendix A 1, Eqs. (A7)-(A16), pp.12-13",
+     "quotes": [
+      "Theorem 5. There exists a series of k single-qubit gates forming a k-th approximant circuit that delivers a unitary operation where all its coefficients are written as Fourier",
+      "First, we show that the first gate of the circuit is equivalent to the 0-th constant Fourier term. Then, we show that if there are N gates in a row forming a N -term Fourier series, then adding a new gate provides a (N + 1)-terms Fourier series.",
+      "(2n + 1) π 2"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5 proved by induction in Appendix A 1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-thm6-uat-proof",
+     "value": "The paper proves (Theorem 6) that a series of k UAT gates gives a unitary whose coefficients are each an approximation of the Theorem 3 form, by writing the output amplitude as a sum of exponentially many terms with complex exponentials of linear functions of the input, and following Cybenko's proof using the Hahn-Banach, Riesz representation and Lebesgue bounded convergence theorems.",
+     "anchor": "Theorem 6, Appendix A 2, Eqs. (A17)-(A29), pp.13-14; Theorems 7-9, p.14",
+     "quotes": [
+      "Theorem 6. There exists a series of k single-qubit gates forming a k-th approximant circuit that delivers a unitary operation where all its coefficients are written as an approximation as defined by Theorem 3, UAT.",
+      "Let us proceed now as in the proof of the UAT in Ref.",
+      "We can now apply the Theorem 7, known as Hahn-Banach theorem."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 6 stated and proved in Appendix A 2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof sketch in Appendix A 2 is terse (it assumes the closure is not the whole space and derives a contradiction) and has typographic slips; the coordinator may weigh this."
+    },
+    {
+     "id_suggestion": "ps-thm10-output-link",
+     "value": "The paper proves (Theorem 10) that the computational-basis output of a single-qubit circuit started in the zero state can give a convergent approximation to any desired function: with Fourier gates the output is a truncated Fourier series in a single variable, and with UAT gates a sum over exponentials valid for single- and multi-variable inputs.",
+     "anchor": "Theorem 10, Appendix A 3, Eqs. (A36)-(A38), p.14",
+     "quotes": [
+      "Theorem 10. The computational basis output of a single-qubit quantum circuit can provide a convergent approximattion to any desired function.",
+      "where Bn are free complex coefficients. This result holds for single-variable functions.",
+      "This result holds for single- and multi-variable functions."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 10 with its scope quoted, proved in Appendix A 3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-cited-classical-theorems",
+     "value": "The paper restates the classical Fourier series theorem (Theorem 1, for functions with a finite number of finite discontinuities integrable on a finite interval) and the Universal Approximation Theorem (Theorem 3, for any non-constant bounded continuous activation and continuous function on the unit cube), noting the UAT is an existence theorem that does not say how many terms are needed.",
+     "anchor": "Theorems 1 and 3, Section II B, pp.3-4",
+     "quotes": [
+      "Theorem 1. Fourier series [1, 2, 18, 19] Let z be any function z : R → C with a finite number of finite discontinuities integrable within an interval [a, b] ∈ R of length P .",
+      "Theorem 3. Universal Approximation Theo-",
+      "Let σ : R → R be any non-constant bounded continuous function.",
+      "This theorem is an existence theorem, and thus it does not specify how many terms from Eq. (10) are needed to achieve an accuracy ε."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Classical theorems cited from other work.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-uat-complex-activation",
+     "value": "The authors show (Appendix B) that the UAT extends to complex functions by using the complex exponential as activation, by writing real and imaginary parts as cosine and sine expansions.",
+     "anchor": "Section II B, p.4; Appendix B, p.15",
+     "quotes": [
+      "Note that the UAT can be immediately applied to complex functions by substituting the real-valued function σ(·) with some complex-valued function.",
+      "In this Appendix we show that the standard formula-"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix B.",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-fourier-vs-uat-scope",
+     "value": "The authors state that the quantum theorems inherit their classical counterparts' scope and limits: the Fourier approach works for integrable functions with finitely many finite discontinuities but only for one variable, its multidimensional extension needing a parameter space growing exponentially with dimension, while the UAT handles several variables naturally but supports only continuous functions.",
+     "anchor": "Section II B, Differences between approaches, p.4",
+     "quotes": [
+      "The quantum universality theorems proposed here inherit the range of applicability, advantages and limitations of their classical counterparts.",
+      "However, the extension to multidimensional spaces is complicated and requires a space of parameters whose size increases exponentially with the number of dimensions [2].",
+      "The UAT only gives support to continuous functions, which is useful from a practical perspective, but less robust than the Fourier series."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of the limits of each approach, Section II B.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-variational-tradeoff",
+     "value": "The authors state that the exact Fourier series is reached only with specific parameter values, and that finding parameters with a classical optimizer allows configurations that surpass the standard Fourier series, especially for shallow circuits, at the cost of losing the constructive recipe.",
+     "anchor": "Section II B, Quantum Fourier series, p.3",
+     "quotes": [
+      "The Fourier series behavior is only",
+      "This freedom gives room to configurations surpassing the performance of the standard Fourier series, especially for shallow circuits. However, the recipe to construct the Fourier series by performing well-defined calculations is instead lost."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim, supported only by the simulations of Section V.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-numerical-setup",
+     "value": "The authors state the numerical setup: simulations without decoherence but with sampling uncertainty, up to 6 layers, run in QIBO; classical models use BFGS and L-BFGS, quantum models L-BFGS and the genetic CMA optimizer; real one-dimensional test functions ReLU, a scaled tanh, step and a polynomial, four two-dimensional functions, and complex combinations; no guarantee that the optimizer finds the global minimum.",
+     "anchor": "Section III and III A, pp.4-5",
+     "quotes": [
+      "Benchmarks are performed using simulations that include no decoherence, but do contain sampling uncertainty. We present simulations with up to 6 layers.",
+      "All simulations are performed using the framework QIBO [21].",
+      "For this reason we look for the best-fit parameters using the aforementioned L-BFGS algorithm and the genetic option CMA [28, 29].",
+      "In this case it is not possible to guarantee that the solution found by any optimization algorithm is the global minimum of our loss function."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its numerical setup and its limit, Section III.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-result-layers-improve",
+     "value": "The authors report that, in classical and simulated quantum models, chi-squared generally falls as layers increase, and state that this flexibility comes from the number of re-uploadings of the input rather than the number of parameters, and that too many parameters likely hinder optimization.",
+     "anchor": "Section V, Fig. 4, p.8",
+     "quotes": [
+      "In the case of classical and simulated quantum models a general trend towards better approximations –implying lower values of χ2– is observed with an increasing numbers of layers.",
+      "This flexibility is given by the number of re-uploadings of the independent variable and not by the amount of parameters. In addition, having too many parameters likely hinders the optimization procedure."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, with the authors' interpretation.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-result-fourier-comparison",
+     "value": "The authors report that the simulated quantum Fourier model beats the classical Fourier series because the quantum version has tunable parameters, while the classical Fourier series gives a guaranteed baseline; and that the UAT models beat the Fourier models despite having fewer parameters, so UAT seems more appropriate for these functions.",
+     "anchor": "Section V, Fig. 4, p.8",
+     "quotes": [
+      "The simulated Fourier model performs better than its classical counterpart. This is due to the fact that a classical Fourier series does not contain tunable parameters, while its quantum version does.",
+      "Despite the fact that the Fourier model contains more parameters than the UAT model, the latter performs better as seen in Fig. 4. Therefore, the UAT method seems more appropriate for the functions used here."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-result-uat-no-winner",
+     "value": "The authors report that for the UAT models no approach wins overall: the classical UAT is better on the polynomial test function and the simulated quantum UAT better on tanh(5x), with similar trends as layers increase; in two dimensions the scaling is similar for quantum and classical methods.",
+     "anchor": "Section V, Figs. 4-5, p.8",
+     "quotes": [
+      "In the UAT case of Fig. 4, no approach returns better results. The classical algorithm performs better in the poly(x) case, but the results with the simulated quantum method improve the classical ones in the tanh(5x) case.",
+      "In agreement to the one-dimensional Z benchmark, the scaling is similar for both quantum and classical methods."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The paper shows no accuracy advantage of the quantum UAT over a classical one-hidden-layer network on these benchmarks."
+    },
+    {
+     "id_suggestion": "ps-result-complex-benchmark",
+     "value": "The authors report that in the X-Y benchmark for complex functions a common advantage for the quantum models is visible, with combinations involving tanh(5x) and ReLU fitting best.",
+     "anchor": "Section V, Fig. 7, p.8",
+     "quotes": [
+      "In this case, it is possible to see a common advantage for the quantum models. In particular, the functions tanh(5x) and ReLU(x) work better in any combination."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-result-experimental-degradation",
+     "value": "The authors report that the hardware runs, which use parameters optimized in simulation, suffer from circuit noise and sampling uncertainty that degrade chi-squared more as layers are added, and that sampling uncertainty sets a lower bound on the experimental chi-squared; they state the finite coherence does not seem to impact the results significantly.",
+     "anchor": "Section V, p.8; Section VI, p.8",
+     "quotes": [
+      "The experimental realization of the quantum approximation models suffers from circuit noise and sampling uncertainties, and therefore degrades the quantity χ2. This is more prominent as more layers are added to the model.",
+      "The inherent sampling uncertainty sets a lower bound in the value of χ2 obtained through experiments.",
+      "The finite qubit coherence does not seem to impact the results significantly in the gate sets applied."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-hardware-setup",
+     "value": "The authors state the hardware: a 3D transmon in an aluminum cavity at about 20 mK, qubit frequency 2 pi times 4.81 GHz, relaxation time 15.6 µs and spin-echo time 12.0 µs, which exceed the operation time of up to 6 layers by 2 orders of magnitude, DRAG pulses with error per gate 0.01 from randomized benchmarking, and about 50000 measurements per data point.",
+     "anchor": "Section IV, p.5; Appendix D, pp.15-17",
+     "quotes": [
+      "The qubit is a 3D transmon geometry [30] located inside an aluminum three-dimensional cavity.",
+      "ωq = 2π × 4.81 GHz.",
+      "T1 = 15.6 µs and T2Echo = 12.0 µs. These time scales exceed the operation times needed to implement the algorithm up to 6 layers by 2 orders of magnitude.",
+      "which leads to an error per gate = 0.01 found with randomized benchmarking [34].",
+      "Each data point requires around 50000 measurements in order to average out the amplifier noise.",
+      "The experiment was realized in a dilution fridge with a base temperature of approximately 20 mK."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its experimental setup, Section IV and Appendix D.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-rb-caveat",
+     "value": "The authors state that randomized benchmarking measures Clifford-gate errors, not the arbitrary-angle rotations the experiment uses, though it gives a reasonable estimate, and that the gate error is probably limited by non-ideal filtering of the measurement lines; they note the experimental parameters were not re-optimized on hardware, which could improve results.",
+     "anchor": "Section IV, p.6; Section V, p.7",
+     "quotes": [
+      "Randomized benchmarking measures errors in Clifford gates and not arbitrary angle rotations, which are instead used in this experiment, yet offers a reasonable estimate on the overall fidelity of our gates.",
+      "The gate error observed is probably limited due to a non-ideal filtering of the measurement lines in the fridge.",
+      "Hence, an optimization performed directly on the experimental parameters could improve the final results [36]."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of its experimental limits, Sections IV and V.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-no-advantage-single-qubit",
+     "value": "The authors state that no single-qubit algorithm can bring quantum advantage because it is efficiently simulable classically, that the approach should be a sub-task of a larger routine, that advantage requires multi-qubit circuits, and that whether a multi-qubit extension is more flexible remains unclear.",
+     "anchor": "Section VI, Conclusions, p.10",
+     "quotes": [
+      "It is known that no single-qubit algorithm can bring quantum advantage since it is efficiently simulable by classical computers.",
+      "Achieving a quantum advantage requires extending the approach to multi-qubit circuits.",
+      "Whether this extension to multi-qubit circuits is more flexible than the approach of this work remains unclear."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section VI.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-readout-cost",
+     "value": "The authors state that although a complex function can be stored in a single-qubit circuit, retrieving it from the state is costly and requires many measurements, so the algorithm should be regarded as a subroutine, for example a classifier or a function approximant.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "It is worth mentioning that, even though one can store a complex function in a single-qubit circuit, retrieving that information from the quantum state is costly and requires a large amount of measurements.",
+      "Instead, this algorithm should be regarded as a subroutine to be included in a more complex computation."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section I.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ps-conclusion-compression",
+     "value": "The authors conclude that a single-qubit circuit can store two independent real functions, not limited to a single variable, and claim this is the highest degree of data compression in a single-qubit state since a qubit has no more degrees of freedom; they also state that the proofs ensure such models can learn any function underlying training data.",
+     "anchor": "Section VI, Conclusions, p.8; Section I, p.2",
+     "quotes": [
+      "This result guarantees that a single-qubit circuit, as defined in this work, is able to store two different and independent real functions.",
+      "Our present results provide the highest degree of compression of data in a single-qubit state, since there are no more degrees of freedom available in a qubit.",
+      "The proofs given in this work ensure that this kind of models can learn any function underlying the training data."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' interpretation of their theorems; 'can learn' goes beyond the existence results proved.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The universality theorems show representability, not learnability from finite data; the learning claim is broader than what is proved."
+    },
+    {
+     "id_suggestion": "ps-conclusion-equivalent-scaling",
+     "value": "The authors conclude that in all benchmarks the classical and quantum methods show an equivalent scaling, which they say ensures numerically that the quantum procedure is comparable to standard classical ones.",
+     "anchor": "Section VI, Conclusions, p.8",
+     "quotes": [
+      "In all cases, it is possible to see an equivalent scaling for both classical and quantum methods. This ensures numerically that the quantum procedure is comparable to the standard classical ones."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical conclusion from one study's simulations.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "perrier-2024-quantum-geometric-machine-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Perrier_2024_Quantum-Geometric-Machine-Learning__2409.04955.pdf",
+   "title_in_file": "Quantum Geometric Machine Learning",
+   "version_note": "arXiv:2409.04955v1, PhD thesis (UTS, May 2024), thesis by compilation.",
+   "pages": 495,
+   "read_extent": "partial",
+   "not_read": "PDF pages 3, 9 and 10 are scanned images whose text the layer lost (page 9 keeps only its heading): the certificate of original authorship and the declaration of publications included in the thesis. They were viewed as images, are front matter only and hold no results, but cannot be quoted. All other pages were read; pages 2, 4, 6, 8, 11, 159, 221, 313, 423, 465 and 495 are blank.",
+   "what_it_is": "A PhD thesis by compilation presenting the QDataSet (Chapter 3), greybox deep learning of approximate time-optimal subRiemannian geodesics on SU(2^n) (Chapter 4), and a global Cartan decomposition method for KP time-optimal control (Chapter 5), with background chapters and appendices.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "cartan-analytic-method",
+     "verdict": "narrowed",
+     "note": "The sentence is in Section 1.3, but Chapter 5 states the time-optimality of the constant-theta paths the method relies on as a conjecture, and gives analytic solutions only for non-exceptional symmetric spaces under the assumptions [p, p] within k and constant Theta, worked for SU(2) and an SU(3) lambda system.",
+     "value": "The author states that the thesis presents a novel analytical method for determining Hamiltonians that generate time-optimal unitary sequences for certain classes of symmetric spaces; the Cartan chapter states the time-optimality of the constant-theta paths as a conjecture and obtains analytic solutions for non-exceptional symmetric spaces only where [p, p] lies within k and Theta is constant.",
+     "anchor": "Section 1.3 Contributions, p.11; Section 5.3.6, p.197; Section 5.5 Discussion, p.217",
+     "quotes": [
+      "we present a novel analytical method for determining Hamiltonians that generate time-optimal unitary sequences for certain classes symmetric spaces.",
+      "Summarising the above, our conjecture is that for symmetric space controls in p with holonomy targets in k that constant-θ paths are time-optimal.",
+      "it is possible to obtain analytic solutions for time-optimal circuit synthesis for non-exceptional symmetric spaces using a global Cartan decomposition",
+      "However, we have shown that if the assumptions [p, p] ⊆ k and dΘ = 0 hold"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Time-optimality rests on a stated conjecture, and the method is worked only for low-dimensional examples.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The SU(2) and SU(3) worked examples reproduce known minimum times from Boozer and from Albertini, D'Alessandro and Sheller, which supports but does not prove the conjecture."
+    },
+    {
+     "id": "greybox-fidelity-over-099",
+     "verdict": "narrowed",
+     "note": "The over 0.99 figures are training and validation (in-sample) fidelities, and not every greybox reached them: Table 4.1 lists 0.9842 for the fully-connected greybox on SU(8). Out of sample, average generalised gate fidelities on SU(4) and SU(8) were below 0.5.",
+     "value": "The authors report that greybox models outperformed blackbox models, with training and validation average operator fidelities of over 0.99; these are in-sample figures, Table 4.1 lists 0.9842 for the fully-connected greybox on SU(8), and average generalised gate fidelities on unseen SU(4) and SU(8) unitaries were below 0.5.",
+     "anchor": "Section 4.9, p.171; Table 4.1; Section 4.8.4, p.170",
+     "quotes": [
+      "The increase in performance over blackbox models, as evidenced by training and validation average operator fidelities for synthesised quantum circuits of over 0.99 in each case",
+      "Table 4.1: Comparison table of batch fidelity MSE",
+      "FC Greybox 1.827e- 1.681e- 0.9964(e- 3.924e- 4.156e- 0.9940(e- 2.607e- 2.450e- 0.9842(e-",
+      "for SU (4) and SU (8) for most cases",
+      "Average generalised gate fidelities were below 0.5 for each of the models tested."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, on simulated training and validation data only.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The Table 4.1 columns are SU(2), SU(4) and SU(8) in order; the fully-connected greybox was dropped from Table 4.2 for its inferior performance."
+    },
+    {
+     "id": "greybox-generalisation-limit",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 4.9, p.171",
+     "quotes": [
+      "While the models outperformed current benchmarks on training and validation sets, they faced considerable challenges generalising well."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Section 4.8.4 gives the figures: average generalised gate fidelity 0.6474 on SU(2) for the SubRiemannian model and below 0.5 on SU(4) and SU(8)."
+    },
+    {
+     "id": "qdataset-52-datasets",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 3.1 Abstract, p.61",
+     "quotes": [
+      "The QDataSet comprises 52 high-quality publicly available datasets derived from simulations of one- and two-qubit systems evolving in the presence and/or absence of noise."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The authors' own description of what the dataset contains, with the count derived in Section 3.6.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Section 3.6.4 derives the 52 as 13 system and noise combinations, doubled for two waveforms and again for distortion."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qgml-contribution-qdataset-gap",
+     "value": "The author states that quantum machine learning has been characterised by a sparsity of large-scale datasets for benchmarking and developing algorithms, and that the QDataSet was produced to remedy this gap.",
+     "anchor": "Section 1.3 Contributions, p.11",
+     "quotes": [
+      "While quantum machine learning has evolved for more than a decade, the field has been characterised by a sparsity of large-scale datasets from which to benchmark and develop algorithms (as is the case classically). To remedy this gap, the QDataSet was produced."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author's characterization of the field.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-appendices-background-only",
+     "value": "The author states that the Appendices reproduce or paraphrase standard results from the literature, with proofs omitted, and that the first five Chapters are the thesis proper.",
+     "anchor": "Section 1.4 Chapter Synopses, p.12",
+     "quotes": [
+      "The first five Chapters are self-contained and should be regarded as the thesis proper.",
+      "The Appendices reproduce or paraphrase standard results in the literature with source material identified at the beginning of each Appendix. Proofs are omitted for brevity but can be found in the cited sources and other standard texts."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The thesis's own statement of the status of its appendices, Section 1.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-qdataset-citations",
+     "value": "The author states that, as at the date of the thesis, the QDataSet paper and dataset had been referenced in over 20 publications.",
+     "anchor": "Section 1.4, Chapter 3 synopsis, p.13",
+     "quotes": [
+      "As at the date of this thesis, the paper and dataset has been referenced in over 20 publications."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim about citations, dated to the thesis.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-qml-taxonomy-position",
+     "value": "The author states that the results of Chapters 3 and 4 fall between classical machine learning using quantum data and quantum machine learning for quantum data, using classical machine learning and a bespoke architecture equivalent to a parametrised quantum circuit.",
+     "anchor": "Section 2.6, p.50",
+     "quotes": [
+      "Our results in Chapters 3 and 4 fall somewhere between the second (classical machine learning using quantum data) and fourth (quantum machine learning for quantum data) categories",
+      "whereby we leverage classical machine learning and an adapted bespoke architecture equivalent to a parametrised quantum circuit"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The thesis's own classification of its method, Section 2.6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-greybox-unitarity-guarantee",
+     "value": "The author states that the greybox architecture encodes prior information such as unitarity and Hamiltonian construction in the classical network stack, so that outputs are guaranteed unitary, which blackbox learning only approximates at best.",
+     "anchor": "Section 2.6.8 Greybox machine learning, p.59",
+     "quotes": [
+      "By encoding priori information within a classical neural network stack, we obviate the need for the network to learn such rules (such as requirements regarding unitarity or Hamiltonian construction)",
+      "and thereby affording guarantees (such as unitarity of outputs) in a way that blackbox learning only at best approximates."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A design statement about the architecture; the unitarity guarantee follows from the construction, the comparison with blackbox is the author's.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-batch-fidelity-loss",
+     "value": "The thesis states that the loss function used in Chapter 4 (batch fidelity) is the mean squared error of one minus the fidelity between the estimated and target unitaries, and assumes measurement protocols that adequately specify both unitaries.",
+     "anchor": "Section 2.6.7, p.58",
+     "quotes": [
+      "adopted in equation (D.7.4) in Chapter 4 (batch fidelity) takes the mean squared error (MSE, see equation (D.3.6) above) of the loss (difference) between fidelity of the estimated unitary and target as the measure of empirical risk",
+      "In doing so, we assume the existence of measurement protocols that adequately specify"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The thesis's definition of its own loss function, Section 2.6.7.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-barren-plateau-background",
+     "value": "The author states that in barren plateaus the gradient expectation decreases exponentially with the number of qubits, and that despite proposals such as weight initialisation and circuit design they remain a quantum-specific phenomenon to be addressed in circuit design.",
+     "anchor": "Section 2.6.6, item 4, p.57",
+     "quotes": [
+      "where gradient expectation decreases exponentially with the number of qubits",
+      "barren plateaus remain another quantum-specific phenomenon that must be addressed in quantum circuit design"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Background summary of the cited literature.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-qdataset-size",
+     "value": "The thesis states that each of the QDataSet's datasets consists of 10,000 samples and that the total compressed size (Pickle and zip) is around 14TB, several petabytes uncompressed.",
+     "anchor": "Section 3.5 Experimental Methods, p.85",
+     "quotes": [
+      "Each dataset consists of 10,000 samples which in turn comprise a range of data relevant to the training of machine learning algorithms",
+      "The total compressed size of the QDataSet (using Pickle and zip formats) is around 14TB (uncompressed, several petabytes)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors' description of the dataset they produced, Section 3.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-qdataset-two-qubit-limit",
+     "value": "The thesis states that the QDataSet was restricted to one- and two-qubit simulations for computational feasibility: generation took six months on the UTS HPC cluster and a single two-qubit system took nearly four weeks of runtime, which limits direct real-world application of algorithms trained on it to one- and two-qubit systems.",
+     "anchor": "Section 3.5.1 QDataSet and Scalability, pp.86-87",
+     "quotes": [
+      "The QDataSet was generated over a six-month period using the University of Technology, Sydney’s High Performance Computing (HPC) cluster",
+      "nearly four-weeks of runtime for a single two-qubit system",
+      "Such a choice obviously limits direct real-world applications of algorithms trained on the QDataSet to one- and two-qubit systems generally."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own stated limitation of the dataset, Section 3.5.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-qdataset-monte-carlo-noise",
+     "value": "The thesis states that the QDataSet simulates noise with Monte Carlo methods rather than Qutip's Lindblad master equations, because those assume Markovian noise while the datasets include non-Markovian coloured noise, and because Qutip assumes a fermionic or bosonic bath rather than imposed classical noise.",
+     "anchor": "Section 3.5.1, p.86",
+     "quotes": [
+      "Qutip relies upon Lindblad master equations to simulate system/noise interactions which in turn rely upon the validity of certain assumptions and approximations. Chief among these is that noise is Markovian.",
+      "In our datasets, we included coloured noise with a power-spectrum density which is non-Markovian.",
+      "Qutip’s methods assumes a model of a quantum system interacting with a fermionic or bosonic bath"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors' statement of their simulation method, Section 3.5.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-qdataset-no-qec",
+     "value": "The thesis states that the QDataSet was generated for data not encoded in a quantum error-correcting code, aiming instead for algorithms to learn countervailing controls from the data.",
+     "anchor": "Section 3.5.1.1 QDataSet and Error-Correction, pp.87-88",
+     "quotes": [
+      "The QDataSet was generated for non-QEC encoded data."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors' stated scope of the dataset, Section 3.5.1.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-qdataset-categories-noise-profiles",
+     "value": "The thesis states that the QDataSet has four categories (one qubit with single-axis control and noise, one qubit with multi-axis control and noise, two qubits with local-only control, two qubits with an additional interacting control), controls are square or Gaussian pulse trains, and noise follows profiles N0 (noiseless) to N6 covering 1/f noise with a Gaussian bump, stationary and non-stationary Gaussian coloured noise, non-Gaussian noise, and a squared correlated source.",
+     "anchor": "Sections 3.4.7.3, 3.4.8.1 and 3.5.3, pp.81-90",
+     "quotes": [
+      "the QDataSet includes four categories for the datasets set-out in Table 3.6. The first two categories are for 1-qubit systems, the first is single axis control and noise, while the second is multi-axis control and noise.",
+      "The third and fourth categories are 2-qubit systems with local-only control or with an additional interacting control together with noise.",
+      "The first is a train of Gaussian pulses, and the other is a train of square pulses",
+      "N0: this is the noiseless case",
+      "N1: the noise β(t) is described by its power spectral density (PSD) S1(f ), a form of 1/f noise with a Gaussian bump",
+      "N6: this profile is to model a noise source that is correlated to one of the other five sources (N1 - N5) through a squaring operation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors' description of the dataset contents.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-qdataset-classical-ml-quadrant",
+     "value": "The thesis states that the QDataSet fits the second QML subdivision (classical machine learning for quantum data), a deliberate choice given that no scalable fault-tolerant quantum computer is available and NISQ devices are limited.",
+     "anchor": "Section 3.4.1, pp.66-67",
+     "quotes": [
+      "The QDataSet fits within the second subdivision of QML, its primary use being envisaged as assisting in the development of classical algorithms for optimisation problems of engineered quantum systems."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors' statement of the dataset's scope.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-qdataset-52-derivation",
+     "value": "The thesis derives the count of 52 datasets as 13 system and noise combinations across the four categories, doubled for Gaussian and square control waveforms to 26, and doubled again for distorted and undistorted control to 52.",
+     "anchor": "Section 3.6.4 Datasets and naming convention, pp.100-101",
+     "quotes": [
+      "Therefore, the total number of datasets at this point is 13. Including the two types of control waveforms, this gives a total of 26. If we also include the cases of distortion and non-distorted control, then this gives a total of 52 datasets."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors' own count of the datasets they produced.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-qdataset-qutip-validation",
+     "value": "The authors report that comparing mean expectation values of observables on subsamples of each dataset with equivalent Qutip simulations gave average differences of the order ten to the minus six (all observables over all noise realisations) and ten to the minus seven (single observables over separate noise realisations), for noiseless and noisy cases.",
+     "anchor": "Section 3.7.2 Comparison with Qutip, p.103",
+     "quotes": [
+      "On average the error (difference between the means) of the order 10−06, demonstrating the equivalence of the QDataSet simulation code with that from Qutip.",
+      "Comparison of the two means showed that on average the error (difference between the means) of the order 10−07"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A measured validation on subsamples; sample sizes are not stated.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The sample sizes of the validation subsamples are not given, and the validation covers 26 simulated systems."
+    },
+    {
+     "id_suggestion": "qgml-qdataset-monte-carlo-k",
+     "value": "The thesis states that measurement statistics stabilised at around K = 500 randomised pulse sequences and that K of at least 1000 was chosen for the final run, while Table 3.2 lists K set to 2000.",
+     "anchor": "Section 3.5.3.8, p.99; Table 3.2, p.117",
+     "quotes": [
+      "Trial and error indicated a stabilisation of measurement statistics at around K = 500, thus K ≥ 1000 was chosen for the final simulation run to generate the QDataSet.",
+      "number of randomised pulse sequences in Monte Carlo simulation of noise (set to K = 2000)",
+      "Table 3.2: QDataSet characteristics."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Setup values, stated two ways in the thesis.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The two statements are consistent (2000 is at least 1000) but give different levels of detail."
+    },
+    {
+     "id_suggestion": "qgml-qdataset-measurement-combinations",
+     "value": "The thesis states that single-qubit datasets measure three Pauli observables on six initial eigenstates, giving 18 combinations, and two-qubit datasets initialise each qubit in one of the six eigenstates and measure 15 Pauli observables, giving 540 combinations; Table 3.2 instead says the Pauli expectation values number 18 or 52.",
+     "anchor": "Section 3.5.3.6, p.98; Table 3.2, p.117",
+     "quotes": [
+      "We perform the three Pauli measurements on each of these states, resulting in a total of 18 possible combinations.",
+      "For two-qubits, it will be similar but now we initialize every individual qubit into the 6 possible eigenstates, and we measure all 15 Pauli observables (we exclude identity). This gives a total of 540 possible combinations.",
+      "The Pauli expectation values 18 or 52 depending on whether one or two qubits",
+      "Table 3.2: QDataSet characteristics."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Setup values; the table and the text disagree for two qubits.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The 36 initial states is my reading of each of two qubits in one of 6 eigenstates. The figure 52 in Table 3.2 conflicts with 540 in the text and may be an error."
+    },
+    {
+     "id_suggestion": "qgml-qdataset-file-sizes-license",
+     "value": "The thesis states that the largest dataset is over 500GB compressed and the smallest around 1.4GB compressed, that the QDataSet is provided under open-access MIT/CC licensing, and that the code requires Tensorflow above 2.0 and Python 3.",
+     "anchor": "Section 3.12 Code availability, p.116",
+     "quotes": [
+      "The largest of the datasets is over 500GB (compressed), the smallest being around 1.4GB (compressed). The QDataSet is provided subject to open-access MIT/CC licensing for researchers globally.",
+      "The QDataSet code requires Tensorflow > 2.0 along with a current Anaconda installation of Python 3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors' description of the published resource.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-qdataset-vo-operator",
+     "value": "The thesis states that the VO noise operator from earlier work encodes only the features of noise relevant to designing counteracting controls, not the full noise spectrum, so full noise spectroscopy is not required, and that it assumes noise bounded by an upper frequency limit.",
+     "anchor": "Section 3.5.3.3 QDataSet noise operators, p.93",
+     "quotes": [
+      "so encodes only those features of importance or relevance to impact of noise (not the full noise spectrum)",
+      "Thus of particular importance is the assumption (see section A.3.4) that noise is bounded by an upper frequency limit",
+      "The utility of this approach is that full noise spectroscopy is not required."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A method drawn from the cited earlier work [82].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-qml-benchmarking-gap",
+     "value": "The author states that QML literature tends to provide proof-of-concept examples, with little systematic benchmarking of QML algorithms against classical counterparts.",
+     "anchor": "Section 3.9.1 Benchmarking, pp.106-107",
+     "quotes": [
+      "Given its relative nascency, QML literature tends to focus on providing proof-of-concept examples",
+      "There is little in the way of systematic benchmarking of QML algorithms"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author's characterization of the field, without a survey.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-qdataset-parameters",
+     "value": "The thesis lists the QDataSet simulation parameters as total time T of 1, M of 1024 time steps, K of 2000 noise realisations, energy gap 12 (single qubit) and 12 and 10 (two qubits), 5 control pulses, and amplitudes between -100 and 100.",
+     "anchor": "Table 3.7 Dataset Parameters, p.120",
+     "quotes": [
+      "Table 3.7: Dataset Parameters: T : total time, set to unity for standardisation; M : the number of",
+      "T 1 M 1024 K 2000 Ω 12 Ω1 12 Ω2 10 n 5",
+      "Amin Amax σ -100 100 T/(12M)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Read from a table; values are the authors' stated settings.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Table 3.2 also states K = 2000; Section 3.5.3.8 says at least 1000."
+    },
+    {
+     "id_suggestion": "qgml-ch4-three-greybox-models",
+     "value": "The thesis compares three greybox architectures for learning approximate subRiemannian geodesics in multi-qubit special unitary groups, a fully-connected greybox, a GRU RNN greybox and a SubRiemannian model that learns the initial generator, against a recreated GRU and fully-connected blackbox model from earlier work, all trained with the Adam optimizer at learning rate 10 to the minus 3.",
+     "anchor": "Section 4.6.2, pp.150-160",
+     "quotes": [
+      "Three deep learning architectures were applied to the problem of learning approximations to geodesics",
+      "In order to benchmark the performance of the greybox models described above, we recreated the original global and local machine learning models utilised in [54].",
+      "A standard ADAM optimizer [202] (with α = 10−3) was used for all models."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The thesis's own description of its experimental design.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-table41-insample-fidelities",
+     "value": "The authors report in Table 4.1 (initial generator in the full Lie algebra, h of 0.1, 10 segments, 1000 training examples, 75/25 split) average operator fidelities of 0.6936, 0.7170 and 0.7231 for the GRU and FC blackbox, 0.9964, 0.9940 and 0.9842 for the FC greybox, 0.9999, 0.9999 and 0.9998 for the SubRiemannian model, and 0.9998 on all three groups for the GRU RNN greybox, on SU(2), SU(4) and SU(8) respectively.",
+     "anchor": "Table 4.1, p.162",
+     "quotes": [
+      "Table 4.1: Comparison table of batch fidelity MSE",
+      "h = 0.1, nseg = 10, ntrain = 1000; training/validation 75/25; optimizer: Adam, α ≈1e-3.",
+      "GRU & FC 3.693e- 3.559e- 0.6936(e- 4.144e- 4.887e- 0.7170(e- 1.852e- 4.447e- 0.7231(e-",
+      "FC Greybox 1.827e- 1.681e- 0.9964(e- 3.924e- 4.156e- 0.9940(e- 2.607e- 2.450e- 0.9842(e-",
+      "SubRiemannian 8.728e- 3.211e- 0.9999(e- 1.521e- 2.007e- 0.9999(e- 1.024e- 1.137e- 0.9998(e-",
+      "RNN 1.414e- 1.348e- 0.9998(e- 9.019e- 1.204e- 0.9998(e- 3.557e- 1.186e- 0.9998(e-",
+      "for SU (4) and SU (8) for most cases",
+      "G = SU (2), ntrain = 1000, nseg = 10, epochs= 500, Λ0 ∈ su(2n)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Measured in-sample results from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "These are training and validation (in-sample) figures; the blackbox row uses standard MSE on unitaries, not batch fidelity, so the MSE columns are not directly comparable."
+    },
+    {
+     "id_suggestion": "qgml-table42-delta-generator",
+     "value": "The authors report in Table 4.2 (initial generator restricted to the control subset) that the GRU RNN greybox performed slightly better overall than the SubRiemannian model, both outperforming the GRU and FC blackbox, with SU(8) fidelities of 0.9994 and 0.9979 against 0.7177 for the blackbox, and that the FC greybox was not tested in this case.",
+     "anchor": "Table 4.2, p.162",
+     "quotes": [
+      "Table 4.2: Comparison table of batch fidelity MSE",
+      "For this case, overall the GRU RNN Greybox model performed slightly better than the SubRiemannian model, with both outperforming the GRU & FC Blackbox",
+      "The FC Greybox model was not tested given its inferior performance overall.",
+      "GRU & FC 1.053e- 8.668e- 0.7180(e- 1.328e- 1.739e- 0.9621(e- 4.283e- 1.045e- 0.7177(e-",
+      "SubRiemannian 2.616e- 9.263e- 0.9999(e- 5.224e- 5.983e- 0.9999(e- 2.165e- 6.874e- 0.9979(e-",
+      "RNN 7.290e- 7.086e- 0.9999(e- 3.478e- 5.505e- 0.9999(e- 2.817e- 1.092e- 0.9994(e-",
+      "for SU (4) and SU (8) for most cases"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Measured in-sample results from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "In the same table the blackbox scored 0.9621 on SU(4), much higher than its scores on the other two groups; the thesis does not comment on this."
+    },
+    {
+     "id_suggestion": "qgml-timestep-h-dependence",
+     "value": "The authors report that model performance depends strongly on the time step h: raising h from 0.1 to 0.5 worsened the batch fidelity MSE by several orders of magnitude (particularly above 0.3), while very small h gives geodesics too short and close to the identity, hurting generalisation.",
+     "anchor": "Section 4.8.3 and Figure 4.7, pp.164-167",
+     "quotes": [
+      "Even a smaller jump up to h = 0.5 (blue curves) exhibits an increase in MSE and decrease in performance by several orders of magnitude",
+      "However, smaller h can lead to insufficiently long geodesics, leading to a deterioration in generalisation.",
+      "(particularly for h > 0.3)",
+      "the time-step h = ∆t varies from 0.1 to 1"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Measured on SU(2) with one model (SubRiemannian), 1000 training examples.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-segments-100-no-learning",
+     "value": "The authors report that raising the number of segments from 10 to 100 made the GRU RNN greybox model saturate rapidly with no significant learning, with similar results for the SubRiemannian model, suggesting that changing the segment count alone is insufficient.",
+     "anchor": "Figure 4.9 caption, p.166",
+     "quotes": [
+      "As can be seen, the model saturates rapidly once segments are increased to 100 and exhibits no significant learning. Similar results were found for the SubRiemannian model. This result suggests that simply changing the number of segments is insufficient for model improvement.",
+      "where the number of segments was increased from 10 to 100"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A measured observation on SU(2) in one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-generalisation-figures",
+     "value": "The authors report that on random SU(2) test unitaries the SubRiemannian model reached an average generalised gate fidelity of 0.6474 (standard deviation 0.2288), correlated with similarity to the training set (Pearson coefficient 0.52), and that for SU(4) and SU(8) average generalised gate fidelities were below 0.5 for each model tested.",
+     "anchor": "Section 4.8.4 Generalisation and Figure 4.11, pp.168-170",
+     "quotes": [
+      "with average generalised gate fidelity of 0.6474 with considerable uncertainty (standard deviation of 0.2288)",
+      "Pearson coefficient of 0.52 to 95% significance",
+      "Average generalised gate fidelities were below 0.5 for each of the models tested.",
+      "The out of sample performance of both the SubRiemannian and GRU RNN Greybox models (in both cases limited to generators from ∆) for random unitaries drawn from SU (4) and SU (8) was significantly worse than for SU (2).",
+      "Figure 4.11: Generalisation (SubRiemannian model). G = SU (2)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Measured out-of-sample results from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The sample size of test unitaries is not stated."
+    },
+    {
+     "id_suggestion": "qgml-saturation-training-set",
+     "value": "The authors state that model saturation suggests expanding training sets is unlikely to systematically improve generalisation of the models deployed, and that addressing saturation remains a topic for further research.",
+     "anchor": "Section 4.8.4, p.170",
+     "quotes": [
+      "we note the saturation of the models suggests that at least for the models deployed in the experiments described above, expanding training sets is unlikely to systematically improve the generalisation of the models."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An inference from observed saturation, not tested by varying training-set size.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-subriemannian-overdetermined",
+     "value": "The authors state that the SubRiemannian model gave among the highest fidelities because it reproduces the subRiemannian generative method in full, but learned less (started with lower MSE that declined less) and has less applicability beyond that use case.",
+     "anchor": "Sections 4.6.2.5 and 4.8.2, pp.159, 164-165",
+     "quotes": [
+      "this architecture provided among the highestfidelity performance which is unsurprising given that it effectively reproduces the subRiemannian generative method in its entirety",
+      "while having overall lower MSE, it was initialised with a lower MSE which declined less"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "The authors' interpretation of their measured training curves.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-ch4-time-independent-approx",
+     "value": "The thesis states that the geometric machine learning chapter adopts the time-independent discretised approximation of unitary evolution, appropriate where the time step is small relative to total evolution time, and assumes a measurement or tomographic process by which each subunitary can be reconstructed.",
+     "anchor": "Section 4.4.2.1, pp.134-135",
+     "quotes": [
+      "This approximation is considered appropriate where ∆t is small by comparison to total evolution time T",
+      "and is an approximation adopted in our experiments detailed below",
+      "In this work, we assume the existence of a measurement (and indeed tomographic) process by which Uj may be sufficiently reconstructed"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The chapter's stated modelling assumptions.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-worked-example-zrotation",
+     "value": "The authors report a worked example in which the GRU RNN greybox model learned ten pairs of X and Y control amplitudes for a z-rotation by angle -7.529e-01, giving an estimated unitary with fidelity 0.9999 to the target.",
+     "anchor": "Section 4.10.5 and Table 4.3, pp.174-175",
+     "quotes": [
+      "in this case θ =-7.529e-01, generating the target unitary",
+      "with the fidelity between the target and estimate F (UˆT , UT ) = 0.9999."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A single worked example.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "One chosen example; it does not represent the average generalisation fidelity reported elsewhere."
+    },
+    {
+     "id_suggestion": "qgml-swaddle-boozer-comparison",
+     "value": "The authors report that comparing the variational subRiemannian geodesic method with Boozer's analytic SU(2) geodesics over ten segments gave unitary fidelities of 0.9934 to 0.9939 while Hamiltonian distance grew with segment index from 0.0922 to 0.8345, giving some confidence, though not analytic certainty, that the variational method yields useful training data.",
+     "anchor": "Section 4.12 and Table 4.4, pp.183-184",
+     "quotes": [
+      "Algorithm 5 Comparison of subRiemannian and analytic geodesic circuits in SU (2)",
+      "Hamiltonian distance and unitary fidelity between Swaddle and Boozer geodesic ap",
+      "1 0.0922 0.9934 2 0.1986 0.9935",
+      "10 0.8345 0.9939 Table 4.4",
+      "Fidelity results indicate little difference between Uj(S) and Uj(B), while Hamiltonian distance increases with j.",
+      "Overall, the results provide some measure of confidence, though not analytic certainty, that the variational subRiemannian means of geodesic approximation in [54] are useful candidates for training data."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A numerical comparison on one SU(2) case.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-constant-theta-conjecture",
+     "value": "The thesis states as a conjecture, not a proof, that for symmetric space controls in p with holonomy targets in k, constant-theta paths are time-optimal, and that local variation yields Euler-Lagrange equations requiring the frame term to be constant; it notes that proving the extent of and constraints on the constant-theta conjecture is ongoing work.",
+     "anchor": "Sections 5.3.4, 5.3.6 and 5.4.2.2, pp.196-197, 211",
+     "quotes": [
+      "Summarising the above, our conjecture is that for symmetric space controls in p with holonomy targets in k that constant-θ paths are time-optimal.",
+      "We conjecture that upon local variation of the total time with respect to the path, we obtain Euler-Lagrange equations which show that dqq -1 must also be constant for locally time-optimal paths.",
+      "The rationale for this is the subject of ongoing work and is important for proving the extent of (and any constraints upon) the constant-θ conjecture"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The thesis itself labels the time-optimality of constant-theta paths a conjecture, Sections 5.3.4 and 5.3.6.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The certainty applies to the statement that it is a conjecture, not to the conjecture itself."
+    },
+    {
+     "id_suggestion": "qgml-constant-theta-method",
+     "value": "The thesis proposes the constant-theta method: for a global Cartan decomposition G = KAK with controls in p and targets in [p, p] within k, assuming the Cartan parameter is constant reduces the optimal time to minimising the norm of sin ad_Theta(Phi) subject to a commutant condition and X equal to (one minus cos ad_Theta) applied to Phi, with the time-optimal Hamiltonian being sin ad_Theta(Phi) conjugated by exp(-i Lambda t).",
+     "anchor": "Sections 5.1 and 5.6, pp.189, 224-226",
+     "quotes": [
+      "We show that the assumption of dΘ = 0 equates to the corresponding time-optimal unitary control problem being able to be solved analytically using variational techniques.",
+      "Calculating optimal evolution time then reduces to minimization over initial conditions",
+      "Time-optimal control is given by Hamiltonians of the form"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A derivation that rests on the constant-theta assumption and on constant Lagrange multipliers; its time-optimality is conjectured.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-su2-time-reproduces-boozer",
+     "value": "The thesis shows for the single-qubit group SU(2), with controls Jx and Jy and a Jz rotation target, that the constant-theta method gives minimal time Omega T equal to twice the square root of eta times (two pi minus eta), with Hamiltonian Omega(cos(lambda t) Jx + sin(lambda t) Jy), and states this is consistent with Boozer's earlier result.",
+     "anchor": "Section 5.4.1, pp.200-206",
+     "quotes": [
+      "5.4.1 SU(2) time-optimal control",
+      "Note the time optimality is consistent with [190], namely",
+      "= 2 η(2π − η)",
+      "= Ω(cos λtJx + sin λtJy)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A worked derivation checked against a known result; the formula's square root is lost in the text layer and read from the derivation.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The text layer drops the square-root sign; the formula follows from equations 5.4.40 to 5.4.44."
+    },
+    {
+     "id_suggestion": "qgml-su3-lambda-reproduces-dalessandro",
+     "value": "The thesis applies the constant-theta method to an SU(3) lambda system with a Hadamard-type target and recovers the minimum time (the square root of fifteen times pi, over four, with Omega set to one) and the A and P matrices reported by D'Alessandro et al.; it notes that this Hamiltonian form cannot reach targets in the H_III direction.",
+     "anchor": "Sections 5.4.2.2 to 5.4.2.4, pp.212-217",
+     "quotes": [
+      "5.4.2 SU (3)/S(U (1) × U (2)) time-optimal control",
+      "which is “minimum T” in [229].",
+      "which is (as time must be positive) the minimum time t to reach the equivalence class of target Hamiltonians (that generate Uf up to conjugation) in [229].",
+      "Note that as discussed, this particular form of Hamiltonian cannot reach targets in HIII."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A worked example matched to a published result; the minimum time formula sits in equations whose text layer is broken.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The value 15 pi/4 is read with a square root over 15 from equations 5.4.134 to 5.4.137; the text layer splits it."
+    },
+    {
+     "id_suggestion": "qgml-cartan-practical-limits",
+     "value": "The thesis states that Cartan-based unitary synthesis has suffered from practical limitations of exponential circuit depth and difficulty identifying the appropriate Cartan decomposition and Hamiltonian, and that the Cartan chapter addresses these for certain cases.",
+     "anchor": "Section 5.2 Introduction, p.190",
+     "quotes": [
+      "While broadly utilised, Cartan-based unitary synthesis techniques have suffered from practical limitations due to exponential circuit depth [181, 193] together with difficulty in identifying the appropriate form of Cartan decomposition [227] and form of Hamiltonian."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A literature characterisation with citations.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-ch5-discussion-scope",
+     "value": "The thesis concludes that for control problems where the antisymmetric centralizer generators parameterised by theta remain constant, analytic time-optimal synthesis is possible for non-exceptional symmetric spaces using a global Cartan decomposition, given the assumptions [p, p] within k and constant Theta.",
+     "anchor": "Section 5.5 Discussion, p.217",
+     "quotes": [
+      "it is possible to obtain analytic solutions for time-optimal circuit synthesis for non-exceptional symmetric spaces using a global Cartan decomposition",
+      "However, we have shown that if the assumptions [p, p] ⊆ k and dΘ = 0 hold"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The general claim covers all non-exceptional symmetric spaces, but only SU(2) and SU(3) examples are worked and time-optimality is conjectured.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The Discussion's 'we have demonstrated' is stronger than the body text, which calls the time-optimality a conjecture."
+    },
+    {
+     "id_suggestion": "qgml-closed-system-scope",
+     "value": "The thesis states that most results in Chapters 3 and 4 assume a simplified control problem of a closed quantum system, with Chapter 3 showing through the VO operator how machine learning can learn features of an open or noisy system to allow some mitigation.",
+     "anchor": "Appendix A.3, Open quantum systems, p.271",
+     "quotes": [
+      "Most of our results in Chapters 3 and 4 assume a simplified control problem, one of a closed quantum system, while Chapter 3 demonstrates (through the VO operator) how machine learning can be used to learn those features of an open or noisy system"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The author's own statement of the modelling scope of the thesis results.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "This scope limits the Chapter 4 geodesic-learning results to noiseless closed-system unitaries."
+    },
+    {
+     "id_suggestion": "qgml-open-loop-control-scope",
+     "value": "The thesis states that, because measurement collapse limits classical feedback control in the quantum case, it focuses on open-loop control schemes in which controls are applied without observing the current state.",
+     "anchor": "Appendix A.2, quantum control background, p.270",
+     "quotes": [
+      "Instead, we focus on open loop control schemes which rely upon an a priori control system.",
+      "control inputs are applied without observing the current state"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The author's own statement of the control setting adopted.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgml-greybox-variance-not-proven",
+     "value": "The thesis states that it does not formally prove that encoding prior information in the greybox architecture minimises empirical risk by reducing model variance; this is presented as the idea guiding the approach.",
+     "anchor": "Appendix D.9, Greybox machine learning, p.429",
+     "quotes": [
+      "Although we do not formally prove it, our focus is on the idea that by doing so we are in effect minimising empirical risk by reducing the variance in the models"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The author explicitly states the claim is not formally proven.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The variance-reduction benefit of greybox learning is therefore a motivating hypothesis in this thesis, not a result."
+    },
+    {
+     "id_suggestion": "qgml-barren-plateau-initialisation-anecdote",
+     "value": "The author reports that, when tuning the deep learning architectures of Chapters 3 and 4, initialising parameters as in a cited reference worked effectively to avoid barren-plateau type training issues; no data are given for this.",
+     "anchor": "Appendix D.6.4, Barren plateaus, p.417 to 418",
+     "quotes": [
+      "Experimentally, we found, when tuning our quantum deep learning",
+      "architectures in Chapters 3 and 4, initialising parameters as per [124] worked effectively to avoid such issues."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An anecdotal tuning observation with no reported measurements.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The cited reference is Pascanu, Mikolov and Bengio on training recurrent networks. The architectures in Chapters 3 and 4 are classical networks trained on simulated data, so the barren-plateau framing may not apply in the usual parametrised-circuit sense."
+    },
+    {
+     "id_suggestion": "qgml-ch4-training-data-assumed-geodesic",
+     "value": "The thesis states that Chapter 4 assumes the training sequences of unitaries, generated from subRiemannian geodesic approximations, are time-optimal, so that learning controls that reproduce them yields minimal-length paths up to an error tolerance.",
+     "anchor": "Appendix D.8.1, QML optimal control, p.427",
+     "quotes": [
+      "In Chapter 4, we assume that the sequence of unitaries (generated from a theoretically justified means of obtaining subRiemannian geodesics) is time-optimal",
+      "the sequence of controls obtaining Uˆj(t) ≃ Uj(t) will be minimal (up to some error tolerance)"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The author's own statement of an assumption of the Chapter 4 method.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Time-optimality of the learned controls therefore rests on the training data being true geodesics; the thesis checks the variational training data against analytic geodesics only in SU(2) (the Swaddle and Boozer comparison)."
+    },
+    {
+     "id_suggestion": "qgml-appendix-d-architecture-inconsistency",
+     "value": "Appendix D describes the greybox inputs for Chapters 3 and 4 as unitaries in SU(2), says the networks are trained on data from a distribution in su(2) and names a fully-connected network, an LSTM and the greybox model, and elsewhere says the work focuses on SU(2) or SU(3) and refers to a Chapter 6.",
+     "anchor": "Appendix D.3.1 p.394, D.4.2.2 p.404, D.9 p.430 to 431",
+     "quotes": [
+      "G⊗G for Chapters 3 and 4, G = SU(2).",
+      "Several classes of network are used, including a vanilla (basic) fully-connected feedforward network, an LSTM and the greybox approach which we detail here.",
+      "with a focus on U (t) ∈ G for G = SU (2) or SU (3).",
+      "directly related to one of the candidate models used in Chapter 6, namely the fully-connected model"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Appendix text that conflicts with the results chapters, so it is unreliable as a description of what was done.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Chapter 4 reports results on SU(4) and SU(8) as well as SU(2) and uses GRU RNN models, and the thesis has five chapters, so these appendix statements appear carried over from the earlier paper versions and do not match the thesis results chapters."
+    }
+   ]
+  }
+ ]
+}

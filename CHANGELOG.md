@@ -13,7 +13,435 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-10-23 onward (Sprint 12, in progress)
+### 2026-10-24 onward (Sprint 13, in progress)
+
+- **chore**: Sprint 13 opened (2026-10-24). The team lead merged PR #122
+  into develop (0c554bb) and PR #130 to main (a3ad99a); `sprint-12`
+  tagged on a3ad99a; branch `feature/20261024_Sprint_13` cut from the
+  Sprint 12 branch (6.6 carry-forward). Phase 1.1 reconciliation: every
+  day with commits since 2026-10-23 has entries; one commit lacked its
+  own, added below under Sprint 12 (18e9f43)
+- **docs**: Backlog refinement 2026-10-25 (Sprint 13 Phase 1.2 to 1.4):
+  Sprint 12's shipped cards pruned by hand (F100 to F106); F107 carded
+  from the retrospective's Category 13 (the ".;" joins, the LOW proved
+  results' reason); F108 carded from Phase 2's Sprint 28 work at 9993ab6
+  (F162 and corrections to results F102 entered); snapshots refreshed on
+  F95, F98, F57 and F51. Phase 1.3: 0 re-checks due; schema unchanged;
+  ADR-0005 A11 the only ADR change
+- **docs**: Sprint 13 scope selected (team lead, 2026-10-25): F107, F98,
+  F95, F108, F39 and F57 at 800 records; released copies F109 (F95), F110
+  (F98), F111 (F39) and F112 (F57); F90 put on HOLD. Plan drafted
+  (`docs/sprints/SPRINT_13_PLAN.md`); pre-flight: 806 readable `qml`
+  records remain, so Q1 asks 800 or all 806. Approved as amended
+  (2026-10-25): Q1 = 1 (all 806). Issues #132 to #137; draft PR #131
+- **fix**: F107 (Sprint 13 Task A, 2026-10-25): the ".;" join before
+  "Local copy" corrected in 16 paper records' evidence
+  (`scripts/sprint13_f107_joins.py`); two source-printed ".;" kept. Five
+  theoretical results kept LOW (the card said 3; the reading script's
+  notes name 5) now store their own reason instead of "an empirical
+  result", through `sprint12_reading.py`'s `THEORY_LOW` table so its live
+  test still holds; grades unchanged. INTAKE_WORKFLOW.md section 48;
+  `tests/test_sprint13_f107.py` (injections run) (Issue #132)
+- **fix**: the fresh-eyes review of 6c6f0ac (2026-10-25): the join pattern
+  missed a join after a capital, "%" or a quote mark, and its comment
+  credited the wrong part for keeping "Inc."; widened (no new join in the
+  store), and the live guard now reads every text column of the paper and
+  assertion tables, not only `paper_fields.evidence` (both injections run).
+  Its Important finding (more theoretical results kept LOW with "an
+  empirical result") goes to Task F's I2, as the plan's premise (b) says
+- **process**: F111 (Sprint 13 Task B, 2026-10-25): the F39 release.
+  Anthropic's models and pricing pages read 2026-10-25: every tier's id,
+  price, context, maximum output and retirement date unchanged; no new
+  model holds a role. Sprint 11's and Sprint 12's outcomes logged (Sprint
+  12 held no F39 release, so Sprint 11's row was missing). One rule added
+  with its evidence: a reader's certainty suggestion is never applied.
+  `test_a_reader_grade_suggestion_is_never_applied_regression` (two
+  injections run) (Issue #133)
+- **feat**: F112's I2 (Sprint 13 Task F, 2026-10-25): every LOW names its
+  reason through `store.grading.low_grade` (measured result, theoretical
+  result, field statement, authors' claim, cited claim; the texts the
+  store already holds), and `store/write_path.py` refuses a reading script
+  that writes without it. `theory_words` guards every "measured result"
+  that names a theorem, proof, derivation or analytic count. Section 48's
+  premise was wrong (the 6c6f0ac review found 8 more): 29 more Sprint 12
+  theoretical results now store their reason with a cause, from a
+  classifier's 33 candidates each checked by the coordinator; Task A's 5
+  reworded (the old prefix fit 2 of them); grades unchanged. Sprints 9 to
+  11: 27 candidates counted and carded on F57, not corrected.
+  INTAKE_WORKFLOW.md section 49; four injections run (Issue #137)
+- **fix**: the fresh-eyes review of dd620c7 (2026-10-25): 4 more Sprint 12
+  theoretical results (each confirmed in its PDF), 2 moved back
+  (mohseni's estimate is measured; pqc-gradient-cost-linear is a field
+  statement), each with its own dated note; `theory_words` widened (27 of
+  the 36 found, was 15 of 34; "bound" no longer matches "boundary") and
+  30 more measured results named in `MEASURED_DESPITE`; the write-path
+  rule refuses a literal "low" and takes the vendor LOW through
+  `low_grade`; section 49's 499 is 498 exact. Injections run (Issue #137)
+- **process**: F109 (Sprint 13 Task C, 2026-10-25): `Papers\` holds 180
+  PDFs, and every one is named by a record; nothing to enter (Issue #134)
+- **process**: F110 (Sprint 13 Task D, 2026-10-25): Roadmap-to-QML's
+  latest commit is still a239747648 (2026-10-20), read by one GitHub REST
+  call; no new paper (Issue #135)
+- **feat**: F108 (Sprint 13 Task E, 2026-10-25): Phase 2 read at 9cbe5ba
+  (PR #46 merged since planning; no `docs/phase2/` change from the plan's
+  9993ab6). F162 entered under `hsbc-2026` (the plan said `ml`; section
+  43's rule) with 2 SIM assertions, no relation linked (ADR-0004 A8 (b));
+  three F102 values corrected (F110's unreadable solve, F114's
+  calibration and range, F111's range) and the other 9 confirmed by name
+  (`scripts/sprint13_f108_phase2.py`, INTAKE_WORKFLOW.md section 50,
+  `tests/test_sprint13_f108.py`, two injections run) (Issue #136)
+- **fix**: the fresh-eyes review of 88bd065 (2026-10-25): the three
+  corrected values' paper records still pointed at 10086da's blob;
+  repointed at 9cbe5ba with the earlier read kept in the evidence. F162's
+  value now carries the energy_steel HGB case, the 46 to 58 frauds per
+  seed, the inferred telecom-only entry and the label limit, and says what
+  "overall" covers. Section 50's context line corrected. Injections run
+  (Issue #136)
+- **feat**: F112 (Sprint 13 Task F, 2026-10-25): the slice (806 `qml`
+  records), the paced fetch (28 saved, 5 arXiv 404s, 6 with no free
+  copy), and one read ledger: 795 records in 100 groups, 11 in `no_copy`
+  each with its own reason. The reader prompt gains `result_type`. New
+  `tests/test_sprint13_read_ledger.py`, 2 injections (Issue #137)
+- **fix**: the fresh-eyes review of e621771 (2026-10-25): the slice is
+  every `qml` record with an arXiv id or a DOI, not "every readable" one;
+  the 166 GitHub repositories and 11 local-file records left out are
+  carded on F57. Section 51's citation buckets corrected (362 arXiv DOIs
+  and 2 journal DOIs by their own identifier, 53 by a journal version). A
+  fetch failure no longer says "paced" (the log's FAILED covers both
+  fetch paths). farrelly-2019's unstamped file checked by hand (Issue #137)
+- **feat**: F112 half 1 (Sprint 13 Task F, cec6020, 2026-10-25): g01 to
+  g50 read and applied, 1360 assertions from 400 records; the
+  hand-download list puts uncounted records after every counted one in
+  their group. This entry was missing from cec6020 and is added with the
+  review below (Issue #137)
+- **fix**: the fresh-eyes review of cec6020 (2026-10-25): 26 of half 1's
+  HIGH are LOW (18 theorems quoted without statement and conditions, 8
+  "stated limits" that are measured results); 7 limits lose a measured
+  clause; 12 values with an exponent the text layer printed flat say it
+  in words (new guard); 5 HIGH values given their passage; a "full" read
+  whose note says the whole paper is entered as the whole source; the
+  write-path LOW rule requires a call of `low_grade` again (the import
+  alone had passed), and section 49 no longer claims the concatenation
+  case is closed. Section 51's three false claims retracted. Injections
+  run (Issue #137)
+- **feat**: F112 half 2 (Sprint 13 Task F, 2026-10-25): g51 to g100 read
+  and applied, 1350 assertions from 395 records (462 HIGH, 888 LOW); g82's
+  duplicate id renamed; one assertion dropped with its reason.
+  `tests/test_sprint13_reading.py` lands, with the garbled-figure guard
+  and the vendor LOW case, each proven red by injection (Issue #137)
+- **fix**: the fresh-eyes review of f782e53 (2026-10-25): 14 more of half
+  1's HIGH are LOW (8 theorems quoted only from an abstract, 5 measured
+  "limits", 1 cited definition) and 7 of g51 to g69's; 7 limits lose a
+  measured clause; four flat exponents said in words; the garble guard no
+  longer flags "(H2)" or "(B0)"; two write-path bypasses recorded, not
+  closed; "7 of the 113" corrected to 8 (Issue #137)
+- **fix**: the fresh-eyes review of ce2412e (2026-10-25): half 2 re-applied
+  at 460 HIGH and 890 LOW (3 out of HIGH, 1 field statement found to be the
+  paper's own stated limit and moved in); cited clauses and a show-result
+  left out of 4 HIGH values; a quote that had lost the negation before it
+  restored; 6 values trimmed to their quotes; "1.46N" said in words and
+  section 51's "no flat-printed figure" retracted; 12 HIGH locations named
+  by section; two test checks that could not fail removed, and three
+  guards added (a decimal before N, no id both HIGH and named LOW, no
+  stale store row), each proven red; a third write-path bypass recorded
+  (Issue #137)
+- **fix**: the fresh-eyes review of 6cfc137 (2026-10-25): "6 values
+  trimmed" above was 5 trimmed and 1 restored; `qnpg-outer-loop` is a
+  statement about the field, not an authors' claim; a symbol said lost
+  is not; 5 reader anchors corrected in the stored provenance (new
+  `ANCHOR_FIX`), 3 HIGH locations made exact, 2 values worded to their
+  quotes. Half 2 re-applied; grades unchanged (Issue #137)
+- **fix**: the fresh-eyes review of 7ea56e7 (2026-10-25): one of those 5
+  anchors was a wrong correction of a right one (`ma-not-tested-on-hardware`
+  is III.A and IV, Conclusion); "3 HIGH locations" above was 4; qnpg keeps
+  "likely". Half 2 re-applied; grades unchanged (Issue #137)
+- **fix**: Manual Validation Q2 (team lead, 2026-10-25: "q2 fix now
+  before reading any more papers"): `store/write_path.py` reads each
+  script's parsed code instead of its text. The three known bypasses are
+  closed: "low_grade(" in a string or a docstring is not a call, a
+  `low_grade` or `high_grades` the script defines or assigns for itself
+  is refused, and a "#" in a string hides nothing. A script that does not
+  parse is refused. Every script in `scripts/` gets the same verdict as
+  before. Six new cases, proven red against the old rule (Issue #137)
+- **fix**: the fresh-eyes review of ed53933 (2026-10-25): a name spelled
+  as a whole string (`getattr(d, 'insert_assertion')`, `'Verified'`)
+  escaped the parse, though the text rule had refused it; it counts as
+  the name again. `sq.require_edit_basis(...)` through a module was
+  wrongly refused; it counts as the call. Corrected: "Six new cases,
+  proven red" above is five; the sixth, a call through
+  `import store.grading as g`, passes both rules by design. Four more
+  cases, each proven red against ed53933 (Issue #137)
+- **fix**: the fresh-eyes review of b0b41a3 and 6173bad (2026-10-25): a
+  dotted name or a call inside a string
+  (`eval('store.ingest.insert_assertion')`, `exec('insert_assertion(...)')`)
+  still passed; every identifier inside a string now counts. A changed
+  manifest did not run `test_intake`, which reads every manifest; it does
+  now. Each proven red. Every script keeps its verdict (Issue #137)
+- **fix**: the fresh-eyes review of b6cdcd0 (2026-10-25): bytes literals
+  and a grade quoted inside a string (`exec("g = 'high'")`, `b'high'`)
+  still passed the write-path rule though the 1980406 text rule refused
+  them; both count now. `--changed` now also runs the tests that read
+  every file of a kind: the read-ledger tests and the reader-prompt guard
+  on a manifest change, the four script scanners on a script change, and
+  the guard-discipline test on a test change. Each proven red; every
+  script keeps its verdict (Issue #137)
+- **fix**: the fresh-eyes review of 745c6e6 and a3b8074 (2026-10-25):
+  Task G's slice is 1,997, not 1,991 (a whole-paper note with an
+  exception, and three e-mail reads with a part "not read", no longer
+  count as full); F113's card had an earlier run's counts and now
+  matches. The reader's check refuses a `full` read naming a part not
+  read, a changed verdict with no value, a HIGH suggestion with no
+  location or on a measured result, and a file not the brief's. The
+  ledger only appends (66 fetched records and 6 more joined as g295 to
+  g309). The budget guard catches "at most 5 assertions", "up to 4
+  claims", "read the abstract" and minutes per paper; the write-path
+  rule reads an edit table defined inside a string. Each proven red
+  (Issue #138)
+- **process**: No reading budget (team lead, 2026-10-25, at Manual
+  Validation: "remove the budget ... ensure that all future paper reads
+  have no budget"). F57's card drops its per-record rate; the new reader
+  prompt (`manifests/sprint13_g_reads/READER_PROMPT.md`) asks for every
+  page, appendix and proof, sets no cap on assertions, and gives each
+  reader the record's stored assertions to confirm or correct. CLAUDE.md
+  carries the rule; `tests/test_reader_prompts.py` fails on a prompt from
+  Task G on that names a part-read or a cap, proven red with Task F's
+  prompt in its place (Issue #138)
+- **feat**: Sprint 13 Task G (F113, issue #138, added at Manual
+  Validation): the slice of every paper not read in full (1,991 of 2,335,
+  snapshot as of 2026-10-25; a reader's "full" that listed parts does not
+  count), its downloads (Sprint 10's rules: 210 free copies planned, 138
+  with none), the ledger builder and the reader's own check. INTAKE
+  sections 52 (Q4's common names) and 53 (Task G) written before their
+  applies (Issue #138)
+- **fix**: Manual Validation Q3 (team lead, 2026-10-25: "q3 do now"):
+  `scripts/run_suite.py --changed` runs `test_us_english` on any
+  document change, as it already ran the em dash guard. 6cfc137's
+  British spelling passed `--changed` and turned CI red. A test on this
+  repository's own selection fails if either guard leaves the list,
+  proven by injection (Issue #137)
+- **fix**: Manual Validation Q4 (team lead, 2026-10-25: "keep how the
+  paper does them and then put in parenthasses the more common name").
+  `store/common_names.py` adds "(R squared)" after a paper's "R2" and
+  "(D squared sampling)" after "D2-sampling"; `store.ingest` applies it
+  on every insert and sync. The four owning reading scripts re-applied
+  (with verified backups) changed exactly 18 values, 17 with R2 and 1
+  with D2-sampling (snapshot as of 2026-10-25); a second apply wrote
+  nothing. `tests/test_common_names.py` named all 18 against the
+  pre-apply backup and passes on the live store. The three reading
+  scripts' store-match tests compare the value as ingest stores it
+  (Issue #138)
+- **fix**: the hand-download list failed with `KeyError:
+  'cited_by_count'` once Task G's slice (a3b8074) joined the
+  `*_slice.json` manifests, since that slice records no OpenAlex count. A
+  slice row with no count is now read past, as an uncounted one was; a
+  test with no store, proven red on the old script, holds it (Issue #138)
+- **chore**: Task G (F113) after its download run (snapshot as of
+  2026-10-25): 165 copies saved and 45 failed, none retried. The slice,
+  re-run with the download log, holds 1,997 records: 1,640 with a local
+  copy, 183 without one, 174 GitHub repositories. The 183 are listed
+  with their reason in `manifests/sprint13_g_no_copy.json` for the
+  hand-download list. The ledger appended 99 records as groups g310 to
+  g329. The reader prompt now says that a plot whose caption was read is
+  not `not_read`, and that a text layer holding the paper twice is read
+  from its first copy. `tests/test_backlog_cards.py` failed on F57's and
+  F113's headers, which carry no estimate since the budget was removed; a
+  reading card may now say "(no estimate: as long as the reads take ...)"
+  in exactly those words, and every other card still states its minutes
+  (Issue #138)
+- **fix**: the fresh-eyes review of the Q4 fix (ce95e82) found that a
+  bare "R2" is also a label in the active consumer's documents ("R2:
+  exact weight below t", "research R2"), and the rule glossed every one
+  as R squared. A bare R2 now gains the name only beside a number, a
+  comparison or a statistic word, and never next to a label marker.
+  "R-squared", "R^2", "R²" and "R2-score" now gain it too; one stored
+  value ("R-squared value of 0.9959") was updated through its owner
+  apply, and a second apply wrote nothing. The 18 values glossed before
+  are unchanged under the new rule (Issue #138)
+- **fix**: the fresh-eyes review of that fix (8c869cc) found that its
+  40-character window still glossed labels with a number or a statistic
+  word anywhere near ("Cloudflare R2 storage costs below $0.01", "In R2,
+  accuracy was 0.9", "R2 = R1 + 0.5"), matched "train" inside
+  "constraint", missed "R2: 0.93", "r-squared", "R2_score", "R2-scores",
+  "coefficient of determination" and "D² sampling", and put the name
+  inside a token ("R^2 (R squared)_adj"). A bare R2, R^2 or R² now gains
+  the name only when a number follows through connecting words, a
+  statistic noun follows, or a statistic word comes before it; the name
+  goes after the whole token. Three of the four label tests had stayed
+  green with both label guards removed; each guarded case now removes its
+  own guard in the test and must turn glossed. No stored value changes
+  (Issue #138)
+- **fix**: the fresh-eyes review of 44e2512 (2026-10-26) found labels and
+  the real plane still glossed ("rules R2", "Tables S1 and R2", "R1/R2",
+  "in R² 3 points", "R2 from 2020"), common phrasings missed ("R2
+  (0.93)", "R2 = .93", "the R2 of the model was 0.9", "R2 and RMSE of 0.9
+  and 0.1", "R2 improved"), a second gloss after "coefficient of
+  determination (R squared)", and a LaTeX token or a code call split. Each
+  has a test; each guarded case removes its own guard and must turn
+  glossed. Sprint 12 Task G's apply that morning glossed one more stored
+  value ("coefficients of determination", plural) (Issue #138)
+- **chore**: Task G (F113, 01338ff, 2026-10-25): the reader prompt forbids
+  hook override tokens, after the g007 reader used one in its scratch
+  folder; `tests/test_reader_prompts.py` fails on a prompt without the
+  rule (Issue #138)
+- **fix**: Task G (F113, 0765e9a and its review, 2026-10-26): an older
+  reading script's sync no longer puts a partial read's value back over a
+  row re-read in full. The first guard refused every later correction
+  too; it now refuses only a sync dated on or before the full read's
+  (`store.ingest.sync_assertion`), proven red by removing the date test
+  (Issue #138)
+- **feat**: Task G (F113, 2026-10-26): `scripts/sprint13_g_reading.py`
+  enters the reviewed groups from `manifests/sprint13_g_reviews/` (one
+  coordinator review per group, g001 to g042) and their reader
+  files; `ID_FIX` stores a new assertion under another id where the
+  reader's suggestion is already another source's. Dry run only; nothing
+  applied yet (Issue #138)
+- **feat**: Task G (F113, 2026-10-26, after readers g016 to g019 stopped
+  at a usage limit): a reader saves its progress as it goes and starts
+  from it. The reader prompt's "Progress and restart" section saves a
+  partial file about every 10 pages and a done file per finished paper;
+  `scripts/sprint13_g_check.py --partial` checks a part-finished group;
+  `scripts/sprint13_g_status.py` computes each group's state from its
+  files. `tests/test_reader_prompts.py` fails on a prompt without the
+  section, and `tests/test_sprint13_g_restart.py` on the check and the
+  status, each proven red by injection (Issue #138)
+- **fix**: the fresh-eyes review of 6d8dec7 (2026-10-26): Task G's own
+  sync skipped the date guard, so its next apply would have put a review's
+  value back over a later correction; a full-read sync dated before the
+  row's last change is now refused. An ordinal suffix ("2nd") matched the
+  start of the next word, so "R2 of 0.93 than ..." went unglossed. The
+  apply script refuses an edit under an id that `ID_FIX` moves, and refuses
+  a graded confirmed row it does not rewrite unless the store already holds
+  that grade. Each has a test proven red by injection (Issue #138)
+- **fix**: the fresh-eyes review of 9c79048 (2026-10-26): `record()` read
+  an edit under the reader's id while `verify()` and the guard used the
+  stored id, so an edit named as the guard advised was dropped; edits are
+  now read under the stored id. The same-day sync refusal looked for the
+  full read anywhere in a row's history, so a second correction on one day
+  was refused; it now asks whether the last change was the full read. Each
+  has a test proven red by injection (Issue #138)
+- **docs**: Task G paused (2026-10-26, team lead: "pause after the 5
+  current agents complete and backlog the remaining for the next
+  sprint"). Sprint 13 finishes groups g001 to g042 and applies them;
+  groups g043 to g329 (snapshot as of 2026-10-26: 1,430 records) are
+  registered as F114 in `docs/ALL_SPRINTS_MASTER_PLAN.md`, and F113's
+  card records the pause (Issue #138)
+- **fix**: the fresh-eyes review of 57107f1 (2026-10-26): `record()` still
+  read ANCHOR_FIX and CONTEXT_FIX under the reader's id while value and
+  quote edits used the stored id, and the moved-id guard did not cover
+  them, so an anchor or context fix named under the stored id was dropped
+  silently. Both are now read under the stored id and guarded; the tests
+  were proven red by injection (Issue #138)
+- **feat**: F114 cloud readers (2026-10-26, team lead: "cloud runs only one
+  paper at a time, sends the 'brief' (it needs to be essentially the whole
+  paper) ... do one pilot first, then adjust as needed and continue sending
+  until completed or we run out of weekly tokens"). `scripts/f114_cloud.py`
+  writes one paper's extracted text and brief into the tracked placeholders
+  in `manifests/f114_cloud/inbox/`, starts a cloud session from a bundle of
+  the working tree (`CCR_FORCE_BUNDLE=1`), and restores the placeholders,
+  so the text never enters a commit (ADR-0005 section 3); the session pushes
+  its result to `cloud/f114/<record>` and `fetch` saves it outside the
+  repository without merging. `manifests/f114_cloud/READER_PROMPT.md` is
+  Task G's prompt for one paper; `scripts/sprint13_g_check.py --text` checks
+  quotes against the given text. Tests proven red by injection
+  (`tests/test_f114_cloud.py`; the restart-phrase check in
+  `tests/test_reader_prompts.py` now compares "\" and "/" alike) (Issue #138)
+- **fix**: F114 after the pilot and its review (2026-10-26). The pilot read
+  wierichs-2022-general-parameter-shift-rules-quantum in full, and its result
+  passed the check against the PDF. Fixes: the session adds the GitHub
+  remote before pushing (a bundled session has none); `fetch` reads git as
+  UTF-8 (the Windows code page garbled 12 quotes); the paper goes as raw
+  text with its page breaks, not one folded line holding it twice; the
+  inbox is restored from HEAD, index included, and the session commits only
+  its folder by pathspec and checks it was given RECORD; `fetch` checks
+  every pushed commit, not only the final tree; a session silent for 3
+  hours is launched again (3 attempts at most), and a refused or failed
+  paper is set aside instead of stopping the run (Issue #138)
+- **fix**: F114 sessions start from GitHub, not from an uploaded bundle
+  (2026-10-26, team lead: "q2 1"). A bundled session is not linked to the
+  repository, so every push was refused until the team lead linked it by
+  hand. The launcher now reads the new session's id from its console
+  (`scripts/f114_launch.ps1`) and sends the instructions, brief and paper
+  text as one follow-up message; the session saves them outside the
+  repository with `scripts/f114_unpack.py`. Tests proven red by injection
+  (Issue #138)
+- **fix**: F114 launcher fixes found while launching (2026-10-26):
+  `claude --cloud` needs an interactive terminal, so it runs in its own
+  console window, with its stderr logged (08d2f07, b9bfa1f, efd77d7); the
+  launch script reads the console buffer with `GetValue` (cca6628);
+  `fetch` reads results with `git cat-file`, since `git show` refused a
+  long record id on Windows (fa09c8e); each cloud session is named after
+  its paper (6eafb0d) (Issue #138)
+- **docs**: F115 (text from page images) and F116 (read figures) carded;
+  udaru-2025-qml-credit-risk kept unread (2026-10-27, team lead: "mark
+  udaru-2025-qml-credit-risk as unread") (00da300)
+- **fix**: the F114 loop never counts a paper marked unread as in flight
+  (2026-10-27, 0d7597c)
+- **docs**: F114 cloud reads stopped at $0 credit (2026-10-27, team lead:
+  "Can stop sending more papers and backlog the remainder for next
+  sprint"): 302 results fetched, 3 papers kept unread, 1,126 records
+  backlogged (snapshot as of 2026-10-27) (d5fe761). F117 (review the 302
+  results, split by model tier) and F118 (what the store says for the
+  fraud challenge) carded (7aa184c)
+- **chore**: Task G reviews finished through g042 (2026-10-27, cf62cff)
+- **fix**: the sync writes every changed assertion field in one statement
+  (2026-10-27): the trial apply broke the CHECK that an absence names its
+  search scope, because the claim type was written before the scope; test
+  proven red. INTAKE_WORKFLOW.md section 53 records the g001 to g042 apply
+  (eb3941a) (Issue #138)
+- **fix**: Task G's apply rewrote the detail of 114 Task F read rows from
+  the same day (2026-10-28, found by the full suite). Both scripts now
+  match their own read rows by wording; the live store was repaired by
+  re-running Task F's apply, and a diff against the pre-apply backup shows
+  no row missing (5e10948). The read writer is tested on a store that
+  holds Task F's rows (915f9e4). Tests proven red by injection
+- **chore**: Sprint 13 Phase 5.3 Manual Validation resumed after Task G
+  (2026-10-28, ee6f8ad)
+- **docs**: F119 carded at Priority 10 (2026-10-28, team lead: "add the
+  following text and paper to the paper repository and terget read for
+  next sprint - highest priority"): Brighindi's PHI-OMEGA paper, posts,
+  comment thread, images and code, first in Sprint 14 (Manual Validation
+  Q9 = 1, Q10 = 1). F117 and F118 move to Priorities 20 and 22 (91b757b).
+  The card names the author's two PHI-OMEGA repositories (d5a3f94)
+- **fix**: Task G's whole-paper reads stored as `full` (208) and the two
+  with named exceptions as `partial` (2026-10-28, Manual Validation
+  Q7 = 2); the rows first written as `subagent` are moved, not
+  duplicated; test proven red (2bab87b). INTAKE names the 8 full reads
+  the slice counts only through their reader files (d5a3f94)
+- **docs**: Manual Validation Q11 = 1, Q12 = 1, Q13 = 2 (2026-10-28):
+  F119 reads only the parts of the 608-file archive that bear on the
+  paper's claims; the references split in two (PHI-OMEGA / M-OMNIA, and
+  the MB-X.01 structural-coherence code); the 302 cloud results are
+  reviewed in Sprint 14 after F119 (F117), and Sprint 13 closes now
+- **docs**: Sprint 13 retrospective (2026-10-28): Claude's Development
+  Team draft (db8aeb7); the team lead's feedback recorded verbatim and
+  four improvements proposed (af2c2ca). Team lead: "q1 1, q2 1, q3 3
+  q4 1" (I1, I2, I4 now; I3 skipped)
+- **process**: Sprint 13 retrospective I1, I2 and I4 (2026-10-28). I1:
+  Task G's apply is rolled back when it would rewrite a read row, unless
+  `--update-reads` names the rewrite as intended (F117 applies through
+  this script). I2: every `UPDATE paper_reads` names the row's stored
+  detail; the seven older scripts that matched by reader, day and extent
+  alone are narrowed to one row, and `tests/test_read_row_updates.py`
+  names any that does not (including "+" joins, f-strings and DELETE).
+  I4: `test_changelog_currency` names each commit from 71705d8 on that
+  neither changes CHANGELOG.md nor is named in it by its short hash. Each
+  test proven red by injection (c978e50). The fresh-eyes review of
+  c978e50 found nothing Critical; acted on: "update readout-..." is not a
+  read row, the commit marker cannot occur in a subject, the hash length
+  is fixed at 7, the scan reads joined statements. Its Important finding
+  is recorded, not fixed: the older scripts still compare whichever row
+  shares the key, so they must not re-run on a day another script wrote
+  (none does today) (8a06bf5)
+- **fix**: Copilot's review of PR #131 (2026-10-28): `low_grade("vendor
+  claim", why)` was refused as "not one of" the LOW reasons; it now says
+  a vendor claim takes no why (latent: no caller passes one). Test proven
+  red by injection (9e7d9fb)
+- **docs**: Sprint 13 Phase 7.7 (2026-10-28): `SPRINT_13_SUMMARY.md` with
+  its Actuals; master plan rolled (Past Sprint Summary row 13, Last
+  Completed Sprint); `CHECKLIST-Phase2-pre.md` names no sprint, so nothing
+  to reconcile. Copilot's one finding fixed and its thread resolved
+
+### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 
 - **process**: Sprint 12 retrospective, 2026-10-24 (team lead: "q1 1 q2
   1 q3 1"). I1: `run_suite.py` records the store's stamp at each PASSED
@@ -27,6 +455,8 @@ this project keeps having to replace with a step.
 - **fix**: the review of 7b65d12: a `--changed` run with a pytest filter
   (`-k`, `-m`) no longer records the store as checked, since the filter
   may deselect the store's tests; proven by injection (PR #122)
+- **docs**: Sprint 12 Phase 5.3 (18e9f43, 2026-10-23): status to Manual
+  Validation once CI was green on #122 (PR #122)
 - **docs**: Sprint 12 retrospective, summary and Development Team draft,
   2026-10-24; Copilot review requested on #122 (PR #122)
 - **fix**: F105 and F104 (Sprint 12 Tasks G and F) third apply,

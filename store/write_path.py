@@ -13,6 +13,7 @@ apply.
 """
 from __future__ import annotations
 
+import ast
 import inspect
 import re
 import sys
@@ -23,15 +24,110 @@ SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
 # Each problem a new script can have, by the rule it breaks. Names, not
 # calls, so an aliased import (`import insert_assertion as ins`) or an
 # attribute reference is caught too (fresh-eyes review, 2026-10-21);
-# `insert_verified_assertion` does not match. Comments are not code.
-_DIRECT_WRITE = re.compile(r"\b(insert|sync)_assertion\b")
-_TOKEN_NAME = re.compile(r"\bVerified\b")
-_WRITES = re.compile(r"\b(insert|sync)_(verified_)?assertion\b")
-_EDIT_TABLE = re.compile(r"(?m)^(VALUE|QUOTE|CONTEXT)_[A-Z_]+\s*[:=]")
+# `insert_verified_assertion` does not match.
+# Since Sprint 13 Phase 5.3 (team lead, 2026-10-25: "q2 fix now before reading any more papers") the rule reads
+# the parsed code (ast), not its text: a comment is not code, a call is a call node (a "low_grade(" in a string is
+# not one), and a "#" inside a string hides nothing. That closes the three bypasses the fresh-eyes reviews of f782e53
+# and ce2412e found. Names and quoted grades inside string and bytes constants still count, as the text rule
+# counted them (the reviews of ed53933, 6173bad and b6cdcd0), so a docstring naming insert_assertion is refused.
+_DIRECT_WRITE = re.compile(r"^(insert|sync)_assertion$")
+_TOKEN_NAME = re.compile(r"^Verified$")
+_WRITES = re.compile(r"^(insert|sync)_(verified_)?assertion$")
+_EDIT_TABLE = re.compile(r"^(VALUE|QUOTE|CONTEXT)_[A-Z_]+$")
 # A reading script's HIGH comes only from store.grading, with its basis
 # (Sprint 11 retrospective I3, built in Sprint 12 Task G): no literal
 # "high" of its own, in a grade table or a certainty argument.
-_HIGH_LITERAL = re.compile(r"""["']high["']""")
+# Its LOW names a reason through store.grading.low_grade too (Sprint 12
+# retrospective I2, built in Sprint 13 Task F): no "Started LOW" text of its own.
+# The fresh-eyes review of dd620c7: "Started " + "LOW" and a bare ("low", reason) passed; a literal "low" is
+# refused as a literal "high" is, and an aliased import of low_grade counts.
+# The fresh-eyes review of cec6020: the import line alone passed, so a CALL is required.
+# Closed 2026-10-25 by the parse: "low_grade(" in a string or a docstring is not a call; a low_grade (or
+# high_grades) the script defines or assigns for itself is refused, and only names imported from store.grading
+# count; a "#" in a string no longer hides the rest of its line. Known limits, still not closed: a LOW built by
+# concatenation with no quoted "low" ('LO' + 'W', or 'LOW'.lower()) passes; a reading script that compares a
+# literal 'low' (a count) is refused.
+_GRADING = "store.grading"
+# A grade quoted inside a string (exec("g='high'")), as the 1980406 text rule read it (the review of b6cdcd0).
+_QUOTED = re.compile(r"""["'](high|low)["']""")
+
+
+class _Code:
+    """What the rule reads from one script: its names, its calls, its string constants and its module-level
+    table names, each from the parsed code."""
+
+    def __init__(self, tree: ast.AST):
+        self.names: set[str] = set()
+        self.strings: list[str] = []
+        self.called: set[str] = set()
+        self.defined: set[str] = set()
+        self.grading_modules: set[str] = set()
+        self.from_grading: dict[str, str] = {}  # local name -> the store.grading name it binds
+        self.tables: set[str] = set()
+        for node in getattr(tree, "body", []):
+            for target in self._targets(node):
+                self.tables.add(target)
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Name):
+                self.names.add(node.id)
+                if isinstance(node.ctx, ast.Store):
+                    self.defined.add(node.id)
+            elif isinstance(node, ast.Attribute):
+                self.names.add(node.attr)
+            elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                self.defined.add(node.name)
+            elif isinstance(node, ast.arg):
+                self.defined.add(node.arg)
+            elif isinstance(node, ast.alias):
+                self.names.add(node.name.rsplit(".", 1)[-1])
+                if node.asname:
+                    self.names.add(node.asname)
+            elif isinstance(node, ast.Constant) and isinstance(node.value, str):
+                self.strings.append(node.value)
+            elif isinstance(node, ast.Constant) and isinstance(node.value, bytes):
+                self.strings.append(node.value.decode("latin-1"))  # the review of b6cdcd0: eval(b'...') too
+            if isinstance(node, ast.ImportFrom):
+                for alias in node.names:
+                    local = alias.asname or alias.name
+                    if node.module == _GRADING:
+                        self.from_grading[local] = alias.name
+                    elif node.module == "store" and alias.name == "grading":
+                        self.grading_modules.add(local)
+                    else:
+                        self.defined.add(local)
+            elif isinstance(node, ast.Import):
+                for alias in node.names:
+                    if alias.name == _GRADING:
+                        self.grading_modules.add(alias.asname or _GRADING)
+                    elif alias.asname:
+                        self.defined.add(alias.asname)
+            elif isinstance(node, ast.Call):
+                self.called.add(self._callee(node.func))
+
+    @staticmethod
+    def _targets(node: ast.AST) -> list[str]:
+        if isinstance(node, ast.Assign):
+            return [t.id for t in node.targets if isinstance(t, ast.Name)]
+        if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+            return [node.target.id]
+        return []
+
+    def _callee(self, func: ast.AST) -> str:
+        if isinstance(func, ast.Name):
+            return func.id
+        if isinstance(func, ast.Attribute):
+            owner = ast.unparse(func.value)
+            return f"{owner}.{func.attr}"
+        return ""
+
+    def calls_grading(self, name: str) -> bool:
+        """A call of store.grading's `name`, under the name it was imported as or through the module, and
+        never of a function the script binds for itself under that name."""
+        local = {k for k, v in self.from_grading.items() if v == name}
+        if local & self.defined or name in self.defined:
+            return False
+        return bool(local & self.called) or any(f"{m}.{name}" in self.called for m in self.grading_modules) \
+            or f"store.grading.{name}" in self.called
 
 # The scripts written before this rule (Sprint 10 and earlier). They have
 # run, and stay as they are; every other script in scripts/ is held to it,
@@ -50,17 +146,34 @@ GRADING_LEGACY = {"sprint11_reading.py"}
 
 
 def script_problems(text: str, name: str = "") -> list[str]:
-    code = re.sub(r"#.*", "", text)
+    try:
+        code = _Code(ast.parse(text))
+    except SyntaxError as e:
+        return [f"does not parse, so the write-path rule cannot read it ({e.msg}, line {e.lineno})"]
     out = []
-    if "reading" in name and name not in GRADING_LEGACY and _WRITES.search(code):
-        if "high_grades(" not in code or _HIGH_LITERAL.search(code):
+    # A name spelled inside a string counts as the name (the fresh-eyes reviews of ed53933 and 6173bad:
+    # getattr(d, 'insert_assertion'), eval('store.ingest.insert_assertion') and exec('insert_assertion(...)')
+    # passed the parse, and the text rule had refused each).
+    named = code.names | {w for s in code.strings for w in re.findall(r"[A-Za-z_]\w*", s)}
+    writes = any(_WRITES.match(n) for n in named)
+    if "reading" in name and name not in GRADING_LEGACY and writes:
+        if not code.calls_grading("high_grades") or "high" in code.strings \
+                or any("high" in _QUOTED.findall(s) for s in code.strings):
             out.append("grades HIGH outside store.grading (a reading script names each HIGH's basis through "
                        "high_grades and grade, and holds no literal \"high\")")
-    if _DIRECT_WRITE.search(code):
+        if not code.calls_grading("low_grade") or "low" in code.strings \
+                or any("low" in _QUOTED.findall(s) for s in code.strings) \
+                or any("Started LOW" in s for s in code.strings):
+            out.append("grades LOW outside store.grading (a reading script names each LOW's reason through "
+                       "low_grade, and holds no \"Started LOW\" text of its own)")
+    if any(_DIRECT_WRITE.match(n) for n in named):
         out.append("writes an assertion without the quote check (use insert_verified_assertion)")
-    if _TOKEN_NAME.search(code):
+    if any(_TOKEN_NAME.match(n) for n in named):
         out.append("names Verified (only require_verbatim makes one; pass on what it returns)")
-    if _WRITES.search(code) and _EDIT_TABLE.search(code) and "require_edit_basis(" not in code:
+    edit_basis = any(c == "require_edit_basis" or c.endswith(".require_edit_basis") for c in code.called)
+    # A table name inside a string counts too (the review of a3b8074: exec('VALUE_A = {}') passed the parse).
+    tables = code.tables | {w for s in code.strings for w in re.findall(r"(?m)^\s*([A-Z_]+)\s*[:=]", s)}
+    if writes and any(_EDIT_TABLE.match(t) for t in tables) and not edit_basis:
         out.append("edits readers' values, quotes or contexts without require_edit_basis")
     return out
 

@@ -13,9 +13,12 @@ from dataclasses import dataclass, field, fields, replace
 from pathlib import Path
 
 from store import citations
+from store.common_names import with_common_names
 from store.quotes import Verified
 
 HAND_MARKER = "hand-transcribed from"
+# In the note of every Task G sync, so sync_assertion knows a row was re-read in full (Sprint 13 Task G, F113).
+FULL_READ_MARK = "re-read in full (Sprint 13 Task G, F113)"
 NOT_YET_SCREENED = "; not yet screened"  # bulk-intake disposition suffix; set_tier removes it on promotion
 MIN_VISIBLE_WORDS = 50  # below this a saved web page is a shell, not the content (Sprint 5 Task B)
 
@@ -573,6 +576,7 @@ def insert_paper(
 
 
 def insert_assertion(conn: sqlite3.Connection, assertion: AssertionRecord, yielded_by: str | None = None) -> None:
+    assertion = replace(assertion, value=with_common_names(assertion.value))  # Sprint 13 MV Q4
     validate_assertion(assertion)
     conn.execute(
         "INSERT INTO records (id, class, value, provenance, evidence_tag, certainty, certainty_reasons, "
@@ -682,12 +686,34 @@ def sync_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, note: str,
     not delete. `context`: when the wanted context is not among the stored
     ones, it replaces them; when it is, any others are kept."""
     _sync_groups_cover_every_field()
+    wanted = replace(wanted, value=with_common_names(wanted.value))  # Sprint 13 MV Q4, so a second sync is a no-op
     validate_assertion(wanted)
     rid = wanted.id
-    row = conn.execute(f"SELECT {', '.join(_SYNC_RECORD_COLUMNS)} FROM records WHERE id = ? AND class = 'assertion'",
-                       (rid,)).fetchone()
+    row = conn.execute(f"SELECT {', '.join(_SYNC_RECORD_COLUMNS)}, updated, updated_reason FROM records "
+                       "WHERE id = ? AND class = 'assertion'", (rid,)).fetchone()
     if row is None:
         raise ValueError(f"{rid}: no stored assertion to sync")
+    *row, updated, reason = row
+    last_change = (reason or "").rsplit(" | ", 1)[-1]
+    if FULL_READ_MARK in (reason or "") and (today < (updated or "") or
+                                             (FULL_READ_MARK in last_change and FULL_READ_MARK not in note
+                                              and today == updated)):
+        # Sprint 13 Task G (F113): a re-read of the whole paper supersedes the
+        # partial read an older script entered. Without this, re-running that
+        # script (as its own second-apply test does, each with its fixed TODAY)
+        # would put the older value back. The test is the date, not the
+        # script: a sync dated after the row's last change goes through, so a
+        # later correction is never refused (review of 0765e9a). A sync dated
+        # on or before it is a re-apply of work the full read superseded: the
+        # row is left as it is and, as for a sync that finds nothing to change,
+        # no history is appended. Task G's own sync is held to the date too
+        # (review of 6d8dec7): each apply re-syncs every reviewed group at its
+        # review date, which must not undo a later correction; on the same
+        # day it goes through, so a correction within Task G still lands. The
+        # same-day refusal asks whether the row's LAST change was the full read,
+        # not whether one is anywhere in its history (review of 9c79048): a
+        # second correction on the day of a first one is not a re-apply.
+        return []
     changed = [c for c, have in zip(_SYNC_RECORD_COLUMNS, row) if have != getattr(wanted, c)]
     for column in changed:
         conn.execute(f"UPDATE records SET {column} = ? WHERE id = ?", (getattr(wanted, column), rid))
@@ -695,10 +721,14 @@ def sync_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, note: str,
                        (rid,)).fetchone()
     if row is None:
         raise ValueError(f"{rid}: no assertion_fields row to sync")
-    for column, have in zip(_SYNC_FIELD_COLUMNS, row):
-        if have != getattr(wanted, column):
-            conn.execute(f"UPDATE assertion_fields SET {column} = ? WHERE record_id = ?", (getattr(wanted, column), rid))
-            changed.append(column)
+    # One UPDATE for every changed column: the table's CHECK ties claim_type to search_scope, so a row moving to
+    # 'absence' column by column failed on the claim_type step before its search_scope was set (Sprint 13 trial
+    # apply of Task G, 2026-10-27).
+    fields = [column for column, have in zip(_SYNC_FIELD_COLUMNS, row) if have != getattr(wanted, column)]
+    if fields:
+        conn.execute(f"UPDATE assertion_fields SET {', '.join(f'{c} = ?' for c in fields)} WHERE record_id = ?",
+                     (*(getattr(wanted, c) for c in fields), rid))
+        changed += fields
     documents = {r[0] for r in conn.execute("SELECT document FROM assertion_documents WHERE record_id = ?", (rid,))}
     new_documents = [d for d in wanted.documents if d not in documents]
     for document in new_documents:

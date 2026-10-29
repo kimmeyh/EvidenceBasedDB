@@ -1,0 +1,3060 @@
+{
+ "papers": [
+  {
+   "record_id": "suppakitpaisarn-2024-utilizing-graph-sparsification-pre-processing",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Suppakitpaisarn-Hao_2024_Utilizing-Graph-Sparsification-for-Pre-processing-in-Maxcut-QUBO__2401.13004.pdf",
+   "title_in_file": "Utilizing Graph Sparsification for Pre-processing in Maxcut QUBO Solver",
+   "version_note": "arXiv:2401.13004v1, the INOC 2024 proceedings paper. The text layer holds the paper twice (two extraction layouts); the first copy was read and the second used only to check quotes. Math symbols are U+FFFD in the text layer; the formulas of Theorems 2.1 and 3.1 and Tables 1 and 2 were checked on the page images (pp.3 and 5).",
+   "pages": 6,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A short conference paper that proposes effective-resistance graph sparsification before sending a max cut QUBO to a cloud solver, proves a (1 + epsilon) approximation bound, and tests it with Gurobi and a quantum-inspired annealer on instances of at most 800 nodes.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "sparsify-approx-theorem",
+     "verdict": "widened",
+     "note": "The stored value is right but leaves out the theorem's conditions. Widened with the statement as Section 3 gives it: the solver is assumed exact, the bound is a two-sided inequality on the cut weight, the theorem follows from the cited Theorem 2.1 (so it holds at Theorem 2.1's sample count), and the authors extend it, without proof, to an approximate solver.",
+     "value": "The paper proves (Theorem 3.1, which it says follows directly from Theorem 2.1) that, when the QUBO solver is exact and always returns the optimal solution, the cut the method returns from the sparsified graph has weight within a factor of one plus epsilon of the optimal maximum cut of the original graph, so the method is a (1 + epsilon)-approximation algorithm for max cut.",
+     "anchor": "Theorem 3.1 and proof, Section 3, p.3",
+     "quotes": [
+      "The following theorem is directly followed from Theroem 2.1.",
+      "is a cut derived from the QUBO solver using our method, and",
+      "represents the optimal maximum cut, we can establish that:",
+      "Consequently, our algorithm is a (1 + ",
+      "In Theorem 3.1, we assume that our QUBO solver is exact, meaning it always delivers the optimal solution."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3.1 and its two-line proof in Section 3, p.3; the exact-solver condition is quoted from the paragraph after the proof. The inequality symbols are lost in the text layer and were read from the page image: w_G(S') <= w_G(S*) <= (1 + epsilon) w_G(S').",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The bound holds only at the sample count of Theorem 2.1 (q = 9|V| log|V| / epsilon squared, read from the page image); the experiments use a much smaller q (about 5|V|), so the theorem does not cover the experimental runs."
+    },
+    {
+     "id": "sparsify-experiment-ratio",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors report that on classical and quantum-inspired solvers the method consistently yields an approximation ratio of about 0.9 with communication cost reductions between 60% and 95%.",
+     "anchor": "Section 5 Conclusion, p.5",
+     "quotes": [
+      "consistently yields solutions with an approximation ratio of about 0.9, while simultaneously achieving a significant reduction in communication costs to cloud servers, ranging between 60% and 95%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, on instances of at most 800 nodes.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Table 1 holds two ratios below 0.9 (0.88741 for gka1e, 0.8978 for G_1) and one reduction above 95% (0.96388 for ising2.5-150_6666), so 'about 0.9' and 'between 60% and 95%' are rounded summaries."
+    },
+    {
+     "id": "sparsify-scope-no-quantum-solver",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that they confined experiments to smaller instances and that expanding experiments to include quantum solvers is future work.",
+     "anchor": "Section 4.4 and Section 5, p.5",
+     "quotes": [
+      "Therefore, we confined our experimentation to smaller instances",
+      "In our future research, we plan to expand our experiments to include quantum solvers."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Sections 4.4 and 5, p.5.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "sparsify-thm21-cited-spielman-srivastava",
+     "value": "The paper cites from Spielman and Srivastava [46] a theorem (Theorem 2.1): sampling edges a number of times set by the node count, its logarithm and the parameter epsilon gives a sparsified graph in which every cut's weight lies between its weight in the original graph and one plus epsilon times that weight, and the sparsified graph has an edge count of order the node count times its logarithm.",
+     "anchor": "Theorem 2.1, Section 2.3, p.3",
+     "quotes": [
+      "The following theorem is shown in [46]. Theorem 2.1. If",
+      "We have from the theorem that we would obtain a sparse graph with |E| = ",
+      "that preserves the cut size by the sparsification technique."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper cites from other work; its formula is lost in the text layer.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "Read from the page image (p.3): If q = 9|V| log|V| / epsilon squared, then for all S in V, w_G(S) <= w_G'(S) <= (1 + epsilon) w_G(S)."
+    },
+    {
+     "id_suggestion": "sparsify-approx-solver-extension",
+     "value": "The authors state, without giving a proof, that the result extends to an approximate solver: if the QUBO solver is an alpha-approximation algorithm, the method's outcome can be shown to be an alpha times (one plus epsilon) approximation.",
+     "anchor": "Section 3, after the proof of Theorem 3.1, p.3",
+     "quotes": [
+      "However, this result can be extended to scenarios where the solver is approximate.",
+      "-approximation algorithm, then the outcome produced by our method can be demonstrated to be an"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated without proof in the paper.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sparsify-qubo-maxcut-formulation",
+     "value": "The paper derives a QUBO formulation of weighted max cut whose objective value equals the cut size, with a variable set to one for each node in the cut, so maximizing the QUBO objective gives an optimal max cut.",
+     "anchor": "Section 2.2, p.2",
+     "quotes": [
+      "we establish that the objective value of the QUBO corresponds to the cut size, which is also the objective value of the max cut problem.",
+      "Consequently, maximizing this objective value leads to an optimal solution for the max cut problem."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own formulation, derived step by step in Section 2.2, p.2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sparsify-communication-cost-model",
+     "value": "The authors state that sending every QUBO matrix entry to a cloud solver costs an amount of data of order the node count squared, that an off-diagonal entry is non-zero exactly when its node pair is an edge, and so sending only non-zero entries costs data of order the edge count, which is much less when the graph is sparse.",
+     "anchor": "Section 2.2, p.2",
+     "quotes": [
+      "Consequently, the quantity of real numbers required to be sent is on the order of",
+      "By opting to submit only the non-zero entries of",
+      "Therefore, the communication cost with this method of submission is",
+      "which is substantially more efficient for scenarios where",
+      "or in other words, when the input graph is sparse."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own cost model, Section 2.2, p.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sparsify-effective-resistance-sampling-def",
+     "value": "The paper defines the sparsification: edges are sampled a set number of times, each edge with probability equal to its effective resistance divided by the sum of all edges' effective resistances, and a sampled edge's weight in the new graph is its original weight divided by the number of samples times its probability, added again each time it is resampled.",
+     "anchor": "Section 2.3, pp.2 to 3",
+     "quotes": [
+      "The process involves selecting edges from the graph",
+      "is defined as the ratio of its effective resistance",
+      "to the sum of the effective resistances of all edges in the graph",
+      "This formulation assigns higher probabilities",
+      "to edges with greater effective resistance",
+      "If an edge",
+      "that is not already in E is selected, we assign its weight in G as w("
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition of its method, Section 2.3, pp.2 to 3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sparsify-asymptotic-comm-improvement",
+     "value": "The authors derive from Theorem 2.1 that the communication cost of sending the sparsified graph is of order the node count times its logarithm, which is an asymptotic improvement for dense input graphs whose edge count is of order the node count squared.",
+     "anchor": "Section 3, after Theorem 3.1, p.3",
+     "quotes": [
+      "Theorem 2.1 reveals that |E| = ",
+      "indicating that the communication cost associated with sending the sparsified graph G to cloud servers is also",
+      "Therefore, our method can achieve an asymptotic improvement in communication costs for dense input graphs where the number of edges is on the order"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A one-line consequence of a cited theorem, not stated as a theorem of the paper.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sparsify-limit-sparse-inputs",
+     "value": "The authors state that for sparse input graphs the method does not yield a significant reduction in communication costs.",
+     "anchor": "Section 3, p.3",
+     "quotes": [
+      "However, when dealing with sparse input graphs, our approach does not yield a significant reduction in communication costs."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 3, p.3.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sparsify-scope-approximate-preprocessing",
+     "value": "The authors state that, unlike earlier QUBO preprocessing methods that give smaller instances solving the original problem exactly, their preprocessing produces approximate QUBO instances, and that it is designed to be compatible with those existing methods and with max cut algorithms in general.",
+     "anchor": "Section 1.2, p.2",
+     "quotes": [
+      "These methods have been shown to yield smaller QUBO instances that can exactly solve the original problems.",
+      "In contrast, our paper introduces a preprocessing technique aimed at generating approximate QUBO instances.",
+      "Importantly, our approach is designed to be compatible with these existing preprocessing methods."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of its own scope, Section 1.2, p.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sparsify-experiment-setup",
+     "value": "The authors state that all experiments ran in Python on a Windows 11 personal computer with an Intel i7-1165G7 CPU and 16 GB of RAM, on public instances from [34] with weights replaced by their absolute values because the sampling assumes non-negative weights, and that reported values are the mean of ten iterations.",
+     "anchor": "Section 4, p.3",
+     "quotes": [
+      "Furthermore, we utilized publicly available datasets as provided in [34].",
+      "All experiments were carried out on a personal computer running Windows 11, equipped with an 11th Gen Intel(R) Core(TM) i7-1165G7 @2.80GHz CPU and 16 GB of RAM.",
+      "the weights used in our experiments are absolute values of those provided in the publicly available datasets.",
+      "The values presented in this paper represent the mean of ten separate iterations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup, Section 4, p.3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sparsify-gurobi-for-optimality",
+     "value": "The authors state that the solution-gap experiments used the classical solver Gurobi (QUBO feature of Gurobi Optimods, Gurobi version 10.0.3) because it guarantees optimal solutions, although the method's focus is quantum-inspired optimization.",
+     "anchor": "Section 4.1, p.3",
+     "quotes": [
+      "for these experiments, we have opted to use a classical solver, specifically Gurobi [19].",
+      "The rationale behind this choice is Gurobi's ability to guarantee the optimality of the solutions it generates.",
+      "We employ the QUBO optimization feature available in Gurobi Optimods of Gurobi version 10.0.3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup, Section 4.1, p.3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sparsify-theory-sample-count-too-large",
+     "value": "The authors state that the sample count Theorem 2.1 suggests can exceed the actual edge count for small graphs because of its large constant (at epsilon 0.1 about 522261 for be120.3.1, 1248200 for be250.1 and 2712316 for mannino_k487c), so they used a reduced sample count in the experiments.",
+     "anchor": "Section 4.1, p.4",
+     "quotes": [
+      "Theorem 2.1 suggests setting",
+      "the sizeable constant factor can lead to a",
+      "exceeds the actual number of edges, especially when the input graph",
+      "is relatively small.",
+      "is 0.1, this results in approximately 522261 for \"be120.3.1\", 1248200 for \"be250.1\", and 2712316 for \"mannino_k487c\".",
+      "Because of this, we have opted to use a reduced"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement that its experiments run outside the theorem's sample count, Section 4.1, p.4.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "So the experiments do not test the regime Theorem 3.1 covers."
+    },
+    {
+     "id_suggestion": "sparsify-three-instances-thresholds",
+     "value": "The authors report that with Gurobi the method's cut exceeds 90% of the optimal cut for sample counts of at least 500 on be120.3.1 (121 nodes, 2242 edges), 1500 on be250.1 (251 nodes, 3269 edges) and 2000 on mannino_k487c (487 nodes, 8511 edges), with sparsified edge counts of 424, 1092 and 1231, which are communication cost reductions of 81%, 67% and 86%.",
+     "anchor": "Section 4.1 and Figure 2, p.4",
+     "quotes": [
+      "Specifically, \"be120.3.1\" comprises 121 nodes and 2242 edges, whereas \"be250.1\" contains 251 nodes and 3269 edges.",
+      "This dataset features 487 nodes and 8511 edges.",
+      "Our method achieves a cut size that exceeds 90% of the optimal cut size for",
+      "500 in \"be120.3.1\", for",
+      "1500 in \"be250.1\", and for",
+      "2000 in \"mannino_k487c\".",
+      "Correspondingly, these thresholds yield edge counts of 424 for \"be120.3.1\", 1092 for \"be250.1\", and 1231 for \"mannino_k487c\".",
+      "a substantial reduction in communication costs—81% for \"be120.3.1\", 67% for \"be250.1\", and 86% for \"mannino_k487c\"."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, mean of ten runs.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sparsify-table1-ratios",
+     "value": "The authors report (Table 1) that with the sample count set at five times the node count a similar approximation ratio is reached on six further instance types: communication cost reductions from 0.61831 to 0.96388 and approximation ratios from 0.8978 to 0.93774, with the largest reduction where the original graph is dense.",
+     "anchor": "Section 4.1 and Table 1, p.5",
+     "quotes": [
+      "As demonstrated in Table 1, a similar approximation ratio is achieved for all tested instance types with",
+      "Our experiment results with these three datasets yield a 0.9approximation solution when setting",
+      "Notably, there is a substantial decrease in communication cost particularly when the original graph",
+      "0.65151 0.61831 0.96388 0.81725 0.81549 0.8124",
+      "0.90390 0.88741 0.93774 0.91538 0.90912 0.8978"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; table columns read from the page image.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Table 1 rows (page image): bqp250-1 0.65151/0.90390, gka1e 0.61831/0.88741, ising2.5-150_6666 0.96388/0.93774, g05_100.0 0.81725/0.91538, w05_100.0 0.81549/0.90912, G_1 0.8124/0.8978. Two ratios fall below 0.9. The sample count 5|V| is printed next to symbols the text layer lost; read from the page image."
+    },
+    {
+     "id_suggestion": "sparsify-gurobi-time",
+     "value": "The authors report that Gurobi needed more than three hours on the original be120.3.1 and be250.1 instances, but 2.18 seconds and 16.6 seconds on the sparsified graphs at a sample count of about five times the node count, and that computation time grows with the sample count and edge count.",
+     "anchor": "Section 4.2 and Figure 3, p.4",
+     "quotes": [
+      "For the original \"be120.3.1\" and \"be250.1\" inputs, the solver requires more than three hours to find a solution, whereas with the sparsified graphs at",
+      "the computation times drop dramatically to 2.18 seconds and 16.6 seconds, respectively.",
+      "There is also a clear pattern where larger values of",
+      "and increased edge counts correlate with longer computation times."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The introduction gives the same comparison as 'within two hours' and 'under two seconds after we had eliminated 90% of the edges', which does not match Section 4.2's 'more than three hours'."
+    },
+    {
+     "id_suggestion": "sparsify-time-not-decisive",
+     "value": "The authors report that in every test Gurobi found solutions better than those from the sparsified graphs in under five seconds on the original graphs, that most of its time on dense graphs went to proving optimality, and conclude that reduced computation time may not be a decisive advantage of sparsification.",
+     "anchor": "Section 4.2, pp.4 to 5; also Section 1.1, p.1",
+     "quotes": [
+      "In every test conducted, solutions surpassing those of the sparsified graphs were obtained in under five seconds using the original graphs.",
+      "Most of the time which the solver used on the dense graphs is for proving that",
+      "their solutions are optimal.",
+      "This leads us to conclude that reduced computation time may not be a decisive advantage of sparsification techniques."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study and the authors' conclusion from it.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sparsify-intro-summary-claim",
+     "value": "The authors state in the introduction that across all networks tested the cut size was at most 10% smaller than the maximum cut while the number of edges, and so the communication cost, was cut by as much as 90%.",
+     "anchor": "Section 1.1, p.1",
+     "quotes": [
+      "Across all networks tested, we consistently achieved solutions where the cut size was at most 10% smaller than the maximum cut.",
+      "Remarkably, this was accomplished while reducing the number of edges – and consequently, the communication cost – by as much as 90%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical summary from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Table 1 reports approximation ratios of 0.88741 (gka1e) and 0.8978 (G_1), which are more than 10% below the maximum cut, so the 'at most 10%' claim does not hold for every instance in the paper's own table."
+    },
+    {
+     "id_suggestion": "sparsify-quantum-inspired-amplify",
+     "value": "The authors report that with the Fixstars Amplify Annealing Engine, a 10 second solver limit and a sample count of five times the node count, Table 2 gives communication cost reductions from 0.65 to 0.964 and objective value changes from 0.891 to 0.947 across nine instances, which they state align closely with the classical solver results of Table 1.",
+     "anchor": "Section 4.3 and Table 2, p.5",
+     "quotes": [
+      "We employed the Fixstars Amplify Annealing Engine [14] to corroborate our findings with QUBO quantum-inspired solvers.",
+      "we imposed a solver time constraint of 10 seconds.",
+      "set the value of",
+      "0.779 0.704 0.835 0.71 0.65 0.964 0.816 0.812 0.812 0.911 0.891 0.92 0.895 0.909 0.947 0.908 0.902 0.897",
+      "Table 2 shows that the outcomes obtained using quantum-inspired solvers align closely with those presented in Table 1"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; table columns read from the page image.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The objective value column compares against the annealer's result on the original graph, not against a proven optimum."
+    },
+    {
+     "id_suggestion": "sparsify-sdp-comparison",
+     "value": "The authors state that semidefinite programming approximation algorithms might reach similar or better approximation ratios, but are computationally intensive for problems of over 100,000 nodes, where local execution becomes impractical and their cloud-based method is advantageous.",
+     "anchor": "Section 4.4, p.5",
+     "quotes": [
+      "The argument could be made that similar or even superior approximation ratios to those achieved in our research might be attainable using an approximation algorithm based on semi-definite programming",
+      "particularly for problems involving over 100,000 nodes [28], where local execution becomes impractical.",
+      "In such scenarios, our method proves advantageous"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; no instance of that size was run.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sparsify-small-instances-scope",
+     "value": "The authors state that experiments used only instances of at most 800 nodes, where optimal solutions are feasible.",
+     "anchor": "Section 4.4, p.5",
+     "quotes": [
+      "Therefore, we confined our experimentation to smaller instances (with",
+      "800) where obtaining optimal solutions is feasible."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated scope, Section 4.4, p.5.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sparsify-larger-graphs-confidence",
+     "value": "The authors state that, given consistent results across the tested instance sizes, they are confident similar outcomes would be achievable with larger graphs.",
+     "anchor": "Section 4.4, p.5",
+     "quotes": [
+      "given the consistent results across all tested instance sizes, we are confident that similar outcomes would be achievable with larger graphs."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An untested author's claim.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sparsify-hypothesis-quantum-noise",
+     "value": "The authors state, as a hypothesis for future work, that a sparser graph gives shallower quantum circuits and so less noise, and that graph sparsification may therefore both reduce communication cost and improve the quality of solutions from quantum solvers.",
+     "anchor": "Section 5, p.5",
+     "quotes": [
+      "It is understood that a sparser graph results in shallower quantum circuits, thereby reducing the noise in quantum computations.",
+      "our hypothesis is that graph sparsification not only diminishes the communication cost but also enhances the quality of solutions derived from quantum solvers."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A hypothesis, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sparsify-mcsparse-belief",
+     "value": "The authors state a belief, not tested in the paper, that their preprocessing could improve the computation time of the McSparse exact algorithm for sparse max cut, particularly on denser graphs.",
+     "anchor": "Section 1.1, p.1",
+     "quotes": [
+      "We believe that our preprocessing technique could improve the computation time of the McSparse algorithm, particularly when applied to denser graph structures."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's belief, not tested.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sparsify-cloud-motivation",
+     "value": "The authors state that quantum-inspired computers will not be commercially available for the next several decades, so QUBO solvers must be used through cloud services, where communication often becomes a significant bottleneck.",
+     "anchor": "Section 1, p.1",
+     "quotes": [
+      "Since quantuminspired computers will not be commercially available for the next several decades, we are compelled to utilize these solvers through cloud services.",
+      "a step which often results in communication becoming a significant bottleneck [27, 38]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim about the market, without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "suzuki-2022-quantum-fisher-kernel-mitigating-vanishing",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Suzuki-Kawaguchi-Yamamoto_2022_Quantum-Fisher-kernel-for-mitigating-the-vanishing-similarity__2210.16581.pdf",
+   "title_in_file": "Quantum Fisher kernel for mitigating the vanishing similarity issue",
+   "version_note": "arXiv:2210.16581v1, 9 main pages and a 30-page Supplemental Information. The text layer holds the paper twice; the first copy was read and the second used only to check quotes. Exponents are printed flat in the text layer; the formulas of Proposition 1 and Theorem 1 were checked on the page images (pp.3 and 6).",
+   "pages": 39,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory and simulation paper that names the vanishing similarity issue of the fidelity quantum kernel, proposes quantum Fisher kernels, and proves that the anti-symmetric logarithmic derivative version (ALDQFK) keeps a qubit-number-independent variance lower bound with alternating layered ansatzes, under 2-design assumptions.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qfk-hea-inconsistency",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors report that the ALDQFK variance with HEA looks inconsistent with Theorem 1 (1), which they attribute to the 2-design assumption not being satisfied.",
+     "anchor": "Main text, Numerical experiments, p.6",
+     "quotes": [
+      "We remark that the variance of the ALDQFK with HEA does not decrease exponentially fast, which looks inconsistent to Theorem 1 (1).",
+      "This is because the assumption on the 2-design property of quantum circuits is not satisfied due to the insufficient expressivity of the quantum circuits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study, with the authors' explanation of it.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qfk-numerics-confirm",
+     "verdict": "narrowed",
+     "note": "The paper's summary sentence is quoted correctly, but the same paragraph reports two departures from the theory: the ALA ALDQFK variance does vanish with qubit number in Figure 4, contrary to Theorem 1 (2), which the authors attribute to the normalization by the parameter count p; and the HEA result departs from Theorem 1 (1) because the HEAs are not 2-designs. Narrowed to carry both caveats.",
+     "value": "The authors state that the numerical experiments confirm the vanishing similarity issue for the fidelity-based QK in Proposition 1 and the validity of Theorem 1, while reporting that the normalized ALDQFK variance with the ALA vanishes with qubit number in Figure 4, contrary to Theorem 1 (2), which they attribute to the normalization factor p growing linearly with qubit number, and that the HEA result departs from Theorem 1 (1) because the circuits are not 2-designs.",
+     "anchor": "Main text, Numerical experiments, p.6",
+     "quotes": [
+      "Overall, the numerical experiments confirm the vanishing similarity issue in the Fidelity-based QK in Proposition 1, and the validity of Theorem 1 in the main result.",
+      "Indeed, the variance of the ALDQFK with the ALA vanish with respect to the number of qubits in Figure 4, contrary to Theorem 1 (2).",
+      "However, this is attributed to the fact that a normalization factor for the ALDQFK, p, linearly depends on the number of qubits in our setting.",
+      "This is because the assumption on the 2-design property of quantum circuits is not satisfied"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study, up to 14 qubits.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Neither departure is tested further: the unnormalized ALA variance is not shown, so the claimed attribution to p is not checked in the paper."
+    },
+    {
+     "id": "qfk-variance-ala",
+     "verdict": "widened",
+     "note": "The stored value is the main text's summary. Widened with Theorem 1 (2) itself: its 2-design conditions on the partial block and on every block in the light cone, the product-state condition for the variance bound, and the zero expectation.",
+     "value": "The paper proves (Theorem 1 (2)) that when both circuits are alternating layered ansatzes whose partial block up to the parameter and whose light-cone unitary blocks are t-designs with t of at least 2, the expectation of the ALDQFK quantity is zero, and, if the initial state is a tensor product of arbitrary single-qubit pure states, its variance has a lower bound that depends on the unitary block size m and the depth d of the local block, not on the total number of qubits.",
+     "anchor": "Theorem 1 (2), Eqs. (17) and (18), pp.5 to 6; proof SI Sec.III.B, pp.SI-15 to SI-23",
+     "quotes": [
+      "Theorem 1 together with Proposition 1 implies that the variance of the ALDQFK",
+      "(2) Let U (x, θ) and U (x′, θ) be the ALAs, and let W ̃ k,d(x, θi), W ̃ k,d(x′, θi) and unitary blocks in Vr(x, θ) and Vr(x′, θ) be t-designs with t ≥ 2.",
+      "Then the expecta- tion is given by kQAF = 0.",
+      "Additionally, we assume the initial state ρ0 is represented as the tensor product of arbitrary single-qubit pure states",
+      "Then the lower bound of the variance is given by",
+      "Moreover, in the case (2) where the ALA is used, the variance does not depend on the total number of qubits, but the size of the unitary block m and the depth d of the local unitary block"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 (2) states the result with its 2-design and initial-state conditions, pp.5 to 6, proved in SI Sec.III.B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Eq. (18) read from the page image (p.6): Var[k_QF^A] >= 2^(2md) (2^(md) - 1) / (2 (2^(2m) - 1)^2 (2^m + 1)^(4(d-1))). The bound shrinks exponentially in m times d, so 'avoids the issue' holds only for shallow d and small m."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qfk-vanishing-similarity-definition",
+     "value": "The authors define the vanishing similarity issue: all off-diagonal Gram matrix elements of the fidelity-based quantum kernel vanish as the number of qubits grows, because their expectation and variance decrease exponentially with qubit number, so an exponential number of measurement shots is needed and a realistic shot count gives a Gram matrix close to the identity, with overfitting and possibly poor generalization.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "stating that all off-diagonal elements of the Gram matrix (similarity between different data pairs) significantly vanish as the number of qubits is increased.",
+      "Namely, the expectation and the variance of those elements decrease exponentially with respect to the number of qubits.",
+      "This means that an exponential number of measurement shots is required to precisely estimate the QK, which erases the possible quantum advantage.",
+      "Thus the realistic number of measurements on real quantum hardware yields a Gram matrix close to the identity matrix; consequently, overfitting happens"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of the issue it studies, Introduction, p.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The authors note the concept was first introduced in Ref. [7] (Huang et al.); this is a naming, not a new phenomenon."
+    },
+    {
+     "id_suggestion": "qfk-prop1-random-circuit",
+     "value": "The paper proves (Proposition 1 (1)) that for the n-qubit fidelity-based quantum kernel with an arbitrary pure initial state, when both circuits are random circuits on all qubits and at least one is a t-design with t of at least 2, the expectation is one over two to the power n and the variance is approximately one over two to the power two n.",
+     "anchor": "Proposition 1 (1), Eqs. (2) and (3), p.3; proof SI Sec.II.A",
+     "quotes": [
+      "Proposition 1 Let the expectation and the variance of the n-qubit fidelity-based QK defined in Eq. (1) be kQ and V ar [kQ], respectively.",
+      "Also, let the initial state ρ0 be an arbitrary pure state.",
+      "(1) When U (x, θ) and U (x′, θ) are the random quantum circuits acting on all qubits, and at least either U (x, θ) or U (x′, θ) is a t-design with t ≥ 2, the expectation and the variance are given by kQ = 1 2n"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 1 (1) with its t-design and pure-state conditions, p.3, proved in SI Sec.II.A.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "From the page image (p.3): <k_Q> = 1/2^n and Var[k_Q] = (2^n - 1) / (2^(2n) (2^n + 1)), approximately 1/2^(2n)."
+    },
+    {
+     "id_suggestion": "qfk-prop1-ala",
+     "value": "The paper proves (Proposition 1 (2)) that for the fidelity-based quantum kernel with alternating layered ansatzes whose m-qubit local blocks in either circuit are t-designs with t of at least 2, the expectation is one over two to the power n and the variance has an upper bound approximately one over two to the power n times (two minus one over m), using an approximation that assumes two to the m is much greater than one.",
+     "anchor": "Proposition 1 (2), Eqs. (4) and (5), p.3; proof SI Sec.II.B, Eq. (40)",
+     "quotes": [
+      "(2) Let U (x, θ) and U (x′, θ) be the ALAs, and let mqubit local unitary blocks in either U (x, θ) or U (x′, θ) be t-designs with t ≥ 2.",
+      "Then the expectation and the upper bound of the variance are given by kQ = 1 2n",
+      "Also we assume 2m ≫ 1 here."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 1 (2) with its block t-design condition, p.3, proved in SI Sec.II.B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "From the page image (p.3): Var[k_Q] <= 2^kappa / (2^(2m) - 1)^kappa - 1/2^(2n), approximately 1/2^(n(2 - 1/m)), with n = m kappa."
+    },
+    {
+     "id_suggestion": "qfk-prop1-mixed-state",
+     "value": "The paper shows that the fidelity kernel results extend to mixed initial states: in the random-circuit case the pure-state variance is an upper bound for a mixed state, and the alternating-layered-ansatz upper bound is valid for a mixed initial state because it is derived from purity.",
+     "anchor": "SI Sec.II.A after Eq. (23) and SI Sec.II.B after Eq. (40), pp.SI-5 and SI-10",
+     "quotes": [
+      "is the upper bound of the variance for the case where ρ0 is the mixed state, because we utilize the inequality for the purity",
+      "This result is valid for the case where a mixed state is used as the initial state, since the upper bound is derived by the purity of quantum states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Shown in the proof of Proposition 1, SI Sec.II.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-prop1-implication-circuit-structure",
+     "value": "The authors state that Proposition 1 means all off-diagonal Gram elements of the fidelity-based kernel are almost zero for large qubit number for both circuit types, while every diagonal element is 1, and that devising the circuit structure will not circumvent the issue as long as fidelity is the metric.",
+     "anchor": "After Proposition 1, pp.3 to 4",
+     "quotes": [
+      "states that, for both types of circuits, all off-diagonal elements of the Gram matrix given by the fidelity-based QK take almost zeros if the number of qubits n is large.",
+      "Note that every diagonal element, i.e., kQ(x, x), is 1 for any input x regardless of the number of qubits used.",
+      "that devising the circuit structure will not circumvent the issue, as long as the fidelity is used as the metric."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' generalization from two proved circuit classes to circuit structure in general.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-prop1-novelty",
+     "value": "The authors state that the class of alternating layered ansatzes includes the tensor-product circuit as a special case, and that a similar result to case (1) of Proposition 1 appears in Refs. [11, 13] while case (2) had not been reported to their knowledge.",
+     "anchor": "After Proposition 1, p.4",
+     "quotes": [
+      "We remark that the class of ALAs includes the tensor-product quantum circuit studied in the motivating example, as a special case (i.e., L = 1, m = 1 and κ = n).",
+      "We should mention that the similar result for the case (1) can be seen in Ref. [11, 13], but the one for the case (2) has not been reported to the best of our knowledge."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim about prior work.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-classical-fisher-kernel-definition",
+     "value": "The paper defines the classical Fisher kernel as the inner product of Fisher scores (the logarithmic derivatives of a generative model) weighted by the inverse Fisher information matrix, the basis it extends to quantum kernels.",
+     "anchor": "Quantum Fisher kernels, Eq. (6), p.4",
+     "quotes": [
+      "is the logarithmic derivative of the generative model P (x, θ) (called the Fisher score) and I is the Fisher information matrix.",
+      "The idea behind the Fisher kernel is to construct a powerful classifier from the probabilistic generative model, using the Fisher score as a natural feature vector in the space of probability distributions."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition the paper's results depend on, Eq. (6), p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-quantum-fisher-kernel-definition",
+     "value": "The paper defines quantum Fisher kernels as the inner product of quantum logarithmic derivatives (the symmetric SLD or the anti-symmetric ALD) of the data-embedded state, weighted by the inverse of the corresponding quantum Fisher information matrix, and gives for unitary processes the ALD solution built from the derivative of the circuit.",
+     "anchor": "Quantum Fisher kernels, Eqs. (7) to (13), pp.4 to 5",
+     "quotes": [
+      "In this work, we focus on the symmetric logarithmic derivative (SLD) [21] and the anti-symmetric logarithmic derivative (ALD) [22].",
+      "are defined as solutions of the following equations, respectively;",
+      "It is known that these quantities are not uniquely determined.",
+      "Also, a solution of the ALD equation for unitary process can be obtained as",
+      "we define the QFK as an inner product of these logarithmic derivatives"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Eqs. (7) to (13), pp.4 to 5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-fisher-matrix-set-to-identity",
+     "value": "The authors state that in their analysis the quantum Fisher information matrix is set to the identity because it is computationally demanding and has been suggested to be less significant, and that the trace term of the ALD is dropped so that the ALDQFK of an input with itself is constant.",
+     "anchor": "SI Sec.III, after Eq. (44), p.SI-11; also main text after Eq. (13), p.5",
+     "quotes": [
+      "In this work, we set the QFIM as the identity matrix, i.e., F = I, because the QFIM is computationally demanding and has been suggested to be less significant in Ref. [5].",
+      "is ignored so that the ALDQFK with the same inputs kQAF (x, x) is constant for any x."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own setup choice, SI Sec.III, p.SI-11.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "So every result about 'the ALDQFK' is about the kernel without the Fisher information weighting; the kernel actually analysed is a sum of anti-commutator terms over parameters."
+    },
+    {
+     "id_suggestion": "qfk-sldqfk-also-vanishes",
+     "value": "The authors argue, from the parameter shift rule, that the SLD-based quantum Fisher kernel for pure states has a structure similar to the fidelity-based kernel and so also suffers from the vanishing similarity issue.",
+     "anchor": "Quantum Fisher kernels, after Eq. (12), p.5",
+     "quotes": [
+      "However, this means that the SLDQFK for the pure state case has a similar structure to the fidelity-based QK; that is, using the parameter shift rule [34, 35]",
+      "This indicates that the SLDQFK also suffers from the vanishing similarity issue."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument from structure, not a stated theorem with conditions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-thm1-random-circuit",
+     "value": "The paper proves (Theorem 1 (1)) that for the n-qubit ALDQFK quantity with a pure initial state, when both circuits are random circuits on all qubits and both partial circuits up to the parameter are t-designs with t of at least 2, the expectation is 0 and the variance is approximately one over two to the power n plus 1.",
+     "anchor": "Theorem 1 (1), Eqs. (15) and (16), pp.5 to 6; proof SI Sec.III.A",
+     "quotes": [
+      "Also, let the initial state ρ0 be a pure state.",
+      "and both U1:i(x, θ) and U1:i(x′, θ) are t-designs with t ≥ 2, then we have kQAF = 0, (15)",
+      "V ar kQAF = 2n 2 (22n − 1) + 2n − 2 2n (2n + 1) ≈ 1 2n+1 . (16)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 (1) with its t-design and pure-state conditions, pp.5 to 6, proved in SI Sec.III.A.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "From the page image (p.6): Var = 2^n / (2 (2^(2n) - 1)) (1 + (2^n - 2)/(2^n (2^n + 1))), approximately 1/2^(n+1). Still exponential decay, only quadratically slower than the fidelity kernel."
+    },
+    {
+     "id_suggestion": "qfk-thm1-general-initial-state",
+     "value": "The paper derives a lower bound on the ALDQFK variance with the alternating layered ansatz for a larger class of initial states, those satisfying two purity inequalities, which include tensor products of single-qubit pure states and the completely mixed state; the authors state it is unclear which other states satisfy them, and that the lowest bound is reached for a block in the middle of a layer.",
+     "anchor": "SI Sec.III.B, Eqs. (90) to (93), pp.SI-22 to SI-23",
+     "quotes": [
+      "Further, we can derive the lower bound of the variance of the ALDQFK for the larger class of the initial states.",
+      "Note that the initial states that satisfy above conditions include the tensor product states of arbitrary single-qubit pure states",
+      "and the completely mixed states, while it is unclear if any quantum states fulfill the properties.",
+      "Actually, the lowest value is attained when k satisfies ks ≥ 1 and kl ≤ d (i.e., Wk,d(x, θk,d) is located in the middle of a layer)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in SI Sec.III.B with its conditions (Eq. (90)) stated; the formula is flattened in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-thm1-interpretation",
+     "value": "The authors state that Theorem 1 with Proposition 1 implies the ALDQFK variance is less likely to decrease with qubit number than the fidelity kernel's: in the random-circuit case both decay exponentially but with a nearly quadratic difference in scaling, and with the alternating layered ansatz the ALDQFK quantity avoids the issue up to shallow depth; they add that even with a deep ansatz the summed kernel's variance would not be small because of the terms from shallow layers.",
+     "anchor": "After Theorem 1, p.6",
+     "quotes": [
+      "Theorem 1 together with Proposition 1 implies that the variance of the ALDQFK is less likely to decrease with respect to the number of qubits than that of the fidelitybased QK.",
+      "In the case (1), although the ALDQFK shows the exponential decrease as well, there is nearly quadratic difference in the scaling compared to the fidelity-based QK.",
+      "can avoid the vanishing similarity issue up to the shallow depth of the quantum circuit.",
+      "Thus, even if the ALA with large depth L is used, the variance of the ALDQFK would not be small due to the quantities in the shallow layer."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' reading of the theorems; the deep-ansatz statement about the summed kernel is not proved.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The theorem bounds one term of the sum; the variance of the sum also depends on covariances between terms, which the paper does not bound."
+    },
+    {
+     "id_suggestion": "qfk-initial-state-practical",
+     "value": "The authors state that the product-state assumption for the variance bound is not too severe in practice, since a tensor product state is a common choice for initial state preparation.",
+     "anchor": "After Theorem 1, p.6",
+     "quotes": [
+      "We first remark that the assumption on the initial state for the variance calculation in the case (2) is not too severe from the practical perspective, since the tensor product state is a common choice for the initial state preparation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim about practice.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-motivating-example",
+     "value": "The authors report that for the fidelity-based kernel with tensor-product and IQP-type circuits of depth 2 using data re-uploading, on five sets of 100 random data points and five parameter sets (25 combinations), both the expectation and the variance decrease exponentially with qubit number, including for the classically simulable tensor-product circuit.",
+     "anchor": "Motivating examples and Figure 2, p.3; SI Sec.IV.A, p.SI-24",
+     "quotes": [
+      "the tensor-product quantum circuits and the instantaneous quantum polynomial (IQP) type quantum circuits [5] with depth L = 2.",
+      "In the experiment, we prepare five sets of 100 data points",
+      "Then we calculate the QK kQ(x, x′) with x = x′ for all 25 combinations of the input data set and the parameter set",
+      "As shown in Figure 2, they both decrease exponentially fast with respect to the number of qubits.",
+      "Even worse, the tensor-product quantum circuit, which is efficiently simulatable by classical means, witnesses the vanishing similarity issue"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The SI says the kernel is computed with x = x′, but the main text and the kernel's definition point to off-diagonal pairs (x not equal to x′); the text layer appears to have lost the 'not equal' sign."
+    },
+    {
+     "id_suggestion": "qfk-numerics-setup",
+     "value": "The authors state that the variance experiments use tensor-product circuits, alternating layered ansatzes with 2-qubit blocks and hardware-efficient ansatzes with random rotation axes, of depth 3, for 2 to 14 qubits, with 100 random data points and 25 repetitions over parameters and inputs, simulated with Cirq, and with the ALDQFK normalized by the number of parameters.",
+     "anchor": "Numerical experiments and Figure 4, p.6; SI Sec.IV.B",
+     "quotes": [
+      "tensor-product quantum circuits, ALAs with 2-qubit local unitary blocks, and hardware efficient ansatzs (HEAs).",
+      "Variance of the fidelity-based QK and the ALDQFK with respect to the number of qubits, n = 2, 4, 6, 8, 10, 12, 14.",
+      "with depth L = 3 are used.",
+      "In the experiments, we randomly generate 100 data points",
+      "We repeat this process 25 times with different sets of parameters and inputs to obtain the variance for each QK.",
+      "where p is the number of parameters, so that the trace of the Gram matrix coincides with the number of the data points",
+      "For the numerical simulation, we use Cirq, a software library for quantum computing [38]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup, p.6 and SI Sec.IV.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-numerics-fidelity-vs-ald",
+     "value": "The authors report that in simulation the fidelity-based kernel's variance decreases exponentially regardless of circuit type, while the ALDQFK does not show such an exponential decrease for every circuit.",
+     "anchor": "Numerical experiments and Figure 4, p.6",
+     "quotes": [
+      "As expected from Proposition 1, the variance of the fidelity-based QK decreases exponentially fast regardless of the type of quantum circuits.",
+      "On the other hand, the ALDQFK does not show such exponential decrease of variance for every circuit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study, up to 14 qubits.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The same paragraph says the ALA ALDQFK variance does vanish with qubit number in Figure 4, so 'for every circuit' is qualified by the normalization caveat."
+    },
+    {
+     "id_suggestion": "qfk-limit-not-2-designs",
+     "value": "The authors state that the hardware-efficient ansatzes and the alternating-ansatz blocks used in the simulations may not be 2-designs, which the theorems assume.",
+     "anchor": "Numerical experiments, p.6; SI Sec.IV.B",
+     "quotes": [
+      "However, we mention that the HEAs and the unitary blocks in the ALA may not form t-designs with t ≥ 2.",
+      "Note that the random quantum circuits and the local unitary blocks in the ALAs might not be 2-designs."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, p.6 and SI Sec.IV.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-t-design-assumption",
+     "value": "The paper defines a t-design as an ensemble of unitaries with the same statistical properties as the Haar-random unitary group up to the t-th moment, and states that its analysis assumes the random circuits and the local blocks of the alternating ansatz are 2-designs.",
+     "anchor": "Vanishing similarity issue section, p.3; SI Sec.I.A",
+     "quotes": [
+      "Our analysis is based on the assumption that the ran- dom quantum circuits and the local unitary blocks in the ALA are 2-designs.",
+      "Recall that the t-design is an ensem- ble of unitaries that have the same statistical properties as the unitary group with respect to the Haar measure up to the t-th moment"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of the assumption that scopes all its proofs, p.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-ala-definition",
+     "value": "The paper defines the alternating layered ansatz as a brick-like circuit of total depth L with kappa m-qubit local blocks per layer, so that n equals m times kappa, each block overlapping half the qubits of two blocks of the previous layer, and with m equal to 1 treated as the tensor-product circuit.",
+     "anchor": "p.3 and SI Sec.I.B, Eqs. (18) and (19)",
+     "quotes": [
+      "The ALA is a brick-like quantum circuit with alternating layers of m-qubits local unitary blocks",
+      "satisfying n = mκ for the total number of qubits n.",
+      "Here a unitary block overlaps each m/2 qubits on which the corresponding two unitary blocks of one previous layer act",
+      "when m = 1, we assume the ALA can be regarded as the tensor-product quantum circuit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own circuit definition, p.3 and SI Sec.I.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-haar-lemma1",
+     "value": "The paper gives (Lemma 1, one of five lemmas it takes from the Supplementary Information of Ref. [4] and proves) that for an ensemble of unitaries on a d-dimensional space forming a t-design with t of at least 1, the average of the trace of W A W-dagger B equals the trace of A times the trace of B divided by d, for arbitrary operators A and B.",
+     "anchor": "SI Lemma 1, Eq. (5), p.SI-2",
+     "quotes": [
+      "Thus, for the sake of clarity, we show the five Lemmas derived and shown in Supplementary Information of Ref. [4] below.",
+      "Lemma 1. Let the ensemble of unitaries {pi, Wi} acting on the d-dimensional Hilbert space Hw be a t-design with t ≥ 1.",
+      "Then, for arbitrary operators A, B : Hw → Hw, we have"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A lemma the paper attributes to Ref. [4], with its proof reproduced.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "A standard first-moment Haar identity."
+    },
+    {
+     "id_suggestion": "qfk-haar-lemma2",
+     "value": "The paper gives (Lemma 2, from Ref. [4], with proof) for a t-design with t of at least 2 on a d-dimensional space a closed form of the average of the trace of W A W-dagger B W C W-dagger D, in terms of traces of A, B, C, D and of the products AC and BD, with coefficients one over (d squared minus one) and one over d(d squared minus one).",
+     "anchor": "SI Lemma 2, Eq. (7), p.SI-2",
+     "quotes": [
+      "Thus, for the sake of clarity, we show the five Lemmas derived and shown in Supplementary Information of Ref. [4] below.",
+      "Lemma 2. Let the ensemble of unitaries {pi, Wi} acting on the d-dimensional Hilbert space Hw be a t-design with t ≥ 2.",
+      "Then, for arbitrary operators A, B, C, D : Hw → Hw, we have"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A lemma the paper attributes to Ref. [4], with its proof reproduced.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-haar-lemma3",
+     "value": "The paper gives (Lemma 3, from Ref. [4], with proof) for a t-design with t of at least 2 on a d-dimensional space a closed form of the average of the product of traces Tr[W A W-dagger B] Tr[W C W-dagger D], with the same trace terms as Lemma 2 in swapped roles.",
+     "anchor": "SI Lemma 3, Eq. (9), pp.SI-2 to SI-3",
+     "quotes": [
+      "Thus, for the sake of clarity, we show the five Lemmas derived and shown in Supplementary Information of Ref. [4] below.",
+      "Lemma 3. Let the ensemble of unitaries {pi, Wi} on the d-dimensional Hilbert space Hw be a t-design with t ≥ 2."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A lemma the paper attributes to Ref. [4], with its proof reproduced.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-haar-lemma4",
+     "value": "The paper gives (Lemma 4, from Ref. [4], with proof) that for a t-design with t of at least 2 acting on one part of a bipartite space, averaging (I tensor W) A (I tensor W-dagger) B gives the partial trace of A over that part tensored with the identity divided by its dimension, times B, and a matching formula for the trace.",
+     "anchor": "SI Lemma 4, Eqs. (11) and (12), p.SI-3",
+     "quotes": [
+      "Lemma 4. Let the ensemble of unitaries {pi, Wi} on the dw-dimensional Hilbert space Hw be a t-design with t ≥ 2."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A lemma the paper attributes to Ref. [4], with its proof reproduced.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-haar-lemma5",
+     "value": "The paper gives (Lemma 5, from Ref. [4], with proof) an identity, not an average, that rewrites the trace of (I tensor W) A (I tensor W-dagger) B on a space of dimension two to the n as a sum over bit-strings of length n minus m of traces of W with partial-traced blocks of A and B.",
+     "anchor": "SI Lemma 5, Eqs. (15) to (17), pp.SI-3 to SI-4",
+     "quotes": [
+      "Thus, for the sake of clarity, we show the five Lemmas derived and shown in Supplementary Information of Ref. [4] below.",
+      "Lemma 5. Let W be a unitary operator acting on the dw-dimensional Hilbert space Hw.",
+      "Here q and p represent bit-strings of length n − m."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A lemma the paper attributes to Ref. [4], with its proof reproduced.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-fourier-expressivity",
+     "value": "The authors report that a Fourier analysis of the kernels, using alternating ansatzes with 1 to 3 qubits and depth 2 to 4 on 100 one-dimensional data points, frequencies truncated to the range from -12 to 12 (625 coefficients) and 10 trials, finds the ALDQFK has almost the same non-zero Fourier coefficients as the fidelity-based kernel in both amplitude and frequency, which they read as comparable expressivity.",
+     "anchor": "Expressivity comparison and Figure 5, p.7; SI Sec.IV.C",
+     "quotes": [
+      "we use 100 one-dimensional data points and the ALAs with n = 1, 2 and depth L = 2, 3, 4 in the experiments.",
+      "The number of qubits is n = 1, 2, 3 and the circuit depth is L = 2, 3, 4.",
+      "with ω, ω′ ∈ {−12, −11, . . . , 11, 12}.",
+      "(i.e., totally 625 coefficients)",
+      "The standard deviations over 10 trials are depicted by the shaded regions.",
+      "As shown in Figure 5, the ALDQFK has almost the same non-zero Fourier coefficients as those of the fidelity- based QK, in both amplitudes and frequencies."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result on one-dimensional data with at most 3 qubits.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text says n = 1, 2 in one place and the figure caption says n = 1, 2, 3. Expressivity is compared only for one-dimensional inputs and up to 3 qubits, far from the regime where the vanishing issue matters."
+    },
+    {
+     "id_suggestion": "qfk-fourier-hea-and-truncation",
+     "value": "The authors report that with hardware-efficient ansatzes the two kernels have approximately the same number of non-zero Fourier amplitudes down to the order of 10−3, with a slight difference at high frequencies, and that amplitudes below 10−3 are not shown because coefficients smaller than about 2×10−3 might not be taken into account in the SVM objective.",
+     "anchor": "SI Sec.IV.C and SI Figure 2, pp.SI-25 to SI-26",
+     "quotes": [
+      "the fidelity-based QK and the ALDQFK have approximately the same number of nonzero amplitudes up to the order of 10−3, while there is a slight difference in the amplitude of the coefficients with respect to high frequencies.",
+      "This means that the Fourier coefficients of the QKs whose absolute values are less than 1/29 ≈ 2×10−3",
+      "might not be taken into account in the minimization of the objective function.",
+      "Thus values less than 10−3 are not shown in Figure 2 (b)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "1/29 in the text layer is one over two to the ninth power, from the largest C in the SVM grid."
+    },
+    {
+     "id_suggestion": "qfk-fourier-reconstruction-error",
+     "value": "The authors report (SI Table I) mean absolute errors between each kernel and its Fourier reconstruction mostly of order 10−8 to 10−9, rising to between 10−4 and 10−3 for depth 3 with 3 qubits and depth 4 with 2 or 3 qubits, the largest being 1.4 × 10−3.",
+     "anchor": "SI Table I, p.SI-25",
+     "quotes": [
+      "List of the mean absolute errors (MAEs) between QKs and their reconstructed ones.",
+      "(4, 3) 1.3 × 10−3 6.0 × 10−4 1.4 × 10−3 7.4 × 10−4",
+      "(3, 3) 2.4 × 10−4 9.0 × 10−5 4.2 × 10−4",
+      "(4, 2) 4.1 × 10−4 2.6 × 10−4",
+      "(2, 1) 2.6 × 10−8 2.4 × 10−9",
+      "(2, 2) 9.6 × 10−9 7.2 × 10−10"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical fit-quality result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-classification-sine",
+     "value": "The authors report that on one-dimensional synthetic datasets labelled by the sign of a sine of frequency w from 2 to 12 with phase 0.3 (80 training points, SVC with C chosen by 5-fold cross validation, 10 parameter sets), the kernel with the larger Fourier amplitude at the matching frequency has the smaller misclassification rate, for both ALAs and HEAs.",
+     "anchor": "Expressivity comparison and Figure 6, pp.7 to 8; SI Sec.IV.C and SI Figure 3",
+     "quotes": [
+      "which is determined according to the sign of the sine function yi = sign(sin(wxi + b)) with fixed frequency w and phase b.",
+      "are from 2 to 12 when the phase is fixed to b = 0.3.",
+      "Here 80 data points are used for the training and the rest are used for the test.",
+      "using 5-cross validation.",
+      "Again, we prepare 10 sets of the randomly generated parameters in the PQC",
+      "Figure 6 (b) shows that, for a chosen frequency w = ω, the QK with bigger amplitude of cω,−ω has smaller misclassification rate.",
+      "As shown in SI Sec.IV.C, the similar tendency is observed for the case where the HEAs are used."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study on synthetic one-dimensional data.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-geometric-difference",
+     "value": "The authors report that on Fashion-MNIST reduced by PCA to the qubit count, the normalized geometric difference between the fidelity kernel and the ALDQFK grows with qubit number (with an unreliable peak at 4 qubits from an unstable matrix inverse), while the fidelity kernel's Gram matrix approaches the identity and the ALDQFK's distance from the identity levels off.",
+     "anchor": "SI Sec.IV.D and SI Figure 4, p.SI-28",
+     "quotes": [
+      "we compute the geometric difference between these QKs using Fashion-MNIST datasets where the dimension of each data is reduced to the number of qubits by principle component analysis",
+      "we can see that the difference between the fidelity-based QK and the ALDQFK gradually gets larger as the number of qubits increases, while there is a peak for the case n = 4.",
+      "This is because the inverse of a Gram matrix Ka is numerically instable.",
+      "the Gram matrices given by the fidelity- based QK get closer to the identity matrices with respect to the number of qubits, while the difference between those given by the ALDQFK and the identity matrices level off."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study; the authors note the measure does not directly assess performance.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "No classification accuracy on Fashion-MNIST is reported."
+    },
+    {
+     "id_suggestion": "qfk-sld-qntk-connection",
+     "value": "The paper shows that the SLD-based quantum Fisher kernel with the Fisher matrix set to the identity can be written as a sum of quantum neural tangent kernel entries over Pauli observables, and the authors state that the quantum neural tangent kernel may therefore be subject to the same vanishing similarity issue.",
+     "anchor": "SI Sec.V, Eqs. (99) to (106), pp.SI-29 to SI-30",
+     "quotes": [
+      "In this section, we show a link between the SLDQFK and the quantum neural tangent kernel (QNTK).",
+      "since the SLDQFK suffers from the issue, the QNTK may be subjected to the same issue, which probably hinders performance analysis."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation of an identity plus a conjecture drawn from it.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-projected-kernel-not-studied",
+     "value": "The authors state that they do not study the projected quantum kernel, another approach to avoid the issue, because they aim to use the large Hilbert space, and note that even the projected kernel may suffer from the vanishing similarity issue according to Refs. [11, 13].",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "An approach to avoid the vanishing similarity issue is to use the projected QK [7]",
+      "However we will not go deep into the approach in this study, as our motivation is to exploit the large Hilbert space",
+      "We also mention that even the projected QK may suffer from the vanishing similarity issue [11, 13]"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of what it does not study, Introduction, p.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-conclusion",
+     "value": "The authors conclude that the ALDQFK with the alternating layered ansatz may avoid the vanishing similarity issue even for large quantum systems, that it has almost the same expressivity as the fidelity-based kernel, and that the quantum Fisher kernel might hold an important position in quantum machine learning.",
+     "anchor": "Conclusion, p.8",
+     "quotes": [
+      "We show that the ALDQFK with the ALA may avoid the vanishing similarity issue in the quantum kernel methods, even for the large quantum systems.",
+      "Also, the Fourier analysis indicates that the ALDQFK has almost the same expressivity as the fidelity-based QK.",
+      "the QFK might hold an essentially important position in quantum machine learning filed due to the aforementioned desirable features."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusion, resting on 2-design assumptions and small simulations.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No hardware run and no comparison of learning performance at large qubit number is reported."
+    },
+    {
+     "id_suggestion": "qfk-quantum-dynamics-link",
+     "value": "The authors state that the structure in the ALDQFK resembles quantities such as the out-of-time-ordered correlator and the Loschmidt echo, used to study quantum chaos and information scrambling, so its performance could be studied from the viewpoint of quantum dynamics.",
+     "anchor": "Conclusion, p.8",
+     "quotes": [
+      "Indeed, the similar structures appear in quantities such as the out-of-ordered correlator function [41, 42] and Loschmidt Echo [43, 44], both of which are used to investigate quantum chaos and quantum information scrambling.",
+      "Therefore, the performance of the ALDQFK can be investigated from the viewpoint of quantum dynamics"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A suggestion for future work.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qfk-barren-plateau-analogy",
+     "value": "The authors cite that the barren plateau problem, an analogue of the vanishing similarity issue in variational algorithms, can be mitigated by cost function design and by circuit structure such as the alternating layered ansatz, which motivates designing a kernel that uses the data source structure.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "On the other hand, an analogy of the vanishing similarity issue in the variational quantum algorithms—the barren plateau problem [14]—can be mitigated by considering the cost function design [15–17] and the structure of the parameterized quantum circuits (PQCs)"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper cites from other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "swaminathan-2025-distributed-secure-kernel-based-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Swaminathan-Akgun_2024_Distributed-and-Secure-Kernel-Based-Quantum-Machine-Learning__2408.10265.pdf",
+   "title_in_file": "Distributed and Secure Kernel-Based Quantum Machine Learning",
+   "version_note": "arXiv:2408.10265v3 (6 Apr 2025), 23 pages with Appendices A to C. The text layer holds the paper twice; the first copy was read and the second used only to check quotes. Figures 3 and 4 were read on the page images (pp.13 and 14).",
+   "pages": 23,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A paper that proposes quantum feature maps for the polynomial, RBF and Laplacian kernels, a teleportation-and-swap-test architecture for computing kernels on data split between semi-honest parties, and tests the architecture for the linear kernel only on the Qiskit Aer simulator.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "linear-kernel-only-simulator",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that only the linear kernel was tested, because of the simulator limits and lack of access to a real quantum computer, so the other kernels were not tested.",
+     "anchor": "Section 1, p.2; Section 7, p.12",
+     "quotes": [
+      "Due to the limitations of the simulator and our lack of access to a real quantum computer, we were unable to test other kernels at this stage.",
+      "Our experiments focused on computing the linear kernel."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Sections 1 and 7, pp.2 and 12.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "quantum-feature-maps-proved",
+     "verdict": "narrowed",
+     "note": "The contribution sentence is quoted correctly, but the proofs in Section 4 are narrower than 'prove the correctness'. Theorems 1, 3 and 5 prove only that each map is a normalized state. For the RBF and Laplacian maps (Theorems 4 and 6), the proofs show that the inner product equals the kernel in expectation over the random Fourier features, not exactly; Appendix B gives how many features a given error needs. Narrowed to what is proved.",
+     "value": "The authors state they prove the correctness of quantum feature maps for the polynomial, RBF and Laplacian kernels; the proofs show each map is a normalized quantum state, that the polynomial map's inner product follows from the multinomial theorem, and that for the RBF and Laplacian maps built from random Fourier features the expected inner product over the random features equals the kernel.",
+     "anchor": "Section 1, p.2; Section 4, Theorems 1 to 6, pp.6 to 9",
+     "quotes": [
+      "We introduce quantum feature maps for the polynomial, Radial Basis Function (RBF), and Laplacian kernels and theoretically prove the correctness of these feature maps.",
+      "To be well defined, we require the map to be normalizable.",
+      "This follows directly from the multinomial theorem.",
+      "= exp − 1 2σ2 ∥x − y∥2 = KRBF (x, y). (7)",
+      "= exp − ∥x − y∥1 α = KL(x, y). (10)",
+      "It follows like in Theorem 4 that E[⟨φ(x)|φ(y)⟩]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The theorem statements say the maps 'yield' the kernels, but the RBF and Laplacian proofs establish only equality in expectation, and the polynomial construction has a data-dependent constant (see reader_inference).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "In the polynomial map the constant c is defined from each point's own norm (c = 1 minus a times the norm of x), so the inner product of the maps of x and y would carry the square root of c_x times c_y, not one shared c; the paper's Theorem 2 writes a shared c. This is the reader's reading of Eq. (3), not a statement in the paper."
+    },
+    {
+     "id": "security-semi-honest-only",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state the security analysis assumes semi-honest clients and server, that malicious participants can affect the accuracy of the model, and that handling actively malicious entities is future work.",
+     "anchor": "Section 6.3, pp.11 to 12; Section 8, p.14",
+     "quotes": [
+      "In our proposed adversarial model, clients, including Alice and Bob, as well as the server, are semi-honest.",
+      "However, malicious participants can affect the accuracy of the model.",
+      "In the future, our aim is to adapt our methodology to scenarios that involve actively malicious entities."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope, Sections 6.3 and 8.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "simulator-accuracy-comparable",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors report that, on a simulator, their approach achieves performance comparable to centralized classical and quantum methods, and they report no timings because the experiments ran on a simulator.",
+     "anchor": "Section 1, p.2; Section 7, p.12",
+     "quotes": [
+      "Our evaluation demonstrates that the proposed approach ensures data security and achieves performance comparable to centralized classical and quantum methods.",
+      "Note that we do not report any timings since the experiments are run on a simulator."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 1 shows the distributed quantum accuracy below the centralized classical accuracy on every dataset, by up to about ten points on Wine (0.8874 against 0.9860)."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "dsk-thm1-polynomial-map-normalized",
+     "value": "The paper defines a quantum feature map for the polynomial kernel over multi-indices summing to d, with a constant c set to 1 minus a times the norm of x for natural d or minus 1 minus a times the norm of x for even d, and proves (Theorem 1) by the multinomial theorem that it is a well-defined, normalized quantum state.",
+     "anchor": "Section 4.1, Eq. (3) and Theorem 1, p.6",
+     "quotes": [
+      "c = 1 − a∥x∥ if d ∈ N, or c = −1 − a∥x∥ if d ∈ 2N.",
+      "Theorem 1. The quantum feature map above is a well-defined quantum state.",
+      "Then, using the multinomial theorem (Aizerman, 1964; Boser et al., 1992), we have that"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proved normalization, but the proof's last step, (a times norm of x plus c) to the d equals 1, holds with c as defined only if the norm is the one used inside the sum; the text layer does not settle which norm.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-thm2-polynomial-kernel",
+     "value": "The paper states (Theorem 2) that the polynomial feature map yields the polynomial kernel, (a times x-transpose y plus c) to the power d, under an inner product, and that this follows directly from the multinomial theorem.",
+     "anchor": "Section 4.1, Theorem 2, p.6",
+     "quotes": [
+      "Theorem 2. The quantum feature map defined above yields the polynomial kernel (Schölkopf & Smola, 2002), Kpoly = (axT y + c)d, under an inner product.",
+      "This follows directly from the multinomial theorem."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The statement is quoted, but c in the map depends on each data point's norm while the kernel uses one c; the proof does not address this.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "As written, the map's inner product gives a shared constant only when x and y have equal norm."
+    },
+    {
+     "id_suggestion": "dsk-rbf-feature-map-definition",
+     "value": "The paper defines the RBF quantum feature map from D random Fourier features with frequencies drawn from a normal distribution with covariance sigma to the minus 2 times the identity, using the ceiling of log2(2D) qubits, which also sets the approximation quality.",
+     "anchor": "Section 4.2, Eq. (4), p.7",
+     "quotes": [
+      "where ⌈log2(2D)⌉ determines the number of qubits used and the approximation quality, and wi are independent samples from the normal distribution N (0, σ−2I)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Eq. (4), p.7.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-thm3-thm4-rbf",
+     "value": "The paper proves that the RBF feature map is a normalized state (Theorem 3) and, for Theorem 4, that the expected inner product of two feature maps over the random frequencies equals the RBF kernel, exp of minus the squared distance over 2 sigma squared, using the moment generating function of a normal distribution.",
+     "anchor": "Section 4.2, Theorems 3 and 4, Eqs. (5) to (7), pp.7 to 8",
+     "quotes": [
+      "Theorem 3. The quantum feature map above is a well-defined quantum state.",
+      "Theorem 4. The quantum feature map defined above yields the RBF kernel (Broomhead & Lowe, 1988)",
+      "where MZ(t) = E[exp (tZ)] is the moment generating function of a random variable Z.",
+      "= exp − 1 2σ2 ∥x − y∥2 = KRBF (x, y). (7)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The proof of Theorem 4, pp.7 to 8, establishes equality in expectation over the random features; the value states only that.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Any finite D gives only an estimate; Appendix B.2 bounds its error."
+    },
+    {
+     "id_suggestion": "dsk-laplacian-feature-map-definition",
+     "value": "The paper defines the Laplacian quantum feature map from D random Fourier features with frequencies drawn from a Cauchy distribution with scale alpha to the minus 1 times the identity and phases drawn uniformly from 0 to 2 pi, using the ceiling of log2(2D) qubits.",
+     "anchor": "Section 4.3, Eq. (8), p.8",
+     "quotes": [
+      "are independent samples from the Cauchy distribution C(0, α−1I), and αj are independent samples from the uniform distribution U(0, 2π).",
+      "where ⌈log2(2D)⌉ determines the number of qubits used and the approximation quality"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Eq. (8), p.8.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-thm5-thm6-laplacian",
+     "value": "The paper proves that the Laplacian feature map is a normalized state (Theorem 5) and, for Theorem 6, that the expected inner product over the random frequencies equals the Laplacian kernel, exp of minus the L1 distance over alpha, using the characteristic function of a Cauchy distribution.",
+     "anchor": "Section 4.3, Theorems 5 and 6, Eqs. (9) and (10), pp.8 to 9",
+     "quotes": [
+      "Theorem 5. The quantum feature map above is a well-defined quantum state.",
+      "Theorem 6. The quantum feature map defined above yields the Laplacian kernel (Smola & Kondor, 2003)",
+      "is the characteristic function of a random variable Z.",
+      "= exp − ∥x − y∥1 α = KL(x, y). (10)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The proof of Theorem 6, pp.8 to 9, establishes equality in expectation; the value states only that.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-classical-kernel-complexity",
+     "value": "The authors state that classical evaluation costs order N plus d for the polynomial kernel and order N for the RBF and Laplacian kernels, and that classical methods face challenges when N and d are large.",
+     "anchor": "Section 5.1, p.9",
+     "quotes": [
+      "leading to a total complexity of O(N + d).",
+      "leading to a total complexity of O(N ).",
+      "This indicates that classical methods face challenges when N and d are large."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An operation count stated without a model of the full pipeline.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Linear in N is already optimal for reading the data; the quantum state preparation the paper describes is also order N (Section 5.2)."
+    },
+    {
+     "id_suggestion": "dsk-quantum-complexity",
+     "value": "The authors state that preparing the quantum feature map of an N-dimensional vector scales with order N and is the bottleneck, that one inner-product shot costs the log of the encoding dimension, and that with shots of order one over epsilon squared the total is order d log N over epsilon squared for the polynomial kernel and order the ceiling of log2(2 over epsilon squared) over epsilon squared for the RBF and Laplacian kernels.",
+     "anchor": "Section 5.2, pp.9 to 10",
+     "quotes": [
+      "Preparing the quantum feature map for an N -dimensional vector scales with O(N ).",
+      "This step is a bottleneck in the quantum pipeline.",
+      "and hence the overall complexity becomes O((d log N ) · M ) = O((d log N )/ε2).",
+      "computational complexity for the estimation of the inner product in these cases becomes O(⌈log2(2D)⌉ · M ) = O(⌈log2(2/ε2)⌉/ε2)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A complexity accounting whose inner-product figures exclude the order-N state preparation the paper names as the bottleneck.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-no-cloning-security-vs-classical",
+     "value": "The authors state that quantum feature maps offer implicit security guarantees through the no-cloning theorem, whereas secure classical systems need extra overhead such as homomorphic encryption or secure multi-party computation, which can be computationally more expensive.",
+     "anchor": "Section 5.2, p.9",
+     "quotes": [
+      "However, using quantum feature maps offers implicit security guarantees through the no-cloning theorem.",
+      "Secure classical systems require additional overhead, such as homomorphic encryption or secure multi-party computation, to achieve comparable privacy, which can be computationally more expensive (Fan & Vercauteren, 2012)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; no cost comparison is made in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-architecture",
+     "value": "The paper defines an architecture of multiple clients, a central server and a helper: the helper prepares 2n Bell states and distributes seeds, clients teleport their encoded data to the server, the protocol uses 6n plus 1 qubits for two parties, and the server runs a swap test repeated p times to estimate the inner product.",
+     "anchor": "Sections 6.1 and 6.2, pp.10 to 11",
+     "quotes": [
+      "Our architecture comprises multiple clients, a central server, and a helper entity.",
+      "The protocol is established within a total system of (6n + 1) qubits.",
+      "The helper generates 2n Bell states, which are maximally entangled two-qubit states, to facilitate quantum teleportation.",
+      "The server then executes a standard swap test (Barenco et al., 1997).",
+      "This measurement process is repeated p times to enhance accuracy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own protocol definition, Sections 6.1 and 6.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-appendix-a-correctness",
+     "value": "The paper derives (Appendix A), tracking a single qubit of each register for simplicity, that after teleportation and the swap test the probability of measuring the ancilla in state zero is one half plus one half the squared overlap of the two states, so the inner product can be read from 2 Pr(0) minus 1.",
+     "anchor": "Appendix A, Eq. (11), pp.18 to 19",
+     "quotes": [
+      "For simplicity, we track only the i-th qubit of each n-qubit state",
+      "= 1 2 + 1 2 ∥⟨ψ|φ⟩∥2",
+      "∥⟨ψ|φ⟩∥ = 2P r(0)a − 1, (11)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The derivation follows one qubit per register only, not the n-qubit system the architecture uses.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "By the paper's own expression, 2 Pr(0) minus 1 equals the squared overlap, not the overlap as Eq. (11) writes; for the linear kernel this matters because the sign of the inner product is lost."
+    },
+    {
+     "id_suggestion": "dsk-shot-complexity",
+     "value": "The paper derives (Appendix B.1) that the swap-test estimator's standard deviation is at most one over the square root of the number of shots M, so an additive error epsilon needs M of order one over epsilon squared.",
+     "anchor": "Appendix B.1, p.19",
+     "quotes": [
+      "In this section, we derive the relationship between the number of measurement shots, M , and the additive error ε in estimating the inner product of quantum states.",
+      "The standard deviation attains its maximum at p = 1/2.",
+      "which implies M =O 1 ε2"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix B.1, p.19, from the Bernoulli variance.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "A standard-deviation argument, not a tail bound; no confidence level is attached."
+    },
+    {
+     "id_suggestion": "dsk-rbf-feature-count",
+     "value": "The paper derives (Appendix B.2) with Bernstein's inequality that, for sufficiently small epsilon, the RBF estimate is within epsilon of the kernel with probability at least 1 minus delta when D is at least 2v over epsilon squared times ln(2 over delta), where v is the per-feature variance; D is of order one over epsilon squared for large squared distance over sigma squared, and the authors state that a wider kernel needs fewer features.",
+     "anchor": "Appendix B.2, Eq. (12), pp.20 to 21",
+     "quotes": [
+      "We then apply Bernstein's inequality (Bernstein, 1924) to the sum",
+      "For sufficiently small ε (i.e. when the term 4 3 ε is negligible relative to 2v)",
+      "To ensure that the additive error is bounded by ε with probability at least 1 − δ, we require",
+      "we obtain D ≥ 2v ε2 ln 2 δ",
+      "Consequently, for larger σ (i.e., for a wider kernel), a smaller number of random features D is required to achieve a given error tolerance ε."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix B.2 with its small-epsilon condition quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-laplacian-feature-count",
+     "value": "The paper derives (Appendix B.3) by the same Bernstein argument that the Laplacian estimate needs D of order one over epsilon squared for large L1 distance over alpha, and states that a wider Laplacian kernel (larger alpha) needs fewer features, with the dependence on alpha vanishing when alpha is very small or the dimension very large.",
+     "anchor": "Appendix B.3, pp.21 to 22",
+     "quotes": [
+      "Now, following the same procedure as in B.2 by defining Yj = Xj −E[Xj] and applying Bernstein's inequality",
+      "Consequently, for larger α (i.e., for a wider Laplacian kernel), the required D to achieve a given error tolerance ε is smaller.",
+      "In this regime, the relationship between D and ε becomes independent of α"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix B.3 by reference to the B.2 argument.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-classical-approx-simulation",
+     "value": "The authors report classical simulations on simulated datasets of 100 samples, repeated 5 times, in which the relative Frobenius error of the RBF and Laplacian kernel approximations falls as the number of random features D grows, at a rate they say aligns with one over the square root of D, with curves for different kernel widths coinciding at feature dimension d = 100, 000.",
+     "anchor": "Appendix B.4 and Figure 5, pp.22 to 23",
+     "quotes": [
+      "Our empirical results as seen in Figure 5 confirm that the kernel approximation error decreases as the number of random features D increases.",
+      "All experiments were performed on simulated datasets with 100 samples, and each experiment was repeated 5 times with the errors reported as averages.",
+      "Bottom: Experiments with a large feature dimension (d = 100, 000) exhibit nearly overlapping curves regardless of kernel parameters"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical classical simulation from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The sub-captions give d = 10 for the small-dimension runs and the figure caption gives d = 8. These runs evaluate the random-feature approximation classically and do not run any quantum circuit."
+    },
+    {
+     "id_suggestion": "dsk-experiment-setup",
+     "value": "The authors state that all experiments ran on a classical HPC cluster (Intel Xeon E5-2650 v4 nodes with 256 GB memory) with the Qiskit Aer simulator, limited to 31 simulated qubits, with 7 qubits per party in a two-party setup: 14 qubits for the two data providers, 14 for the helper and 1 for the server.",
+     "anchor": "Section 7, p.12",
+     "quotes": [
+      "Each node within this HPC environment was equipped with an Intel XEON CPU E5-2650 v4, complemented by 256 GB of memory and 2 TB of SSD storage capacity.",
+      "As a result, we were restricted to simulating only 31 qubits in our environment.",
+      "assigned n = 7 qubits to each party in our distributed setup.",
+      "allocating 14 qubits for the two data providers, 14 for the helper, and 1 for the server."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup, Section 7, p.12.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Section 6.2 gives 6n plus 1 qubits, which is 43 for n = 7, but the experiment allocates 29; how the protocol fitted is not explained."
+    },
+    {
+     "id_suggestion": "dsk-accuracy-table1",
+     "value": "The authors report (Table 1), with SVM or kernel PCA and stratified 5-fold cross-validation at 1024 shots, accuracies for centralized classical, centralized quantum and distributed quantum of 0.9860, 0.8805 and 0.8874 on Wine; 0.8196, 0.7875 and 0.7983 (SVM) and 0.7872, 0.7451 and 0.7660 (PCA) on Parkinson's; and 0.6788, 0.6308 and 0.6340 (SVM) and 0.6788, 0.6249 and 0.6422 (PCA) on Framingham Heart Study.",
+     "anchor": "Section 7.1 and Table 1, pp.12 to 13",
+     "quotes": [
+      "The accuracies of the different models on the datasets are summarized in Table 1 below.",
+      "All SVM training and evaluation were performed using stratified 5-fold cross-validation to ensure unbiased accuracy metrics.",
+      "All experiments were conducted with 1024 shots of the quantum circuit to ensure reliable accuracy.",
+      "Centralised Classical 0.9860 ± 0.0172 0.8196 ± 0.0644 0.7872 ± 0.0716 0.6788 ± 0.0108 0.6788 ± 0.0095",
+      "Centralised Quantum 0.8805 0.7875 0.7451 0.6308 0.6249",
+      "Distributed Quantum 0.8874 ± 0.0259 0.7983 ± 0.0798 0.7660 ± 0.0744 0.6340 ± 0.0143 0.6422 ± 0.0092"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The distributed quantum setup scores above the centralized quantum setup in every column, although the authors say additional gates make it less accurate; the centralized quantum column has no spread reported."
+    },
+    {
+     "id_suggestion": "dsk-accuracy-explanation",
+     "value": "The authors state that centralized classical methods generally achieve the highest accuracy, that centralized quantum methods are slightly lower because of the characteristics of quantum data and simulators, and that the distributed architecture is comparable but not identical to the centralized quantum one because of the additional gates.",
+     "anchor": "Section 7.1, p.12",
+     "quotes": [
+      "As expected, centralized classical methods generally achieve the highest accuracy, serving as a baseline.",
+      "although slightly lower than their classical counterparts, due to the inherent characteristics of quantum data and quantum simulators.",
+      "Our distributed quantum architecture exhibits comparable but not the same accuracy as the centralized quantum architecture because of the complexity introduced by additional gates in the quantum circuit."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' explanation, not tested.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-not-expected-to-beat-classical",
+     "value": "The authors state that identical or superior accuracy to classical methods is not anticipated in their study, because of quantum noise, approximations in state preparation, hardware constraints and the probabilistic nature of quantum states.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "However, it is important to acknowledge that achieving identical or superior accuracy to classical methods is not anticipated in our study.",
+      "approximations in quantum state preparation, and hardware constraints, but also due to the inherent probabilistic nature of quantum states."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 1, p.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-noise-effect",
+     "value": "The authors report that with depolarizing noise of 0.1% (Level 1) and 1% (Level 2) on single- and two-qubit gates in Qiskit, increasing noise had a negative impact on model performance on the Heart Study and Parkinson's tasks.",
+     "anchor": "Section 7.2 and Figure 3, p.13",
+     "quotes": [
+      "Noise Level 1: This model introduces a depolarizing error with an error rate of 0.1% for single-qubit gates and two-qubit gates.",
+      "Noise Level 2: This model simulates a more challenging environment with a depolarizing error rate of 1%.",
+      "Our results reported in Figure 3 show that increasing noise had a negative impact on model performance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study; values only in the figure.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "From the page image (Figure 3): at Level 2 the quantum accuracies drop to roughly 0.58 to 0.63 on all five tasks."
+    },
+    {
+     "id_suggestion": "dsk-shots-effect",
+     "value": "The authors report that on a 100-sample, 10-label subset of the Digits dataset with a linear-kernel SVM, accuracy rises with the number of shots: 0.71 at 128 and 256 shots, 0.74 at 512 and 0.83 at 1024, against 0.88 for a centralized classical SVM.",
+     "anchor": "Section 7.3 and Figure 4, p.14",
+     "quotes": [
+      "We used a subset of the Digits dataset containing 100 samples (Pedregosa et al., 2011).",
+      "The objective was to classify these samples into 10 labels (0-9)",
+      "We varied the number of shots, specifically using 128, 256, 512, and 1024 shots",
+      "0.95 Accuracy 0.9 0.88 0.85 0.8 0.75 0.71 0.7 128 0.71 256 Centralized Classical SVM 0.74 512 Number of Shots 0.83 1,024"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study; values read from Figure 4 (confirmed on the page image).",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-server-learns-only-kernel",
+     "value": "The authors state that the non-colluding server cannot reconstruct the clients' data because it does not know the series of encodings, and learns only the kernel matrix, and that with colluding malicious clients and a non-colluding malicious server the honest clients' data remain private.",
+     "anchor": "Section 6.3, pp.11 to 12",
+     "quotes": [
+      "The non-colluding server does not know the series of encodings applied to the original data and hence cannot reconstruct the original classical data from the quantum data it receives since it does not know how to measure it.",
+      "It only learns the kernel matrix reflecting similarities between participants' data.",
+      "colluding malicious clients and a non-colluding malicious server, the non-adversarial clients' data remain private."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An informal security argument, without a formal proof.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-eavesdropper-detection",
+     "value": "The authors state that an eavesdropper faces the no-cloning theorem, that interception can be detected if clients and server periodically exchange predetermined random quantum states, and that intercepted data has limited use because the encoding is randomized by a pre-shared seed.",
+     "anchor": "Section 6.3, p.12",
+     "quotes": [
+      "An adversarial third-party attempting to eavesdrop on the quantum data would face significant challenges due to the no-cloning theorem (Wootters & Zurek, 1982)",
+      "This can be effectively detected if clients and the server periodically exchange predetermined random quantum states",
+      "the utility of intercepted data is limited for the third-party as the encoding of data for transmission is randomized"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An informal security argument; the detection step is not part of the tested protocol.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-implicit-approach-scope",
+     "value": "The authors state that their work follows the implicit approach in a distributed setting: quantum states are used only for kernel computation and the modelling is done on classical computers.",
+     "anchor": "Section 3.1, p.5",
+     "quotes": [
+      "Our work follows the implicit approach in a distributed setting where quantum states are used for kernel computation, and the modeling is offloaded to classical computing."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of scope, Section 3.1, p.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-prior-work-dsqml",
+     "value": "The authors state that, to their knowledge, only one study, Sheng and Zhou (2017), had implemented kernel-based techniques with quantum computing in a distributed framework, and that its DSQML algorithm in effect computes the linear kernel using amplitude encoding.",
+     "anchor": "Section 3.2, p.5",
+     "quotes": [
+      "To the best of our knowledge, only one study, Sheng & Zhou (2017), has implemented kernel-based techniques using quantum computing within a distributed framework.",
+      "Although DSQML essentially computes the linear kernel in a distributed setting using amplitude encoding"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim about prior work.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-two-party-extension-claim",
+     "value": "The authors state that they describe and test the protocol with two parties and that it naturally extends to any number of participants, as data can be redistributed while maintaining consistent results.",
+     "anchor": "Sections 6.2 and 7, pp.10 and 12",
+     "quotes": [
+      "Without loss of generality, we describe our protocol with two participants.",
+      "Our method naturally extends to any number of participants.",
+      "In addition, we tested our methodology in a two-party configuration."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The extension to more parties is claimed, not tested.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-cited-quantum-speedups",
+     "value": "The authors cite that quantum computing estimates distances and inner products of post-processed N-dimensional vectors in order log N rather than order N, and clusters them into M clusters in order log(MN) rather than polynomial in MN.",
+     "anchor": "Section 1, p.1",
+     "quotes": [
+      "the estimation of distances and inner products between post-processed N -dimensional vectors is achieved in O(log(N )) as compared to O(N ).",
+      "Similarly, clustering N -dimensional vectors into M clusters is expedited to O(log(M N )) using quantum data, compared to O(poly(M N ))."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper cites from other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "These figures assume the data is already in quantum form; the paper's own Section 5.2 states that preparing that form costs order N."
+    },
+    {
+     "id_suggestion": "dsk-cited-rff-bound",
+     "value": "The paper cites the Random Fourier Features result of Rahimi and Recht: for a shift-invariant kernel that is the Fourier transform of a probability distribution, the RFF feature map approximates the kernel with a probability of error at least epsilon bounded by 2 exp of minus D epsilon squared over 4.",
+     "anchor": "Section 2.2, Definition 3, p.4",
+     "quotes": [
+      "Definition 3. Random Fourier Features (RFF) (Rahimi & Recht, 2007) Given a shift-invariant kernel k(x − y) that is the fourier transform of a probability distribution χ",
+      "satisfies the following inequality for all ε: P |zT (x)z(y) − k(x, y)| ≥ ε ≤ 2 exp −Dε2 4 ."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper cites from other work.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-cited-schuld-killoran-maps",
+     "value": "The authors cite Schuld and Killoran (2019): any quantum encoding acts as a feature map that induces a kernel; amplitude encoding gives the linear kernel, a copies-of-states map gives the homogeneous polynomial kernel, and another map gives the cosine kernel.",
+     "anchor": "Section 3.1, pp.4 to 5",
+     "quotes": [
+      "Later, Schuld & Killoran (2019) demonstrated that this approach is a specific instance of a more general principle",
+      "formalized the idea of a quantum feature map by noting that any quantum encoding x → |ψ(x)⟩ behaves like a feature map and maps to a complex Hilbert space H, hence naturally inducing a kernel.",
+      "The resulting inner product of the encodings corresponds to the linear kernel.",
+      "is associated with the homogeneous polynomial kernel",
+      "which is associated with the cosine kernel"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper cites from other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-conclusion",
+     "value": "The authors conclude that they demonstrated the framework upholds security against semi-honest parties and external eavesdroppers and that computing the linear kernel on public datasets in the Qiskit Aer simulator validates the framework with accuracies comparable to centralized classical and quantum frameworks.",
+     "anchor": "Section 8, p.14",
+     "quotes": [
+      "We have demonstrated that our proposed framework upholds security against semi-honest parties as well as external eavesdroppers.",
+      "The application of our architecture to compute the linear kernel for publicly available datasets using Qiskit's Aer Simulator validates our distributed framework, yielding accuracies comparable to those achieved in centralized classical and quantum frameworks."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusion; the security argument is informal and only the linear kernel was run.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dsk-intro-absolute-security-claim",
+     "value": "The authors state that quantum data collapse on measurement and cannot be copied without destroying the original, offering absolutely secure communication.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "Quantum data collapse upon measurement and cannot be copied without destroying the original data, offering absolutely secure communication."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The paper itself later limits security to semi-honest parties (Section 6.3)."
+    }
+   ]
+  },
+  {
+   "record_id": "sweke-2025-kernel-based-dequantization-variational-qml",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Sweke-et-al._2025_Kernel-based-dequantization-of-variational-QML-without-Random-Fourier-Features__2503.23931.pdf",
+   "title_in_file": "Kernel-based dequantization of variational QML without Random Fourier Features",
+   "version_note": "arXiv:2503.23931v1 (31 Mar 2025), 13 pages. The text layer holds the paper twice and embeds base64 LaTeX blobs from the tensor-network diagrams; math symbols are U+FFFD. The prose of the first copy was read in full from the text; Sections 2.7 to 4 (Eqs. 18 to 45, the complexity and Observation 1) were read on the page images, pp.6 to 10.",
+   "pages": 13,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A short theory note with no experiments, showing that PQC-inspired kernels reweighted by weightings induced from symmetric matrix product states can be evaluated exactly and efficiently by tensor-network contraction, so kernel-based dequantization of variational QML need not use Random Fourier Features for them.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "sweke-exact-kernel-eval",
+     "verdict": "widened",
+     "note": "The stored value is right; the Section 4 derivation has now been read (on the page images), so the value is widened with the setting and conditions Observation 1 rests on: the data-encoding strategy of Section 2.7, a symmetric MPS weighting of bond dimension polynomial in d, per-component frequency counts independent of d, and evaluation by contracting an MPS representation of the feature map.",
+     "value": "The authors show (Observation 1, Section 4) that, for a data-encoding strategy in which data enters through Hamiltonian time evolutions, a PQC-inspired kernel reweighted by a weighting induced from a symmetric matrix product state of bond dimension polynomial in d can be evaluated exactly and efficiently classically, by writing the feature map as a matrix product state and contracting the inner product as a tensor network, without Random Fourier Features.",
+     "anchor": "Section 4, Eqs. (27) to (45) and Observation 1, pp.7 to 10; Abstract and Section 7",
+     "quotes": [
+      "we show that the kernels whose evaluation is approximated by RFF in this dequantization algorithm can in fact often be evaluated exactly and efficiently classically.",
+      "4 Exact and efficient evaluation of kernels with MPS-induced reweightings",
+      "Our strategy is to show that for weightings",
+      "also has a polynomial bond-dimension MPS representation.",
+      "which was already assumed to be polynomial in",
+      "In light of the above, we can now make the following observation, which is the central result of this note:",
+      "Observation 1: (Efficient evaluation of PQC-inspired kernels reweighted via weightings induced from symmetric MPS)",
+      "can be evaluated exactly and efficiently classically.",
+      "In this work, we have shown that the class of reweighted PQC-inspired kernels, with reweightings induced from symmetric MPS, can in fact be evaluated exactly and efficiently classically."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Observation 1 is derived step by step in Section 4 (Eqs. 27 to 45) with its conditions stated in the two numbered assumptions on p.10; the statement is quoted and the formulas were read on the page images.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The paper calls the result an 'Observation', not a theorem, and gives no formal proof environment; the derivation is constructive. From the page image (p.10) the contraction cost is O(d D^3 M_max), with D the MPS bond dimension and M_max = max_j (2 M_j + 1)."
+    },
+    {
+     "id": "sweke-limit-parity",
+     "verdict": "widened",
+     "note": "The stored value omits the second half of the sentence: the parity problem can be solved efficiently by a PQC-based model but by no kernel method, which is why kernel-based dequantization cannot be efficient there.",
+     "value": "The authors state that the conditions from prior work also imply settings in which kernel based dequantization cannot be efficient, and name learning parities as an explicit example, which a PQC-based model can solve efficiently but no kernel method can, citing [JFP+23].",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "We stress that the conditions from [SRJ+23] also imply the existence of settings in which kernel based dequantization cannot be efficient.",
+      "One can indeed construct an explicit example of such a setting by considering the problem of learning parities, which can be solved efficiently using a PQC-based model, but cannot be solved efficiently by any kernel method [JFP+23]."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A claim the source cites from other work, not tested in it.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "sweke-scope-regression",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that their short note shows that, for a wide range of instances, this approach can be simplified.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "In this short note we show that for a wide range of instances, this approach can be simplified."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope, abstract, p.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The approach being simplified is RFF-based dequantization of PQC models for regression problems (abstract)."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "sweke-pqc-fourier-structure",
+     "value": "The authors cite that, under mild assumptions on the gates, a PQC model is a Fourier series in the data whose frequency set is fixed by the data-encoding gates and whose coefficients depend on all gates but not on the data, with the zero frequency included and non-zero frequencies in mirror pairs.",
+     "anchor": "Section 2.1, Eq. (2), p.3",
+     "quotes": [
+      "It is by now well known that, under mild assumptions on the structure of gates in the circuit",
+      "these PQC models admit a succinct description given by",
+      "is completely determined by the gates in",
+      "which are parameterized by data-points",
+      "but not on",
+      "come in mirror pairs"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper cites from other work ([SSM21; GT20; CGM+21]).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sweke-pqc-models-linear",
+     "value": "The paper shows that all PQC models are linear models with respect to a feature map made of a constant and the cosines and sines of the frequencies in the frequency set.",
+     "anchor": "Section 2.2, Eqs. (3) to (8), p.3",
+     "quotes": [
+      "It is known that all PQC models are linear models with respect to a feature map defined by Ω.",
+      "is indeed a linear function with respect to the feature map"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 2.2, Eqs. (3) to (8), p.3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sweke-pqc-inspired-kernel-definition",
+     "value": "The paper defines a PQC-inspired kernel as the inner product of the PQC feature map under any positive semidefinite matrix, and the kernel reweighted by a vector w of non-zero components, which is normalized and shift-invariant; with w all ones it is the canonical PQC-inspired kernel.",
+     "anchor": "Section 2.3, Eqs. (9) to (14), pp.3 to 4",
+     "quotes": [
+      "This follows from the fact that every positive semidefinite",
+      "a PQCinspired kernel, for any positive semidefinite",
+      "be any vector with all components non-zero",
+      "is both normalized (i.e.",
+      "and shift-invariant (i.e. depends only on",
+      "We refer to",
+      "as a reweighting of Ω, and to the kernel",
+      "the canonical PQC-inspired kernel."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definitions, Section 2.3, pp.3 to 4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sweke-kernel-dequantization-definition",
+     "value": "The paper defines kernel-based dequantization as replacing PQC optimization with a kernel method that uses a PQC-inspired kernel, whose output is a linear function of the same feature map and in many cases the empirical risk minimizer over all such linear functions.",
+     "anchor": "Section 2.4, p.4",
+     "quotes": [
+      "the output function will be a linear function with respect to the feature map",
+      "In fact, in many cases one can show that the output function will actually be the empirical risk minimizer over all such linear functions [Sch02; SC08].",
+      "We refer to such an approach as kernel-based dequantization."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition, Section 2.4, p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sweke-two-obstacles",
+     "value": "The authors state two obstacles to kernel-based dequantization: efficiency, because the frequency set often grows exponentially so it is not clear the kernel can be evaluated efficiently, and generalization, because an empirical-risk guarantee does not on its own show the kernel method generalizes at least as well as PQC optimization, which needs a relative generalization bound.",
+     "anchor": "Section 2.4, p.4",
+     "quotes": [
+      "Unfortunately, there are two immediate obstacles to this approach: 1. Efficiency:",
+      "often scales exponentially with respect to",
+      "2. Generalization:",
+      "a guarantee on the empirical risk of an output hy- pothesis is not on its own sufficient to prove a guarantee on generalization.",
+      "one then also needs to prove a relative generalization bound, which proves that the output of the kernel-based method generalizes at least as well as the output of PQC-based optimization."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of what kernel-based dequantization must still establish, Section 2.4, p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "This note addresses only the efficiency obstacle; it proves no generalization bound."
+    },
+    {
+     "id_suggestion": "sweke-encoding-scope",
+     "value": "The authors state that they consider only circuits in which classical data enters through Hamiltonian time evolutions whose duration is set by a single data component, and exclude more general encodings such as time evolutions of parameterized linear combinations of Hamiltonians.",
+     "anchor": "Section 2.7, Eq. (15), p.5",
+     "quotes": [
+      "In this work, we consider an important sub-class of parametrized quantum circuits in which the classical data",
+      "enters only via Hamiltonian time evolutions, whose duration is controlled by a single component of",
+      "We stress that we exclude here more general encoding schemes, such as those which allow for time evolutions of parameterized linear combinations of Hamiltonians."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope, Section 2.7, p.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sweke-frequency-set-exponential",
+     "value": "The authors state that the frequency set has a Cartesian product structure over data components and that, if each component's frequency count is independent of d, the number of frequencies scales exponentially with d.",
+     "anchor": "Section 2.7, Eqs. (17) and (18), pp.5 to 6",
+     "quotes": [
+      "Cartesian product structure.",
+      "scales exponentially with respect to"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of the setting, Section 2.7, pp.5 to 6; the inequality was read on the page image.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "From the page image (p.6): the size of the frequency set is at least M_min to the power d."
+    },
+    {
+     "id_suggestion": "sweke-mps-weighting-definition",
+     "value": "The paper defines a weighting of the frequency set as a d-index tensor, calls it an MPS weighting if its matrix product state decomposition has bond dimension polynomial in d, calls it symmetric if each frequency and its mirror have equal weight, and calls a weighting of the split set induced from a symmetric MPS if it comes from a weighting that is both.",
+     "anchor": "Section 3, Eqs. (22) to (24), pp.6 to 7",
+     "quotes": [
+      "can be represented as a",
+      "-index tensor where the",
+      "an MPS weighting if the MPS decomposition of",
+      "has bond-dimension polynomial in",
+      "a symmetric weighting of",
+      "which is both an MPS weighting and symmetric."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Section 3, pp.6 to 7.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sweke-symmetrization",
+     "value": "The authors state that any MPS weighting can be turned into a symmetric MPS weighting, by adding a copy with every index flipped, which can be easily checked to be symmetric and of at most double the bond dimension.",
+     "anchor": "Section 3, Eqs. (25) and (26), p.7",
+     "quotes": [
+      "we can straightforwardly obtain a symmetric MPS weighting",
+      "the \"index-flip operator\"",
+      "which can be easily checked to be appropriately symmetrized and of at most double the bond-dimension as"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated as easily checked, without a written proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sweke-evaluation-complexity",
+     "value": "The authors state that, assuming each data component's frequency count is a constant independent of d and the symmetric MPS weighting has bond dimension D polynomial in d, evaluating the kernel by contracting Eq. (45) costs linear in d, cubic in D and linear in the largest per-component frequency count, by the standard edge-bond-bond contraction scheme for the inner product of two MPS.",
+     "anchor": "Section 4, after Eq. (45), p.10",
+     "quotes": [
+      "With the above established, let us now examine the complexity of evaluating",
+      "via contraction of Eq. (45). To this end:",
+      "constant independent",
+      "which was already assumed to be polynomial in",
+      "More specifically, this follows from the standard \"edge-bond-bond\" contraction scheme for the taking the inner product of two MPS [Sch11; BC17]",
+      "which adds constant factors to the complexity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The complexity formula is lost in the text layer and could not be quoted; read from the page image.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "From the page image (p.10): O(d D^3 M_max)."
+    },
+    {
+     "id_suggestion": "sweke-kernel-trick",
+     "value": "The authors state that Eq. (45) is a kernel trick for these kernels: a way to evaluate the kernel without first constructing the exponentially large feature vectors and taking their inner product, efficient when the reweighting is induced from a symmetric MPS of polynomial bond dimension.",
+     "anchor": "Section 4, after Observation 1, p.10",
+     "quotes": [
+      "(45) as describing a kernel trick for the evaluation of reweighted classically inspired-PQC kernels",
+      "a method to evaluate the kernel without firstly fully constructing the feature vectors and then taking the inner product.",
+      "this kernel trick is efficient when the reweighting is induced from a symmetric MPS (of polynomial bond-dimension)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A restatement of Observation 1, derived in Section 4.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sweke-same-set-as-rff-efficient",
+     "value": "The authors state that the set of kernels for which they give a kernel trick is the same set that prior work [SRJ+23] showed to be efficient to approximate with Random Fourier Features, so that work's insights into inductive bias and generalization can still guide kernel selection outside the RFF approach.",
+     "anchor": "Section 1, p.2; Section 5, p.10",
+     "quotes": [
+      "We note that, interestingly, the set of kernels for which we provide a kernel trick is the same set of kernels which were shown in Ref. [SRJ+23] to be efficient to approximate within an RFF-based approach.",
+      "can still be used to inform kernel selection outside of the RFF-based approach."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A comparison with a cited result.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sweke-derandomizing-rff",
+     "value": "The authors state that their results can be seen as a means of simplifying or derandomizing RFF-based dequantization, by implementing the chosen kernel method directly without randomized approximations.",
+     "anchor": "Section 5, p.10",
+     "quotes": [
+      "As such, one can think of these results as providing a means for simplifying or \"derandomizing\" RFF-based dequantization, by allowing one to simply implement a chosen kernel method, without requiring randomized approximations."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An interpretation by the authors.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sweke-rff-dataset-size-advantage",
+     "value": "The authors state that RFF was originally motivated by better complexity in data-set size: with a kernel that is evaluated and sampled in constant time, kernel ridge regression costs quadratic space and cubic time in the data-set size n, while RFF regression with S samples costs space linear in n times S, so RFF-based dequantization can be more efficient when n exceeds S, before counting the costs of evaluating the kernel and sampling its eigenspectrum.",
+     "anchor": "Section 5, Efficiency with respect to data-set size, p.10",
+     "quotes": [
+      "The original motivation for the introduction of Random Fourier Features was an improved complexity with respect to data-set size [RR07].",
+      "RFF based dequantization can be more efficient in the regime when",
+      "Of course, in practice one also has to take into account the complexity of evaluating the kernel"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A standard cited complexity comparison; the cost formulas are lost in the text layer.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": "From the page image (p.10): kernel ridge regression O(n^2) space and O(n^3) time; RFF O(nS) space and O(nS^2 + S^3) time."
+    },
+    {
+     "id_suggestion": "sweke-open-rff-without-kernel-trick",
+     "value": "The authors state that there may exist PQC-inspired kernels that cannot be evaluated efficiently but whose eigenspectrum can be sampled efficiently, so that RFF would be efficient where no kernel trick exists, and leave identifying such kernels to future work.",
+     "anchor": "Section 5, Potentially efficient implementation where no kernel tricks exist, p.10",
+     "quotes": [
+      "However, there does exist the possibility of PQC-inspired kernels",
+      "for which the kernel cannot be efficiently evaluated, but for which one can efficiently sample from the eigenspectrum of the kernel, and therefore efficiently implement RFF.",
+      "We leave identification of such kernels for future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "An open problem the paper states, Section 5, p.10.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sweke-no-definitive-answer-rff",
+     "value": "The authors state that they do not give definitive answers on whether RFF-based dequantization has advantages, offering only perspectives on it.",
+     "anchor": "Section 5, p.10",
+     "quotes": [
+      "While we do not provide any definitive answers here, we do provide below a variety of perspectives on this question"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 5, p.10.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sweke-generalization-future",
+     "value": "The authors state that prior work adapted RFF generalization bounds to reweighted PQC-inspired kernels, that standard bounds for kernel ridge regression could similarly be applied using known spectral insights, and leave a detailed comparison of generalization performance to future work.",
+     "anchor": "Section 5, Generalization, p.11; Section 7",
+     "quotes": [
+      "has shown how can straightforwardly adapt known generalization bounds for RFF to the setting of reweighted PQCinspired kernels",
+      "However, we note that one could similarly apply standard gen- eralization bounds for algorithms such as kernel ridge regression [CBP21] to reweighted PQC-inspired kernels",
+      "We leave a detailed comparison of generalization performance to future work."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the comparison is left to future work, Section 5, p.11.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The conclusion says known bounds can be applied 'to obtain generalization bounds', but the paper derives none."
+    },
+    {
+     "id_suggestion": "sweke-entangled-tensor-kernel",
+     "value": "The authors show that whenever the weighting is MPS-induced, the reweighted PQC-inspired kernel is an entangled tensor kernel in the sense of [SSJ25], with local feature maps per data component and a diagonal MPO core tensor whose bond dimension is set by that of the weighting.",
+     "anchor": "Section 6, Eqs. (46) and (47), p.11",
+     "quotes": [
+      "Here we note that ETKs also provide a suitable formalism for the description of reweighted PQC-inspired kernels.",
+      "is in fact an ETK with a diagonal MPO core-tensor.",
+      "and an MPO core tensor whose bond dimension is determined by the bond-dimension of the reweighting"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Shown by a diagrammatic identity against a definition in another paper.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sweke-cited-prior-rff-ltd",
+     "value": "The authors cite that kernel-based dequantization was first proposed in [LTD+22], which found that RFF can sometimes be implemented efficiently even when the kernel cannot be evaluated efficiently, but focused on the canonical PQC-inspired kernel and implicitly assumed universal PQC models for its guarantees.",
+     "anchor": "Section 2.5, p.5",
+     "quotes": [
+      "The kernel-based approach to dequantization was first proposed and explored in Ref. [LTD+22]",
+      "can sometimes be efficiently implemented even when",
+      "However, this original work of Ref. [LTD+22] focused primarily on the canonical PQC-inspired kernel, and implicitly considered universal PQCmodels when providing analytical guarantees."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper cites from other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sweke-cited-srj-stj",
+     "value": "The authors cite that [SRJ+23] extended RFF-based dequantization to any reweighted PQC-inspired kernel with necessary and sufficient conditions for efficiency and generalization, and that [STJ24] showed by tensor networks that every PQC architecture has a kernel that can be evaluated exactly and efficiently classically and outputs a linear function of the same feature map.",
+     "anchor": "Section 2.5, p.5",
+     "quotes": [
+      "Ref. [SRJ+23] then extended this line of work",
+      "showing that one can in fact consider any reweighted PQC-inspired kernel, and provided necessary and sufficient conditions for both efficiency and good generalization of RFF-based dequantization",
+      "Another approach was taken in Ref. [STJ24], who showed via a tensor-network analysis, that for every parameterized quantum circuit architecture",
+      "one can identify a kernel which can be evaluated exactly and efficiently classically"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper cites from other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sweke-motivation-dequantization",
+     "value": "The authors state that significant effort has gone into showing when variational QML models are not expected to be advantageous, typically by efficient classical algorithms that match variational QML on certain tasks, an approach referred to as dequantization.",
+     "anchor": "Section 1, p.1",
+     "quotes": [
+      "significant effort has been spent towards showing when and how variational QML models are not expected to be advantageous",
+      "typically by developing efficient classical algorithms which can be shown to achieve similar performance to variational QML for certain tasks of interest",
+      "Often, this approach is referred to as dequantization of variational QML [GGP+25]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A summary of cited work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "thabet-2024-quantum-positional-encodings-graph-neural",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Thabet-et-al._2024_Quantum-Positional-Encodings-for-Graph-Neural-Networks__2406.06547.pdf",
+   "title_in_file": "Quantum Positional Encodings for Graph Neural Networks",
+   "version_note": "arXiv:2406.06547v1, the ICML 2024 (PMLR 235) paper, 30 pages with Appendices A to D. The text layer holds the paper twice; the first copy was read and the second used only to check quotes.",
+   "pages": 30,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A paper by Pasqal authors proposing positional encodings for graph transformers from quantum states built on the graph (ground-state correlations, 1- and 2-particle quantum walks), with expressivity propositions against Weisfeiler-Lehman tests and benchmarks run with classically simulated, tractable versions of the features.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "thabet-expressivity",
+     "verdict": "narrowed",
+     "note": "The abstract and conclusion say the authors 'prove' greater expressivity on strongly regular graphs, but the proofs in Section 4 and Appendix B establish: a localized single-walker quantum walk is not weaker than 1-WL and is weaker than 2-WL (Prop 4.2); GD-WL with RRWP cannot distinguish SRGs of the same family (Prop 4.6); and the solvable one-layer Ising case cannot either (Prop 4.7). The positive SRG result, that a two-layer Ising evolution and a 2-particle walk distinguish SRGs, is stated as empirical (Section 4.3) and as not yet demonstrated in general. Narrowed to that.",
+     "value": "The authors state they prove some quantum positional encodings are more expressive than random-walk and Laplacian ones on strongly regular graphs; what the paper proves is that random-walk (RRWP) distances and a one-layer Ising evolution cannot distinguish non-isomorphic strongly regular graphs of the same family, while the distinction of such graphs by a two-layer Ising evolution and a 2-particle quantum walk is shown empirically on two families and stated as not yet demonstrated in general.",
+     "anchor": "Abstract; Sections 4.2 and 4.3, pp.6 to 7; Section 6, p.9",
+     "quotes": [
+      "We proved that some positional encodings that use quantum features are theoretically more expressive than ones based on simple random walk and laplacian eigenvectors, on strongly regular graphs.",
+      "Proposition 4.6. GD-WL with RRWP distance cannot, even with eigen-decomposition of the distance matrix, distinguish non isomorphic SRGs from the same family.",
+      "This result shows that the case in which it is possible to derive formal expressions actually fails to distinguish non isomorphic SRGs.",
+      "a two layers Ising evolution and a 2-QW are strictly more powerful than 2-WL.",
+      "This property has been demonstrated in some cases for k = 1 and observed for k = 2 in the case of SRGs, but not yet demonstrated in the general case and for any value of k."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The positive SRG result is empirical on two families; the proved results are limits of the classical encodings and of the solvable Ising case.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The 'proof' in the abstract and conclusion is stronger than the body supports: the body proves the classical baseline fails on SRGs and observes that the quantum features succeed on 25 graphs."
+    },
+    {
+     "id": "thabet-limit-real-world",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that it remains unclear whether an actual performance improvement will be observed on real-world use cases, and whether it will justify the cost of quantum hardware.",
+     "anchor": "Section 6, p.9",
+     "quotes": [
+      "While it remains unclear whether an actual performance improvement will be observed on real-world use cases, and whether this improvement will justify the cost of using quantum hardware in the future"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 6, p.9.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "thabet-small-gain",
+     "verdict": "narrowed",
+     "note": "The paper limits the gain to versions of the quantum features that are efficiently computable classically; no quantum hardware was used. Narrowed to carry that scope.",
+     "value": "The authors report that, limiting themselves to versions of quantum features that are efficiently computable, they were able to show a small gain in performance compared to state-of-the-art models.",
+     "anchor": "Section 5.3, p.8",
+     "quotes": [
+      "We limited ourselves to versions of quantum features that are efficiently computable and we were able to show a small gain in performance compared to state-of-the-art models."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, 4 seeds per benchmark.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "In Table 1 the gains over the authors' own GRIT run (ZINC 0.058 or 0.059 against 0.060; MNIST 98.204 against 98.164; CIFAR10 76.442 against 76.198) are within one standard deviation, and on PATTERN and CLUSTER the quantum encodings score below that run."
+    },
+    {
+     "id": "thabet-synthetic-accuracy",
+     "verdict": "narrowed",
+     "note": "The accuracy figures are right, but the dataset was built so that its Ising ground states can be computed efficiently classically, from ladder graphs, 800 graphs in total; the 'quantum encoding' model is a small GCN with ground-state correlation eigenvectors computed classically. Narrowed to carry this setup.",
+     "value": "The authors report that on an artificial binary graph classification dataset of 800 ladder-based graphs, built so that their Ising ground states can be computed efficiently, a GCN using eigenvectors of the ground-state correlation matrix reaches 100% test accuracy while classical models with Laplacian eigenvectors or RRWP reach 45% accuracy.",
+     "anchor": "Section 5.2 and Figure 5, p.8; Appendix D.2, pp.29 to 30",
+     "quotes": [
+      "The quantum encoding models achieve 100% accuracy whereas all other classical models achieve 45% accuracy.",
+      "We were able to engineer an artificial dataset for which classical approaches fail to perform the associated binary classification tasks",
+      "The ground state of the total graph is included in a union of the groundstates of the subgraph, so it can be efficiently computed.",
+      "our dataset consists of 400 graphs per class, so 800 in total."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on one engineered dataset.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "45% on a balanced binary task is below chance. Appendix D.2 describes both classes as 'type 0 and type 1 concatenated', so the class definition as printed is ambiguous (the second is presumably type 2)."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "thabet-graph-quantum-state",
+     "value": "The paper associates a graph with a quantum state of one qubit per node through a Hamiltonian that is a sum of two-qubit Pauli strings on the edges, focusing on the Ising and XY Hamiltonians, and prepares states by alternating p layers of the graph Hamiltonian and a non-commuting mixing Hamiltonian, motivated by their similarity to Trotterized dynamics.",
+     "anchor": "Section 3.1, Eq. (1), p.4",
+     "quotes": [
+      "We associate a graph G(V, E), to a quantum state |ψG⟩ of |V| qubits containing information about G via a hamiltonian",
+      "We will be focusing on the Ising hamiltonian",
+      "and the XY hamiltonian",
+      "We consider the quan- tum state obtained by alternated action of p layers of",
+      "The choice of these states is motivated by their similarity with the Trotterized dynamics of several quantum systems(Suzuki, 1976)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own construction, Section 3.1, p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thabet-ground-state-definition",
+     "value": "The paper defines the ground state of the graph as the equal-weight superposition over the lowest-energy eigenstate manifold of its Hamiltonian, and states that ground states are in general hard to compute classically.",
+     "anchor": "Section 3.1, p.4; Appendix A.2",
+     "quotes": [
+      "The ground state (GS) of a system is defined as the lowest-energy eigenstate of its hamiltonian",
+      "GSs are in the general case hard to compute classically (Schollwo ̈ck et al., 2008).",
+      "With that in mind, we call ground state of the graph the state"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Section 3.1, p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thabet-ground-state-correlation-pe",
+     "value": "The paper proposes using the eigenvectors with the highest eigenvalues of the ground-state correlation matrix of Z operators as positional encodings, in place of Laplacian eigenvectors, and expects the same sign-ambiguity challenges.",
+     "anchor": "Section 3.2.1, p.4",
+     "quotes": [
+      "We propose to use the correlation matrix Cij = ⟨ZiZj⟩ on the ground state of the graph defined in Sec. 3.1.",
+      "we take the ones with highest eigenvalues, since they are the ones in which most of the information about the correlation matrix is contained.",
+      "We expect to face the same challenges due to the sign ambiguity"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own method definition, Section 3.2.1, p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thabet-k-particle-walks-scope",
+     "value": "The authors state that the XY Hamiltonian restricted to the k-particle subspace acts as the adjacency matrix of a k occupation graph, so its evolution is a quantum walk on it, and that because full XY simulation is impractical for graphs of more than 20 nodes they simulate only the one- and two-particle cases.",
+     "anchor": "Section 3.2.2, p.5",
+     "quotes": [
+      "can be seen as the adjacency matrix of a graph called the k occupation graph.",
+      "A complete simulation of the XY hamiltonian evolution is impractical for graphs of more than 20 nodes, therefore in this work we restrict ourselves to the simulation of"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope statement, Section 3.2.2, p.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thabet-qirw-definition",
+     "value": "The paper defines quantum-inspired random walks (QiRW) using discrete powers of the degree-normalized two-particle XY Hamiltonian, which are not implemented natively on a quantum computer, are directly comparable to RRWP, and are cheaper to compute than continuous quantum walks.",
+     "anchor": "Section 3.2.2, p.5",
+     "quotes": [
+      "We propose a dis- crete version of the quantum features described above, where we consider powers of the hamiltonian",
+      "The discrete powers are not implemented natively on a quantum computer, hence the name quantum-inspired.",
+      "They are however directly com- parable to the RRWP scheme of (Ma et al., 2023), and they are cheaper to compute than the continuous quan- tum random walks."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Section 3.2.2, p.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The best-performing 'quantum' encoding in the benchmarks (2-QiRW) is by this definition a classical matrix-power feature, not something a quantum computer computes natively."
+    },
+    {
+     "id_suggestion": "thabet-prop-4-1",
+     "value": "The paper states and proves (Proposition 4.1) that when the input state is a uniform superposition of delocalized states, the single-walker quantum walk is weaker than the 1-WL test, the proof attributing this to the walk's sum aggregation not being injective.",
+     "anchor": "Proposition 4.1, Section 4.1, p.5; proof Appendix B.1, pp.13 to 14",
+     "quotes": [
+      "Proposition 4.1. When the input state of the unitary is a uniform superposition of delocalized states, the following holds : 1-QW ⊏ 1-WL.",
+      "This is the main reason for which the 1 − QW is less powerful than the 1 − W L, which allows any sort of aggregation functions and most notably injective functions."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 4.1 with its input-state condition, p.5, proved in Appendix B.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof in B.1 is an informal argument that leans on a cited result (Powers and Sulaiman, 1982)."
+    },
+    {
+     "id_suggestion": "thabet-prop-4-2",
+     "value": "The paper states (Proposition 4.2) that when the input state is a uniform superposition or localized states, the single-walker quantum walk is weaker than 2-WL and is not comparable to 1-WL; the proof shows a localized walker can distinguish some regular graphs that 1-WL cannot, and that walk probabilities are computable from the Furer spectral invariant, which a cited result places below 2-WL.",
+     "anchor": "Proposition 4.2, Section 4.1, p.5; proof Appendix B.2, pp.14 to 15",
+     "quotes": [
+      "Proposition 4.2. When the input state of the unitary is a uniform superposition or localized states the following holds: 1. 1-QW ⊏ 2-WL & 2. 1-QW",
+      "Thus, a single particle QW can distinguish 2 such regular graphs.",
+      "However, we know that a 1-WL cannot distinguish regular graphs.",
+      "In (Rattan & Seppelt), the authors prove that F.I⊏2-WL. Therefore 1-QW⊏ 2-WL."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 4.2 with its input-state condition, p.5, proved in Appendix B.2 using a cited result.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The appendix heading states the localized case only, while the proposition names 'uniform superposition or localized states'; the incomparability with 1-WL is shown for localized inputs."
+    },
+    {
+     "id_suggestion": "thabet-prop-4-3",
+     "value": "The paper states and proves (Proposition 4.3) that with a superposition input state the k-walker quantum walk is weaker than the k-delta-LWL test, because WL coloring on the k-particle occupation graph matches k-delta-LWL coloring; the authors state this does not allow a conclusive comparison with k-WL, whose positioning is future work.",
+     "anchor": "Proposition 4.3, Section 4.1, p.5; proof Appendix B.3, p.15",
+     "quotes": [
+      "Proposition 4.3. When the input state of the unitary is a superposition state, the following holds : k-QW ⊏ k-δ-LWL.",
+      "However, this result does not allow us to make a conclusive comparison between k-QW and k-WL.",
+      "QW in comparison with the k-WL is not provided here and is part of our future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 4.3 with its input condition, p.5, proved in Appendix B.3; the comparison with k-WL is a stated open problem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thabet-srg-definition",
+     "value": "The paper defines a strongly regular graph srg(nu, k, lambda, mu) as a graph with nu vertices of degree k in which every adjacent pair has lambda common neighbours and every non-adjacent pair has mu, and chooses these graphs because their regularity makes graphs of the same family especially hard to distinguish.",
+     "anchor": "Definition 4.4, Section 4.2, p.6",
+     "quotes": [
+      "Definition 4.4. A strongly regular graph (SRG), noted srg(ν, k, λ, μ), is a graph with ν vertices of fixed degree k, such that every pair of adjacent vertices have a fixed number λ of common neighbors, and every pair of non-adjacent vertices have a fixed number μ of common neighbors.",
+      "We chose to work on these particular graphs because their regularity makes them especially difficult to distinguish within the same family."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition the paper's results depend on, Definition 4.4, p.6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thabet-prop-4-5-cited",
+     "value": "The paper cites (Proposition 4.5, Bodnar et al., 2021) that distinguishing two non-isomorphic strongly regular graphs from the same family requires a 3-WL test or higher.",
+     "anchor": "Proposition 4.5, Section 4.2, p.6",
+     "quotes": [
+      "Proposition 4.5. (Bodnar et al., 2021) It requires a 3-WL test or higher to distinguish two non-isomorphic strongly regular graphs from the same family."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper cites from other work.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thabet-prop-4-6",
+     "value": "The paper proves (Proposition 4.6) that GD-WL with RRWP distance cannot, even with eigen-decomposition of the distance matrix, distinguish non-isomorphic strongly regular graphs from the same family, because for such graphs every power of the adjacency matrix is a combination of the identity, the all-ones matrix and the adjacency matrix with coefficients depending only on the family parameters.",
+     "anchor": "Proposition 4.6, Section 4.2, p.6; proof Appendix B.4, p.15",
+     "quotes": [
+      "Proposition 4.6. GD-WL with RRWP distance cannot, even with eigen-decomposition of the distance matrix, distinguish non isomorphic SRGs from the same family.",
+      "the powers of the adjacency matrix A can be expressed as An = αnI + βnJ + γnA where αn, βn, γn only depend on N, k, λ, μ.",
+      "Therefore, for strongly regular graphs, the GD-WL with RRWP test is equivalent to the WL test."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 4.6, p.6, proved in Appendix B.4 from cited identities for SRGs.",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thabet-prop-4-7",
+     "value": "The paper proves (Proposition 4.7) that for any quantum state representing a strongly regular graph after an evolution under a local, uniform-field Ising Hamiltonian (one layer, between opposite mixing pulses), the total occupation and the one- and two-body local occupation observables cannot distinguish two non-isomorphic strongly regular graphs from the same family, since the correlation matrix depends only on the family parameters and the adjacency matrix.",
+     "anchor": "Proposition 4.7, Section 4.3, p.6; proof Appendix B.5, pp.15 to 27",
+     "quotes": [
+      "Proposition 4.7. For any quantum state representing a strongly regular graph following an evolution from a local, uniform-field Ising Hamiltonian,",
+      "the total occupation observable, as well as the linear (one body) and quadratic (two bodies) local occupation observables do not allow to distinguish two non isomorphic SRGs from the same family.",
+      "This corresponds to a single layer Ising evolution, preceded and followed by an evolution through the mixing hamiltonian",
+      "with ck,λ & ck,μ ∈ R that only depend on the invariants, A the adjacency matrix of the graph"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 4.7 with its Hamiltonian and observable conditions, p.6, proved by full calculation in Appendix B.5.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thabet-occupation-formula-check",
+     "value": "The authors report that their closed-form expression for the total occupation under one-layer Ising evolution matches a numerical simulation of the dynamics on a random graph of 10 vertices.",
+     "anchor": "Appendix B.5.3, Eq. (45) and Figure 6, p.20",
+     "quotes": [
+      "This expression is checked in Fig. 6, on a random graph of 10 vertices.",
+      "Both curves collapse on top of each other."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A single numerical check.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thabet-srg-empirical-distinction",
+     "value": "The authors report that on two SRG families, srg(26, 10, 3, 4) with 10 non-isomorphic graphs and srg(25, 12, 5, 6) with 15, correlations from a two-layer Ising evolution and a 2-particle quantum walk give non-zero permutation-invariant distances between all graphs, that isomorphic copies (5 random per graph) give zero distance, and that GD-WL with these edge features distinguishes all pairs, which they state shows empirically that these are strictly more powerful than 2-WL for certain datasets.",
+     "anchor": "Section 4.3 and Figure 3, pp.6 to 7",
+     "quotes": [
+      "Figure 3 shows the results of the distinguishability in a set of 2 families, with 25 and 26 nodes.",
+      "the family srg(26, 10, 3, 4) that includes 10 non-isomorphic graphs, and (b) the family of srg(25, 12, 5, 6) that includes 15 non-isomorphic graphs.",
+      "Using this formula, a non- zero value implies that the two graphs are not isomor- phic, but the opposite is not necessarily true.",
+      "a set of 5 randomly selected isomor- phic counterparts is zero as expected.",
+      "We also run the GD-WL test with the edge features S(M ) and we obtain that all pairs of graphs are successfully distinguished.",
+      "that for certain data sets, a two layers Ising evolution and a 2-QW are strictly more powerful than 2-WL."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on two graph families.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text says p = 2 for the Ising case and a 2-QW for the XY case."
+    },
+    {
+     "id_suggestion": "thabet-quantum-advantage-potential",
+     "value": "The authors state that k-WL needs comparisons costing at least N to the k, whereas a quantum evolution needs a number of shots of order one over epsilon squared that does not grow with Ising layers or walkers, giving an attractive potential for quantum advantage, limited to datasets where large k matters and assuming the quantum walks are strictly more powerful than k-WL for every k.",
+     "anchor": "Section 4.3, p.7",
+     "quotes": [
+      "Fi- nally, it's important to point out that the classical k-WL test requires comparisons between pairs of subsets of nodes of size k, rendering its complexity to at least N k, N being the size of the graph.",
+      "This gives our approach an attractive potential for quantum advantage, albeit limited to datasets on which large values of k in the k-WL test are relevant.",
+      "This also assumes that the k-QW as well as the k- layers Ising, are both strictly more powerful than the k-WL for any values of k."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim resting on an assumption the paper says is not demonstrated in general.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thabet-benchmark-setup",
+     "value": "The authors state that they benchmark on datasets from Dwivedi et al. (2020) following the GRIT experimental setup, take the other architectures' results from Ma et al. (2023), run only GRIT themselves with the original hyperparameters and no extensive search, report the mean and standard deviation of 4 seeds, and compute the quantum walk encodings numerically, which is tractable for graphs below 200 nodes.",
+     "anchor": "Section 5.1 and Table 1, pp.7 to 8; Appendix C.1",
+     "quotes": [
+      "We benchmark our method on 7 datasets from (Dwivedi et al., 2020)",
+      "Our method is compared to many other architectures and the results directly taken from (Ma et al., 2023).",
+      "We do not perform an extensive hyperparameter search for each architecture and only run ourselves the GRIT model by taking the same hyperparameters as the authors.",
+      "We show the mean ± s.d. of 4 runs with different random seeds as in (Ma et al., 2023).",
+      "Those encodings are computed numerically since they are still tractable for graphs below 200 nodes"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup, Section 5.1 and Appendix C.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text says 7 datasets while Table 1 holds five benchmarks; the other two are the large-scale sets of Table 4."
+    },
+    {
+     "id_suggestion": "thabet-table1-results",
+     "value": "The authors report (Table 1) for GRIT with their quantum encodings against their own GRIT run: ZINC MAE 0.058 (1-CQRW) and 0.059 (2-QiRW) against 0.060; MNIST 98.108 and 98.204 against 98.164; CIFAR10 76.347 and 76.442 against 76.198; PATTERN 87.205 and 90.165 against 90.405; CLUSTER 78.895 and 79.777 against 79.856; they state their methods perform better on ZINC, MNIST and CIFAR10 than all others and come second on PATTERN and CLUSTER.",
+     "anchor": "Section 5.1 and Table 1, p.8",
+     "quotes": [
+      "0.060 ± 0.002",
+      "98.164 ± 0.054",
+      "76.198 ± 0.744",
+      "90.405 ± 0.232",
+      "79.856 ± 0.156",
+      "GRIT 1-CQRW 0.058 ± 0.002 98.108 ± 0.111 76.347 ± 0.704 87.205 ± 0.040 78.895 ± 0.1145 GRIT 2-QiRW 0.059 ± 0.004 98.204 ± 0.048 76.442 ± 1.07 90.165 ± 0.446 79.777 ± 0.171",
+      "Our methods performs better on ZINC, MNIST and CIFAR10 than all others, and comes second for PATTERN and CLUSTER."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, 4 seeds, with classically simulated features.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The ZINC, MNIST and CIFAR10 margins over the authors' GRIT run are within one standard deviation."
+    },
+    {
+     "id_suggestion": "thabet-large-scale-results",
+     "value": "The authors report that on ZINC-full (4 seeds) and PCQM4Mv2 (a single run), across GINE, GatedGCN and GRIT with LE, RRWP, 2-QiRW and RRWP plus 2-QiRW encodings, quantum features perform better for all models on ZINC-full and for some models on PCQM4Mv2; for GRIT, RRWP plus quantum features gives 0.023 against 0.025 on ZINC-full and .0838 against .0842 on PCQM4Mv2.",
+     "anchor": "Section 5.1, Figure 4, p.7; Table 4, p.29",
+     "quotes": [
+      "Quantum features perform better for all models in the case of ZINC-full and for some models of PCQM4Mv2.",
+      "For ZINC-full, we show the mean and s.d of 4 runs with different random seeds. For PCQM4Mv2 we show the output of a single run.",
+      "GRIT RRWP RRWP+Q 0.025 ± 0.002 0.023 ± 0.002 .0842 .0838"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; PCQM4Mv2 is a single run.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thabet-synthetic-setup",
+     "value": "The authors state that the synthetic dataset is built from ladder graphs with crossings placed to select particular Ising ground states, of lengths 100 to 400, and that the GCN was trained for 200 epochs with Adam at learning rate 0.001 on a random 0.8/0.1/0.1 split, with the RRWP features very similar for the two classes while the ground-state correlations differ.",
+     "anchor": "Appendix C.2, p.28; Appendix D.2, pp.29 to 30",
+     "quotes": [
+      "Each type is composed of one ladder graphs with crossings inserted at different places.",
+      "The length of graphs are taken between 100 and 400",
+      "We train the GCN model for 200 epochs using the Adam optimizer, 0.001 learning rate, no weight decay.",
+      "We split randomly the dataset on train/validation/test with a proportion 0.8/0.1/0.1",
+      "we see that the RRWP features are very similar for the two classes whereas the correlations on the ground state are very different."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own dataset construction and training setup, Appendices C.2 and D.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thabet-discussion-plausible-gain",
+     "value": "The authors state that including quantum walk features improves state-of-the-art models on most datasets tested, that this is unsurprising for datasets like ZINC where random walks are known to help, and that features not classically accessible could plausibly give a greater improvement if quantum hardware becomes widely available.",
+     "anchor": "Section 5.3, p.8",
+     "quotes": [
+      "Including the quantum walk features into state-of-the-art models improves their performances on most of the datasets tested.",
+      "It is then plausible that using quantum features that cannot be classically accessible could lead to a greater improvement of models, if quantum hardware can be made widely available."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's conjecture; no non-classical features were computed.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thabet-neutral-atom-hardware",
+     "value": "The authors, from Pasqal, state that neutral atom quantum hardware implements the time-dependent Hamiltonians they describe natively, including the XY model, and is becoming usable through cloud access, and that the study gives strong indications that full use of quantum hardware can lead to high-performance architectures for certain tasks.",
+     "anchor": "Section 6, p.9",
+     "quotes": [
+      "This study provides strong indications that the full leverage of quantum hardware can lead to the development of high-performance architectures for certain tasks.",
+      "In particular, Neutral Atom quantum hardware (Henriet et al., 2020; Wurtz et al., 2023) implement these natively (including the XY model (Chen et al., 2023)) and they are becoming usable through cloud access."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A hardware vendor's authors describing their platform class.",
+     "result_type": "vendor",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thabet-contribution-no-training",
+     "value": "The authors state that, unlike their earlier hybrid model, they use random parameterized or well-chosen quantum states such as ground states without training them, which removes the difficulty of training quantum states, applies to any graph learning task, and is benchmarked on large-scale datasets of about 3 million graphs.",
+     "anchor": "Section 2.4, p.3",
+     "quotes": [
+      "Instead of parameterizing the quantum dynamics and training it as in (Thabet et al., 2022), we either use random parameterized states or well-chosen quantum states (such as ground states) and use the correlations as positional encoding for graph transformers.",
+      "This approach removes the difficulty of training the quantum states",
+      "Finally, we provide benchmarks on large-scale datasets (∼ 3 millions graphs)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of its own contribution and scope, Section 2.4, p.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thabet-prior-hybrid-limits",
+     "value": "The authors state that their earlier hybrid architecture was hard to train in simulation, relied on quantum gradient methods that are hardly scalable, had little theoretical backing, and was tested only on small datasets of a few thousand graphs with at most 20 nodes.",
+     "anchor": "Section 2.3, p.3",
+     "quotes": [
+      "First, the model is difficult to train in simulation because the optimizer of quantum parameters needs to be adjusted separately from the optimizer of classical parameters.",
+      "Secondly, it has been shown that methods to compute the gradients on a quantum computer are hardly scalable.",
+      "The experiments have only been made on small datasets compared to the biggest ones available (a few 1000s of graphs and maximum 20 nodes)"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' assessment of prior work, partly cited.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thabet-cited-quantum-walk-speedups",
+     "value": "The authors cite that quantum walks have shown an exponential hitting-time advantage on graphs such as hypercubes and glued binary trees, recently extended to more general hierarchical graphs.",
+     "anchor": "Appendix A.1, p.13",
+     "quotes": [
+      "Notably, quantum walks have demonstrated exponential hitting time advantage for graphs like hypercubes (Kempe, 2002) and glued binary trees (Childs et al., 2003).",
+      "These results have been recently extended for more general hierarchical graphs (Balasubramanian et al., 2023)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper cites from other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thabet-neutral-atom-mis",
+     "value": "The authors state that neutral atom processors natively address a weighted Ising-type Hamiltonian whose eigenenergies, for a parameter delta below 1, form the cost function of the NP-hard maximum independent set problem, and that quantum annealing without symmetry breaking would prepare an equal-weight superposition of all maximum independent sets.",
+     "anchor": "Appendix A.2, p.13",
+     "quotes": [
+      "When using neutral atom quantum processors (Henriet et al., 2020), one can natively address hamiltonians of the form",
+      "< δ < 1, this is the cost function associated with the maximum independent set problem, a NP-hard problem (Garey & Johnson, 1979).",
+      "In the absence of degeneracy-lifting or symmetry-breaking effects, a quantum annealing scheme would prepare a symmetric, equal-weight superposition of all maximum independent sets."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statement about hardware and annealing, partly cited.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The lower bound of the delta range is lost in the text layer; the page image (p.13) shows delta between zero and one, with coupling one quarter and alpha set from delta and the summed couplings at each node."
+    },
+    {
+     "id_suggestion": "thabet-graph-transformer-cost",
+     "value": "The authors state that, because attention has quadratic cost, graph transformers are not applicable to large-scale graphs of millions of nodes.",
+     "anchor": "Section 2.1, p.2",
+     "quotes": [
+      "However, due to the quadratic cost of computing the attention process, they are not applicable to large-scale graphs of millions of nodes and more."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim about other methods.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
