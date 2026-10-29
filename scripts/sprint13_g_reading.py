@@ -416,7 +416,7 @@ def commit_apply(conn, update_reads: bool) -> list[str]:
     where only new reads were expected, nobody asked why, and the real apply rewrote Task F's rows. A rewritten read
     row is now a stop: the apply is rolled back unless the run names the rewrite as intended."""
     log = apply_changes(conn)
-    rewrites = [x for x in log if x.startswith("update read")]
+    rewrites = [x for x in log if x.split()[:2] == ["update", "read"]]  # not "update readout-..." (an assertion)
     if rewrites and not update_reads:
         conn.rollback()
         raise ReadRowsRewritten(f"{len(rewrites)} read rows would be rewritten; nothing written. Each must be intended; "

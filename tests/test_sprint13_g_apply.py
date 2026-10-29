@@ -177,5 +177,8 @@ def test_an_apply_that_rewrites_a_read_row_is_rolled_back_unless_named(synthetic
         assert [x.split()[0] for x in g.commit_apply(conn, update_reads=True)] == ["update", "read"]
         assert {tuple(r) for r in conn.execute(extents, (rid, g.SUBAGENT_READER, day))} == {("full",)}
         assert g.commit_apply(conn, update_reads=False) == []  # a second apply writes nothing
+        # review of c978e50: an assertion whose id begins "read" is not a read row
+        monkeypatch.setattr(g, "apply_changes", lambda conn: ["update readout-2024-x [value]"])
+        assert g.commit_apply(conn, update_reads=False) == ["update readout-2024-x [value]"]
     finally:
         conn.close()

@@ -181,15 +181,19 @@ def commits_without_entry(repo: Path, since: str, changelog_text: str) -> list[s
     CHANGELOG.md nor is named in it; None when git cannot read the range."""
     try:
         out = subprocess.run(
-            ["git", "log", "--no-merges", "--name-only", "--format=@@%h %s", f"{since}..HEAD"],
+            # %x00 marks each commit (a subject may hold any text); --abbrev=7
+            # keeps the hash the length entries cite as the repository grows
+            ["git", "log", "--no-merges", "--name-only", "--abbrev=7", "--format=%x00%h %s", f"{since}..HEAD"],
             cwd=repo, capture_output=True, text=True, encoding="utf-8", timeout=60)
     except Exception:                                    # noqa: BLE001
         return None
     if out.returncode != 0:
         return None
     missing = []
-    for block in out.stdout.split("@@")[1:]:
-        head, *files = [line for line in block.splitlines() if line.strip()]
+    for block in out.stdout.split("\x00")[1:]:
+        head, *files = [line for line in block.splitlines() if line.strip()] or [""]
+        if not head:
+            continue
         if "CHANGELOG.md" not in files and head.split()[0] not in changelog_text:
             missing.append(head)
     return missing
@@ -222,8 +226,8 @@ def test_the_entry_check_names_an_uncovered_commit(tmp_path):
     git("commit", "-q", "-m", "with its entry")
     (tmp_path / "code.py").write_text("x = 1\n", encoding="utf-8")
     git("add", "-A")
-    git("commit", "-q", "-m", "no entry")
+    git("commit", "-q", "-m", "no entry @@ x")  # a marker-like subject does not split the commit
     short = git("rev-parse", "--short", "HEAD")
-    assert commits_without_entry(tmp_path, base, "start\nan entry\n") == [f"{short} no entry"]
+    assert commits_without_entry(tmp_path, base, "start\nan entry\n") == [f"{short} no entry @@ x"]
     assert commits_without_entry(tmp_path, base, f"start\nan entry\nlater: {short}\n") == []
     assert commits_without_entry(tmp_path, "0" * 40, "") is None

@@ -421,10 +421,17 @@ this project keeps having to replace with a step.
   `--update-reads` names the rewrite as intended (F117 applies through
   this script). I2: every `UPDATE paper_reads` names the row's stored
   detail; the seven older scripts that matched by reader, day and extent
-  alone are fixed, and `tests/test_read_row_updates.py` names any that
-  does not. I4: `test_changelog_currency` names each commit from 71705d8
-  on that neither changes CHANGELOG.md nor is named in it by its short
-  hash. Each test proven red by injection
+  alone are narrowed to one row, and `tests/test_read_row_updates.py`
+  names any that does not (including "+" joins, f-strings and DELETE).
+  I4: `test_changelog_currency` names each commit from 71705d8 on that
+  neither changes CHANGELOG.md nor is named in it by its short hash. Each
+  test proven red by injection (c978e50). The fresh-eyes review of
+  c978e50 found nothing Critical; acted on: "update readout-..." is not a
+  read row, the commit marker cannot occur in a subject, the hash length
+  is fixed at 7, the scan reads joined statements. Its Important finding
+  is recorded, not fixed: the older scripts still compare whichever row
+  shares the key, so they must not re-run on a day another script wrote
+  (none does today)
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 
