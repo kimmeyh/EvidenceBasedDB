@@ -48,10 +48,26 @@ repository exists. No other F# from either source repository applies here.
 | 10 | docs/sprints/SPRINT_10_SUMMARY.md | [OK] Complete | 2026-10-18 to 2026-10-21 |
 | 11 | docs/sprints/SPRINT_11_SUMMARY.md | [OK] Complete | 2026-10-21 to 2026-10-23 |
 | 12 | docs/sprints/SPRINT_12_SUMMARY.md | [OK] Complete | 2026-10-23 to 2026-10-24 |
+| 13 | docs/sprints/SPRINT_13_SUMMARY.md | [OK] Complete | 2026-10-24 to 2026-10-28 |
 
 ## Last Completed Sprint
 
-Sprint 12 is below; Sprint 11 follows it for continuity.
+Sprint 13 is below; Sprint 12 follows it for continuity.
+
+### Sprint 13: Fix Sprint 12's Two Defects, Check the Models, Then Read 800 Records (2026-10-24 to 2026-10-28, PR #131)
+
+Seven tasks, seven issues (#132-#138). **Corrections**: the ".;" joins and
+the LOW theoretical results' reasons (F107); Phase 2's F162 and three
+F102 values (F108). **Process**: the F39 release (F111); every LOW names
+its reason; the write-path rule reads parsed code; no reading budget.
+**Papers**: Papers and Roadmap checked (F109, F110); all 806 readable
+`qml` records, 795 read (F112); the full re-read (F113), 210 records
+applied, 302 cloud results waiting for F117. Store 2,334 -> 2,335 papers
+(869 -> 1,653 `read`), 2,970 -> 10,735 assertions; suite 1,253 -> 1,424.
+Retrospective: team lead all "Very Good"; I1, I2 and I4 applied (a
+read-row rewrite stops the apply; read-row updates name their detail;
+every commit has its CHANGELOG entry), I3 skipped. Full detail:
+`docs/sprints/SPRINT_13_SUMMARY.md`.
 
 ### Sprint 12: Fix the Entities, Speed the Suite, Then Read 400 Records (2026-10-23 to 2026-10-24, PR #122, merged to develop and to main via PR #130 on 2026-10-24; tagged sprint-12)
 

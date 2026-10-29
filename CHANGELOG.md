@@ -435,7 +435,11 @@ this project keeps having to replace with a step.
 - **fix**: Copilot's review of PR #131 (2026-10-28): `low_grade("vendor
   claim", why)` was refused as "not one of" the LOW reasons; it now says
   a vendor claim takes no why (latent: no caller passes one). Test proven
-  red by injection
+  red by injection (9e7d9fb)
+- **docs**: Sprint 13 Phase 7.7 (2026-10-28): `SPRINT_13_SUMMARY.md` with
+  its Actuals; master plan rolled (Past Sprint Summary row 13, Last
+  Completed Sprint); `CHECKLIST-Phase2-pre.md` names no sprint, so nothing
+  to reconcile. Copilot's one finding fixed and its thread resolved
 
 ### 2026-10-23 to 2026-10-24 (Sprint 12, PR #122, merged to develop 2026-10-24 and to main via PR #130 the same day; tagged sprint-12)
 
