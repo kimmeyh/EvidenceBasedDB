@@ -1,0 +1,664 @@
+{
+ "papers": [
+  {
+   "record_id": "wei-2021-quantum-convolutional-neural-network-nisq",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2021/Wei-et-al._2021_A-Quantum-Convolutional-Neural-Network-on-NISQ-Devices__2104.06918.pdf",
+   "title_in_file": "A Quantum Convolutional Neural Network on NISQ Devices",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "",
+   "what_it_is": "A proposal for a quantum convolutional neural network built from linear combinations of unitaries, with numerical simulations on image filtering and MNIST.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "qcnn-gate-count",
+     "value": "The authors state that their QCNN uses O((log2 M)6) basic gates, where M is the input data size.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "with O((log2 M)6) basic gates and O(m2 + e) variational parameters, where M is the input data size"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Complexity stated by the authors from their own circuit construction (Appendix B); not independently proved in the main text.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-exp-speedup",
+     "value": "The authors state that the algorithm achieves an exponential speedup over classical algorithms in gate complexity, comparing a classical convolutional layer cost of O(M2) with their quantum cost.",
+     "anchor": "Sec. IV, p.7-8",
+     "quotes": [
+      "For CNN, the complexity of implementing a classical convolutional layer is O(M2). Thus, this algorithm achieves an exponential speedup over classical algorithms in gate complexity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author's complexity argument; the quantum count assumes efficient state preparation by amplitude encoding or qRAM.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The comparison is of gate counts for the convolution layer only; input state preparation and readout cost are assumed efficient, so this is not an end-to-end speedup."
+    },
+    {
+     "id_suggestion": "qcnn-mnist-similar",
+     "value": "The authors report that in numerical simulations on MNIST, QCNN and CNN gave similar performance, and that QCNN involves fewer parameters and has a smaller fluctuation range.",
+     "anchor": "Sec. III.B, p.7",
+     "quotes": [
+      "We can conclude that from the numerical simulation result, QCNN and CNN provide similar performance. QCNN involves fewer parameters and has a smaller ﬂuctuation range."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical simulation result from one study, repeated 100 times per model (Fig. 4, Table I).",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-noise-model",
+     "value": "The authors state that the QCNN was run in simulation, with noise modeled as a random single-qubit Pauli gate applied with probability 0.01 after each operation.",
+     "anchor": "Sec. III.B, p.7",
+     "quotes": [
+      "The noise is simulated by randomly acting a single qubit Pauli gate in [I, X, Y, Z] with a probability of 0.01 on the quantum circuit after an operation implemented"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own simulation setup, Sec. III.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No hardware run is reported; the noise result covers only this simulated Pauli noise."
+    }
+   ]
+  },
+  {
+   "record_id": "wierichs-2022-general-parameter-shift-rules-quantum",
+   "file": "D:/Data/Harold/EvidenceBasedDB/Papers/2021-07_Wierichs_General-parameter-shift-rules-for-quantum-gradients.pdf",
+   "title_in_file": "General parameter-shift rules for quantum gradients",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Introduction, Related work, Sec. 2 background, Sec. 3.3 to 3.5 skim, Sec. 5.1 QAOA, Sec. 6 Discussion; appendices not read.",
+   "what_it_is": "A derivation of general parameter-shift rules for quantum gradients from the Fourier-series form of variational cost functions, with a resource analysis and QAOA example.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "gpsr-derivation",
+     "value": "The paper derives general parameter-shift rules for single-parameter gates from the fact that the evaluated functions are finite Fourier series of the input parameters, with closed-form expressions to apply them.",
+     "anchor": "Abstract, p.1; Sec. 3",
+     "quotes": [
+      "the evaluated functions typically are ﬁnite Fourier series of the input parameters. In this work, we use this fact to derive new, general parameter-shift rules for single-parameter gates, and provide closed-form expressions to apply them."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derivation in Sec. 3 (generalized parameter-shift rule, Eq. 24).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gpsr-2r-evals",
+     "value": "The paper states that its generalized shift rule for R equidistant frequencies requires 2R evaluations, compared with a rule of 2R + 1 evaluations in Ref. 42.",
+     "anchor": "Sec. 1, Related work, p.2",
+     "quotes": [
+      "the authors of Ref. [42] consider integer eigenvalues and derive a rule with 2R + 1 evaluations for equidistant eigenvalues",
+      "our work results in the exact generalization of those shift rules, which requires 2R evaluations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Sec. 3.3; the comparison to Ref. 42 is stated in the Related work paragraph, p.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gpsr-qaoa-savings",
+     "value": "The authors report that for MaxCut QAOA circuits, the generalized parameter-shift rule reduces the number of circuit evaluations significantly when computing derivatives with respect to parameters that feed into many gates.",
+     "anchor": "Abstract, p.1; Sec. 5.1, Tab. 3",
+     "quotes": [
+      "the generalized parameter-shift rule can reduce the number of circuit evaluations signiﬁcantly when computing derivatives with respect to parameters that feed into many gates.",
+      "We systematically observe the number of evaluations for the gradient to be cut in half"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Evaluation counts in Tab. 3 and Fig. 3 depend on an upper bound on the largest eigenvalue of the problem Hamiltonian.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gpsr-limits",
+     "value": "The authors state that much remains unknown about the practicality of the new rules, and that for a general generator the frequencies are not equidistant and the number of frequencies R may scale quadratically in the size of U, so that the method would scale poorly compared with decomposing the generator.",
+     "anchor": "Sec. 6, p.15",
+     "quotes": [
+      "much remains unknown about the practicality of our new parameter-shift rules.",
+      "the frequencies will not be equidistant, and in fact R may scale quadratically in the size of U"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of limits, Sec. 6 Discussion, p.15.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "wolf-2024-why-we-care-about-quantum",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2024/Wolf_2024_Why-we-care-about-quantum-machine-learning__2401.07547.pdf",
+   "title_in_file": "Why we care (about quantum machine learning)",
+   "version_note": "",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "A short extended abstract giving a socio-epistemological reading of why quantum machine learning receives so much attention.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "wolf-corpus",
+     "value": "The author states that the analysis rests on a corpus of 10 specialised QML publications and a corpus of 5 general-audience headlines and synopses.",
+     "anchor": "Sec. II Methods, p.1",
+     "quotes": [
+      "Analyse a corpus of 10 specialised publications",
+      "Analyse a corpus of 5 headlines and synopsis"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of its own method, Sec. II.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "A corpus of 15 items is a small qualitative sample, so the conclusions are the author's interpretation rather than a measured result."
+    },
+    {
+     "id_suggestion": "wolf-pragmatic",
+     "value": "The author states as a key conclusion that some part of the rationality behind the support of QML appears to be pragmatic, despite often being interpreted as epistemic.",
+     "anchor": "Sec. IV.A",
+     "quotes": [
+      "One of the key conclusions is that some part of the rationality behind the support of QML appears to be pragmatic, despite often being interpreted as epistemic."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author's argued interpretation from a small corpus, not tested.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "wolf-field-state",
+     "value": "The author states that QML developments are currently limited to theoretical statements and formal proofs, or to small-scale noisy experiments and classical simulations.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "Despite its developments being currently limited to either theoretical statements and formal proofs"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author's characterization of the field in the abstract, with no single study behind it.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "wolf-limits",
+     "value": "The author states that the extended abstract only scratched the surface of the questions raised and does not aspire to provide a definite answer to any of them.",
+     "anchor": "Sec. I and Sec. IV.A",
+     "quotes": [
+      "It by no means aspires to provide a deﬁnite answer to any of those questions",
+      "This extended abstract only scratched the surface of questions which deserve more sustained and in-depth analysis."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The author's own statement of scope and limits, Sec. I and Sec. IV.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "wu-2023-real-neural-network-state-quantum",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2023/Wu-et-al._2023_A-real-neural-network-state-for-quantum-chemistry__2301.03755.pdf",
+   "title_in_file": "A real neural network state for quantum chemistry",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Introduction, Methods skim, Sec. III Results, Sec. IV Conclusion.",
+   "what_it_is": "A real-valued single-layer neural network ansatz (tanh-FCN) adapted from the restricted Boltzmann machine for variational Monte Carlo ground-state energies of molecules, with a Hartree-Fock re-initialization technique.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "tanhfcn-real",
+     "value": "The authors state that their network uses only real numbers to represent the real electronic wave function, and that they obtain precision comparable to RBM for various prototypical molecules.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "our neural network only uses real numbers to represent the real electronic wave function, while we obtain comparable precision to RBM for various prototypical molecules"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author's summary of simulation results (Table I); the body notes tanh-FCN is less accurate than RBM on several molecules.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tanhfcn-less-accurate",
+     "value": "The authors report that the energies from tanh-FCN are not as accurate as those from RBM, but that its computational cost is at least two times lower than RBM at the same hidden size.",
+     "anchor": "Sec. III.D, p.4",
+     "quotes": [
+      "we note that the energies obtained using tanh-FCN is not as accurate as those obtained using RBM, however the computational cost of tanh-FCN is at least two times lower than RBM"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical comparison on small molecules in the STO-3G basis (Table I).",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hf-reinit",
+     "value": "The authors report that initializing the Monte Carlo sampling from the Hartree-Fock reference state accelerates convergence and improves final-energy accuracy for both tanh-FCN and RBM, shown on the H2O molecule (STO-3G basis, 14 qubits).",
+     "anchor": "Sec. III.E, Fig. 4; Sec. IV",
+     "quotes": [
+      "demonstrate that this technique can signiﬁcantly accelerate the convergence and improve the accuracy of the ﬁnal energy for both tanh-FCN and RBM",
+      "The H2O (STO-3G basis, 14 qubits) molecule is used here"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one molecule (Fig. 4).",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tanhfcn-scope",
+     "value": "The authors state that the study focuses on molecular systems with at most 30 qubits.",
+     "anchor": "Sec. III.A, p.3",
+     "quotes": [
+      "in this work we focus on molecular systems with at most 30 qubits"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of its own scope, Sec. III.A.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "wu-2025-hybrid-tensor-network-neural-network",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2025/Wu-et-al._2025_Hybrid-tensor-network-and-neural-network-quantum-states-for-quantum-chemistry__2507.19276.pdf",
+   "title_in_file": "Hybrid tensor network and neural network quantum states for quantum chemistry",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Introduction, Sec. 4 Results (text and captions), Sec. 5 Conclusion; Sec. 2 and 3 method details skimmed only.",
+   "what_it_is": "Two hybrid tensor network and neural network ansatze (BDG-RNN and RBM-inspired correlators) and a semi-stochastic local-energy algorithm for variational Monte Carlo in quantum chemistry.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "hybrid-chem-acc",
+     "value": "The authors report that their approaches reach chemical accuracy in challenging systems including the one-dimensional hydrogen chain H50, and state that chemical accuracy is achieved across all systems tested using BDG-RNN.",
+     "anchor": "Abstract, p.1; Sec. 5",
+     "quotes": [
+      "We validated our methodology on several prototypical systems, including the 1D hydrogen chain H50",
+      "where the chemical accuracy is achieved across all systems using BDG"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical results from the paper's own VMC runs (Figs. 2 to 4).",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hybrid-semistochastic",
+     "value": "The authors report that, with the chosen settings, the semistochastic local-energy evaluation reduces computational cost to just 0.05% of the original, an approximately 2000-fold speedup, in the hydrogen-chain benchmark.",
+     "anchor": "Sec. 4.1, Fig. 2",
+     "quotes": [
+      "With these settings, the computational cost is reduced to just 0.05% of the original, yielding an approximately 2000-fold speedup."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical timing result from one benchmark (Fig. 2a).",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hybrid-rbm-corr",
+     "value": "The authors state that a large systematic enhancement in accuracy is observed using RBM-inspired correlators.",
+     "anchor": "Sec. 5, p.20",
+     "quotes": [
+      "a large systematic enhancement in accuracy is observed using RBM-inspired correlators."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from the paper's own runs (Figs. 3 and 4).",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hybrid-limit",
+     "value": "The authors state that, although BDG-RNN shows superior accuracy over MPS at the same bond dimensions, further developments are necessary to apply it to large-scale strongly correlated systems.",
+     "anchor": "Sec. 5, p.21",
+     "quotes": [
+      "demonstrates superior accuracy over MPS at the same bond dimensions, further developments are necessary in order to apply it to large-scale strongly correlated systems"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of limits, Sec. 5.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "wu-2026-cutvqa-co-designing-circuit-cutting",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2025/Wu-et-al._2025_Efficient-Variational-Quantum-Algorithms-via-Circuit-Knitting-and-Architecture__2508.03376.pdf",
+   "title_in_file": "CutVQA: Co-Designing Circuit Cutting and Architecture Search for Scaling Variational Quantum Algorithms",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Introduction, Sec. 2 background, Sec. 3 skimmed, Sec. 4 Experiments, Sec. 5 Conclusion.",
+   "what_it_is": "A framework combining circuit cutting with quantum architecture search and subcircuit-level optimization to scale variational quantum algorithms, evaluated in simulation on QAOA and VQE.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "cutvqa-headline",
+     "value": "The authors report that on QAOA and VQE evaluations CutVQA matches baseline accuracy while reducing sampling overhead by 2-3 orders of magnitude and shortening training time by at least 50%.",
+     "anchor": "Abstract, p.1; Sec. 4.2",
+     "quotes": [
+      "show that CutVQA matches baseline accuracy while reducing sampling overhead by 2-3 orders of magnitude and shortening training time by at least 50%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical simulation result, averaged over ten runs (Table 2, Fig. 4).",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cutvqa-setup",
+     "value": "The authors state that the experiments ran on AMD EPYC 9654 CPUs (96 cores, 192 threads) with 512GB memory using the Mindquantum and Qiskit software development kits, and that the noise tests used four noise models each with noise probability 0.01.",
+     "anchor": "Sec. 4.1 and 4.4",
+     "quotes": [
+      "Experiments ran on AMD EPYC 9654 CPUs (96 cores, 192 threads, 2.4GHz) with 512GB DDR5-4800MHz memory",
+      "each with noise probability 0.01"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own experimental setup, Sec. 4.1 and Sec. 4.4.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The evaluation ran on classical CPUs, so it is a simulation study and shows no run on quantum hardware."
+    },
+    {
+     "id_suggestion": "cutvqa-scope",
+     "value": "The authors state that CutVQA was evaluated on VQE for ground-state energies of H2, LiH, and F2, and on QAOA for Max-Cut on random graphs, with all methods restricted to at most five ansatz blocks.",
+     "anchor": "Sec. 4.1 and 4.2.1",
+     "quotes": [
+      "CutVQA was evaluated on VQE [24] for ground-state energies of H2, LiH, and F2, and on QAOA [12] for Max-Cut",
+      "with all methods restricted to at most five ansatz blocks to ensure fairness"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of the benchmarks and limits of its evaluation, Sec. 4.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cutvqa-cutting-cost",
+     "value": "The authors state that circuit cutting has an exponential sampling overhead, whose cost grows exponentially with the number of partition points.",
+     "anchor": "Sec. 2, p.2-3",
+     "quotes": [
+      "A major limitation of circuit cutting is the exponential sampling overhead",
+      "Intuitively, the cost grows exponentially with the number of partition points."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The overhead is attributed to prior work (cited as Ref. 25).",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "xu-2025-accelerating-quantum-reinforcement-learning-quantum",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2025/Xu-Aggarwal_2025_Accelerating-Quantum-Reinforcement-Learning-with-a-Quantum-Natural-Policy__2501.16243.pdf",
+   "title_in_file": "Accelerating Quantum Reinforcement Learning with a Quantum Natural Policy Gradient Based Approach",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Sec. 1 Introduction, Sec. 3 and 4 theorem statements and discussion, Sec. 5 Conclusion; appendix proofs not read.",
+   "what_it_is": "A theory paper proposing a Quantum Natural Policy Gradient algorithm for model-free reinforcement learning with quantum oracle access, with sample-complexity guarantees.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "qnpg-sample-complexity",
+     "value": "The paper states that the QNPG algorithm achieves a sample complexity of O~(-1.5) for queries to the quantum oracle, improving on the classical lower bound of O~(-2) for queries to the MDP.",
+     "anchor": "Abstract, p.1; Theorem 3, Sec. 4",
+     "quotes": [
+      "This paper demonstrates that the proposed QNPG algorithm achieves a sample complexity of O˜(ϵ−1.5) for queries to the quantum oracle, significantly improving the classical lower bound of O˜(ϵ−2) for queries to the MDP."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3 (Sec. 4), under Assumptions 1 to 3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The two bounds count different things (queries to a quantum oracle versus queries to the MDP), so the improvement holds only under the quantum-oracle access model."
+    },
+    {
+     "id_suggestion": "qnpg-oracle-setup",
+     "value": "The authors state that they assume access to a quantum transition oracle and a quantum initial state oracle, which are quantum analogs for sampling from the classical environment and the initial state distribution.",
+     "anchor": "Sec. 1, p.1",
+     "quotes": [
+      "we assume access to a quantum transition oracle and a quantum initial state oracle"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup, Sec. 1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnpg-bias",
+     "value": "The authors state that the deterministic truncation-based estimator introduces a bounded bias, and that the bias decays exponentially with increasing truncation levels.",
+     "anchor": "Abstract, p.1; Theorem 1, Lemma 5",
+     "quotes": [
+      "While this modification introduces a bounded bias in the estimator, the bias decays exponentially with increasing truncation levels."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 and Lemma 5, Sec. 3 (proofs in Appendix C and D).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnpg-outer-loop",
+     "value": "The authors state that the sample-complexity bound arises because quantum computing can accelerate the inner loop but not the outer loop of such algorithms.",
+     "anchor": "Sec. 1.1, p.2",
+     "quotes": [
+      "this limitation arises because quantum computing can accelerate the inner loop but not the outer loop of such algorithms."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of the limit of the approach, Sec. 1.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "xu-2025-entangled-mixed-state-datasets-generation",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2025/Xu-et-al._2025_Entangled-mixed-state-datasets-generation-by-quantum-machine-learning__2503.06452.pdf",
+   "title_in_file": "Entangled Mixed-State Datasets Generation by Quantum Machine Learning",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Introduction, Sec. 3 theorem statement, Sec. 4 benchmark text, Sec. 5 Conclusion; proofs and Sec. 2 details skimmed.",
+   "what_it_is": "A method for generating entangled and separable mixed-state datasets using supervised QML and concentratable entanglement, with a benchmark of three parameterized quantum circuits.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "emsd-method",
+     "value": "The authors state that the paper provides a method for generating mixed-state datasets for entangled-separable classification tasks, based on supervised quantum machine learning and the concentratable entanglement measures.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "This paper is dedicated to provide a method for generating mixed-state datasets for entangled-separable classification tasks. This method is based on supervised quantum machine learning and the concentratable entanglement measures."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of its own contribution and scope, Abstract.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emsd-continuity",
+     "value": "The authors state that they proved a continuity bound for the concentratable entanglement, so that states close in trace distance have similar values.",
+     "anchor": "Sec. 3, Theorem 1; Sec. 5",
+     "quotes": [
+      "we proved a continuity bound for CEL.",
+      "similar CEL values, providing a rigorous basis for our dataset generation approach."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1, Sec. 3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emsd-benchmark",
+     "value": "The authors report from numerical simulations that HWE and SEA perform better than SD on the dataset classification task, with performance mainly influenced by depth.",
+     "anchor": "Sec. 4",
+     "quotes": [
+      "Overall, through our numerical simulations, we find that HWE and SEA perform better in the dataset classification task, with their performance mainly influenced by depth."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical simulation result on the authors' generated datasets of 2, 3, 4 and 5 qubits.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emsd-ghz-limit",
+     "value": "The authors report that learning on GHZ and W states with white noise reached a highest accuracy of only 60%, which they describe as equivalent to random guessing in most cases.",
+     "anchor": "Sec. 4",
+     "quotes": [
+      "we also conducted learning on both GHZ state and W state with white noise",
+      "the highest accuracy in this architecture is only 60%, which is equivalent to random guessing in most cases."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical simulation result reported in Sec. 4.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,2000 @@
+{
+ "papers": [
+  {
+   "record_id": "gonon-2026-quantitative-universal-approximation-noisy-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Gonon-Jacquier-Mordarski_2026_Quantitative-Universal-Approximation-for-Noisy-Quantum-Neural__2604.02064.pdf",
+   "title_in_file": "Quantitative Universal Approximation for Noisy Quantum Neural Networks",
+   "version_note": "The text layer holds the paper twice (v3 of 19 May 2026, then the same text again); the first copy was read and the second was used only to check quotes.",
+   "pages": 30,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper with a hardware test that proves quantitative universal approximation bounds for noisy QNNs, with a depolarising-noise specialisation tested on ibm_fez for Black-Scholes put pricing.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "gonon-bounds-limits",
+     "verdict": "confirmed",
+     "note": "Section 1 and Section 5 both state these limits; the conclusion also adds that the Levy constants scale as O(T -d/2).",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "gonon-ibm-fez-envelope",
+     "verdict": "confirmed",
+     "note": "Confirmed. Figure 4.2 caption adds alpha = 0.3650, total bound $18.578 and empirical MAE $2.345; see the new assertion.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "gonon-noisy-qnn-uat",
+     "verdict": "narrowed",
+     "note": "The abstract's explicit bound in hardware noise parameters is Theorem 3.17 (depolarising noise only, with a statistical, a systematic and an offset term); Theorem 3.6 for general CPTP noise is stated in terms of a worst-case fidelity Fmin, not hardware parameters.",
+     "value": "The paper proves Theorem 3.17 for depolarising noise: for any R > 0, f in F_R, n in N and depolarising noise parameters (λV, λU), there exists θ such that the L2(μ) approximation error by the noisy QNN is bounded by terms for statistical, systematic and offset error. For general CPTP noise it proves Theorem 3.6, whose noise term depends on the worst-case fidelity Fmin.",
+     "anchor": "Theorem 3.17, Section 3.5, p.13; Theorem 3.6, Section 3.4, p.10",
+     "quotes": [
+      "Theorem 3.17 (Universal approximation with depolarising noise). For any R > 0, f ∈ FR, n ∈ N, and depolarising noise parameters (λV, λU), there exists θ ∈ Θ such that",
+      "Theorem 3.6 (Universal approximation under general CPTP noise)",
+      "Fmin is the worst-case fidelity"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3.17 and Theorem 3.6 are proved in Section 3 and their conditions are quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "gonon-thm36-general-cptp",
+     "value": "The paper proves Theorem 3.6: for any R > 0, f in F_R, n in N and CPTP channels ΨV and ΨU, there exists θ such that the L2(μ) error of the noisy QNN is bounded by the noiseless bound plus a noise term that depends on the worst-case fidelity Fmin.",
+     "anchor": "Theorem 3.6, Section 3.4",
+     "quotes": [
+      "Theorem 3.6 (Universal approximation under general CPTP noise). For any R > 0, f ∈ FR, n ∈ N, CPTP channels ΨV and ΨU, there exists θ ∈ Θ such that",
+      "is the worst-case fidelity Fmin := inf inf"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3.6 is proved in Section 3.4 and its conditions are quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gonon-thm315-affine-cancel",
+     "value": "The paper proves Theorem 3.15: adding two trainable parameters β1, β2 as an affine post-processing layer exactly cancels the depolarising bias, so optimal training of the augmented QNN exactly recovers the ideal QNN output. In the case of Remark 3.14 only β1 needs to be trained, and β2 = 0.",
+     "anchor": "Theorem 3.15 and Remark 3.14, Section 3.5",
+     "quotes": [
+      "Theorem 3.15 (Exact depolarising-noise cancellation by affine post-processing).",
+      "Equivalently, optimal training of the augmented QNN exactly recovers the ideal QNN output.",
+      "In the case of Remark 3.14 (2n = 4n), β2 = 0 and only β1 needs to be trained."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3.15 is proved from Corollary 3.13 in Section 3.5; the depolarising model is its condition.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gonon-cor313-depolarising-output",
+     "value": "The paper derives Corollary 3.13: under depolarising noise the noisy QNN output equals α times the ideal QNN output plus a constant offset, where α := (1 − λV)(1 − λU).",
+     "anchor": "Proposition 3.12 and Corollary 3.13, Section 3.5",
+     "quotes": [
+      "Corollary 3.13. With fnR,θ(·) the ideal QNN output from (2.2), we obtain, under depolarising noise,",
+      "where α := (1 − λV)(1 − λU)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 3.5 from Proposition 3.12.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gonon-prop320-readout",
+     "value": "The paper proves Proposition 3.20: for depolarising noise with readout error p, the approximation bound of the depolarising theorem gains an additional term 4Rp.",
+     "anchor": "Proposition 3.20, Section 3.7",
+     "quotes": [
+      "Proposition 3.20. For depolarising noise with readout error p, the approximation bound is,",
+      "Thus f R n,θ − fnR,θ L2 (μ) ⩽ 4Rp."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Section 3.7 with the worst-case readout argument quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gonon-three-error-terms",
+     "value": "The authors state that the total approximation error has three contributions, a statistical term that is the noiseless bound scaled by the hardware fidelity factor α, a systematic term that is the fundamental limitation that noisy circuits cannot perfectly reproduce the target function, and an offset term depending on the qubit count.",
+     "anchor": "Remark 3.18, Section 3.5; Section 5",
+     "quotes": [
+      "The total approximation error has three contributions:",
+      "is the bound from [9] scaled by the hardware fidelity factor α.",
+      "represents the fundamental limitation: noisy circuits cannot perfectly reproduce the target function."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Remark 3.18 reads off the terms of the proved Theorem 3.17.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gonon-prop22-expectation-functions",
+     "value": "The paper proves Proposition 2.2: for f(x) := E[Φ1(x + L)] with L an R^d-valued random variable, if Φ1 is in L1(R^d) and ξ → E[e^{iL·ξ}] is integrable, then Statement 2.1 holds with B = L1[f ].",
+     "anchor": "Proposition 2.2, Section 2.2, p.4",
+     "quotes": [
+      "Proposition 2.2. Let L be an Rd-valued random variable and f (x) := E[Φ1(x + L)] on Rd.",
+      "If Φ1 ∈ L1(Rd) and ξ → E[eiL·ξ] is integrable, then Statement 2.1 holds with B = L1[f ]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Section 2.2 with the conditions quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gonon-cor24-levy-constant",
+     "value": "The paper proves Corollary 2.4: for a d-dimensional Levy process with non-degenerate diffusion matrix and Φ ∘ exp in L1(R^d), the noiseless approximation statement holds with an explicit constant B. The authors state the resulting constants for Levy models scale as O(T −d/2).",
+     "anchor": "Corollary 2.4, Section 2.2; Section 1 scope and limitations",
+     "quotes": [
+      "Corollary 2.4. Let L be a d-dimensional Lévy process with non-degenerate diffusion matrix: there exists C > 0 such that",
+      "the constants for Lévy models scale as O(T −d/2)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Corollary 2.4 is proved in Section 2.2 and its condition is quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gonon-bs-put-constant",
+     "value": "The authors compute for the truncated Black-Scholes put with K = 1, K = 0.4, σ = 0.2, T = 1 and a = a∗ ≈ 0.584 the constant B ≈ 2.316, and estimate that the truncation error at the money is around 4 · 10−6.",
+     "anchor": "Examples 2.3.3, Section 2.3, p.6",
+     "quotes": [
+      "For K = 1, K = 0.4, σ = 0.2, T = 1 and a = a∗ ≈ 0.584 we obtain B ≈ 2.316.",
+      "at the money x = 0, for K = 1, K = 0.4, σ = 0.2, T = 1, the error is around 4 · 10−6."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: theoretical result",
+     "result_type": "theoretical",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gonon-bachelier-put-constant",
+     "value": "The authors compute for the Put option in the Bachelier model, normalised by the spot price with K = 1, σ = 0.2, T = 1 and a = Kπ/2, the constant B ≈ 0.1986.",
+     "anchor": "Section 2.3.2, p.5",
+     "quotes": [
+      "Working with quantities normalised by the spot price, for example, we obtain for K = 1, σ = 0.2, T = 1 and a = Kπ/2, then B ≈ 0.1986."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: theoretical result",
+     "result_type": "theoretical",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gonon-gaussian-experiment",
+     "value": "The authors report for the one-dimensional Gaussian density, on the domain x in [−4, 4] with 100 uniformly spaced points and parameters optimised by differential evolution, that the empirical RMSE lies below the theoretical L2 bound and the ratio MAE/εn lies below 1 throughout. They state the needed number of accuracy blocks shows a quadratic dependence n = O(ε−2), typical of Monte Carlo-type approximation.",
+     "anchor": "Section 4.2, p.14 to 15",
+     "quotes": [
+      "We consider the domain x ∈ [−4, 4] with 100 uniformly spaced points and optimise the parameters by differential evolution.",
+      "the empirical RMSE lies below the theoretical L2 bound",
+      "the ratio MAE/εn, which lies below 1 throughout, confirming that the bound of Statement 2.1 holds in the finite-n regime",
+      "This highlights the quadratic dependence n = O(ε−2), typical of Monte Carlo-type approximation"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gonon-noiseless-bs-put-experiment",
+     "value": "The authors report that in the noiseless Black-Scholes Put experiment (Method A) the ratio of the empirical MAE to the bound εn lies below the bound at all four tested values of n, n in {2, 4, 6, 8}, and that the largest absolute errors concentrate near the deep-in-the-money boundary.",
+     "anchor": "Section 4.3, p.15",
+     "quotes": [
+      "The ratio MAE/εn lies below at all four values of n, confirming that the bound is not merely asymptotic but holds in the finite-n NISQ regime.",
+      "Figure S2.6 plots the empirical MAE for Method A against n ∈ {2, 4, 6, 8}",
+      "The largest absolute errors concentrate near the deep-in-the-money boundary"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result",
+     "result_type": "measured",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gonon-noise-sim-agreement",
+     "value": "The authors report that for depolarising error rates ε in {0.001, 0.005, 0.01, 0.02} the density-matrix prediction of the depolarised state agrees with AerSimulator with a depolarising NoiseModel across all 20 test points, and that at ε = 0.02 the systematic term of Theorem 3.17 dominates.",
+     "anchor": "Section 4.4, p.15",
+     "quotes": [
+      "For ε ∈ {0.001, 0.005, 0.01, 0.02}",
+      "compared against AerSimulator with a depolarising NoiseModel; agreement holds across all 20 test points",
+      "while at ε = 0.02 the systematic term (1 − α) f L2(μ) of Theorem 3.17 dominates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gonon-hardware-setup",
+     "value": "The authors state that circuits trained by Method A were run on ibm_fez via SamplerV2 with Nshots = 8192 and optimization_level=3 transpilation on 10 randomly drawn test points.",
+     "anchor": "Sections 4.1 and 4.5",
+     "quotes": [
+      "Circuits trained by Method A are run on ibm_fez via SamplerV2 with Nshots = 8192 and optimization_level=3 transpilation on 10 randomly drawn test points (S, K, T, r, σ).",
+      "Shot budget: Nshots = 8192 per circuit"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own hardware experiment setup in Section 4.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gonon-hardware-figure42-numbers",
+     "value": "The authors report in the hardware figure caption, for the ibm_fez experiment, α = 0.3650, a total bound of $18.578, an empirical MAE of $2.345, a Pearson correlation of 0.9973 with the comprehensive noise model, and that the systematic term dominates at current noise levels.",
+     "anchor": "Figure 4.2 caption, Section 4.5, p.16",
+     "quotes": [
+      "Panel (f): summary statistics including α = 0.3650, total bound $18.578, empirical MAE $2.345, and Pearson correlation 0.9973 with the comprehensive noise model.",
+      "the systematic term (1 − α) f L2(μ) dominates at current noise levels"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The bound is roughly eight times the observed MAE, so staying inside the envelope is a weak test of the bound's sharpness."
+    },
+    {
+     "id_suggestion": "gonon-ibm-fez-parameters",
+     "value": "The authors list for ibm_fez (Heron r2) a single-qubit gate error of 2.761 · 10−4, a two-qubit gate error of 2.548 · 10−3, a relaxation time of 144.97 μs, a dephasing time of 99.9 μs and a two-qubit gate duration of 68 ns.",
+     "anchor": "Appendix A, Table 1, p.17",
+     "quotes": [
+      "Value 2.761 · 10−4 2.548 · 10−3 144.97 μs 99.9 μs 68 ns",
+      "ibm_fez two-qubit error rate ε2Q = 2.548 · 10−3"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: setup result",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The column-to-row mapping is read from the order of the table's rows, since the text layer prints the columns separately."
+    },
+    {
+     "id_suggestion": "gonon-lambda-v-definition",
+     "value": "The authors define the effective depolarising parameter of the V gate, built from n − 2 one-qubit Hadamard gates with per-gate error rate ε1Q, as λV = 1 − (1 − ε1Q)n−2, and state that implementing U via Uniformly Controlled Rotations reduces the two-qubit gate count by a factor of roughly 15.",
+     "anchor": "Section 3.6, p.12 to 13",
+     "quotes": [
+      "the effective parameter is thus λV = 1 − (1 − ε1Q)n−2.",
+      "its implementation via Uniformly Controlled Rotations reduces this by a factor of roughly 15"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the hardware-parameterised model in Section 3.6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gonon-v-noiseless-assumption",
+     "value": "The authors state in the Kraus-form remark that they assume the operation of V is noiseless, because V only consists of Hadamard gates.",
+     "anchor": "Remark 3.5, Section 3.3, p.8",
+     "quotes": [
+      "We actually assume that the operation of V is noiseless (which is not so demanding as V only consists of Hadamard gates"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own stated modelling assumption in Remark 3.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Section 3.6 then gives V a nonzero depolarising parameter λV, so the remark's assumption is not the one used in the hardware bound."
+    },
+    {
+     "id_suggestion": "gonon-circuit-validation",
+     "value": "The authors report that the inner product between the circuit built with uniformly controlled rotations and the naive circuit equals 1 to tolerance 10−9 for n in {2, 4, 8}, d in {1, 5} and three parameter scales.",
+     "anchor": "Section 4.1.1, p.14",
+     "quotes": [
+      "The inner product | ψUCR|ψnaive | equals 1 to tolerance 10−9 for n ∈ {2, 4, 8}, d ∈ {1, 5}"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gonon-open-problems",
+     "value": "The authors state as open or next steps: sharper dimension-dependent bounds, extending the depolarising specialisation to non-unital noise channels, and adapting the analysis to data-reuploading circuits and to fault-tolerant regimes. They state the depolarising bound is architecture-specific.",
+     "anchor": "Section 1 scope and limitations; Section 5, p.16",
+     "quotes": [
+      "sharper dimension-dependent bounds, perhaps exploiting the convolutional structure of f , would be valuable.",
+      "The depolarising specialisation could be extended to non-unital noise channels (amplitude damping in isolation, leakage)",
+      "the depolarising bound is architecture-specific"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limits and open problems in Sections 1 and 5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gonon-cited-noise-collapse",
+     "value": "The authors state, citing other work, that under non-unital noise deep parameterised circuits estimating expectation values collapse to logarithmic depth, and that in this truncated regime their outputs can be classically estimated to constant precision.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "Under non-unital noise, deep parameterised circuits estimating expectation values collapse to logarithmic depth [21], and in this truncated regime, their outputs can be classically estimated to constant precision [20]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: cited result",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gonon-cited-noise-gap",
+     "value": "The authors state, citing other work, that the accuracy gap between noise-free simulation and execution on IBMQ devices can exceed 60% on simple classification tasks unless the model is explicitly made noise-aware.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "the accuracy gap between noisefree simulation and execution on IBMQ devices can exceed 60% on simple classification tasks unless the model is explicitly made noise-aware [36]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: cited result",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gonon-prior-noiseless-only",
+     "value": "The authors state that all earlier quantitative approximation results for quantum circuits (Korobov, Fourier-integrable, Sobolev and Hölder function classes) assume noiseless quantum circuits.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "All of these results assume noiseless quantum circuits."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: cited result",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "gross-2026-kernel-based-optimization-measurement-operators",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Gross-Rieser_2026_Kernel-based-optimization-of-measurement-operators-for-quantum-reservoir__2602.14677.pdf",
+   "title_in_file": "Kernel-based optimization of measurement operators for quantum reservoir computers",
+   "version_note": "",
+   "pages": 26,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory and simulation paper that formulates optimal readout-observable training for stateless and stateful quantum reservoir computers as kernel ridge regression and tests it on MNIST, Lorenz-63, a harmonic signal and Mackey-Glass.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "gross-memory-limit-large-n",
+     "verdict": "confirmed",
+     "note": "Confirmed in Section II C 1. The summary adds that application to larger systems is bottlenecked by memory for the 4^N-dimensional operator matrix.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "gross-optimal-observable-method",
+     "verdict": "narrowed",
+     "note": "The optimality is that of a minimizer of a Tikhonov-regularized training loss over all Hermitian operators (Appendix A, representer property). The paper says generalization is not covered: both optimization methods provide only error bounds on the training set.",
+     "value": "The authors derive in Appendix A that for a Tikhonov-regularized loss over the Hermitian operators there exists an optimal observable in the span of the training-data states, so for the squared-error loss measurement optimization for a QELM is exactly kernel ridge regression. They state that a closer look at generalization is future work, since both primal and dual optimization methods provide only error bounds on the training set.",
+     "anchor": "Appendix A; Section V, p.10 to 11",
+     "quotes": [
+      "we optimize the measurement operator M using a Tikhonovregularized loss function",
+      "Therefore, there exists an optimal observable M ∗ in the span of the training data",
+      "Thus, for the squared-error loss, measurement optimization for a QELM is exactly kernel ridge regression",
+      "since both primal and dual optimization methods provide only error bounds on the training set"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Appendix A proves the representer property and states its conditions (regularized loss over M(H)); Section V states the limit.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "gross-qelm-mnist-accuracy",
+     "verdict": "widened",
+     "note": "Adds the accuracies (93.5% and 92%), the qubit number and the condition that monomials up to order 2 close the gap.",
+     "value": "The authors report for a QELM with N = 5 qubits on MNIST that the test accuracy of the classical SVM saturates at around 93.5%, which appears to be also an upper limit for the QELM, and that without additional monomial features the QELM test accuracy saturates at about 92% but requires a significantly larger number of observables.",
+     "anchor": "Section IV A, p.7 to 8",
+     "quotes": [
+      "We use a QELM with N = 5 qubits",
+      "We find that the test accuracy of the classical SVM saturates at around ACSVM ≈ 93.5%, which appears to be also an upper limit for the QELM.",
+      "Notably, without additional monomial features, the QELM test accuracy saturates at AQELM ≈ 92%, but requires a significantly larger number of observables."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "gross-dual-closed-form",
+     "value": "The authors state that for the least-squares loss the dual coefficients of the optimal observable are available in closed form as α∗ = (K + λ1)−1y, with Kij = tr(ρ(xi)ρ(xj)), and that an optimally trained QELM then admits the kernel form f(x) = sum over j of αj∗ tr(ρ(xj)ρ(x)) = tr(M ∗ρ(x)).",
+     "anchor": "Section II B, Eqs. (2.10) and (2.11), p.3",
+     "quotes": [
+      "For the least-squares loss, the canonical solution coefficients are available in closed form as α∗ = (K + λ1)−1y, Kij = tr(ρ(xi)ρ(xj)).",
+      "an optimally trained QELM [Eq. (2.2)] admits the kernel form"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section II B and Appendix A under the least-squares loss, which is quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gross-stateful-representer",
+     "value": "The authors derive in Appendix F that for a QRC with internal memory, under the assumptions that the reservoir has fading memory so that inputs older than the memory length L are negligible and that initialization transients have decayed, the representer theorem gives an optimal observable in the span of the window-state density matrices, with a kernel on input histories.",
+     "anchor": "Appendix F, Eqs. (F7) to (F10)",
+     "quotes": [
+      "Due to the fading memory of the reservoir, the dependence on inputs earlier than time t − L is negligible.",
+      "We assume that any transient associated with the reservoir initialization has already decayed before the observed sequence begins",
+      "By the representer theorem in (M(H), ⟨·, ·⟩HS), there exists an optimal observable [67, 76]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix F with its assumptions quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gross-stateless-assumption",
+     "value": "The authors state that the feature map is assumed to be stateless, so that the state is always fully determined by the input vector, and that a QRC with memory length L is treated as stateless by using the input history as an effective input, an approximation they say is typically warranted by the echo state property.",
+     "anchor": "Section II A, p.2",
+     "quotes": [
+      "the feature map (2.1) is assumed to be stateless in the sense that the state ρ is always fully determined by the input vector x",
+      "This approximation is typically warranted due to the echo state property of a QRC."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own model assumption in Section II A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gross-efficiency-primal-dual",
+     "value": "The authors state that for a complete operator basis the primal formulation has time complexity O of 64 to the power N and memory O of 16 to the power N (printed O(64N ) and O(16N )), while the dual formulation inverts a P by P kernel matrix with time cubic and memory quadratic in P, so the dual method is preferable when the number of samples is small compared to the feature-space dimension. Truncating the operator basis can make the primal method more efficient at the expense of losing the optimality guarantee.",
+     "anchor": "Section II C 1, p.4",
+     "quotes": [
+      "In the case of a complete operator basis, m = D2 = 4N , leading to a scaling of O(64N ) in time and O(16N ) in memory.",
+      "Thus, the dual method is preferable when the number of samples is small compared to the feature space dimension (P ≪ m)",
+      "If one chooses to truncate the operator basis to m < D2, the primal method can become more efficient, however at the expense of losing the optimality guarantee."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Complexity statements derived in Section II C 1 with conditions quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gross-efficiency-abstract-claim",
+     "value": "The authors claim in the abstract that for large qubit numbers the method is more efficient than the conventional training of QRCs.",
+     "anchor": "Abstract, p.1; Section II C 1",
+     "quotes": [
+      "For large qubit numbers, this method is more efficient than the conventional training of QRCs.",
+      "Explicitly constructing and storing M ∗ requires O(D2) = O(4N ) memory, which eventually limits the feasibility of the full optimization for large N ."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The abstract's efficiency claim is bounded by the paper's own memory limit for M*, and the experiments reach only N up to about 10."
+    },
+    {
+     "id_suggestion": "gross-implementation-single-rotation",
+     "value": "The authors state that, since M* is Hermitian, the optimal observable can be implemented by a single basis rotation V† followed by a standard computational-basis measurement, which is equivalent to measuring all 2^N Pauli-Z strings; the Pauli-basis subsets do not necessarily mutually commute.",
+     "anchor": "Section II C 2 and 3; Section V",
+     "quotes": [
+      "Thus, the optimal observable can be implemented by a single basis rotation V † followed by a standard computational-basis measurement.",
+      "Exact implementation of the optimal measurement operator M ∗ on an N -qubit system requires measuring all 2N Z-strings",
+      "the elements of the set OP∗auli do not necessarily mutually commute"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section II C 3 (diagonalization of the Hermitian M*).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gross-pauli-truncation-bound",
+     "value": "The authors prove in Appendix D that, for any feature state with Hilbert-Schmidt norm at most one, the worst-case prediction error from measuring only a subset of Pauli observables is bounded by the Hilbert-Schmidt norm of the omitted part of M*, that is by the magnitude of the omitted coefficients.",
+     "anchor": "Appendix D, Eq. (D1)",
+     "quotes": [
+      "Using the Cauchy–Schwarz inequality in the Hilbert–Schmidt inner product yields",
+      "Since for any feature state |ρ(x)|HS ≤ 1, the worst-case prediction error is bounded by the magnitude of the omitted coefficients"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix D from the Cauchy-Schwarz inequality; the condition is quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gross-conjugation-invariance",
+     "value": "The authors state that global conjugation of the feature map by a unitary leaves the trained predictor unchanged and only transforms the optimal observable, so for stateless QELMs with a unitary channel optimization of the reservoir unitary can be traded against optimization of the measurement operator.",
+     "anchor": "Section II B remark (ii); Section V",
+     "quotes": [
+      "Global conjugation ρ(x) → U ρ(x) U † leaves the expression (2.11) unchanged and only transforms the optimal observable",
+      "for stateless QELMs with a unitary channel, optimization of the reservoir unitary can be traded against optimization of the measurement operator"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows from the trace form of the kernel, Section II B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gross-primal-dual-equivalence",
+     "value": "The authors state that when the measurement operators form a complete orthonormal basis, or at least span the relevant subspace containing M*, the primal and dual formulations are equivalent.",
+     "anchor": "Section II B, p.3",
+     "quotes": [
+      "When the measurement operators {Mk} form a complete orthonormal basis (or at least span the relevant subspace containing M ∗ [17]), primal and dual formulations are equivalent"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated with its condition in Section II B and shown in Appendices A and E.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gross-linear-readout-only",
+     "value": "The authors state that the measurement-operator optimization theory developed in the paper applies only to the linear readout case.",
+     "anchor": "Section III C, p.6",
+     "quotes": [
+      "Note that the measurement-operator optimization theory developed here applies only to the linear readout case."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated scope limit.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gross-size-limit-future-work",
+     "value": "The authors state that they numerically demonstrated the optimization for QRCs with N up to about 10 qubits, using a representative subset of the training samples for the kernel matrix, and that application to larger systems is bottlenecked by memory for the 4^N-dimensional operator matrix and requires further methodological developments.",
+     "anchor": "Section V, p.10",
+     "quotes": [
+      "We have numerically demonstrated the feasibility of the optimization for QRCs with N ≲ 10 qubits",
+      "Application to larger systems is instead bottlenecked by memory consumption of the 4N -dimensional operator matrix and requires further methodological developments."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit in Section V.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gross-mnist-setup",
+     "value": "The authors state that the MNIST experiment uses a random subset of approximately 10 000 samples for the kernel-based optimization, a held-out test set of 0.2 of the data, and a classical SVM with polynomial features up to degree 4 on the principal components as the comparison.",
+     "anchor": "Section IV A, p.7",
+     "quotes": [
+      "For the kernel-based optimization, we use a random subset of approximately 10 000 samples.",
+      "we consider an SVM with polynomial features (up to degree 4) constructed from the principal components",
+      "The prediction accuracy on a held-out test data set (Ptest = 0.2P )"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its experimental setup in Section IV A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gross-mnist-reservoir-findings",
+     "value": "The authors report that with a TFIM reservoir unitary, primal optimization using only Z- and ZZ-Pauli observables with monomials up to order 4 gives higher test accuracy than without a reservoir unitary, and that kernel-based results are similar with and without the unitary. They also report that kernel-based optimization with Pauli-Z observables and 2nd-degree monomials reaches the classical SVM accuracy, and that optimizing over a single class can reduce the computational load without sacrificing accuracy if the QELM is retrained for all classes.",
+     "anchor": "Section IV A, p.8",
+     "quotes": [
+      "using only Z- and ZZ-Pauli observables enhanced with monomials up to order pmax = 4, we obtain a higher test accuracy in the case with than without a reservoir unitary",
+      "the results obtained for the QELM optimized via the kernel method are similar both with and without a reservoir unitary",
+      "it suffices to restrict the readout to Pauli-Z observables enhanced by 2nd-degree monomials to reach the classical SVM accuracy ACSVM",
+      "Performing the kernel-based optimization only over a single class can significantly reduce the computational load without sacrificing accuracy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gross-mnist-explanations",
+     "value": "The authors explain the quantum-to-classical accuracy gap by saying that powers of expectation values of observables acting on the same qubit cannot be represented in the operator basis for the present encoding, and explain the higher accuracy with a reservoir unitary by the information scrambling property of the unitary.",
+     "anchor": "Section IV A, p.8",
+     "quotes": [
+      "This quantum-to-classical performance gap exists because powers ⟨σj⟩q of expectation values of observables acting on the same qubit j cannot be represented in the operator basis for the present encoding.",
+      "We explain this by the information scrambling property of the unitary"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gross-lorenz-memoryless",
+     "value": "The authors report for the memoryless QRC (QELM) on the 3-dimensional Lorenz-63 system, with parameters σ = 10, ρ = 28, β = 8/3 and largest Lyapunov exponent λ1 ≈ 0.89, that due to using an optimal measurement operator the presence of a reservoir unitary does not have a significant impact on the largest achievable forecast horizon, and that the largest forecast horizon is reached for a slightly reduced number of observables.",
+     "anchor": "Section IV B 1, p.9",
+     "quotes": [
+      "with parameters σ = 10, ρ = 28, β = 8/3 and largest Lyapunov exponent λ1 ≈ 0.89 [58]",
+      "Due to using an optimal measurement operator M ∗, the presence of a reservoir unitary does not have a significant impact on the largest achievable forecast horizon.",
+      "the largest forecast horizon is reached for a slightly reduced number of observables"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gross-lorenz-memory",
+     "value": "The authors report that for a QRC with internal memory on the Lorenz-63 series, memory states significantly enhance prediction accuracy for both primal and dual optimization, giving forecast horizons of Tfch/TL ≈ 10, and that using the optimal operator M* directly gives a significantly lower forecast horizon and higher training error (Etrain ≈ 2×10−6) than the Pauli decomposition or diagonalization (Etrain ≈ 4 × 10−8). They say this appears specific to the current setup or data.",
+     "anchor": "Section IV B 2, p.9",
+     "quotes": [
+      "yielding forecast horizons of Tfch/TL ≈ 10 (which is comparable to recent literature results [38])",
+      "Notably, using the optimal operator M ∗ directly leads in this case to a significantly lower forecast horizon and higher training error (Etrain ≈ 2×10−6) compared to the Pauli decomposition or diagonalization methods (Etrain ≈ 4 × 10−8).",
+      "This result appears to be specific to the current QRC setup or data"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gross-harmonic-series",
+     "value": "The authors report that for a scalar harmonic time series, NA = 3 ancilla qubits and a well tuned memory capacity suffice to learn about 10 frequencies, that the full M* provides a stable forecast up to the maximum tested time, and that forecasts using few measurement operators can become unstable. They say a detailed study will be presented elsewhere.",
+     "anchor": "Section IV B 2, p.9 to 10",
+     "quotes": [
+      "we find here that NA = 3 and a well tuned memory capacity (via the TFIM parameters) suffices to learn n ∼ 10 frequencies.",
+      "Using the full M ∗ provides a stable forecast up to the maximum tested time",
+      "The forecast can become unstable when using a small number of measurement operators"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gross-mackey-glass",
+     "value": "The authors report that for the Mackey-Glass system with theta = 17, beta = 0.2, gamma = 0.1, n = 10 and NA = 3 ancilla qubits, the optimized QRC forecasts up to at least 250 time steps and the Pauli decomposition with a slightly reduced observable count reaches about 300 time steps, possibly due to numerical stabilization effects.",
+     "anchor": "Section IV B 2, p.10",
+     "quotes": [
+      "with chaotic-regime parameters θ = 17, β = 0.2, γ = 0.1, n = 10",
+      "a QRC with TFIM-based unitary and NA = 3 ancilla qubits",
+      "the optimized QRC can forecast the Mackey-Glass time series up to ≥ 250 time steps",
+      "reaches even to ∼ 300 time steps, possibly due to numerical stabilization effects"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gross-pauli-y-vanish",
+     "value": "The authors state that measuring the encoded product states with a Pauli string containing a Y-factor will always yield zero, so for setups without reservoir unitaries the effective maximum number of operators is lower.",
+     "anchor": "Appendix G; Section IV, p.7",
+     "quotes": [
+      "measuring the above encoded product states with a Pauli string P containing a Y -factor will always yield zero",
+      "expectation values involving Pauli-Y 's vanish identically on states encoded via (3.10), (3.12), or (3.13)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows from the single-qubit expectation values in Table IV for the stated encodings.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gross-novelty-claims",
+     "value": "The authors state that no systematic study of optimal measurement operators for QRCs has been performed besides their cited related work, and that dual-space optimization seems not to have been discussed previously in the context of QRCs.",
+     "anchor": "Section I; Section II B",
+     "quotes": [
+      "Besides this, no systematic study of optimal measurement operators for QRCs has been performed.",
+      "Method (C) seems not to have been discussed previously in the context of QRCs."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "guan-2022-verifying-fairness-quantum-machine-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Guan-Fang-Ying_2022_Verifying-Fairness-in-Quantum-Machine-Learning__2207.11173.pdf",
+   "title_in_file": "Verifying Fairness in Quantum Machine Learning",
+   "version_note": "The text layer holds the paper twice (arXiv v1, then the same text again); the first copy was read and the second was used only to check quotes.",
+   "pages": 29,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory and algorithm paper that defines individual fairness for quantum decision models, proves a Lipschitz-constant characterization with an eigenvalue algorithm, and tests it on small real-data models and random 25 to 27 qubit QCNNs.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "fairness-algorithm-experiments",
+     "verdict": "widened",
+     "note": "Adds the accuracy of the trained real-data models (around 70%) and that 29-qubit runs hit the 10 hour time-out for several noise settings.",
+     "value": "The authors report experiments on quantum (noisy) decision models with 8 or 9 qubits for income prediction and credit scoring on real-world data, with all models well trained and achieving around 70% train and test accuracy. They say the efficiency is shown by a class of random quantum decision models with 27 qubits, and for 29-qubit QCNN models the time-out was set at 10 hours.",
+     "anchor": "Sections 1, 6.1, 6.2 and Appendix D",
+     "quotes": [
+      "The effectiveness of our algorithm is confirmed by experiments on quantum (noisy) decision models with 8 or 9 quantum bits (qubits) for income prediction and credit scoring on real-world data",
+      "its efficiency is shown by a class of random quantum decision models with 27 qubits",
+      "All models are well trained and achieve around 70% train and test accuracy",
+      "we also test on 29-qubit QCNN models",
+      "In this experiment, the time-out (TO) is set as 10 hours."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "fairness-limits-random-models",
+     "verdict": "confirmed",
+     "note": "Confirmed in Sections 6 and 7; Section 6.2 also says training a noisy model of that size is currently intractable on TensorFlow Quantum, so the parameters are randomly sampled.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "fairness-reduction-noise-improves",
+     "verdict": "widened",
+     "note": "The statements behind the reduction are Theorem 3 (K* from eigenvalues) and Theorem 2 (adding noise cannot raise K*). Theorem 2 is stated for a noiseless unitary model with noise added; Remark 1 says the same holds for noise in the middle of the circuit.",
+     "value": "The paper proves Theorem 2: for a noiseless quantum decision model A = (U, {Mi}) with unitary U, any quantum noise represented by a super-operator E gives a Lipschitz constant KE∗ ≤ K∗, so adding noise cannot make the model less fair. It reduces fairness checking to computing the Lipschitz constant K∗ through the eigenvalues of certain matrices.",
+     "anchor": "Theorem 2, Section 4.2, p.9; Theorem 3, Section 5.1, p.10",
+     "quotes": [
+      "Theorem 2. Let A = (U , {Mi}i∈O) be a quantum decision model. Then for any quantum noise represented by a super-operator E, we have KE∗ ≤ K∗",
+      "The following theorem provides a method to compute the Lipschitz constant K∗ by evaluating the eigenvalues of certain matrices."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2 is proved (outline in Section 4.2, full proof in Appendix C as Theorem 5) and its conditions are quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "fairness-lemma1-trace-contraction",
+     "value": "The paper proves that for any quantum decision model the output distance is at most the input trace distance, d(A(ρ), A(σ)) ≤ D(ρ, σ), so a model is automatically (ε, δ)-fair whenever ε = δ and K ≤ 1.",
+     "anchor": "Lemma 1, Section 4.1, p.8; Appendix A",
+     "quotes": [
+      "Lemma 1. Let A = (E, {Mi}i∈O) be a quantum decision model. Then d(A(ρ), A(σ)) ≤ D(ρ, σ).",
+      "The above lemma indicates that quantum decision model A is automatically (ε, δ)-fair whenever ε = δ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix A from the trace-distance characterization by measurements.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fairness-thm1-lipschitz-iff",
+     "value": "The paper proves Theorem 1: for a quantum decision model and 1 ≥ ε, δ > 0, A is (ε, δ)-fair if and only if δ ≥ K∗ε, where K∗ is the best Lipschitz constant, and if A is not (ε, δ)-fair then the pair (ψ, φ) achieving K∗ is a bias kernel that generates a bias pair with any state σ.",
+     "anchor": "Theorem 1, Section 4.1, p.8; Appendix B",
+     "quotes": [
+      "Theorem 1. 1. Given a quantum decision model A = (E, {Mi}i∈O) and 1 ≥ ε, δ > 0, A is (ε, δ)-fair if and only if δ ≥ K∗ε.",
+      "If A is not (ε, δ)-fair, then (ψ, φ) achieving K∗ is a bias kernel"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix B; the conditions are quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fairness-thm3-eigenvalue-formula",
+     "value": "The paper proves Theorem 3: the Lipschitz constant of a quantum decision model A = (E, {Mi}) is K∗ = max[λmax(MA) − λmin(MA)] over subsets A of the outcome set O, where MA is the sum over i in A of E†(Mi†Mi), the eigenvectors of the maximum and minimum eigenvalues of the optimal MA give the bias kernel.",
+     "anchor": "Theorem 3, Section 5.1, p.10; Theorem 6, Appendix C",
+     "quotes": [
+      "Theorem 3. 1. Given a quantum decision model A = (E, {Mi}i∈O). The Lipschitz constant K∗ is: K∗ = max[λmax(MA) − λmin(MA)]",
+      "be two normalized eigenvectors corresponding to the maximum and minimum eigenvalues of MA∗ , respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix C (Lemmas 2 and 3 and Theorem 6).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fairness-thm4-complexity",
+     "value": "The paper proves Theorem 4: the worst case complexities of Algorithms 1 and 2 are both O(N 5+ 2|O||O|N 2), where N is the dimension of the input Hilbert state space and |O| is the number of measurement outcomes. For two outcomes, as in binary tasks, this is O(N 5) with N = 2n, which is exponential in the number n of input qubits.",
+     "anchor": "Theorem 4, Section 5.2, p.11",
+     "quotes": [
+      "Theorem 4. The worst case complexities of Algorithms 1 and 2 are both O(N 5+ 2|O||O|N 2), where N is the dimension of input Hilbert state space H and |O| is the number of the measurement outcome set O.",
+      "It is even a constant 2 in most real-world tasks for binary decisions/classifications",
+      "However, the dimension N is exponential in the number n of the input qubits, i.e., N = 2n."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Complexity derived in Section 5.2 with the condition on N and |O| quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fairness-efficiency-claim",
+     "value": "The authors state that, because the problem reduces to eigenvalue analysis that is polynomial in the dimension of the input quantum data, their algorithm is exact (sound and complete) and efficient.",
+     "anchor": "Section 1.1, p.3",
+     "quotes": [
+      "Then we resolve the latter by eigenvalue analysis with polynomial time in the dimension of input quantum data. As a result, our algorithm is exact (sound and complete) and efficient."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The dimension N is 2^n for n qubits, so the algorithm is polynomial in N but exponential in the number of qubits, as Section 5.2 states."
+    },
+    {
+     "id_suggestion": "fairness-definition-bias-pair-fair",
+     "value": "The paper defines an (ε, δ)-bias pair as two states within input distance ε whose output distributions differ by more than δ, and a model as (ε, δ)-fair if it has no (ε, δ)-bias pair. It uses the trace distance for D on inputs and the total variation distance for d on measurement outcome distributions.",
+     "anchor": "Definitions 2 and 3, Section 3, p.7",
+     "quotes": [
+      "Then (ρ, σ) is said to be an (ε, δ)-bias pair if the following is true [D(ρ, σ) ≤ ε] ∧ [d(A(ρ), A(σ)) > δ].",
+      "Then A is (ε, δ)-fair if there is no any (ε, δ)-bias pair.",
+      "In this paper, we use it as d(·, ·) for measurement outcome distributions in Definition 1 and choose D(·, ·) to be the trace distance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions in Section 3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fairness-scope-individual",
+     "value": "The authors state that they focus on individual fairness, treating similar individuals similarly, with the trace distance as the metric for the similarity of quantum data, and that fairness is a global property established on all quantum states, so fairness implies robustness.",
+     "anchor": "Section 1 contributions; Section 3, p.7",
+     "quotes": [
+      "Our design decision is as follows: we focus on individual fairness — treating similar individuals similarly [18].",
+      "In contrast, fairness is established on all quantum states: A is (ε, δ)-fair if and only if ρ is (ε, δ)-robust for all states ρ ∈ D(H).",
+      "So, fairness implies robustness and can be thought of as global robustness."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of its own scope and its definition of fairness versus robustness in Section 3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fairness-depolarizing-factor",
+     "value": "The authors state that for a noiseless unitary model with global depolarizing noise of probability p, a calculation using Theorem 3 yields KE∗ = (1 − p)K∗, so depolarizing noise improves fairness by the order of (1 − p).",
+     "anchor": "Section 4.2, Eq. (5), p.9",
+     "quotes": [
+      "A calculation (with the help of Theorem 3 below) yields: KE∗ = (1 − p)K∗.",
+      "So, depolarizing noise improves fairness by the order of (1 − p)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: theoretical result",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The calculation is not shown in the paper, only stated; the certainty is low for that reason."
+    },
+    {
+     "id_suggestion": "fairness-noise-claim-middle",
+     "value": "The authors state in a remark that adding noises at the end of a noiseless computation can always improve fairness and that this is also true when the noises appear in the middle, after any gate in the circuit.",
+     "anchor": "Remark 1, Section 4.2, p.9",
+     "quotes": [
+      "The above theorem indicates that adding noises at the end of noiseless computation can always improve fairness.",
+      "Indeed, this is also true when the noises appear in the middle (after any gate in the circuit)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No proof is given for the case of noise in the middle of the circuit."
+    },
+    {
+     "id_suggestion": "fairness-noise-experiment-trend",
+     "value": "The authors report that in the Lipschitz-constant experiments on models trained from the real datasets, with bit flip, phase flip, depolarizing and mixed noise at different probabilities, a higher noise probability gives a smaller K∗, and say this confirms the claim that quantum noise improves fairness.",
+     "anchor": "Section 6.1, Table 1, p.14",
+     "quotes": [
+      "It can be seen that the higher level of noise's probability, the smaller value of constant K∗.",
+      "Therefore, the claim of quantum noise improving fairness in Section 4.2 is confirmed by the numerical results.",
+      "including bit flip, phase flip, depolarizing, and the mixtures of them"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fairness-dataset-setup",
+     "value": "The authors state the Adult Income experiment (DiCE version) uses 8 features and randomly selected 1, 000 training and 400 test samples, and the German Credit experiment uses 1, 000 loan applicants with 20 features reduced to 9 significant predictors. The quantum models use 3 rotation blocks and 2 entangling blocks.",
+     "anchor": "Section 6.1, p.12 to 13",
+     "quotes": [
+      "Each individual in this modified dataset has 8 features",
+      "We randomly select 1, 000 and 400 data from the training dataset and test dataset contained in this modified dataset, respectively.",
+      "This dataset contains 1, 000 loan applicants with 20 features",
+      "we have 9 features (e.g., Account Balance, Payment Status) left as significant predictors",
+      "we only use 3 rotation blocks and 2 entangling blocks in the training models"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own experimental setup in Section 6.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fairness-scalability-setup",
+     "value": "The authors state that the scalability experiments use QCNN models expanded from 8 qubits to 27 qubits, run on models with 25 and 27 qubits with randomly sampled parameters generated and evaluated 3 times per noise setting, using a tensor network with the power method for the eigenvalue step, on a server with 2048 GB memory and at most 80 processors per experiment.",
+     "anchor": "Section 6.2 and Section 6, p.11 to 15",
+     "quotes": [
+      "we expanded the existing example of Quantum Convolutional Neural Network (QCNN) [32] in the QCNN tutorial9 of TensorFlow Quantum from 8 qubits (see Fig. 3) to 27 qubits",
+      "We choose the models with 25 and 27 qubits to run experiments.",
+      "for each noise with different levels of probability, we generate the model and evaluate the Lipschitz constant K∗ for 3 times",
+      "2048 GB Memory and no dedicated GPU",
+      "each experiment is run with at most 80 processors"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own experimental setup in Sections 6 and 6.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fairness-27-qubit-result",
+     "value": "The authors state that the QCNN results with randomly sampled parameters show their algorithm can handle 27-qubit quantum decision models on a small server, and that they also obtained bias kernels in all experiments but did not show them because they are large vectors.",
+     "anchor": "Section 6.2, p.15",
+     "quotes": [
+      "These results prove that our fairness verification algorithm is efficient and can handle 27-qubit quantum decision models on a small server.",
+      "in all experiments, we also obtain bias kernels by Algorithm 1"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: measured result",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The word 'prove' is the authors'; these are timing measurements on randomly parameterized models, not a proof."
+    },
+    {
+     "id_suggestion": "fairness-scale-comparison",
+     "value": "The authors state that their 27-qubit result triples the size handled by state-of-the-art algorithms for verifying quantum machine learning models, which they say deal with 9 qubits. They state in a footnote that the compared work was run on a personal computer at up to 8 qubits and that on their server the same experiments could handle only 9 qubits.",
+     "anchor": "Abstract; Section 1 contribution (3); footnote 4, p.4",
+     "quotes": [
+      "for a class of random (noisy) quantum decision models with 27 qubits (227-dimensional state space) tripling (218 times more than) that of the state-of-the-art algorithms for verifying quantum machine learning models",
+      "The state-of-the-art verification algorithm [26] for quantum machine learning was only able to deal with (the robustness with) 9 qubits.",
+      "The experiments of [26] were performed on a personal computer and the size is at most 8 qubits."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The compared algorithm checks local robustness, a different property from the global fairness checked here."
+    },
+    {
+     "id_suggestion": "fairness-novelty-claim",
+     "value": "The authors state that, to the best of their knowledge, the verification problem of fairness in quantum algorithms has not yet been touched.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "However, to the best of our knowledge, the verification problem of fairness in quantum algorithms has not yet been touched."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fairness-future-work",
+     "value": "The authors state as future work how to improve the results for training quantum decision models with a fairness guarantee, and further investigation of the bias kernels through more experiments on real-world applications.",
+     "anchor": "Section 7, p.16",
+     "quotes": [
+      "An interesting topic for future research is how to improve the results presented in this paper for training quantum decision models with fairness guarantee.",
+      "further investigations are required to better understand the bias kernels detected by our verification algorithm"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open problems in Section 7.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fairness-appendix-theorems",
+     "value": "The paper proves in Appendix C, for a POVM and a super-operator E, that K∗({Mi}) ≥ K∗({E†(Mi)}) (Theorem 5, a restatement of the noise result) and that K∗({Mi}) = max[λmax(MA) − λmin(MA)] over subsets A of the outcomes (Theorem 6), by first restricting the optimization to orthogonal pure states.",
+     "anchor": "Appendix C, Theorems 5 and 6, Lemma 3, p.22 to 24",
+     "quotes": [
+      "Theorem 5. For any POVM {Mi}i∈O and super-operator E, we have K∗({Mi}i∈O) ≥ K∗({E †(Mi)}i∈O).",
+      "Theorem 6. K∗({Mi}i∈O) = max[λmax(MA) − λmin(MA)]",
+      "First, we observe that the optimization problem of computing K∗({Mi}i∈O) in Lemma 2 can be constrained in pure states instead of searching mixed states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix C with the statements quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fairness-cited-quantum-claims",
+     "value": "The authors state, citing other work, that the Sycamore quantum computer with 53 noisy superconducting qubits did a sampling calculation in 200 seconds that would take (arguably) 10,000 years on the largest classical computer, and that a quantum PCA algorithm can run exponentially faster on a quantum processor.",
+     "anchor": "Section 1, p.1 to 2",
+     "quotes": [
+      "a quantum computer Sycamore with 53 noisy superconducting qubits can do a specific calculation, namely sampling, in 200 seconds that would take (arguably) 10,000 years on the largest classical computer",
+      "It was recently shown that quantum PCA algorithm [6] can run exponentially faster on a quantum processor."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: cited result",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "gutierrez-2025-enhanced-squeezing-faster-metrology-layered",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Gutierrez-Araiza-Bravo-Yelin_2025_Enhanced-Squeezing-and-Faster-Metrology-from-Layered__2512.09137.pdf",
+   "title_in_file": "Enhanced Squeezing and Faster Metrology from Layered Quantum Neural Networks",
+   "version_note": "The text layer holds the paper twice (arXiv v1, then the same text again); the first copy was read and the second was used only to check quotes. Figure 2 was viewed as an image.",
+   "pages": 6,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A short analytic paper that compares quantum reservoir computer, perceptron and layered QNN architectures as one-axis-twisting spin-squeezing sensors and derives a squeezing-time reduction and a stated square-root-of-2 sensitivity advantage.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "gutierrez-ideal-assumptions-limit",
+     "verdict": "confirmed",
+     "note": "Confirmed in the Discussion (Section VI); the same section lists the open questions.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "gutierrez-sequential-layers-constructive",
+     "verdict": "narrowed",
+     "note": "The advantage is a factor of square root of 2 (the root sign is displaced in the text layer) at equal layer sizes, under ideal time reversal, negligible decoherence and weak-field linear response. The paper's printed Eqs. 20, 21 and Fig. 2 do not obviously support the direction of the advantage; see reader_inference.",
+     "value": "The authors state that for a 2-layer QNN the net response derivative is the sum of two contributions, Din(θ) + Dout(θ), and that the 2-layer QNN achieves a square-root-of-2 improvement in sensitivity relative to a QRC of identical size when Nin = Nout, under ideal time reversal, negligible decoherence and a weak-field linear-response regime.",
+     "anchor": "Sections IV and V, Eqs. (11) to (21), p.3 to 4; Section VI, p.5",
+     "quotes": [
+      "The corresponding derivatives also add:",
+      "∂φ⟨Sy⟩φ=0 = Din(θ) + Dout(θ).",
+      "Thus the 2-layer QNN achieves a 2 improvement in sensitivity relative to a QRC of identical size.",
+      "The present analysis assumes ideal time-reversal, negligible decoherence, and a weak-field linear-response regime."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "By the printed equations, the QNN derivative is of order Nl to the 3/2 (Eq. 20) and the QRC derivative is root 2 times that (Eq. 21), with the same standard deviation sqrt(Nl) in both cases (Eq. 8 and the QRC with N = 2Nl). That ordering would favour the QRC, and the Fig. 2 middle panel plots the ratio of the QNN to the QRC phase uncertainty at about 1.39 to 1.43, which is above one. Eq. 25 gives a ratio of about 1/sqrt(L). The reader could not reconcile these with the stated root-2 advantage of the QNN; the coordinator should treat the advantage as unverified."
+    },
+    {
+     "id": "gutierrez-two-layer-squeezing-time",
+     "verdict": "narrowed",
+     "note": "The reduction of the optimal squeezing time by a factor of Nout is derived in the perturbative regime of the effective Hamiltonian, with a large Rabi drive on the output qubits, and rests on the effective one-axis-twisting Hamiltonian cited from other work.",
+     "value": "The authors show that when each output qubit is driven strongly along x and prepared in a coherent spin state, the input block undergoes OAT evolution Nout times faster than in the single-perceptron architecture, so in a QNN with Nin input and Nout output qubits the time to generate optimal squeezing is reduced by a factor of Nout while the sensitivity remains Heisenberg-limited in the total number of qubits. The effective Hamiltonian is derived with a large Rabi field Ω with Ω ≫ J.",
+     "anchor": "Section II Eq. (2); Section III Eqs. (4) to (6), p.2",
+     "quotes": [
+      "so the input block undergoes OAT evolution Nout times faster than in the single-perceptron architecture.",
+      "the metrological sensitivity remains Heisenberg-limited in the total number of qubits, but the time to generate optimal squeezing is reduced by a factor of Nout.",
+      "Applying a large Rabi field Ω along x on the output qubit, with Ω ≫ J, generates an effective interaction through second-order processes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "gutierrez-effective-oat-cited",
+     "value": "The authors state, citing earlier work, that after averaging in the toggling frame the star-graph perceptron Hamiltonian becomes an effective one-axis-twisting Hamiltonian on the input qubits mediated by the output qubit, and that the perceptron reproduces the full OAT Hamiltonian on Nin qubits using a single nonlinear mediator.",
+     "anchor": "Section II, Eq. (2), p.2",
+     "quotes": [
+      "After averaging in the toggling frame, the resulting Hamiltonian becomes [10]",
+      "Thus the perceptron reproduces the full OAT Hamiltonian on Nin qubits despite using only a single nonlinear mediator."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: cited result",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gutierrez-perceptron-no-advantage",
+     "value": "The authors state that a single perceptron yields the same Heisenberg-limited scaling as an all-to-all OAT system with N = Nin and the same optimal squeezing strength, so a single perceptron offers no fundamental metrological advantage over a conventional ensemble of N qubits, although the squeezing rate is enhanced in the perturbative regime.",
+     "anchor": "Section II, p.2",
+     "quotes": [
+      "yields the same Heisenberg-limited scaling as in an all-to-all OAT system with N = Nin.",
+      "Thus a single perceptron offers no fundamental",
+      "advantage over a conventional ensemble of N qubits.",
+      "the squeezing rate is enhanced in the perturbative regime because the output qubit continuously steers the inputs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: theoretical result",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gutierrez-two-layer-derivation",
+     "value": "The authors derive for a 2-layer QNN that the response derivatives are Din(θ) = Nin/2 (Nin − 1) sin(Nout θ) cosNin−2(Nout θ) and the analogous Dout(θ), that for equal layer sizes the optimum satisfies Nlθ ≈ 1/√Nl, giving a derivative of order Nl to the power 3/2 for the QNN, and that a QRC with the same total qubit count N = 2Nl gives root 2 times Nl to the power 3/2. They combine the two uncorrelated blocks' uncertainties as Δ Sy = square root of Nin/2 + Nout/2.",
+     "anchor": "Sections IV and V, Eqs. (8) to (21), p.3 to 4",
+     "quotes": [
+      "Din(θ) = Nin 2 (Nin − 1) sin(Noutθ) cosNin−2(Noutθ)",
+      "Substituting this value yields the asymptotic scaling ∂φ⟨Sy⟩φ=0 ≈ Nl3/2.",
+      "A QRC with the same total number of qubits N = 2Nl gives instead ∂φ ⟨Sy ⟩φ=0 ≈ √ 2 Nl3/2",
+      "Since the two blocks are initially uncorrelated, their uncertainties combine as"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: theoretical result",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "By the printed equations, the QNN derivative is of order Nl to the 3/2 (Eq. 20) and the QRC derivative is root 2 times that (Eq. 21), with the same standard deviation sqrt(Nl) in both cases (Eq. 8 and the QRC with N = 2Nl). That ordering would favour the QRC, and the Fig. 2 middle panel plots the ratio of the QNN to the QRC phase uncertainty at about 1.39 to 1.43, which is above one. Eq. 25 gives a ratio of about 1/sqrt(L). The reader could not reconcile these with the stated root-2 advantage of the QNN; the coordinator should treat the advantage as unverified."
+    },
+    {
+     "id_suggestion": "gutierrez-l-layer-scaling",
+     "value": "The authors state that for L layers with Nl qubits per layer the number of effective squeezing events is 2(L − 1), the total derivative is about (L − 1) Nl to the power 3/2 against L to the power 3/2 times Nl to the power 3/2 for a QRC with N = LNl qubits, giving a sensitivity enhancement of order square root of L for L much less than Nl, and a squeezing time reduced by 1/Nl compared to the QRC.",
+     "anchor": "Section V, Eqs. (22) to (25), p.4; Abstract",
+     "quotes": [
+      "Thus the number of effective squeezing events is #events = 2(L − 2) + 2 = 2(L − 1)",
+      "∂φ⟨Sy⟩φ=0 ≈ (L − 1) Nl3/2.",
+      "∂φ⟨Sy⟩φ=0 ≈ (LNl)3/2 = L3/2Nl3/2.",
+      "As every layer is steered by Nl qubits, the squeezing time is reduced by 1/Nl compared to the QRC.",
+      "Generalizing to L layers, we show that the metrological gain scales as L while the required squeezing time decreases as 1/Nl, where Nl is the number of qubits per layer."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: theoretical result",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The ratio in Eq. 25 is printed as about 1/sqrt(L) for the phase uncertainty. Whether the QRC comparison in Eq. 24 uses the same standard deviation was not checked in the text; see the inconsistency noted for the 2-layer case."
+    },
+    {
+     "id_suggestion": "gutierrez-fig2-comparison",
+     "value": "The authors present Figure 2 as a comparison of squeezing dynamics and sensitivity across the QRC, perceptron and QNN architectures and say it illustrates the enhancement; the plotted values are in the figure, not in the text layer.",
+     "anchor": "Figure 2, p.5; Section IV, p.4",
+     "quotes": [
+      "FIG. 2. Comparison of squeezing dynamics and sensitivity across the QRC, perceptron, and QNN architectures.",
+      "Figure 2 illustrates this enhancement."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: theoretical result",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Read from the figure image: the middle panel is labelled with the ratio of the QNN to the QRC phase uncertainty and plots values of about 1.39 to 1.43 against the layer proportion, for Nin from 10 to 100000. A ratio above one would mean the QNN is less sensitive. The right panel plots the ratio of optimal squeezing times falling with Nin on log axes."
+    },
+    {
+     "id_suggestion": "gutierrez-scope-direct-calculation",
+     "value": "The authors state that the remainder of the paper shows the effect using direct calculations of the squeezed sensing response, comparing the QRC, perceptron and QNN architectures under equivalent OAT resources. The paper reports no hardware measurement.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "The remainder of the paper shows this effect using direct calculations of the squeezed sensing response and compares the QRC, perceptron, and QNN architectures under equivalent OAT resources."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its method and scope in Section I.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gutierrez-protocol-definition",
+     "value": "The authors define the metrological sequence used for all models as coherent-spin preparation, one-axis-twisting dynamics, field encoding via a weak rotation, time-reversal, and collective readout.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "we consider a standard metrological sequence consisting of coherent-spin preparation, one-axis-twisting dynamics, field encoding via a weak rotation, time-reversal, and collective readout."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own protocol in the abstract.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gutierrez-open-questions",
+     "value": "The authors state as open: whether the architectural advantages persist under dissipation, leakage or control noise, how QNN-based squeezing compares with other fast entanglement mechanisms such as programmable Floquet sequences and scrambling Hamiltonians, and whether QNN architectures can be co-designed for both sensing and computation.",
+     "anchor": "Section VI, p.5",
+     "quotes": [
+      "Understanding whether architectural advantages persist under dissipation, leakage, or in the presence of control noise is an important next step.",
+      "including programmable Floquet sequences and disordered or scrambling Hamiltonians",
+      "an open question is whether QNN architectures can be co-designed for dual functionality"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open problems in Section VI.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gutierrez-hardware-accessibility-claim",
+     "value": "The authors claim that, because the improvements stem from temporal ordering and steering effects rather than from more exotic protocols, implementations should be accessible on current neutral-atom, trapped-ion, superconducting-qubit and cavity-QED hardware.",
+     "anchor": "Section VI, p.5",
+     "quotes": [
+      "implementations should be accessible on current neutral-atom",
+      "because the improvements observed here stem from temporal ordering and steering effects rather"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "gyurik-2023-establishing-learning-separations-between-classical",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Gyurik-Dunjko_2022_On-establishing-learning-separations-between-classical-and-quantum-machine__2208.06339.pdf",
+   "title_in_file": "On establishing learning separations between classical and quantum machine learning with classical data",
+   "version_note": "The text layer holds the paper twice (arXiv v2, then the same text again); the first copy was read in full and the second was used only to check quotes. The file is the 2022 arXiv preprint (v2, July 2023), the record id carries 2023.",
+   "pages": 29,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory note on PAC learning definitions that distills two sufficient-condition checklists (Theorems 3 and 4) for provable classical-versus-quantum learning separations with classical data, and applies them to four examples.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "gyurik-no-true-separation-classical-data",
+     "verdict": "confirmed",
+     "note": "Confirmed in the Conclusion; the abstract and Section 1 say the same, restricted to certain contrived cryptography-inspired datasets for classical data.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "gyurik-pac-limit",
+     "verdict": "confirmed",
+     "note": "Confirmed. The Conclusion adds that there is a significant gap between the PAC framework and machine learning in practice; see the new assertion.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "gyurik-theorem3-captures-known",
+     "verdict": "widened",
+     "note": "Adds what Theorem 3 states and that the two captured separations (discrete logarithm CC/QQ, cube root CC/QC) rest on widely-believed conjectures about classical hardness.",
+     "value": "The authors state that Theorem 3 (proved in Appendix B) gives sufficient conditions for a CC/QQ or CC/QC separation, and show that it captures the two known learning separations: the discrete logarithm concept class (CC/QQ) and the cube root concept class (CC/QC). They say the classical hardness in both rests on a widely-believed conjecture.",
+     "anchor": "Section 3.1.1, p.15 to 16; Section 4, p.22",
+     "quotes": [
+      "First, we showed that Theorem 3 indeed captures the learning separations of [LAT21] and [SG04].",
+      "we can evoke Theorem 3 and conclude that the concept class",
+      "exhibits a CC/QQ learning separation",
+      "exhibits a CC/QC learning separation",
+      "under this widely-believed conjecture there does not exist a classical algorithm"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "gyurik-def-efficient-pac",
+     "value": "The paper defines efficient PAC learnability: a family of concept classes is efficiently PAC learnable under target distributions if some hypothesis classes and learning algorithms exist such that, with probability at least 1−δ, the algorithm outputs a specification of a hypothesis within error ǫ, and the algorithm runs in time O(n, size(c), 1/ǫ, 1/δ). It restricts to polynomially evaluatable hypothesis classes.",
+     "anchor": "Definitions 1 and 2, Section 2, p.4 to 5",
+     "quotes": [
+      "Definition 1 (efficient PAC learnability).",
+      "with probability at least 1−δ (over the random examples drawn by calls to EX(c, Dn)",
+      "Moreover, the learning algorithm An must run in time O(n, size(c)†, 1/ǫ, 1/δ).",
+      "We therefore restrict ourselves to polynomially evaluatable hypothesis classes [KV94b]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition in Section 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gyurik-hypothesis-class-vacuous",
+     "value": "The authors show in Appendix A.1 that if the hypothesis class is not restricted to be polynomially evaluatable, then the restriction that the learning algorithm runs in polynomial time is vacuous: any concept class learnable in superpolynomial time becomes learnable in polynomial time by enumerating hypotheses by sets of training examples.",
+     "anchor": "Appendix A.1, p.24",
+     "quotes": [
+      "if we do not restrict the hypothesis class to be polynomially evaluatable, then the restriction that the learning algorithm has to run in polynomial time is vacuous",
+      "consider the hypothesis class {H′}n∈N whose hypotheses are enumerated by all possible polynomially-sized sets of training examples"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved by construction in Appendix A.1 with the condition on the hypothesis class quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gyurik-lemma1-cq-equals-qq",
+     "value": "The paper proves Lemma 1, CQ = QQ: any problem quantumly efficiently learnable with a quantumly polynomially evaluatable hypothesis class is also classically efficiently learnable with another quantumly polynomially evaluatable hypothesis class. The authors state it is critical that the hypothesis class may be changed, and that with a fixed hypothesis class the collapse does not happen.",
+     "anchor": "Lemma 1, Section 2, p.7; Appendix A.2",
+     "quotes": [
+      "Lemma 1. CQ = QQ.",
+      "We would like to reiterate that it is critical that one is allowed to change the hypothesis class when mapping a problem in QQ to QC.",
+      "if the hypothesis class is fixed (as in the order parameter example and Definition 4), then such a collapse does not happen"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix A.2 by delegating the quantum learner into the hypothesis class; the condition is quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gyurik-definition-separation",
+     "value": "The paper defines learning separations of two kinds, CC/QC and CC/QQ, over the categories of classical or quantum efficient learnability combined with classical or quantum polynomial evaluatability, and states that any CC/QC separation directly implies a CC/QQ separation. The authors state that a singleton concept class that is classically intractable to evaluate gives a CC/QQ separation that is hard to argue is a genuine learning problem, since the quantum learner needs no data.",
+     "anchor": "Definitions 3 to 5, Section 2, p.5 to 8",
+     "quotes": [
+      "Definition 5 (learning separation).",
+      "any CC/QC separation directly implies a CC/QQ separation",
+      "However, note that the quantum learner requires no data to learn the concept class, so it is hard to argue that this is a genuine learning problem."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions and remarks in Section 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gyurik-cited-dlp-separation",
+     "value": "The authors state, citing earlier work, that the discrete logarithm concept class has a CC/QQ separation proved under the Discrete Logarithm Assumption using a quantum kernel method, and that to the best of their knowledge it is unknown whether it also has a CC/QC separation.",
+     "anchor": "Section 2.1, Theorem 1, p.8 to 9",
+     "quotes": [
+      "In this work, the authors prove a CC/QQ separation for the following discrete logarithm concept class.",
+      "Additionally, they show that under the Discrete Logarithm Assumption",
+      "To the best of our knowledge, it is unknown whether the discrete logarithm concept class also exhibits a CC/QC learning separation."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: cited result",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gyurik-cited-cube-root-separation",
+     "value": "The authors state, citing earlier work, that the cube root concept class based on the RSA cryptosystem has a CC/QC separation because a quantum learner can use Shor's algorithm to compute the private exponent and so use a classically polynomially evaluatable hypothesis class, while no classical learner can efficiently learn it under the Discrete Cube Root Assumption.",
+     "anchor": "Section 2.2, Theorem 2, p.9 to 10",
+     "quotes": [
+      "This concept class exhibits a CC/QC separation, as a quantum learning algorithm can efficiently learn it using an hypothesis class that is classically polynomially evaluatable.",
+      "The Discrete Cube Root Assumption states that if only given x and N , then computing fN−1(x) is classically intractable",
+      "Using Shor's algorithm a quantum learning algorithm can efficiently compute d∗ following the standard attack on the RSA cryptosystem."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: cited result",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gyurik-thm3-statement",
+     "value": "The paper proves Theorem 3: if every concept decomposes as c(x) = f(gn−1(x)) with f in a family Fn and gn invertible, and first, examples can be generated efficiently by a classical randomized algorithm; second, no classical algorithm can efficiently invert gn on a 1 − 1/poly(n) fraction of inputs and evaluating a subset of concepts on a subset of points lets one invert gn; and third, Fn is quantumly efficiently learnable with a classically polynomially evaluatable hypothesis class and gn can be inverted by a quantum algorithm (CC/QQ) or a classical evaluation of a quantum-computed specification (CC/QC), then the concept classes exhibit a CC/QQ or CC/QC separation.",
+     "anchor": "Theorem 3, Section 3, p.12 to 13; Appendix B proof",
+     "quotes": [
+      "Theorem 3 (Sufficient conditions for separations based on heuristic hardness).",
+      "such that every c ∈ Cn can be decomposed as c(x) = f (gn−1(x)), for some f ∈ Fn.",
+      "Criterion 1 (efficient example generation):",
+      "and then show that this implies that there exists a classical algorithm that can efficiently invert gn on a 1 − 1/poly(n) fraction of inputs",
+      "Criterion 3 (quantum efficient learnability):"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix B; the criteria are quoted. The classical-hardness criterion is an assumption, not proved.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gyurik-thm4-statement",
+     "value": "The authors state Theorem 4, a second checklist that does not need efficient example generation: if the inverse functions lie inside BQP but outside HeurP/poly, the family Fn is in QQ, and evaluating a subset of concepts on a subset of points computes the inverse, then the concept classes exhibit a CC/QQ separation. The proof given is a proof-sketch.",
+     "anchor": "Theorem 4, Section 3, p.14; Appendix C",
+     "quotes": [
+      "Theorem 4 (Sufficient conditions for separations based on heuristic hardness – version 2).",
+      "The family of functions {gn−1}n∈N lies inside BQP but lies outside HeurP/poly (with respect to input distribution gn(Dn)).",
+      "Proof-sketch. First, we show that no classical learner can efficiently learn {Cn}n∈N."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: theoretical result",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The appendix gives only a proof-sketch for Theorem 4, so the statement is quoted with its conditions but the proof is not complete in the paper."
+    },
+    {
+     "id_suggestion": "gyurik-prop1-nonverifiable",
+     "value": "The authors state Proposition 1: if a certain function in BQP exists that is not random verifiable, then there exists a learning problem with a CC/QQ separation whose concepts are not random verifiable. They argue it is possible that there exist functions in BQP that are neither in HeurP/poly nor random verifiable, in which case a learning separation can be proved.",
+     "anchor": "Proposition 1, Section 3, p.13",
+     "quotes": [
+      "Proposition 1. If there exists an f ∈ BQP with f ∈ HeurP/poly that is not random verifiable, then there exists a learning problem which exhibits a CC/QQ separation whose concepts are not random verifiable.",
+      "there exist functions f in BQP that are neither in HeurP/poly nor random verifiable. In this case, we can prove the existence of learning separations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: theoretical result",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer drops the negation sign in the statement of Proposition 1; the surrounding prose says the function is outside HeurP/poly. Whether such a function exists is an assumption of the proposition."
+    },
+    {
+     "id_suggestion": "gyurik-example2-power-of-data",
+     "value": "The authors show that for single-parameter functions from a universal parameterized quantum circuit, written as α cos(θ − β) + γ, three distinct examples let a classical learner fit α, β and γ and evaluate the function on unseen points, so examples can radically enhance what a classical learner can evaluate. They state that with a polynomial number of Fourier frequencies a polynomial number of examples suffices, and that for circuits with exponentially many Fourier terms it is unclear how to learn classically.",
+     "anchor": "Section 3.1.2, Example 2, p.17",
+     "quotes": [
+      "it turns out that the examples given to a classical learner radically enhance what it can efficiently evaluate.",
+      "uniquely determine fφ(θ) and one can simply fit α, β and γ to these three examples to learn how to evaluate fφ on unseen points.",
+      "when the number of frequencies appearing in the Fourier series is polynomial, then a polynomial number of examples suffices",
+      "in which case it is unclear how to classically efficiently learn it"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: theoretical result",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The argument rests on cited results about the form of the function and the Fourier-series form of circuit expectation values."
+    },
+    {
+     "id_suggestion": "gyurik-example3-matrix-inversion",
+     "value": "The authors state that for a learning problem built on quantum linear systems, efficient classical example generation requires sparse inputs, and it is unknown whether a classical algorithm can efficiently solve the easier problem for inputs of that form. They conclude that translating a BQP-complete problem into a learning separation is far from trivial, since examples can radically enhance what a classical computer can evaluate.",
+     "anchor": "Section 3.1.3, Example 3, p.18",
+     "quotes": [
+      "However, for the case where the data only consists of sparse x, it is unclear whether the quantum advantage criteria are met.",
+      "taking a BQP-complete problem and translating this into a learning separation is far from trivial, as examples can radically enhance what a classical computer can evaluate"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: theoretical result",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gyurik-example4-hamiltonian-learning",
+     "value": "The authors state for Hamiltonian learning from time-evolved states that the efficient data generation requirement of Theorem 3 is not satisfied in the general case, that in certain cases a classical learner can efficiently learn the concept class so no separation is possible, and that if the concepts are BQP-hard then they are likely outside HeurP/poly, in which case Theorem 4 can imply a learning separation without efficient example generation.",
+     "anchor": "Section 3.1.4, Example 4, p.19 to 20",
+     "quotes": [
+      "The biggest challenge when trying to apply Theorem 3 to the problem of Hamiltonian learning is the",
+      "it has been shown that in certain cases a classical learner can efficiently learn CHL [HKT21], in which case no separation is possible at al.",
+      "if the concepts are indeed BQP-hard, then they are likely outside HeurP/poly, in which case Theorem 4 can imply a learning separation"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: theoretical result",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gyurik-cited-worst-to-average",
+     "value": "The authors state, citing Blum and Micali, that computing the discrete logarithm on a 1/2 + 1/poly(n) fraction of inputs is as hard as computing it for all inputs by a worst-case to average-case reduction, and that heuristic-hardness statements are typically obtained from such reductions.",
+     "anchor": "Section 3, p.11 to 12",
+     "quotes": [
+      "we know that computing the discrete logarithm on a 1 2 + 1 poly(n) fraction of inputs is as hard as computing it for all inputs due to a worst-case to average-case reduction by Blum and Micali [BM84]",
+      "heuristic-hardness statements are typically obtained"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: cited result",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gyurik-complexity-reformulation",
+     "value": "The authors state that learning separations can be reformulated in complexity terms as problems inside HeurBQP with sampling advice that do not lie in HeurBPP with sampling advice.",
+     "anchor": "Section 3, p.12",
+     "quotes": [
+      "learning separations are exhibited by problems inside HeurBQP with sampling advice, that do not lie in HeurBPP with sampling advice"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: theoretical result",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gyurik-scope-limits-of-checklists",
+     "value": "The authors state that the checklists are not general characterizations of all possible learning separations, that Theorem 3 does not capture the setting where the hypothesis class is fixed, and that, because Theorem 3 requires classically efficient example generation, their results arguably say almost nothing about many relevant scenarios in quantum machine learning where the data is generated by a quantum process.",
+     "anchor": "Section 1, p.2; Section 3, p.12 to 13",
+     "quotes": [
+      "These checklists are not general characterizations of all possible learning separation.",
+      "We also remark that Theorem 3 does not capture the setting where the hypothesis class used by the learning algorithm is fixed",
+      "Our results therefore arguably say almost nothing about many relevant scenarios in quantum machine learning"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limits in Sections 1 and 3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gyurik-hardness-unproven",
+     "value": "The authors state that all proofs they discuss require as a necessary ingredient a proof that certain functions are classically heuristically hard, and that there are not many such proofs known to date.",
+     "anchor": "Section 4, p.22",
+     "quotes": [
+      "Note, all proofs we discussed will as a necessary ingredient require a proof that certain functions are classically heuristically hard.",
+      "While we may conjecture this is the case for many functions, there are not many proofs known to date."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit in Section 4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gyurik-pac-vs-practice",
+     "value": "The authors state that there is a significant gap between the PAC framework and machine learning in practice, that for any fixed-size real-world problem a particular classical or quantum learning algorithm may outperform others, and that quantum machine learning experiments cannot yet be run at sufficiently large sizes to compare convincingly with state-of-the-art classical machine learning.",
+     "anchor": "Section 4, p.22 to 23",
+     "quotes": [
+      "In general, there is a significant gap between the PAC framework and machine learning in practice.",
+      "for any fixed size real world problem, it simply may be the case that a particular classical (or quantum) learning algorithm outperforms others",
+      "we cannot yet run quantum machine learning experiments at sufficiently large sizes to convincingly compare it to state-of-the-art classical machine learning"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limits in Section 4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gyurik-no-separation-efficiently-evaluatable",
+     "value": "The authors state that, to the best of their knowledge, no learning separation is known for concept classes specified in a way that allows efficient classical evaluation, and that the class of polynomially-sized logarithmic-depth Boolean circuits is efficiently evaluatable yet not classically efficiently learnable, but is also not quantumly efficiently learnable, citing other work.",
+     "anchor": "Section 3, p.10 to 11",
+     "quotes": [
+      "To the best of our knowledge, no such separation is known, though it is not inconceivable that they exist.",
+      "However, these concepts are also not quantumly efficiently learnable [AGS21]"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: claim result",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gyurik-cited-quantum-data-advantage",
+     "value": "The authors state, citing other work, that the most obvious examples of practical quantum advantage for learning problems occur when the data itself comprises genuine quantum states, whereas for classical data advantages have been established only for cryptography-inspired datasets of limited practical relevance.",
+     "anchor": "Section 1, p.1",
+     "quotes": [
+      "The most obvious examples of practical quantum advantage for learning problems occur when the data itself comprises genuine quantum states [HBC+22].",
+      "when the data is classical the community has only been able to establish quantum advantages for cryptography-inspired datasets, which are of limited practical relevance"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Low: cited result",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

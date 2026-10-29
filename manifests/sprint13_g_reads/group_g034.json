@@ -1,0 +1,2117 @@
+{
+ "papers": [
+  {
+   "record_id": "quyen-2026-benchmarking-loss-functions-trainable-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Dinh-Quyen-et-al._2026_Benchmarking-loss-functions-for-trainable-quantum-feature-maps__2607.12487.pdf",
+   "title_in_file": "Benchmarking loss functions for trainable quantum feature maps",
+   "version_note": "arXiv:2607.12487v1, 14 Jul 2026.",
+   "pages": 10,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A numerical benchmark of Distance Loss, Measurement Loss and a proposed Log-Likelihood Loss for training trainable quantum feature maps used in a quantum-kernel SVM, on three small synthetic 2D datasets in a Qiskit state-vector simulator.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "quyen-classical-svm-limit",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section VI Conclusion and future work, p.9",
+     "quotes": [
+      "the current framework still relies on a classical SVM classifier for the final decision boundary",
+      "it remains unclear whether the observed improvements are mainly determined by the number of trainable parameters or by the structural properties of the quantum ansatz"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states both limits itself in Section VI, p.9.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "quyen-dl-ml-limits",
+     "verdict": "widened",
+     "note": "The stored value is right but leaves out the quadratic O(M squared) scaling of Distance Loss, the class-count cap of Measurement Loss (at most 2 to the n classes on n qubits), and the authors' account of what the trajectory crossing does to training. Section III, p.3 adds these.",
+     "value": "The authors state that the Distance Loss method requires fidelity evaluations for all pairs of training samples, so its cost scales as O(M squared), while the Measurement Loss method achieves linear scaling, O(M), by assigning each class to a fixed orthogonal target state. They state that Measurement Loss limits the number of classes to the available orthogonal basis states (an n-qubit system can represent at most 2 to the power n classes), and that tracking state evolution during training reveals a recurring trajectory crossing problem, in which clusters forced toward fixed targets intersect, temporarily reducing class separability and possibly causing sharp drops in accuracy.",
+     "anchor": "Section III Limitation of existing losses, p.3",
+     "quotes": [
+      "the DL method requires fidelity evaluations for all pairs of training samples",
+      "the ML method achieves linear scaling, O(M ), by assigning each class to a fixed orthogonal target state",
+      "Consequently, its computational cost scales as O(M 2), making it increasingly expensive for large datasets.",
+      "An n-qubit system can represent at most 2n distinct classes, imposing a hard constraint on multi-class classification.",
+      "a recurring optimization phenomenon that we refer to as trajectory crossing problem",
+      "This intersection temporarily reduces class separability, increases inter-class overlap, and can lead to sharp drops in classification accuracy during training."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Scaling counts follow from the loss definitions; the trajectory crossing is an observed phenomenon in the authors' simulations, not proved.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer prints the exponents flat: 'O(M 2)' is O(M squared) and '2n' is 2 to the power n."
+    },
+    {
+     "id": "quyen-lll-stability",
+     "verdict": "narrowed",
+     "note": "The abstract's 'consistently' is limited by the body: the stability gain shows mainly for shallow circuits, the LLL method does not exceed Distance Loss accuracy, and deeper circuits let all three losses converge stably. Evidence is 20 runs per loss on three synthetic 2D datasets in a noise-free simulator.",
+     "value": "The authors report, from 20 independent runs on three synthetic datasets in a state-vector simulator, that Log-Likelihood Loss substantially reduces the accuracy variance seen with Measurement Loss, especially for shallow circuits, while keeping the same linear computational complexity; it does not exceed the accuracy of Distance Loss, and with sufficient circuit depth all three losses eventually converge stably.",
+     "anchor": "Abstract p.1; Section V D, pp.6-7; Table II; Section VI p.9",
+     "quotes": [
+      "Our results show that Log-Likelihood Loss consistently achieves more stable optimization than Measurement Loss while retaining linear computational complexity.",
+      "exhibits significantly larger fluctuations in the accuracy, especially for shallow circuits",
+      "The LLL method substantially reduces this variance while preserving the same linear computational complexity as the ML method.",
+      "Although the LLL method does not exceed the performance of LDL, it provides a more stable optimization behavior",
+      "all loss functions eventually achieve stable convergence when sufficient circuit depth is available",
+      "we execute 20 independent runs for each loss function",
+      "All experiments were executed using Qiskit 1.4.4 [27] state-vector simulator"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated study on small synthetic data.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "quyen-noise-effect",
+     "verdict": "widened",
+     "note": "Adds the noise settings (fixed 4 layers, depolarizing 0.001 and 0.01, readout 0.01, 1024 shots, 20 runs), that only the LLL method was tested under noise, and the noisy accuracies from Table IV.",
+     "value": "The authors report a preliminary noise test of the Log-Likelihood Loss method only, with 4 layers, depolarizing errors of probability 0.001 and 0.01 after single- and two-qubit gates, symmetric readout error 0.01 and 1024 shots, over 20 runs: test accuracy on moons stays almost unchanged (0.97 noise-free, 0.98 with noise), while it falls by approximately 0.06 and 0.09 for circles (0.97 to 0.91) and gaussian (0.94 to 0.85). All other results used an ideal noise-free simulator.",
+     "anchor": "Section V F, p.8; Table IV",
+     "quotes": [
+      "All previous results were obtained using an ideal noisefree statevector simulator.",
+      "The experiments were performed with a fixed #Layers = 4, considering depolarizing errors with probabilities 0.001 and 0.01 after single- and two-qubit gates, respectively, together with a symmetric readout error of probability 0.01.",
+      "Each circuit evaluation was sampled using 1024 measurement shots",
+      "mean accuracy ± standard deviation over 20 independent runs for each dataset",
+      "moons 0.97 ± 0.02 0.98 ± 0.02 circles 0.97 ± 0.03 0.91 ± 0.07 gaussian 0.94 ± 0.02 0.85 ± 0.03",
+      "The performance on the moons dataset remains almost unchanged, while the accuracy decreases by approximately 0.06 and 0.09 for the circles and gaussian datasets, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated noise study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "quyen-naive-tqfm-cancels",
+     "value": "The authors state that appending parameterized rotations W(θ) strictly after the data-encoding circuit is mathematically ineffective for kernel methods, because W(θ)†W(θ) = I makes the trainable parameters cancel out in the fidelity kernel; data re-uploading, which combines input and parameters in the same rotation blocks, is used instead.",
+     "anchor": "Section II B, Eq. (4)-(5), p.2",
+     "quotes": [
+      "However, this architecture is mathematically ineffective for kernel methods [16].",
+      "Due to W (θ)†W (θ) = I, the trainable parameters θ cancel out entirely during fidelity estimation",
+      "This architecture combines input x and parameters θ within the same rotation blocks across l layers"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A one-line algebraic identity shown in Eq. (4), p.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quyen-lll-definition",
+     "value": "The authors define the Log-Likelihood Loss as the class-averaged empirical negative log-likelihood of the fidelities between each encoded state and its class's target basis state, derived by reading the fidelity as the conditional probability P(y|x;θ) and assuming i.i.d. training samples.",
+     "anchor": "Section IV, Eq. (12)-(13), pp.3-4",
+     "quotes": [
+      "the fidelity naturally defines the conditional probability P (y|x; θ)",
+      "Assuming that the training samples are independent and identically distributed (i.i.d.), the likelihood of the complete dataset is given by",
+      "we take the negative logarithm of the likelihood and define the following Log-Likelihood Loss (LLL)",
+      "This formulation corresponds to the empirical negative log-likelihood objective"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Eq. (13), p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quyen-lll-weighting-mechanism",
+     "value": "The authors state that Measurement Loss applies a linear penalty that weights all samples equally, while Log-Likelihood Loss applies minus log of the prediction probability, which grows rapidly for small probabilities and so emphasizes poorly classified samples; they say this adaptive weighting, analogous to cross-entropy, may explain the improved stability.",
+     "anchor": "Section IV, Fig. 3, p.4",
+     "quotes": [
+      "assigning identical weight to all samples regardless of their prediction confidence",
+      "Consequently, samples with low prediction probabilities contribute more strongly to the overall optimization objective",
+      "This adaptive weighting mechanism is analogous to the role of cross-entropy",
+      "may explain the improved optimization stability observed in our ex- periments"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An explanation the authors offer ('may explain'), not tested separately.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quyen-experimental-setup",
+     "value": "The authors state the setup: three scikit-learn synthetic datasets (moons and circles, binary; gaussian, three concentric classes), split 40% train, 20% validation, 40% test; Qiskit 1.4.4 state-vector simulator; EfficientSU2-based circuit with data re-uploading; COBYLA with at most 2000 iterations; 20 independent runs per loss function.",
+     "anchor": "Section V A-B and D, pp.5-6; Table I",
+     "quotes": [
+      "We use three synthetic datasets generated by Scikitlearn",
+      "partitioned into three concentric classes based on a multidimensional Gaussian distribution",
+      "each dataset is randomly divided into training (40%), validation (20%), and test (40%) subsets",
+      "All experiments were executed using Qiskit 1.4.4 [27] state-vector simulator",
+      "constructed based on the EfficientSU2 ansatz",
+      "driven by the COBYLA algorithm with a maximum of 2000 iterations",
+      "we execute 20 independent runs for each loss function"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its setup, Section V, pp.5-6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Datasets are 2D toy sets with 100 to 200 training samples; results may not carry over to realistic data."
+    },
+    {
+     "id_suggestion": "quyen-crossing-not-label-assignment",
+     "value": "The authors report that assigning each class to its nearest orthogonal basis state at initialization does not prevent the trajectory crossing problem with Measurement Loss: cross-overlap rises quickly early in training together with a significant drop in training accuracy, which they take to show the instability is tied to the geometric constraints of fixed-target optimization rather than to label choice.",
+     "anchor": "Section V C, p.6, Fig. 6",
+     "quotes": [
+      "we use a nearest-basis-vector assignment strategy in our experiments",
+      "this strategy is still insufficient to prevent the trajectory crossing problem",
+      "the cross-overlap rapidly increases during the early training stage, accompanied by a significant drop in training accuracy",
+      "is closely related to the geometric constraints of fixed-target optimization"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Shown in one representative training run (Fig. 6) on the circles dataset.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quyen-dl-best-accuracy-overlap",
+     "value": "The authors report that Distance Loss achieves the lowest state overlap between classes and consistently gives the highest classification accuracy across most datasets and circuit depths, while Measurement Loss converges to a higher residual overlap despite a lower numerical loss; on circles with one layer Measurement Loss reaches 0.87 ± 0.10 accuracy.",
+     "anchor": "Section V D, p.6; Fig. 7; Table II",
+     "quotes": [
+      "The DL method achieves the lowest overlap",
+      "The DL method consistently gives the highest classification accuracy across most datasets and circuit depths.",
+      "the ML method converges to a higher residual overlap despite achieving a lower numerical loss value",
+      "on the circles dataset with one layer, the ML method achieves an accuracy of 0.87 ± 0.10"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quyen-fixed-target-limits-lll",
+     "value": "The authors state that Log-Likelihood Loss reduces residual overlap compared with Measurement Loss, but the improvement remains limited because both rely on fixed reference states, whereas Distance Loss lets embeddings arrange themselves freely.",
+     "anchor": "Section V D, p.6",
+     "quotes": [
+      "The LLL method improves upon this behavior by reducing the residual overlap compared with the ML method",
+      "However, the improvement remains limited because both objectives rely on fixed reference states."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its own method, Section V D, p.6.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quyen-training-time-scaling",
+     "value": "The authors report simulated training times rising from 150.8 s at 5 samples to 4535.3 s at 30 samples for Distance Loss, against 33.8 s to 124.5 s for Measurement Loss and 34.1 s to 125.5 s for Log-Likelihood Loss, consistent with quadratic against linear scaling.",
+     "anchor": "Section V D, Table III, p.7",
+     "quotes": [
+      "TABLE III. The training time (in seconds) on quantum simulation scaling w.r.t M .",
+      "LDL LML LLLL 150.8 530.0 1150.2 2048.4 3192.4 4535.3 33.8 57.7 75.5 94.5 110.8 124.5 34.1 55.3 75.3 93.0 110.5 125.5",
+      "#Samples (M ) Method 5 10 15 20 25 30"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Measured wall-clock times on one CPU simulator.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quyen-depth-tradeoff",
+     "value": "The authors report that as variational layers increase from 1 to 6 on the circles dataset, all three losses reach lower training loss with less run-to-run variance, but test accuracy improves little beyond a certain depth, so depth alone is not sufficient and over-parameterized circuits may overfit.",
+     "anchor": "Section V E, p.8, Fig. 8; Section V D, p.7",
+     "quotes": [
+      "tional layers (#Layers) from 1 to 6",
+      "As the number of layers increases, all three objectives exhibit decreasing training loss",
+      "increasing the number of layers beyond a certain point provides limited improvement in test accuracy, despite the continuous reduction in training loss",
+      "increasing circuit depth alone is not sufficient to achieve better classification performance",
+      "Over-parameterized circuits may fit the training data excessively"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quyen-noisy-training-dynamics",
+     "value": "The authors report that under simulated noise all datasets show strong loss fluctuations during the first approximately 100 iterations, stabilizing after approximately 200 iterations, and say the loss results only support, and do not independently explain, the accuracy trends.",
+     "anchor": "Section V F, pp.8-9, Fig. 9",
+     "quotes": [
+      "All datasets exhibit strong fluctuations during the first ∼100 iterations due to the shot noise and gate errors, but the training process becomes stable after approximately 200 iterations.",
+      "these results provide supporting evidence for the observed accuracy trends rather than an independent explanation of the noise sensitivity"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated noise study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quyen-future-fully-quantum-inference",
+     "value": "The authors state, as future work, a fully quantum inference scheme that assigns labels directly from target-state measurement probabilities, removing the classical post-processing step, and systematic comparisons of circuit designs to study the parameter-architecture trade-off.",
+     "anchor": "Section VI, p.9",
+     "quotes": [
+      "A natural direction for future work is to develop a fully quantum inference scheme by directly assigning labels according to measurement probabilities of the target quantum states.",
+      "Future studies will investigate this parameter–architecture trade-off through systematic comparisons of different circuit designs"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of open problems, Section VI, p.9.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quyen-conclusion",
+     "value": "The authors conclude that Log-Likelihood Loss avoids the quadratic cost of distance-based optimization while keeping linear scaling, improves optimization stability of shallow circuits and achieves competitive accuracy, and that the training objective is a key factor in the optimization, robustness and generalization of TQFM-based QSVMs.",
+     "anchor": "Section VI, p.9",
+     "quotes": [
+      "The proposed loss LLL addresses the quadratic computational cost of distance-based optimization while preserving the linear scaling of measurementbased approaches.",
+      "the LLL method improves the optimization stability of shallow quantum circuits and achieves competitive classification performance",
+      "the design of the training objective is a key factor in determining the optimization behavior, robustness, and generalization capability of TQFM-based QSVMs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Conclusions resting on one simulated study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "rad-2023-deep-quantum-neural-networks-gaussian",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Rad_2023_Deep-Quantum-Neural-Networks-are-Gaussian-Process__2305.12664.pdf",
+   "title_in_file": "Deep Quantum Neural Networks are Gaussian Process",
+   "version_note": "arXiv:2305.12664v1, 22 May 2023 (dated May 23, 2023). The text layer flattens most equations (superscripts, sums and fractions lose their layout); every page of text was read. Appendix B carries an unfinished placeholder '[NEED TO BE COMPLETE]' in the source itself.",
+   "pages": 16,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A single-author theory preprint that uses Haar-random (t-design) averaging and a 1/d expansion to argue that over-parameterized variational quantum circuits output a Gaussian process at large Hilbert-space dimension, links that process to the quantum neural tangent kernel, and sketches nearly-Gaussian finite-width corrections.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qnn-gp-finite-width-expansion",
+     "verdict": "narrowed",
+     "note": "The body limits the abstract's framework: the closed-form higher-order correction is claimed 'at least for the case of dQNTK', the next order is O(1/d), and the appendix that carries the beyond-Gaussian derivation contains an unfinished placeholder.",
+     "value": "The author presents a 1/d expansion, d the circuit's Hilbert-space dimension, for finite-width effects and states that Bayesian learning gives higher-order corrections of the output distribution in closed form, at least for the case of dQNTK, by a nearly-Gaussian action whose next leading order is O(1/d); the appendix carrying this derivation contains an unfinished placeholder.",
+     "anchor": "Abstract p.1; Section III C, p.8; Appendix B, p.11",
+     "quotes": [
+      "we present a framework to examine the impact of finite width in the closed-form relationship using a 1/d expansion, where d represents the dimension of the circuit's Hilbert space",
+      "we can obtain higher-order corrections of the output distribution in a closed form, at least for the case of dQNTK",
+      "we need to incorporate the next leading order in finite width, which is of O(1/d)",
+      "[NEED TO BE COMPLETE]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation sketch, not a stated theorem, with an incomplete appendix.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Section III C also says 'dQNTK is zero' in the nearly-Gaussian case, which sits awkwardly with the claim of a closed-form dQNTK correction."
+    },
+    {
+     "id": "qnn-gp-simulation-setup",
+     "verdict": "widened",
+     "note": "Adds the feature map (ZZFeaturemap), the Pauli Z observables, the number of Haar instances and that the outcome is shown only as plotted joint distributions of two outputs, with no quantitative Gaussianity measure.",
+     "value": "The author reports simulations of circuits whose layers are random two-qubit gates followed by entangling gates, with MNIST input reduced by PCA and mapped by the ZZFeaturemap, observables built from Pauli Z, and ten to the fifth random Haar instances per width and depth; plotted joint distributions of two outputs show the output distribution tending toward a Gaussian as the QNN becomes deeper.",
+     "anchor": "Figure 2 caption, p.3",
+     "quotes": [
+      "Each layer of the circuit consists of random two-qubit gates followed by entanglement gates.",
+      "The observables used in the simulations were constructed from the Pauli Z matrix",
+      "We generated 105 random Haar instances for each circuit with given values of n and L.",
+      "reduced size with the Principal Component Analysis(PAC) , and then mapped to the feature space using the ZZFeaturemap",
+      "The joint distribution, P (fi, fj), of the output was plotted for two fixed indices i and j.",
+      "As observed, as the quantum neural network (QNN) becomes deeper, the output distribution tends to converge more towards a Gaussian distribution."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A qualitative empirical observation from one figure.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text layer prints '105' for ten to the fifth. No width, depth or qubit values for the runs are given in the text."
+    },
+    {
+     "id": "qnn-gp-wide-deep",
+     "verdict": "narrowed",
+     "note": "The analytic part rests on the gates satisfying a t-design condition (Haar averages) and on the limit d to infinity; the paper adds that the t-design condition is only supported by 'evidence' for over-parameterized and deep circuits.",
+     "value": "The author states that Haar-random initialization makes the QNN behave like a Gaussian process at wide width or, empirically, at deep depth; the analytic expectations require the gates to satisfy the t-design condition, which the author says evidence suggests holds for over-parameterized and deep circuits, and the Gaussian form is taken in the limit where d approaches infinity.",
+     "anchor": "Abstract p.1; Section I A, Eq. (6)-(7), p.2; Section III A, p.6",
+     "quotes": [
+      "We observe the influence of initializing parameters using random Haar distribution results in the QNN behaving similarly to a Gaussian Process (QNN-GP) at wide width or, empirically, at a deep depth.",
+      "If the gates in a quantum model satisfy the t-design condition",
+      "This holds true for overparameterized and deep circuits, where evidence suggests that the t-design condition can be met.",
+      "In the asymptotic regime where d approaches infinity, higher-order corrections within the correlation"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation under an assumed t-design condition, plus a qualitative simulation.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qnn-gp-two-point-leading-order",
+     "value": "The author derives, by Haar averaging, that at large d the connected two-point correlator of circuit outputs is, to leading order one over d squared, the product of Tr(ρρ) for the two inputs and Tr(OO) for the two observables, with corrections of order one over d cubed.",
+     "anchor": "Eq. (9) and (13), p.3; Appendix C 1, Eq. (C10)-(C11), pp.14-15",
+     "quotes": [
+      "E[fi1,α1 fi2,α2 ]|conn. = 1 d2 [Tr(ρα1 ρα2 ) Tr(Oi1 Oi2 )]+O( 1 d3 )",
+      "At large d, the two point correlator exhibits the following behavior:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived in Appendix C under the Haar (t-design) assumption; not stated as a theorem and the text layer flattens the formula.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-gp-odd-correlators-vanish",
+     "value": "The author assumes the output distribution is symmetric about the origin, which implies the odd-order correlators vanish and lets the distribution be written through even moments.",
+     "anchor": "Section I A, p.3; Section III, p.5; Appendix B, p.11",
+     "quotes": [
+      "This assumption implies that the odd order of correlators will vanish.",
+      "assuming symmetry around the origin in the output distribution and excluding correlations of odd order"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own stated assumption, Sections I A and III.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-gp-infinite-width-posterior",
+     "value": "The author states that in the extreme over-parameterized case d to infinity, keeping only the quadratic term of the action, the QNN output is Gaussian and the posterior on unseen inputs is a Gaussian process whose mean is kernel regression on the observed labels and whose covariance, to leading order, is Tr(OiOj) over d squared times the fidelity-kernel Schur complement.",
+     "anchor": "Section III A, Eq. (30)-(35), p.6; Appendix A, Eq. (A7)-(A8), pp.10-11",
+     "quotes": [
+      "In this section, we want to study the extreme overparameterized case d → ∞ where all higher order terms than quadratic interaction can be neglected",
+      "In this regime, it becomes possible to express the output distribution of the quantum neural network as a Gaussian distribution.",
+      "In literature, the term Tr(ρxρx) is occasionally denoted as the Quantum fidelity kernel",
+      "Therefore, we can deduce that in the case of an infinitely deep scenario, the output of the QNN follows a Gaussian process"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation following a classical textbook calculation, not stated as a theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Appendix A calls the limit 'infinitely deep' while Section III A calls it infinite width (d to infinity); the paper uses the two loosely."
+    },
+    {
+     "id_suggestion": "qnn-gp-qntk-haar-average",
+     "value": "The author derives that the Haar-averaged tangent-kernel entry is, to leading order, c over d squared times Tr(OiOj)Tr(ραρβ), with c of order one, and that summing over the L parameters gives a kernel of order L over d squared.",
+     "anchor": "Section I A, Eq. (17)-(18), p.4",
+     "quotes": [
+      "= c d2 Tr(OiOj) Tr(ραρβ) + O( 1 d3 )",
+      "which is typically of order one (O(1))",
+      "ημν [Hij,αβ ]μν ∼ L d2 Tr(Oi Oj ) Tr(ραρβ ) + O( 1 d3 )"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation that assumes a frozen kernel and a unit learning-rate matrix, not stated as a theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-gp-qntk-kernel-regression",
+     "value": "The author states that as d approaches infinity the training dynamics keep only the linear term, so at long training times the circuit output is linear kernel regression with the QNTK, obtained without actually training, and the output distribution matches the Gaussian process of the functional description with Q replaced by K; higher moments are of order one over d squared and are disregarded.",
+     "anchor": "Section III B, Eq. (38)-(48), pp.6-7",
+     "quotes": [
+      "in the limit of d → ∞, it is acceptable to only retain the linear term",
+      "we can determine the output of the circuit (without actually performing any training) as a linear kernel regression",
+      "The higher order moments are of the order O(1/d2) and can be disregarded.",
+      "we obtain the same distribution as predicted by the Gaussian process, particularly as t → ∞, and substituting Q with K"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation that assumes a frozen kernel near initialization, not stated as a theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The frozen-kernel (lazy training) assumption is taken from [11]."
+    },
+    {
+     "id_suggestion": "qnn-gp-depth-faster-convergence",
+     "value": "The author states that depth L shows its effect through faster convergence toward a Gaussian distribution, the output change being proportional to an exponential in minus L times the leading kernel.",
+     "anchor": "Section II, Eq. (20), p.4",
+     "quotes": [
+      "the impact of depth, denoted as L, becomes evident through the faster convergence to a Gaussian distribution",
+      "f (t) − f (0) ∝ (e−LQˆ )tη"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated with one formula, not derived in the text.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-gp-traditional-dqntk-infeasible",
+     "value": "The author states that in the finite-width regime higher-order terms such as dQNTK and ddQNTK must be considered, and that obtaining these corrections by traditional methods can be unfeasible and give no closed-form solution.",
+     "anchor": "Section III C, p.8; Section III B, p.7",
+     "quotes": [
+      "it becomes necessary to consider higherorder terms, such as dQNTK and ddQNTK",
+      "Using traditional methods to obtain higher-order corrections in the output distribution, such as for dQNTK, can be unfeasible and not provide a closed-form solution.",
+      "Solving Eq.36 entails dealing with a complex set of differential equations, which generally do not yield a closedform solution [19]."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim supported by a cited textbook.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-gp-meta-kernels-definition",
+     "value": "The author defines the quantum meta-kernels dQNTK and ddQNTK as the expected higher-derivative terms of the output expansion and identifies them with the third- and fourth-order output correlators, alongside the QNTK identified with the two-point correlator.",
+     "anchor": "Section III B, Eq. (39)-(41), p.7",
+     "quotes": [
+      "these are known as quantum meta kernels, which correspond to the third and fourth-order correlations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Section III B, p.7.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-gp-probabilistic-advantage",
+     "value": "The author states that representing the circuit output as a probability distribution, instead of a delta function, lets the framework incorporate uncertainty and gives more flexibility in noise analysis.",
+     "anchor": "Section III, p.5; Abstract p.1",
+     "quotes": [
+      "The key advantage of this perspective lies in its ability to incorporate uncertainty within the framework, enabling increased flexibility in noise analysis.",
+      "this probabilistic viewpoint lends itself naturally to accommodating noise within our model"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; the paper does not carry out any noise analysis.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No noisy model or noise result appears anywhere in the paper."
+    },
+    {
+     "id_suggestion": "qnn-gp-init-no-guarantee",
+     "value": "The author states that initialization strategies such as Gaussian and reduced-domain initialization, reported to speed convergence and alleviate barren plateaus, do not guarantee that the global minimum is reached in a reasonable number of iterations.",
+     "anchor": "Section II, p.5",
+     "quotes": [
+      "These studies suggest that such strategies can enhance convergence speed and alleviate the problem of barren plateaus.",
+      "these assumptions do not guarantee that the global minimum can be reached within a reasonable number of iterations using these initialization methods"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result with the author's comment.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-gp-kernel-beats-gradient-underparam",
+     "value": "The author cites recent findings that kernel-based methods can be more successful than gradient methods in mitigating the barren plateau problem in under-parameterized regimes.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "recent findings suggest that kernel-based methods can be more successful than gradient methods in mitigating the Barren Plateau problem in under-parameterized regimes[2, 18]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "Reference 18 is the author's own earlier paper."
+    },
+    {
+     "id_suggestion": "qnn-gp-concurrent-work",
+     "value": "The author notes that the work was presented informally at the APS March Meeting 2023 and that, near completion, the author became aware of similar work on arXiv (García-Martín, Larocca and Cerezo, Deep quantum neural networks form gaussian processes).",
+     "anchor": "Note added, Section IV, p.8; reference [4], p.9",
+     "quotes": [
+      "This work was presented informally to the scientific community during the APS March Meeting 2023",
+      "we became aware of work with a similar topic on arXiv [4]",
+      "Diego García-Martín, Martin Larocca, and M Cerezo. Deep quantum neural networks form gaussian processes."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own note on its provenance, p.8.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-gp-conclusion",
+     "value": "The author concludes that over-parameterization through width and depth shifts the output distribution of variational quantum circuits toward a Gaussian process, observed theoretically and by simulation, and that finite width skews the distribution toward non-Gaussianity, treated by a 1/d expansion in closed form.",
+     "anchor": "Section IV Conclusion, p.8",
+     "quotes": [
+      "We explored the impact of overparameterization through the expansion of width and depth .",
+      "We obsereved theortically and by simulation that this led to a shift in the output distribution of the quantum models towards a Gaussian process.",
+      "We also examined how the finite size of the width can skew the distribution towards non-Gaussianity.",
+      "We demonstrated how this can be achieved using a 1/d expansion in closed form relation"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Conclusions resting on derivation sketches and one qualitative simulation.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "ralli-2025-bridging-quantum-chemistry-maxcut-classical",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Ralli-et-al._2025_Bridging-Quantum-Chemistry-and-MaxCut-Classical-Performance-Guarantees-and__2506.04223.pdf",
+   "title_in_file": "Bridging Quantum Chemistry and MaxCut: Classical Performance Guarantees and Quantum Algorithms for the Hartree-Fock Method",
+   "version_note": "arXiv:2506.04223v1, 4 Jun 2025 (dated June 13, 2025). Figures 2-4 are plots; their captions and the raw data tables in Appendix H were read.",
+   "pages": 36,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A quantum-chemistry methods paper that rewrites Hartree-Fock-style SCF as a sequence of QUSO/QUBO/MaxCut problems, derives a per-step approximation guarantee from semidefinite programming, tests it classically on the hydroxide anion and N2 dissociation, and outlines four hybrid quantum-classical variants (GAS, QAOA, QA, DQI) that it does not run.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "ralli-limits-two-molecules-hybrids",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section V Conclusion, pp.12-13",
+     "quotes": [
+      "However, we only studied two molecular systems and further benchmarking of each method is still required.",
+      "We leave a thorough investigation of these hybrid approaches for future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section V, pp.12-13.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "ralli-maxcut-scf-guarantee",
+     "verdict": "narrowed",
+     "note": "The body limits the guarantee: it bounds only the single Slater determinant (1-RDM) chosen in the current MO basis at each step, as a fraction of optimal set by the approximation algorithm; the SCF MaxCut graphs have negative edge weights, so the 0.878 Goemans-Williamson ratio does not apply directly and the derived bound is problem-dependent and likely loose; it does not hold for multi-reference methods such as CASSCF.",
+     "value": "The authors state that applying semidefinite programming to the MaxCut-SCF problem ensures, at each step, that the single Slater determinant (1-RDM) chosen in the current molecular orbital basis is within a fraction of optimal determined by the approximation algorithm, a guarantee absent from conventional Hartree-Fock. Because the MaxCut graph can have negative edge weights, the bound is problem-dependent: the Goemans-Williamson ratio of 0.878 holds for positive weights only, and their bound with negative weights (Equation F8) is likely loose. The analysis does not hold for multi-reference SCF methods such as CASSCF.",
+     "anchor": "Abstract p.1; Section III B, pp.7-8; Section V, pp.12-13; Appendix F, pp.28-29",
+     "quotes": [
+      "This procedure provides performance guarantees at each SCF step, irrespective of the complexity of the optimization landscape.",
+      "while the MO basis is being optimized the 1-RDM considered remains within a certain fraction of the optimal one, determined by the specific approximation algorithm used",
+      "This guarantee is not present in conventional HartreeFock approaches.",
+      "However, this bound is problem- dependent as the negative edge weights are defined by the particular problem",
+      "achieves an approximation ratio of at least αG.W = 0.878 for graphs with positive edge weights",
+      "This indicates the approximation ratio given by Equation (F8) is likely to be loose.",
+      "this analysis does not hold for multi-reference SCF methods, such as Complete Active Space self-consistent field (CASSCF)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The guarantee follows from cited SDP results; the paper's own bound is derived in Appendix F but its tightness is open.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "ralli-numerics-classical",
+     "verdict": "narrowed",
+     "note": "The body adds that internal instabilities were still possible for the new methods (CPLEX sometimes matched the unstable RHF energies), that annealing was simulated, and that only two molecules were studied.",
+     "value": "The authors report, from classical-hardware calculations on the hydroxide anion and molecular nitrogen with up to 220 qubits (spin-orbitals), that MaxCut-SCF and QUBO-SCF are competitive with conventional Hartree-Fock solvers including second-order methods and resist internal instabilities; internal instabilities were still possible, as some CPLEX results matched the RHF energies obtained without a stability check. Annealing was simulated and no quantum hardware was used.",
+     "anchor": "Abstract p.1; Section IV, pp.9-10; Section V p.12; Figure 2 caption p.11",
+     "quotes": [
+      "The largest problem addressed in this study involves a system comprised of 220 qubits (equivalently, spin-orbitals).",
+      "Our numerical results, obtained using classical hardware, show that MaxCut-SCF and QUBO-SCF are both competitive with conventional Hartree-Fock solvers including second-order methods, while being resistant to internal instabilities.",
+      "However, they are still possible as seen by the cplex results, in Figure 3a, where sometimes the energies calculated matched the RHF calculation when the internal stability was not checked.",
+      "here annealing is simulated",
+      "no computations were carried out on quantum hardware"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on two molecules.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "ralli-hf-is-quso",
+     "value": "The authors show that the diagonal Hartree-Fock Hamiltonian, being at most a product of two number operators, maps under the Jordan-Wigner transform to Pauli terms acting non-trivially on at most two qubits, so single-reference SCF in a finite basis is exactly a Quadratic Unconstrained Spin Optimization (QUSO) problem with no auxiliary variables needed.",
+     "anchor": "Section II A, Eq. (4) and (7), p.4; Section I, p.2",
+     "quotes": [
+      "the diagonal Pauli Hamiltonian will only be composed of n-fold tensor products Pj consisting of I, Z that act non-trivially on at most two qubits",
+      "The Pauli Hamiltonian in Equation (7) therefore describes a Quadratic Unconstrained Spin Optimization (QUSO) problem by definition.",
+      "No auxiliary variables are required to reduce the locality of the problem as the Hartree-Fock Hamiltonian is already two-local"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A short derivation from Eq. (4) to Eq. (7), p.4, with its condition (diagonal Fock-basis Hamiltonian, Jordan-Wigner) stated.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-hardware-connectivity-limit",
+     "value": "The authors state that their method is still limited when the Ising problem cannot be mapped directly onto hardware because of connectivity between spins; embedding with ancilla bits is possible but undesirable, and no such issue arises when the solvers run on conventional computers.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "our methodology is still limited if the output Ising problem cannot be mapped directly onto the hardware due to connectivity constraints between spins",
+      "but this is not desirable as unnecessary degrees of freedom have been added to the problem",
+      "if QUBO/Ising solvers are run on conventional computers, no such connectivity issues are present"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section I, p.2.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-dwave-connectivity-cited",
+     "value": "The authors state that specialist Ising hardware limits connectivity, giving D-Wave's 5,000-qubit device, restricted to 15 connections per qubit, as an example.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "One issue with using specialist Ising solver hardware is a limitation on the connectivity between spin sites.",
+      "For example D-Wave's 5,000-qubit device is restricted to 15 connections per qubit."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement about a vendor device, given without a citation in that sentence.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-algorithms-1-2-definition",
+     "value": "The authors define two SCF procedures that, unlike standard Hartree-Fock, optimize over the reference Slater determinant at every step: the first optimizes the orbital-rotation vector κ with an inner search for the lowest-energy Fock state in the current basis; the second optimizes the coefficient matrix C by repeated Fock-matrix diagonalization, with the one-particle reduced density matrix taken from the best Slater determinant found in each basis.",
+     "anchor": "Section III A 1-2, Eq. (11)-(13), pp.5-7; Figure 1; Appendix I",
+     "quotes": [
+      "The two algorithms differ in how they specify changes in the molecular orbital basis.",
+      "the HF reference state is not fixed during optimization over ⃗κ and instead an inner optimization over different computational basis states is performed",
+      "In Algorithm 2, for a particular C, the Fock matrix is diagonalized to obtain a new C, which defines a new Fock matrix.",
+      "the one-particle reduced density matrix in Equation (12) is not fixed by a particular Slater determinant and instead optimized over"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions, Section III A, pp.5-7.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-local-minima-claim",
+     "value": "The authors state that letting the reference Slater determinant change during optimization is why the new approaches should converge faster and be more resistant to local minima.",
+     "anchor": "Section III A 2-3, p.7",
+     "quotes": [
+      "is exactly why this approach should converge faster and be more resistant to local minima",
+      "An advantage of these newly proposed SCF approaches is they should be more resistant to local minima as the single reference Fock state is allowed to change rather than being fixed."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's argument, later tested only on two molecules.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-wrong-symmetry-penalty",
+     "value": "The authors state that solving the unconstrained problem can return solutions with incorrect symmetries, such as the wrong number of electrons, and add a penalty term weighted by a large positive λ that penalizes Slater determinants outside the correct symmetry sector.",
+     "anchor": "Section III A 3, Eq. (14), p.7; Appendix B, pp.20-22",
+     "quotes": [
+      "solving the QUSO problem (over D rather than S) can provide solutions with incorrect symmetries",
+      "For example, solutions with the wrong number of electrons can be obtained via this approach",
+      "Here VP penalizes any Slater determinant not in the correct symmetry sector by λ, which takes a large positive value."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of a limit of its method and its remedy, Section III A 3, p.7.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-spin-penalty-quartic",
+     "value": "The authors state that a general penalty favoring a chosen total spin contains quartic terms and must be quadratized before it can be added, while for closed-shell systems requiring zero total spin a modified penalty is quadratic and can be added directly.",
+     "anchor": "Appendix B 1 b, Eq. (B7)-(B8), pp.21-22",
+     "quotes": [
+      "Due to the squaring operation this operator will contain quartic terms and thus cannot just be added to the optimization problem as the overall problem would then not be quadratic.",
+      "Fortunately, for closed shell systems if S2 = 0 is required the penalty term above can be modified.",
+      "Note this penalty is quadratic, so can be added to the QUSO problem without requiring quadratization techniques."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows directly from the penalty forms written in Eq. (B7)-(B8), Appendix B.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-maxcut-single-ancilla",
+     "value": "The authors show that the QUSO problem maps to an equivalent MaxCut problem using a single auxiliary bit; the sector with the ancilla set reproduces every eigenvalue with all spins flipped, so a solution found there is converted back by a bitwise not and no samples are wasted.",
+     "anchor": "Section III B, p.7; Appendix E 2, Eq. (E5)-(E12), pp.24-27",
+     "quotes": [
+      "A QUSO problem can be transformed into an equiva- lent MaxCut problem using a single auxiliary bit.",
+      "the corresponding eigenstate is the corresponding eigenstate of the original Hamiltonian with all the spins flipped (the bitwise-not bitstring)",
+      "Crucially, this correction makes sure no samples are wasted when approximately solving the problem using randomized methods"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix E 2, pp.24-27, following Boros and Hammer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-edge-weight-scaling",
+     "value": "The authors state they prove that the number of positive edge weights in each MaxCut-SCF graph scales quadratically with the number of spin-orbitals, while the number of negative edge weights scales linearly; this uses real orbitals, for which the relevant two-body integral differences are non-negative, and further negative weights can occur when penalty terms are added.",
+     "anchor": "Section III B, pp.7-8; Appendix E 2, Eq. (E12), p.27; Section V, pp.12-13",
+     "quotes": [
+      "We prove that the number of positive edge weights of each MaxCut (SCF) problem scales quadratically with the number of spin-orbitals (or qubits)",
+      "if the orbitals are real, then the two-body integrals",
+      "The number of negative edge weights will scale as O(M ) due to the first term in this equation.",
+      "If penalization terms are added to the QUSO/QUBO cost function then further negative edge weights can occur."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Shown from the form of Eq. (E12), Appendix E 2, p.27, with the real-orbital condition and the penalty caveat stated.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-negative-weight-bound",
+     "value": "The authors derive, for MaxCut graphs with negative edge weights, that the optimum is at least the Goemans-Williamson ratio times the rounded cut value plus (1 minus that ratio) times the sum of negative weights, with (1 minus the ratio) equal to 0.122, so negative weights slightly worsen the approximation; they leave open whether this can be tightened by other SDP techniques.",
+     "anchor": "Appendix F, Eq. (F6)-(F8), pp.28-29; Section V, p.13",
+     "quotes": [
+      "where (1 − αG.W ) = 0.122",
+      "We observe that the right-hand side of the inequality decreases in the presence of negative edge weights, indicating a slight deterioration in the approximation quality",
+      "We leave an open question as to whether it can be tightened and if different SDP techniques can be applied to this particular problem to improve the approximation ratio."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived in Appendix F; the inequality is printed flat in the text layer, so the statement could not be quoted whole.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-maxcut-negative-weight-ratios-cited",
+     "value": "The authors cite that MaxCut with negative weights, written via a symmetric real graph Laplacian, always admits a 0.56 approximation ratio algorithm, with a better ratio possible if the Laplacian is positive semidefinite.",
+     "anchor": "Section III B, p.7",
+     "quotes": [
+      "The problem can be written via a graph Laplacian, which is a symmetric real matrix and a 0.56 approximation ratio algorithm is always possible [60, 62].",
+      "if this Laplacian matrix is positive semidefinite, then a"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The text layer prints the PSD ratio as '2 π ≈ 0.6' (two over pi)."
+    },
+    {
+     "id_suggestion": "ralli-gw-optimal-ugc-cited",
+     "value": "The authors cite that Goemans-Williamson guarantees an approximation ratio of at least 0.878 for MaxCut with non-negative edge weights, and that if the unique games conjecture holds, Goemans-Williamson is optimal unless P = NP.",
+     "anchor": "Section II B, p.5",
+     "quotes": [
+      "Applying the semidefinite programming algorithm of Goemans-Williamson (GW) [52] to MaxCut guarantees an approximation ratio of at least 0.878 compared to the optimal cut.",
+      "However, this requires the graph to have non-negative edge weights [52].",
+      "if the unique games conjecture is true, then the Goemans-Williamson approximation algorithm for MaxCut is optimal unless P = NP"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited results.",
+     "result_type": "cited",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-complexity-class",
+     "value": "The authors state that QUBO-SCF and MaxCut-SCF are NP-hard, as each solves sequential QUBO or MaxCut problems, and that this places them in the same complexity class as Hartree-Fock and DFT, which are NP-complete as a worst-case statement.",
+     "anchor": "Section V, p.12; Section I, p.2; Section III B, p.8",
+     "quotes": [
+      "Both methods are NPhard, as each requires solving sequential QUBO or MaxCut problems.",
+      "Our QUBO and MaxCut formulation for SCF is thus in the same complexity class as these two methods",
+      "The fact that HF and DFT are NP-complete is a worstcase statement [30, 31]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Rests on cited complexity results.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-better-determinant-benefits",
+     "value": "The authors state two benefits of finding a better single Slater determinant: a better variational upper bound on the ground-state energy, and a better starting reference for single-reference post-Hartree-Fock methods.",
+     "anchor": "Section III C, p.8",
+     "quotes": [
+      "The solution provides a better upper bound to the true ground state energy by the variational principle",
+      "It has major implications for single reference post Hartree-Fock methods, where essentially these can all be started from a better reference point"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-google-hf-vqe-critique",
+     "value": "The authors argue that in Google AI Quantum's Hartree-Fock VQE the input state was fixed, so the reduced density matrices were set by the initial state and the orbital updates could have been obtained classically; in their methods the hard part is choosing the Slater determinant, done by a quantum or classical solver, with orbital updates done classically.",
+     "anchor": "Section III C, p.8",
+     "quotes": [
+      "Since the initial state was fixed the orbital updates could have been obtained classically",
+      "selecting the optimal Slater determinant is the hard part of the problem",
+      "The orbital updates are then determined classically, as this step is efficient to do on conventional computers."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's argument about another group's experiment.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-hybrid-quantum-variants",
+     "value": "The authors outline four hybrid quantum-classical SCF variants that use a quantum subroutine for the inner Slater-determinant search (Grover Adaptive Search, QAOA, quantum annealing, Decoded Quantum Interferometry) with classical orbital updates, and leave a detailed study of each to future work.",
+     "anchor": "Section III D, pp.8-9; Section V, p.13",
+     "quotes": [
+      "we outline four hybrid quantumclassical SCF algorithms based on Grover Adaptive Search, QAOA, Quantum Annealing and DQI",
+      "each utilize a different quantum subroutine to find the lowest-energy Slater determinant at each SCF step followed by a classical orbital optimization",
+      "De- tailed investigation of QAOA-SCF is left for future work.",
+      "We leave an investigation of DQI-SCF to future work"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of what it proposes and leaves untested, Sections III D and V.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-gas-speedup-caveat",
+     "value": "The authors state that Grover Adaptive Search would give a quadratic speed-up over brute force for the inner QUBO, but that Grover-like speed-ups are typically realized only asymptotically and constant overheads may negate any theoretical advantage at practical sizes.",
+     "anchor": "Section III D 1, p.8",
+     "quotes": [
+      "This provides a quadratic speed-up for QUBO problems compared to brute force search.",
+      "It is worth noting that Grover-like speed-ups are typically realized only in the asymptotic regime.",
+      "For practical problem sizes, constant overheads in an algorithm's implementation may negate any theoretical advantage."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section III D 1, p.8.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-qaoa-no-trotter",
+     "value": "The authors note that in QAOA-SCF the time evolution under the cost Hamiltonian incurs no Trotter error, since all its terms commute.",
+     "anchor": "Section III D 2, p.9",
+     "quotes": [
+      "Note that the implementation of time evolution un- der the \"cost\" Hamiltonian incurs no Trotter error, as all terms in the Hamiltonian commute."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows from the cost Hamiltonian being diagonal (all Z terms), Section III D 2, p.9.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-dqi-xorsat",
+     "value": "The authors state that the MaxCut-SCF problem can be converted to a weighted MAX-2-XORSAT instance for DQI, and that adding further constraints such as a spin constraint would generally give MAX-k-XORSAT problems.",
+     "anchor": "Section III D 4, Eq. (18)-(19), p.9",
+     "quotes": [
+      "The MaxCut SCF problem of Equation (E12) can be converted to a weighted MAX-2-XORSAT instance",
+      "In general, these modifications will give MAX-k-XORSAT problems."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A mapping sketched in one equation, not run.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-numerical-setup",
+     "value": "The authors state the numerical setup: PySCF integrals; the hydroxide anion in 6-31G (22 qubits) and molecular nitrogen in cc-pVDZ, cc-pVTZ and cc-pVQZ (56, 120 and 220 qubits); restricted (identical alpha and beta) orbitals; penalties for zero total spin and correct electron counts with λ set to the Hamiltonian's 1-norm; inner problems solved with dwave-tabu, dwave-neal simulated annealing, CPLEX and Goemans-Williamson via CVXPY; real orbital rotations; all on conventional computers.",
+     "anchor": "Section I, p.2; Section IV, pp.9-10",
+     "quotes": [
+      "OH– anion in the 6-31G basis set (22 qubit problem) and the dissociation of molecular N2 in the cc-pVDZ, cc-pVTZ and cc-pVQZ basis sets (56, 120 and 220 qubit problems,",
+      "the alpha and beta spatial orbitals were restricted to be identical for all calculations in this work",
+      "with λ set to be the 1-norm of the Hamiltonian",
+      "the TabuSampler from dwave-tabu [74], SimulatedAnnealingSampler from dwave-neal [75] and the CplexOptimizer in qiskit_optimization",
+      "Each MaxCut problem was solved using the Goemans Williamson (GW) algorithm",
+      "Note that we restricted ⃗κ to be real"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its setup, Section IV, pp.9-10.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-external-instabilities-excluded",
+     "value": "The authors state they do not consider external instabilities and focus on internal stabilities.",
+     "anchor": "Section II A, p.4",
+     "quotes": [
+      "We do not consider external instabilities in this work and instead focus on internal stabilities."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope statement, Section II A, p.4.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-oh-convergence",
+     "value": "The authors report for the hydroxide anion in 6-31G at a 3 Å bond length that several conventional chemistry codes converged to local minima showing internal instabilities and the others needed second-order SCF to reach the true ground state, while every QUBO- and MaxCut-SCF instance, with both new algorithms, converged to the ground state within four optimization steps.",
+     "anchor": "Section IV A, p.10; Figure 2 caption, p.11; Appendix H 1, Tables IV-VIII",
+     "quotes": [
+      "described in the 6-31G basis set (22 qubits/spin-orbitals) with a bond length of 3 Å",
+      "These results showed internal instabilities.",
+      "Each of these methods required second-order SCF methods to converge to the true Hartree-Fock ground state.",
+      "We observe that all instances converged to the ground state.",
+      "each method was able to converge to the true ground state within four optimization steps"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on one molecule at one geometry.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-orca-below-hf",
+     "value": "The authors report that the ORCA optimization went below the Hartree-Fock energy before converging and attribute this to the software modifying the problem, such as level shifting and DIIS.",
+     "anchor": "Section IV A, p.10",
+     "quotes": [
+      "we note that the orca optimization went below the Hartree-Fock energy before the result converged",
+      "We believe this is due to the software modifying the underlying problem, such as using level shifting and Direct Inversion in the Iterative Subspace (DIIS)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One observation with an author's explanation.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-n2-dissociation",
+     "value": "The authors report for N2 dissociation in three basis sets that QUBO- and MaxCut-SCF (Algorithm 2) perform as well as, or better than, conventional RHF; default RHF underperforms at large bond lengths because of internal instabilities, and second-order RHF with stability checks performed significantly better and agreed with the new methods. They did not apply internal stability methods to the QUBO/MaxCut results.",
+     "anchor": "Section IV B, p.10; Figure 3, p.12; Appendix H 2, Tables IX-XI",
+     "quotes": [
+      "The results indicate that QUBO and MaxCut SCF perform as well as, or better than, conventional RHF for N2.",
+      "At large bond lengths, the RHF method generally underperforms compared to other techniques.",
+      "The second-order RHF calculations, in which internal instabilities were checked and corrected when present, performed significantly better.",
+      "Note we did not use internal stability methods to try and further optimize the QUBO/MaxCut results"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-cisd-better-orbitals",
+     "value": "The authors report that CISD in the molecular orbitals selected by QUBO/MaxCut-SCF can be superior to CISD in conventional SCF orbitals, and propose, without determining it, that the unoccupied orbitals may be better optimized because different Fock states are visited.",
+     "anchor": "Section IV B, pp.10-12; Figure 4, p.13; Appendix H 2, Tables XII-XIV",
+     "quotes": [
+      "The results show the selected basis can be superior to those obtained by conventional SCF",
+      "The reason why this is the case is complicated to determine given the high dimensionality of the problem.",
+      "we propose it could be due to the unoccupied MOs being better optimized in the new SCF approaches"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation with an unconfirmed explanation.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-encoding-choice",
+     "value": "The authors state that a number (Jordan-Wigner) encoding is likely optimal, since Bravyi-Kitaev or parity encodings would enlarge the Pauli support and make the problem no longer quadratic.",
+     "anchor": "Section V, p.13",
+     "quotes": [
+      "Therefore, a number encoding of the problem is likely optimal.",
+      "If the Bravyi-Kitaev or parity encoding was used, the support of the Pauli operators will increase, making the problem no longer quadratic (2-local)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim without proof.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-ksdft-orbitals",
+     "value": "The authors state that converged Kohn-Sham DFT orbitals are still a valid MO basis, so a variational QUBO problem can be defined with respect to the true Hamiltonian in that basis, as for the other SCF methods.",
+     "anchor": "Section II A, p.4",
+     "quotes": [
+      "the converged KS-DFT molecular orbitals are still a valid MO basis and thus the true molecular Hamiltonian can be written in this basis",
+      "This means a variational QUBO problem can be defined with respect to the true Hamiltonian, just as for the other SCF methods."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statement, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-integral-cost",
+     "value": "The authors state that transforming all two-electron integrals to a rotated basis costs of order M to the fifth through the tensor contraction, and that building the diagonal Hamiltonian needs only two N_s by N_s matrices of integrals, giving speed and memory savings.",
+     "anchor": "Appendix A, p.19; Appendix G, pp.29-30",
+     "quotes": [
+      "will have a cost scaling as O(M 5) due to the tensor contraction",
+      "However, not all these integrals are required to build the diagonal fermionic Hamiltonian.",
+      "only the necessary terms have been transformed (providing both speed and memory improvements)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Contraction costs follow from the tensor contractions written out in Appendix G, Tables I-III.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-rosenberg-quadratization-cited",
+     "value": "The authors cite Rosenberg (1975) that any pseudo-Boolean function admits a quadratization computable in polynomial time, while noting that optimizing the quadratic reformulation is still NP-hard.",
+     "anchor": "Appendix D, p.23",
+     "quotes": [
+      "Rosenberg showed in 1975 that any pseudo-Boolean function admits a quadratization and that such a mapping can be computed in polynomial time",
+      "We note the problem of optimizing the quadratic reformulation is still NP-hard"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-quantum-speedup-cited",
+     "value": "The authors cite that quantum speedup has recently been achieved for one problem by DQI and for one ensemble of MaxCut instances by QAOA, and propose chemistry optimization problems as new instance ensembles for these algorithms.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "Recently quantum speedup has been achieved for one problem by the DQI algorithm [6], and for one ensemble of instances of MaxCut for QAOA [32].",
+      "Combinatorial optimization problems in chemistry provide new ensembles of instances on which to investigate the performance of these quantum algorithms."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited results.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ralli-conclusion",
+     "value": "The authors conclude that their QUBO and MaxCut formulation of SCF allows a whole new class of optimizers to be applied to the nonlinear problem, and that the MaxCut form uniquely gives a per-iteration guarantee that the Slater determinant's energy is some fraction of optimal in that basis.",
+     "anchor": "Section V, p.12",
+     "quotes": [
+      "but allows a whole new class of optimizers to be applied to the nonlinear optimization problem",
+      "the MaxCut formulation uniquely provides performance guarantees, specifically ensuring the quality of the single Slater determinant state used at each SCF iteration"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conclusion resting on cited SDP guarantees and a limited numerical study.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "recio-armengol-2024-single-shot-quantum-machine-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Recio-Armengol-Eisert-Meyer_2024_Single-shot-quantum-machine-learning__2406.13812.pdf",
+   "title_in_file": "Single-shot quantum machine learning",
+   "version_note": "arXiv:2406.13812v1, 19 Jun 2024 (dated June 21, 2024). Equations are flattened in the text layer; every page of text, including Appendices A-D, was read.",
+   "pages": 18,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper that defines when a quantum classifier is single-shot (near-deterministic from one run), lower-bounds the single-shot error by quantum multi-hypothesis testing of the embedded states, turns that into circuit-depth requirements for noiseless and depolarized embeddings, and argues that generically single-shot models generalize poorly.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "classification-only-scope",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section VI Conclusion, p.10",
+     "quotes": [
+      "First of all, we only considered classification tasks in this work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope statement, Section VI.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "generic-single-shot-not-trainable",
+     "verdict": "narrowed",
+     "note": "Section V is an argument, not a theorem: it covers 'generically accurate' single-shot models (an accurate single-shot POVM exists for every labeling), assumes all data points are at least ξ apart, treats binary classification, and rests on a cited sample-complexity bound for learning a POVM effect.",
+     "value": "The authors argue, not as a stated theorem, that a generically accurate single-shot model (one for which an accurate single-shot POVM exists for every possible labeling) cannot generalize well: assuming all data points are at least ξ apart and considering binary classification, such a model must map separated inputs to nearly orthogonal directions, so the Hilbert-space dimension, and by a cited bound the number of training samples needed to learn the POVM, grows like the number of ξ-balls covering the input space, which is inefficient in the input size.",
+     "anchor": "Section V, pp.9-10; Section VI, p.10",
+     "quotes": [
+      "To this end, we consider models that can be considered as generically accurate single-shot models.",
+      "Formally, we assume that all possible datapoints encountered by the model have a lower bound on their distance in some norm",
+      "To connect this to our setting we consider the setting of binary classification.",
+      "which is inefficient in the size of the input as we expected from our thought experiment",
+      "a learning model cannot be single-shot in a generic way, i.e. for all possible labelings of the input",
+      "it would become too expressive and there would be no meaningful way for such a model to generalize well"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A heuristic argument resting on a cited bound, not a proved theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "single-shot-bounded-by-distinguishability",
+     "verdict": "widened",
+     "note": "Adds the two theorem statements and their conditions. The Bayesian bound (Theorem 6) is the optimal multi-hypothesis error for the average states of the classes the classifier itself assigns; the depth bound (Theorem 9) holds for an L-layer circuit encoding each feature once per layer, and gives the needed depth as inversely proportional to the average inter-class distance.",
+     "value": "The paper proves that if a classifier has the Bayesian single-shot property, its single-shot error δ is at least the optimal Bayesian multi-hypothesis testing error between the average embedded states of the classes the classifier itself assigns. For an embedding by a noiseless parametrized circuit of L layers that encodes each data feature once per layer, it proves the single-shot error is bounded by the worst average distance between two data classes, so either the classes are far apart in input space or the circuit is sufficiently deep; with equally likely classes the required number of layers is inversely proportional to the average distance between classes. The authors note the bound need not be achieved by the circuit.",
+     "anchor": "Theorem 6, Section IV, p.6; Lemma 8 and Theorem 9, Section IV, p.8; proof Appendix C, pp.15-16",
+     "quotes": [
+      "If the classifier f has the Bayesian single-shot property, the error probability δ has to fulfill",
+      "Let ρθ(x) be obtained from a parametrized quantum circuit of L layers",
+      "The single-shotness error probability is bounded by the worst average distance between two data classes",
+      "either we have that the different classes are located far apart in the input space or we have a sufficiently deep circuit",
+      "the length of the circuit is inversely proportional to the average distance between the classes",
+      "it is not necessarily the case (and usually not expected) that this single-shot error probability is actually achieved by the circuit"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorems 6 and 9 are stated with their conditions and proved in Section IV and Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer flattens the formula of Eq. (58) and Eq. (60); the exact constants should be checked on the PDF."
+    },
+    {
+     "id": "single-shot-definition",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section III, Definition 2, p.4",
+     "quotes": [
+      "single-shot: exactly when the probability that a random label",
+      "is identical to the majority label",
+      "assigned by the classifier is very high"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Definition 2, p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "single-shot-measurement-problem",
+     "value": "The authors state that quantum learning models must be run many times and aggregated to give a prediction because measurement outcomes are probabilistic, that this measurement problem persists even on a fault-tolerant quantum computer, and that it adds time and cost absent from classical models.",
+     "anchor": "Introduction, pp.1-2",
+     "quotes": [
+      "many executions of a quantum learning model have to be aggregated to obtain an actual prediction",
+      "This issue, an instance of what has been called the measurement problem, even persists if the model is run on a fault-tolerant quantum computer.",
+      "this not only increases",
+      "the time it takes to produce a prediction but also the cost"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A framing claim of the authors.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "single-shot-multi-to-binary-lemma",
+     "value": "The paper proves that the optimal Bayesian multi-hypothesis testing error is lower-bounded by a prior-weighted combination of the worst pairwise binary testing errors, and hence by the minimum over states of the maximum pairwise error; in the minimax setting the error is at least the worst pairwise minimax error.",
+     "anchor": "Lemma 1, Section II, p.3; proof Appendix A, p.13",
+     "quotes": [
+      "Lemma 1 (Multi-hypothesis testing to binary reduc- tion).",
+      "the worst-case error can only improve when considering a hypothesis test among fewer alternatives",
+      "When facing a multi-hypothesis testing problem, additional side information can only improve our performance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 1 is stated and proved in Appendix A.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The authors note these lower bounds are not necessarily the tightest possible."
+    },
+    {
+     "id_suggestion": "single-shot-classifier-error-hypothesis",
+     "value": "The authors show that a quantum classifier used once is equivalent to a multi-hypothesis test between the average embedded states of each true class, so its error is at least the optimal achievable multi-hypothesis testing error for those states.",
+     "anchor": "Section II, Eq. (8)-(14), p.3",
+     "quotes": [
+      "we see that a quantum classifier is equivalent to a quantum multihypothesis testing problem for the average states for each class",
+      "we can conclude that the error of a quantum classifier is at least the optimal achievable error"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived step by step in Eq. (8)-(14), p.3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "single-shot-property-not-accuracy",
+     "value": "The authors state that being single-shot is independent of the labels being correct (a classifier that always outputs the same label is perfectly single-shot but inaccurate), depends on the data distribution, is only meaningful for small δ, and is not present at random initialization but must be enforced by training.",
+     "anchor": "Section III, after Definition 2, p.4",
+     "quotes": [
+      "being single-shot is a property of the classifier that is independent of the labels being actually correct",
+      "Consider for example a classifier that always outputs the same label, it will be perfectly single-shot",
+      "the singleshot property is necessarily dependent on the learning problem through the data distribution p(x)",
+      "It is no property that will be present upon random initialization and has to be enforced through an appropriate training procedure"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own clarification of its definition, Section III, p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "single-shot-agnostic-definition",
+     "value": "The authors define an agnostic single-shot classifier by requiring the probability that a single output equals the majority label to be high for every data point in the domain, not on average; it implies the Bayesian version with the same δ but is much more stringent, and a classifier continuous in the data cannot be agnostically single-shot with small δ when regions with different assigned labels touch.",
+     "anchor": "Definition 3, Section III, p.4",
+     "quotes": [
+      "Definition 3 (Single-shot probabilistic classifier (Agnos- tic)).",
+      "The agnostic definition immediately implies the Bayesian one with the same δ = δ ̄, but it is much more stringent.",
+      "if there are two sets of points with distinct labels assigned by the classifier that touch in parameter space"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Definition 3, p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "single-shot-restriction-lemma",
+     "value": "The paper proves, by the union bound, that a classifier agnostically single-shot with error δ-bar on a subset of the data domain is Bayesian single-shot for any data distribution with δ at most δ-bar plus the probability that a data point falls outside that subset.",
+     "anchor": "Lemma 4 (Restriction lemma), Section III, p.4",
+     "quotes": [
+      "Lemma 4 (Restriction lemma).",
+      "Then, for any data-distribution, the classifier is Bayesian",
+      "which is just a simple application of the union bound"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 4 is stated with its conditions and follows from the union bound.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "single-shot-majority-vote-lemma",
+     "value": "The paper proves that m independent repetitions of a probabilistic classifier with a majority vote form an agnostically single-shot classifier whose failure probability is at most the number of labels times an exponential that decays in m times the squared gap, where the gap is the smallest difference between the two largest label probabilities over all inputs; the dependence on the gap, not the failure probability, is necessary.",
+     "anchor": "Lemma 5, Section III, pp.5-6",
+     "quotes": [
+      "m independent repetitions of f to- gether with a majority vote form a new classifier that is agnostically",
+      "where ∆ is the smallest gap between the two largest label probabilities",
+      "From Hoeffding's inequality, we have the two one-sided estimates",
+      "We wish to note that the dependence on the gap in- stead of the failure probability of the classifier is neces- sary."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 5 is stated and proved via Hoeffding's inequality and the union bound, pp.5-6.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The exponent prints flat ('exp − 1 m∆2'); likely minus one half m times gap squared, to be checked on the PDF."
+    },
+    {
+     "id_suggestion": "single-shot-agnostic-bound",
+     "value": "The paper proves that an agnostically single-shot classifier's error is at least the maximum, over one data point chosen per assigned label, of the minimax multi-hypothesis error between their embedded states; assuming the minimax binary error is not far from the equal-prior one, the authors derive that the trace distance between embedded states of any two points with different predicted labels must be large, so an embedding that varies continuously over x cannot be agnostically single-shot on the whole range of x.",
+     "anchor": "Theorem 7, Section IV, p.7; Eq. (50)-(56), p.7",
+     "quotes": [
+      "If the classifier f has the agnostic single-shot property, the error probability δ ̄ has to fulfill",
+      "it is reasonable to assume that it is not too far from the problem of distinguishing both states with prior probability",
+      "agnostic single-shotness imposes a strong requirement on the distances of the embedded states for different classes predicted by the classifier",
+      "any embedding ρ(x) that continuously varies over x cannot be agnostically single shot on the whole value range of x"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 7 is stated and proved on p.7; the trace-distance corollary adds an assumption the paper names ('reasonable to assume').",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The step to the trace-distance form rests on an unproved assumption about minimax versus equal-prior binary error."
+    },
+    {
+     "id_suggestion": "single-shot-continuity-lemma",
+     "value": "The paper proves that for a parametrized circuit of L layers encoding each data feature once per layer, the trace distance between embedded states is at most L times the largest spectral spread of the encoding generators times the one-norm distance of the inputs; this follows from a diamond-norm continuity theorem for parametrized circuits that is saturated by parallel Z rotations.",
+     "anchor": "Lemma 8, Section IV, p.8; Theorem 12 and proof of Lemma 8, Appendix B, pp.13-15",
+     "quotes": [
+      "∥ρθ(x) − ρθ(x′)∥1 ≤ L∆∥x − x′∥1",
+      "is the largest spectral spread of the generators used to encode the parameters",
+      "Theorem 12 (Diamond norm continuity).",
+      "There exists circuit that saturate the above bound.",
+      "saturating example of parallel Z rotations on n qubits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 8 and Theorem 12 are stated with conditions and proved in Appendix B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "single-shot-noisy-circuits",
+     "value": "The authors show that under local depolarizing noise applied after every step, embedded states approach the maximally mixed state, so the distance between two noisy embedded states is bounded by a term decaying exponentially in the number of steps (from a cited relative-entropy contraction); combined with continuity, they prove an improved bound for circuits deeper than a threshold depth L0 that, unlike the noise-only estimate, does not decay to zero as L grows.",
+     "anchor": "Section IV Noisy circuits, pp.8-9; Lemma 10, p.9; Theorem 13, Appendix D, pp.16-18",
+     "quotes": [
+      "we study an error model where local depolarizing noise of survival probability p",
+      "A quantum circuit affected by local depolarizing noise will eventually produce a quantum state that is very close to the maximally mixed state",
+      "which decreases exponentially in t",
+      "In the case L ≤ L0, the bound does not improve on the noiseless one.",
+      "the above bound does not decay to zero as L → ∞"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 10 follows from Theorem 13, proved in Appendix D; the contraction step is cited [16].",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "single-shot-orthogonal-embedding-thought",
+     "value": "The authors argue that an embedding mapping all sufficiently separated inputs to mutually orthogonal directions would allow single-shot classification for every labeling but generalize poorly, since unseen points land in the orthogonal complement of the training data where the best strategy is random guessing.",
+     "anchor": "Section V, pp.9-10",
+     "quotes": [
+      "This is achieved by embedding all sufficiently separated inputs into mutually orthogonal directions of Hilbert space.",
+      "it is evident that such an embedding would result in poor generalization performance for any POVM inferred from the training data",
+      "There, we cannot infer a good classification and the best strategy would be random guessing."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A thought experiment, not proved.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "single-shot-povm-sample-complexity-cited",
+     "value": "The authors cite Cheng, Hsieh and Yeh that learning a POVM effect on a D-dimensional Hilbert space to precision ε in operator norm needs a number of samples growing with D over ε squared, and that the sample complexity does not change much when single outcomes replace expectation values.",
+     "anchor": "Section V, Eq. (72), pp.9-10; reference [6]",
+     "quotes": [
+      "samples are necessary to learn a POVM effect on a D-dimensional Hilbert space to precision ε in operator norm",
+      "the sample complexity does not change significantly when single measurement outcomes are given instead of expectation values"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result; the bound's formula is flattened in the text layer.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "single-shot-open-questions",
+     "value": "The authors state as open directions: extending single-shot learning to regression via quantum metrology reductions, and how to construct models, training procedures or embedding circuits that enforce single-shotness while keeping accuracy.",
+     "anchor": "Section VI, pp.10-11",
+     "quotes": [
+      "A generalization to",
+      "regression would surely also be possible and similar fundamental bounds could be expressed in terms of quantum metrology reductions",
+      "How can we enforce this property during training to obtain accuracy and single-shotness?",
+      "Can we also find explicit constructions for learning models or embedding circuits that enforce a certain degree of single-shotness?"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own open problems, Section VI.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "single-shot-conclusion",
+     "value": "The authors conclude that single-shotness of a quantum classifier is fundamentally constrained by the distinguishability of the embedded states, that circuit embeddings need a certain depth to be single-shot, and that this work is only the start of overcoming the measurement problem.",
+     "anchor": "Section VI, p.10",
+     "quotes": [
+      "how single-shot a quantum classifier can be is fundamentally constrained by the distinguishability of the embedded quantum states",
+      "we additionally showed how a certain depth of these circuits is necessary to realize a single-shot classifier",
+      "This work can only be considered the start of our way to overcome the measurement problem."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Restates Theorems 6, 7 and 9, proved in the paper.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "robertson-2022-escaping-barren-plateaus-approximate-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Robertson-et-al._2022_Escaping-barren-plateaus-in-approximate-quantum-compiling__2210.09191.pdf",
+   "title_in_file": "Escaping barren plateaus in approximate quantum compiling",
+   "version_note": "arXiv:2210.09191v1, 17 Oct 2022 (IBM Research Europe). Figures 6 and 8 are plots; their captions and surrounding text were read. Equations are flattened in the text layer.",
+   "pages": 15,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "An IBM methods paper for classically assisted approximate quantum compiling that writes the local Hilbert-Schmidt cost as a sum of bit-flip terms, truncates it to a few terms with adaptive coefficients, shows analytically for a product-rotation example that each term softens the gradient-variance decay, and reports faster convergence on a 24-qubit state preparation and an 8-qubit time-evolution compilation.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "conjecture-general-ansatz",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 3, p.8",
+     "quotes": [
+      "We conjecture that such results will hold for more general Ansatz and target states"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 3, p.8.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "experiment-sizes",
+     "verdict": "widened",
+     "note": "Adds the rest of the setup: 24 CNOT blocks between adjacent qubits, a target generated from the same CNOT structure with random angles, and for the time-evolution case the XXX Hamiltonian with a first-order Trotter benchmark of two steps at dt = 0.2.",
+     "value": "The authors state that the state-preparation experiment uses 24 qubits with 1 repetition and 1 layer, giving 24 CNOT blocks connecting adjacent qubits, with a target state generated by a circuit of the same CNOT structure and random angles; the circuit-compilation experiment approximates the time-evolution operator of the XXX Hamiltonian on 8 qubits and compares with a first-order Trotter decomposition with two Trotter steps and dt = 0.2.",
+     "anchor": "Section 5.1, p.9; Section 5.2, p.10; Figure 8 caption, p.11",
+     "quotes": [
+      "we consider the case with n = 24 qubits, b = 1 repetitions and l = 1 layers",
+      "there are therefore 24 qubits and 24 CN OT blocks connecting every couple of adjacent qubits",
+      "The target state |ψ0 was generated from a circuit with the same CN OT structure but parameterized by random angles.",
+      "Approximate compilation of time evolution operator on 8 qubits",
+      "the standard first order Trotter decomposition with two Trotter steps and with dt = 0.2",
+      "We will consider the XXX Hamiltonian"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own setup, Sections 5.1-5.2 and the Figure 8 caption.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "Equation (33) is labeled HXXZ but the text calls it the XXX Hamiltonian; all three couplings are equal."
+    },
+    {
+     "id": "gradient-variance-exponent",
+     "verdict": "narrowed",
+     "note": "Names the particular case and the condition on the coefficients: the ansatz is a product of single-qubit X rotations with target |0⟩ (the example of Cerezo et al. [12]), and the coefficients α must solve a set of linear equations; only k = 1 and k = 2 are worked out, the general k is asserted by analogy.",
+     "value": "The authors show analytically, for the example where the ansatz is a product of single-qubit X rotations and the target state is all zeros (also studied in [12]), that the global cost's gradient variance decays with exponent n minus one, while their truncated cost with k bit-flip terms and coefficients chosen to solve k linear equations has its exponent reduced to n minus k minus one, so there exist coefficients for which the exponent is increased by k relative to the global cost; they work out k equal to one and two and state the general case by analogy.",
+     "anchor": "Section 3, Eq. (15)-(29), pp.7-8",
+     "quotes": [
+      "The specific example that we use to demonstrate the effect of the \"bit-flip\" terms was also studied in [12].",
+      "we have k independent variables α1, ..., αk and we will obtain k linear equations similar to (25)",
+      "Now, we can see that each truncated local expression reduces the power of the variance in (19) by 1.",
+      "such that the exponent that appears in the variance of the gradient of the truncated cost function in (21) is increased by k with respect to the global cost function"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived only for one product-state example; the general-k step is asserted, and the variance formulas are flattened in the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Here the variance is a power of one third, so 'exponent increased by k' means the decay is slower by a factor of three per added term, still exponential in n."
+    },
+    {
+     "id": "improves-convergence",
+     "verdict": "narrowed",
+     "note": "The body limits the claim: in circuit compilation the k = 1 truncated cost also hit a barren plateau with poor fidelity, and only the k = 2 cost escaped; evidence is one 24-qubit state-preparation run and one 8-qubit compilation.",
+     "value": "The authors report that their truncated local cost functions can be calculated classically and escape barren plateaus: in 24-qubit state preparation the one-flip-term cost converged much faster than the global cost, and in 8-qubit time-evolution compilation both the global cost and the one-flip-term cost reached a barren plateau with poor fidelity, while the two-flip-term cost escaped and reached a fidelity higher than the Trotter circuit.",
+     "anchor": "Abstract p.1; Section 5.1, p.9, Figure 6; Section 5.2, p.10, Figure 8; Section 6, p.11",
+     "quotes": [
+      "we can significantly improve convergence with the approach developed in this work",
+      "Not only does the local cost function CL(1) converge at a much faster rate than CG",
+      "both the global cost function CG defined in (4) and the partially localised cost function defined in (21) with k = 1 reach a barren plateau and converge to an operator that has poor fidelity with the target",
+      "we consider the case with n = 24 qubits",
+      "Approximate compilation of time evolution operator on 8 qubits",
+      "However, we can see that CL(2) performs much better and not only does it escape from the barren plateau, but achieves a fidelity that is higher than that of the Trotter circuit.",
+      "can be feasibly calculated on a classical computer while also being powerful enough to escape barren plateaus that appear in both approximate state preparation and full circuit approximation"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from single runs in one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Section 3 says convergence of (21) with k = 1 is significantly better than (4); that holds for state preparation (Fig. 6) but not for circuit compilation (Fig. 8)."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "robertson-classical-vs-quantum-assisted",
+     "value": "The authors state that classically assisted compiling avoids quantum-device noise but, because the Hilbert space grows exponentially, is limited to sub-circuits on a fixed number of qubits, whereas quantum-assisted compiling scales but suffers noise-induced convergence issues and needs long-range connectivity.",
+     "anchor": "Section 1, p.1",
+     "quotes": [
+      "The main advantage of such an approach is that one can avoid the issues arising from noise on a quantum device",
+      "one is limited to sub circuits that act on a fixed number of qubits",
+      "The quantum assisted approach however is scalable",
+      "require long range qubit connectivity on the quantum device of interest"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of the limit of its approach, Section 1.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robertson-frobenius-implies-hs",
+     "value": "The authors show that the Hilbert-Schmidt test cost is bounded by the Frobenius-norm cost, so minimizing the Frobenius cost automatically minimizes the Hilbert-Schmidt cost.",
+     "anchor": "Section 2.2, Eq. (3)-(7), p.4",
+     "quotes": [
+      "We can thus conclude that minimising CF N minimises CHS automatically."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A short derivation in Eq. (5)-(7), p.4.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robertson-bp-classical-practice",
+     "value": "The authors state that although a classical implementation computes gradients directly, so an exponentially small gradient is in principle less serious than when it must be estimated by measurement, in practice barren plateaus still raise training times beyond practical limits and appear even with small numbers of qubits.",
+     "anchor": "Section 3, p.5",
+     "quotes": [
+      "we calculate the gradient directly without taking measurements and thus in principle an exponentially vanishing gradient is not as significant of an issue",
+      "in practice we observe that even in the classical case, the appearance of these barren plateaus cause the training times to increase beyond practical limits",
+      "we observe that the barren plateaus appear even in systems with small numbers of qubits n"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An observation reported without separate data.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robertson-local-cost-cited",
+     "value": "The authors cite Cerezo et al. that if the ansatz depth is of order log n, the gradient variance of a local cost function vanishes only polynomially in the number of qubits, instead of exponentially as for a global cost.",
+     "anchor": "Section 3, p.5",
+     "quotes": [
+      "if the depth of V (θ) is of order O(log n) then the variance of the gradient of a local cost function vanishes only polynomially instead of exponentially"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robertson-local-cost-bitflip-form",
+     "value": "The authors compute the local state-preparation cost explicitly as one minus the target overlap minus weighted sums of overlaps with states carrying one, two and more bit flips, which lets it be used on a classical computer without running circuits and taking shots; its many terms make its gradient harder to compute than the global cost, so they truncate it to the first k terms.",
+     "anchor": "Section 3, Eq. (13)-(14) and (21), pp.6-7",
+     "quotes": [
+      "The final expression can be written as a sum of terms with \"bit-flips\"",
+      "allows us to use a local cost function on a classical computer without running the circuit several times and taking shots",
+      "the large number of terms appearing in (14) increases the difficulty of calculating its gradient",
+      "In particular, we will take only the first k terms in equation (14)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An explicit expansion stated without a written-out proof.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robertson-bitflip-intuition",
+     "value": "The authors explain that the flip terms bias the parameters toward states with bit-flip errors relative to the target, which enlarges the target in barren regions of parameter space, while at the optimum only the target-overlap term is nonzero.",
+     "anchor": "Section 3, pp.7-8",
+     "quotes": [
+      "the second term encourages the parameters θ to tend towards those that correspond to the target state",
+      "which act so as to increase the size of the target in regions of barren parameter space"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An intuitive explanation, not proved.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robertson-full-compiling-extension",
+     "value": "The authors state that the analysis must be extended further to apply to full approximate compiling, where the target is a matrix rather than a vector, and propose a natural extension of the local cost for circuits as weighted traces over bit-flipped products.",
+     "anchor": "Section 3, Eq. (30), p.8",
+     "quotes": [
+      "We note that we need to extend this analysis further in order to apply it to full approximate quantum compiling",
+      "in which case the target to approximate is a matrix instead of a vector"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 3, p.8.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robertson-alpha-update-scheme",
+     "value": "The authors set the flip-term coefficient to decrease during optimization, taking it equal to the current cost value starting from one, so the flip terms switch off as the cost approaches zero; they note this cost is always non-negative because the target and all bit-flipped states form an orthogonal basis, and an exponentially smoothed variant reduces gradient noise.",
+     "anchor": "Section 4, Eq. (31), p.9; Appendix A, Eq. (36), p.15",
+     "quotes": [
+      "The first, most straightforward scheme that we implement is to gradually decrease α with increasing k",
+      "it can be shown that CL(1)(α) is always non-negative, even when α = 1, because |0 and all \"bit-flipped\" states constitute an orthogonal basis",
+      "can enhance the optimisation procedure due to the reduced noise in the gradient profile"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its algorithm, Section 4 and Appendix A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robertson-surrogate-model",
+     "value": "The authors describe a surrogate model that maximizes the projection onto the span of the target and its single-flip states, so the gradient needs just two dot products instead of n + 1, and a simpler variant that uses only the largest projection with a hysteresis rule: the leading state is replaced only when its projection is 10% lower than the new leader's.",
+     "anchor": "Appendix B, Eq. (37)-(38), p.15",
+     "quotes": [
+      "the gradient is computed for just two dot products instead of n + 1 ones",
+      "we employ the idea of hysteresis",
+      "only gives up if its projection onto V †(θ) |ψ0 is 10% lower than the projection of the currently leading state"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its method, Appendix B.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robertson-surrogate-mps-limit",
+     "value": "The authors state that forming the composite state in the surrogate model can be challenging when generalizing from ordinary vectors to matrix-product-state format for scalability, and that applying the methods to large qubit numbers with tensor networks is left to upcoming work.",
+     "anchor": "Appendix B, p.15; Section 6, p.11",
+     "quotes": [
+      "can be challenging if we want to generalize the framework from using an ordinary vectors to matrix-product state (MPS) format for scalability",
+      "one can use Tensor Networks to represent the state classically and thus one can apply the techniques developed here on large numbers of qubits - see our upcoming work"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit and future work, Appendix B and Section 6.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robertson-two-stage-optimizer",
+     "value": "The authors report that L-BFGS terminated prematurely when it saw no progress after a few iterations, so they used two stages: Adam first reduces the objective from 1 to below 0.9, then L-BFGS finishes.",
+     "anchor": "Section 5.1, p.9",
+     "quotes": [
+      "quasi-Newton L-BFGS method terminates prematurely if it does not detect any progress after a small number of iterations",
+      "the first-order gradient-based Adam optimizer reduces the objective function from 1 to a value below 0.9, then L-BFGS does the rest of the job"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An observation from the authors' runs.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robertson-state-prep-cg-via-cl1",
+     "value": "The authors report that in 24-qubit state preparation the global cost evaluated at parameters found by optimizing the one-flip-term cost also falls much faster than when the global cost is optimized directly.",
+     "anchor": "Section 5.1, Figure 6 caption, p.9",
+     "quotes": [
+      "we consider the case with n = 24 qubits",
+      "but so too does CG when evaluated at the parameters θ that are found by optimising for CL(1)",
+      "Figure 6 clearly demonstrates that the objective function without the \"bit-flip\" terms CG performs much worse than CL(1)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one run.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robertson-compiling-complexity-cited",
+     "value": "The authors cite that generic n-qubit unitaries are computationally hard even to approximate and that quantum circuit compilation is NP-complete, and that universal parametric templates give impractically deep circuits for present devices.",
+     "anchor": "Section 2, p.3",
+     "quotes": [
+      "It was shown in [32] that generic unitary operations over n qubits are computationally hard even to approximate.",
+      "More recently it has been shown that quantum circuit compilation is an NP-complete problem [33].",
+      "such circuit templates result in impractically deep circuits for present day quantum devices"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited results.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robertson-madden-results-cited",
+     "value": "The authors cite Madden and Simonetto that approximate quantum compiling derived a 14-CNOT decomposition of a 4-qubit Toffoli gate from scratch and compressed the Quantum Shannon Decomposition by a factor of two without practical loss of fidelity.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "such an approach could be used to derive a 14-CN OT decomposition of a 4-qubit Toffoli gate from scratch",
+      "can be compressed by a factor of two without practical loss of fidelity"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited results.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robertson-cnot-block-universal",
+     "value": "The authors state that with three CNOT blocks per qubit pair, each block of CNOTs on two qubits is a universal two-qubit circuit.",
+     "anchor": "Section 2.1, p.4",
+     "quotes": [
+      "We note that for b = 3, each block of CN OT s acting on 2 qubits constitutes a universal two-qubit quantum circuit"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A known result stated without proof, following [10].",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robertson-conclusion",
+     "value": "The authors conclude that their techniques significantly improve convergence of classically assisted quantum compilation, useful for compiling sub-circuits or for finding efficient circuits for weakly entangled states that seed quantum algorithms.",
+     "anchor": "Section 6 Discussion, p.11",
+     "quotes": [
+      "In this work we have developed a set of techniques that significantly improve the convergence of classically assisted quantum compilation algorithms.",
+      "finding the most efficient way to generate a weakly entangled state on a quantum computer"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conclusion resting on two numerical experiments.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

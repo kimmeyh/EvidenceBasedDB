@@ -1,0 +1,2593 @@
+{
+ "papers": [
+  {
+   "record_id": "pesah-2021-absence-barren-plateaus-quantum-convolutional",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2020-11_Pesah_Absence-of-Barren-Plateaus-in-Quantum-Convolutional-Neural-Networks.pdf",
+   "title_in_file": "Absence of Barren Plateaus in Quantum Convolutional Neural Networks",
+   "version_note": "arXiv:2011.02966v2, dated 1 Nov 2021.",
+   "pages": 29,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper with numerics that lower-bounds the gradient variance of randomly initialized quantum convolutional neural networks (QCNNs) with a new graph-based Haar-integration method (GRIM) and concludes that QCNNs have no barren plateaus.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "pesah-2design-assumption",
+     "verdict": "widened",
+     "note": "The stored value names only the 2-design assumption on the convolutional and fully connected layers. Theorem 1 also requires the sub-blocks WA and WB of the differentiated unitary to be independent 2-designs, and the introduction lists a second assumption: the cost is linear in the input density matrix.",
+     "value": "The authors state that Theorem 1 assumes that the unitaries Wij, WA and WB in the convolutional and fully connected layers form independent 2-designs, and that their analysis rests on two assumptions: all unitaries in the QCNN form independent (and uncorrelated) 2-designs, and the cost function is linear with respect to the input density matrix.",
+     "anchor": "Theorem 1, Section III B, p.7; Introduction, p.2",
+     "quotes": [
+      "let us assume that the unitaries Wij, WA and WB in the convolutional and fully connected layers form independent 2-designs",
+      "(1) all the unitaries in the QCNN form independent (and uncorrelated) 2-designs; (2) the cost function is linear with respect to the input density matrix."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own assumptions in the statement of Theorem 1 (p.7) and in the Introduction (p.2).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "pesah-future-cost-functions",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state, as a future research direction, that one can analyze more general cost functions than the ones considered here, for instance mean-square cost functions as used in regression.",
+     "anchor": "Section IV Discussion, p.9",
+     "quotes": [
+      "First, one can analyze more general cost functions than the ones considered here.",
+      "For instance, one could consider meansquare cost functions, as the ones employed in regression problems"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open direction, Section IV Discussion, p.9.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "pesah-no-barren-plateau",
+     "verdict": "narrowed",
+     "note": "The abstract's claim holds under conditions the abstract does not state. Corollary 1 needs the number of layers L at most of order log(n) and a proviso that the product of the trace of H-mu squared, epsilon-O and epsilon-sigma-w is not smaller than one over a polynomial in n; Theorem 1, from which it follows, needs the 2-design assumption. The text explains the proviso: the measured operator and the reduced input operator must not be exponentially close to the identity in Hilbert-Schmidt distance.",
+     "value": "The paper proves (Corollary 1) that, since the number of layers L is at most of order log(n), the variance of the cost partial derivative is at most polynomially vanishing with n, provided that the product of the trace of H-mu squared, epsilon-O and epsilon-sigma-w is in Omega of one over a polynomial in n; the authors explain that this proviso means the measured operator O and the reduced operator sigma-w must have a Hilbert-Schmidt distance to the scaled identity that is not exponentially vanishing. Corollary 1 rests on Theorem 1, which assumes independent 2-designs.",
+     "anchor": "Corollary 1, Section III B, p.7; proof in Appendix 3, pp.24-29",
+     "quotes": [
+      "Then, since L is at most O(log(n)), the vari-",
+      "ance Var[∂µC] is at most polynomially vanishing with n as",
+      "provided that Tr[Hµ2]εOεσw ∈ Ω",
+      "The latter means that O and the reduced operator σw need to respectively have a Hilbert-Schmidt distance to the (scaled) identity operator which is not exponentially vanishing.",
+      "form independent 2-designs",
+      "From Theorem 1 we can obtain the following corollary."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Corollary 1 (p.7) is stated with its condition and proved in Appendix 3 (pp.24-29) for all three placements of W.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer prints the square of H-mu flat as Hµ2; the statement's Omega argument is one over poly(n)."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "pesah-qcnn-architecture-definition",
+     "value": "The authors define the QCNN as a circuit of convolutional layers, each two rows of parametrized two-qubit gates on alternating pairs of neighboring qubits, and pooling layers in which half of the qubits are measured and the outcomes control a unitary on neighbouring qubits, followed by a fully connected layer and the measurement of a Hermitian operator O.",
+     "anchor": "Section II A, p.2",
+     "quotes": [
+      "The convolutional layer is composed of two rows of parametrized two-qubit gates acting on alternating pairs of neighboring qubits.",
+      "In each pooling layer half of the qubits are measured, with the measurement outcomes controlling the unitary applied to neighbouring qubits.",
+      "the QCNN contains a fully connected layer that applies a unitary to the remaining qubits. Finally, at the end of the QCNN one measures the expectation value of some Hermitian operator O."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of the architecture it analyzes, Section II A, p.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-applies-to-hierarchical-classifier",
+     "value": "The authors state that their analysis applies as well to the very similar Hierarchical Quantum Classifier architecture of Grant et al.",
+     "anchor": "Section I Introduction, p.1",
+     "quotes": [
+      "A very similar architecture was proposed by Grant et al. in [55] under the name Hierarchical Quantum Classifier, which our work applies to as well."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of its own scope, Introduction, p.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-linear-cost-setup",
+     "value": "The authors assume the cost is a weighted sum of expectation values of O over the training states with real coefficients, rewrite it in terms of a Hermitian operator sigma, and state that their results are valid whether or not sigma is a quantum state; binary classification is an example of this form.",
+     "anchor": "Section II B, pp.2-3",
+     "quotes": [
+      "cost function which we assume can be expressed as",
+      "where cα are real coefficients",
+      "As shown below, our results are valid independently of σ being a quantum state.",
+      "For example, in a binary classification problem the training set is usually of the form"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its cost-function setup, Section II B, pp.2-3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-simplifying-qubit-count",
+     "value": "The authors consider for simplicity the case where the qubit number n is two to the power k and the number of layers L equals log(n), which is k, so that the output space has dimension two, and they assume the unitaries in the convolutional and pooling layers are independent; they state this generalization contains as a special case the usual QCNN in which blocks of the same layer are identical.",
+     "anchor": "Section II C, p.3",
+     "quotes": [
+      "In what follows we consider for simplicity the case where n = 2k and L = log(n) = k, so that dim(Hout) = 2.",
+      "we assume that the unitaries in the convolutional and pooling layers are independent",
+      "this generalization contains as a special case the usual QCNN structure where the blocks in the same convolutional or pooling layer are identical"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own simplifying setup, Section II C, p.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text layer prints n = 2^k flat as n = 2k."
+    },
+    {
+     "id_suggestion": "pesah-variance-trainability-definition",
+     "value": "The authors use the variance of the cost partial derivative over the random parameters as the trainability measure: by Chebyshev's inequality it bounds the probability that the derivative deviates from zero; an exponentially small variance is a barren plateau, which needs exponential precision, while large variances show no barren plateau.",
+     "anchor": "Section II D, p.3",
+     "quotes": [
+      "Hence, from Chebyshev's inequality, Eq. (8) bounds the probability that the cost function partial derivative deviates from zero",
+      "Hence, if the variance is exponentially small (i.e., if the cost exhibits a barren plateau), the cost function gradient will be on average exponentially small and an exponential precision will be needed to navigate the flat landscape.",
+      "In contrast, large variances show that no barren plateaus are present"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition of the quantity its results bound, Section II D, p.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-pooling-absorbed-by-2design",
+     "value": "The authors show that, because each convolutional unitary preceding a pooling operator forms a 2-design and so is left- and right-invariant, the action of the pooling operators can be absorbed into the convolutional unitaries: the variance of the cost partial derivative is independent of the controlled unitaries in the pooling layers.",
+     "anchor": "Section II E, Eq. (13), p.4; Fig. 2",
+     "quotes": [
+      "As W forms a 2-design it is left- and rightinvariant under the action of the unitary group.",
+      "Equation (13) shows that the action of the operators Iij in the pooling layer can be absorbed into the action of the unitaries in the convolutional layers as the variance of the cost function partial derivative is independent of the controlled unitaries in Iij."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived from the stated 2-design invariance property, Eq. (13), Section II E, p.4.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-grim-method",
+     "value": "The authors introduce the Graph Recursion Integration Method (GRIM) for expectation values over Haar-distributed unitaries: it integrates groups of unitaries (modules) together and groups the resulting terms recursively into an oriented graph, avoiding the exponential growth in the number of terms of sequential elementwise Weingarten integration; for the QCNN three basic modules (center, edge, middle) cover any forward light-cone.",
+     "anchor": "Section III A, pp.4-5; Fig. 3",
+     "quotes": [
+      "which we call the Graph Recursion Integration Method (GRIM)",
+      "number of terms that one has to keep track of increases",
+      "exponentially with the number of unitaries integrated.",
+      "recursively grouping the resulting terms to form a graph",
+      "In Fig. 3(a) we show the three distinct basic modules",
+      "needed to analyze the QCNN architecture"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition of its own method, Section III A, pp.4-5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-proposition1-path-sum",
+     "value": "The paper proves (Proposition 1) that for a unitary W in a given layer the contribution of the forward light-cone term to the variance can be computed via the GRIM as a sum over all paths in the oriented graph, each weighted by the product of its edge coefficients, which lie strictly between zero and one; since epsilon-O and epsilon-sigma-w are always positive, any single path gives a lower bound on the variance.",
+     "anchor": "Proposition 1, Section III A, pp.5-6; proof Appendix 2 B, pp.16-21",
+     "quotes": [
+      "Proposition 1. Let W be a unitary in the -th layer of",
+      "can be ultimately obtained by adding up all the paths in the oriented graph Gw weighed by the coefficients associated with the edges taken over the",
+      "Moreover, since εO and εσw are always positive, any single path over the graph leads to a lower bound for",
+      "Note that this constitutes a proof for Proposition 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved in Appendix 2 B, but the displayed inequality of Proposition 1 (Eq. 21) is garbled in the text layer, so its full statement could not be quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The layer symbol (ell) is lost in the text layer, which prints 'the -th layer'."
+    },
+    {
+     "id_suggestion": "pesah-center-module-coefficient",
+     "value": "The authors compute that, for W the center unitary of its layer, integrating one center module connects the node N1 to itself with coefficient 28/125, so the graph has a single node; in the proof of the corollary this gives the path sum for that case as at least 28/125 to the power of the layer index.",
+     "anchor": "Section III A, Eq. (25), p.7; Appendix 3 A, Eqs. (123)-(124), p.25",
+     "quotes": [
+      "integrating a module connects the node N1 with itself with a coefficient λ1,1 = 28/125.",
+      "and we can see that it is",
+      "composed of a single node."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A derived value, computed by Weingarten integration in Section III A, p.7, and used in the proof of Corollary 1, Appendix 3 A.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-theorem1-lower-bound",
+     "value": "The paper proves (Theorem 1) that for the QCNN cost of Eq. (4), with W a unitary in the first sub-layer of a given layer and the unitaries Wij, WA and WB in the convolutional and fully connected layers independent 2-designs, the variance of the cost partial derivative with respect to a parameter theta-mu in W is lower-bounded by Fn(L, ell), computed from the GRIM graph: one ninth times the trace of H-mu squared times epsilon-O times epsilon-sigma-w, divided by fifty to the power (L minus ell plus one), times the sum of Lambda-g over the paths of the graph.",
+     "anchor": "Theorem 1, Section III B, Eqs. (26)-(27), p.7; restated and proved in Appendix 2, pp.15-24",
+     "quotes": [
+      "Theorem 1. Consider the QCNN cost function of Eq. (4) and let W be a unitary in the first sub-layer of the -th layer of V (θ).",
+      "let us assume that the unitaries Wij, WA and WB in the convolutional and fully connected layers form independent 2-designs.",
+      "Then, the lower bound of the variance of the cost partial derivative with respect to a parameter θµ in unitary W can be computed, using the GRIM, from the graph Gw as",
+      "Fn(L, ) = 1 9 Tr[Hµ2 ]εO εσw 50L− +1"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 is stated with its conditions on p.7 and proved in Appendix 2 (pp.15-24).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer loses the layer symbol ell and prints the exponent of fifty flat as '50L− +1'; the inequality sign of Eq. (26) is also lost."
+    },
+    {
+     "id_suggestion": "pesah-theorem1-generalized-sublayer",
+     "value": "The authors derive a generalized form of Theorem 1 that holds whether W is in the first or second sub-layer: the variance is lower-bounded with fifty to the power (L minus ell plus two) in the denominator, taking the minimum of the three backward light-cone bounds; a further generalization lets the reduced operator be on any odd pair of qubits in the effective backward light-cone.",
+     "anchor": "Appendix 2 D, Eqs. (121)-(122), p.24; Fig. 14",
+     "quotes": [
+      "Combining Eqs. (75), (103), with (121) results in a generalized form of Theorem 1",
+      "1 Tr[Hµ2]εOεσ 9 50L− +2",
+      "This will lead to a final result in which σ is the reduced state in any odd pair of qubits in LB."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived in Appendix 2 D, but the displayed bound is garbled in the text layer, so its full statement could not be quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-corollary1-proof-cases",
+     "value": "The authors prove Corollary 1 by showing, for each of three cases of how the forward light-cone is covered by center, edge and middle modules, that there is always one path in the GRIM graph whose coefficient is not exponentially vanishing when L is of order log(n), and conclude that Corollary 1 is valid for all possible choices of W.",
+     "anchor": "Appendix 3, pp.24-29; Tables I-III",
+     "quotes": [
+      "we need to show that there is always one path g such that the coefficient Λg is not exponentially vanishing with the system size",
+      "Hence, the lower bound is in Ω(1/ poly(n)) if L ∈ O(log(n)).",
+      "Hence, we have shown that Corollary 1 is valid for all possible choices of W ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The proof is given case by case in Appendix 3, pp.24-29.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-shallowness-is-core",
+     "value": "The authors state that at the core of Corollary 1 lies the fact that QCNNs are shallow, with at most a number of layers L of order log(n), because the number of qubits is reduced at each layer, and elsewhere attribute the results intuitively to this logarithmic depth and the local nature of the cost function.",
+     "anchor": "Section III B, p.7; Introduction, p.2",
+     "quotes": [
+      "We remark that at the core of the result in Corollary 1 lies the fact that QCNNs are shallow, as they have at most a number of layers L in O(log(n)).",
+      "Intuitively, our results follow from the intrinsically short depth of the QCNN (logarithmic depth), and the local nature of the cost function."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' explanation of why the proof works, not itself a proved statement.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-condition-near-identity-hard",
+     "value": "The authors state that Corollary 1's condition is expected, because extracting information by measuring operators close to the identity is naturally hard, as is training a circuit on a state close to the identity, and that in the Appendix they relax the condition on sigma.",
+     "anchor": "Section III B, p.7",
+     "quotes": [
+      "Note that this condition is expected, as extracting information by measuring operators close to the identity is naturally a hard task.",
+      "Similarly, attempting to train a quantum circuit on a state close to the identity is also a difficult task.",
+      "in the Appendix we relax the condition on σ",
+      "As indicated in Corollary 1, the bound in (28) holds if"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit on its main result, Section III B, p.7.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-theorem2-pooling-only",
+     "value": "The paper proves (Theorem 2) that for a QCNN whose convolutional unitaries are the identity and whose pooling layers act as the controlled-Y-rotation channel of Eqs. (29)-(30), starting from the all-zero state, the expectation of the magnitude of the cost partial derivative with respect to any pooling parameter equals one over (two times n to the power (log base two of pi, minus one)); the authors conclude that this pooling-based QCNN has no barren plateau since the derivative is polynomially vanishing with system size.",
+     "anchor": "Theorem 2, Section III C, Eq. (31), p.8; proof Appendix 4, Eq. (162), p.29",
+     "quotes": [
+      "Theorem 2. Consider a CQNN where the convolutional",
+      "unitaries are Wij = 11 for all i, j and where the action of pooling layers can be described by Eqs. (29)–(30).",
+      "the expectation value of the magnitude of the cost function partial derivative ∂C/∂θ(k) = ∂kC with respect to any parameter θ(k) in a pooling module is",
+      "2nlog2(π)−1",
+      "Moreover, here we assume for simplicity that ρ(0) = | 0 0 |⊗n",
+      "Theorem 2 shows that the pooling-based QCNN does not exhibit a barren plateau as |∂kC| is polynomially vanishing with the system size."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2 is stated with its conditions on p.8 and proved in closed form in Appendix 4, p.29.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Theorem 2 bounds the mean magnitude of the derivative, not its variance as Theorem 1 does. The text layer prints the exponent flat, and 'Wij = 11' is the identity."
+    },
+    {
+     "id_suggestion": "pesah-single-pooling-layer-plateau",
+     "value": "The authors show that, for the correlated angle cross-section, the cost after a single pooling layer is almost everywhere equal to one on the interval from minus pi to pi as n grows and so exhibits a barren plateau, while at full depth (j equal to log n, which is L) the expected magnitude of the derivative is one over pi for all n, which implies no barren plateau; uncorrelated pooling angles give no barren plateau as long as the pooling module is sufficiently deep.",
+     "anchor": "Appendix 4, Eqs. (159)-(162), p.29",
+     "quotes": [
+      "i.e., a single pooling layer, the expression (159) is almost everywhere equal to 1 on [−π, π] as n → ∞ and, therefore, C(1)(θ) exhibits a barren plateau.",
+      "In contrast, for j = log n = L, one evaluates",
+      "for all n, which implies the absence of barren plateaus in the landscape because the magnitude of the derivative is",
+      "does not result in barren plateaus for any parameters, as long as the pooling module is sufficiently deep."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Closed-form derivation in Appendix 4, p.29.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The value one over pi is printed in the garbled Eq. (160) as '1 = π'."
+    },
+    {
+     "id_suggestion": "pesah-pooling-enhances-trainability-claim",
+     "value": "The authors state that by consolidating parameters into smaller registers, pooling layers can enhance trainability compared with a QNN that keeps a full n-qubit register throughout the circuit.",
+     "anchor": "Appendix 4, p.29",
+     "quotes": [
+      "By consolidating parameters into smaller registers, pooling layers in a QCNN can enhance trainability in comparison to a QNN in which a full n-qubit register is maintained throughout a variational circuit."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' general claim, illustrated only by the pooling-only example.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-numerics-setup",
+     "value": "The authors simulated, for each number of qubits n from 4 to 26 in even steps, 200 randomly initialized QCNNs with TensorFlow Quantum, each two-qubit block given by a parametrized circuit able to prepare any two-qubit unitary, a single all-zero training state, the measured operator Z tensor Z, and the trained parameter in the center unitary of the first layer; error bars are standard deviations over 16 repetitions.",
+     "anchor": "Section III D, p.8; Fig. 7",
+     "quotes": [
+      "For each number of qubits n ∈ {4, 6, ..., 26}, we simulated 200 instances of randomly initialized QCNNs and computed the derivative ∂µC.",
+      "All the simulations were performed using TensorFlow Quantum [63].",
+      "this decomposition allows us to prepare any two-qubit unitary (up to a global phase)",
+      "the training set contains a single state initialized the the all-zero state",
+      "Error bars represent the standard deviation over 16 repetitions.",
+      "the trainable parameter θµ is in the center unitary acting on the first layer"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own numerical setup, Section III D, p.8.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-numerics-subexponential",
+     "value": "The authors report that in their simulations the variance for correlated (identical per layer) unitaries was always larger than for uncorrelated ones, and that on a log-scale plot the curves are sub-linear, meaning the scaling of the variance is sub-exponential; they state this numerically verifies that QCNNs do not exhibit barren plateaus.",
+     "anchor": "Section III D, pp.8-9; Fig. 7(b)",
+     "quotes": [
+      "case is always larger than that of the uncorrelated case as in (32).",
+      "we can see that the curves are sub-linear, meaning that the scaling of Var[∂µC] is sub-exponential.",
+      "This result then numerically verifies that QCNNs do not exhibit barren plateaus in their training landscape."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study up to 26 qubits.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Sub-linear on a log scale up to 26 qubits does not by itself distinguish polynomial from slow exponential decay."
+    },
+    {
+     "id_suggestion": "pesah-correlated-bound-suggestion",
+     "value": "The authors state that their numerics suggest the lower bound of Theorem 1 can also be used as a lower bound for the correlated case (the original QCNN with identical unitaries per layer), and that when the two-qubit gates do not form 2-designs one can expect the gradient variance to be larger.",
+     "anchor": "Section III D, p.8; Section IV, p.9",
+     "quotes": [
+      "This suggests that the lower bound obtained in Theorem 1 can also be used as a lower bound for the correlated case.",
+      "Similarly, when the two-qubit gates do not form 2-designs, then one can expect the variance of the gradient to be larger [64]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A suggestion from numerics and a cited expectation, not proved in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-conclusion-generically-trainable",
+     "value": "The authors conclude that their result confirms the absence of barren plateaus in QCNNs, guarantees trainability under random initialization, and highlights QCNNs as potentially being generically trainable under random initialization, unlike other QNN architectures trainable only under certain conditions.",
+     "anchor": "Section IV Discussion, p.9",
+     "quotes": [
+      "This result confirms the absence of barren plateaus in QCNNs and allows us to guarantee the trainability of this architecture when randomly initializing its parameters.",
+      "our work highlights QCNNs as potentially being generically trainable under random initialization, and hence sets them apart from other QNN architectures that are trainable only under certain conditions."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' summary conclusion; the proved content is in Theorem 1 and Corollary 1 with their conditions.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-barren-plateau-speedup-link",
+     "value": "The authors state that polynomial overhead is the standard goal for quantum algorithms, and hence the absence or existence of a barren plateau can determine whether or not a quantum speedup is achievable.",
+     "anchor": "Section IV Discussion, p.9",
+     "quotes": [
+      "We remark that polynomial overhead is the standard goal for quantum algorithms",
+      "Hence, the absence or existence of a barren plateau can determine whether or not a quantum speedup is achievable."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' claim without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-future-mera-grim",
+     "value": "The authors state as future directions analyzing how their results and methods can give trainability results for MERA frameworks, and using the GRIM to analyze the gradient variance of other VQA and QNN architectures.",
+     "anchor": "Section IV Discussion, p.9",
+     "quotes": [
+      "it would be interesting to analyze how our results and methods can be employed to derive trainability results for MERA frameworks.",
+      "Finally, we believe the GRIM will be useful in analyzing the scaling of the cost function partial derivative variance for other VQA and QNN architectures."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open directions, Section IV, p.9.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-tree-tensor-cited",
+     "value": "The authors note that after their work, another paper analyzed QNNs with a Tree Tensor structure and concluded that this architecture also does not exhibit barren plateaus.",
+     "anchor": "Note added, Section IV, p.9",
+     "quotes": [
+      "the authors analyze the existence of barren plateaus in QNN with a Tree Tensor structure, concluding that this architecture also does not exhibit barren plateaus."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-cited-barren-plateau-origins",
+     "value": "The authors cite prior work showing barren plateaus arise in VQAs with deep random parametrized circuits or with global cost functions, and in perceptron-based dissipative QNNs.",
+     "anchor": "Section I Introduction, p.1",
+     "quotes": [
+      "it has been shown that barren plateaus can arise for different architectures such as VQAs with deep random parametrized quantum circuits [35] or with global cost functions [36].",
+      "more general perceptron-based dissipative QNNs [32] can also show barren plateau landscapes [37, 43]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results attributed to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-rtni-integration",
+     "value": "The authors state that the Haar integrations in their calculations were performed with the Random Tensor Network Integrator (RTNI) package for symbolic integration.",
+     "anchor": "Appendix 1 A, p.12",
+     "quotes": [
+      "the integrations in our calculations were performed by employing the Random Tensor Network Integrator (RTNI) package for symbolic integration of Haar distributed tensors [66]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own method, Appendix 1 A, p.12.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-lemma2-hs-identity",
+     "value": "The paper proves (Lemma 2) that for a Hermitian operator H on a bipartite space whose second factor has dimension d, the trace of H squared minus the trace of the squared partial trace over the second factor divided by d equals the Hilbert-Schmidt distance between H and that partial trace tensored with the identity over d.",
+     "anchor": "Lemma 2, Appendix 1 B, Eq. (38), pp.12-13",
+     "quotes": [
+      "Lemma 2. Let H = H1 ⊗ H2 be a bipartite Hilbert space with dim H2 = d, and let H be a Hermitian operator on H, we have:",
+      "Tr H2 − Tr Tr2 [H]2 d",
+      "where DHS(H1, H2) = Tr[(H1 − H2)2] = ||H1 − H2||22 is the Hilbert-Schmidt distance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved on p.13, but the displayed identity is garbled in the text layer, so the statement is only partly quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-lemma4-trace-distance-any-matrices",
+     "value": "The paper proves (Lemma 4) the monotonicity of the trace distance under partial trace for any two operators on a tensor product space, not only density matrices, using the duality of Schatten norms, with an alternative proof for Hermitian operators.",
+     "anchor": "Lemma 4, Appendix 1 B, Eqs. (59)-(67), p.14",
+     "quotes": [
+      "Lemma 4 (Monotonicity of the trace distance). Let H be a tensor product Hilbert space H = HA ⊗ HB, and let RAB and SAB be two operators on H.",
+      "The monotonicity of the trace distance is usually proven when RAB and SAB are density matrices. The proof we present here is valid for any two matrices.",
+      "Proof. By duality of Schatten norms [67], we have:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved on p.14, but the inequality sign of Eq. (59) is lost in the text layer, so the statement cannot be quoted whole.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Eq. (59) reads DT(RAB, SAB) at least DT(RB, SB); the sign is lost in the text layer."
+    },
+    {
+     "id_suggestion": "pesah-lemma5-hs-reduction",
+     "value": "The paper proves (Lemma 5) an inequality lower-bounding the Hilbert-Schmidt distance between an operator on a bipartite space and its reduction tensored with the normalized identity by the Hilbert-Schmidt distance of the reduced operator to the normalized identity, scaled by a ratio of the subsystem dimensions; the proof uses equivalence of matrix norms and Lemma 4.",
+     "anchor": "Lemma 5, Appendix 1 B, Eqs. (68)-(72), pp.14-15",
+     "quotes": [
+      "Lemma 5. Let H be a tensor product Hilbert space H = HA ⊗ HB, with dim HA = dA and dim HB = dB, and let RAB be an operator on H.",
+      "where the first and last inequalities come from the equivalence of matrix norms given by Eq. (70), while the second inequality follows from the monotonicity of the Trace distance as stated in Lemma 4."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved on pp.14-15, but the displayed inequality (68) is garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-lemma3-delta-psi-sum",
+     "value": "The paper proves (Lemma 3) that a weighted sum over bitstrings of the operator Delta-Psi equals the Hilbert-Schmidt distance between a reduced operator of the backward-evolved sigma and its further reduction tensored with the normalized identity; the proof uses Lemma 1 and Lemma 2.",
+     "anchor": "Lemma 3, Appendix 1 B, Eqs. (45)-(58), pp.13-14",
+     "quotes": [
+      "Lemma 3. Consider the operator ∆Ψppqq defined in the main text",
+      "where σS,w = TrS[σL] and σL = VLσVL†.",
+      "where in the last equation we invoked Lemma 2.",
+      "where the last line comes from Lemma 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved on pp.13-14, but Eq. (46) is garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pesah-lemma1-cited",
+     "value": "The authors state Lemma 1, partial-trace identities for sums over a basis of a third subsystem, and refer to earlier work for its proof.",
+     "anchor": "Lemma 1, Appendix 1 B, p.12",
+     "quotes": [
+      "Lemma 1. Let H = H1 ⊗ H2 ⊗ H3 be a tripartite Hilbert space, and let {|p } be an arbitrary basis of H3.",
+      "For the proof of Lemma 1, see [36]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result whose proof is attributed to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "pirnay-2024-principle-super-polynomial-quantum-advantage",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Pirnay-et-al._2022_A-super-polynomial-quantum-advantage-for-combinatorial-optimization__2212.08678.pdf",
+   "title_in_file": "An in-principle super-polynomial quantum advantage for approximating combinatorial optimization problems via computational learning theory",
+   "version_note": "arXiv:2212.08678v4, 13 Feb 2024 (dated 5.12.2022 in the header). The file name's title ('A super-polynomial quantum advantage for combinatorial optimization') is the earlier title; the record's title matches this version.",
+   "pages": 20,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A complexity-theory paper that builds, from Kearns and Valiant's cryptographic hardness of learning, explicit integer linear programming and formula colouring instances that are classically hard to approximate (assuming RSA is hard to invert) but that a fault-tolerant quantum computer approximates within a polynomial factor using Shor's algorithm.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "pirnay-fault-tolerant-scope",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that the speed-up uses a fault tolerant quantum computer, and that the advantage is borrowed from Shor's algorithm.",
+     "anchor": "Abstract, p.1; Section III Discussion, p.4; Section IV C, p.14",
+     "quotes": [
+      "The quantum advantage in this work is ultimately borrowed from Shor's quantum algorithm for factoring.",
+      "using a fault tolerant quantum computer",
+      "can be solved in polynomial time given access to a fault-tolerant quantum computer"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the scope of its result, Abstract and Discussion.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "pirnay-near-term-open",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that it remains open to what extent the potential can be unlocked for short variational quantum circuits accessible on near-term quantum computers.",
+     "anchor": "Section II A, p.2; Section IV D, pp.17-18",
+     "quotes": [
+      "it remains open to which extent this potential can be unlocked for short variational quantum circuits as they are accessible in near-term quantum computers.",
+      "It remains to be investigated to which extent the resulting instances can be practically studied and solved on near-term quantum computers."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section II A (p.2) and Section IV D (p.17).",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The stored anchor says Section III Discussion; the sentence is in Section II A, Premise of this work."
+    },
+    {
+     "id": "pirnay-superpoly-advantage",
+     "verdict": "narrowed",
+     "note": "The abstract's 'fully constructive proof' holds for specific constructed instances (ILP-RSA and FC-RSA), under the assumption that inverting the RSA function is classically hard, and the quantum algorithm approximates within a polynomial factor, not exactly. The paper also says the same in-principle separation already follows from the PCP theorem and Shor's algorithm; its contribution is the explicit end-to-end construction.",
+     "value": "The authors prove a super-polynomial quantum advantage for approximating combinatorial optimization only for special constructed instances (the ILP-RSA and FC-RSA sets) and under the assumption that inverting the RSA function is hard for classical computers: no classical probabilistic polynomial-time algorithm approximates these instances up to polynomial factors, while a quantum algorithm approximates the optimal solution within a polynomial factor. They state that such an in-principle separation can already be obtained from the PCP machinery and Shor's algorithm, and that their focus is a technically detailed and complete constructive proof.",
+     "anchor": "Abstract, p.1; Section I, p.2; Theorems II.3 and II.4, p.4",
+     "quotes": [
+      "we provide special instances that are hard for classical computers to approximate up to polynomial factors.",
+      "Simultaneously, we give a quantum algorithm that can efficiently approximate the optimal solution within a polynomial factor.",
+      "Assuming the hardness of inverting the RSA function, there exists no classical probabilistic polynomial-time algorithm",
+      "Thus, an in-principle separation between classical and quantum approximation algorithms can already be obtained from the PCP machinery and Shor's algorithm.",
+      "the focus of this work is to provide a technically detailed and complete proof"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorems II.3/IV.12 and II.4/IV.16 are stated with their assumption and proved in Section IV B and IV C.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "pirnay22-thm-classical-hardness-ilp",
+     "value": "The paper proves (Theorem II.3, restated as Theorem IV.12) that, assuming the hardness of inverting the RSA function, no classical probabilistic polynomial-time algorithm, given an instance of ILP-RSA, finds a constraint-satisfying assignment whose objective value is at most the optimal value to the power alpha times the instance size to the power beta, for any alpha at least 1 and beta from 0 up to but not including 1/4.",
+     "anchor": "Theorem II.3, p.4; Theorem IV.12, Section IV B 4, p.14",
+     "quotes": [
+      "Assuming the hardness of inverting the RSA function, there exists no classical probabilistic polynomial-time algorithm that on input an instance ILPF of ILP-RSA finds an assignment A of the variables in ILPF which satisfies all constraints",
+      "J (A) ≤ optILP(ILPF )α| ILPF |β",
+      "for any α ≥ 1 and 0 ≤ β < 1/4."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated with its assumption on p.4 and proved through the reduction chain of Section IV B, ending at Theorem IV.12, p.14.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Fig. 1's caption uses 0 to 1 for beta in its definition of 'hard to approximate', while the theorem proves the narrower range up to 1/4."
+    },
+    {
+     "id_suggestion": "pirnay22-thm-quantum-efficiency-ilp",
+     "value": "The paper proves (Theorem II.4, restated as Theorem IV.16) that there exists a polynomial-time quantum algorithm that, given an instance of ILP-RSA, finds an assignment satisfying all constraints whose objective value is at most the optimal value to the power alpha, for some alpha at least 1; the algorithm reads the RSA parameters from the instance and runs Shor's algorithm to reconstruct the secret key.",
+     "anchor": "Theorem II.4, p.4; Theorem IV.16 and proof, Section IV C 1, p.17",
+     "quotes": [
+      "There exists a polynomial-time quantum algorithm that, on input an instance ILPF of ILP-RSA, finds a variable assignment A",
+      "for all ILPF and for some α ≥ 1.",
+      "Essentially, the efficient quantum algorithm cleverly reads out the RSA parameters from an instance ILPF of ILP-RSA and then runs Shor's algorithm for integer factorization, thereby reconstructing the secret RSA key."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated on p.4 and proved via Theorems IV.15 and IV.11 on p.17.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay22-thm-fc-to-ilp-reduction",
+     "value": "The paper proves (Theorem IV.11) a polynomial-time reduction from formula colouring to integer linear programming in which a colouring with k colours is valid if and only if the corresponding ILP assignment is valid with objective value k; the constructed ILP has M (4M + Q + 1) + 12R constraints and 2M (M + 1) + 5R variables, polynomial in the formula size.",
+     "anchor": "Theorem IV.11 and proof, Section IV B 4, pp.12-14",
+     "quotes": [
+      "There exist τ5, g2, such that P is a valid k-colouring of F if and only if A is a valid assignment of the variables in ILPF such that the objective function of ILPF is k.",
+      "In total, we get M (4M + Q + 1) + 12R constraints and 2M (M + 1) + 5R variables, which are polynomial in the size of F ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in both directions on pp.13-14.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay22-thm-quantum-con-crsa",
+     "value": "The paper proves (Theorem IV.13, with Algorithm 1) that a polynomial-time quantum algorithm, given a sample of Con(C-RSA, BC), finds a consistent Boolean circuit whose size is at most the optimal size to the power alpha for some alpha at least 1, by factoring N with Shor's algorithm, computing the secret exponent with the extended Euclidean algorithm and hard-wiring it into a decryption circuit; Corollary IV.14 extends this to Boolean formulae, log-space Turing machines and DFAs.",
+     "anchor": "Theorem IV.13, Algorithm 1, Corollary IV.14, Section IV C, pp.14-15",
+     "quotes": [
+      "There exists a polynomial-time quantum algo-",
+      "finds a consistent hypothesis h ∈ BC which approximates the size optCon(S) of",
+      "Run Shor's algorithm (1) to factor N and retrieve p and q; Run the extended Euclidean algorithm to compute d",
+      "for all S and for some α ≥ 1.",
+      "Corollary IV.14 (Quantum efficiency for more approximation tasks)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved on p.15 with Algorithm 1.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay22-thm-quantum-fc-rsa",
+     "value": "The paper proves (Theorem IV.15) that a polynomial-time quantum algorithm, given an instance of FC-RSA, finds a valid colouring with at most the optimal number of colours to the power alpha, for some alpha at least 1: it reconstructs the bit strings of the sample from the formula's clauses (Algorithm 2), rebuilds the decryption circuit, converts it to a consistent DFA and reads a colouring off the DFA (Algorithm 3).",
+     "anchor": "Theorem IV.15, Algorithms 2 and 3, Section IV C 1, pp.15-17",
+     "quotes": [
+      "There exists a polynomial-time quantum algorithm that, on input of an instance FS of FC-RSA, finds a valid colouring P such that",
+      "for all FS and for some α ≥ 1.",
+      "Thus, by parsing FS and looking for all predicates of the form as in (52), we can infer all bits in wi given FS, for all i.",
+      "We then run Algorithm 3 to obtain a colouring for FS from t.",
+      "Algorithm 2: Infer wi given FS"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved on pp.15-17 with Algorithms 2 and 3.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay22-membership-decidable",
+     "value": "The authors show that whether a given formula colouring instance belongs to FC-RSA can be decided in quantum polynomial time, by reconstructing the RSA parameters and ciphertext-label pairs, rebuilding the instance through the reduction chain and comparing.",
+     "anchor": "Section IV C 1, p.17; also Section II A, p.2",
+     "quotes": [
+      "It is interesting to note, that whether an instance I of FC belongs to the set FC-RSA can be decided in quantum polynomial-time.",
+      "If the resulting instance matches instance I, clearly I ∈ FC-RSA and can therefore be solved by algorithm 3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Argued with an explicit algorithm on p.17.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay22-explicit-construction",
+     "value": "The authors stress that the reduction is explicit, so the instances for which a quantum advantage of this kind is achievable can be constructed, and they expect such instances to be useful to compare quantum and classical optimization algorithms.",
+     "anchor": "Section IV C 1, p.17; Section III Discussion, pp.4-5",
+     "quotes": [
+      "It is important to stress that the reduction is explicit: That is to say, we can construct the instances for which one can achieve a quantum advantage of this kind.",
+      "useful to compare quantum versus classical optimization algorithms and provide a fruitful arena for future research in this field."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The first part rests on the proved construction; the expected usefulness is an authors' claim.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay22-not-np-hard-exact",
+     "value": "The authors state that the work does not suggest solving NP-hard problems exactly on a quantum computer in polynomial time; it gives an in-principle advantage for classically hard-to-approximate instances.",
+     "anchor": "Section II A, p.2",
+     "quotes": [
+      "The present work does not suggest to solve NP-hard problems exactly on a quantum computer in polynomial time.",
+      "Instead, we provide a full proof for an in-principle quantum advantage for classically hard-to-approximate combinatorial optimization problems"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of scope, Section II A, p.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay22-not-variational",
+     "value": "The authors state that their quantum algorithm is distinctly not of a variational type; they nonetheless show how formula colouring can be cast as a quartic binary optimization problem and a commuting classical Hamiltonian, and state that for the FC-RSA Hamiltonians it remains to be studied how well quantum optimization algorithms solve them in practice.",
+     "anchor": "Section II B, p.4; Section IV D, pp.17-18",
+     "quotes": [
+      "The quantum algorithm presented is distinctly not of a variational type",
+      "show how the formula colouring problem in the centre of this work can be cast into a quartic binary optimization",
+      "it remains to be studied how well the corresponding Hamiltonians",
+      "can be solved using quantum optimization algorithms in practice."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of the nature and limit of its algorithm, Sections II B and IV D.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay22-hard-to-approximate-definition",
+     "value": "The authors define hard to approximate as: no polynomial time algorithm approximates the size of the optimal solution up to a factor of opt to the power alpha times instance size to the power beta, with alpha at least 0 and beta from 0 up to but not including 1; whether there is a problem solvable exactly by a polynomial-time quantum algorithm but hard to approximate classically is left for further research.",
+     "anchor": "Fig. 1 caption, p.3",
+     "quotes": [
+      "By hard to approximate we mean that there is no polynomial time algorithm that approximates the size of the optimal solution up to a factor of optα · |I|β",
+      "α, β are constants such that α ≥ 0, 0 ≤ β < 1",
+      "whether there exists a problem that can be solved exactly by a polynomial-time quantum algorithm, but are hard to approximate classically, is left for further research."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition and stated open question, Fig. 1 caption, p.3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The caption allows alpha at least 0, while the theorems use alpha at least 1."
+    },
+    {
+     "id_suggestion": "pirnay22-fc-definition",
+     "value": "The authors define the formula colouring problem: an instance is a Boolean formula over integer variables made of conjunctions of clauses that two variables differ or that equality of two variables implies equality of two others, and a solution is a satisfying colouring with the fewest colours; graph colouring encodes into it, so it is NP-complete.",
+     "anchor": "Definition II.1, p.3; Definition IV.4, p.9",
+     "quotes": [
+      "Instance A Boolean formula F (z1, . . . , zm) which consists of conjunctions of clauses of the form either",
+      "Solution A minimal colouring P for F (z1, . . . , zm) such that F is satisfied.",
+      "Thus the formula colouring problem belongs to the computationally hard-to-solve class of NP-complete problems."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition, Definition II.1 (p.3) and IV.4 (p.9).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay22-pac-definition",
+     "value": "The authors define an (epsilon, delta)-PAC learning algorithm for C by H as one that outputs an h in H with error at most epsilon with probability at least one minus delta, for all distributions over X and all c in C.",
+     "anchor": "Section IV A 6, p.8",
+     "quotes": [
+      "An (ϵ, δ)-probably approximately correct (PAC) (29) learning algorithm for C by H outputs an h ∈ H, such that errorc,D(h) ≤ ϵ with probability at least 1 − δ (for all distributions D over X and all c ∈ C)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition, Section IV A 6, p.8.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay22-occam-razor-cited",
+     "value": "The authors cite Occam's razor (Theorem IV.3): for a sample of sufficient size drawn independently from D and fixed alpha at least 1 and beta from 0 up to but not including 1, any consistent hypothesis of size at most the optimal consistent size to the power alpha times the sample size to the power beta has error at most epsilon with probability at least one minus delta; hence learning C by H is an approximation task.",
+     "anchor": "Theorem IV.3, Section IV A 6, p.8",
+     "quotes": [
+      "where the m examples have been sampled independently from D and for some fixed α ≥ 1 and 0 ≤ β < 1, any h that is consistent with S and which satisfies",
+      "does also satisfy errorc,D(h) ≤ ϵ with probability at least 1 − δ.",
+      "Importantly, learning C by H can be interpreted as an approximation task."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A theorem attributed to Blumer et al. and Kearns and Valiant.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay22-kearns-valiant-hardness-cited",
+     "value": "The authors cite Kearns and Valiant (Theorems IV.6, IV.7 and IV.9): assuming RSA is hard to invert, no classical probabilistic polynomial-time algorithm approximates the minimal consistent hypothesis for C-RSA, Boolean formulae, log-space Turing machine or DFA versions within the Occam factor for any alpha at least 1 and beta from 0 up to but not including 1, and none approximates FC-RSA colourings for beta below 1/2.",
+     "anchor": "Theorems IV.6, IV.7, IV.9, Section IV B, pp.10-12",
+     "quotes": [
+      "Theorem IV.6 (Classical approximation hardness of C-RSA (21)).",
+      "Theorem IV.7 (Classical approximation hardness of more representations (21)).",
+      "for all S and any α ≥ 1 and 0 ≤ β < 1.",
+      "Theorem IV.9 (Classical hardness of approximation for formula colouring (21)).",
+      "for any α ≥ 1 and 0 ≤ β < 1/2."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results attributed to Ref. (21), Kearns and Valiant.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The beta threshold halves at each reduction because the instance size grows quadratically: the formula has order |S| squared clauses and the ILP has order |F| squared size."
+    },
+    {
+     "id_suggestion": "pirnay22-con-to-fc-cited",
+     "value": "The authors cite Theorem IV.8 from Kearns and Valiant: a polynomial time algorithm maps an instance S of Con(DFA, DFA) to a formula colouring instance such that S has a k-state consistent DFA if and only if the formula has a colouring with k colours; the formula has order |S| squared clauses.",
+     "anchor": "Theorem IV.8, Section IV B 3, p.11",
+     "quotes": [
+      "There is a polynomial time algorithm τ4 that on input an instance S of the problem Con(DFA, DFA) outputs an instance FS of the formula colouring problem such that S has a k-state consistent hypothesis M ∈ DFA if and only if FS has a colouring P , with |P | = k.",
+      "the resulting FS consists of Θ(|S|2) many clauses."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A theorem attributed to Ref. (21).",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay22-rsa-lsb-hardness-cited",
+     "value": "The authors cite Alexi et al.: a classical polynomial-time algorithm that finds the least significant bit of x given RSA(x, N, e) would give a classical polynomial-time algorithm that inverts the RSA encryption function; Shor's algorithm factors N in polynomial time on a quantum computer.",
+     "anchor": "Section IV A 8, p.9",
+     "quotes": [
+      "Formally, Alexi et. al. (32) have proven that if there exists a classical polynomial-time algorithm that finds the LSB of x, given RSA(x, N, e), then there exists a classical polynomial-time algorithm that inverts the RSA encryption function.",
+      "On a quantum computer, however, Shor's algorithm (1) can be used to factor the integer N in polynomial time."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results attributed to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay22-representation-reductions-cited",
+     "value": "The authors state, with proofs referred to Kearns and Vazirani and to Kearns and Valiant, that the evaluation problem of log-depth poly-size Boolean circuits reduces in polynomial time to that of Boolean formulae, which reduces to that of log-space Turing machines, which reduces to that of DFAs.",
+     "anchor": "Section IV A 5, Eqs. (5)-(7), p.7",
+     "quotes": [
+      "Eval(BC) ≤p Eval(BF),",
+      "Eval(BF) ≤p Eval(LSTM),",
+      "Eval(LSTM) ≤p Eval(DFA).",
+      "The full proofs can be found in Refs. (27) and (21)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The full proofs are attributed to other work; the paper sketches them.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay22-noise-obstacles-cited",
+     "value": "The authors cite work identifying obstacles for variational algorithms on noisy devices with circuits deeper than logarithmic, which may be read as indicating it will be challenging to achieve quantum advantages at realistic noise levels.",
+     "anchor": "Section I Introduction, p.2",
+     "quotes": [
+      "some obstacles have been identified for quantum computers that involve circuits that are deeper than logarithmic (14–17), obstacles that may well be read as indications that it will be challenging to achieve quantum advantages in the presence of realistic noise levels."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results attributed to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay22-tsp-cited",
+     "value": "The authors cite that travelling salesperson instances of up to 85.900 cities have been solved optimally.",
+     "anchor": "Section I Introduction, p.1",
+     "quotes": [
+      "enormous traveling salesperson instances of up to 85.900 cities have been solved optimally (7)"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to other work.",
+     "result_type": "cited",
+     "context": "world",
+     "reader_inference": "85.900 uses a European thousands separator: 85,900 cities."
+    },
+    {
+     "id_suggestion": "pirnay22-local-hamiltonian-qma-cited",
+     "value": "The authors state that since any combinatorial optimization problem of this type maps to a local Hamiltonian, the local Hamiltonian problem is NP-hard, and cite that it is even QMA-complete.",
+     "anchor": "Section IV D, p.18",
+     "quotes": [
+      "Since any combinatorial optimization problem of the type discussed here can be mapped to a local Hamiltonian it is apparent that the local Hamiltonian problem is NP-hard.",
+      "In fact it is even known to be QMA-complete (36)"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to Kempe, Kitaev and Regev.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay22-conclusion-guidance",
+     "value": "The authors conclude that the work clarifies in what precise sense one can hope for quantum advantages in optimization, and provides guidance for what one can reasonably hope for from near-term quantum algorithms for combinatorial optimization.",
+     "anchor": "Section II A, pp.2-3; Section III Discussion, p.5",
+     "quotes": [
+      "to clarifying in what precise sense one can hope for quantum advantages in optimization in the first place.",
+      "The work here shows and provides guidance for the dis-"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' conclusion.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "pirnay-2024-unconditional-distribution-learning-advantage-shallow",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Pirnay-et-al._2024_An-unconditional-distribution-learning-advantage-with-shallow-quantum__2411.15548.pdf",
+   "title_in_file": "An unconditional distribution learning advantage with shallow quantum circuits",
+   "version_note": "arXiv:2411.15548v2, 27 Nov 2024.",
+   "pages": 12,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A learning-theory paper that lifts Bene Watts and Parham's unconditional sampling separation between constant-depth quantum (QNC0) and classical (NC0) circuits to a PAC generator learning separation by adding a hidden hyperplane shift s to the majority-mod-p function.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "pirnay-learner-perfect-precision",
+     "verdict": "narrowed",
+     "note": "Theorem III.1 holds for sufficiently large p of order at most n to the one third, any delta, success probability one minus delta, and order p to the fourth times log(p/delta) examples. The 'perfect precision' is because the target distribution is defined as the Born distribution of that very circuit, so once s is found the output circuit is the generating circuit.",
+     "value": "The paper proves (Theorem III.1) a polynomial-time PAC generator learning algorithm for the class D that, for sufficiently large p in O(n to the one third), any delta greater than 0 and any s in the field of order p, outputs a constant-depth quantum circuit whose Born distribution has total variation distance 0 to the target with probability 1 minus delta, using order p to the fourth times log(p/delta) examples; the authors state the error is 0 because the output circuit is exactly the circuit that generated the target distribution.",
+     "anchor": "Theorem III.1, Section III C, p.5; Theorem 12 and proof, Appendix B, pp.9-12",
+     "quotes": [
+      "There exists a polynomial-time",
+      "PAC generator learning algorithm for D, that for suffi-",
+      "ciently large p ∈ O(n1/3), any δ > 0, and any s ∈ Fp,",
+      "outputs a description of a constant-depth quantum circuit whose Born distribution D′ satisfies",
+      "dT V (Dn,p,s, D′) = 0",
+      "with probability 1 − δ, and which uses",
+      "Since this circuit is exactly the circuit that generated the target distribution, we obtain an error ϵ = 0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem III.1 is stated with its conditions on p.5 and proved as Theorem 12 in Appendix B, pp.9-12.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The sample bound printed as 'M ∈ O p4 log p δ' is O(p^4 log(p/delta)); it follows from O(p^2/epsilon^2 log(p/delta)) with epsilon = 1/(7p)."
+    },
+    {
+     "id": "pirnay-qnc0-nc0-pac-separation",
+     "verdict": "narrowed",
+     "note": "The abstract states the separation without its size or conditions. Theorem IV.1 quantifies it as a total-variation advantage of at least one over pi minus order one over log n, and the classical side rests on Theorem 7 (Theorem 34 of Watts and Parham) for local functions with a bounded number of random input bits. The concept class is the hidden shift s, a class polynomial in size.",
+     "value": "The paper proves (Theorem IV.1) that for learning a constant-depth generator for the distribution class D, choosing QNC0 over NC0 as the hypothesis class yields an advantage in total variation distance of at least one over pi minus order one over log n; the classical bound uses Theorem 7, for local functions whose input has at most N plus N to the delta bits, and the authors note the concept class is polynomial in size.",
+     "anchor": "Theorem IV.1 and proof, Section IV, pp.5-6; Theorem 7, Section III D, p.5; Section V, p.6",
+     "quotes": [
+      "Theorem IV.1 (Advantage of shallow quantum hypotheses). For the problem of learning a constant-depth generator for the distribution class D, the hypothesis choice of QNC0 over NC0 yields an advantage in total variation",
+      "Let f : {0, 1}ℓ → {0, 1}N+1 be an (ϵ log N )1/2-local function, with ℓ ≤ N + N δ.",
+      "the concept class studied in this work is polynomial in size (in the problem parameters)",
+      "Theorem 7 (Classical hardness of PAC learning)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Theorem IV.1 is proved on p.6, but its displayed bound (one over pi minus O(1/log n)) is garbled in the text layer and could not be quoted whole.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The bound printed as '1 1 −O . π log n' reads 1/pi - O(1/log n)."
+    },
+    {
+     "id": "pirnay-structured-data-limit",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state the problem uses highly structured data, that advantages over deeper classical circuits remain to be shown, and that the result is a stepping stone.",
+     "anchor": "Section V Summary and Discussion, p.6",
+     "quotes": [
+      "Ideally, one should be able to show advantages also over deeper classical circuits.",
+      "it still makes use of highly structured data",
+      "this result is a stepping stone in a bigger program"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section V, p.6.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "pirnay24-generator-definition",
+     "value": "The authors define a generator for a distribution D over n-bit strings as any function from m-bit strings to n-bit strings that on uniformly random inputs outputs samples according to D, and define QNC0 as constant-depth quantum circuits of one and two qubit gates and NC0 as constant-depth classical circuits with bounded fan-in gates.",
+     "anchor": "Definition 1, Section II, p.2",
+     "quotes": [
+      "A generator for D is any function GEND : {0, 1}m → {0, 1}n that on uniformly random inputs outputs samples according to D",
+      "QNC0, which are constant-depth quantum circuits that consist of one and two qubit gates, and NC0, which are constant-depth classical with bounded fan-in gates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition, Definition 1, p.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay24-pac-generator-definition",
+     "value": "The authors define an (epsilon, delta)-PAC generator learner for a class of distributions as an algorithm that, for every D in the class, given samples from D, with probability at least 1 minus delta outputs a generator for some D' with total variation distance to D at most epsilon; it is efficient if its time and sample complexity are polynomial in n, and the class is learnable with H if an efficient learner exists with generators constrained to H.",
+     "anchor": "Definition 2, Section II, p.2",
+     "quotes": [
+      "probability at least 1 − δ, A outputs a generator for some distribution D′, satisfying",
+      "dT V (D, D′) ≤ ϵ,",
+      "We call A an efficient (ϵ, δ)-PAC generator learner for D if its time (and sample) complexity are O(poly(n)).",
+      "We say that D is (ϵ, δ)-PAC generator learnable with H, if an efficient A exists and if we constrain the generator to some generator class H."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition, Definition 2, p.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay24-watts-parham-sampling-cited",
+     "value": "The authors cite Theorem 3 of Watts and Parham: for each delta there is a family of distributions over n bits such that a constant-depth quantum circuit from the all-zero state produces a distribution within total variation distance one sixth plus a vanishing term of the target, while each fan-in 2 classical circuit taking n plus n to the delta random bits that comes within one half minus omega of one over log n of the target has depth of order at least log log n.",
+     "anchor": "Theorem 3, Section III, p.2",
+     "quotes": [
+      "Theorem 3 (Theorem 3 in Ref. [17]). For each δ ∈ (0, 1),",
+      "1. There exists a constant-depth quantum circuit which",
+      "2. Each classical circuit with fan-in 2 which takes n + nδ",
+      "has depth Ω(log log n)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A theorem attributed to Watts and Parham; its displayed bounds are garbled in the text layer.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay24-single-distribution-not-learning",
+     "value": "The authors state that a distribution class with only one distribution per problem size is hardly a learning task, and that with Theorem 3 alone the quantum generator's error could not be made arbitrarily small (not below one sixth); they therefore introduce a hyperplane shift s into the majority-mod-p function, so that learning the generator requires learning s from examples.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "However, it is hardly a learning task when the distribution class consists only of one distribution per problem size.",
+      "would be able to approximate the target distribution better",
+      "than the classical generator, but up to an error that cannot",
+      "we introduce a hyperplane learning problem into the",
+      "one needs to learn the hyperplane s from m",
+      "From Theorem 3 we can actually directly construct a PAC generator learning problem"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of why it constructs its problem as it does, Section III, p.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay24-poor-mans-ghz",
+     "value": "The authors state that the prepared state is not a GHZ state, which is not within reach of constant-depth quantum circuits, but a binary tree poor man's GHZ state, which has random bit flips that cannot be corrected in constant depth; they cite (Theorem 4) that it can be built by a depth-3 circuit of 1 and 2 qubit gates on 2n minus 1 qubits.",
+     "anchor": "Section I, p.2; Section III B and Theorem 4, p.4",
+     "quotes": [
+      "The state prepared is not quite a GHZ state, as this is not within reach for constant depth quantum circuits [19]",
+      "has random bit flips that cannot be corrected in constant depth.",
+      "Theorem 4 (Theorem 29 in Ref. [17]). For any n, the state vector |PMn⟩ can be constructed by a depth-3 quantum circuit consisting of 1 and 2 qubit gates acting on 2n − 1 qubits."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Theorem 4 and the GHZ limit are attributed to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay24-nonlocal-correlations-origin",
+     "value": "The authors identify the non-local correlations in states preparable with constant-depth circuits as the origin of the quantum advantage, and state that although they use no mid-circuit measurements, measurements still play an important role in preparing the state.",
+     "anchor": "Abstract, p.1; Section I, pp.1-2",
+     "quotes": [
+      "identifying non-local correlations as the origin of the quantum advantage.",
+      "While we do not make use of mid-circuit measurements, in the preparation of the above state, measurements still play an important role in the preparation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' interpretation of the source of the separation.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay24-thm5-approx-distribution",
+     "value": "The authors state (Theorem 5, an adaptation of Theorem 33 of Watts and Parham to include the shift s) that for n sufficiently large and p equal to n to the c for any constant c in (0, 1/2), a constant-depth quantum circuit of one- and two-qubit unitary gates on the (2n minus 1)-qubit all-zeros state samples a distribution whose total variation distance to (Z, pmmajmod) is bounded by the displayed equation of the theorem; the Born distribution of this circuit is defined as the target distribution.",
+     "anchor": "Theorem 5, Section III B, Eq. (8), p.4; Appendix A, p.9",
+     "quotes": [
+      "Theorem 5 (Approximating the desired distribution). For n sufficiently large and p = nc for any constant c ∈ (0, 1/2) there exists a constant-depth quantum circuit consisting of one- and two-qubit unitary gates which takes the (2n − 1)-qubit all zeros state as input",
+      "The Born distribution (Z′, Y ) generated by this circuit is our target distribution.",
+      "And thus Theorem 5 follows.",
+      "of Theorem 33 in Ref. [17] yields the following."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Argued in Appendix A by adapting cited results; the bound of Eq. (8) is garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Eq. (8) is printed as '≤ 1 − 1 + O(n−c). 2π'; from Theorem 8 and the proof of Theorem IV.1 it reads 1/2 - 1/pi + O(n^-c). The proof of Theorem IV.1 and Fig. 2 use c in (0, 1/3), not (0, 1/2)."
+    },
+    {
+     "id_suggestion": "pirnay24-target-class-definition",
+     "value": "The authors define the target class D as the distributions Dn,p,s for natural n, prime p and s in the field of order p, each the Born distribution of the constant-depth unitary circuit of Fig. 2 a), and state as a corollary that the optimal quantum circuit to generate Dn,p,s is at most constant-depth.",
+     "anchor": "Eq. (10) and Corollary 6, Section III B, p.5",
+     "quotes": [
+      "The distribution Dn,p,s is given by the Born distribution of the unitary constant-depth quantum circuit in Fig. 2 a).",
+      "Corollary 6 (Optimal quantum circuit). The optimal quantum circuit to generate the distribution Dn,p,s is at most constant-depth."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition of its target class and a direct corollary, Section III B, p.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Because the target is defined as the circuit's own Born distribution, the quantum hypothesis class contains the target exactly by construction."
+    },
+    {
+     "id_suggestion": "pirnay24-learning-strategy",
+     "value": "The authors' learning algorithm estimates, from the examples, the probability f(k) of observing the parity bit for each k, finds the coordinate k-star where the estimate crosses 1/2 from below, and outputs s as p minus k-star mod p; it then outputs the circuit of Fig. 2 a) with that s.",
+     "anchor": "Section III C, p.5; Appendix B algorithm steps 1-3, p.11",
+     "quotes": [
+      "we can identify k∗ = p − s mod p as the coordinate for which f (k∗) = 1/2 and f (k∗ + 1) > 1/2. This way, we recover s = p − k∗ mod p.",
+      "Then we can output the quantum circuit in Fig. 2 a), as the generator in QNC0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own algorithm, Section III C and Appendix B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay24-learning-proof-parameters",
+     "value": "The authors' proof sets the estimate precision epsilon to 1/(7p) with n in Omega of p cubed (equivalently p in O of n to the one third), requires the closeness threshold tau below pi/(6p), proves (Lemma 14) the needed cosine property for p at least 3, and concludes the algorithm finds s with probability 1 minus delta, giving total variation distance 0.",
+     "anchor": "Appendix B, Eqs. (B10)-(B14) and Lemma 14, pp.11-12",
+     "quotes": [
+      "asymptotically in p, when ϵ = 1 7p and n ∈ Ω(p3) (↔ p ∈ O(n1/3)).",
+      "And thus we require π τ< 6p",
+      "which is true for p ≥ 3, as proven in Lemma 14 below.",
+      "Since the target distribution has exactly been generated by that circuit, the TV distance the output generator and the target distribution is 0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix B, pp.10-12.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer prints 1/(7p) as '1 7p' and the exponent of p flat."
+    },
+    {
+     "id_suggestion": "pirnay24-thm7-classical-hardness-cited",
+     "value": "The authors take the classical hardness from Theorem 34 of Watts and Parham (their Theorem 7): for each delta below 1 there is an epsilon greater than 0 such that, for all sufficiently large even N equal to 2n minus 2 and suitable primes p, every (epsilon log N) to the one half-local function on at most N plus N to the delta input bits has total variation distance at least one half minus order one over log N to the s equal 0 distribution; it suffices that even for fixed s the distributions are not in NC0, since constant-depth circuits are O(1)-local.",
+     "anchor": "Theorem 7, Section III D, p.5",
+     "quotes": [
+      "Theorem 7 (Classical hardness of PAC learning). For each δ < 1, there exists an ϵ > 0 such that for all sufficiently large even integer N = 2n − 2",
+      "Then dT V (f (U ), (Z, pmmajmodp,s=0(Z))) ≥ 1/2 − O(1/ log N ).",
+      "it suffices to show that, even for a fixed value of s, the distributions Dn,p,s are not in NC0.",
+      "as constantdepth circuit are O(1)-local.",
+      "We thus can directly take the hardness result of Theorem 34 from Ref. [17]."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A theorem attributed to Watts and Parham.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay24-unitary-approximation-lemmas",
+     "value": "The authors show that the non-unitary A gates of the cited circuit can be replaced by unitary U gates obtained by Gram-Schmidt orthonormalization: with theta equal to pi/p and p equal to n to the c for c in (0, 1/2), Lemma 10 gives an operator-norm distance of order n to the minus mc, and with m equal to the ceiling of 2/c + 1 the two circuits' distributions differ in total variation by order n to the minus c minus 1.",
+     "anchor": "Appendix A, Lemma 9 (cited), Lemma 10, Eq. (A8), pp.8-9",
+     "quotes": [
+      "Essentially, Um,θ arises from applying the Gram-Schmidt ortho-normalization to the problematic states output by Aθ,m.",
+      "||Am,θ − Um,θ||∞ ∈ O(n−mc).",
+      "Now, let m = ⌈2/c + 1⌉.",
+      "dT V (P, Q) ∈ O(n) × O(n−mc) = O(n−c−1) = O",
+      "Lemma 10 (Closeness of unitaries).",
+      "for some constant c ∈ (0, 1/2), there exists a unitary matrix Um,θ satisfying"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived by following cited equations of Watts and Parham rather than proved in full in this paper.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay24-compilation-constant-depth",
+     "value": "The authors state, citing prior work, that the U gates can be compiled into arbitrary one-qubit gates and CNOT gates: any m-qubit operator uses at most order m cubed times four to the m two-qubit gates, each two-qubit gate decomposes into at most 5 one-qubit and CNOT gates, so for constant m the U gates compile to a constant-depth sequence.",
+     "anchor": "Appendix A 1, p.9",
+     "quotes": [
+      "any operator on m qubits can be performed with at most O(m34m) two-qubit gates",
+      "any of those two qubit gates can be decomposed into a sequence of at most 5 one-qubit gates and CNOT gates",
+      "Thus, for constant m and any θ, there exists a constant time algorithm that compiles the Um,θ gates into a constant depth sequence of arbitrary one-qubit gates and CNOT gates."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Gate-count results attributed to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The count printed as 'O(m34m)' is O(m^3 4^m)."
+    },
+    {
+     "id_suggestion": "pirnay24-mean-estimator-cited",
+     "value": "The authors cite a classical multivariate mean estimator (Lemma 13) that returns an epsilon-precise estimate in infinity norm of the mean of a bounded d-dimensional random variable with probability at least 1 minus delta, and a fact (Fact 11) bounding the distance of a sum of uniform bits modulo p from uniform.",
+     "anchor": "Lemma 13 and Fact 11, Appendix B, pp.9-11",
+     "quotes": [
+      "Lemma 13 (Lemma C.1, page 15 [32]).",
+      "there exists a classical multivariate mean estimator that returns an ϵ-precise",
+      "Fact 11 (Fact 3.2 in Ref. [22]).",
+      "with success probability at least 1 − δ"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results attributed to other work.",
+     "result_type": "cited",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay24-prior-advantages-fault-tolerant",
+     "value": "The authors state that earlier quantum learning advantages work only for precisely engineered data that are not very plausible in practice and resort to full fault tolerant quantum computers, which to date are still fictitious machines; they cite increasing evidence that without error correction only logarithmically deep circuits are usable before noise sets in.",
+     "anchor": "Section I Introduction, p.1",
+     "quotes": [
+      "they work for data only that are precisely engineered and not very plausible from a practical perspective.",
+      "Above all, they resort to full fault tolerant quantum computers, which to date are still fictitious machines.",
+      "there is increasing evidence that all one has are logarithmically deep quantum circuits before the effect of quantum noise sets in"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' assessment of prior work, partly cited.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pirnay24-conclusion-affirmative",
+     "value": "The authors conclude that their work answers in the affirmative whether quantum advantages in machine learning with short quantum circuits can be found, which leaves room for optimism because known limitations of non-error-corrected circuits set in at logarithmic or poly-logarithmic depth while they use constant-depth circuits.",
+     "anchor": "Section V Summary and Discussion, p.6",
+     "quotes": [
+      "So our work answers the question whether quantum advantages in machine learning problems with short quantum circuits can be found to the affirmative.",
+      "the known results on limitations of non-error corrected quantum circuits would set in at logarithmic or poly-logarithmic depth [14, 15]: Here, we are resorting to constant-depth quantum circuits."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' conclusion; the proved content is Theorem IV.1 with its conditions.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper assumes noiseless constant-depth circuits; it does not analyze noise."
+    },
+    {
+     "id_suggestion": "pirnay24-different-from-learning-circuits",
+     "value": "The authors state that the question studied differs from actually learning shallow quantum circuits, that steps toward realistic unstructured data will presumably eventually require a fault tolerant quantum computer, and that more work is needed to bring such ideas closer to reality and unstructured data.",
+     "anchor": "Section V Summary and Discussion, p.6",
+     "quotes": [
+      "the question discussed here is different from the question of actually learning shallow quantum circuits [26, 27]",
+      "such algorithms will presumably eventually require a fault tolerant quantum computer.",
+      "More work needs to be done to bring such ideas closer to reality and the realm of unstructured data."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limits, Section V, p.6.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "qiao-2025-q-run-quantum-inspired-data",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Qiao-et-al._2025_Q-RUN-Quantum-Inspired-Data-Re-uploading-Networks__2512.20654.pdf",
+   "title_in_file": "Q-RUN: Quantum-Inspired Data Re-uploading Networks",
+   "version_note": "arXiv:2512.20654v1 [cs.LG], 18 Dec 2025.",
+   "pages": 24,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A classical neural network layer (Q-RUN) modeled on data re-uploading quantum circuits, with a Fourier-spectrum expressivity claim and benchmarks on implicit representation, density estimation, molecular energy, time series, sentiment classification, parameter-efficient fine-tuning and image classification; no quantum hardware is used.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qrun-classical-surrogate-scope",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that Q-RUN replaces quantum measurement with a lightweight MLP approximation and that their goal is not to outperform task-specific, highly specialized models.",
+     "anchor": "Section 4.2.2, p.7; Section 5.3.1, p.14",
+     "quotes": [
+      "we relax the strict reliance on quantum measurements in their theoretical form and instead introduce a lightweight MLP to approximate the measurement process",
+      "Notably, our goal is not to outperform task-specific, highly specialized models, but to evaluate Q-RUN as a generalpurpose, plug-and-play module for enhancing mainstream AI architectures."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of its own approach and evaluation scope, Sections 4.2.2 and 5.3.1.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qrun-error-reduction",
+     "verdict": "narrowed",
+     "note": "The abstract's 'one to three orders of magnitude' holds only on certain tasks. In the body the largest gains are in energy modeling (up to 449 times over Tanh, about 13 times over FAN) and in the symbolic-regression scalability study (2 to 3 orders over FAN on three of four datasets). In implicit representation Q-RUN is best on two of four signals, ties KAN on Cello and is beaten by QIREN on Astronaut.",
+     "value": "The authors report that Q-RUN reduces parameters while decreasing error by approximately one to three orders of magnitude on certain tasks: in energy modeling up to a 449x improvement over Tanh and approximately 13x over FAN with the fewest parameters, and in the scalability study 2 to 3 orders of magnitude below FAN on the first three of four symbolic regression datasets; in implicit representation their own table gives Q-RUN an MSE (x10^-3) of 5.5 on Astronaut against 4.0 for QIREN.",
+     "anchor": "Abstract, p.1; Section 5.2.3 and Table 3, pp.12-13; Section 5.4.3 and Fig. 9, p.18; Table 2, p.10",
+     "quotes": [
+      "Q-RUN reduces model parameters while decreasing error by approximately one to three orders of magnitude on certain tasks",
+      "Notably, Q-RUN achieves up to a 449× improvement over Tanh and approximately a 13× gain over the best-performing FAN",
+      "On the first three datasets, Q-RUN achieves remarkably low MSE from the very beginning, outperforming FAN by 2 to 3 orders of magnitude.",
+      "Implicit Representation results measured by Mean Squared Error (MSE, ×10−3)",
+      "Astronaut 20 9.9 9.4 9.9 5.1 9.0 9.7 12.0 4.0 5.5"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical results from one study, mostly on small benchmarks.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table 2's column order is Tanh, ReLU, PWLNN, FNO, RFF, SIREN, FAN, KAN, QIREN, Q-RUN, so 4.0 is QIREN and 5.5 is Q-RUN."
+    },
+    {
+     "id": "qrun-fourier-claim",
+     "verdict": "corrected",
+     "note": "The stored value reads the text layer's '3dn' as a product. The appendix shows each dimension's spectrum triples with each re-upload, so the count is three to the power d times n (exponential in the parameter count), which the paper states as an exponential number of frequencies. The claim also rests on a well-trained, non-degenerate w ('in the best case'); a full proof is in Appendix A, not only a sketch.",
+     "value": "The paper states (a claim sketched in the methodology section and proved in Appendix A) that under optimal conditions, with a well-trained learnable vector w making the frequencies non-degenerate, Q-RUN can express a d-dimensional truncated Fourier series whose spectrum contains up to three to the power (d times n) components, which the authors describe as an exponential number of frequency components with respect to a linearly growing number of parameters.",
+     "anchor": "Claim 2, Section 4.1, p.6; Appendix A, pp.23-24",
+     "quotes": [
+      "Claim 2. Under optimal conditions, Q-RUN is capable of expressing a d-dimensional truncated Fourier series with a frequency spectrum containing up to 3dn components.",
+      "Since the parameter vector w is learnable, a well-trained w can ensure that the resulting frequency components are",
+      "Q-RUN can potentially cover an exponential number of frequency components with respect to its linearly growing number of parameters"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation of the reachable frequency set for the theoretical (tensor-product) form only; the relaxed Q-RUN actually run replaces the measurement by an MLP and is not covered by the proof.",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": "The text layer prints 3^(dn) flat as '3dn' and once as '3nd'."
+    },
+    {
+     "id": "qrun-overfitting-fourth-dataset",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors report that on the fourth dataset of a model-size study Q-RUN shows a U-shaped trend, with error first decreasing then increasing, indicating potential overfitting at larger capacities.",
+     "anchor": "Section 5.4.3 Scalability Comparison, Fig. 9, p.18",
+     "quotes": [
+      "On the fourth dataset, however, Q-RUN exhibits a less ideal U-shaped trend. The MSE first decreases and then increases, indicating potential overfitting at larger capacities.",
+      "Nevertheless, Q-RUN still surpasses other methods with similar parameter scales."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The stored anchor says 'Appendix experiments'; the passage is in Section 5.4.3 of the main text."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qrun-drqc-claim1-cited",
+     "value": "The authors state, citing prior work, that the capability of data re-uploading quantum circuits to fit Fourier series grows exponentially with circuit size under optimal conditions: a DRQC can represent a Fourier series with spectrum size (2NL + 1) to the power d using order dNL parameters, while a conventional Fourier series typically requires order (NL) to the power d parameters; but a d-dimensional input theoretically requires d times N qubits, which current quantum computers cannot reliably handle for data with hundreds or thousands of dimensions.",
+     "anchor": "Claim 1 and Remark, Section 3.1, p.5",
+     "quotes": [
+      "Claim 1. The capability of DRQC to fit Fourier series grows exponentially with the size of the circuit under optimal conditions [10].",
+      "Because a DRQC can represent a Fourier series with spectrum size (2N L + 1)d using only O(dN L) parameters, while a conventional Fourier series typically requires O((N L)d) parameters.",
+      "It is unfortunate, however, that a d-dimensional input theoretically requires a circuit with (d · N ) qubits."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A claim attributed to Ref. [10] with a remark, not proved here.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The exponent d is printed flat in the text layer."
+    },
+    {
+     "id_suggestion": "qrun-advantage-is-capacity-not-speed",
+     "value": "The authors state that the advantage of DRQC lies primarily in modeling capacity rather than computational acceleration, which implies its inductive biases may be used without quantum hardware.",
+     "anchor": "Section 1 Introduction, p.1",
+     "quotes": [
+      "Fortunately, we observe that the advantage of DRQC lies primarily in modeling capacity rather than computational acceleration.",
+      "This insight implies that we may leverage the core inductive biases of such quantum models without"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' claim that motivates the design.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrun-theoretical-form-infeasible",
+     "value": "The authors state that the theoretical (tensor-product) Q-RUN becomes infeasible for high-dimensional tasks on classical hardware because of the exponential growth of the Hilbert space, so they relax the quantum operations; the complete quantum formulation is left to future quantum hardware advancements.",
+     "anchor": "Section 4.2, p.6",
+     "quotes": [
+      "which become infeasible for high-dimensional tasks on classical hardware due to the exponential growth of the Hilbert space.",
+      "The complete quantum formulation is left to future quantum hardware advancements."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit of its theoretical form, Section 4.2, p.6.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The theory of Claim 2 is for the form that is not run; the experiments use the relaxed form."
+    },
+    {
+     "id_suggestion": "qrun-relaxed-architecture",
+     "value": "The authors define the relaxed Q-RUN layer: a linear projection reducing the input dimension by a factor alpha (typically 2), each element encoded as cos and sin of a shared learnable scale times the element and concatenated n times instead of tensor products, then a three-layer element-wise shared MLP whose layers approximate the tensor product, the unitary evolution and the measurement expectation.",
+     "anchor": "Section 4.2.1-4.2.2, Eqs. (5)-(9), pp.6-8; Fig. 4-5",
+     "quotes": [
+      "Typically, we set α = 2 to halve the input dimension",
+      "Instead of computing tensor products, we concatenate the encoding repeated n times for the j-th feature dimension:",
+      "This module is implemented",
+      "as a three-layer element-wise MLP with an activation function. Specifically, f1 approximates the tensor product, f2 simulates the unitary evolution, and f3 estimates the measurement expectation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition of its own layer, Section 4.2, pp.6-8.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "Each element is a sinusoidal feature of a learned frequency followed by a small MLP, so the relaxed layer is a classical Fourier-feature network; no quantum state is simulated."
+    },
+    {
+     "id_suggestion": "qrun-universal-approximation-justification",
+     "value": "The authors justify the MLP observable by the universal approximation theorem: an MLP with sufficient expressive power can approximate any measurable function, so they expect an MLP to approximate the evolution and measurement of a small quantum system.",
+     "anchor": "Section 4.2.2, p.7",
+     "quotes": [
+      "According to the universal approximation theorem [56], an MLP with sufficient expressive power can approximate any measurable function. Therefore, we expect MLP to approximate the evolution and measurement behavior of a small quantum system."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited theorem used as an expectation, not shown for this module.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrun-flops-tradeoff",
+     "value": "The authors state that Q-RUN involves more FLOPs than a standard MLP layer, though its parameter count can be kept comparable or smaller by configuring alpha, n and m, and its modular element-wise design enables high parallelism.",
+     "anchor": "Section 4.2.2, Table 1, p.8",
+     "quotes": [
+      "Although Q-RUN employs a more complex structure, the number of parameters can be maintained at a comparable or even smaller scale than that of a standard MLP by properly configuring the hyperparameters",
+      "Moreover, while Q-RUN involves more FLOPs, its modular design and element-wise observable computation enable high parallelism"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of a cost of its design, Table 1, p.8.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrun-experiment-setup",
+     "value": "The authors ran data modeling experiments in PyTorch on an NVIDIA RTX 3060 GPU and prediction tasks on an NVIDIA RTX 4090 GPU, and controlled Q-RUN's scale to be comparable to or smaller than the classical baselines.",
+     "anchor": "Section 5, p.8",
+     "quotes": [
+      "The data modeling experiments were conducted using a PyTorch implementation on an NVIDIA RTX 3060 GPU, while the prediction modeling tasks were performed on an NVIDIA RTX 4090 GPU",
+      "the scale of Q-RUN was controlled to be comparable to or smaller than that of the classical baselines"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own setup, Section 5, p.8.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "No repeated runs, seeds or error bars are reported for any table."
+    },
+    {
+     "id_suggestion": "qrun-rq1-drqc-approximation",
+     "value": "The authors randomly initialized a single-qubit DRQC with data re-uploaded 8 times and an 8-qubit single-layer DRQC, sampled 1,000 inputs from the interval from minus 20 to 20, simulated outputs on the Pennylane simulator, trained on the sub-interval from minus 10 to 10, and report from plots that MLP performs poorly outside the training domain, FAN is limited and Q-RUN achieves the best performance.",
+     "anchor": "Section 5.1, Fig. 6, p.9",
+     "quotes": [
+      "we randomly initialized a single-qubit DRQC with data re-uploaded 8 times",
+      "and an 8-qubit DRQC with a single-layer multi-qubit structure",
+      "We uniformly sampled 1,000 input points from the interval [−20, 20], and obtained their corresponding outputs by executing the DRQC on the Pennylane quantum simulator [57]",
+      "The subset with x ∈ [−10, 10] was used for training",
+      "In contrast, Q-RUN achieves the best performance"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, reported only as plots.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrun-fan-failure-speculation",
+     "value": "The authors call FAN's limited approximation of DRQC unexpected and suggest DRQC's periodic functions may reflect complex high-frequency structures originating from quantum phenomena such as entanglement and superposition, and that Q-RUN may become a candidate for quantum circuit simulation.",
+     "anchor": "Section 5.1, p.9",
+     "quotes": [
+      "This result was unexpected, suggesting that the periodic functions from DRQC, while appearing simple, may actually reflect complex high-frequency structures originating from quantum phenomena such as entanglement and superposition",
+      "Q-RUN may emerge as a promising candidate for quantum circuit simulation [58]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A speculation without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The single-qubit circuit in the test has no entanglement."
+    },
+    {
+     "id_suggestion": "qrun-implicit-representation-results",
+     "value": "The authors report implicit representation MSE (x10^-3) for Q-RUN of 5.3 on Cello (tied with KAN), 5.5 on Astronaut (QIREN 4.0 and RFF 5.1 are lower), 0.6 on Camera and 1.2 on Coffee (best on these two), on images downsampled to 32 x 32 pixels under extreme parameter constraints, and state Q-RUN achieves nearly the best results overall.",
+     "anchor": "Section 5.2.1, Table 2, p.10",
+     "quotes": [
+      "Implicit Representation results measured by Mean Squared Error (MSE, ×10−3)",
+      "Cello 14 6.8 6.0 5.4 6.0 5.5 6.4 5.3 5.5 5.3",
+      "Astronaut 20 9.9 9.4 9.9 5.1 9.0 9.7 12.0 4.0 5.5",
+      "Camera 5.8 2.7 1.0 4.1 1.9 1.5 1.4 2.4 1.1 0.6",
+      "Coffee 14.8 4.2 2.8 3.9 4.9 2.3 2.3 2.8 1.5 1.2",
+      "Each image is cropped and downsampled to 32 × 32 pixels",
+      "In contrast, Q-RUN model achieves nearly the best results overall",
+      "which imposes extreme parameter constraints such that the number of learnable parameters is significantly smaller than the number of pixels"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, single runs on tiny signals.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Columns are Tanh, ReLU, PWLNN, FNO, RFF, SIREN, FAN, KAN, QIREN, Q-RUN."
+    },
+    {
+     "id_suggestion": "qrun-density-estimation",
+     "value": "The authors report on two synthetic one-dimensional mixtures of 25 Gaussians (1,024 samples each, one with narrow standard deviations) that Q-RUN achieves the best performance on both distributions with the fewest parameters; KANs and QIREN are not reported for this task.",
+     "anchor": "Section 5.2.2, Fig. 7, pp.10-12",
+     "quotes": [
+      "We adopt two synthetic distributions, P (X)1 and P (X)2, each comprising 25 Gaussian components.",
+      "A total of 1,024 samples are drawn from each distribution for training and evaluation.",
+      "In contrast, Q-RUN achieves the best performance on both distributions with the fewest parameters",
+      "KANs and QIREN are not reported for DE because KANs perform poorly on this task, and scaling up QIREN for DE is difficult on classical computers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the KL values are only in Fig. 7.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The KL divergence and parameter values in Fig. 7's panels are font-encoded in the text layer and unreadable; the figure caption was read."
+    },
+    {
+     "id_suggestion": "qrun-energy-modeling",
+     "value": "The authors report molecular energy MAE on a water dataset: for single H2O, Q-RUN 6.9 × 10−6 against FAN 9.5 × 10−5 and Tanh 3.1 × 10−3, and for the H2O dimer, Q-RUN 3.1 × 10−5, with 3,493 parameters (the fewest); 20% of each dataset is held out for testing.",
+     "anchor": "Section 5.2.3, Table 3, pp.11-13",
+     "quotes": [
+      "H2O 3.1 × 10−3 4.9 × 10−2 4.9 × 10−2 2.0 × 10−3 5.5 × 10−2 2.2 × 10−4 9.5 × 10−5 6.9 × 10−6",
+      "H2O Dimer 3.2 × 10−4 2.1 × 10−1 2.1 × 10−1 7.5 × 10−4 2.0 × 10−4 1.7 × 10−4 2.9 × 10−4 3.1 × 10−5",
+      "#Params 4,061 4,061 4,689 4,028 16,705 4,061 4,551 3,493",
+      "Following standard practice, 20% of the dataset is held out for testing."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Columns are Tanh, ReLU, PWLNN, FNO, RFF, SIREN, FAN, Q-RUN."
+    },
+    {
+     "id_suggestion": "qrun-time-series",
+     "value": "The authors report on Weather, Exchange, Traffic and ETTh forecasting (horizons 96 to 720 from 96 input steps), with Q-RUN replacing the Transformer FFN at 10.48M parameters (fewest), that Q-RUN consistently achieves the best performance across most datasets.",
+     "anchor": "Section 5.3.1, Table 4, pp.13-14",
+     "quotes": [
+      "Time Series Forecasting (TSF) predicts the next [96, 192, 336, 720] steps from an input sequence of 96 time steps.",
+      "(12.69M) (12.12M) (11.07M) (11.06M) (10.48M)",
+      "As a result, Q-RUN consistently achieves the best performance across most datasets while using the fewest parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "In Table 4 Q-RUN is not best on every Traffic horizon (for example at 336 LSTM has the lowest MSE) nor on every ETTh MAE; the baselines are not current forecasting state of the art, as the authors state."
+    },
+    {
+     "id_suggestion": "qrun-sentiment-classification",
+     "value": "The authors report sentiment classification with models trained only on SST-2 and evaluated zero-shot on IMDB, Sentiment140 and Amazon Reviews: Q-RUN in place of BERT's FFN has 66.99M parameters and accuracies 82.11 (SST-2), 73.12 (IMDB), 61.37 (Sentiment140) and 78.21 (Amazon), described as competitive in most cases with nearly 40% fewer trainable parameters than the original BERT.",
+     "anchor": "Section 5.3.2, Table 5, pp.14-15",
+     "quotes": [
+      "Models are trained solely on SST-2 and evaluated not only on the SST-2 test set but also on IMDB, Sentiment140, and Amazon Reviews to assess their zero-shot generalization.",
+      "120.14 129.73 109.48 95.33 95.32 66.99",
+      "80.60 79.59 81.19 80.39 81.54 82.11",
+      "64.38 62.03 69.94 70.12 73.98 73.12",
+      "59.79 58.74 57.79 61.94 60.93 61.37",
+      "71.52 67.19 71.55 76.89 77.63 78.21",
+      "substituting with Q-RUN achieves competitive performance in most cases",
+      "reducing the number of trainable parameters by nearly 40% compared to the original BERT"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Rows of Table 5 are model columns in the order LSTM, Mamba, BERT, FANGated, FAN, Q-RUN; FAN is higher on IMDB (73.98) and FANGated on Sentiment140 (61.94)."
+    },
+    {
+     "id_suggestion": "qrun-peft-results",
+     "value": "The authors report parameter-efficient fine-tuning: on DistilBERT/IMDB, Q-RUN at rank 8 reaches 90.73% test accuracy and at rank 4 90.40%, with 0.151M trainable parameters (less than 0.23% of full fine-tuning); on Mistral-7b/TweetEval irony, Q-RUN at rank 8 reaches 84.18% against 62.12% for zero-shot inference; the authors state Q-RUN consistently outperforms other baselines in test accuracy across all settings.",
+     "anchor": "Section 5.3.3, Table 6, pp.15-16",
+     "quotes": [
+      "On DistilBERT, Q-RUN with rank r = 8 achieves the best test accuracy of 90.73%, surpassing both LoRA and DoRA at the same rank.",
+      "Even with r = 4, Q-RUN reaches 90.40%",
+      "Notably, Q-RUN requires only 0.151M trainable parameters, which is less than 0.23% of full fine-tuning (66.96M)",
+      "On Mistral-7b, Q-RUN achieves the highest test accuracy of 84.18% (r = 8), outperforming all other methods, whereas direct inference with Mistral-7b alone yields only 62.12%.",
+      "Across all settings, Q-RUN consistently outperforms other baselines in terms of test accuracy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, single runs.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table 6 itself lists full fine-tuning of DistilBERT at 91.53% test accuracy, DoRA (r=4) at 90.60% above Q-RUN (r=4) at 90.40%, and on Mistral DoRA (r=8) at 83.16% above Q-RUN (r=4) at 82.65%, so 'consistently outperforms ... across all settings' holds only rank for rank against LoRA and at rank 8."
+    },
+    {
+     "id_suggestion": "qrun-image-classification",
+     "value": "The authors report that replacing a CNN's fully connected layers with Q-RUN (1.36M against 1.86M parameters) gives accuracies of 99.68 on MNIST, 94.57 on Fashion-MNIST and 88.92 on Fashion-MNIST-Corrupted, slightly above CNN and FAN, while on MNIST-Modified both FAN and Q-RUN fall below the CNN (Q-RUN 94.34, CNN 94.52), which they attribute to fitting irrelevant high-frequency noise.",
+     "anchor": "Section 5.3.4, Table 7, p.16",
+     "quotes": [
+      "1.86M 1.86M 1.36M",
+      "99.67 99.63 99.68",
+      "94.23 94.52 94.34",
+      "94.47 94.15 94.57",
+      "88.82 88.61 88.92",
+      "An interesting observation is that on MNIST-Modified, both FAN and Q-RUN show a decrease in performance.",
+      "Fourierbased models may inadvertently fit irrelevant high-frequency noise, which leads to reduced accuracy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; differences are a few tenths of a percent with no reported variance.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Columns of Table 7 are FAN, CNN, Q-RUN."
+    },
+    {
+     "id_suggestion": "qrun-reupload-ablation",
+     "value": "The authors report from training curves on the RQ1 setup that more data re-uploads give faster loss reduction, and that going from 3 to 4 re-uploads gives significantly faster convergence and lower final test loss than 1 to 2, indicating that more re-uploads enhance expressive power.",
+     "anchor": "Section 5.4.1, Fig. 8, p.17",
+     "quotes": [
+      "It is evident that increasing the number of re-uploading times from 1 to 2 results in relatively slow convergence, whereas 3 to 4 re-uploading times lead to significantly faster convergence and lower final loss values.",
+      "These observations indicate that a higher number of data re-uploading times enhances the expressive power of the model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrun-efficiency-comparison",
+     "value": "The authors report on a density estimation task at comparable parameter scale that Q-RUN (3421 parameters) trains in 32.26 s, slower than MLP-based baselines (6.46 to 12.12 s) but faster than FNO (81.69 s) and KAN (3245.51 s), while QIREN ran out of memory.",
+     "anchor": "Section 5.4.2, Table 8, p.17",
+     "quotes": [
+      "6.46 7.08 7.18 8.28 12.12 23.25 81.69 3245.51 Out of Memory",
+      "While Q-RUN is slower than standard MLP-based baselines due to its structured design, it is still significantly more efficient than recent specialized architectures, such as FNO and KAN.",
+      "Q-RUN 3421 32.26"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical timing from one study on one GPU.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Train-time columns are RFF, Tanh, ReLU, SIREN, FAN, PWLNN, FNO, KAN, QIREN."
+    },
+    {
+     "id_suggestion": "qrun-scalability-setup",
+     "value": "The authors follow FAN's setup for four symbolic regression tasks of 4,000 samples each (1,000 for testing), varying depth in 3 and 4 and hidden size from 4 to 128, with LBFGS optimization and Q-RUN pretrained with AdamW.",
+     "anchor": "Section 5.4.3, p.18",
+     "quotes": [
+      "Each dataset contains 4,000 samples, with 1,000 used for testing.",
+      "we evaluate scalability with network depths in [3, 4] and hidden sizes in [4, 8, 16, 32, 64, 128].",
+      "To accelerate training, Q-RUN is first pretrained with AdamW and then fine-tuned using LBFGS."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own setup, Section 5.4.3, p.18.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "Q-RUN alone gets an extra AdamW pretraining stage."
+    },
+    {
+     "id_suggestion": "qrun-conclusion",
+     "value": "The authors conclude that QML can inspire better AI models even without quantum hardware, that Q-RUN can be viewed theoretically as a truncated Fourier series with enhanced expressiveness, and that it achieves superior performance with fewer learnable parameters across a wide range of tasks.",
+     "anchor": "Section 6 Conclusion, p.18",
+     "quotes": [
+      "In this paper, we show that QML can inspire the design of better AI models, even without access to quantum hardware.",
+      "Across a wide range of AI tasks, Q-RUN achieves superior performance while using fewer learnable parameters."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' summary conclusion over single-study results.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrun-future-work",
+     "value": "The authors list as open directions whether Q-RUN can extend to more general quantum circuit architectures to learn circuit behaviors and emulate quantum outputs, its use for parameter-efficient fine-tuning of large language models, and whether it can serve as a classical twin of DRQC.",
+     "anchor": "Section 6 Future Work, p.18",
+     "quotes": [
+      "an open question is whether Q-RUN can be extended to more general quantum circuit architectures to learn circuit behaviors and even emulate quantum outputs.",
+      "Third, it is worth exploring whether Q-RUN can serve as a classical twin of DRQC."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open questions, Section 6, p.18.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrun-qnn-nisq-limits",
+     "value": "The authors state that QNN-based models are often challenging to deploy on real quantum hardware in the NISQ era and, even when executable, noise makes it difficult to surpass the latest classical methods; and that quantum-inspired approaches are typically tailored to specific problems.",
+     "anchor": "Section 2.2, p.3",
+     "quotes": [
+      "However, due to limitations of the NISQ era, these models are often challenging to deploy on real quantum hardware, and even when executable, noise interference makes it difficult to surpass the latest classical methods.",
+      "However, these approaches are typically tailored to specific problems rather than serving as general-purpose methods applicable across diverse AI tasks."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' assessment of prior work.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrun-fourier-features-linear-capacity-cited",
+     "value": "The authors state, citing prior work, that Fourier-feature methods such as SIREN and RFF have Fourier representation capacity that grows only linearly with model size, so high-dimensional Fourier series demand exponentially more parameters.",
+     "anchor": "Section 2.1, p.3",
+     "quotes": [
+      "However, because their Fourier representation capacity grows only linearly with model size, representing high-dimensional Fourier series demands exponentially more parameters [10]."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to Ref. [10].",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "qiu-2025-quantum-learning-tunable-loss-functions",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Qiu-Pira-Rebentrost_2025_Quantum-Learning-with-Tunable-Loss-Functions__2508.21369.pdf",
+   "title_in_file": "Quantum Learning with Tunable Loss Functions",
+   "version_note": "arXiv:2508.21369v1 [quant-ph], 29 Aug 2025 (dated September 1, 2025).",
+   "pages": 26,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A learning-theory paper that defines quantum tilted empirical risk minimization (QTERM) for selecting projector-valued hypotheses from single-copy product quantum states, and proves a sample complexity bound, a PAC bound for classical TERM and an agnostic learning guarantee, all in a small-tilt regime; it has no experiments.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qiu-qterm-learnability",
+     "verdict": "narrowed",
+     "note": "The abstract's 'we prove QTERM learnability' is proved (Theorem 7) only for a tilt whose magnitude lies strictly between 0 and the accuracy epsilon, for a finite class of m hypotheses given as projector lists on a single-copy product state; the bound reduces to the QERM bound as the tilt goes to 0.",
+     "value": "The paper proves (Theorem 7) that for m hypotheses given as lists of projectors and a single-copy product state, with the magnitude of the tilt gamma in (0, epsilon), an algorithm outputs an index and an estimated tilted value that are within epsilon of the best and of the true value except with probability delta, for n of order (1/epsilon squared) log(1/delta) log squared(1/epsilon) times the maximum of a (e to the |gamma| minus 1) squared over gamma squared logarithmic term and (log m + C1) squared; the authors state that as gamma goes to 0 the sample complexity recovers that of the standard ERM algorithm.",
+     "anchor": "Theorem 7 and proof, Section III, pp.10-14; Theorem 1 (informal), p.4",
+     "quotes": [
+      "First, we prove QTERM learnability by deriving upper bounds on",
+      "Theorem 7 (Tilted empirical risk minimization for projector-valued functions). Let there be m possible concepts",
+      "|γ| ∈ (0, ε). There exists an algorithm that outputs both an index c∗ and an estimated value µˆc∗ (γ) such that",
+      "In particular, if we desire |∆(γ)| ∈ O(ε), it suffices to choose |γ| ∈ (0, ε), i.e., γ is sufficiently small.",
+      "Furthermore, when γ → 0, the sample complexity recovers to the complexity of the standard ERM algorithm in Fact 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Theorem 7 is proved on pp.11-14, but its displayed sample-complexity formula is garbled in the text layer and could not be quoted whole.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Requiring the tilt to be smaller than the target accuracy makes the tilted risk differ from the plain mean loss by at most |gamma|/8, so the proved regime is close to ordinary QERM."
+    },
+    {
+     "id": "qiu-small-tilt-limit",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that their current analysis focuses on the small-tilt regime, and that understanding the theoretical behavior of TERM for large tilt remains an open challenge.",
+     "anchor": "Section VII Concluding thoughts, p.20; also Section I C, p.5",
+     "quotes": [
+      "A natural extension of this work would be to expand theoretical proofs to cover larger ranges of the tilt γ.",
+      "While our current analysis focuses on the small-γ regime to ensure the provable sample complexity bound and learnability, understanding the theoretical behavior of TERM for large γ remains an open challenge.",
+      "Throughout our analysis we observe that the learning becomes significantly more difficult for large γ values."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section VII (p.20) and Section I C (p.5).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qiu-term-pac-bound",
+     "verdict": "narrowed",
+     "note": "Theorem 8 needs a loss in [0, 1] and a tilt gamma in (0, epsilon), bounds the one-sided deviation R(h) minus the tilted empirical risk, and carries a covering-number factor of the exponential tilted-loss class; the exponential decay is in n epsilon squared over 32 |e^gamma - 1| squared.",
+     "value": "The paper proves (Theorem 8) that for any concept class F with loss in [0, 1], gamma in (0, epsilon) and any distribution D, the probability over n samples that some h has true risk exceeding its tilted empirical risk by at least epsilon is at most 8 times the uniform covering number of the exponential tilted-loss class on 2n points at scale epsilon/8, times exp of minus n epsilon squared over 32 |e^gamma minus 1| squared; the proof uses symmetrization, concentration and lifting from a cover.",
+     "anchor": "Theorem 8 and proof, Section IV, pp.14-16; Theorem 2 (informal), p.4",
+     "quotes": [
+      "Second, we establish new PAC generalization bounds on classical TERM.",
+      "Consider hypotheses h in any concept class F and loss function taking value in [0, 1], for γ ∈ (0, ε) and any probability distribution D",
+      "∃ h ∈ F : R(h) − Rγ(h) ≥ ε",
+      "≤ 8Γ1 2n, 8 , GF,L,γ exp − 32|eγ − 1|2",
+      "The probability of a large deviation decays exponentially in the number of samples n.",
+      "The proof will follow in three steps, using the same techniques as the proof of PAC bound of empirical risk, namely symmetrization, concentration, and lifting the bound from the cover"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved on pp.14-16, but the displayed bound is garbled in the text layer and the proof has a step the reader could not verify (see reader_inference).",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": "The concentration step bounds the difference of logarithms of the averaged exponentials by epsilon/4 without the 1/gamma factor that defines the tilted risk; with that factor the exponent would carry gamma squared. As stated, the bound goes to zero as gamma goes to 0 for any fixed n, which a bound that reduces to ERM's should not do. The coordinator may wish to check this before grading."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qiu-single-copy-product-setup",
+     "value": "The authors set up learning from classical samples drawn i.i.d. from a continuous distribution, each paired with a single copy of a quantum state, so the learner holds a product state of non-identical single-copy states; measurements must be gentle so as not to destroy information needed to test the remaining hypotheses.",
+     "anchor": "Section I B Problem Setup, p.3",
+     "quotes": [
+      "For each sample xi, it is practically impossible to obtain identical copies of the corresponding quantum state.",
+      "where each ρ(xi) is available only as a single copy. In particular, there is no way to request ρ(xi) ⊗ ρ(xi) for any i.",
+      "these measurements are implemented gently on ρ(⃗x), so that extracting information about Tr[ρ(xi) Π(xi)(c)] does not destroy the samples that are still needed to test the rest of hypotheses."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup, Section I B, p.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qiu-tilted-risk-definition",
+     "value": "The authors define the tilted risk of hypothesis c as one minus (1/gamma) log of the average over samples of exp(gamma times the acceptance probability), state that their concentration bounds require |gamma| < 1, that gamma to 0 recovers the ordinary mean loss and that as gamma goes to plus infinity it behaves like one minus the maximum acceptance probability.",
+     "anchor": "Eq. (1), Section I B, pp.3-4; Definition 6, Section III, p.10",
+     "quotes": [
+      "The tilted risk function is defined",
+      "For our concentration bounds to hold, we require |γ| < 1, since γ → 0 recovers the ordinary mean loss and γ too large overemphasizes outliers.",
+      "As γ → +∞, Rγ(c) behaves like 1 − maxi∈[n] Tr[ρ(xi)Π(xi)(c)]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition of its central quantity, Section I B and Definition 6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The introduction asks |gamma| < 1, but Theorems 7 and 8 need the stronger |gamma| < epsilon."
+    },
+    {
+     "id_suggestion": "qiu-tilt-norm-analogy",
+     "value": "The authors describe the tilt by analogy with norms: for small gamma the tilted risk behaves like an L1-type average, as gamma grows it shifts toward an L2-like behavior that amplifies high-loss samples, and for very large gamma it resembles a max (L-infinity) function.",
+     "anchor": "Section I B, p.4",
+     "quotes": [
+      "the tilted empirical risk behaves similarly to an L1-type averaging, providing a balanced estimate of the loss across samples.",
+      "As γ increases, the risk shifts toward an L2-like behavior, amplifying higher-loss samples and emphasizing variance.",
+      "the tilted empirical risk resembles a max function (akin to an L∞ norm)"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An informal interpretation without proof.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qiu-theorem1-informal-sample",
+     "value": "The authors state informally (Theorem 1) that with approximately (1/epsilon squared) log(1/delta) log squared(1/epsilon) quantum samples, plus factors depending on gamma and m, an algorithm reliably estimates the best of m projector-valued hypotheses within epsilon of the true minimum with failure probability at most delta; their overview figure states the sample complexity as O-tilde(2|gamma| epsilon to the minus 2 log m).",
+     "anchor": "Theorem 1 (informal), Section I C, p.4; Fig. 2, p.5",
+     "quotes": [
+      "Theorem 1 (Quantum Tilted Empirical Risk for Projector-Valued Functions, informal).",
+      "plus factors depending on γ and m), an algorithm can reliably",
+      "Guarantees that the estimated risk is within ε of the true minimum with a failure",
+      "outputs c* with sample complexity O˜ (2|γ|ε−2 log m), where O˜ ( ⋅ ) suppresses polylogarithmic factors of 1/ε, 1/δ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An informal restatement; the formal Theorem 7 is the proved form.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The figure's O-tilde(2|gamma| eps^-2 log m) does not match the formal Theorem 7, whose gamma factor is (e^|gamma| - 1)^2/gamma^2; '2|γ|' may be a flattened 2^|gamma|."
+    },
+    {
+     "id_suggestion": "qiu-large-gamma-difficulty",
+     "value": "The authors state that their guarantees hold for a certain threshold value of gamma, that bounds hold primarily for sufficiently small gamma, and that the exponential dependence on gamma in the generalization error could make reliable learning for large gamma difficult.",
+     "anchor": "Section I C, p.5",
+     "quotes": [
+      "It is worth highlighting that the theoretical guarantees hold for a certain threshold value of γ.",
+      "From a perspective of sample complexity, the bounds we establish in this work hold primarily for sufficiently small γ.",
+      "A lesson from our learning guarantee for the generalization error is the exponential dependence on γ which could make reliable learning for large γ difficult."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section I C, p.5.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qiu-term-definition",
+     "value": "The authors define (after Li et al.) the gamma-tilted empirical risk, for nonzero real gamma, as one over gamma times the log of the average over N training samples of exp(gamma times the loss), and cite that tilted empirical risk converges to the min-loss, the ERM loss and the max-loss as the tilt moves from minus infinity to infinity for continuously differentiable losses.",
+     "anchor": "Definition 2, Section II B, p.7; Lemma 4 (cited), p.8",
+     "quotes": [
+      "Definition 2 (Tilted Empirical Risk Minimization — TERM [7, 8]).",
+      "the γ-tilted loss in ERM is defined",
+      "Tilted empirical risk Rγ(θ) converges to min-loss, ERM, max-loss as t moves from −∞ to ∞.",
+      "Lemma 4 (Convergence of Rγ(θ), Lemma 4 in [7, 8])."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A definition and convergence result attributed to Li et al.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qiu-term-lower-generalization-claim",
+     "value": "The authors state that TERM ensures lower generalization error, and cite work reporting that across bounded and unbounded losses the upper bounds on the generalization error converge at a rate of order one over the square root of n.",
+     "anchor": "Section II B, p.7",
+     "quotes": [
+      "TERM, in turn, ensures lower generalization error.",
+      "the convergence rates for the upper bounds consistently exhibit a rate of O(1/ n), where n is the number of training samples."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The first part is an authors' claim without proof in the paper; the rate is cited from Ref. [13].",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The paper says the cited study is of 'QTERM', but Ref. [13] is on classical tilted empirical risk. The text layer loses the square-root sign in the rate."
+    },
+    {
+     "id_suggestion": "qiu-covering-definitions",
+     "value": "The authors define the covering number of a class of operator-valued functions as the maximum over samples of the minimal size of an internal epsilon-cover under a seminorm, an operator-class covering number for hypothesis classes valued in an operator algebra, and the exponential tilted loss-function class of functions exp(gamma times a loss bounded in [0, a]) with values in [1, e to the gamma a].",
+     "anchor": "Definitions 3-5, Section II C, p.8",
+     "quotes": [
+      "Definition 3 (Covering Number). Let G ⊆ L(H)X be a class of functions mapping from a space X to bounded linear operators on a Hilbert space H, and let ε ∈ (0, 1].",
+      "Definition 4 (Operator-class covering number).",
+      "Definition 5 (Exponentially tilted loss-function class)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions, Section II C, p.8.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qiu-qerm-fact-cited",
+     "value": "The authors cite (Fact 1, Theorem 1 of Fanizza, Quek and Rosati) a quantum empirical risk minimization algorithm for projector-valued functions on a product state that outputs an index and estimate within epsilon of the maximum and of the true value except with probability delta, for a sample size of order log(1/delta) times the maximum of log(m/delta) and log squared(em), over epsilon squared.",
+     "anchor": "Fact 1, Section II C, p.8",
+     "quotes": [
+      "Fact 1 (Quantum empirical risk minimization (QERM) for projector-valued functions, Theorem 1 in [31]).",
+      "There exists an algorithm that outputs both an index c∗ and an estimated value µˆc∗ such that",
+      "if the number of samples n is sufficiently large."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A theorem attributed to Ref. [31]; its displayed bound is garbled in the text layer.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qiu-threshold-search-cited",
+     "value": "The authors cite quantum threshold search on non-identical product states (Lemma 5, from Fanizza, Quek and Rosati): if some projector list's average exceeds its threshold and (log m + C2) squared is below C1 n epsilon squared, a sequence of two-outcome measurements outputs a c whose average is at least its threshold minus epsilon with probability at least 0.03; thresholds are then optimized by binary search starting from 1/2.",
+     "anchor": "Lemma 5, Section II D, p.9; Algorithms 1-2, Section IX B, pp.23-24",
+     "quotes": [
+      "Lemma 5 (Quantum threshold search on nonidentical states, Lemma 1 in [31]).",
+      "If the condition holds: (log m + C2)2 < C1nε2 for appropriate constants C1, C2 > 0, it outputs c such that",
+      "with probability at least 0.03.",
+      "Specifically, we begin with a candidate threshold of 1/2."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A lemma attributed to Ref. [31].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The text layer prints squares flat ('(log m + C2)2', 'nε2')."
+    },
+    {
+     "id_suggestion": "qiu-proposition6",
+     "value": "The authors state (Proposition 6, adapted from Lemmas 2 and 5 of Fanizza, Quek and Rosati) that if the product state is split into blocks of length l satisfying two lower bounds and the block-wise tilted estimates are within epsilon over four of their targets, an algorithm outputs an index and estimate within epsilon of the maximum and true value except with probability delta, for large enough n of order at least one over epsilon squared.",
+     "anchor": "Proposition 6, Section III, p.10",
+     "quotes": [
+      "Proposition 6 (Conditions on QTERM given sufficiently large product states).",
+      "It is primarily adapted from Lemma 2 and Lemma 5 in [31], with necessary adjustments made",
+      "for large enough n = Ω(1/ε2)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated as adapted from cited lemmas; not proved separately in the paper.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qiu-tilt-deviation-bound",
+     "value": "The authors show in the proof of their sample complexity theorem, using Hoeffding's lemma, that the difference between the tilted average and the plain average of the block expectations is at most one eighth of |gamma| in magnitude for every nonzero real gamma, so choosing |gamma| in (0, epsilon) keeps it of order epsilon.",
+     "anchor": "Proof of Theorem 7, Eqs. (19)-(23), p.12",
+     "quotes": [
+      "Applying Hoeffding's Lemma, for every γ ∈ R,",
+      "Thus for every real γ ̸= 0, |∆(γ)| ≤",
+      "In particular, if we desire |∆(γ)| ∈ O(ε), it suffices to choose |γ| ∈ (0, ε), i.e., γ is sufficiently small."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived in the proof; the bound's fraction |γ|/8 is split across lines in the text layer and could not be quoted whole.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qiu-covering-by-operator-class",
+     "value": "The authors state that in quantum settings the function-class covering number in Theorem 8 can generally be bounded by the operator-class covering number, and that for parametrized quantum circuits encoding-dependent generalization bounds can give explicit covering-number estimates.",
+     "anchor": "Remark after Theorem 8, Section IV, p.16",
+     "quotes": [
+      "one can leverage encoding-dependent generalization bounds in Ref. [51] to obtain explicit estimates of the covering numbers for the tilted-loss class under that encoding.",
+      "Therefore, the function-class covering number appearing in the PAC bound established in Theorem 8 can generally be bounded by the operator-class covering number"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A remark without proof.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qiu-lemma9-uniform-convergence",
+     "value": "The paper states (Lemma 9) that from l0 samples of a classical-quantum distribution one can build a finite subset of the class, of size at most the operator-class covering number at epsilon/2, such that every hypothesis has a member within epsilon in true risk, and that the tilted empirical risk is uniformly within epsilon/4 of the true risk except with probability bounded by a covering number at scale epsilon/128 times an exponential in l0 epsilon squared over 512 |e^gamma minus 1| squared; the learning is decomposed into building the net from classical data and selecting from it with quantum data.",
+     "anchor": "Lemma 9 and proof, Section V, pp.16-17",
+     "quotes": [
+      "Lemma 9 (Uniform Convergence of QTERM).",
+      "one can construct a finite subset Cε/2 ⊆ C with respect to the loss function L whose size obeys |Cε/2| ≤ Γ1,q(l0, ε/2, C).",
+      "Via this lemma, we decompose the learning task into two stages: using classical data to construct an ε-net over the concept space, and then using quantum data to select an optimal hypothesis from this finite subset.",
+      "∀h ∈ C : |R(h) − Rγ(h)| < ε/4,",
+      "8Γ1,q (2l0 , ε/128, C)e−",
+      "l0 ε2 512|eγ −1|2"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved on p.17 from Theorem 8; the error bound is garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qiu-theorem10-agnostic",
+     "value": "The paper proves (Theorem 10) that for a class of projector-valued hypotheses with training samples from an unknown classical-quantum channel, there is an agnostic algorithm that, for fixed gamma in a proven range, outputs a hypothesis whose estimate is within 3 epsilon of the best and within 2 epsilon of its own true value, with error probability that can be made arbitrarily small if the squared log of the covering number divided by n tends to 0 for every epsilon, with n = 6Tkl.",
+     "anchor": "Theorem 10 and proof, Section V, pp.17-18; Theorem 3 (informal), p.5",
+     "quotes": [
+      "Theorem 10 (Agnostic Learnability of Projector-Valued Functions via QTERM).",
+      "there exists an agnostic learning algorithm A that, for fixed γ in a proven range, outputs a hypothesis c∗ ∈ C along with an estimate µˆc∗ (γ) of 1 − Rγ(c) such that",
+      "Pr µˆc∗ (γ) − inf µc(γ) ≥ 3ε ∪ |µˆc∗ (γ) − µc∗ (γ)| ≥ 2ε := perr,",
+      "lim log2 Γ1,∞(n, ε, C) = 0, ∀ε > 0.",
+      "provided that n = 6T kl,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 10 is stated with its conditions on p.17 and proved on pp.17-18.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The 'proven range' of gamma is the range of Theorems 7 and 8, |gamma| in (0, epsilon). The infimum in the statement should be a supremum for a quantity being maximized; the proof uses max."
+    },
+    {
+     "id_suggestion": "qiu-qtr-definition",
+     "value": "The authors define a Quantum Tilted Risk for a state rho and a parameterized Hamiltonian H(phi) as one over gamma times log Tr(exp(gamma H(phi)) rho), show (Lemma 11) that it converges to Tr(H(phi) rho) as gamma goes to zero, and relate it to a tilted Renyi relative entropy and to a free energy; they distinguish it from QTERM, which works on finite empirical samples.",
+     "anchor": "Definition 7, Lemma 11, Section VI, pp.18-20",
+     "quotes": [
+      "Definition 7 (Quantum Tilted Risk (QTR)).",
+      "Lemma 11 (Convergence of QTR). The convergence of QTR to the expectation value of Hamiltonian is",
+      "RQ(γ, ϕ) can be seen as a tilted relative R´enyi entropy to measure how ρ and σ(ϕ) overlap.",
+      "Furthermore, while QTERM focuses on finite-sample empirical data in a learning framework, QTR is concerned with global system-level evaluations involving quantum states and observables."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition with a short proof of Lemma 11 by L'Hopital's rule, Section VI.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No learning guarantee is proved for QTR; it is proposed for future work such as Hamiltonian learning."
+    },
+    {
+     "id_suggestion": "qiu-exponential-expectation-estimation",
+     "value": "The authors prove a multiplicative Chernoff bound for independent variables in a positive interval [a, b] (Proposition 13) and extend a cited expectation-estimation result to exponentiated measurement outcomes (Proposition 15), whose deviation probability decays as exp of minus n epsilon squared over 3 r squared with r = |e^c minus 1|.",
+     "anchor": "Propositions 13 and 15, Appendix IX A, pp.21-22",
+     "quotes": [
+      "Proposition 13 (Multiplicative Chernoff bound for general bounded variables).",
+      "Proposition 15 (Exponential expectation estimation).",
+      "Pr X − Eρ[X(Π¯ )] ≥ nε ≤ 2e−nε2/3r2 ,",
+      "and the length of the interval",
+      "of r = |ec − 1|."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved in the appendix, but exponents are printed flat in the text layer.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qiu-quantum-pac-sample-higher-cited",
+     "value": "The authors cite that quantum sample complexity in the quantum PAC framework of Heidari et al. is higher than its classical analogue.",
+     "anchor": "Section I A Related Work, p.3",
+     "quotes": [
+      "Quantum sample complexity for the quantum PAC framework proposed in Ref. [34] is known to be higher compared to the classical analogue."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qiu-conclusion-implicit-regularization",
+     "value": "The authors conclude that QTERM unifies and extends classical TERM and QERM, that its tilt is meant to keep the model from fitting excessively to noisy or anomalous data, and that the work offers a theoretical understanding for implicitly regularized quantum models, making quantum learning more practical and scalable.",
+     "anchor": "Section VII, p.20",
+     "quotes": [
+      "It unifies and extends classical TERM and QERM, offering a new approach tailored to the challenges of quantum data and learning.",
+      "A central idea behind this tilt mechanism is to help prevent the model from fitting excessively to noisy or anomalous data points, which could lead to overfitting.",
+      "This work contributes to the broader field of quantum learning by offering a theoretical understanding for implicitly regularized quantum models, making quantum learning more practical and scalable."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' conclusion; no experiment or proof in the paper shows a regularization or practicality benefit.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper has no numerical experiments, and the abstract's claim that QTERM is 'a competitive alternative to implicit and explicit regularization' is not tested in it."
+    },
+    {
+     "id_suggestion": "qiu-future-directions",
+     "value": "The authors list as future work comparing QTERM with L1 and L2 regularization and adding entropy regularizers, deriving further generalization bounds, robustness measures and convergence rates, a tilted parameter-shift rule, margin-based and stability-based generalization bounds, and extension to quantum generative models and quantum reinforcement learning.",
+     "anchor": "Section VII, pp.20-21",
+     "quotes": [
+      "future research could focus on comparing and establishing properties of QTERM with respect to other types of regularizers such as L2 regularization and L1 regularization",
+      "presence of the tilting hyperparameter motivates us to define tilted parameter shift rule",
+      "Similarly, stability-based bounds for generalization error can be a compelling framework [71].",
+      "QTERM could be extended to quantum generative models, such as quantum GANs or variational autoencoders, and quantum reinforcement learning."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open directions, Section VII.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qiu-llm-assistance-disclosure",
+     "value": "The authors disclose that portions of the manuscript were drafted or edited with the assistance of ChatGPT to improve clarity and style.",
+     "anchor": "Section VIII Acknowledgments, p.21",
+     "quotes": [
+      "Portions of this manuscript were drafted or edited with the assistance of ChatGPT to improve clarity and style."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors' own statement about how the paper was prepared, Acknowledgments, p.21.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,2937 @@
+{
+ "papers": [
+  {
+   "record_id": "kerenidis-2016-quantum-recommendation-systems",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2016-03_Kerenidis_Quantum-Recommendation-Systems.pdf",
+   "title_in_file": "Quantum Recommendation Systems (Kerenidis, Prakash; arXiv:1603.08675v3, 22 Sep 2016)",
+   "version_note": "",
+   "pages": 22,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper that gives a quantum recommendation algorithm, which samples a recommendation from a thresholded low-rank projection of a subsample matrix stored in a quantum-accessible data structure, in time poly(k)polylog(mn) for most users.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qrecsys-assumptions",
+     "verdict": "narrowed",
+     "note": "The two quoted assumptions are right (the first is in Section 1.2, p.5, the second on p.6, not Section 1.1). The proof of Theorem 6.1 (p.19) adds a condition the value does not carry: the stated running time needs a constant sampling probability p, so a constant fraction of the matrix elements must be subsampled.",
+     "value": "The authors state that the algorithm assumes a classical data structure to which quantum queries can be made, and that beyond the low-rank approximation assumption they make no additional assumptions about the classical data. In the proof of Theorem 6.1 they add that the desired running time needs the sampling probability p to be a constant, so a constant fraction of the matrix elements is subsampled, which they state is also the case for classical recommendation systems.",
+     "anchor": "Section 1.2, pp.5-6; proof of Theorem 6.1, p.19",
+     "quotes": [
+      "it assumes that there exists a classical data structure to which we can make quantum queries.",
+      "we do not make any additional assumptions about the classical data beyond the low rank approximation assumptions made by classical recommendation systems.",
+      "in order to have the desired running time, we need to take p to be some constant, meaning that we need to subsample a constant fraction of the matrix elements.",
+      "Proof. First, by the conditions of Theorem 4.3, we must have p",
+      "This is also the case for classical recommendation systems [5, 8]. Second, we need to show that for most users the term Wi",
+      "Theorem 6.1. For at least"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its input model (Section 1.2, pp.5-6) and of the sampling condition its running time needs (proof of Theorem 6.1, p.19).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qrecsys-first-polylog-claim",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Abstract, p.1; Section 1.1, p.4",
+     "quotes": [
+      "This is the first algorithm for recommendation systems with complexity polylogarithmic in the matrix dimensions."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own priority claim; the paper does not survey or test it.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qrecsys-runtime-theorem",
+     "verdict": "narrowed",
+     "note": "Theorem 6.1 holds only for a subset of users, at least (1 - xi)(1 - delta - zeta)m of them, and Algorithm 6.1 requires a subsample matrix in the Theorem 5.1 data structure that satisfies the conditions of Theorem 4.3. The stored value gives the conclusion without these conditions. The expected time is made a worst-case time by stopping after log(n) times the expected time.",
+     "value": "The paper proves (Theorem 6.1) that for at least (1 − ξ)(1 − δ − ζ)m users in the subset S′, the expected running time of Algorithm 6.1 is O(polylog(mn)poly(k)). Algorithm 6.1 requires a subsample matrix T, with sampling probability p, stored in the data structure of Theorem 5.1 and satisfying the conditions of Theorem 4.3. The authors state the expected time can be made a worst-case time by stopping after log(n) times the expected running time, which decreases correctness only by a factor of 1 − 1/poly(n).",
+     "anchor": "Theorem 6.1 and Algorithm 6.1, Section 6, p.18; proof, p.19",
+     "quotes": [
+      "Theorem 6.1. For at least (1 − ξ)(1 − δ − ζ)m users in the subset S′, we have that the expected running time of Algorithm 6.1 is O(polylog(mn)poly(k)).",
+      "Require: A subsample matrix T ∈ Rm×n (with sampling probability p) stored in the data structure from Theorem 5.1 and satisfying the conditions in Theorem 4.3; a user index i.",
+      "by stopping after running log(n) times more than the expected running time and hence decreasing the correctness only by a factor of 1 − 1/poly(n)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 6.1 (p.18) is quoted with its user-subset condition, and Algorithm 6.1's input requirement is quoted; the proof is on p.19. The parameters xi, delta, zeta come from Theorem 3.3 (p.9).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qrecsys-memory-model",
+     "value": "The authors require of an online recommendation system that writing a tuple (i, j, Pij) into the memory data structure and reading it out take time polylogarithmic in the matrix dimensions, and that total memory be linear, up to polylogarithmic terms, in the number of entries that have arrived.",
+     "anchor": "Section 1, Computational resources and performance, p.3",
+     "quotes": [
+      "We require that the time needed to write the tuple (i, j, Pij ) into the memory data structure and to read it out is polylogarithmic in the matrix dimensions.",
+      "we require that the total memory required is linear (up to polylogarithmic terms) in the number of entries of the preference matrix that have arrived into the system."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its memory model (Section 1, p.3).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-classical-two-stage-cost",
+     "value": "The authors state that classical recommendation systems generally use a preprocessing stage taking time poly(mn) with extra memory O(nk), and an online recommendation taking time O(nk).",
+     "anchor": "Section 1, Computational resources and performance, p.3",
+     "quotes": [
+      "In general, the preprocessing time is polynomial in the dimensions of the preference matrix, i.e. poly(mn), the extra memory is O(nk), while the time for the online recommendation is O(nk)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's description of classical systems, not shown in the paper.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-reconstruction-harder-than-recommendation",
+     "value": "The authors state that all known matrix reconstruction algorithms take time polynomial in the matrix dimensions, and that reconstruction is harder than recommendation because a good recommendation system only needs to output a high value element, not the entire matrix.",
+     "anchor": "Section 1, Recommendations by Matrix Reconstruction, p.3",
+     "quotes": [
+      "Note that all known algorithms for matrix reconstruction require time polynomial in the matrix dimensions.",
+      "matrix reconstruction is a harder task than recommendation systems, in the sense that a good recommendation system only needs to output a high value element of the matrix and not the entire matrix"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement the paper attributes to other work ([20, 3]).",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-good-only-with-low-rank",
+     "value": "The authors state that the algorithm works for any matrix but, as in the classical case, guarantees good recommendations only when the matrix has a good low-rank approximation.",
+     "anchor": "Section 1, p.4",
+     "quotes": [
+      "Our algorithm works for any matrix, but as in the classical case, it guarantees good recommendations only when the matrix has a good low-rank approximation."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Section 1, p.4).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-low-rank-needs-agreement",
+     "value": "The authors state that a low-rank matrix alone does not give good recommendations: if each of k user types agrees only on small-value elements, recommendations would be of no quality, so the implicit assumption is k user types whose users agree on the high-value elements.",
+     "anchor": "Section 1, The low-rank assumption, p.2",
+     "quotes": [
+      "In other words, even though the matrix is low-rank, the recommendations would be of no quality.",
+      "is that there are k types of users and the users of each type",
+      "on the high-value elements. Recommendations by Matrix Reconstruction."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the assumption its guarantees rest on (Section 1, p.2).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-low-rank-real-data",
+     "value": "The authors state that preference matrices from real data have been found to have rank asymptotically much smaller than the size of the matrix.",
+     "anchor": "Section 1, The low-rank assumption, p.2",
+     "quotes": [
+      "preference matrices that come from real data have been found to have rank asymptotically much smaller than the size of the matrix."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim about other data, with no citation at this sentence and no test in the paper.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-real-world-scale",
+     "value": "The authors state that real-world systems such as Amazon or Netflix can have about 100 million users and around one million products.",
+     "anchor": "Section 1, Computational resources and performance, p.3",
+     "quotes": [
+      "where the number of users can be about 100 million and the products around one million."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's estimate with no source in the paper.",
+     "result_type": "claim",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-preference-matrix-definition",
+     "value": "The paper defines the preference matrix T of size m × n, with one row per user and one column per product, whose element Tij is 0 or 1; product j is a good recommendation for user i iff Tij = 1.",
+     "anchor": "Section 3.1, Definition 3.1, p.7",
+     "quotes": [
+      "We define a preference matrix T of size m × n, where every row corresponds to a user, every column to a product, and the element Tij is 0 or 1 and denotes whether product j is a good recommendation for user i or not.",
+      "Definition 3.1. A product j is a good recommendation for user i iff Tij = 1, otherwise it is bad."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition (Definition 3.1, p.7).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-lemma-3-2-bad-sample-bound",
+     "value": "The paper proves (Lemma 3.2) that if an approximation of T is within epsilon of T in Frobenius norm, relative to the Frobenius norm of T, then the probability that a sample from the approximation is a bad recommendation is bounded by an expression in epsilon. The authors state this is a guarantee for an average user, weighted by the weight of each row.",
+     "anchor": "Lemma 3.2, Section 3.2, p.8",
+     "quotes": [
+      "Lemma 3.2. Let T be an approximation of the matrix T such that T − T F ≤ ǫ T F . Then, the probability a sample according to T is a bad recommendation is",
+      "the above lemma provides the guarantee that the probability of a bad recommendation for an average user is small, where the average is weighted according to the weight of each row."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proved lemma whose bound the text layer garbles (norm bars and the fraction are lost), so the bound itself is not quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The page image would show the bound; from the proof's last line it appears to be epsilon over (1 minus epsilon), squared, but this is not settled from the text layer."
+    },
+    {
+     "id_suggestion": "qrecsys-frobenius-only-heavy-users",
+     "value": "The authors state that closeness in Frobenius norm alone may give good recommendations only for very heavy users and bad ones for almost everyone else, so a guarantee for most users needs most users to be typical, and good recommendations cannot be expected for users who like almost nothing.",
+     "anchor": "Section 3.2, p.8",
+     "quotes": [
+      "Note that only with the closeness guarantee in the Frobenius norm, this may not be true,",
+      "the recommendation system provides good recommendations only for the very heavy users and bad ones for almost everyone else.",
+      "We cannot expect to provide good recommendations for example to users that like almost nothing."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Section 3.2, p.8).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-theorem-3-3-typical-users",
+     "value": "The paper proves (Theorem 3.3) that if a subset S of at least (1 − ζ)m rows has row norms within a factor (1 + γ) of the average, and the approximation is within epsilon of T in Frobenius norm, then a subset S′ of at least (1 − δ − ζ)m users exists on which the average probability that a sample is a bad recommendation is bounded by an expression in epsilon, gamma, delta and zeta.",
+     "anchor": "Theorem 3.3, Section 3.2, p.9",
+     "quotes": [
+      "Theorem 3.3. Let T be an m × n matrix. Let S be a subset of rows of size |S| ≥ (1 − ζ)m (for ζ > 0) such that for all i ∈ S,",
+      "Ti 2 ≤ (1 + γ) T 2",
+      "Then, there exists a subset S′ ⊆ S of size at least (1 − δ − ζ)m (for δ > 0), such that on average over the users in S′, the probability that a sample from the row Ti is a bad recommendation is"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proved theorem whose row-norm condition and bound the text layer garbles, so they are not quoted whole.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-typical-user-example",
+     "value": "The authors state that if 90% of users have preferences between 1/1.1 and 1.1 times the average, the error over the typical users increases by at most a factor of 1.5.",
+     "anchor": "Section 3.2, after the proof of Theorem 3.3, p.9",
+     "quotes": [
+      "For example, if we assume that 90% of the users have preferences between 1/1.1 and 1.1 times the average, then the error over the typical users has increased by at most a factor of 1.5."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A worked example stated without the parameter choices that give it.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-several-recommendations",
+     "value": "The authors state that quality can be improved by recommending a small number of products instead of one, counting success if at least one is good, and that this is what practical systems do.",
+     "anchor": "Section 3.2, p.9",
+     "quotes": [
+      "Note also that we can easily make the quality of the recommendation system even better if we are willing to recommend a small number of products, instead of just one, and are satisfied if at least one of them is a good recommendation.",
+      "This is in fact what happens in practical systems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim, not analysed in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-theorem-4-1-achlioptas-mcsherry",
+     "value": "The paper cites (Theorem 4.1, from Achlioptas and McSherry [2]) that subsampling each entry with a stated probability and rescaling gives, with probability at least 1 − exp(−19(log n) to the fourth power), for any k, a rank-k projection of the subsampled matrix whose Frobenius error exceeds the best rank-k error by an additive term proportional to the square root of eta times k to the one-quarter power times the Frobenius norm.",
+     "anchor": "Theorem 4.1, Section 4, p.10",
+     "quotes": [
+      "Theorem 4.1. [2] Let A ∈ Rm×n be a matrix and b = maxij Aij. Define the matrix A to be a random matrix obtained by subsampling with probability",
+      "With probability at least 1 − exp(−19(log n)4) we have for any k",
+      "≤ A − Ak F + 3√ηk1/4 A F . (8)"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to [2].",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-theorem-4-2-threshold-projection",
+     "value": "The paper proves (Theorem 4.2) that for a matrix A with largest entry 1, subsampled with a stated probability and rescaled, with threshold sigma set from a parameter mu, if the best rank-k error is at most epsilon times the Frobenius norm of A and the Frobenius norm is large enough, then eta and mu can be chosen so that the projection onto singular vectors above the threshold has Frobenius error at most 3 epsilon times the Frobenius norm of A.",
+     "anchor": "Theorem 4.2, Section 4, pp.10-11",
+     "quotes": [
+      "Theorem 4.2. Let A ∈ Rm×n be a matrix such that maxij Aij = 1.",
+      "Let μ > 0 a threshold parameter",
+      "If A − Ak F ≤ ǫ A F for some ǫ > 0 and A F ≥ 36√2(nk)1/2 ǫ3 then we can choose η, μ such that A − A≥σ F ≤ 3ǫ A F ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.2 (pp.10-11) is quoted with its conditions and proved on p.11; the text layer drops the norm bars, so the norm-size condition is read as printed.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-theorem-4-3-family-projection",
+     "value": "The paper proves (Theorem 4.3) that under the same subsampling, with a precision parameter kappa > 0, the projection that also keeps any subset of singular vectors with singular values in [(1 − κ)σ, σ) has, when the best rank-k error is at most epsilon times the Frobenius norm and the Frobenius norm is large enough, Frobenius error at most 9 epsilon times the Frobenius norm of A for suitable eta and mu.",
+     "anchor": "Theorem 4.3, Section 4, pp.11-12",
+     "quotes": [
+      "the following Theorem 4.3. Let A ∈ Rm×n be a matrix and maxij Aij = 1.",
+      "some subset of singular vectors whose corresponding singular value is in the interval [(1 − κ)σ, σ).",
+      "Let κ>0 a precision parameter.",
+      "If A − Ak F ≤ ǫ A F for some ǫ > 0 and A F ≥ 36√2(nk)1/2 ǫ3 then we can choose η, μ such that A − A≥σ,κ F ≤ 9ǫ A F ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.3 (pp.11-12) is quoted with its conditions and proved on p.12, choosing kappa = 1/3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-theorem-5-1-data-structure",
+     "value": "The paper proves (Theorem 5.1, restated and proved as Theorem A.1) that for entries arriving in arbitrary order, with w entries arrived, a data structure exists of size O(w log squared (mn)), with time O(log squared (mn)) to store a new entry, through which a quantum algorithm with quantum access can prepare the state of each stored row and the state of the vector of row norms in time polylog(mn).",
+     "anchor": "Theorem 5.1, Section 5.1, p.13; Appendix A, Theorem A.1, p.21",
+     "quotes": [
+      "Entries (i, j, Aij ) arrive in the system in an arbitrary order and w denotes the number of entries that have already arrived in the system.",
+      "There exists a data structure to store the entries of A with the following properties: i. The size of the data structure is O(w · log2(mn)). ii. The time to store a new entry (i, j, Aij ) is O(log2(mn)).",
+      "iii. A quantum algorithm that has quantum access to the data structure can perform the mapping U : |i |0 → |i |Ai , for i ∈ [m], corresponding to the rows of the matrix currently stored in memory",
+      "where A ∈ Rm has entries Ai = Ai in time polylog(mn).",
+      "Theorem 5.1. Let A ∈ Rm×n be a matrix."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5.1 (p.13) is quoted with its conditions and proved in Appendix A (pp.21-22).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-binary-tree-structure",
+     "value": "The authors describe the data structure as one binary tree per matrix row, whose leaves hold the individual amplitudes and whose internal nodes hold the sum of squares of the leaves below them, with log(n) nodes updated per entry; the state is prepared by conditional rotations using the stored amplitudes, with two quantum queries per rotation.",
+     "anchor": "Section 5.1, p.13; Appendix A, pp.21-22",
+     "quotes": [
+      "The leaves hold the individual amplitudes of the vector and each internal node holds the sum of the squares of the amplitudes of the leaves rooted on this node.",
+      "For each entry added to the tree, we need to update log(n) nodes in the tree.",
+      "Overall, there are ⌈log n⌉ rotations applied and for each one of them we need two quantum queries to the data structure"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own construction (Section 5.1 and Appendix A).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-linear-time-preprocess-from-array",
+     "value": "The authors state that even if the data has been stored as a normal array or list, it can be preprocessed in linear time into the needed data structure, and that the classical complexity of matrix reconstruction does not change given the new data structure.",
+     "anchor": "Section 1.2, p.5",
+     "quotes": [
+      "Note also, that even in the case the data has been stored as a normal array or list, we can preprocess it in linear time to construct our needed data structure.",
+      "Moreover, the classical complexity of matrix reconstruction does not change given the new data structure."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; the linear-time preprocessing is not proved separately.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-theorem-5-2-singular-value-estimation",
+     "value": "The paper proves (Theorem 5.2) that for a matrix A stored in the Theorem 5.1 data structure and precision epsilon > 0, an algorithm with running time O(polylog(mn)/ǫ) estimates the singular value of each row singular vector in coherent superposition within plus or minus epsilon times the Frobenius norm of A, with probability at least 1 − 1/poly(n).",
+     "anchor": "Theorem 5.2, Section 5.2, p.13; proof via Lemma 5.3 and Algorithm 5.1, pp.14-16",
+     "quotes": [
+      "Theorem 5.2. Let A ∈ Rm×n be a matrix with singular value decomposition A = i σiuivit stored in the data structure in theorem 5.1.",
+      "Let ǫ > 0 be the precision parameter. There is an algorithm with running time O(polylog(mn)/ǫ) that performs the mapping i αi |vi → i αi |vi |σi , where σi ∈ σi ± ǫ A F for all i with probability at least 1 − 1/poly(n)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5.2 (p.13) is quoted with its conditions and proved on pp.14-16.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-alternative-sve-cited",
+     "value": "The authors state that a different quantum singular value estimation algorithm, based on [16], runs in time O(polylog(mn)) over epsilon cubed, and that its coherence analysis was shown in [19].",
+     "anchor": "Section 5.2, p.14",
+     "quotes": [
+      "A different quantum algorithm for singular value estimation can be based on the work of [16] with running time O(polylog(mn)/ǫ3), and for which a coherence analysis was shown in",
+      "[19]. The idea for our singular value estimation algorithm"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to [16] and [19].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-lemma-5-3-walk-unitary",
+     "value": "The paper proves (Lemma 5.3) that for a matrix A in the Theorem 5.1 data structure there are isometries P and Q factoring A over its Frobenius norm, applicable in time O(polylog(mn)); that the unitary W = U · V built from the two reflections can be implemented in time O(polylog(mn)); and that Q maps a row singular vector with singular value sigma_i to an eigenvector of W whose eigenphase theta_i satisfies cos(θi/2) = σi over the Frobenius norm of A.",
+     "anchor": "Lemma 5.3, Section 5.2, p.14; proof pp.14-15",
+     "quotes": [
+      "Lemma 5.3. Let A ∈ Rm×n be a matrix with singular value decomposition A = i σiuivit stored in the data structure in theorem 5.1.",
+      "the mappings |y → |P y and |x → |Qx can be performed in time O(polylog(mn)).",
+      "ii. The unitary W = U · V , where U, V are the reflections U = 2P P t − Imn and V = 2QQt − Imn can be implemented in time O(polylog(mn)).",
+      "iii. The isometry Q : Rn → Rmn maps a row singular vector vi of A with singular value σi to an eigenvector Qvi of W with eigenvalue eιθi such that cos(θi/2) = σi/ A F ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 5.3 (p.14) is quoted with its conditions and proved on pp.14-15.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-theorem-5-4-projection",
+     "value": "The paper states (Theorem 5.4) that the quantum projection with threshold outputs the projection of x onto the row singular vectors above the threshold (plus some in the band below it) with probability at least 1 − 1/poly(n), in an expected time the text layer garbles. The authors state the running time depends only on the threshold sigma and not on the condition number of A.",
+     "anchor": "Theorem 5.4, Section 5.3, p.17",
+     "quotes": [
+      "Theorem 5.4. Algorithm 5.3 outputs |A+≥σ,κA≥σ,κx with probability at least 1 − 1/poly(n)",
+      "It is important to notice that the running time of the quantum projection algorithm depends only on the threshold σ",
+      "and not on the condition number of A"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proved result whose running-time expression the text layer garbles, so the full statement is not quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The algorithm box is labelled Algorithm 5.2 while the text and Theorem 5.4 call it Algorithm 5.3; this looks like a numbering slip in the paper."
+    },
+    {
+     "id_suggestion": "qrecsys-amplitude-amplification-omitted",
+     "value": "The authors state that amplitude amplification could improve the running time of the projection algorithm once a careful error analysis is done, because the reflections are not exact, and that they omit this analysis since it would not change the running time asymptotically.",
+     "anchor": "Section 5.3, p.17",
+     "quotes": [
+      "One could also use amplitude amplification to improve the running time of algorithm 5.3, once a careful error analysis is performed as the reflections are not exact.",
+      "this will not change asymptotically the running time of the algorithm and hence we omit the analysis."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of what it leaves out (Section 5.3, p.17).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-rank-assumption-k-100",
+     "value": "The authors state that in recommendation systems they assume the matrix T is within epsilon of its rank-k truncation in Frobenius norm for a small epsilon and a small rank k, no more than 100, and that k need only be estimated well.",
+     "anchor": "Section 6, p.18",
+     "quotes": [
+      "for some small approximation parameter ǫ and small rank k (no more than 100).",
+      "we assume we know k but in fact we just need to have a good estimate for it."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its rank assumption (Section 6, p.18).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-correctness-9-epsilon",
+     "value": "The paper shows that, with probability at least 1 − exp(−19(log n) to the fourth power), the thresholded projection of the subsample matrix is within 9 epsilon of T in Frobenius norm, so that by Theorem 3.3 a subset S′ of at least (1 − δ − ζ)m users gets bad recommendations from the quantum algorithm with an average probability bounded by the Theorem 3.3 expression with 9 epsilon in place of epsilon.",
+     "anchor": "Section 6.1, Correctness, p.18",
+     "quotes": [
+      "exp(−19(log n)4), T − T≥σ,κ F ≤ 9ǫ T F .",
+      "In this case, we can apply Theorem 3.3 with matrix T = T≥σ,κ to show that there exists a subset of users S′ of size at least (1 − δ − ζ)m (for δ > 0),",
+      "the probability that our quantum algorithm provides a bad recommendation is",
+      "By Theorem 4.3, and by setting the parameters appropriately to get equation (11), we have that with probability at least 1 −"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proved bound whose final expression the text layer garbles.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-no-preprocessing-exponential-claim",
+     "value": "The authors state that their system performs no preprocessing and needs no extra memory, only an online computation in time poly(k)polylog(mn), which can be viewed as exponentially smaller than the classical time if the rank k is a small constant and the matrix dimensions are of the same order.",
+     "anchor": "Section 1.2, p.6",
+     "quotes": [
+      "Importantly, in our system, we do not perform any preprocessing nor do we need any extra memory.",
+      "Our recommendation algorithm just performs an online computation that requires time poly(k)polylog(mn).",
+      "This can be viewed as exponentially smaller than the classical time if the rank k is a small constant and the matrix dimensions are of the same order."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's comparison with classical algorithms, which the paper does not prove optimal.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "This comparison is against classical reconstruction algorithms known in 2016; the paper itself proves no classical lower bound."
+    },
+    {
+     "id_suggestion": "qrecsys-no-sparsity-condition-dependence",
+     "value": "The authors state that, unlike the HHL algorithm, their running time depends neither on the sparsity of the input matrix nor on its condition number, and that they have not changed what needs to be output, since sampling from the solution is what a recommendation system needs.",
+     "anchor": "Section 1.2, p.6",
+     "quotes": [
+      "Unlike the HHL algorithm, our running time does not depend on the sparsity of the input matrix nor on its condition number, i.e. its smallest singular value.",
+      "It is also crucial to note that we have not changed what one needs to output, as was the case for the HHL algorithm and its applications,",
+      "We have instead described a real world application, where the ability to sample from the solution is precisely what is needed."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's summary comparison; the running-time independence follows from Theorems 5.4 and 6.1.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-hhl-fine-print",
+     "value": "The authors state that the HHL algorithm runs in polylogarithmic time only when the matrix is well conditioned and sparse, and that one must check whether a quantum algorithm solves the original classical problem or a weaker variant.",
+     "anchor": "Section 1.2, p.5",
+     "quotes": [
+      "the running time of the HHL algorithm is polylogarithmic only when the matrix is well conditioned (i.e. the minimum singular value is at least inverse polynomially big) and sparse;",
+      "whether the quantum algorithm solves the original classical problem or a weaker variant to account for the fact that the classical solution is not given explicitly but is encoded in a quantum state [1, 17]."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work ([10], [1, 17]).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrecsys-phase-estimation-cited",
+     "value": "The paper cites phase estimation (Theorem 2.2, from [12]): it estimates eigenvalues of a unitary within additive error epsilon in time O(T(U) log n/epsilon); each estimate is within error with probability at least 0.8, boosted to 1 − 1/poly(n) by repeating O(log n) times and taking the most frequent estimate.",
+     "anchor": "Section 2.2, Theorem 2.2, p.7",
+     "quotes": [
+      "Theorem 2.2. Phase estimation [12]:",
+      "estimates the eigenvalues of a unitary operator U with additive error ǫ in time O(T (U ) log n/ǫ)",
+      "within additive error ǫ with probability at least 0.8, the probability is boosted to 1 − 1/poly(n) by repeating O(log n) times and choosing the most frequent estimate."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to [12].",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "kerenidis-2022-quantum-machine-learning-subspace-states",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Kerenidis-Prakash_2022_Quantum-machine-learning-with-subspace-states__2202.00054.pdf",
+   "title_in_file": "Quantum machine learning with subspace states (Kerenidis, Prakash; arXiv:2202.00054v2, 2 Feb 2022)",
+   "version_note": "",
+   "pages": 32,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper that introduces quantum subspace states, two ways to prepare them (Givens circuits of FBS gates, and logarithmic-depth Clifford loaders), and three applications: quantum determinant sampling, singular value estimation for compound matrices, and a logarithmic-depth block encoding of the Dirac operator for topological data analysis.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "determinant-sampling-classical-open",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 1, after Theorem 1.3, p.5",
+     "quotes": [
+      "For this case, the additional speedup is due to the low Givens complexity of the matrix, while it remains to be seen if more efficient classical determinant sampling algorithms can be given for this setting."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open question (Section 1, p.5).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "determinant-sampling-theorem",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Theorem 1.3, Section 1, p.5; Theorem 5.5, Section 5, p.24",
+     "quotes": [
+      "Theorem 5.5. (Quantum Determinal Sampling) Given A ∈ Rn×d, there is a quantum determinant sampling algorithm that requires O(nd2) pre-processing to orthogonalize A, and generates subsequent samples using a quantum",
+      "Each of the d circuits can be implemented with O(n log n) gates and depth O(log n), yielding the following result."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5.5 (p.24), proved through Lemma 5.4 and the logarithmic-depth Clifford loader construction (Section 4.3).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The abstract and the Section 1 text say the Clifford-loader sampler uses O(nd) gates, and Table 1 lists O(nd) gates for Clifford loaders, while Theorems 1.3 and 5.5 say O(nd log n) gates. The paper does not reconcile the log n factor."
+    },
+    {
+     "id": "determinant-sampling-vs-classical",
+     "verdict": "narrowed",
+     "note": "The O(n squared) against O(n cubed) comparison does not follow from Theorem 1.3, whose gate count O(nd log n) is O(n squared log n) for d = O(n). Section 5 ties the O(n squared) figure to the Givens-circuit sampler, whose worst-case Givens complexity is O(n squared), and the classical O(n cubed) is the per-sample cost after the O(nd squared) pre-processing that the quantum and classical algorithms share. The stored value omits both scopes.",
+     "value": "The authors state that for d = O(n) the quantum determinant sampling algorithm has gate complexity O(n squared) against O(n cubed) for the state-of-the-art classical algorithm. In the determinant sampling section they tie this to the Givens-circuit sampler, whose worst-case Givens complexity is O(n squared), after an O(nd squared) pre-processing shared with the classical algorithm, whose per-sample cost is O(d cubed); and they state a potentially cubic speedup, O(n log n) against O(n cubed) operations per sample, when an embedding into a unitary of Givens complexity O(n log n) is known.",
+     "anchor": "Section 1 after Theorem 1.3, p.5; Section 5, pp.22-23",
+     "quotes": [
+      "For the case d = O(n), the quantum determinant sampling algorithm has gate complexity O(n2) compared to the state-of-the-art classical algorithm with gate complexity O(n3).",
+      "For d = O(n), the worst case Givens complexity is O(n2), so the quantum determinant sampling algorithm has complexity O(n2) compared to the classical O(n3) algorithm.",
+      "The pre-processing for the quantum determinant algorithms is the same as that for the classical algorithm, namely the matrix A is orthogonalized to A ̃ such that Col(A) = Col(A ̃) in time O(nd2).",
+      "If an embedding of A into a unitary U having Givens complexity O(n log n) is known, then there is a potentially cubic speedup as the quantum algorithm requires O(n log n) operations for generating a sample"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A gate-count comparison derived from the Givens-circuit construction against a cited classical bound; the classical side is not a lower bound.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The speedup is polynomial (from O(n cubed) to O(n squared) per sample) and leaves the shared O(nd squared) pre-processing unchanged."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "subspace-state-definition",
+     "value": "The paper defines the subspace state of a d-dimensional subspace of Rn, represented by a matrix X with orthonormal columns, as the superposition over size-d subsets S of [n] of det(XS)|S>, where XS restricts X to the rows in S; it is invariant under column operations, correctly normalized by the Cauchy-Binet identity, and for d = 1 reduces to the unary amplitude encoding.",
+     "anchor": "Definition 1.1, Section 1, p.3; Definition 2.3, Section 2.2, pp.9-10",
+     "quotes": [
+      "Definition 2.3. Let X be a d-dimensional subspace of Rn for d ∈ [n] and let X ∈ Rn×d be a matrix with orthonormal columns (XT X = Id) such that Col(X) = X .",
+      "where XS is the restriction of X to the rows in S and the sum is over size d subsets of [n].",
+      "Subspace states represent the underlying subspace X and are invariant under column operations applied to the representing matrix X.",
+      "Note also that for d = 1, the subspace state reduces to the well-known unary amplitude encoding of a single vector."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition (Definitions 1.1 and 2.3).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "subspace-states-real-amplitudes-scope",
+     "value": "The authors state that in this work they restrict themselves to quantum states with real amplitudes and therefore consider the orthogonal group instead of the unitary group.",
+     "anchor": "Section 2.1, p.8",
+     "quotes": [
+      "Note in this work we restrict ourselves to quantum states with real amplitudes and therefore consider the orthogonal group instead of the unitary group."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope statement (Section 2.1, p.8).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "subspace-states-parameters-not-closed",
+     "value": "The authors state that subspace states of dimension d are determined by O(nd) parameters and occupy a small fraction of the Hamming-weight-d space, and that a linear combination of subspace states is not a subspace state, their amplitudes being characterized by quadratic constraints.",
+     "anchor": "Section 2.2, p.10",
+     "quotes": [
+      "Subspace states of dimension d are determined by exactly O(nd) parameters and thus occupy a small fraction of the n d -dimensional subspace Hd spanned by the bit strings of Hamming weight d.",
+      "Unlike vector states, the linear combination of subspace states is not a a subspace state, the amplitudes of subspace states are in fact characterized by quadratic constraints."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated with a citation to [34] for the constraints, not proved in the paper.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fbs-gate-implementation",
+     "value": "The paper proves (Proposition 2.6) that the FBS gate on qubits i and j, which acts as RBS(θ) or RBS(−θ) by the parity of the qubits between them, can be implemented using an RBS gate together with a circuit of depth O(log |i − j|) with O(|i − j|) additional two-qubit controlled-X and controlled-Z gates.",
+     "anchor": "Definition 2.5 and Proposition 2.6, Section 2.3, p.11",
+     "quotes": [
+      "Proposition 2.6. The gate F BSij(θ) can be implemented using an RBS gate together with a circuit of depth O(log |i − j|) with O(|i − j|) additional two qubit controlled-X and controlled-Z gates.",
+      "It follows from the definition that F BSij(θ) acts as RBSij(θ) if the parity ⊕i<k<jxk of the qubits 'between' i and j is even and is the conjugate gate RBSij(−θ) otherwise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 2.6 is quoted with its conditions and proved on p.11.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fbs-givens-rotation-theorem",
+     "value": "The paper proves (Theorem 2.7) that applying the gate FBSij(θ) to the subspace state of any matrix X in Rn×d applies the Givens rotation G(i, j, θ) to the subspace, for every dimension d, so one FBS gate simulates a row operation on an n × d matrix, which costs O(d) classically.",
+     "anchor": "Theorem 2.7, Section 2.4, p.12",
+     "quotes": [
+      "Theorem 2.7. An application of the gate F BSij(θ) applies a Givens rotation to the subspace state, that is, F BSij(θ) |Col(X) = |Col(G(i, j, θ)X) . (9) where X ∈ Rn×d is the matrix representing an arbitrary subspace state of dimension d ∈ [n].",
+      "so the application of a single F BS gate can simulate the effect of a row operation on an n × d matrix, an operation with complexity O(d) in the classical case."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2.7 is quoted with its conditions and proved on p.12.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "matchgate-simulability-not-bottleneck",
+     "value": "The authors state that circuits of matchgates acting on adjacent qubits can be simulated classically with polynomial overhead [36], that this efficient simulability is not a bottleneck for polynomial speedups with O(n) qubits on n-dimensional matrices, and that the algorithms with potential exponential speedups use controlled FBS circuits, which go beyond the efficiently simulable gates.",
+     "anchor": "Section 2.1, p.9",
+     "quotes": [
+      "Quantum circuits consisting only of matchgates can be simulated classically with a polynomial overhead [36] if the matchgates act on adjacent qubits.",
+      "For quantum linear algebra algorithms using O(n) qubits to operate with n dimensional matrices, the efficient simulability of the circuits is not a bottleneck for obtaining polynomial speedups.",
+      "The algorithms achieving potential exponential speedups apply controlled versions of circuits composed of F BS gates and therefore use gates besides the ones that can be efficiently simulated."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Partly cited ([36]), partly an author's argument not proved in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "givens-circuit-theorem-3-2",
+     "value": "The paper proves (Theorem 3.2) that a Givens circuit G on n qubits with corresponding unitary U maps each standard basis state |S> to the subspace state of US, the submatrix of U with columns indexed by S, so a Givens circuit prepares the subspace state of any subset of U's columns.",
+     "anchor": "Theorem 3.2, Section 3, p.13",
+     "quotes": [
+      "Theorem 3.2. Let G be a Givens circuit on n qubits and let U = U (G) be the corresponding unitary, then the action of G on a standard basis state |S for S ∈ {0, 1}n is given as, G |S = |Col(US) , (11)",
+      "The Givens circuit can therefore be used to prepare subspace states corresponding to any subset of the columns of U ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3.2 is quoted with its conditions and proved on p.13.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "givens-complexity-definition",
+     "value": "The paper defines the Givens complexity of a unitary as the minimum number of Givens rotations in a decomposition of it, states that a counting argument gives O(n2) for a generic unitary, read as n squared, and states that Fourier, wavelet and other well-structured matrices are known to have Givens complexity O(n log n).",
+     "anchor": "Definition 3.3, Section 3, p.14",
+     "quotes": [
+      "Definition 3.3. Let U ∈ Rn×n be a unitary matrix, the Givens complexity γ(U ) is defined as the minimum number of Givens rotation matrices in a decomposition",
+      "A counting argument shows that the Givens complexity of a generic unitary matrix is O(n2), however for well-structured matrices the Givens complexity can be much lower.",
+      "several families of matrices including the Fourier, wavelet and several other well structured matrices [31] are known to have γ(X) = O(n log n)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition (Definition 3.3, p.14); the O(n log n) families are cited to [31].",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "givens-preprocessing-worst-case",
+     "value": "The authors state that the worst-case cost of decomposing a unitary into Givens rotations equals that of the singular value decomposition, so the pre-processing to compute the Givens circuit for an n × d matrix is O(nd2), read as nd squared, and that this cost can be amortized in online settings or where parameters are updated frequently.",
+     "anchor": "Section 3, p.14",
+     "quotes": [
+      "The worst case complexity of decomposing a unitary into a sequence of Givens rotations is the same as that for the Singular Value Decomposition algorithm, namely the pre-processing overhead to compute the Givens circuits for the X ∈ Rn×d matrix is O(nd2).",
+      "Such pre-processing costs can be amortized in an online setting or in machine learning applications where the parameters are being updated frequently."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statement of a known classical cost, not proved in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pyramid-circuit-theorem-3-4",
+     "value": "The paper states (Theorem 3.4) that a matrix U in Rn×d with orthonormal columns can be compiled into a Givens circuit of RBS gates only in time O(nd2), read as nd squared, giving a pyramid circuit of depth n + d with (2n − 1 − d)d gates on adjacent qubits, and that this is optimal in the number of gates since it equals the number of free parameters.",
+     "anchor": "Theorem 3.4, Section 3.1, pp.14-15",
+     "quotes": [
+      "Theorem 3.4. A matrix U ∈ Rn×d with orthonormal columns can be compiled into a Givens circuit using only RBS gates in time O(nd2). The resulting pyramid circuit has depth n + d and uses (2n − 1 − d)d gates acting on adjacent qubits.",
+      "The number of RBS gates used in the pyramid circuit is equal to the number of free parameters for a matrix U ∈ Rn×d with orthonormal columns, so this construction is optimal in the number of gates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Theorem 3.4 is stated with its conditions but its proof is not given in the paper; it is attributed to the pyramid circuits of [23].",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sine-cosine-givens-circuit",
+     "value": "The authors state that the sine-cosine decomposition for partial isometries gives Givens circuits with O(nd) gates, depth O(d log n) and pre-processing O(nd2), read as nd squared, and they leave open the optimal implementation of this circuit with minimal extra qubits and depth.",
+     "anchor": "Section 3.2, p.15",
+     "quotes": [
+      "The sine cosine decomposition algorithm for partial isometries [33, 9] can be used to obtain Givens circuits with O(nd) gates, depth O(d log n) and pre-processing overhead O(nd2).",
+      "We leave open the optimal implementation of the above circuit with minimal overheads in terms of extra qubits and circuit depth,"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A construction stated with citations ([33, 9]) and not proved in the paper; the open implementation is the paper's own stated limit.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "subspace-prep-methods-table-1",
+     "value": "The paper's Table 1 gives, for subspace state preparation: pyramid circuit O(nd) gates, depth n + d, pre-processing O(nd2); sine-cosine decomposition O(nd) gates, depth d log n, pre-processing O(nd2); Clifford loaders O(nd) gates, depth d log n, pre-processing O(nd). Here nd2 is read as nd squared.",
+     "anchor": "Table 1, Section 1, p.5",
+     "quotes": [
+      "Method Gates Depth Preprocessing Pyramid Circuit O(nd) n + d O(nd2) Sine Cosine Decomposition O(nd) d log n O(nd2) Clifford Loaders O(nd) d log n O(nd) Table 1: Gate complexity, circuit depth, and pre-processing overheads for subspace state preparation methods."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A summary table; its Clifford-loader gate count differs from Theorems 1.3 and 5.5 by a log n factor.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Section 5 states the logarithmic-depth Clifford loader uses O(n log n) gates per column, which gives O(nd log n), not the O(nd) in this table."
+    },
+    {
+     "id_suggestion": "anticommuting-system-lemma-4-3",
+     "value": "The paper proves (Lemma 4.3) that if there is an anti-commuting operator system of rank (2n + 1) on a Hilbert space H, then H decomposes into a tensor product of n qubit systems, so the dimension of H is at least 2 to the power n.",
+     "anchor": "Lemma 4.3, Section 4.1, pp.16-17",
+     "quotes": [
+      "Lemma 4.3. If there is an anti-commuting operator system of rank (2n + 1) acting on a Hilbert space H, then H decomposes into a tensor product of n qubit systems, in particular dim(H) ≥ 2n."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 4.3 is quoted with its conditions and proved on pp.16-17 via Jordan's lemma.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "clifford-loader-definition",
+     "value": "The paper defines the Clifford loader of a unary data loader D(x) as C(x) = DF(x)(X ⊗ I...)DF(x)*, where DF(x) replaces each RBS gate of D(x) by the corresponding FBS gate, and states that, unlike a unary data loader, a Clifford loader is determined on the entire Hilbert space.",
+     "anchor": "Definition 4.6, Section 4.2, p.18",
+     "quotes": [
+      "Definition 4.6. Given a unary data loader D(x), the Clifford loader is the circuit C(x) = DF (x)(X⊗ I⊗n−1)DF (x)∗ where DF (x) is obtained by replacing each RBS gate in D(x) by the corresponding F BS gate.",
+      "a Clifford loader is determined on the entire Hilbert space."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition (Definition 4.6, p.18).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "clifford-loader-subspace-action",
+     "value": "The paper proves (Theorem 4.7) that for a unit vector x with components parallel and orthogonal to a d-dimensional subspace Col(Y), the Clifford loader maps the subspace state of Col(Y) to cos(θ) times the state of the subspace with x removed plus sin(θ) times the state of the subspace with the orthogonal component added, which implies the Clifford loader does not depend on the choice of unary data loader.",
+     "anchor": "Theorem 4.7, Section 4.2, p.18",
+     "quotes": [
+      "Theorem 4.7. Let x = cos(θ)x + sin(θ)x⊥ be the decomposition of unit vector x ∈ Rn into components orthogonal and parallel to a d-dimensional subspace Col(Y ).",
+      "which implies that the Clifford loaders in definition 4.6 do not depend on the choice of the unary data loader D(x).",
+      "The first part of the superposition has Hamming weight (d−1) and represents the subspace obtained by removing x from Y while the second part of the superposition has Hamming weight (d + 1) and represents the subspace obtained by adding x⊥ to Y ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proved theorem whose displayed formula the text layer flattens (the parallel-component accents are lost), so its full statement is not quoted exactly.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "clifford-loader-implements-gamma",
+     "value": "The paper proves (Theorem 4.9) that for all unit vectors x in Rn, the Clifford loader circuit C(x) implements the unitary Γ(x), the sum over i of x_i times Z on the first i − 1 qubits, X on qubit i and identity on the rest, a reflection with eigenvalues ±1.",
+     "anchor": "Definition 4.4 and Theorem 4.9, Section 4.2, pp.17-21",
+     "quotes": [
+      "Theorem 4.9. For all unit vectors x ∈ Rn with x 2 = 1, the Clifford loader circuit C(x) implements the unitary Γ(x).",
+      "It follows that for unit vectors x ∈ Rn, the operator Γ(x) is unitary, in fact it is a reflection as its eigenvalues are constrained to be ±1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.9 is quoted with its condition and proved on pp.19-21 via Lemma 4.8.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "log-depth-clifford-loader-depth",
+     "value": "The authors derive that the optimized logarithmic-depth Clifford loader has circuit depth d(n) = 4(log n − 1) for n > 2 a power of 2, from the recursion d(n) = d'(n/2) + 3 and d'(n) = d'(n/2) + 4 with d(2) = d'(2) = 1.",
+     "anchor": "Section 4.3, p.21",
+     "quotes": [
+      "The explicit solution for these recurrences is d(n) = 4(log n − 1) where n > 2 is a power of 2.",
+      "We have d(2) = d (2) = 1 and from the recursion we have d(n) = d (n/2) + 3 and d (n) = d (n/2) + 4."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper's own derivation from its recursive construction (Section 4.3, p.21).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer drops the prime on d'(n); the value restores it from the paper's naming of d(n) and d'(n)."
+    },
+    {
+     "id_suggestion": "classical-determinant-sampling-cost-cited",
+     "value": "The authors state that the best known classical determinant sampling algorithm needs O(nd2) time, read as nd squared, to orthogonalize the matrix and O(d3), read as d cubed, arithmetic operations per sample [6], improving on earlier approaches needing O(d4), read as d to the fourth, per sample, and that Markov chain Monte Carlo alternatives incur larger polynomial overheads.",
+     "anchor": "Section 5, pp.22-23",
+     "quotes": [
+      "The best known classical determinant sampling algorithm with this approach requires O(nd2) time to pre-process the matrix to have orthogonal columns and requires O(d3) arithmetic operations to generate each sample from the determinant distribution [6].",
+      "This algorithm was discovered recently and is an improvement on previous approaches that required O(nd2) pre-processing and O(d4) arithmetic operations for generating samples.",
+      "There are also alternative classical algorithms for determinant sampling using Markov chain Monte Carlo methods that incur larger polynomial overheads."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to [6].",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "determinant-sampling-definition",
+     "value": "The paper defines the determinant sampling problem for a full rank matrix A in Rn×d as sampling subsets S of size d with probability det(AS) squared over det(AT A), notes that full rank is required for the distribution to be well defined, and states that measuring the subspace state of Col(A) in the standard basis gives exactly a sample from this distribution.",
+     "anchor": "Definition 5.1, Section 5, p.22",
+     "quotes": [
+      "Definition 5.1. Given a full rank matrix A ∈ Rn×d the determinant sampling problem for A is the problem of sampling from the probability distribution on S ⊂ [n], |S| = d such that p(S) = det(AS )2 det(AT A) where AS denotes the sub-matrix of A with rows indexed by S.",
+      "Note that the full rank condition is equivalent to det(AT A) > 0 and required for the determinant distribution to be well-defined.",
+      "measuring the subspace state |Col(A) in the standard basis produces exactly a sample from the determinant distribution for A."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition (Definition 5.1, p.22).",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "clifford-loader-sampler-correctness",
+     "value": "The paper proves (Lemma 5.4) that for A in Rn×d with orthonormal columns, applying the Clifford loaders of A's d columns to the all-zeros state gives the superposition of det(AS)|S> over size-d subsets, which establishes the correctness of Algorithm 5.1; the authors state that given orthonormal input the pre-processing is O~(nd) operations, against O(nd2), read as nd squared, for the Givens-decomposition sampler.",
+     "anchor": "Algorithm 5.1, Lemma 5.4, Section 5, pp.23-25",
+     "quotes": [
+      "Lemma 5.4. Let A ∈ Rn×d be such that AT A = Id, then,",
+      "This establishes the correctness of the quantum determinantal sampling algorithm 5.1.",
+      "the quantum determinant sampling algorithm 5.1 uses O ̃(nd) operations for pre-processing (reading the input matrix and computing the parameters of the Clifford loaders),",
+      "while the algorithm based on the Givens decomposition needs to find the Givens decomposition decomposition of the input matrix A which takes O(nd2) operations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 5.4 is quoted with its condition and proved on p.24 via Corollary 5.3 and the Cauchy-Binet identity.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The paper says Lemma 5.4 is for 'orthonormal rows' in one sentence and states it for AT A = Id (orthonormal columns); the condition quoted is the lemma's own."
+    },
+    {
+     "id_suggestion": "compound-matrix-definition",
+     "value": "The paper defines the compound matrix A^k of A in Rn×n, for k in [n], as the matrix of dimension n choose k whose entries are det(AIJ) for size-k row and column subsets I and J; compound matrices of unitary matrices are unitary and compound matrices are multiplicative, (AB)^k = A^k B^k.",
+     "anchor": "Definition 6.1 and Claim 6.2, Section 6, p.25",
+     "quotes": [
+      "Definition 6.1. [Compound matrix] Given a matrix A ∈ Rn×n, the compound matrix Ak for k ∈ [n] is the n k dimensional matrix with entries AkIJ = det(AIJ ) where I and J are subsets of rows and columns of A with size k.",
+      "Compound matrices preserve the property of being unitary (orthogonal), that is the compound matrices Uk for a unitary (orthogonal) matrix U are also unitary.",
+      "the multiplicative property (AB)k = AkBk holds."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition (Definition 6.1, p.25).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "givens-circuit-direct-sum-compound",
+     "value": "The paper proves (Lemma 6.3) that the Givens circuit G(U) implements the direct sum of the compound matrices of U, and (Lemma 6.4) that its eigenvectors are the subspace states of sets S of eigenvectors of U, with eigenvalue e to the i times the sum of the corresponding eigenphases.",
+     "anchor": "Lemmas 6.3 and 6.4, Section 6, pp.25-26",
+     "quotes": [
+      "Lemma 6.3. The Givens circuit G(U ) implements the unitary ⊕kn=0U k, i.e. the Givens circuit is the direct sum of the compound matrices.",
+      "Lemma 6.4. Let (vi, eiθi) be the eigenvectors and eigenvalues of U , the eigenvectors of the Givens circuit G(U ) = ⊕in=0U k are |Col(VS) and the corresponding eigenvalues are"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemmas 6.3 and 6.4 are quoted and proved on pp.25-26.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "compound-svd-theorem-6-6",
+     "value": "The paper proves (Theorem 6.6) that for A a block of PT Q with singular value decomposition, the principal vectors between the compound-matrix subspaces are pairs of subspace states built from sets S of singular vectors, with cos(θS) equal to the product of the singular values in S.",
+     "anchor": "Claim 6.5 and Theorem 6.6, Section 6, pp.26-27",
+     "quotes": [
+      "Theorem 6.6. (Compound matrix SVD) Let A = (P T Q)IJ be as in Definition 6.5 and let A = U T ΣV be the singular value decomposition of A.",
+      "These relations show that (|Col(P US) , |Col(QVS) ) is a pair of principal vectors for Jordan's lemma and that angles between the vectors is given by cos(θS) = ( i∈S σi)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The theorem's conclusion is quoted from the proof because the text layer drops the product sign in its statement.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer prints the product over S as a bare 'i∈S σi'; Lemma 6.4 and the surrounding text identify it as a product."
+    },
+    {
+     "id_suggestion": "subspace-sve-theorem-6-7",
+     "value": "The paper states (Theorem 6.7, Subspace SVE) that for A in Rm×n with singular value decomposition, embedded in a unitary U, the map from a superposition of subspace states of sets of k right singular vectors to the same superposition with estimates θS, with cos(θS) within a stated precision of the product of the singular values in S, has complexity O(T(U)) over the precision, where T(U) is the cost of the Givens circuits for U.",
+     "anchor": "Theorem 1.5, Section 1, p.6; Algorithm 6.1 and Theorem 6.7, Section 6, p.27",
+     "quotes": [
+      "Theorem 6.7. (Subspace SVE) Let A = U ΣV T be the singular value decomposition for matrix A ∈ Rm×n embedding in unitary U RN×N .",
+      "has complexity O(T (U )/ ) where T (U ) is the complexity of implementing the Givens circuits for U ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The text layer drops the precision symbol and the product sign from the statement, so the theorem cannot be quoted whole.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "compound-sve-dequantization-resistance",
+     "value": "The authors give two reasons to expect phase estimation for compound matrices to resist dequantization: 2-sampling from rows or columns of compound matrices is equivalent to determinant sampling, which has cubic classical cost, and even if A has a rank r approximation, the compound matrix's low-rank approximation has rank exponential in r for large enough k.",
+     "anchor": "Section 6, p.26; Section 1, p.6",
+     "quotes": [
+      "First 2-sampling from the rows or columns of compound matrices is equivalent to the determinant sampling problem, which has cubic cost in the classical case, increasing polynomial overheads for possible 'quantum inspired' algorithms.",
+      "the compound matrix Ak will have a low rank approximation with rank rk which is exponential in r for large enough k."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's argument for plausibility, not a proof of classical hardness.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "compound-sve-exponential-unproven",
+     "value": "The authors state that it is plausible the compound-matrix quantum algorithm achieves an exponential speedup in some settings, but that further work on quantum-inspired SVD for compound matrices is needed to substantiate that claim, that whether the speedup can be shown in practice is an equally important question, and that finding applications remains future work.",
+     "anchor": "Section 1, p.6; Section 6, pp.26-28",
+     "quotes": [
+      "It is therefore plausible that the quantum algorithm indeed achieves an exponential speedup for some settings, but further work on quantum inspired SVD for compound matrices would be needed to substantiate the claim of an exponential speedup.",
+      "An equally important question is whether this speedup can be shown in practice, whether exponential or high-degree polynomial.",
+      "Finding more quantum and quantum-inspired machine learning applications for compound matrix SV D and subspace SVE remains a direction for future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Sections 1 and 6).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dirac-operator-complete-complex-circuit",
+     "value": "The paper proves (Lemma 7.5, Theorem 7.6) that the Dirac operator of the complete simplicial complex on n vertices is the sum over i of Z on the first i − 1 qubits and X on qubit i, that scaled by one over root n it is unitary and equal to the Clifford loader unitary for the uniform vector, and that there is a circuit with n qubits, O(n log n) gates and depth O(log n) for it.",
+     "anchor": "Lemma 7.5 and Theorem 7.6, Section 7, p.29",
+     "quotes": [
+      "Lemma 7.5. The Dirac operator D for the complete simplicial complex on n vertices can be represented as,",
+      "In fact it also has a logarithmic depth implementation as it is identical to the unitary Γ(x) implemented by the Clifford loader circuit for the vector x = √1 n 1n with uniform coordinates.",
+      "Theorem 7.6. There is a quantum circuit with n qubits, O(n log n) gates and depth O(log n) for the Dirac operator"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 7.5 and Theorem 7.6 are quoted and proved on p.29 from the Clifford loader construction.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dirac-operator-submatrix-theorem-7-7",
+     "value": "The paper proves (Theorem 7.7) that the Dirac operator of an orientable simplicial complex C is the submatrix, indexed by the simplices of C, of the scaled complete-complex Dirac unitary, so that unitary is a block encoding for the Dirac operator of a general complex; the authors work with orientable complexes only.",
+     "anchor": "Theorem 7.7, Section 7, p.30; Section 7, p.28",
+     "quotes": [
+      "Theorem 7.7. The Dirac operator of an orientable simplicial complex C is the submatrix of U = √1 n i∈[n] Z⊗(i−1) ⊗ X ⊗",
+      "I⊗(n−1) indexed by the simplices that belong to C.",
+      "we will work with orientable complexes in this work."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 7.7 is quoted with its orientability condition and proved on p.30.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tda-depth-reduction-scope",
+     "value": "The authors state that the original LGZ quantum TDA algorithm had circuit depth O(n5), read as n to the fifth, that recent works brought it to O(n), and that the logarithmic-depth Clifford loader block encoding reduces the depth from O(n) to O(log n); they state their contribution is only an exponentially lower-depth block encoding, to be combined in a black-box way with the Dicke state preparation and singular value transformation of state-of-the-art algorithms, whose running time and assumptions for exponential speedups are in [13].",
+     "anchor": "Section 7, pp.28-30",
+     "quotes": [
+      "We note that the circuit depth for the original LGZ algorithm [26] for quantum TDA was O(n5), a series of recent works [11, 13] on quantum TDA have improved on this by more efficient encodings for the Dirac operator and brought down the depth to O(n) [38].",
+      "The resulting algorithm reduces the depth for the topological data analysis algorithm from O(n) to O(log n).",
+      "Our contribution to quantum TDA is to provide an exponentially lower-depth block encoding for the Dirac operator by embedding it into a logarithmic depth unitary.",
+      "The detailed running time and the assumptions required for exponential speedups for state of the art quantum topological data analysis algorithms may be found for example in Theorem 7 in [13]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The depth reduction follows from Theorems 7.6 and 7.7, but the end-to-end TDA cost and the earlier depths are cited, not shown.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The claim is a depth reduction of one subroutine, not an end-to-end speedup for TDA."
+    },
+    {
+     "id_suggestion": "intro-dequantization-and-polynomial-speedups",
+     "value": "The authors state that Tang's quantum-inspired classical algorithm refuted the exponential speedup for recommendation systems and has been extended to other QML problems, that quantum algorithms for low-rank approximation and least squares regression retain an 8th-power polynomial speedup over state-of-the-art quantum-inspired algorithms [10], and that quantum-inspired algorithms are known to be considerably slower in practice.",
+     "anchor": "Section 1, Introduction, p.2",
+     "quotes": [
+      "Tang [35] obtained a quantum-inspired classical algorithm with running time polynomial in the rank and poly-logarithmic in matrix dimensions for the recommendation systems problem.",
+      "The quantum algorithms for lowrank approximation and least squares regression retain an 8th-power polynomial speedup over the state of the art quantum-inspired algorithms, [10].",
+      "the quantum-inspired algorithms are known to be considerably slower in practice than the classical algorithms with a polynomial dependence on the matrix dimension,"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper attributes to [35], [5] and [10]; the practical-slowness claim carries no citation.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "data-loader-parameter-counting",
+     "value": "The authors state that a parameter counting argument shows the number of qubits times the circuit depth must be Ω(n) for a data loader that can construct any n-dimensional vector state, that unary data loaders use n qubits and depth log n, and that the advantage from such tools is in circuit depth rather than size, which a classical parallel comparison may remove.",
+     "anchor": "Section 1, Introduction, pp.2-3",
+     "quotes": [
+      "A simple parameter counting argument shows that the number of qubits times the circuit depth must be Ω(n) for a data loader circuit that can construct any n-dimensional vector state.",
+      "Near term applications with depth limited devices motivated the use of unary data loader circuits with n qubits and depth log n.",
+      "The quantum advantage using these simple tools is in terms of circuit depth rather than circuit size.",
+      "the correct comparison should be against a classical parallel algorithm running on multiple classical processors, in which case only the circuit size and not depth matters."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's argument stated without proof in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "unary-vs-binary-encoding-depth",
+     "value": "The authors state that unary amplitude encodings can be prepared with parametrized circuits of depth log n, whereas binary encodings require depth O(n) or specialized hardware such as QRAM.",
+     "anchor": "Section 2.1, p.8",
+     "quotes": [
+      "Unary amplitude encodings are useful for quantum machine learning as they can be prepared using parametrized circuits of depth log n, in contrast to binary encodings that either require depth O(n) or specialized hardware like quantum random access memory (QRAM) for state preparation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim, not proved in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "subspace-approach-conclusion",
+     "value": "The authors conclude that further applications of subspace states and their preparation circuits are likely, and that these tools will be broadly useful for polynomial and possibly even exponential speedups for machine learning and topological data analysis problems.",
+     "anchor": "Section 1, p.7",
+     "quotes": [
+      "It is likely that further applications will be found and that these tools will be broadly useful for obtaining polynomial and possibly even exponential speedups for machine learning and topological data analysis problems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's forecast.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "khadiev-2026-quantum-random-forest-regression-problem",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Khadiev-Safina_2026_Quantum-Random-Forest-for-the-Regression-Problem__2603.22790.pdf",
+   "title_in_file": "Quantum Random Forest for the Regression Problem (Khadiev, Safina; arXiv:2603.22790v1, 24 Mar 2026)",
+   "version_note": "The file has 6 pages; the stored anchors name pp.9-10, which do not exist in this file. The same text is in Section IV (p.5) and Section V (pp.5-6) here.",
+   "pages": 6,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A short theory paper with a small simulation, giving a quantum amplitude-estimation algorithm for the prediction step of a trained random forest regressor, with query complexity independent of the number of trees.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qrf-open-question",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section V, Conclusion, pp.5-6",
+     "quotes": [
+      "The open question is how to remove dependence on (ymax − ymin)."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open problem (Section V, p.6).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qrf-query-complexity",
+     "verdict": "widened",
+     "note": "The paper states the bounds, not only what they do not depend on: O(t · h) to forecast a portion of the range (the normalized value beta) and O(t(ymax − ymin) · h) for the value itself; Theorem 1 adds a log(1/delta) factor for error probability delta. The stored value omits the bounds and the height h.",
+     "value": "The authors state that the algorithm's query complexity does not depend on the number of trees but depends on the accuracy of computation: forecasting a portion of the range between the maximum and minimum gives complexity O(t · h), with t the accuracy and h the height of the trees, and forecasting the value itself gives O(t(ymax − ymin) · h).",
+     "anchor": "Section V, Conclusion, pp.5-6",
+     "quotes": [
+      "The query complexity of the algorithm do not depend on the number of trees, but depend on the accuracy of computation.",
+      "If we forecast a portion of the range between the maximum and the minimum, then the complexity is O(t · h), where t is an accuracy of computation and h is",
+      "the height of trees. If we forecast the value itself, then the complexity is O(t(ymax − ymin) · h)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Restates Theorem 1 (Section III-C, p.4), proved on pp.4-5.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qrf-simulation",
+     "verdict": "narrowed",
+     "note": "The paper limits the test: the parameters are small because of simulator performance (14 qubits, two trees of height 2, accuracy t = 32, 10 iterations), and it states that probabilistic measurement can occasionally give less accurate outcomes. It also gives one example pair of normalized values (0.1596 classical, 0.14645 quantum) against a Lemma 2 bound of 0.0623.",
+     "value": "The authors report that a simulated random forest of two trees, each of height 2, with accuracy t = 32 (5 qubits), 3 binary attributes, 14 qubits in total and 10 iterations, reached the required accuracy with high probability, differing from the classical algorithm by only about 3% for the value R; for the normalized value beta an example result was 0.1596 classically and 0.14645 on the quantum circuit, within the Lemma 2 bound of 0.0623. They state the small values were chosen because of simulator performance limits, and that probabilistic measurement can occasionally give less accurate outcomes.",
+     "anchor": "Section IV, On Circuit Implementation, p.5",
+     "quotes": [
+      "we generate a random forest with randomized parameters consisting of two trees, each of height 2.",
+      "Small values are selected due to the limitations imposed by simulator performance. The accurance t = 32, equivalent to 5 qubits.",
+      "For simplicity, X contains 3 binary attributes. The total number of qubits equals 14",
+      "The circuit executes 10 iterations.",
+      "Our experiments show that with high probability we reach the required accuracy, and the results differs from the classical algorithm only on about 3% for the value R.",
+      "For the normilized value β, examples of results are 0.1596 for classical implementation and 0.14645 for quantum implementation. According to Lemma 2, the difference between normalized predictions should not exceed 0.0623,",
+      "However, probabilistic measurement processes can occasionally produce less accurate outcomes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one small simulation; the number of runs behind 'with high probability' is not given.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Two trees of height 2 is too small to show the claimed independence from the number of trees."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qrf-classical-vs-quantum-intro",
+     "value": "The authors state that the classical testing algorithm for a random forest of n trees of maximum height h has complexity O(n · h), testing all trees one by one, while the quantum version has query complexity O(t·h·(ymax −ymin)), reduced to O(t · h) if forecasting a portion of the range between maximum and minimum values is enough.",
+     "anchor": "Section I, Introduction, p.1",
+     "quotes": [
+      "complexity of the classical version of the testing algorithm is O(n · h) that is testing all the trees one by one.",
+      "The suggested quantum version has O(t·h·(ymax −ymin)) query complexity, where t is the required accuracy of the answer, ymax is the maximum possible value for the answer, and ymin is",
+      "If it is enough to forecast a portion of the range between maximum and minimum values, then the query complexity is O(t · h)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The classical cost is stated, not proved as a lower bound; the quantum bound is Theorem 1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The quantum bound beats O(n · h) only when the accuracy parameter t (times the range, for R) is smaller than the number of trees n."
+    },
+    {
+     "id_suggestion": "qrf-abstract-more-efficient-claim",
+     "value": "The authors claim that the presented algorithm is more efficient, in query complexity or running time, than the classical counterpart.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "The presented algorithm is more efficient (in terms of query complexity or running time) than the classical counterpart."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; the paper gives no classical lower bound and no running-time comparison.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The comparison holds only when t is small relative to n; the paper does not state this condition."
+    },
+    {
+     "id_suggestion": "qrf-theorem-1",
+     "value": "The paper proves (Theorem 1) that the quantum algorithm returns the result of the random forest testing process for an object X with accuracy t and error probability delta, with query complexity O(t · h log(1/δ)) for forecasting the normalized value beta and O(t(ymax − ymin) · h log(1/δ)) for forecasting the value R.",
+     "anchor": "Theorem 1, Section III-C, p.4; proof pp.4-5",
+     "quotes": [
+      "The presented quantum algorithm returns the",
+      "result of the testing process of the Random Forest model for",
+      "an object X with accuracy t and error probability δ.",
+      "The query complexity of the algorithm is O(t · h log 1 δ ) for forecasting β value, and is O(t(ymax − ymin) · h log 1 δ ) for forecasting R value."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 is quoted with its accuracy and error-probability conditions; its proof is on pp.4-5. The text layer interleaves the two columns, so the statement is quoted in pieces.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-proof-cost-per-query",
+     "value": "The paper's proof states that the amplitude estimation invokes the D and V transformations t times, that only D depends on the input and invokes the tree-walk unitary and its inverse once each, each doing O(h) queries, so amplitude estimation costs O(t · h) and the powering lemma multiplies this by O(log(1/δ)); estimating R needs accuracy t(ymax − ymin).",
+     "anchor": "Proof of Theorem 1, Section III-C, p.5",
+     "quotes": [
+      "The amplitude estimation algorithm invokes D and V transforma- tions t times. The transfomration V does not depend on input variables, but D does.",
+      "So, the complexity of D is O(h), and the complexity of the amplitude estimation algorithm is O(t · h). We invoke it O(log 1 δ ) times because of the powering lemma.",
+      "If we estimate R = (β − C)(ymax − ymin), then we need to increase accuracy. It becomes t(ymax − ymin)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper's proof of Theorem 1 (p.5).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The quoted transformation text has a hyphen at a line break ('transforma- tions') kept as printed."
+    },
+    {
+     "id_suggestion": "qrf-scope-testing-only",
+     "value": "The authors state that they assume the model is already trained and are interested in the testing process only; training of the decision trees is not the main topic of the paper.",
+     "anchor": "Section II-A and II-B, p.2",
+     "quotes": [
+      "In this paper, we assume that the model is already trained (built), and we are interested in the testing process only.",
+      "It is not the main topic of interest of the paper."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope statement (Section II, p.2).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-forest-output-definition",
+     "value": "The paper defines the random forest as decision trees T0 to Tn−1 with maximum height h, whose testing result for an input X is the mean of the tree results, and defines ymin and ymax as the minimal and maximum leaf labels among all trees.",
+     "anchor": "Section II-B, p.2; Section III-B, p.3",
+     "quotes": [
+      "As a Random Forest model, we consider a set of decision trees {T0, . . . , Tn−1}, where n is the number of trees. The parameter h is the maximum height of the trees.",
+      "Then, the result of the testing (forecasting) process for the Random Forest model for X is",
+      "Let ymin and ymax be the minimal and maximum possible labels of leaves among all the trees of the model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions (Sections II-B and III-B).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-method-amplitude-estimation",
+     "value": "The authors state that the method rests on quantum amplitude estimation and a specific representation of the decision trees: each tree's leaf value is encoded by rotating an output qubit by an angle whose squared sine is the leaf value normalized to the range, and the target value is recovered as R = (β − C)(ymax − ymin).",
+     "anchor": "Section I, p.1; Section III-B, pp.3-4",
+     "quotes": [
+      "Our method is based on the Quantum Amplitude Estimation algorithm [38] and the specific representation of the decision trees.",
+      "We can compute the target value as R = (β − C)(ymax − ymin).",
+      "For this goal, we apply the operator Ry(2αi)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own construction (Section III-B).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-beta-or-r-by-error-measure",
+     "value": "The authors state that the choice between computing the normalized value beta or the value R depends on the forecast-quality measure: for difference measures similar to MAE, MSE and RMSE R should be computed, and for portion measures similar to MAPE, wMAPE and sMAPE beta can be computed.",
+     "anchor": "Section III-B, p.4",
+     "quotes": [
+      "checking quality of forecasting, we can choose computing β or R.",
+      "(difference of the values), then we should compute R.",
+      "portion of values), then we can compute β."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's recommendation; the two-column text layer interleaves this passage.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-amplitude-estimation-lemma-cited",
+     "value": "The paper cites amplitude estimation (Lemma 2, from [38]): using D and V t times each, it outputs an estimate of beta within an error bound in t with probability at least 8/π², improvable to 1 − δ via the powering lemma at a multiplicative cost O(log(1/δ)).",
+     "anchor": "Section III-A, Lemma 2, p.3",
+     "quotes": [
+      "Lemma 2 (Amplitude estimation [38]): There is a quantum algorithm called amplitude estimation",
+      "using D and V transformations t times each. The success probability of 8 π2 can be improved to 1−δ for any δ > 0 using the powering lemma at the cost of a multiplicative factor O(log 1 δ )."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to [38]; the error bound is garbled in the text layer.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-powering-lemma-cited",
+     "value": "The paper cites the powering lemma (Lemma 1, from [41]): an estimator within epsilon except with probability gamma < 0.5, repeated O(log(1/δ)) times with the median taken, is accurate within epsilon with probability at least 1 − δ.",
+     "anchor": "Section III-A, Lemma 1, p.3",
+     "quotes": [
+      "Lemma 1 (Powering lemma [41] or success probability boosting technique):",
+      "except with probability γ , for some fixed γ < 0.5. Then, for any δ > 0, it suffices to repeat the U algorithm O(log 1 δ ) times and take the median to obtain an estimate which is accurate to within ε with probability at least 1 − δ."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to [41].",
+     "result_type": "cited",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrf-circuit-construction",
+     "value": "The authors describe the circuit: the tree gate is a uniformly controlled gate controlled by the tree-index register; the tree walk is a sequence of multiplication by 2 and addition of 1, repeated h times, with multiplication by 2 a sequence of SWAP gates; the leaf rotation is a uniformly controlled rotation; and a SWAP gate can be represented with 3 CNOT gates.",
+     "anchor": "Section IV, On Circuit Implementation, Figs. 2-4, p.5",
+     "quotes": [
+      "The gate UTi is U CG controlled by the decision tree indices in the register |λ⟩.",
+      "Step 1 consists of a sequence of multiplication by 2 and addition of 1 operations.",
+      "This process is repeated h times. Step 2 is implemented using uniformly controlled rotation operator.",
+      "The operator of multiplication by 2 is a sequence of SWAP gates due to [30].",
+      "SWAP gate can be represented using 3 CNOT gates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own circuit construction (Section IV, p.5).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "khesin-2025-quantum-computing-graphs",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Khesin_2025_Quantum-Computing-from-Graphs__2501.17959.pdf",
+   "title_in_file": "Quantum Computing from Graphs (Khesin, MIT PhD thesis, arXiv:2501.17959v1)",
+   "version_note": "",
+   "pages": 169,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A PhD thesis on the graph formalism for stabilizer states and codes: merging graph states under non-Clifford (C3) gates, a canonical form and algorithms for extended graph states, a universal graph representation of stabilizer codes with code constructions, QLO-game views of coding algorithms and random codes, and equivalence classes of CSS and Clifford codes in the ZX-calculus.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "graph-code-encoding-depth-twice-degree",
+     "verdict": "narrowed",
+     "note": "The informal Theorem 4.1.2 item 3 is stated precisely in Theorem 4.4.6 (Section 4.4, p.72), which adds a condition (qubits may be initialized to the |+> state) and gives the exact bound depth(C) <= 2 delta* + 3 for maximum degree delta*. The proof bounds the CZ layers through Vizing's edge colouring.",
+     "value": "The thesis proves that, if qubits can be initialized to the |+⟩ state, an efficient algorithm outputs, for a graph G with maximum degree δ∗, an encoding circuit C for the code with stabilizers S(G) whose depth is at most 2δ∗ + 3; the informal statement calls this twice the maximum degree up to a small additive constant.",
+     "anchor": "Theorem 4.1.2 (informal), Section 4.1.1, p.57; Theorem 4.4.6, Section 4.4, p.72",
+     "quotes": [
+      "(3) There exists an efficient algorithm which produces an encoding circuit for C(G) whose depth is bounded by (up to a small additive constant) twice the maximum degree of G.",
+      "Theorem 4.4.6. Suppose that one may initialize qubits to the |+⟩ state. Given a graph G with maximum degree δ∗, there exists an efficient algorithm which outputs an encoding circuit C for the code with stabilizers S(G), such that depth(C) ≤ 2δ∗ + 3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.4.6 is quoted with its condition and exact bound; its constructive proof follows on pp.72-73.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "graph-codes-scope-limits-vs-qldpc",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 4.1.1, Contributions, scope, and conjectures, p.58",
+     "quotes": [
+      "The universality of these results therefore has limitations that do not exist for highly specific quantum low-density parity check (qLDPC) constructions.",
+      "Thus, our intention is not to use the graph representation as a means for continued study into asymptotically good qLDPC codes with very large constants"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The thesis's own scope statement (Section 4.1.1, p.58).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "graph-random-codes-tradeoff-extends-qgv",
+     "verdict": "widened",
+     "note": "The formal Theorem 4.5.10 (p.93) gives the trade-off: an efficiently sampleable family of distributions over stabilizer codes with stabilizer weight at most min(n, (4 + o(1)) R d^2 log^2 n), rate R(n), and distance d(n) with probability at least 1 - n^-d, as n goes to infinity. The thesis also limits it: it complements rather than subsumes the Gilbert-Varshamov bound, and it forces the stabilizer weight to be at least the distance, an artifact of the proof technique.",
+     "value": "The thesis states that randomly connecting edges of its graphs gives a large class of codes in which almost all members satisfy a trade-off between rate, distance and stabilizer weight, extending the quantum Gilbert-Varshamov bound, which has always large stabilizer weight. The formal theorem gives an efficiently sampleable family of distributions over stabilizer codes that, as n goes to infinity, has stabilizer weights at most min(n, (4 + o(1)) R d-squared log-squared n), rate R(n), and distance d(n) with probability at least 1 − n to the power −d. The author states that the result complements, rather than subsumes, the Gilbert-Varshamov bound by giving a nontrivial weight reduction at substantially sublinear distances, and that it forces the stabilizer weight to be at least as large as the distance, an artifact of the proof technique.",
+     "anchor": "Section 4.1.1, p.58; Theorem 4.5.10 and discussion, Section 4.5.6, pp.93-94",
+     "quotes": [
+      "By randomly connecting edges of our graphs, we give a large class of codes for which almost all members satisfy a trade-off between rate, distance, and stabilizer weight.",
+      "This extends the result of the quantum Gilbert-Varshamov bound, which shows by a coarsegrained probabilistic stabilizer tableau analysis a similar result with a rate-distance trade-off but always large stabilizer weight.",
+      "There exists an efficiently sampleable family of distributions Sn, parameterized by n, over stabilizer codes that as n → ∞ satisfy three properties.",
+      "(a) The stabilizer weights are |Si|≤ min(n, (4 + o(1))Rd2 log2 n), (4.15) where Si is a stabilizer from a tableau sampled from Sn, (b) the rate is R(n), and (c) with probability at least 1 − n−d, a random code from Sn will have distance d(n).",
+      "complements, as opposed to subsuming, the Gilbert-Varshamov bound because it provides a nontrivial weight reduction at substantially sublinear distances.",
+      "It also forces the stabilizer weight, at least for the generating set we construct, to be at least as large as the distance, which is an artifact of our proof technique."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.5.10 is quoted with its three properties and the author's own stated limits; its proof follows in Section 4.5.6.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The text layer prints the admissible distance range as [ω(1), n log n ], which has lost a fraction or root; the value leaves the range out."
+    },
+    {
+     "id": "graph-stabilizer-code-bijection",
+     "verdict": "widened",
+     "note": "The stored value is accurate but leaves out the precise statement and its costs. Theorem 4.2.5 (p.63) proves that any Clifford encoder has a unique equivalent ZX canonical form (ZXCF) satisfying the Edge, Hadamard, RREF and Clifford rules, computed in worst-case O(n^3) time, and that the map is bijective. The informal Theorem 4.1.1 gives tableau-to-graph in O(n^3) time and the reverse in O(n^2) time. The informal statement says 'essentially uniquely'.",
+     "value": "The thesis proves that every stabilizer code is essentially uniquely represented by an encoder-respecting graph satisfying some rules, and conversely; precisely, any Clifford encoder has a unique equivalent ZX canonical form satisfying the Edge, Hadamard, RREF and Clifford rules, an algorithm finds it in worst-case O(n cubed) time, and the map is bijective. The informal statement gives compilation from tableaus to graphs in O(n cubed) time and back in O(n squared) time.",
+     "anchor": "Abstract; Theorem 4.1.1 (informal), Section 4.1.1, p.56; Theorem 4.2.5, Section 4.2, p.63; proof in Appendix D",
+     "quotes": [
+      "Every stabilizer code is essentially uniquely represented by an encoder-respecting graph satisfying some rules, and conversely every such graph essentially uniquely represents a stabilizer code.",
+      "There is an efficient compilation algorithm that maps tableaus to graphs in O(n3) time and vice versa in O(n2) time.",
+      "Theorem 4.2.5. Any Clifford encoder has a unique equivalent ZXCF satisfying the Edge, Hadamard, RREF, and Clifford rules.",
+      "There exists an algorithm, running in worst-case O(n3) time, that on an input of a description of a Clifford encoder outputs the corresponding ZXCF. This map is bijective."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.2.5 is quoted; its proof is in Section 4.2.3 and Appendix D.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "graph-c3-gate-merging-theorem",
+     "value": "The thesis proves that for a C3 operator C from the set {T, CS, CH, CCZ, CCX, CSWAP} and a state U|G⟩, with U local Clifford and G an n-vertex graph of largest degree d, two states U1|G1⟩ and U2|G2⟩ with C|ψ⟩ = U1|G1⟩ + U2|G2⟩ can be found in runtime O(nd).",
+     "anchor": "Theorem 2.5.1, Section 2.5, p.24; runtime proof p.30",
+     "quotes": [
+      "Let S be {T, CS, CH, CCZ, CCX, CSWAP}, a collection of C3",
+      "Theorem 2.5.1. Let C ∈ S be a C3 operator and let state |ψ⟩ be U |G⟩ where U is local Clifford and G is an n-vertex graph with largest degree d.",
+      "Then we can find two states U1 |G1⟩ and U2 |G2⟩ such that C |ψ⟩ = U1 |G1⟩ + U2 |G2⟩ in runtime O(nd).",
+      "Since d < n, we have proven our runtime O(nd)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2.5.1 with its conditions; the merging formula is proved in Section 2.7 and the runtime in Section 2.8.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-two-t-gates-two-stabilizer-states",
+     "value": "The thesis shows that T1T2|++⟩ decomposes into 2 stabilizer states with its merging algorithm, which is optimal since the state is not a stabilizer state.",
+     "anchor": "Section 2.6.2, Magic states, p.27",
+     "quotes": [
+      "We obtain a decomposition into 2 stabilizer states, which is optimal since T1T2 |++⟩ is not a stabilizer state."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A worked derivation (Equations 2.9 to 2.11); optimality follows because the state is not a stabilizer state.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-c3-simulation-future-work",
+     "value": "The thesis states as future work examining how its algorithm performs on higher-qubit magic states, finding more cases where two states can be merged, and the implications of its C3 circuit simulation algorithm for universal quantum computation.",
+     "anchor": "Section 2.9, Conclusion, p.31",
+     "quotes": [
+      "In this chapter, we showed how to simulate C3 circuits on stabilizer states.",
+      "Future work can examine how our algorithm performs when computing higher-qubit magic states. We can also look to derive more cases where merging two states is possible besides the ones we found.",
+      "Additionally, we can look at the implications of our C3 circuit simulation algorithm for universal quantum computation."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The thesis's own statement of open work (Section 2.9).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-reduced-form-support",
+     "value": "The thesis proves that an extended graph state in reduced form, with k of its local Clifford operators equal to H, has support 2 to the power n−k.",
+     "anchor": "Lemma 3.3.3, Section 3.3, p.37",
+     "quotes": [
+      "Lemma 3.3.3. Let |ψ⟩ = cvzv |G⟩ be in reduced form. Let k be the number of ci that v=1 are equal to H. Then the support of |ψ⟩ is 2n−k."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 3.3.3 with its proof; the exponent is printed flat in the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-canonical-form-unique",
+     "value": "The thesis proves that the canonical form of an extended graph state is unique: two states equal up to global phase and both in canonical form have the same graph, the same local Clifford operators and the same Pauli Z components.",
+     "anchor": "Theorem 3.3.4, Section 3.3, p.38",
+     "quotes": [
+      "Theorem 3.3.4. If |ψ⟩ = |ψ′⟩ up to global phase",
+      "then G = G′, c = c′, and z = z′. The representation v=1 of a state in canonical form is unique."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3.3.4 with its proof (Section 3.3).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-canonical-form-count",
+     "value": "The thesis proves a closed-form count of the n-qubit extended graph states in canonical form; the text layer prints it as 2n (2k + 1) and loses the product notation.",
+     "anchor": "Theorem 3.3.9, Section 3.3, p.40",
+     "quotes": [
+      "Theorem 3.3.9. There are 2n (2k + 1) n-qubit extended graph states in canonical form."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A proved theorem, but the text layer garbles the formula, so its exact form cannot be quoted.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The counting proof chooses ck, zk and the lower-numbered edges per qubit k, which suggests a product over k of 2 to the k plus 1 terms times a power of 2; this is a reading of a garbled formula."
+    },
+    {
+     "id_suggestion": "graph-canonical-simplification-runtime",
+     "value": "The thesis proves that an algorithm simplifies an arbitrary extended graph state into canonical form in O(n d squared) time, where d is the maximum degree encountered during the calculation.",
+     "anchor": "Theorem 3.3.13, Section 3.3, p.41",
+     "quotes": [
+      "Theorem 3.3.13. There exists an algorithm to simplify an arbitrary extended graph state, n |ψ⟩ := Cv |G⟩, into canonical form, that runs in O(nd2), where d is the maximum v=1 degree in G encountered during the calculation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3.3.13 with its proof (Section 3.3).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-canonical-circuit-four-blocks",
+     "value": "The thesis states that its canonical form converts directly to a canonical circuit that prepares stabilizer states from a computational basis state with only four blocks of Clifford gates, fewer than other canonical forms.",
+     "anchor": "Section 3.1, Introduction, p.33",
+     "quotes": [
+      "form can be directly converted to a canonical circuit that prepares stabilizer states from a computational basis state. This circuit has only four blocks of Clifford gates, which is fewer than other canonical forms [44]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A comparison with prior canonical forms stated in the introduction; the comparison is not proved as a theorem.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-state-simulator-costs",
+     "value": "The thesis states that graph state simulators apply local Clifford gates such as S and H in O(1) time, and that the bottleneck is applying controlled-Pauli gates such as CZ, currently done in O(d squared) time for maximum degree d.",
+     "anchor": "Section 3.4.1, Algorithm, p.44",
+     "quotes": [
+      "Graph state simulators of stabilizer circuits are advantageous in that local Clifford gates such as S and H can be applied trivially in O(1) time.",
+      "The bottleneck of a graph state simulator is the application of controlled-Pauli gates, such as CZ gates, which currently can be done in O(d2) time where d is the maximum degree of the graph encountered during the calculation."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement of the state of the field, resting on prior simulators [33, 43].",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-cz-update-quadratic-lower-bound",
+     "value": "The thesis proves that a family of extended graph states exists for which applying a CZ gate requires toggling Ω(n squared) edges of the graph, and concludes that under certain assumptions extended graph states cannot be updated in under quadratic time upon a controlled-Pauli gate, so simulation should not apply one gate at a time.",
+     "anchor": "Theorem 3.4.2, Section 3.4, p.45; Section 3.6, Conclusion, p.53",
+     "quotes": [
+      "Theorem 3.4.2. There exists a family of extended graph states such that applying a CZ gate requires Ω(n2) edges of G to be toggled.",
+      "and also to prove that under certain assumptions, it is impossible to update extended graph states in under quadratic time in the number of qubits upon the application of a controlled-Pauli gate.",
+      "Therefore, in order to improve graph state simulation, we should consider algorithms that do not simply apply one gate at a time."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3.4.2 with its constructive proof (Section 3.4).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The lower bound concerns the number of edges toggled in this representation, not every possible simulation method."
+    },
+    {
+     "id_suggestion": "graph-merging-odd-k-identity",
+     "value": "The thesis proves a merging identity for odd k = 2m + 1 and an arbitrary vertex set A, expressing the projector-type sum applied to a graph state as a product of Z powers and CS gates on that graph state; the text layer garbles the formula.",
+     "anchor": "Theorem 3.5.1, Section 3.5, p.47",
+     "quotes": [
+      "Theorem 3.5.1. Let k = 2m + 1. Let A be an arbitrary set."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A proved theorem whose formula is garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-hadamard-pair-identity",
+     "value": "The thesis proves an identity that writes HuHv|G⟩, for two non-adjacent vertices u and v, as the sum of ZuZv|G⟩ and a state with Z operators on the neighbourhoods and CZ gates between the closed neighbourhoods of u and v.",
+     "anchor": "Theorem 3.5.2, Section 3.5, p.47",
+     "quotes": [
+      "Theorem 3.5.2. Let u and v be two vertices of graph G such that (u, v) ∈/ E(G).",
+      "Let sets Mu and Mv be defined as Mu = N (u) ∪ {u} and Mv = N (v) ∪ {v}."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A proved theorem whose formula is garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-linearly-dependent-triplets",
+     "value": "The thesis proves that any set of three linearly dependent stabilizer states that are not all parallel falls, up to global phase, into one of three cases, the first being a stabilizer state, its image under a Pauli operator P, and their normalized sum; it states this completely characterizes linearly dependent triplets.",
+     "anchor": "Theorem 3.5.3, Section 3.5, p.49; Chapter 6, p.131",
+     "quotes": [
+      "Theorem 3.5.3. Let S := {|ψ1⟩ , |ψ2⟩ , |ψ3⟩} be a set of linearly dependent stabilizer states that are not all parallel. Then, up to global phase, one of the three cases must be true",
+      "For some stabilizer state |φ⟩ and some Pauli operator P , S = {|φ⟩ , P |φ⟩ , I √+ P |φ⟩}.",
+      "by completely characterizing linearly dependent triplets of stabilizer states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3.5.3 with its proof (Section 3.5); cases 2 and 3 are garbled in the text layer, so only case 1 is restated.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-stabilizer-inner-product-sum",
+     "value": "The thesis proves that if two stabilizer states have an inner product in a specific two-element set, then minus their sum is a stabilizer state with the same pairwise inner products; the set is garbled in the text layer.",
+     "anchor": "Theorem 3.5.7, Section 3.5, p.51",
+     "quotes": [
+      "is a stabilizer state and satisfies ⟨ψ2| ψ3⟩ = ⟨ψ3| ψ1⟩ = ⟨ψ1| ψ2⟩."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A proved theorem whose condition is garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-inner-product-algorithm",
+     "value": "The thesis proves that the inner product of two extended graph states can be computed in O(n d squared) time, where d is the maximum degree in the two graphs encountered during the calculation.",
+     "anchor": "Theorem 3.5.9, Section 3.5, p.52",
+     "quotes": [
+      "Then ⟨ψ |ψ′⟩ can be computed in O(nd2) time, where d is the maximum degree in G and G′ encountered during the calculation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3.5.9 with its proof (Section 3.5).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "With d up to n the worst case is cubic in n."
+    },
+    {
+     "id_suggestion": "graph-code-distance-at-most-min-degree",
+     "value": "The thesis proves that the distance of the code represented by a graph is bounded above by the minimum degree of any vertex among the inputs and their output neighbours (informally, by the min-degree of the graph), using canonical logical operators: for an input v with a neighbour u, logical X on v is Z on v's output neighbours and logical Z on v is X on u times Z on u's output neighbours.",
+     "anchor": "Theorem 4.1.2 (informal) item 1, p.57; Theorem 4.4.3 and Corollary 4.4.4, Section 4.4, p.70",
+     "quotes": [
+      "(1) The distance of C(G) is bounded above by the min-degree of G.",
+      "If v is an input vertex with a neighbour u, Xv = ZNo(v) and Zv = XuZNo(u).",
+      "Corollary 4.4.4. The distance of the code with stabilizers S(G) is at most the minimum degree of any vertex in I ∪ No(I)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.4.3 and Corollary 4.4.4 with their proofs (Section 4.4).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-code-stabilizer-weight-bound",
+     "value": "The thesis proves that the stabilizer tableau from its compilation algorithm has weights bounded by a quadratic function of the degree of certain nodes; when every path between every pair of inputs has length at least 3, the maximum stabilizer weight is at most the maximum output degree plus the largest output neighbourhood of a pivot.",
+     "anchor": "Theorem 4.1.2 (informal) item 2, p.57; Corollary 4.4.5, Section 4.4, p.71",
+     "quotes": [
+      "(2) The stabilizer tableau produced by the algorithm in Theorem 4.1.1 has weights bounded by a quadratic function of the degree of certain nodes in G.",
+      "Moreover, if every path between every pair of nodes v, w ∈ I is of length at least 3, so that every node u ∈ O is connected to at most one node in I, then max |S|≤ S ∈S (G) δO∗ + δP∗ O."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Corollary 4.4.5, a direct consequence of the proved inversion formula (Theorem 4.4.2).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-code-edge-colouring-vizing",
+     "value": "The thesis states that finding the optimal edge colouring is NP-complete, but Vizing's theorem guarantees a colouring with at most δ∗ + 1 colours that an efficient algorithm finds, which bounds the CZ layers of its encoding circuit.",
+     "anchor": "Proof of Theorem 4.4.6, Section 4.4, p.73",
+     "quotes": [
+      "edge colouring is known to be NP-complete, Vizing's edge colouring theorem guarantees that the minimal colouring is at most δ∗ + 1, and moreover there exists an efficient algorithm which finds such a colouring [77, 78]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the thesis attributes to [77, 78].",
+     "result_type": "cited",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-code-generic-logical-operation-depth",
+     "value": "The thesis proves that for a graph code with maximum degree δ∗ and a unitary U implementable in depth dU, an efficient algorithm constructs a circuit that logically implements U with depth at most 4δ∗ + 6 + dU, and that every diagonal gate can be implemented logically with depth at most 2δ∗ + 5.",
+     "anchor": "Theorems 4.4.7 and 4.4.8, Section 4.4, p.74",
+     "quotes": [
+      "Let G be a graph code with maximum degree δ∗, and let U be a unitary which can be implemented in depth dU . Then there is an efficient algorithm which constructs a circuit CU that logically implements U on G, such that depth(CU ) ≤ 4δ∗ + 6 + dU .",
+      "Theorem 4.4.8. For any graph code G with maximum degree δ∗, every diagonal gate U can be implemented logically on G with depth at most 2δ∗ + 5."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorems 4.4.7 and 4.4.8 with their proofs (Section 4.4).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-code-sqrt-x-logical-depth",
+     "value": "The thesis proves that an efficient algorithm finds a circuit implementing the logical square-root-of-X gate (HSH) on an input node u with depth at most deg(u) + 1.",
+     "anchor": "Theorem 4.4.11, Section 4.4, p.76",
+     "quotes": [
+      "There is an efficient algorithm which finds a circuit that implements the logical X = HSH gate on an input node u with depth at most deg(u) + 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.4.11, proved from Claim 4.4.9 and Lemma 4.4.10; the root sign is lost in the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-code-coding-algorithms-are-qlo",
+     "value": "The thesis proves that code distance, stabilizer weight reduction and decoding are each given by an instance of a quantum lights out (QLO) game on the code's graph, so these coding algorithms are approximately optimal strategies for QLO games.",
+     "anchor": "Theorem 4.1.3 (informal), p.57; Theorems 4.4.13, 4.4.14 and 4.4.15, Section 4.4.3, pp.78-80",
+     "quotes": [
+      "Many coding algorithms such as distance approximation, stabilizer weight reduction, and decoding are all approximately optimal strategies for QLO games.",
+      "Theorem 4.4.13 (Distance is QLO). Given a graph G, denote the distance of the code represented by d(G), which is calculated by the following QLO instance.",
+      "Theorem 4.4.14 (Weight reduction is QLO). Let {Si} be the canonical stabilizer generators of G.",
+      "Then, the recovery map that should be applied is given by a QLO game instance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorems 4.4.13 to 4.4.15 with their proofs (Section 4.4.3).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-qlo-np-complete",
+     "value": "The thesis concludes that, since finding the distance of a stabilizer code is NP-complete, optimally playing QLO on arbitrary graphs is also NP-complete.",
+     "anchor": "Section 4.4.3, after Theorem 4.4.13, p.79",
+     "quotes": [
+      "Since finding the distance of a stabilizer code is NP-complete [79], we",
+      "may immediately conclude that optimally playing QLO on arbitrary graphs is also NP-complete."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A one-line deduction from Theorem 4.4.13 and a hardness result cited from [79].",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The deduction gives NP-hardness; membership in NP for the general game is not argued in the quoted text."
+    },
+    {
+     "id_suggestion": "graph-semi-bipartite-representation",
+     "value": "The thesis proves that every stabilizer code has at least one equivalent code with a representation as a semi-bipartite graph with no local Clifford operations.",
+     "anchor": "Theorem 4.2.7, Section 4.2, p.65",
+     "quotes": [
+      "Theorem 4.2.7. For any stabilizer code, there exists at least one equivalent code that has a representation as a semi-bipartite graph with no local Clifford operations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.2.7 (Section 4.2).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-css-codes-bipartite",
+     "value": "The thesis states, first as an observation from experimental testing and then as a theorem proved in its CSS chapter, that bipartite graphs correspond to CSS codes: the graph of any CSS code is bipartite and any bipartite graph can be turned into a CSS code.",
+     "anchor": "Theorem 4.2.9, Section 4.2, p.65; full proof in Chapter 5",
+     "quotes": [
+      "From experimental testing we can make the following observation.",
+      "Theorem 4.2.9. Bipartite graph correspond to CSS codes. Specifically, the graph of any CSS code will be bipartite and any bipartite graph can be turned into a CSS code.",
+      "We prove this theorem fully in the next chapter, which focuses more heavily on CSS codes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated as a theorem with a proof sketch in Section 4.2 and a full proof in Chapter 5.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-dodecahedral-code",
+     "value": "The thesis reports a [[16, 4, 3]] dodecahedral code, the optimal packing of inputs into the dodecahedral graph with no two inputs joined by a path shorter than 3; it is a non-CSS stabilizer code with rate higher than the 5-qubit code, its encoding circuit has depth 6 as drawn, and moving some CZ gates gives a provably optimal depth-5 circuit. Distances in this section were computed directly.",
+     "anchor": "Section 4.5.1 and 4.5.2, Figures 4.6 and 4.7, pp.81-82",
+     "quotes": [
+      "The distance calculations of codes in this section were performed by direct computation.",
+      "Figure 4.6: The 16, 4, 3",
+      "This code is the optimal packing of input nodes into the dodecahedral graph so that no inputs have a path between them of length less than 3.",
+      "therefore this code is a non-CSS stabilizer code. The rate of the code is higher than that of the 5-qubit code.",
+      "so that the circuit depth is the number of blocks, in this case 6.",
+      "to produce a depth-5 (but more visually complicated) circuit, which is provably optimal."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A computed code construction; the distance comes from direct computation with the authors' code [81].",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The double brackets of the code parameters are lost in the text layer."
+    },
+    {
+     "id_suggestion": "graph-icosahedral-codes",
+     "value": "The thesis reports that marking a single input on the icosahedron gives only distance 3, because a logical Y has weight 3, while a double cover of the punctured icosahedron with two inputs gives a [[22, 2, 5]] code and a 5-fold cover gives a [[54, 6, 5]] code.",
+     "anchor": "Section 4.5.3, Figure 4.8, pp.83-84",
+     "quotes": [
+      "Hence, a logical Y on any input is a logical operation of weight 3",
+      "creates a code of distance 3.",
+      "we create a 22, 2, 5 code.",
+      "The 5-covered icosahedral code has parameters 54, 6, 5"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A computed code construction; distances in this section come from direct computation.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The text layer places the [[54, 6, 5]] sentence before the covering-space explanation, so the paragraph order is disturbed."
+    },
+    {
+     "id_suggestion": "graph-hypercube-codes",
+     "value": "The thesis states that hypercube codes have distance provably at most m and at least about m/2 (the decoder corrects at least m/4 errors, up to a ±1 additive constant), conjectures that the distance is m, and gives the m = 7 case as a [[112, 16]] code with distance between 4 and 7; asymptotically the distance scales as Θ(log n).",
+     "anchor": "Section 4.1.1, p.57; Section 4.5.4, p.85",
+     "quotes": [
+      "Their distance is provably at most m, but we show that the decoder can correct at least m/4 errors on it, so that the",
+      "distance is also at least m/2 (up to a ±1 additive constant). We conjecture, however, that a more careful analysis can prove that the distance is actually m.",
+      "For example, for m = 7, the code is 112, 16 with distance between 4 and 7.",
+      "Θ(log n) . To improve the rate further"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Mixes proved bounds (Corollary 4.5.7) with a conjecture; the asymptotic rate is garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-rate-barrier-separated-inputs",
+     "value": "The thesis states that improving the rate beyond the distance-rate trade-off barrier R ≤ 1/d requires the most general form of graph codes, with inputs separated by paths of length 2.",
+     "anchor": "Section 4.5.4, p.85",
+     "quotes": [
+      "To improve the rate further without the strong distance-rate trade-off barrier R ≤ 1 d , we will need to use the most general form of graph codes, namely those with inputs separated by paths of length 2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Stated in the construction discussion, not as a numbered theorem.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-three-layer-torus-code-rate",
+     "value": "The thesis gives a 3-layer, high-dimensional checkerboard-like code construction with a constant rate of 2/7 at any scale; its distance is bounded above by d, and lower-bounding the distance needs more sophisticated techniques.",
+     "anchor": "Section 4.5.4, p.86",
+     "quotes": [
+      "(4) We repeat this 3-layer structure as many times as desired.",
+      "Again, we see that our distance upper bound is d",
+      "More sophisticated techniques are necessary to lower-bound the distance. However, the rate of this code is a constant 2 7 , which is achieved at any scale of"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A construction with its rate; the distance has no lower bound.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-greedy-decoder-guarantee",
+     "value": "The thesis proves that for a B-sensitive graph with minimum degree δ∗ the greedy graph decoder corrects at least the floor of δ∗ divided by 2B errors, so Θ(δ∗) errors for constant B, which puts a lower bound on the code's distance.",
+     "anchor": "Theorem 4.1.5 (informal), p.58; Theorem 4.5.2, Section 4.5.5, p.87",
+     "quotes": [
+      "Theorem 4.5.2 (Greedy guarantee). Let G be a B-sensitive graph. Denote δ∗ := min deg(v) v∈V the minimum degree of G. Then the greedy graph decoder corrects at least ⌊ δ∗ 2B ⌋ errors.",
+      "For constant B, the decoder thus corrects Θ(δ∗) errors.",
+      "putting a lower bound on the code's distance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.5.2 with its proof (Section 4.5.5).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-sensitivity-distance-and-depth-bounds",
+     "value": "The thesis proves that for a B-sensitive graph with minimum degree δ∗ the code distance is at most δ∗ and at least about δ∗/B, and that the canonical encoding circuit depth is at most B times (distance minus 1).",
+     "anchor": "Corollaries 4.5.3 and 4.5.4, Section 4.5.5, p.88",
+     "quotes": [
+      "Corollary 4.5.3 (Distance bound). Let G be a B-sensitive graph and minimum degree δ∗, and let C(G) be the code that G represents. Then δ∗ B ≤2 δ∗ 2B + 1 ≤ dist(C(G)) ≤ δ∗.",
+      "B(2 δ∗ 2B + 1) − B ≤ B(dist(C(G)) − 1)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Proved corollaries, but the floor expressions are garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-hypercube-sensitivity",
+     "value": "The thesis proves that every hypercube code is 2-sensitive, so the d-dimensional hypercube code has distance between about d/2 and d, and conjectures that its distance is d and that a greedy decoder can decode up to the floor of (d−1)/2 errors.",
+     "anchor": "Theorem 4.5.6, Corollary 4.5.7 and Conjecture 4.5.8, Section 4.5.5, pp.89-92",
+     "quotes": [
+      "Theorem 4.5.6 (Hypercube sensitivity). Every hypercube code is 2-sensitive.",
+      "Corollary 4.5.7. The d-dimensional hypercube cube has distance between 2 d 4 + 1 ≈ d/2 and d.",
+      "Conjecture 4.5.8. The d-dimensional hypercube code has distance d and a greedy decoding algorithm can decode up to ⌊ d−1 2 ⌋ errors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4.5.6 and Corollary 4.5.7 are proved; the distance-d statement is labelled a conjecture.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-quantum-gilbert-varshamov",
+     "value": "The thesis states the quantum Gilbert-Varshamov bound: for d at most n/2, as n goes to infinity an [[n, k, d]] code exists if nH(d/n) + d log 3 < n − k, with H the binary entropy, and gives a self-contained probabilistic proof by a union bound over random stabilizer tableaus.",
+     "anchor": "Theorem 4.5.9, Section 4.5.6, p.92; Appendix F, pp.153-154",
+     "quotes": [
+      "Theorem 4.5.9 (Quantum Gilbert-Varshamov). For parameters d≤ n 2 and k which depend implicitly on n, as n → ∞ there exists a n, k, d code if nH(d/n) + d log 3 < n − k,",
+      "We give a self-contained proof of Theorem 4.5.9 in Appendix F.",
+      "To complete the proof, we apply the union bound."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A well-known result (cited to [1]) proved in Appendix F.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Appendix F writes that a code exists if and only if the failure probability is below 1; the union-bound argument gives only the sufficient direction."
+    },
+    {
+     "id_suggestion": "graph-random-code-weight-separated-inputs",
+     "value": "The thesis states that for graphs in which all inputs are at least 3 nodes apart the rate is 1/Δ and the stabilizer weight is at most (2 + o(1)) d log n.",
+     "anchor": "End of Section 4.5.6, p.95",
+     "quotes": [
+      "all inputs are at least 3 nodes away from each other, in which case R = 1/∆ and thus |Sv|≤ (2 + o(1))d log n."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A special case stated after the proof of Theorem 4.5.10, not separately proved.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-css-kl-canonical-form",
+     "value": "The thesis proves that every CSS code has a unique equivalent ZX diagram (the KL canonical form) satisfying bipartite, phase-free and RREF rules, with an analogous canonical form for CSS states, and states that this improves on the known fact that phase-free ZX diagrams are CSS codes by giving an optimal and unique representation with one node per input and output.",
+     "anchor": "Theorem 5.3.2 and Corollary 5.3.4, Section 5.3, pp.103-104; Chapter 6, p.131",
+     "quotes": [
+      "Theorem 5.3.2 (KL canonical form for CSS codes). For any CSS code, there is a unique equivalent ZX diagram satisfying the following rules.",
+      "Corollary 5.3.4 (Canonical form for CSS states). For any CSS state, there is a unique equivalent ZX diagram satisfying the following rules.",
+      "it was known that phase-free ZX diagrams are CSS codes, but now we have shown an optimal and unique representation, reducing the number of nodes to have one per"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5.3.2 with its counting proof (Lemmas 5.3.5 to 5.3.10).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-fundamental-theorem-clifford-codes",
+     "value": "The thesis proves the Fundamental Theorem of Clifford Codes: a Clifford code whose encoder-respecting form has a full-rank input-output adjacency matrix has a unique decomposition into a product of prime codes, up to a permutation of input nodes; and two Clifford encoders with the same codespace, each made of prime components, have equivalent ZX diagrams up to a permutation of the inputs.",
+     "anchor": "Theorems 5.5.3 and 5.5.6, Section 5.5, pp.116-118",
+     "quotes": [
+      "Theorem 5.5.3 (Fundamental Theorem of Clifford Codes). Consider a Clifford code with an encoder-respecting form satisfying the constraint that the input-output adjacency matrix is full rank.",
+      "Then, there exists a unique decomposition of the code into a product of prime codes (up to a permutation of input nodes).",
+      "Theorem 5.5.6. Given two Clifford encoders with the same codespace, each entirely made up of prime components, they have equivalent ZX diagrams up to a permutation of the inputs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorems 5.5.3 and 5.5.6 with their proofs (Section 5.5).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-clifford-code-equivalence-conjecture",
+     "value": "The thesis conjectures that the ZX diagrams of two Clifford codes are equivalent if and only if one can be reached from the other by local complementations, output and input permutations, row operations on the input-output adjacency matrix, removing input-input edges, and local operations on output edges.",
+     "anchor": "Conjecture 5.6.3, Section 5.6, p.120",
+     "quotes": [
+      "Conjecture 5.6.3. The ZX diagrams for two Clifford codes C1 and C2 are equivalent if and only if the diagram for one of the codes can be reached from the other after a sequence of operations consisting only of the following:",
+      "(5) Removing an input-input edge. (6) Applying local operations on the output edges."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Labelled a conjecture.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-equivalence-class-counts",
+     "value": "The thesis reports that the number of equivalence classes of [[n, 1]] codes for n = 1 through 4 is (n − 1)!, a pattern that seems to break for larger n, and that for [[n, 2]] codes with n = 2 through 5 it is (n − 2) · (n − 2)!.",
+     "anchor": "Section 5.7, Figures 5.11 and 5.12, p.123",
+     "quotes": [
+      "For the n, 1 codes, the number of equivalence classes for n = 1 through 4 are (n − 1)!. However, this pattern seems to break for larger values of n.",
+      "Furthermore, for the n, 2 codes, the number of equivalence classes for n = 2 through 5 are (n − 2) · (n − 2)!."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Counts from computational enumeration for small n.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-equivalence-class-size-conjecture",
+     "value": "The thesis conjectures that for positive integers n > k the equivalence classes of [[n, k]] codes with a single connected component have sizes divisible by 3 to the power k.",
+     "anchor": "Conjecture 5.7.1, Section 5.7, p.124",
+     "quotes": [
+      "Conjecture 5.7.1. For positive integers n > k, the equivalence classes of n, k codes with a single connected component have sizes divisible by 3k."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Labelled a conjecture, from small-case observations.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-bipartite-forms-propositions",
+     "value": "The thesis proves that among connected [[4, 2]] bipartite ZX diagrams there is only 1 distinct diagram up to equivalence through operations 2 through 4, and that an [[n, 2]] encoder graph equivalent to a bipartite form is also equivalent to one whose two inputs share at most the floor of (n/2 − 1) free outputs; it conjectures that all bipartite forms in a class are related by output permutations, input permutations and row operations.",
+     "anchor": "Propositions 5.8.1 and 5.8.2 and Conjecture 5.8.3, Section 5.8, pp.125-128",
+     "quotes": [
+      "Proposition 5.8.1. Among all connected 4, 2 bipartite ZX diagrams, there is only 1 distinct diagram up to equivalence through operations 2 through 4 from Conjecture 5.6.3.",
+      "It is also equivalent to a bipartite form where the two inputs are both connected to at most ⌊ n 2 − 1⌋ of the same free outputs.",
+      "Conjecture 5.8.3. In an equivalence class that contains bipartite forms, all bipartite forms in the class can be transformed from one to another using only output permutations, input permutations, and row operations on the input-output adjacency matrix."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Two proved propositions joined with a conjecture.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-conclusion-degree-controls-code",
+     "value": "The thesis concludes that key code properties such as weight, distance, and encoding and logical operator circuit depths are all controlled by small linear functions of graph degrees, and that its greedy QLO decoder succeeds up to a small constant factor on at least a class of graphs that includes the hypercube code.",
+     "anchor": "Chapter 6, Conclusion, p.131",
+     "quotes": [
+      "Key code properties such as weight, distance, encoding and logical operator circuit depths are all controlled by small linear functions of graph degrees.",
+      "up to a small constant factor on at least a certain class of graphs which include the hypercube code."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A summary claim in the conclusion.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "Theorem 4.1.2 item 2 bounds the general stabilizer weight by a quadratic function of degree; the linear bound holds when inputs are separated by paths of length at least 3 (Corollary 4.4.5), so 'linear' for weight is narrower than the conclusion says."
+    },
+    {
+     "id_suggestion": "graph-future-directions",
+     "value": "The thesis states as open directions characterizing linearly dependent n-tuples of stabilizer states for n ≥ 4 and stabilizer decompositions of magic states, relating spectral and other graph properties to code properties, studying QLO strategies, designing graphs for given architectures, and applying non-Clifford gates to graph codes.",
+     "anchor": "Chapter 6, Conclusion, pp.131-132",
+     "quotes": [
+      "Future work can continue characterizing linearly dependent n-tuples of stabilizer states for n ≥ 4 as well as stabilizer decompositions of magic states",
+      "It is also worthwhile to more deeply study the quantum lights out game, as insights onto their strategies have equivalent interpretations on coding algorithm performance.",
+      "Additionally, the behaviour of graphs, and more importantly, graph codes, under logical and physical non-Clifford operations could be studied more closely."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The thesis's own statement of open directions (Chapter 6).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-magic-state-decomposition-limit",
+     "value": "The thesis reports that it expressed the n-qubit magic state as a sum of 2 to the power n/2 stabilizer states (printed flat as 2n 2), but that further simplification by combining two stabilizer states into one proved impossible.",
+     "anchor": "Appendix A, Stabilizer rank of magic states, p.133",
+     "quotes": [
+      "able to express the n-qubit magic state as a sum of 2n 2 stabilizer states, it then proved impossible to simplify further simply by combining two stabilizer states into one."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A reported result of a first attempt in an appendix; the exponent is flat in the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The impossibility refers to pairwise merging with Theorem 3.5.3, not to all decompositions."
+    },
+    {
+     "id_suggestion": "graph-zxcf-runtime-not-improvable",
+     "value": "The thesis suspects that the worst-case time complexity of its ZX canonical form algorithm cannot be improved, while leaving room for heuristic runtime improvements.",
+     "anchor": "End of Appendix D, p.150",
+     "quotes": [
+      "We suspect that the worst-case time complexity cannot be improved, but that there is a lot of room for heuristic runtime improvements and optimizations."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated as a suspicion, not proved.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-code-to-circuit-procedure",
+     "value": "The thesis gives a procedure that turns a graph code in ZX canonical form into an encoding circuit: start with k input wires, add a |0⟩ state for each non-pivot output, apply H to all n wires, apply CX gates for input to non-pivot-output edges, CZ gates for output-output edges, and then the local operations on the outputs.",
+     "anchor": "Appendix H, p.157",
+     "quotes": [
+      "(1) Start with k open wires representing the inputs of the circuit. (2) Add a |0⟩ state for each of the n − k non-pivot output nodes. (3) Apply an H gate to all n wires.",
+      "(5) Apply a CZ gate between pairs of wires corresponding to the output-output edges. (6) Apply the local operations attached to the outputs to the corresponding wires."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The thesis's own construction, worked through in Appendix H.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-thesis-improves-garcia-markov-cross",
+     "value": "The thesis claims to improve the results of García, Markov and Cross by deriving a simpler graph merging formula and completely characterizing linearly dependent triplets of stabilizer states.",
+     "anchor": "Chapter 6, Conclusion, p.131",
+     "quotes": [
+      "In this thesis we improved the results of García, Markov, and Cross [45] by deriving a simpler graph merging formula and by completely"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's comparative claim in the conclusion.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "kim-2024-dequantizability-inputs",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Kim-Choi_2024_Dequantizability-from-inputs__2405.13273.pdf",
+   "title_in_file": "Dequantizability from inputs (Kim, Choi; arXiv:2405.13273v1, 22 May 2024)",
+   "version_note": "",
+   "pages": 10,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A short theory paper that disputes a block-encoding corollary of Chakraborty, Gilyen and Jeffery, derives a sparsity bound as a test of dequantizability from the input matrix, and applies it to the sparse-access input model to claim a 1-sparse Hermitian family whose quantum algorithms cannot prevent dequantization.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "corollary-sparse-dequantization",
+     "verdict": "corrected",
+     "note": "The stored value says the corollary 'requires' a dequantization to exist; the paper says the corollary 'necessitates' it, that is, implies it, as a consequence. The triad statement also carries a condition the stored value drops: 'unless we want to permit BQP-completness' shrinkage by the classical data'. Corollary 15 itself can now be quoted in full.",
+     "value": "The paper states Corollary 15: for a 1-sparse n × n Hermitian A with diagonal entries d−i for all i and d > n, no quantum algorithm from A prevents dequantization. The authors state that the corollary necessitates that dequantization exists for some non-trivial sparse-access input model, and that the quantum-accessible data structure, block encoding and QSVT triad would not grand-unify QML algorithms, unless BQP-completeness' shrinkage by the classical data, and not by the quantum algorithm, is permitted.",
+     "anchor": "Corollary 15, Section 4, p.7; Section 1.1 (Corollary 4, informal), p.2",
+     "quotes": [
+      "Corollary 15. Let a 1-sparse, n × n Hermitian A with diagonal entries d−i for all i ∈ [n] and d > n. Then no quantum algorithm Q : A → α prevents dequantization.",
+      "Primarily, it necessitates that there exists dequantization for some non-trivial sparse-access input model,",
+      "QML algorithms at all, unless we want to permit BQP-completness' shrinkage by the classical data and not by the quantum algorithm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A corollary whose proof's closing step the reader could not verify (see reader_inference).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof of Corollary 15 ends with '1 < d − n + 1 ... which is a contradiction for any d > n'; but 1 < d − n + 1 holds whenever d > n, so the stated contradiction does not follow on the reader's reading. With s = 1, lambda_min = d to the minus n and kappa = d to the n − 1, the Theorem 14 condition reads d to the n > d to the n−1 times (n − 1) + 1, which d > n satisfies. The coordinator may want to check the page image."
+    },
+    {
+     "id": "dequantizability-scheme",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Abstract, p.1; Section 4 after Theorem 14, p.7",
+     "quotes": [
+      "Note that the purpose of Theorem 14 is to showcase the method of dequantizability-verification from input, beforehand algorithm analysis or execution."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own characterisation of their result.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "open-problem-limit",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 5, Conclusions and Outlook, p.8",
+     "quotes": [
+      "The lower bound of the eigenvalue transformation, and thus of QSVT, only requires the matrix for block-encoding to be an unknown Hermitian, with the promise that the spectrum lies in I, as in [4, Theorem 73]."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open problem (Section 5, p.8).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "storage-not-sufficient",
+     "verdict": "widened",
+     "note": "The stored value gives the informal reading; the paper states the formal Lemma 7, naming the access it means (the sp-normalising map (2) with epsilon precision in polylog(mn/epsilon) time), presents it as a negation of [3, Corollary 5], and limits its reach: it does not make block encoding from quantum-accessible data structures, or QSVT, invalid.",
+     "value": "The paper states Lemma 7, a negation of [3, Corollary 5]: there is a matrix A(p/2) stored in a quantum-accessible data structure such that no quantum algorithm performs the sp-normalising state-preparation map (2) with ε-precision in polylog(mn/ε) time. The authors state that storage alone does not imply certain efficient quantum access, that some property of the matrix is required, and that this does not make the construction of block encoding from quantum-accessible data structures, or the QSVT framework, invalid.",
+     "anchor": "Lemma 7, Section 2, pp.3-4; Section 1.1 (Lemma 1, informal), p.2",
+     "quotes": [
+      "Lemma 7 (negation of [3, Corollary 5]). There is a matrix A(p/2) ∈ Cm×n stored in a quantum- accessible data structure, such that no quantum algorithm performs the map (2) with ε-precision in polylog(mn/ε) time.",
+      "storage alone does not imply the existence of certain efficient quantum access to that matrix. Instead, some property of the matrix is required for certain efficient quantum access.",
+      "This does not mean that the whole construction of block encoding from quantum-accessible data structures is invalid, nor is the whole QSVT framework based on it invalid."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A lemma proved by an informal case argument about which inner model is initiated; the reader cannot settle the proof from the text.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "dequant-tang-most-qml-dequantized",
+     "value": "The authors state that results of dequantization, depicted in Tang's thesis, show most QML algorithms dequantized, including the QSVT framework, suggesting QML in general may not give exponential speedup, quadratic being the best case.",
+     "anchor": "Section 1, Introduction, p.1",
+     "quotes": [
+      "where it appears most QML algorithms have been dequantized, including the QSVT framework, suggesting that QML in general may not provide exponential speedup at all, quadratic being the best-case."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to [5].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dequant-limits-frobenius-inputs",
+     "value": "The authors state limits of dequantization: all dequantized QML algorithms take only input matrices normalized by the Frobenius norm, so the quantum-classical comparison reduces to the construction cost of the data structure; dequantization cannot capture query access via circuits of polylogarithmic depth; and it is unknown whether the complement class of Frobenius-normalising instances allows dequantization.",
+     "anchor": "Section 1, Introduction, p.1",
+     "quotes": [
+      "Note that all dequantized QML algorithms only take input matrices that get normalized by the Frobenius norm to be prepared for a quantum state.",
+      "the performance comparison between quantum and classical machine learning is reduced to comparing the construction cost of the data structure, as noted in [11].",
+      "dequantization cannot capture query-access instances via circuits with some polylogarithmic depth, as in [12].",
+      "we do not know whether the complement class of Frobenius-normalising instances of the quantum-accessible data structure would allow dequantization."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Statements partly attributed to [11] and [12], not shown in the paper.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dequant-tang-open-problem-cited",
+     "value": "The authors state that full QSVT is conceived to be un-dequantizable because it includes the sparse-access input model, which is BQP-complete, and that Tang posed the open problem of an alternative block-encoding or state-preparation construction that may prevent dequantization.",
+     "anchor": "Section 1, Introduction, p.1",
+     "quotes": [
+      "to be un-dequantizable because it includes sparse-access input model, as in the sparse linear systems solver of [6], which is known to be BQP-complete.",
+      "Tang posed the open problem of an alternative construction of block encoding or state preparation that may prevent dequantizaition,"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement the paper attributes to [5] and [6].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dequant-theorem-5-sve-cited",
+     "value": "The paper cites (Theorem 5, from [2, Theorem 4.4]) that for a matrix stored in a quantum-accessible data structure, a quantum algorithm performs singular value estimation to precision delta in time O~(μ(A)/δ), with mu(A) the minimum over p in [0, 2] of the Frobenius norm and an sp-based factor.",
+     "anchor": "Theorem 5, Section 2, p.3",
+     "quotes": [
+      "Theorem 5 ([2, Theorem 4.4]). Let A ∈ Cm×n be stored in a quantum-accessible data structure. There is a quantum algorithm that performs singular value estimation (SVE) for A to precision δ in time O ̃(μ(A)/δ) where",
+      "μ(A) = min ∥A∥F , sp(A)s2−p(A†) . (1) p∈[0,2]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to [2].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dequant-lemma-6-block-encoding-cited",
+     "value": "The paper cites (Lemma 6, from [3, Lemma 6] and [4, Lemma 50]) that if A is stored in a quantum-accessible data structure, unitaries implementable in time O(polylog(mn)/ε) form a block encoding of A with normalisation the Frobenius norm, and that if the two sp-power matrices are stored, unitaries in time O(polylog(mn/ε)) give a block encoding with normalisation mu_p(A); the authors call this translation disputable because the matrix is given outside the data structure.",
+     "anchor": "Lemma 6, Section 2, p.3",
+     "quotes": [
+      "Lemma 6 ([3, Lemma 6], [4, Lemma 50]).",
+      "then there exist unitary matrices UR and UL that can be implemented in time O(polylog(mn/ε)) such that UR† UL is a (μp(A),",
+      "If A is stored in a quantum-accessible data structure, then there exists UR and UL that can be implemented in time O(polylog(mn)/ε) such that UR† UL is a (∥A∥F , ⌈log(m + n)⌉, ε)-block encoding of A.",
+      "However, this translation is disputable. The matrix is not given inside the data structure in the first place."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to [3] and [4], with the authors' own objection.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dequant-sp-definition",
+     "value": "The paper defines sp(A), for p in [0, 2], as the p-th power of the maximum over rows of the lp norm of A, and treats the lp expression for p in [0, 1) as a quasinorm, defining s0(A) separately as the maximum count of nonzero entries per row, which is the sparsity s.",
+     "anchor": "Section 2, p.3; Section 3, p.4",
+     "quotes": [
+      "sp(A) is (intended to be) defined as the p-th power of maxi∈[m] lp norm of A. For p ∈ [0, 2]:",
+      "for p ∈ [0, 1) does not define a norm because it is not sub-additive.",
+      "Therefore, as in [15], we say quasinorm instead, and define otherwise for p = 0.",
+      "s0(A) as the maximum count of nonzero entries per row Ai for i ∈ [m], that is exactly the definition of the sparsity s in the sparse-access input model:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions (Sections 2 and 3).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dequant-definition-9-dequantization",
+     "value": "The paper defines (Definition 9, after [17, Definition 2]) a classical algorithm C as a dequantization of a quantum algorithm Q if, from sample-query access on A, it evaluates queries to Q's output state or outputs its value with a similar performance guarantee, a number of sample-query accesses polynomial in m, and a worst runtime polynomially slower than Q; the terms similar performance guarantee and sample-query access are left undefined.",
+     "anchor": "Definition 9, Section 3, p.4",
+     "quotes": [
+      "Definition 9 ([17, Definition 2]).",
+      "say that classical algorithm C is a dequantization of Q, if C evaluates queries to |a⟩ or ouputs a with 1. a similar performance guarantee as Q, 2. a number of sample-query access polynomial in m, 3. and a worst runtime that is polynomially slower than of Q, from sample-query access on A.",
+      "performance guarantee\" or the term sample-query access are not defined,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition (Definition 9, p.4), adapted from [17].",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dequant-sparse-access-definitions",
+     "value": "The paper defines an n × n matrix as s-sparse if it has at most s nonzero entries per row, and sparse if s = polylog(n); defines the condition number as the ratio of largest to smallest eigenvalue; and defines a quantum algorithm as sparse-access input if its matrix is a sparse Hermitian conditioned by kappa, with eigenvalues between κ−1 and 1.",
+     "anchor": "Definitions 8, 12 and 13, Sections 3-4, pp.4-5",
+     "quotes": [
+      "Definition 8. Matrix An×n is said to be s-sparse if it has at most s nonzero entries per row. If s = polylog(n), A is said to be sparse.",
+      "The condition number κ of matrix A is the ratio of the largest to the smallest eigenvalue of A,",
+      "A quantum algorithm Q : A → α is said to be sparse-access input if An×n is a sparse Hermitian conditioned by κ such that κ−2I ⪯ A†A ⪯ I , equivalently, for all i ∈ [n]. κ−1 ≤ λi ≤ 1"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions (Definitions 8, 12, 13).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dequant-lemma-10-sparsity-bound",
+     "value": "The paper states Lemma 10: if A satisfies a sparsity bound relating s2−p of A-dagger, the squared Frobenius norm and sp(A) for all p in [0, 2], then some quantum algorithm from A has a classical dequantization; its proof rests on the premise that existing dequantizations are provided when the Frobenius-normalising inner model is initiated.",
+     "anchor": "Lemma 10, Section 3, pp.4-5",
+     "quotes": [
+      "Lemma 10. If A is a matrix such that s2−p A† ≥ ∥A∥F2 sp(A) for all p ∈ [0, 2], then there exists some quantum algorithm Q : A → α such that some classical algorithm is a dequantization of Q.",
+      "First, we simplify the fact that existing dequantizations are provided when the μF inner model is initiated:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The lemma is quoted, but its proof rests on an informal premise the paper does not prove (that existing dequantizations are exactly the Frobenius-normalising case).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dequant-lemma-11-contrapositive",
+     "value": "The paper states Lemma 11, the contrapositive of Lemma 10 with p = 2 or p = 0: for any quantum algorithm from A, if no classical algorithm dequantizes it, then A or A-dagger has sparsity below a ratio of the squared Frobenius norm to s2.",
+     "anchor": "Lemma 11, Section 3, p.5",
+     "quotes": [
+      "Lemma 11. For any quantum algorithm Q : A → α, if no classical algorithm is a dequantization of Q, then A is a s0(A)-sparse matrix such that",
+      "Proof. Take the contrapositive of Lemma 10 with a selection of p = 2 or p = 0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Depends on Lemma 10's informal premise; the bound itself is garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dequant-theorem-14",
+     "value": "The paper states Theorem 14: for any sparse-access input quantum algorithm, if no classical algorithm dequantizes it, then A is a kappa-conditioned s-sparse Hermitian satisfying a bound that relates kappa, n, s and the smallest eigenvalue magnitude, given equivalently in terms of κ(n − 1) + 1.",
+     "anchor": "Theorem 14, Section 4, p.6",
+     "quotes": [
+      "Theorem 14. For any sparse-access input quantum algorithm Qs : A → α, if no classical algorithm is a dequantization of Qs, then A is a κ-conditioned s-sparse Hermitian such that",
+      "equivalently, √ s κ(n − 1) + 1 < |λmin| ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The bound is garbled in the text layer, and the theorem rests on Lemma 11.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "From the proof, the equivalent form appears to be κ(n − 1) + 1 < √s / |λmin|."
+    },
+    {
+     "id_suggestion": "dequant-sparsity-not-enough-claim",
+     "value": "The authors state that a 1-sparse Hermitian of arbitrary size would lead to a quantum algorithm that cannot prevent dequantization, and that sparsity alone is not enough for QML algorithms to be quantum advantageous; for the identity matrix the Theorem 14 test is trivial.",
+     "anchor": "Section 4, after Theorem 14, p.7",
+     "quotes": [
+      "we may apply Theorem 14 to state that a 1-sparse Hermitian of an arbitrary size would lead to a quantum algorithm that cannot prevent dequantization.",
+      "sparsity alone is not enough for QML algorithms to be quantum advantageous.",
+      "if A is a 1-sparse, 1-conditioned Hermitian, then 1 < 1 < n, n which is trivial."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's conclusion resting on Corollary 15, whose proof the reader could not verify.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dequant-lcu-limit",
+     "value": "The authors state that if the assumption λmax = 1 is necessary, as in the LCU approach of [20], they cannot lead to a contradiction for a 1-sparse Hermitian, at least for now, so some optimization is required.",
+     "anchor": "Section 4, after the proof of Corollary 15, p.7",
+     "quotes": [
+      "Note that if the assumption that λmax = 1 is necessary, as in the linear combinations of unitary (LCU) approach of [20, Theorem 3, Lemma 11], we cannot lead to a contradiction for a 1-sparse Hermitian, at least for now, thereby requiring some optimization."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Section 4, p.7).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dequant-chakraborty-lemma-reinforces",
+     "value": "The authors state that the later proof by Chakraborty et al. ([13, Lemma 3]) reinforces their point rather than resolving it, because that proof assumes the block-encoding unitaries exist.",
+     "anchor": "Section 2, p.4",
+     "quotes": [
+      "Note that the proof provided later by Chakraborty et al. in [13, Lemma 3] reinforces our point rather than resolving it because their proof relies on the assumption that UR† and UL exist."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's reading of other work.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dequant-outlook-signal-processing",
+     "value": "The authors propose, as outlook, reformulating the problem of the sp function in terms of quantum access of classical data as a matter of signal processing, in particular sparsification or proximal operators, returning QML algorithm design to the equation Ax = b.",
+     "anchor": "Section 5, Conclusions and Outlook, p.8",
+     "quotes": [
+      "we may effectively reformulate the problem as a matter of signal processing, in particular sparcification or proximal operators,",
+      "This approach towards QML algorithm design and analysis would bring us back to its foundation, or the equation Ax = b."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proposal for future work.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dequant-lemma-18-sp-ordering",
+     "value": "The paper proves (Lemma 18, Appendix A, via the generalized Hölder inequality and Corollary 17) that for a kappa-conditioned Hermitian A with eigenvalues at most 1, s2(A) ≤ s2−ε(A) ≤ s1(A) ≤ s0(A) for ε in (0, 1).",
+     "anchor": "Appendix A, Lemma 18, p.10",
+     "quotes": [
+      "Lemma 18. Let a κ-conditioned Hermitian A such that k−1 ≤ λi ≤ 1. It follows that s2(A) ≤ s2−ε(A) ≤ s1(A) ≤ s0(A), where ε ∈ (0, 1). Proof. By Corollary 17,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 18 is quoted with its conditions and proved in Appendix A (p.10).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

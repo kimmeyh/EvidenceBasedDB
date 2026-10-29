@@ -1,0 +1,668 @@
+{
+ "papers": [
+  {
+   "record_id": "panambalom-2026-impact-data-loss-postprocessing-training",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2026/Panambalom-et-al._2026_Impact-of-Data-Loss-in-Postprocessing-on-Training-and-Inference-of__2609.05060.pdf",
+   "title_in_file": "Impact of Data Loss in Postprocessing on Training and Inference of Quantum Neural Networks",
+   "version_note": "",
+   "read_extent": "full",
+   "partial_detail": "",
+   "what_it_is": "A case study showing that the SamplerQNN postprocessing filter in Qiskit Machine Learning discards most valid shots on IBM hardware, with a merged fix.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "samplerqnn-filter-shot-loss",
+     "value": "The authors report that on their quantum hardware runs, where bit-strings span over 100 physical qubits, the SamplerQNN postprocessing filter led to the loss of 85 to 99.6% of valid measurement shots, and that the behaviour arises in released library versions 0.8.4 to 0.9.0. They state it only manifests on real IBM hardware or SamplerV2.",
+     "anchor": "Abstract; Section I; Section IV",
+     "quotes": [
+      "On our quantum hardware runs, where bit-strings span over 100 physical qubits, this filter led to the loss of 85 to 99.6% of valid measurement shots",
+      "The behaviour arises in all released versions of the library (0.8.4 to 0.9.0).",
+      "It only manifests when using real IBM quantum hardware or SamplerV2, with all qubits measured by default."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study on two IBM backends (five experiments).",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The 85 to 99.6% range depends on qubit placement chosen by the transpiler, so it is not a fixed property of the library."
+    },
+    {
+     "id_suggestion": "inference-accuracy-drop",
+     "value": "The authors report that for inference, accuracy drops from 0.94 to 0.39 on the same raw measurements, for one hardware experiment, when the SamplerQNN filter is used in place of layout-based marginalisation.",
+     "anchor": "Abstract; Section III-A, Tables II and IV",
+     "quotes": [
+      "for inference, accuracy drops from 0.94 to 0.39 on the same raw measurements",
+      "The classically trained model had learned well, achieving an accuracy of 0.94 when all shots were used (Method B)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single experiment result (4-qubit model on ibm_kingston), Table II.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The 0.94 to 0.39 pair is the most affected of five experiments; other experiments differed less (Table II)."
+    },
+    {
+     "id_suggestion": "training-loss-compression",
+     "value": "The authors report that the loss signal received by the optimiser during on-hardware fine-tuning is compressed by 22 to 27 times, and that for the 4-qubit model at the first on-device iteration the correct loss was 0.33 but the optimiser received 0.012.",
+     "anchor": "Abstract; Section III-B, Table V",
+     "quotes": [
+      "for training, the loss signal is compressed by 22 to 27",
+      "the 4-qubit model has a correct loss of 0.33 but the optimiser received 0.012"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from two models (4-qubit and 7-qubit) in one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The abstract prints a multiplication sign after 27; the extracted text shows a replacement character, so 'times' is inferred from context ('compressed by a factor of 25' in Section III-B)."
+    },
+    {
+     "id_suggestion": "training-experiment-underdimensioned",
+     "value": "The authors state that with only 5 hardware iterations COBYLA never completes its initial simplex for either model, that zero actual optimisation steps are taken, and that the experiment was structurally underdimensioned regardless of the issue.",
+     "anchor": "Section III-B-2",
+     "quotes": [
+      "With only 5 hardware iterations available, COBYLA never completes its initial simplex for either model",
+      "Zero actual optimisation steps are taken.",
+      "the experiment was structurally underdimensioned regardless of the issue"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit of their own training experiment (Section III-B-2).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The training-impact result therefore rests on simplex-construction steps only, not on real optimisation."
+    }
+   ]
+  },
+  {
+   "record_id": "paquette-2026-pricing-lookback-options-quantum-computer",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2026/Paquette-et-al._2026_Pricing-Lookback-Options-on-a-Quantum-Computer__2604.00389.pdf",
+   "title_in_file": "PRICING LOOKBACK OPTIONS ON A QUANTUM COMPUTER",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Section 1 Introduction, Section 2 problem setup, Section 5.3 discussion and Hamiltonian complexity, Section 6 Conclusion; Sections 3, 4 and 5.1 to 5.2 not read in detail.",
+   "what_it_is": "A variational imaginary time evolution method for pricing discretely monitored lookback options, compared against Monte Carlo in numerical simulation.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "lookback-alg42-more-accurate",
+     "value": "The authors state that numerical simulations show both methods approach the Monte Carlo benchmarks as the number of qubits and circuit expressibility increase, with Algorithm 4.2 consistently providing superior accuracy across different maturities and volatility regimes.",
+     "anchor": "Section 6 Conclusion",
+     "quotes": [
+      "Numerical simulations show that both methods approach the Monte Carlo benchmarks as the number of qubits and circuit expressibility increase, with Algorithm 4.2 consistently providing superior accuracy across different maturities and volatility regimes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from the authors' own numerical simulations.",
+     "result_type": "measured",
+     "context": "world",
+     "reader_inference": "Results are simulation against Monte Carlo; no run on quantum hardware is stated in the parts read."
+    },
+    {
+     "id_suggestion": "lookback-qubit-accuracy-tradeoff",
+     "value": "The authors state that the first approach requires fewer qubits for the space discretization, while the second approach yields better results, even with a limited number of qubits.",
+     "anchor": "Section 1 Introduction",
+     "quotes": [
+      "While the implementation of the first approach requires fewer qubits for the space discretization, the second approach yields better results, even with a limited number of qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Authors' summary of their own numerical comparison.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lookback-scope-black-scholes",
+     "value": "The authors state that their work is an extension of [7], in which imaginary time evolution is used to price European and Asian options in the Black-Scholes model, and that they restrict themselves to a simple market.",
+     "anchor": "Section 1 and Section 2.1",
+     "quotes": [
+      "Our work is an extension of [7], in which imaginary time evolution is used to price European and Asian options in the Black-Scholes model.",
+      "Following [7], we restrict ourselves to a simple market"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope in Sections 1 and 2.1.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lookback-variational-limits",
+     "value": "The authors state that the classical optimization landscape often contains numerous local minima, and that the algorithm remains vulnerable to errors from gate implementation and measurement, necessitating further error mitigation techniques.",
+     "anchor": "Section 5.3.1",
+     "quotes": [
+      "The classical optimization landscape often contains numerous local minima, hindering convergence to the global optimum",
+      "Also, the algorithm remains vulnerable to errors from gate implementation and measurement, necessitating further error mitigation techniques."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Stated limit of the method in Section 5.3.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "park-2025-addressing-current-challenges-quantum-machine",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2025/Park-et-al._2025_Addressing-the-Current-Challenges-of-Quantum-Machine-Learning-through-Multi__2505.08782.pdf",
+   "title_in_file": "Addressing the Current Challenges of Quantum Machine Learning through Multi-Chip Ensembles",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Sections 1 to 6 (introduction, background, framework overview, experiments, discussion); appendices and proofs not read.",
+   "what_it_is": "A multi-chip ensemble variational quantum circuit framework, evaluated in noisy simulation on MNIST and related datasets.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "multichip-noise-resilience",
+     "value": "The authors report that multi-chip ensemble VQCs consistently achieved lower quantum errors than both unmitigated single-chip VQCs and those with ZNE error mitigation, under calibrated depolarizing and amplitude-damping noise emulated in simulation.",
+     "anchor": "Section 5.5; Section 5.1",
+     "quotes": [
+      "multi-chip ensemble VQCs consistently achieved lower quantum errors than both unmitigated single-chip VQCs and those with ZNE error mitigation",
+      "we emulate NISQ conditions with calibrated depolarizing and amplitude-damping noise"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from simulated noise on benchmark datasets.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The noise is emulated, not measured on hardware, so the result does not show behavior on real chips."
+    },
+    {
+     "id_suggestion": "multichip-gradient-variance",
+     "value": "The authors report that for a total of 8 qubits, increasing the number of chips reduced the overall entanglement while increasing the variance of gradients (Table 1), and conclude this suggests a reduced risk of barren plateaus.",
+     "anchor": "Section 5.3",
+     "quotes": [
+      "For a total of 8 qubits, increasing the number of chips (i.e., dividing a large VQC into smaller subcircuits) reduced the overall entanglement while increasing the variance of gradients (Table 1).",
+      "the higher gradient variance observed in multi-chip ensemble VQCs suggests a reduced risk of barren plateaus"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result at 8 qubits; figures are in Table 1, not quoted.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Eq. 2 states no gates connect chips (no cross-chip entanglement), while the abstract mentions controlled inter-chip entanglement boundaries; the two statements are in tension."
+    },
+    {
+     "id_suggestion": "multichip-mnist-convergence",
+     "value": "The authors report that the multi-chip ensemble VQC without classical dimension reduction (Ensemble 98-Chip) achieved the best performance on MNIST, converging to the optimal loss value in fewer than 10 epochs.",
+     "anchor": "Section 5.2, Figure 2a",
+     "quotes": [
+      "the multi-chip ensemble VQC without classical dimension reduction (Ensemble 98-Chip) achieved the best performance, converging to the optimal loss value in fewer than 10 epochs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result in simulation on one dataset (main text).",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "multichip-limits-and-design",
+     "value": "The authors state that limitations include their use of identical subcircuits across chips and non-optimized aggregation functions, and that there are no cross-chip entanglement in the multi-chip ensemble VQCs.",
+     "anchor": "Section 6 Discussion; Section 3.1",
+     "quotes": [
+      "Limitations include our use of identical subcircuits across chips and non-optimized aggregation functions.",
+      "This indicates that there are no cross-chip entanglement in the multi-chip ensemble VQCs."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Stated limits in Section 6 and design statement in Section 3.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "park-2026-image-classification-ibm-quantum-computers",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2026/Justin-Park-et-al._2026_Image-Classification-on-IBM-Quantum-Computers__2607.17705.pdf",
+   "title_in_file": "Image Classification on IBM Quantum Computers",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Section 1 Introduction, Section 4 Results (4.1 to 4.5 start), Section 5 Conclusion; Methods and ansatz comparison not read.",
+   "what_it_is": "A ten-class MNIST quantum classifier run end-to-end on a 127-qubit IBM Eagle device, with quantum multi-programming and a train-in-simulator workflow.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "ibm-mnist-hardware-penalty",
+     "value": "The authors report that they used the framework to run ten-class MNIST end-to-end on a 127-qubit IBM Eagle-r3 processor, with a single forward pass at K = 1 incurring a hardware-noise penalty of 5.33 percentage points relative to the noiseless reference (79.11%).",
+     "anchor": "Section 5 Conclusion; Section 4.2",
+     "quotes": [
+      "used it to run ten-class MNIST end-to-end on a 127-qubit IBM Eagle-r3 processor",
+      "relative to its noiseless reference (79.11%), a single forward pass on the QPU at K = 1 incurs a modest and highly reproducible hardware-noise penalty of 5.33 percentage points"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result on one device, three seeds, 75 test samples.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ibm-mnist-finetune-no-gain",
+     "value": "The authors report that two epochs of on-hardware COBYLA fine-tuning produced no measurable change in test accuracy (within sampling noise at both K = 1 and K = 4).",
+     "anchor": "Section 5 Conclusion; Section 4.4",
+     "quotes": [
+      "two epochs of on-hardware COBYLA fine-tuning produced no measurable change in test accuracy (within sampling noise at both K = 1 and K = 4)"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical negative result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Only two hardware epochs were run, so this is a weak test of on-hardware training."
+    },
+    {
+     "id_suggestion": "ibm-mnist-classical-baseline",
+     "value": "The authors report that a matched-capacity classical multilayer perceptron reached 82.22% and exceeded the best quantum cell (the noiseless reference, 79.11%) by roughly three percentage points, and that this is a feasibility-and-workflow demonstration rather than a claim of quantum advantage.",
+     "anchor": "Section 5 Conclusion; Section 4.5",
+     "quotes": [
+      "which reached 82.22% and exceeded the best quantum cell (the noiseless reference, 79.11%) by roughly three percentage points",
+      "a feasibility-and-workflow demonstration rather than a claim of quantum advantage"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical comparison from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ibm-mnist-study-bounds",
+     "value": "The authors state that the study is bounded by its scale: a 350/75/75 MNIST subset whose 75-sample test set resolves accuracy only to 1.33% per sample, three random seeds, and a single device over a limited calibration window.",
+     "anchor": "Section 5 Conclusion",
+     "quotes": [
+      "a 350/75/75 MNIST subset whose",
+      "1.33% per sample, three random seeds, and a single device over a limited calibration window."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own limits in the Conclusion.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "perelshtein-2021-large-scale-quantum-hybrid-solution",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2020/Perelshtein-et-al._2020_Large-scale-quantum-hybrid-solution-for-linear-systems-of-equations__2003.12770.pdf",
+   "title_in_file": "Large-scale quantum hybrid solution for linear systems of equations",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Introduction, Results (hybrid algorithm, benchmarking problem, small-scale implementation, start of large-scale section), Conclusion; Methods and Supplementary not read.",
+   "what_it_is": "A hybrid HHL linear-system solver run on small IBMQ devices and a noisy simulator, with claimed advantage at larger scale.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "hhl-advantage-claim",
+     "value": "The authors state that their implemented quantum solution of a 217-dimensional problem is a record for a linear system solution on quantum computers and demonstrates algorithmic quantum advantage over classical solutions.",
+     "anchor": "Conclusion; Abstract",
+     "quotes": [
+      "The implemented quantum solution of a 217-dimensional problem, which is a record for a linear system solution on quantum computers, demonstrates algorithmic quantum advantage over classical solutions."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Authors' own claim; the classical comparison was not located in the parts read.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The printed '217' is probably 2^17 with the superscript lost in extraction. The hardware runs named in the same Conclusion used only 5, 15 and 20 qubits."
+    },
+    {
+     "id_suggestion": "hhl-hardware-scale",
+     "value": "The authors state that they probed the algorithm on a simulator with an embedded noise model, which is devoid of correlations in gate errors, and on real IBMQ QPUs with 5, 15 and 20 qubits.",
+     "anchor": "Conclusion",
+     "quotes": [
+      "We probed the algorithm on the simulator with an embedded noise model, which is devoid of correlations in gate errors, and on the real IBMQ QPUs with 5, 15 and 20 qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own experimental setup (Conclusion).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-restricted-matrices",
+     "value": "The authors state that, to focus on the phase estimation part of the algorithm, they consider only particular matrices A for which the Hamiltonian simulation can be efficiently performed.",
+     "anchor": "Results, Hybrid quantum algorithm",
+     "quotes": [
+      "to focus on the phase estimation part of the quantum algorithm, we consider only particular matrices A for which the Hamiltonian simulation can be efficiently performed."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-depth-reduction",
+     "value": "The authors state that the hybrid technique allows them to significantly reduce the depth of the circuit, by an order of magnitude for the 50-qubit scheme.",
+     "anchor": "Results, Benchmarking problem; Fig. 1c",
+     "quotes": [
+      "Such a technique allows us to significantly reduce the depth of the circuit, by an order of magnitude for the 50-qubit scheme."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Circuit-depth comparison from circuit construction (Fig. 1c), not an executed 50-qubit run.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "perlin-2026-q-chop-quantum-constrained-hamiltonian",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2024/Perlin-et-al._2024_Q-CHOP-Quantum-constrained-Hamiltonian-optimization__2403.05653.pdf",
+   "title_in_file": "Q-CHOP: Quantum constrained Hamiltonian optimization",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Sections I to III (introduction, background, start of algorithm), Section IV opening and setup, Section V Discussion; the individual problem sections IV B onward not read in detail.",
+   "what_it_is": "A quantum adiabatic algorithm for constrained optimization that stays in the feasible subspace, benchmarked by exact classical simulation against penalty-based quantum annealing.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "qchop-outperforms-sqaa",
+     "value": "The authors report that Q-CHOP consistently outperforms the standard, penalty-based adiabatic algorithm in numerical experiments across a diverse set of problems.",
+     "anchor": "Section V Discussion; Abstract",
+     "quotes": [
+      "Q-CHOP consistently outperforms the standard, penalty-based adiabatic algorithm in numerical experiments across a diverse set of problems"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from the authors' own simulations at chosen hyperparameters.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qchop-simulation-setup",
+     "value": "The authors state that they study Q-CHOP numerically using exact classical simulations and compare it to the SQAA.",
+     "anchor": "Section IV",
+     "quotes": [
+      "We now study the performance of Q-CHOP numerically using exact classical simulations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experimental setup (Section IV).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qchop-penalty-contingent",
+     "value": "The authors state that their conclusions about how Q-CHOP compares to the SQAA are contingent on the choice of penalty factor, and that optimizing it may diminish the performance difference.",
+     "anchor": "Section V Discussion",
+     "quotes": [
+      "our conclusions about how Q-CHOP compares to the SQAA is contingent on the choice of penalty factor",
+      "may diminish the performance difference between Q-CHOP and the SQAA"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Stated limit in Section V.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qchop-inequality-constraints",
+     "value": "The authors state there is a clear need to design better strategies to handle inequality constraints, since the strategy in Section III D does not scale to large numbers of inequality constraints.",
+     "anchor": "Section V Discussion",
+     "quotes": [
+      "there is also a clear need to design better strategies to handle inequality constraints, since the strategy in Section III D does not scale to large numbers of inequality constraints."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Stated limit in Section V.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "perrier-2024-quantum-geometric-machine-learning",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2024/Perrier_2024_Quantum-Geometric-Machine-Learning__2409.04955.pdf",
+   "title_in_file": "Quantum Geometric Machine Learning (PhD thesis, University of Technology Sydney)",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Thesis abstract, Chapter 1 overview and contributions, abstracts and introductions of Chapters 3, 4 and 5, and the Chapter 4 future-directions section; the 495-page body, proofs and appendices not read.",
+   "what_it_is": "A PhD thesis on geometric and deep-learning methods for quantum control, including the QDataSet and greybox models for time-optimal unitary synthesis.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "qdataset-52-datasets",
+     "value": "The author states that the QDataSet comprises 52 high-quality publicly available datasets derived from simulations of one- and two-qubit systems evolving in the presence and/or absence of noise.",
+     "anchor": "Chapter 3 Abstract",
+     "quotes": [
+      "The QDataSet comprises 52 high-quality publicly available datasets derived from simulations of one- and two-qubit systems evolving in the presence and/or absence of noise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The thesis states what the QDataSet contains (Chapter 3 abstract).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "greybox-fidelity-over-099",
+     "value": "The author reports that greybox models outperformed blackbox models, as evidenced by training and validation average operator fidelities for synthesised quantum circuits of over 0.99 in each case.",
+     "anchor": "Chapter 4, Section 4.9",
+     "quotes": [
+      "The increase in performance over blackbox models, as evidenced by training and validation average operator fidelities for synthesised quantum circuits of over 0.99 in each case"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from simulation in one chapter.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "greybox-generalisation-limit",
+     "value": "The author states that while the models outperformed current benchmarks on training and validation sets, they faced considerable challenges generalising well.",
+     "anchor": "Chapter 4, Section 4.9",
+     "quotes": [
+      "While the models outperformed current benchmarks on training and validation sets, they faced considerable challenges generalising well."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Stated limit in Section 4.9.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cartan-analytic-method",
+     "value": "The author states that the thesis presents a novel analytical method for determining Hamiltonians that generate time-optimal unitary sequences for certain classes symmetric spaces.",
+     "anchor": "Chapter 1, Section 1.3 Contributions",
+     "quotes": [
+      "we present a novel analytical method for determining Hamiltonians that generate time-optimal unitary sequences for certain classes symmetric spaces."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Contribution statement; the derivation and its assumptions were not read.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The theorem and its simplifying assumptions in Chapter 5 were not read, so the grade should be set after that read."
+    }
+   ]
+  },
+  {
+   "record_id": "pira-2026-fundamentals-quantum-machine-learning-robustness",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2026/Pira-Rebentrost_2026_Fundamentals-of-Quantum-Machine-Learning-and-Robustness__2602.20499.pdf",
+   "title_in_file": "Fundamentals of Quantum Machine Learning and Robustness",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, Section 1 Introduction, Section 2.1, Section 5 Opportunities and Challenges, Section 6 start, Section 7 Conclusion and Outlook; Sections 2.2 to 4 skimmed only.",
+   "what_it_is": "A book-chapter introduction to quantum machine learning and adversarial robustness, with no new experiments.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "qml-speedups-idealized",
+     "value": "The authors state that speedups from quantum linear-algebra subroutines are typically proven under idealized assumptions, and that they motivate the search for practical QML models.",
+     "anchor": "Section 5.1",
+     "quotes": [
+      "While these speedups are typically proven under idealized assumptions, they motivate the search for practical QML models that can offer meaningful improvements on real-world problems."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Survey statement about the field, no single study behind it.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qml-encoding-cost",
+     "value": "The authors state that the data encoding step for classical data is often costly and may offset any potential quantum advantage.",
+     "anchor": "Section 5.2",
+     "quotes": [
+      "This encoding step is often costly and may offset any potential quantum advantage."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Survey statement about the field.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qml-barren-plateaus-cited",
+     "value": "The authors state, citing [69, 70], that variational quantum algorithms suffer from barren plateaus, regions of the parameter space where gradients vanish exponentially with system size.",
+     "anchor": "Section 5.2",
+     "quotes": [
+      "Variational quantum algorithms, which are central to many QML architectures, suffer from barren plateaus, or regions of the parameter space where gradients vanish exponentially with system size [69, 70]."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Result the chapter attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qml-lack-of-datasets",
+     "value": "The authors state there is a lack of standardized datasets and benchmarks that are native to the quantum domain, and that much current research relies on synthetic datasets or repurposed classical data to benchmark toy examples.",
+     "anchor": "Section 5.2",
+     "quotes": [
+      "There is also a lack of standardized datasets and benchmarks that are native to the quantum domain.",
+      "Much of the current research relies on synthetic datasets or repurposed classical data to benchmark toy examples."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Survey statement about the field.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

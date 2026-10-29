@@ -522,10 +522,10 @@ def apply_changes(conn) -> list[str]:
             if (reader, on, extent) not in have:
                 add_read(conn, rid, reader, on, extent, detail)
                 log.append(f"read   {rid} [{reader}, {on}, {extent}]")
-            elif conn.execute("SELECT detail FROM paper_reads WHERE record_id = ? AND reader = ? AND read_on = ? "
-                              "AND extent = ?", (rid, reader, on, extent)).fetchone()[0] != detail:
+            elif (old := conn.execute("SELECT detail FROM paper_reads WHERE record_id = ? AND reader = ? AND read_on = ? "
+                                      "AND extent = ?", (rid, reader, on, extent)).fetchone()[0]) != detail:
                 conn.execute("UPDATE paper_reads SET detail = ? WHERE record_id = ? AND reader = ? AND read_on = ? "
-                             "AND extent = ?", (detail, rid, reader, on, extent))
+                             "AND extent = ? AND detail = ?", (detail, rid, reader, on, extent, old))
                 log.append(f"update {rid} read detail [{reader}, {on}, {extent}]")
         # (4) promotion
         if tier != "read":

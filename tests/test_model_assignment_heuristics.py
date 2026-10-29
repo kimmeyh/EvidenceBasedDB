@@ -182,3 +182,20 @@ def test_parallel_readers_are_capped_and_never_share_a_record_regression():
     assert pattern["required_protocol"] == "read-only-evidence-gathering"
     for rule in ("exactly one", "two groups", "one serial fetcher"):
         assert rule in pattern["rationale"], f"parallel-reading rule missing: {rule!r}"
+
+
+def test_a_reader_grade_suggestion_is_never_applied_regression():
+    """F111 (Sprint 13 Task B): in Sprints 11 and 12 the readers suggested
+    HIGH for measured results the coordinator kept LOW (learning_log rows).
+    The parallel-reading pattern says a reader's suggestion is never
+    applied, and both rows carry the evidence. Proven to fail by injection,
+    2026-10-25: deleting "never applied" from the rationale turned this
+    red; so did removing the Sprint 12 row. Both restored."""
+    d = _load()
+    pattern = next(p for p in d["task_patterns"] if p["pattern"].startswith("parallel first-pass reading"))
+    assert "certainty suggestion is never applied" in pattern["rationale"]
+    assert "store.grading" in pattern["rationale"]
+    rows = {e["sprint"]: e for e in d["learning_log"]}
+    for sprint in (11, 12):
+        assert sprint in rows, f"no learning_log row for Sprint {sprint}"
+    assert "HIGH" in rows[12]["outcomes"][0]["findings"]

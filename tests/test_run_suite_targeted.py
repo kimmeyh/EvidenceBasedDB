@@ -41,6 +41,7 @@ def repo(tmp_path):
         "tests/test_no_em_dashes.py": "\n",
         "tests/test_changelog_currency.py": "\n",
         "tests/test_sprint_documents.py": "\n",
+        "tests/test_us_english.py": "\n",
     }
     for name, text in files.items():
         (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
@@ -67,6 +68,29 @@ def test_a_document_picks_its_readers_and_the_document_guards(repo):
     rs = _runner()
     (repo / "docs" / "GUIDE.md").write_text("changed\n", encoding="utf-8")
     assert rs.targeted_tests(repo, rs.changed_files(repo)) == sorted(["tests/test_x.py", *rs.DOC_GUARDS])
+
+
+def test_a_document_change_in_this_repository_runs_the_spelling_and_dash_guards():
+    """Manual Validation Q3 (team lead, 2026-10-25: "q3 do now"): 6cfc137
+    put "whilst" in two documents, --changed did not run test_us_english,
+    and CI went red. The check runs on this repository's own tests, so a
+    guard renamed or dropped from DOC_GUARDS fails here. Proven to fail by
+    injection, 2026-10-25: with test_us_english.py taken out of DOC_GUARDS,
+    this test went red. Restored."""
+    rs = _runner()
+    for doc in ("CHANGELOG.md", "docs/INTAKE_WORKFLOW.md"):
+        picked = rs.targeted_tests(ROOT, [doc])
+        assert {"tests/test_us_english.py", "tests/test_no_em_dashes.py"} <= set(picked), (doc, picked)
+    # the fresh-eyes review of b0b41a3: test_intake reads every manifest. Proven to fail by injection,
+    # 2026-10-25: with the manifests/ branch removed from targeted_tests, a new manifest picked no test_intake.
+    assert "tests/test_intake.py" in rs.targeted_tests(ROOT, ["manifests/a_new_manifest.json"])
+    # the fresh-eyes review of b6cdcd0: the other tests that read every file of a kind. Proven to fail by
+    # injection, 2026-10-25: with each of the three branches removed in turn, its assertion went red.
+    reader_file = rs.targeted_tests(ROOT, ["manifests/sprint13_reads/group_g09.json"])
+    assert "tests/test_sprint13_read_ledger.py" in reader_file, reader_file
+    script = set(rs.targeted_tests(ROOT, ["scripts/sprint13_read_ledger.py"]))
+    assert set(rs.SCRIPT_GUARDS) <= script, script
+    assert "tests/test_guard_discipline.py" in rs.targeted_tests(ROOT, ["tests/test_reader_prompts.py"])
 
 
 def test_a_new_test_file_runs_itself_and_conftest_runs_everything(repo):

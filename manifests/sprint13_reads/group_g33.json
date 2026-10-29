@@ -1,0 +1,613 @@
+{
+ "papers": [
+  {
+   "record_id": "meyer-2024-robustness-generalization-quantum-reinforcement-learning",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2024/Meyer-et-al._2024_Robustness-and-Generalization-in-Quantum-Reinforcement-Learning-via__2410.21117.pdf",
+   "title_in_file": "Robustness and Generalization in Quantum Reinforcement Learning via Lipschitz Regularization",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, sections 1 to 6 (method, setup, robustness, generalization, discussion); curriculum-learning details and references skimmed",
+   "what_it_is": "A quantum policy-gradient method with Lipschitz regularization (RegQPG) and a curriculum variant, tested on CartPole.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "regqpg-robustness",
+     "value": "The authors report that training with the Lipschitz-regularized quantum policy gradient (RegQPG) improves the robustness of quantum policies on CartPole under additive Gaussian observation noise.",
+     "anchor": "Abstract; Section 4, Fig. 4",
+     "quotes": [
+      "Overall, we can conclude, that Lipschitz regularization, as implemented in RegQPG, can significantly improve the robustness of quantum policies.",
+      "We show that training with RegQPG improves the robustness and generalization of the resulting policies."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical experiments on one environment (CartPole).",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "One benchmark environment; the PQC policy has few layers; no comparison with a classical policy network."
+    },
+    {
+     "id_suggestion": "curr-regqpg-generalization",
+     "value": "The authors report that, with the curriculum variant (CurrRegQPG), the fraction of runs that generalized over the widest tested range of initial pole angular velocities rose from 3% to 41% with regularization.",
+     "anchor": "Section 5.2, Table 2",
+     "quotes": [
+      "significantly increases from 3% to 41% in the presence of regularization"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single environment, 100 runs per setting; empirical.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The 41% figure is for the regularization rate 0.1 column of Table 2; a rate of 0.2 gave a smaller gain."
+    },
+    {
+     "id_suggestion": "cartpole-setup",
+     "value": "The authors state that the experiments use the CartPole environment, with training performance averaged over 100 random seeds.",
+     "anchor": "Section 3; Fig. 3 caption",
+     "quotes": [
+      "For experimentally validating the claims in this paper, we use the CartPole environment (Brockman et al., 2016)",
+      "Training performance is averaged over 100 random seeds."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of its own experimental scope, Section 3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The evidence is limited to one small control task."
+    },
+    {
+     "id_suggestion": "lipschitz-limitation",
+     "value": "The authors state that the Lipschitz bound may limit policy performance in certain scenarios and that less conservative conditions are future work.",
+     "anchor": "Section 6",
+     "quotes": [
+      "Future work should consider less conservative conditions than those based on the Lipschitz bound in Equation (9).",
+      "it may limit the performance of QRL policies in certain scenarios."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of a limit, Section 6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "meyer-2026-gradient-scalability-taylor-surrogation-quantum",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2025/Meyer-et-al._2025_Trainability-of-Quantum-Models-Beyond-Known-Classical-Simulability__2507.06344.pdf",
+   "title_in_file": "Gradient Scalability and Taylor Surrogation of Quantum Cost Landscapes",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, introduction, sections II and III main text including Theorem 2 discussion, conclusion; appendices not read",
+   "what_it_is": "A theory paper on a Taylor surrogate for near-Clifford circuits and a Linear Clifford Encoder that keeps gradients from vanishing at initialization on small patches.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "lce-constant-gradient",
+     "value": "The paper proves that, for its Linear Clifford Encoder (LCE), the expected squared gradient norm at initialization has a constant lower bound independent of circuit depth, when parameters start on a sufficiently small patch near Clifford circuits.",
+     "anchor": "Section III, Theorems 1 and 2",
+     "quotes": [
+      "in order to achieve a constant lower bound on the expected gradient square norm, independent of the circuit depth of",
+      "This is achieved by initializing the parameters on a sufficiently small patch"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2 with Theorem 1, Section III.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The patch is classically simulable, so the result does not by itself give a quantum advantage."
+    },
+    {
+     "id_suggestion": "taylor-surrogate-complexity",
+     "value": "The authors state that the Taylor surrogate matches Pauli path runtime guarantees with provable speedups on sufficiently small patches, and that a lower-bound analysis identifies a threshold where it shifts from polynomial to super-polynomial complexity.",
+     "anchor": "Section V Conclusion; Theorems 3 and 4",
+     "quotes": [
+      "We showed that the Taylor surrogate matches Pauli path runtime guarantees [21] with provable speedups on sufficiently small patches.",
+      "identifies the boundary where our Taylor surrogate shifts from polynomial to super-polynomial complexity, as established by our lower bound analysis"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorems 3 and 4 as summarized in the Conclusion; proofs in appendices not read by this reader.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "no-bp-guarantee-beyond-threshold",
+     "value": "The authors state that they do not prove guarantees for the absence of barren plateaus beyond the threshold, and present the polynomial-decay regime strictly as a numerical indication and open hypothesis.",
+     "anchor": "Section I Introduction",
+     "quotes": [
+      "While we do not prove theoretical guarantees for the absence of barren plateaus beyond this threshold",
+      "We present this regime strictly as a numerical indication and an open hypothesis for future rigorous proof."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' statement of their own limit, Section I.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "mohseni-2025-demonstrating-quantum-scaling-advantage-approximate",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2024/Mohseni-et-al._2024_A-Competitive-Showcase-of-Quantum-versus-Classical-Algorithms-in-Energy__2405.11917.pdf",
+   "title_in_file": "Demonstrating Quantum Scaling Advantage in Approximate Optimization for Energy Coalition Formation with 100+ Agents",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, introduction, results discussion of solution quality and runtime scaling, conclusion; supplemental algorithm reviews skimmed",
+   "what_it_is": "A benchmark of D-Wave quantum annealing, 1-round QAOA on IBM hardware and classical solvers on an energy coalition formation problem.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "dwave-solution-quality",
+     "value": "The authors report that D-Wave matches their best classical solvers on solution quality for up to 100 prosumers and reaches solutions within a 1% optimality gap from Gurobi for 150 prosumers.",
+     "anchor": "Section IV Conclusion",
+     "quotes": [
+      "D-Wave matches our best classical solvers (e.g., Gurobi and Tabu Search) for up to 100 prosumers (qubits) and achieves solutions within a 1% optimality gap from Gurobi for problems with 150 prosumers (150 logical qubits)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One benchmark study on one problem family.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Authors include E.ON staff; the hardware vendor is not an author."
+    },
+    {
+     "id_suggestion": "dwave-runtime-scaling",
+     "value": "The authors report that D-Wave shows more favorable runtime scaling with problem size than the classical approximate solvers tested, yet remains slower than some classical methods such as QB-Solve at the sizes evaluated.",
+     "anchor": "Section IV Conclusion; Fig. 3(b)",
+     "quotes": [
+      "D-Wave exhibits more favorable time scaling with problem size than classical approximate solvers. However, for the system sizes we evaluated, it remains slower than some classical methods, such as QB-Solve.",
+      "The runtime of Gurobi, QB-solve, Tabu search, and simulated annealing scales cubically with varying prefactors"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical scaling fit from one study, Fig. 3(b).",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The title says quantum scaling advantage; the body says the advantage is a potential one on preliminary evidence."
+    },
+    {
+     "id_suggestion": "preliminary-evidence-limit",
+     "value": "The authors describe their evidence as preliminary and a potential scaling advantage, and state that clear scaling is difficult to observe with up to 45 prosumers.",
+     "anchor": "Section I; results discussion",
+     "quotes": [
+      "We provide preliminary empirical evidence suggesting a potential scaling advantage of DWave for a dense, real-world problem in approximate optimization.",
+      "DWave and QB-Solve demonstrate competitive runtimes, but clear scaling is difficult to observe with up to 45 prosumers."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own qualification, Section I and results discussion.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "molteni-2026-quantum-machine-learning-advantages-beyond",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2025/Molteni-Marshall-Dunjko_2025_Quantum-machine-learning-advantages-beyond-hardness-of-evaluation__2504.15964.pdf",
+   "title_in_file": "Quantum Machine Learning Advantages Beyond Hardness of Evaluation",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, introduction, preliminaries, Section 6 discussion, theorem statements; appendix proofs not read",
+   "what_it_is": "A theory paper proving identification-task learning separations for quantum functions under complexity-theoretic assumptions.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "not-random-generatable",
+     "value": "The paper proves that quantum functions are not random generatable unless BQP is in the second level of the polynomial hierarchy.",
+     "anchor": "Section 1 contribution 1; Theorem 1",
+     "quotes": [
+      "We show that quantum functions are not random generatable unless BQP is in the second level of the polynomial hierarchy."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Contribution 1 in Section 1, proved in the appendix (Theorem 1 variant).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "identification-advantage",
+     "value": "The paper proves that for a broad class of quantum identification tasks there exists an exponential quantum advantage unless BQP is in a low level of the polynomial hierarchy.",
+     "anchor": "Abstract; Corollary 1",
+     "quotes": [
+      "for a broad class of quantum identification tasks there exists an exponential quantum advantage unless BQP is in a low level of the polynomial hierarchy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Abstract and Corollary 1; conditional on complexity assumptions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The result is conditional on a complexity-theoretic assumption and concerns constructed tasks, not typical ML workloads."
+    },
+    {
+     "id_suggestion": "heuristic-assumption-scope",
+     "value": "The authors state that the main-text results are presented under the heuristic form of the complexity-theoretic assumptions, since the analysis follows a distribution-specific scenario.",
+     "anchor": "Section 1",
+     "quotes": [
+      "We note that the results in the main text are presented under the heuristic form of the complexity-theoretic assumptions, since our analysis follows a distribution-specific scenario."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors' statement of scope, Section 1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "exclusively-theoretical",
+     "value": "The authors state that the manuscript presents exclusively theoretical results.",
+     "anchor": "Reproducibility statement",
+     "quotes": [
+      "This manuscript presents exclusively theoretical results."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Reproducibility statement.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "monbroussou-2026-hybrid-quantum-neural-networks-theory",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2026/Monbroussou-et-al._2026_Hybrid-Quantum-Neural-Networks-Theory_Implementations_and-Applications__2608.01194.pdf",
+   "title_in_file": "Hybrid Quantum Neural Networks: Theory, Implementations, and Applications",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, contents, Section VII (discussion, challenges, perspectives); body sections II to VI not read in full",
+   "what_it_is": "A review of hybrid quantum neural networks by Terra Quantum authors.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "provable-separations-not-settled",
+     "value": "The review states that theory has established provable separations on specific constructed tasks, but that the case for a robust, scale-invariant advantage across typical learning workloads is not yet settled.",
+     "anchor": "Section VII",
+     "quotes": [
+      "Theory has now established provable separations on specific constructed tasks, including some defined over large-scale classical data, yet the case for a robust, scale-invariant advantage across typical learning workloads is not yet settled."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Review statement of the field; no single study.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": "Review authors are at Terra Quantum, which sells hybrid quantum ML products."
+    },
+    {
+     "id_suggestion": "trainable-implies-simulable",
+     "value": "The review states that ansatzes that are provably trainable seem to admit classical simulation methods.",
+     "anchor": "Section VII",
+     "quotes": [
+      "ansatzes that are provably trainable seem to admit classical simulation methods"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Review synthesis of cited work.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmarks-not-at-scale",
+     "value": "The review states that recent benchmarks caution that gains from hybrid quantum neural networks have not yet been demonstrated at scale.",
+     "anchor": "Abstract",
+     "quotes": [
+      "While recent benchmarks caution that such gains have not yet been demonstrated at scale"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Abstract of the review.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mostly-simulated",
+     "value": "The review states that most HQNN results today are obtained by simulating the quantum layer classically, with on-hardware execution reserved for final validation.",
+     "anchor": "Section VII A",
+     "quotes": [
+      "Most HQNN results today are obtained by simulating the quantum layer classically, with on-hardware execution reserved for final validation."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Review statement about the state of the field.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "monbroussou-2026-quantum-machine-learning-industrial-applications",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2026/Monbroussou_2026_Quantum-Machine-Learning-for-Industrial-Applications__2606.14822.pdf",
+   "title_in_file": "Quantum Machine Learning for Industrial Applications",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "English abstract, chapter 3 summary and the statements of Lemma 3.1 and Theorems 3.2 and 3.3, Chapter 8 conclusion; remaining chapters and appendix proofs not read",
+   "what_it_is": "A PhD thesis (Sorbonne Universite, with Naval Group) on trainability, subspace-preserving circuits and dequantization of QML models.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "hw-preserving-no-bp",
+     "value": "The thesis states that barren plateaus can be avoided for subspace-invariant circuits built from RBS or FBS gates, provided the circuit is used in a fixed Hamming-weight subspace and under certain assumptions on qubit connectivity.",
+     "anchor": "Chapter 3; Lemma 3.1, Theorems 3.2 and 3.3",
+     "quotes": [
+      "BPs can indeed be avoided for subspace-invariant quantum circuits based on RBS or FBS gates",
+      "provided the circuit is employed only in a given HW k subspace with fixed k and under certain assumptions on the qubit connectivity"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 3.1 and Theorems 3.2 and 3.3, Chapter 3 (proofs in Appendix A, not read).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bp-avoidance-implies-simulability",
+     "value": "The thesis states that when QML algorithms avoid the barren plateau problem, this is often achieved by reducing algorithmic complexity to the point where efficient classical simulation becomes possible.",
+     "anchor": "Chapter 8 Conclusion",
+     "quotes": [
+      "when QML algorithms avoid key issues such as the barren plateau problem (a vanishing-gradient phenomenon that prevents learning), this is often achieved by reducing algorithmic complexity to the point where efficient classical simulation becomes possible"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Conclusion summarizing recent research.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dequantization-open",
+     "value": "The thesis states that designing quantum models provably resistant to dequantization remains a non-trivial task, especially when also avoiding exponential concentration of the loss landscape.",
+     "anchor": "Chapter 8 Conclusion",
+     "quotes": [
+      "designing quantum models that are provably resistant to dequantization remains a non-trivial task, all the more so when simultaneously avoiding exponential concentration of the loss landscape"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Author's statement of an open limit, Chapter 8.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmarks-fail-baselines",
+     "value": "The thesis cites recent benchmarking studies as showing that many widely used quantum models fail to outperform well-tuned classical baselines.",
+     "anchor": "Chapter 8 Conclusion",
+     "quotes": [
+      "Recent benchmarking studies [74] have shown that many widely used quantum models fail to outperform well-tuned classical baselines"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited result in the conclusion.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "mondal-2023-ground-or-excited-state-state",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2023/Mondal-Maitra_2023_Ground-or-Excited-State-a-State-Specific-Variational-Quantum-Eigensolver__2308.10719.pdf",
+   "title_in_file": "Ground or Excited State: a State-Specific Variational Quantum Eigensolver for Them All",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, introduction, computational details, Be insertion results description, conclusion; derivation details of Section II skimmed",
+   "what_it_is": "A VQE variant (ss-VQE) that targets symmetry-adapted ground and excited states one at a time, tested by simulation on a small molecular system.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "ssvqe-proposal",
+     "value": "The authors claim that their state-specific VQE needs no prior knowledge of the ground state and can selectively target any low-lying excited state of a given symmetry.",
+     "anchor": "Section I",
+     "quotes": [
+      "Unlike all other methods, ss-VQE does not require any prior knowledge of the ground state and it can selectively target any low-lying excited state"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Authors' claim of advantage over other methods.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ssvqe-be-h2-sim",
+     "value": "The authors report simulating ground and excited states along the insertion pathway of a beryllium atom into a hydrogen molecule in the STO-3G basis, with ss-VQE results shown as dots against FCI values as lines.",
+     "anchor": "Section III; Fig. 5 caption",
+     "quotes": [
+      "We simulated the ground and a number of excited states along the insertion pathway in STO-3G basis where the core 1s orbital of Be is kept frozen.",
+      "The Solid lines are the FCI values whereas the dots are the results obtained from state-specific VQE (ss-VQE)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One molecular test case; numerical agreement is in the figure, not stated in the quotes.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Agreement with FCI is shown in a figure; this reader did not extract numbers."
+    },
+    {
+     "id_suggestion": "ideal-simulator-scope",
+     "value": "The authors state that all calculations used a statevector simulator assuming an ideal quantum environment.",
+     "anchor": "Section III computational details",
+     "quotes": [
+      "we have chosen the statevector-simulator assuming an ideal quantum environment"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Authors' statement of computational setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "No noisy or hardware run supports the near-term-device claim."
+    }
+   ]
+  },
+  {
+   "record_id": "montanez-barrera-2025-evaluating-performance-quantum-processing-units",
+   "file": "D:/Data/Harold/EvidenceBasedDB/QMLPapers/2025/Montanez-Barrera-Michielsen-Neira_2025_Evaluating-the-performance-of-quantum-process-units-at__2502.06471.pdf",
+   "title_in_file": "Evaluating the performance of quantum processing units at large width and depth",
+   "version_note": "",
+   "read_extent": "partial",
+   "partial_detail": "Abstract, introduction, benchmarking background, Section IV discussion and conclusions; detailed results sections not read",
+   "what_it_is": "A cross-vendor benchmark of 24 quantum processors using a linear ramp QAOA protocol.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "assertions": [
+    {
+     "id_suggestion": "lrqaoa-scope",
+     "value": "The authors state that they applied the linear ramp QAOA benchmark to 24 quantum processors from six vendors, with problems up to 156 qubits and 10,000 layers.",
+     "anchor": "Abstract",
+     "quotes": [
+      "We apply this protocol to 24 quantum processors from six vendors, testing problems with up to 156 qubits and 10,000 layers across 1D-chains, native layouts, and fully connected topologies."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors' statement of their experimental scope, abstract.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "h2-only-56-qubit-eplg",
+     "value": "The authors report that Quantinuum H2-1 was the only platform to pass the 56-qubit fully connected benchmark, and that the error-per-layered-gate metric does not consistently predict algorithmic performance, especially at scale.",
+     "anchor": "Section IV",
+     "quotes": [
+      "(ii) Quantinuum's H2-1 is the only platform to successfully pass the 56-qubit FC benchmark.",
+      "(iii) The error-perlayered-gate (EPLG) metric does not consistently predict algorithmic performance, especially at scale."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical results from one benchmark study at one time.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Results depend on hardware access at the time and on the single LR-QAOA protocol."
+    },
+    {
+     "id_suggestion": "stable-over-time",
+     "value": "The authors report that the protocol remained stable over time, with less than 1% variation over two months.",
+     "anchor": "Section IV",
+     "quotes": [
+      "remains stable over time, with less than 1% variation over two months."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical stability check reported in the conclusion.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "raw-performance-scope",
+     "value": "The authors state that the benchmark is designed to capture the raw performance of a QPU, and that changing the initial state, for example by warm-start initialization, introduces bias and invalidates statistical comparisons.",
+     "anchor": "Section IV",
+     "quotes": [
+      "In general, these benchmarks are designed to capture the raw performance of a QPU.",
+      "Changing the initial state, for example via warm-start initialization [41], introduces bias and invalidates statistical comparisons."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Authors' statement of benchmark scope.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

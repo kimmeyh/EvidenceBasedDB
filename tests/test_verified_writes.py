@@ -140,6 +140,16 @@ def test_new_scripts_write_only_through_the_checked_path():
     ("write = ingest.sync_assertion", "without the quote check"),
     ("v = Verified(a.id, a.citation_context)", "names Verified"),
     ("from store.quotes import Verified as V", "names Verified"),
+    # the fresh-eyes review of ed53933: a name spelled as a string passed the parse
+    ("getattr(d, 'insert_assertion')(conn, a)", "without the quote check"),
+    ("V = getattr(q, 'Verified')", "names Verified"),
+    # the fresh-eyes review of 6173bad: a dotted name or a call inside a string
+    ("eval('store.ingest.insert_assertion')(conn, a)", "without the quote check"),
+    ("exec('insert_assertion(conn, a)')", "without the quote check"),
+    # the fresh-eyes review of b6cdcd0: bytes constants
+    ("eval(b'insert_assertion')(conn, a)", "without the quote check"),
+    # the fresh-eyes review of a3b8074: an edit table defined inside a string
+    ("insert_verified_assertion(conn, a, v)\nexec('''\nVALUE_A = {}\n''')\n", "without require_edit_basis"),
     ("insert_verified_assertion(conn, a, v)\nVALUE_REPLACE = {'x': 'a new value'}\n"
      "# require_edit_basis( is only mentioned here", "without require_edit_basis"),
 ])
@@ -155,11 +165,14 @@ def test_the_script_rule_names_each_planted_problem(planted, expected):
              "CONTEXT_BY_RANK = {}  # an entry script's table, with no assertion written\n")
     assert script_problems(clean) == []
     assert script_problems("CONTEXT_BY_RANK = {}\ninsert_paper(conn, paper)\n") == []
+    # the fresh-eyes review of ed53933: the basis called through a module is a call of it
+    assert script_problems("import store.quotes as sq\nVALUE_FIXES = {}\ninsert_verified_assertion(conn, a, v)\n"
+                           "sq.require_edit_basis(aid, value, basis, text)\n") == []
 
 
-_GRADED = ("from store.grading import grade, high_grades\n"
+_GRADED = ("from store.grading import grade, high_grades, low_grade\n"
            "HIGH = high_grades({'a1': ('proved result', 'Theorem 2, p.6')})\n"
-           "certainty, reasons = grade('a1', HIGH, otherwise=('low', 'Started LOW'))\n"
+           "certainty, reasons = grade('a1', HIGH, otherwise=low_grade('measured result'))\n"
            "insert_verified_assertion(conn, a, v)\n")
 
 
@@ -169,6 +182,11 @@ _GRADED = ("from store.grading import grade, high_grades\n"
     ("sprint12_reading.py", _GRADED + "a.certainty = \"high\"\n", True),
     ("sprint12_reading.py", "insert_verified_assertion(conn, a, v)\n", True),  # no grading at all
     ("sprint12_reading.py", "insert_paper(conn, p)\nGRADE = {'proved': 'high'}\n", False),  # writes no assertion
+    # the fresh-eyes review of ed53933: a write named as a string still makes the script a writer
+    ("sprint12_reading.py", "getattr(d, 'insert_verified_assertion')(conn, a, v)\nGRADE = {'x': 'high'}\n", True),
+    # the fresh-eyes review of b6cdcd0: a grade quoted inside a string, or a bytes literal
+    ("sprint12_reading.py", _GRADED + "exec(\"g = 'high'\")\n", True),
+    ("sprint12_reading.py", _GRADED + "x = b'high'\n", True),
     ("sprint12_f102_intake.py", "insert_verified_assertion(conn, a, v)\ncertainty='high'\n", False),  # not reading
     ("sprint11_reading.py", "insert_verified_assertion(conn, a, v)\nGRADE = {'proved': 'high'}\n", False),
 ])
@@ -195,6 +213,84 @@ def test_the_grading_helper_refuses_high_without_a_named_basis():
         high_grades({"a1": ("setup", "  ")})
     with pytest.raises(ValueError, match="only from high_grades"):
         grade("a2", high, ("high", "Started HIGH: the reader said so"))
+
+
+@pytest.mark.parametrize("name, body, flagged", [
+    ("sprint13_reading.py", _GRADED, False),
+    ("sprint13_reading.py", _GRADED + "EMPIRICAL = 'Started LOW: an empirical result from one study. NOT upgraded'\n",
+     True),
+    ("sprint13_reading.py", _GRADED.replace("low_grade('measured result')", "('low', reason)"), True),
+    # the fresh-eyes review of dd620c7: both passed the first rule
+    ("sprint13_reading.py", _GRADED + "x = ('low', 'Started ' + 'LOW: the reader thinks so')\n", True),
+    ("sprint13_reading.py", _GRADED.replace("import grade, high_grades, low_grade", "import grade, high_grades, "
+                                            "low_grade as lg").replace("low_grade('measured", "lg('measured"), False),
+    # the fresh-eyes review of cec6020: the import line alone, with no call, passed
+    ("sprint13_reading.py", _GRADED.replace("otherwise=low_grade('measured result')", "otherwise=MY_LOW"), True),
+    ("sprint13_reading.py", "insert_paper(conn, p)\nX = 'Started LOW'\n", False),  # writes no assertion
+    ("sprint11_reading.py", "insert_verified_assertion(conn, a, v)\nX = 'Started LOW'\n", False),
+    # the three bypasses the fresh-eyes reviews of f782e53 and ce2412e found, closed 2026-10-25 by the parse
+    ("sprint13_reading.py", _GRADED.replace("otherwise=low_grade('measured result')", "otherwise=MY_LOW")
+     + "NOTE = 'low_grade(is named here only)'\n", True),
+    ("sprint13_reading.py", _GRADED.replace("otherwise=low_grade('measured result')", "otherwise=MY_LOW")
+     + "def f():\n    \"\"\"low_grade('in a docstring')\"\"\"\n", True),
+    ("sprint13_reading.py", _GRADED + "def low_grade(reason):\n    return my_tuple(reason)\n", True),
+    ("sprint13_reading.py", _GRADED + "low_grade = lambda reason: my_tuple(reason)\n", True),
+    ("sprint13_reading.py", _GRADED + "x = ('#', 'Started LOW: hidden after the hash')\n", True),
+    ("sprint13_reading.py", _GRADED + "exec(b\"g = 'low'\")\n", True),  # the review of b6cdcd0
+    ("sprint13_reading.py", "import store.grading as g\nfrom store.grading import grade, high_grades\n"
+     "HIGH = high_grades({'a1': ('proved result', 'Theorem 2, p.6')})\n"
+     "c = grade('a1', HIGH, otherwise=g.low_grade('measured result'))\ninsert_verified_assertion(conn, a, v)\n", False),
+])
+def test_a_reading_script_grades_low_only_through_store_grading(name, body, flagged):
+    """Sprint 12 retrospective I2 (Sprint 13 Task F): a reading script's
+    LOW names its reason through low_grade, with no "Started LOW" text of
+    its own. Proven to fail by injection, 2026-10-25: with the LOW rule
+    removed from script_problems, the two flagged cases went red. Restored.
+    And 2026-10-25 again: with the call rule put back to the bare name, the
+    import-only case went red. Not closed (store/write_path.py says so): a
+    LOW built by concatenation with no quoted "low".
+    The five bypass cases (a call named in a string, in a docstring, a
+    low_grade the script defines or assigns, a "#" in a string): proven to
+    fail by injection, 2026-10-25, against the text rule of 1980406 (each
+    passed it unflagged) and again with calls_grading's own-definition check
+    removed (the def and lambda cases went red). Restored."""
+    problems = script_problems(body, name)
+    assert any("grades LOW outside store.grading" in p for p in problems) == flagged, problems
+
+
+def test_the_grading_helper_names_every_low_reason():
+    """The texts are the ones the store holds, so moving a script onto
+    low_grade writes nothing new; a theoretical result needs its why.
+    Proven to fail by injection, 2026-10-25: with the LOW_NEEDS_WHY check
+    removed from low_grade, the bare theoretical result was accepted."""
+    from store.grading import low_grade
+    assert low_grade("measured result") == ("low", "Started LOW: an empirical result from one study. NOT upgraded")
+    assert low_grade("theoretical result", "Theorem 2, not checked by the coordinator") == (
+        "low", "Started LOW: a theoretical result (proof, derivation or proposition): Theorem 2, not checked by the "
+               "coordinator. NOT upgraded")
+    with pytest.raises(ValueError, match="names why"):
+        low_grade("theoretical result", " ")
+    with pytest.raises(ValueError, match="is not one of"):
+        low_grade("probably fine")
+    assert low_grade("vendor claim")[1].startswith("Started MODERATE: vendor primary documentation")
+    # Copilot, PR #131 (2026-10-28): a vendor claim with a why was refused as "not one of" the reasons. Proven to
+    # fail, 2026-10-28: without the vendor-claim branch's own refusal, the message was "is not one of".
+    with pytest.raises(ValueError, match="vendor claim takes no why"):
+        low_grade("vendor claim", "the vendor's own page")
+
+
+def test_theory_words_skip_a_proof_of_principle_run():
+    """The fresh-eyes review of dd620c7: the first pattern missed "we
+    show", Omega and a bare "prove", and "bounds?" also matched "boundary".
+    Proven to fail by injection, 2026-10-25: with the closing word
+    boundary removed from the pattern, "decision boundary" was read as
+    theory."""
+    from store.grading import theory_words
+    assert theory_words("a proof of principle run and a proof-of-concept demo on hardware") == []
+    assert theory_words("the decision boundary and open boundary conditions") == []
+    assert theory_words("Theorem 3 gives gate complexity O(n2); we prove it") == ["Theorem", "complexity", "O(",
+                                                                                  "prove"]
+    assert theory_words("we show they contain Ω(n) min-entropy") == ["we show", "Ω("]
 
 
 # ------------------------------------------------------------------ I1

@@ -1,0 +1,2077 @@
+{
+ "group": "g025",
+ "papers": [
+  {
+   "record_id": "liao-2024-graph-neural-networks-quantum-computers",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Liao-Zhang-Ferrie_2024_Graph-Neural-Networks-on-Quantum-Computers__2405.17060.pdf",
+   "title_in_file": "Graph Neural Networks on Quantum Computers",
+   "version_note": "arXiv:2405.17060v1, 27 May 2024.",
+   "pages": 50,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper that proposes quantum circuit constructions for graph convolutional, graph attention and message-passing GNNs and analyses the time and space complexity of quantum SGC and LGC against classical ones, with no experiments.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qgnn-no-empirical-eval",
+     "verdict": "widened",
+     "note": "The stored value drops the end of the sentence: the paper places the empirical evaluations 'in more general settings and real-world applications'. The paper also says outright that it does no benchmark evaluation (Appendix E, p.47), which the stored id implies but the value does not say.",
+     "value": "The authors list further analysis and empirical evaluations to assess the performance and scalability of their Quantum GNN architectures in more general settings and real-world applications as future research directions, and state that, unlike Chen et al., who evaluate their QGCN on a benchmarking dataset, their own work focuses on the theoretical aspects and complexity analysis.",
+     "anchor": "Section 7.2, p.35; Appendix E, p.47",
+     "quotes": [
+      "Future research directions include further analysis and empirical evaluations to assess the performance and scalability of our Quantum GNN architectures in more general settings and real-world applications.",
+      "While Chen et al. evaluate their QGCN on certain benchmarking dataset, our work focuses on the theoretical aspects and performed rigorous complexity analysis"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of its scope and future work, Section 7.2 p.35 and Appendix E p.47.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No numerical experiment or simulation appears anywhere in the 50 pages."
+    },
+    {
+     "id": "qsgc-depth-space-tradeoff",
+     "verdict": "narrowed",
+     "note": "The paper derives this only for K = 2, for a single forward pass and cost function evaluation, at fixed precision, and under its assumption that the weight-matrix PQC is shallower than the circuit for S to the K. The linear space is the qubit count of order NC plus N log N times s log s (Table 1, p.13), which footnote 3 calls comparable to the classical SGC's.",
+     "value": "The paper derives that, for K = 2, a single forward pass and cost function evaluation at fixed precision, and assuming the depth of the weight-matrix PQC is less than the depth of the circuit for S to the K, the quantum SGC optimized for minimal circuit depth achieves logarithmic time complexity in the input sizes, at the cost of linear space complexity, which the authors call comparable to that of the classical SGC.",
+     "anchor": "Section 7.2, p.35; Table 1, p.13; Section 3.2, p.12; footnote 3, p.3",
+     "quotes": [
+      "when optimizing for minimal circuit depth, the quantum SGC achieves logarithmic time complexity in the input sizes, albeit at the cost of linear space complexity",
+      "Complexity comparison between Quantum SGC and Classical SGC (K = 2) for a single forward pass and cost function evaluation, assuming fixed precision parameters.",
+      "We assume that the depth of this PQC is less than the depth of the circuit for SK.",
+      "This improvement comes with a trade-off in space complexity, which is comparable to that of the classical SGC."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A complexity derivation in Section 6 that assembles cited circuit costs (refs. 48, 52, 53, 62); not stated as a theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qsgc-potential-advantage",
+     "verdict": "narrowed",
+     "note": "The introduction limits the advantage to 'certain conditions commonly encountered in real-world applications', and the analysis covers the SGC only for K = 2 at fixed precision; data loading by state preparation is counted, but the read-out of labels by state tomography (Section 3.1.3) is outside the tables.",
+     "value": "The authors state that their complexity analysis shows their quantum SGC can potentially achieve significant improvements in time and/or space complexity compared to its classical counterpart, under certain conditions commonly encountered in real-world applications; the comparison is for K = 2, a single forward pass and cost function evaluation, at fixed precision.",
+     "anchor": "Abstract, p.1; Section 1, p.3; Table 1, p.13",
+     "quotes": [
+      "A complexity analysis of our quantum implementation of the Simplified Graph Convolutional (SGC) Network shows potential quantum advantages over its classical counterpart",
+      "can potentially achieve significant improvements in time and/or space complexity compared to its classical counterpart, under certain conditions commonly encountered in real-world applications",
+      "Complexity comparison between Quantum SGC and Classical SGC (K = 2) for a single forward pass and cost function evaluation, assuming fixed precision parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A complexity comparison, not a theorem; the conditions are named only in general terms.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The tables compare a forward pass and one cost evaluation; the cost of extracting labels by tomography and of training is not in them."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qgnn-three-architectures",
+     "value": "The authors propose quantum algorithms corresponding to the three fundamental types of classical GNNs: Graph Convolutional Networks, Graph Attention Networks and Message-Passing GNNs.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "We devise quantum algorithms corresponding to the three fundamental types of classical GNNs: Graph Convolutional Networks, Graph Attention Networks, and MessagePassing GNNs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of what it does, Abstract p.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qsgc-min-depth-time-vs-classical",
+     "value": "The paper derives that the quantum SGC with minimum circuit depth has time complexity logarithmic in the input sizes, assuming fixed success probability, against the classical SGC's time complexity of order N d C plus N C squared; the space complexity of the quantum SGC in this case is comparable to the classical SGC's.",
+     "anchor": "Section 3.2, Case 1, p.12; Table 1, p.13",
+     "quotes": [
+      "The time complexity of the quantum SGC in the case is logarithmic in the input sizes",
+      "(assuming fixed success probability), this represents a significant improvement over the classical SGC's time complexity of O(N dC + N C2)",
+      "However, the space complexity of quantum SGC in this case is comparable to that of the classical SGC."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation, not a theorem; it rests on cited state-preparation and block-encoding costs.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qsgc-min-qubits-space-exponential",
+     "value": "The paper derives that the quantum SGC with minimum qubits has space complexity of order log(NC), an exponential reduction compared to the classical SGC's space complexity, and that its time complexity in this case still offers a computational advantage over the classical SGC, though less pronounced than in the minimum depth case.",
+     "anchor": "Section 3.2, Case 2, p.13; Eq. (65) and (67), p.32",
+     "quotes": [
+      "The space complexity of the quantum SGC in the minimum qubits case is O(log(N C)), which represents an exponential reduction compared to the classical SGC's space complexity",
+      "Furthermore, the time complexity of the quantum SGC, in this case, still offers a computational advantage over the classical SGC.",
+      "Although the speedup is less pronounced compared to the minimum depth case"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation, not a theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The minimum-qubit time bound in Eq. (65) still grows with NC divided by log(NC), so it is not logarithmic."
+    },
+    {
+     "id_suggestion": "qsgc-success-probability",
+     "value": "The authors state that the quantum SGC provides a probabilistic result with a success probability of 1 − δ, and that the complexity tables give quantum space as the number of qubits including ancilla qubits.",
+     "anchor": "Table 1 and its note, p.13",
+     "quotes": [
+      "The quantum SGC provides a probabilistic result with a success probability of 1 − δ.",
+      "space complexity in the quantum case refers to the number of qubits, including the ancilla qubits used by the circuit"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the terms of its own comparison in Table 1's caption and note, p.13.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qsgc-moderate-case",
+     "value": "The authors state that intermediate choices of ancillary qubits could potentially lead to moderate improvements in both time and space complexity, and that this moderate case could be advantageous for hardware or problem instances where neither circuit depth nor qubit number is the sole limiting factor.",
+     "anchor": "Section 3.2, p.13 (the formulas for the moderate case are scrambled in the text layer and were read from the page image); Eq. (62), p.31",
+     "quotes": [
+      "which could potentially lead to m√oderate improve- me√nts",
+      "This moderate case could be advantageous for certain quantum hardware architectures or problem instances where neither the circuit depth nor the number of qubits is the sole limiting factor."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' claim built on a derivation, not a theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The page image shows square-root scaling in NC for both time and qubits in this case."
+    },
+    {
+     "id_suggestion": "qsgc-pqc-depth-assumption",
+     "value": "The authors assume that the depth of the PQC implementing the SGC weight matrix is less than the depth of the circuit for S to the K, prioritizing efficiency while potentially sacrificing some expressiveness in the weight matrix.",
+     "anchor": "Section 3.2, p.12",
+     "quotes": [
+      "We assume that the depth of this PQC is less than the depth of the circuit for SK.",
+      "we prioritize the efficiency of the overall quantum SGC implementation while potentially sacrificing some expressiveness in the weight matrix"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own stated assumption, Section 3.2 p.12.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qsgc-data-encoding-cited",
+     "value": "The authors encode node features by amplitude encoding with the state preparation method of reference [48], whose Theorem 3 gives a tunable trade-off between the number of ancillary qubits and the circuit depth.",
+     "anchor": "Section 3.1.1, p.8; Section 3.2, p.12",
+     "quotes": [
+      "We select the approach from Ref. [48] for our data encoding, as their work provides a tunable trade-off between the number of ancillary qubits and the circuit depth for the state preparation.",
+      "According to Theorem 3 in [48]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to reference 48.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qsgc-product-block-encoding",
+     "value": "The authors implement S squared for K = 2 as the product of block-encoded matrices, citing Lemma 53 of reference [62].",
+     "anchor": "Section 3.2, p.12",
+     "quotes": [
+      "In the quantum SGC, for K = 2,10 we can efficiently implement SK by leveraging the product of block-encoded matrices as stated in Lemma 53 of Ref.[62]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited lemma.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qsgc-k2-cited-performance",
+     "value": "The authors cite the SGC work [55] for the claims that SGC removes nonlinearities while performing comparably to vanilla GCN, that the simplifications do not affect accuracy across various applications, and that SGC with K = 2 often matches or beats K > 2.",
+     "anchor": "Section 3.2, p.11; footnote 10, p.12",
+     "quotes": [
+      "the experimental results demonstrated that the simplifications do not affect the accuracy across various applications [55]",
+      "SGC with K = 2 often achieves similar/better performance than that of K > 2 in many downstream applications.[55]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited classical result.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-sgc-dominant-term",
+     "value": "The authors state, citing [64], that although the N C squared term appears to dominate classical SGC time, node-wise feature transformation runs at reduced cost through parallel dense matrix multiplication, so the N d C term is the dominant term and the primary obstacle to scalability.",
+     "anchor": "Table 1 caption, p.13; Table 4 caption, p.32",
+     "quotes": [
+      "However, in practice, node-wise feature transformation can be executed at a reduced cost due to the parallelism in dense-dense matrix multiplications.",
+      "Consequently, O(N dC) is the dominant complexity term in the time complexity of classical SGC and the primary obstacle to achieving scalability [64]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited claim about classical practice.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-gcn-complexity-cited",
+     "value": "The authors state, citing [77], that a K-layer classical GCN has time complexity of order K N C squared plus K |E| C and space complexity of order |E| plus K C squared plus K N C.",
+     "anchor": "Section 6.1, p.29",
+     "quotes": [
+      "For K layers, the overall time complexity is O(KN C2 + K|E|C + KN ) = O(KN C2 + K|E|C). The space complexity is O(|E| + KC2 + KN C). [77]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited complexity count.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qlgc-min-qubits",
+     "value": "The paper derives that the quantum LGC with minimum qubits has space complexity of order log(NC), significantly lower than classical LGC, and a time complexity that provides a potential advantage over classical LGC for certain problem instances.",
+     "anchor": "Section 3.3, p.15; Table 2, p.15; Table 5, p.33",
+     "quotes": [
+      "The space complexity of this case is O(log(N C)), which is significantly lower than the space complexity of classical LGC.",
+      "which also provides a potential advantage over classical LGC's O(KN dC + KN C2) for certain problem instances"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation, not a theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The classical LGC time is written with a K N C squared term in the text on p.15 but with N C squared in Table 2 (p.15), Eq. (70) and Table 5 (p.33)."
+    },
+    {
+     "id_suggestion": "qlgc-qsvt-trainable-phases",
+     "value": "The authors implement the LGC polynomial of the Laplacian with the polynomial eigenvalue transformation, a special instance of QSVT, so that the QSVT phases are the tunable weights to be trained; the depth for the block encoding of P(L) is K times the depth of the block-encoding of L plus the additional one- and two-qubit gates.",
+     "anchor": "Section 3.3, p.14 to 15; Section 6.3, p.33",
+     "quotes": [
+      "The parametrization of the polynomial is equivalent to parametrization of the Pauli angles(phases) in the QSVT circuit, that is, the phases are the tunable weights to be trained.",
+      "The depth of the circuit for the block encoding of P (L) is K times the depth of the block-encoding UL plus O((n′anc + 1)K) for the additional one- and two-qubit gates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A construction and its depth count; the QSVT result is cited (Theorem 56 of ref. 66).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgat-not-strict-block-encoding",
+     "value": "The authors state that their graph attention construction does not strictly achieve a block-encoding of the weighted adjacency matrix, but generates a quantum state that resembles the graph attention operation.",
+     "anchor": "Section 4.2, footnote 13, p.18; p.23",
+     "quotes": [
+      "are not strictly constructing Oldiagonal here and the following operations do not strictly achieve a blockencoding of the weighted adjacency matrix",
+      "however the alternative versions do generate a quantum state that resembles the Graph attention operation."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, footnote 13 p.18.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgat-qmpnn-sparse-scope",
+     "value": "The authors restrict the attention and message-passing constructions to graphs whose (weighted) adjacency matrices can be decomposed as the summation of 1-sparse matrices, with the sum over them carried out by LCU.",
+     "anchor": "Section 4.1, p.16; Section 4.2, p.17; Section 5, p.25",
+     "quotes": [
+      "in this paper we investigate certain sparse matrices (here, the weighted adjacency matrices) that can be decomposed as the summation of 1-sparse matrices",
+      "we investigate the graphs with certain adjacency matrices that can be decomposed as the summation of 1-sparse matrices",
+      "The summation over l can be carried out by Linear Combination of Unitaries (LCU)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the class of graphs it treats, Sections 4.2 and 5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qmpnn-linear-phi",
+     "value": "The authors' quantum message-passing GNN relies on the update function being linear in its arguments, so that aggregation over neighbours is achieved by an overall LCU module.",
+     "anchor": "Section 5, p.26",
+     "quotes": [
+      "Since φ is linear in its arguments, we have",
+      "This allows us to achieve the aggregation over different neighbours by the overall LCU module"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own construction assumption, Section 5 p.26.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The activation function is omitted from the update function here (footnote 15, p.24), which is what makes it linear."
+    },
+    {
+     "id_suggestion": "qattention-oracle",
+     "value": "The authors build a quantum attention oracle in which the attention score is the inner product of linearly transformed node features, evaluated in superposition by a parallel swap test and stored in a register by amplitude estimation.",
+     "anchor": "Appendix B, p.38 to 42",
+     "quotes": [
+      "this attention score can be evaluated on quantum circuit by parallel Swap Test",
+      "The second step is to use amplitude estimation [81] to extract and store the attention scores into an additional register"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A circuit construction without a cost analysis.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The paper gives no complexity count for the attention or message-passing constructions; only SGC and LGC are analysed."
+    },
+    {
+     "id_suggestion": "selective-copying-constant-depth",
+     "value": "The authors show, by circuit identities in figures, that the selective copying operation can be implemented by a circuit with constant depth, as a comparing unitary followed by a controlled copy.",
+     "anchor": "Appendix A, Figs. 13 to 17, p.36 to 37",
+     "quotes": [
+      "we show that the selective copying operation can be implemented by a circuit with constant depth",
+      "The stack on the right side can be implemented by a comparing unitary followed by a controlled copy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A diagrammatic argument, not a stated theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gcn-layer-proof",
+     "value": "The paper proves, using vec(ABC) = (CT ⊗ A)vec(B), that the linear layer-wise transformation of a multi-channel GCN can be implemented by applying the block-encoding of the normalized adjacency matrix and a parameterized quantum circuit on the two registers Reg(i) and Reg(k).",
+     "anchor": "Appendix C, Eqs. (C1) to (C8), p.42 to 43",
+     "quotes": [
+      "Using vec(ABC) = (CT ⊗ A)vec(B) (A, B,C are matrices)",
+      "the layer-specific trainable weight matrix and normalized adjacency matrix multiplied on the node feature matrix can be implemented by applying the block-encoding of the normalized adjacency matrix and a parameterized quantum circuit on the two quantum registers Reg(i) and Reg(k) respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix C, p.42 to 43, with the identity it rests on quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The block-encoding acts probabilistically: the desired state comes with an orthogonal '+ ...' part (p.10), and normalization factors are omitted (footnote 5, p.8)."
+    },
+    {
+     "id_suggestion": "qgcn-tomography-readout",
+     "value": "The authors state that predicted labels are extracted from the output state by quantum state tomography, followed by a softmax on the estimated amplitudes, and that the cost function is the negative inner product with a label state evaluated by the Modified Hadamard test.",
+     "anchor": "Section 3.1.3, p.11",
+     "quotes": [
+      "To extract the predicted labels from the output state |ψout⟩, quantum state tomography techniques are employed.",
+      "The cost function can be evaluated via the \"Modified Hadamard test\" [52, 53]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its inference and training procedure, Section 3.1.3 p.11.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Tomography cost is not part of the complexity tables, which cover a forward pass and one cost evaluation."
+    },
+    {
+     "id_suggestion": "modified-hadamard-test-cost",
+     "value": "The authors cite the Modified Hadamard test as estimating an inner product with additive precision ε using controlled applications of the two unitaries of order log(1/δ) divided by ε squared times, with probability 1−δ, and state that it needs only one additional qubit.",
+     "anchor": "Section 6.2.2, p.31 to 32",
+     "quotes": [
+      "with additive precision ε using controlled applications of U1 and U2 O log(1/δ) ε2 times, with probability 1−δ",
+      "as the Modified Hadamard test requires only one additional qubits"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result (refs. 52, 53).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgcn-activation-ntca",
+     "value": "The authors apply the non-linear activation with Nonlinear Transformation of Complex Amplitudes (NTCA) for a two-layer GCN, and leave the use of other techniques and the detailed analysis for future work.",
+     "anchor": "Section 3.1.2, p.9",
+     "quotes": [
+      "the element-wise non-linear activation function can be applied using an established technique called Nonlinear Transformation of Complex Amplitudes (NTCA)[49]",
+      "we leave this and the detailed analysis for future work"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 3.1.2 p.9.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qsgc-future-work-items",
+     "value": "The authors leave for future work reusing the data-encoding ancillary qubits for the block-encoding, and the interplay between the depth of the weight-matrix PQC and the depth of the block-encoding circuit.",
+     "anchor": "footnote 17, p.30; Section 3.2, p.12",
+     "quotes": [
+      "One can potentially reuse the ancillary qubits in the data encoding for block-encoding of S2, reducing the total number of qubits. We leave this for future work.",
+      "is an interesting topic for future research"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open items, p.12 and p.30.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgnn-fewer-parameters-claim",
+     "value": "The authors claim that by incorporating the inductive bias of graph-structured data, their Quantum GNN can potentially operate with fewer parameters than its problem-agnostic counterpart, potentially leading to more efficient training and less overfitting.",
+     "anchor": "Fig. 21 caption, p.44",
+     "quotes": [
+      "By incorporating the inductive bias into the architecture, our Quantum GNN can potentially operate with fewer parameters than its problem-agnostic counterpart.",
+      "This can potentially lead to more efficient training and less overfitting"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' claim without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgnn-conclusion-large-graphs",
+     "value": "The authors conclude that their complexity results suggest their quantum GNN frameworks have the potential to efficiently process large-scale graphs that are intractable for classical GNNs.",
+     "anchor": "Section 7.2, p.35",
+     "quotes": [
+      "These complexity results suggest that our quantum GNN frameworks have the potential to efficiently process large-scale graphs that are intractable for classical GNNs"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' conclusion going beyond the SGC and LGC analyses.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-gnn-scalability-cited",
+     "value": "The authors state, citing [12] and earlier work, that classical GNNs face memory limits on giant graphs, sparse matrix operations that are inefficient on GPUs optimized for dense operations, and subsampling whose subgraphs may not preserve the semantics of the whole graph or give reliable gradients.",
+     "anchor": "Section 1, p.3",
+     "quotes": [
+      "One major challenge is the memory limitations that arise when handling giant graphs.",
+      "which pose challenges for efficient computation on modern hardware like GPUs that are optimized for dense matrix operations1 [12]",
+      "it is challenging to guarantee that these subgraphs preserve the semantics of the entire graph and provide reliable gradients for training GNNs [12]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited classical claims.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gnn-permutation-equivariance-def",
+     "value": "The authors define the key property of GNNs as permutation equivariance, and state that the convolutional, attentional and message-passing flavours offer increasing expressivity at the cost of reduced scalability.",
+     "anchor": "Section 2, p.4 and p.6",
+     "quotes": [
+      "The key defining property of GNNs is permutation equivariance.",
+      "offer increasing levels of expressivity, albeit comes at the cost of reduced scalability"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition of the model class it builds on, Section 2 p.4 (following refs. 1, 32, 33).",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgnn-related-work-comparison",
+     "value": "The authors state that Hu et al. use N separate circuits, one per node, while their own work coherently encodes all node features in a single state on two entangled registers, and that Zheng et al. focus on numerical simulations without theoretical analysis.",
+     "anchor": "Appendix E, p.46 to 47",
+     "quotes": [
+      "For data encoding, Hu et al. use N separate quantum circuits (N is the number of nodes), with each circuit encoding the features of a single node.",
+      "our work coherently encodes all N node features into a single quantum state on two entangled registers",
+      "while Zheng et al. focus on numerical simulations without theoretical analysis"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' description of other works.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgnn-multihead-extension",
+     "value": "The authors state that the single-head quantum attention method could be extended to multi-head attention following the approach of reference [76].",
+     "anchor": "Section 4.2, p.23",
+     "quotes": [
+      "The method described here could be extended to multihead attention following the approach outlined in Ref [76]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' claim, not worked out in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "liu-2023-can-variational-quantum-algorithms-demonstrate",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Liu-et-al._2023_Can-Variational-Quantum-Algorithms-Demonstrate-Quantum-Advantages-Time-Really__2307.04089.pdf",
+   "title_in_file": "Can Variational Quantum Algorithms Demonstrate Quantum Advantages? Time Really Matters",
+   "version_note": "arXiv:2307.04089v1, 9 Jul 2023.",
+   "pages": 18,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "An analysis paper that argues gradient cost in VQAs scales with the parameter number (Theorem 1), derives gate-layer depths for UCCSD and HEA (Theorems 2 and 3), and estimates ideal VQA wall-clock time against classical simulation.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "vqa-gradient-cost-ol",
+     "verdict": "narrowed",
+     "note": "The theorem statement is now quoted in full. The proof assumes a specific circuit form, each parameter entering as (cos θ I − i sin θ P) times a fixed gate, treats the term functions as unknown, and only excludes that some gradient elements are linear combinations of the others; that limits what the theorem covers.",
+     "value": "The paper states as Theorem 1 that for a general ansatz with L independent parameters and a cost function defined as the expectation value under some Hamiltonian, at least O(L) cost-function evaluations are needed to obtain the gradient; the proof takes the circuit as a product of gates of the form cos θl I − i sin θl Pl times an unparameterized gate, assumes the term functions are unknown, and shows that no gradient element is a linear combination of the others.",
+     "anchor": "Section 3, Theorem 1 and its proof, p.7 to 9",
+     "quotes": [
+      "Theorem 1. For a general ansatz U (θ) with L independent parameters, and the cost function defined as the expectation value under some Hamiltonian H, we need at least O(L) times for evaluating the cost function to obtain the gradient.",
+      "U (θ) = Ul(θl)Wl = (cos θlI − i sin θlPl)Wl",
+      "We assume {fpq} are unknown.",
+      "Due to the unknown functions {fpq}, unknown elements must be a linear combination of known gradients."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A stated theorem whose proof only rules out linear relations among gradient elements under an assumed circuit form; it is not a general query lower bound.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The paper itself cites [42] that backpropagation scaling is possible with multiple copies of the ansatz, so the bound holds only for the single-copy, linear-reuse setting the proof treats."
+    },
+    {
+     "id": "vqa-ideal-scope",
+     "verdict": "widened",
+     "note": "Section 5 lists more that is ignored: hardware initialization and readout time and trainability as well as noise, connectivity and reachability, with the stated aim of showing the best time scaling.",
+     "value": "The authors state that the time-cost analysis is in an ideal setting that does not consider noise, qubit connectivity or reachability; in the total time cost section they also ignore the time for initializing the hardware and reading out the outcomes and limitations like trainability, to show the best time-scaling of VQAs; and they state that the work does not aim to deny the potential of VQAs.",
+     "anchor": "Section 1, p.2; Section 5, p.13; Abstract, p.1",
+     "quotes": [
+      "we do not consider realistic limitations on VQAs like noise, qubit connectivity, reachability, etc.",
+      "the time for initializing the hardware and reading out the outcomes, as well as limitations for VQAs like reachability and trainability, are all ignored",
+      "The goal of ignoring these factors is to show the \"best\" time-scaling performance of VQAs.",
+      "this work does not aim to deny the potential of VQAs"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of scope, Section 1 p.2 and Section 5 p.13.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "vqa-one-year-20-qubits",
+     "verdict": "narrowed",
+     "note": "The one-year figure comes from the UCCSD estimate (Fig. 5) under assumed gate times of 30 ns and 60 ns, and the paper reads the smallest sampling-times-iterations product as one optimization step, so the year is per step at the chemical-accuracy sampling level.",
+     "value": "The authors report, for the UCCSD ansatz with assumed single- and two-qubit gate times of 30 ns and 60 ns, that even at about 20 qubits VQAs easily reached the 1-year time, and that the time for one step of parameter optimization at the chemical-accuracy sampling level comes at the level of 1 year on an ideal quantum computer.",
+     "anchor": "Section 4, p.10; Fig. 5 caption, p.13 to 14",
+     "quotes": [
+      "The time of applying a single- and two-qubit gate are tsingle = 30 ns and tdouble = 60 ns",
+      "Even at a scaling of about 20 qubits, VQAs easily reached the 1-year time.",
+      "can be viewed as the time for performing one step of parameter optimization, which comes at the level of 1 year"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A modelled time estimate from assumed gate times and sample counts, not a measurement or theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "vqa-theorem2-uccsd-depth",
+     "value": "The paper proves as Theorem 2 that, for a many-body system with no spin-orbitals and ne electrons under the first-order Trotter expansion, the UCCSD single-qubit gate layer depth is 6 times the number of single-excitation terms plus 24 times the number of double-excitation terms, with a two-qubit layer depth also given in closed form.",
+     "anchor": "Section 4, Theorem 2 and proof, p.11 to 12",
+     "quotes": [
+      "Theorem 2. For a many-body system with no spin-orbitals and ne electrons, the gate layer depth for the UCCSD ansatz under the first-order Trotter expansion is: lsingle =6Cn1e Cn1o−ne + 24Cn2e Cn2o−ne"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2 with its conditions (Jordan-Wigner mapping, first-order Trotter) stated and proved on p.11 to 12.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The count assumes the circuit of Fig. 3(a) for each Pauli exponential, with no gate parallelism across terms."
+    },
+    {
+     "id_suggestion": "vqa-theorem3-hea-depth",
+     "value": "The paper states as Theorem 3 that the HEA with P blocks has single-qubit layer depth 3P and two-qubit layer depth nP, and it has 3nP parameters.",
+     "anchor": "Section 4, Theorem 3, p.12; Eq. (43), p.10",
+     "quotes": [
+      "Theorem 3. For the HEA described above with P blocks, we have: lsingle = 3P, ldouble = nP.",
+      "LHEA = 3nP."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows directly from the HEA definition in Eqs. (16) to (18), p.6 to 7, and is stated as Theorem 3, p.12.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqa-no-backprop",
+     "value": "The authors state that backpropagation cannot be implemented directly for QNNs because a QNN does not record the inter-layer state, and cite a reference that backpropagation scaling for training QNNs is only possible with multiple copies of the ansatz.",
+     "anchor": "Section 3, p.7",
+     "quotes": [
+      "the backpropagation algorithm cannot be implemented directly because a QNN is a parameterized unitary transformation that maps an initial state to the ansatz, without recording to inter-layer state",
+      "the backpropagation scaling for training QNNs is only possible when we have multiple copies of the ansatz"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument plus a cited result (ref. 42).",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqa-parameter-scalability-claim",
+     "value": "The authors argue that because gradient cost depends on the number of parameters, increasing parameters to improve performance, a strategy that works for classical NNs, is not a good choice in VQAs, and that applying VQAs would be challenging as the parameter number grows with problem size.",
+     "anchor": "Section 3, p.7",
+     "quotes": [
+      "This dependency heavily limits the scalability of VQAs.",
+      "However, scalability limitation makes increasing parameters not a good choice in VQAs.",
+      "Since the parameter number naturally grows with the problem size or complexity, applying VQAs would be challenging."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' argument drawn from Theorem 1.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqa-sampling-chemical-accuracy",
+     "value": "The authors state that reaching sampling error ε needs of order 1/ε squared samples, so about ten to the sixth samples are required to reach chemical accuracy of 1.6 times ten to the minus third Hartree, and that barren plateaus can cause exponentially increased sampling times.",
+     "anchor": "Section 3, p.7",
+     "quotes": [
+      "achieving sampling error ε will require sampling O(1/ε2) times",
+      "Then about 106 sampling times is required to reach the widely-applied chemical accuracy 1.6 × 10−3 Hartree",
+      "problems like barren plateaus can cause exponentially increased sampling times"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A standard estimate stated without derivation in the paper.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqa-gradient-sign-sampling",
+     "value": "The authors show that with the parameter-shift rule and sampling error ε, the worst-case sampled gradient is the true gradient minus ε, so updating in the correct direction needs sampling accuracy tied to the scale of the gradient, and barren plateaus would then require exponential sampling times.",
+     "anchor": "Section 4, Eqs. (54) to (56), p.12",
+     "quotes": [
+      "Then sampling accuracy is dependent on the scaling of the gradient.",
+      "While the magnitude of the gradient could be affected by the barren plateaus, exponential sampling times would be required, which is not workable in practice."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A short worst-case derivation, not a theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqa-time-model",
+     "value": "The authors model the total VQA time as sample time times samples per cost function times cost functions per gradient times iterations, take the sample time as the circuit running time only, ignoring initialization and readout of the order of 1 μs as comparable to about a hundred gates, and obtain a total time that grows polynomially in qubit number for a fixed product of samples and iterations.",
+     "anchor": "Section 4, Eqs. (40) to (45) and (58) to (60), p.9 to 13",
+     "quotes": [
+      "On current superconducting hardware, tinitial and tread together will reach the order of 1 μs [43, 44].",
+      "then we will ignore this cost and only take the circuit running time as tsample",
+      "We can see that for a fixed Nsi, the total time establishes a polynomial growth."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own time model and its stated simplifications, Section 4 p.9 to 13.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqa-estimate-setup",
+     "value": "The authors estimate time for solving ground states of molecular systems with the number of electrons set to half the spin-orbitals, with the product of samples and iterations ranging from ten to the sixth to ten to the twelfth, and HEA block depths P = n and P = n squared, using 1-year and 1000-year times as benchmarks.",
+     "anchor": "Section 5, Eqs. (61) to (62), p.13",
+     "quotes": [
+      "we consider applying VQAs to solve the ground states of different-sized molecular systems",
+      "The number of electrons is set to be ne = no/2.",
+      "Therefore, Nsi ranges from 106 to 1012.",
+      "Therefore, we will consider the following two cases: P = n and P = n2.",
+      "The 1-year and 1000-year time are given as benchmarks."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own setup for its estimates, Section 5 p.13.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqa-classical-sim-model",
+     "value": "For classical simulation, the authors set the gate time for 10 qubits as ten to the minus third seconds, doubling with each further qubit, with no sampling required, against ten to the sixth samples for the quantum case.",
+     "anchor": "Section 6, p.14",
+     "quotes": [
+      "We set the gate time of 10 qubits as t10 = 10−3 s and the time for n qubits is tn = t102n−10.",
+      "Sampling is not required with classical simulation. We set Nsample = 106 for quantum simulations to reach the chemical accuracy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own assumptions for the classical comparison, Section 6 p.14.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The classical model is a single-core state-vector simulator with no tensor-network or other methods; the paper notes multi-core speedups separately."
+    },
+    {
+     "id_suggestion": "vqa-crossing-time-years",
+     "value": "The authors report that the VQA and classical simulation time curves cross at a time that is at the scaling of years and increases with the number of parameters, so VQAs can only outperform classical computers when the required time exceeds it; their conclusion puts the crossing over ten to the second years with the UCCSD ansatz.",
+     "anchor": "Section 6, Fig. 7, p.14 to 15; Section 7, p.15; Abstract, p.1",
+     "quotes": [
+      "It is only possible for VQAs to outperform classical computers when the time required is larger than T . From the figures, this time is at the scaling of years,",
+      "and it also increased with the number of parameters.",
+      "The result showed that the running time of VQAs is only shorter when the time-scaling is over 102 years with the UCCSD ansatz."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A modelled estimate read from the authors' plots.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The abstract gives the range as 100-102 years in the text layer, read as ten to the zero to ten to the second years."
+    },
+    {
+     "id_suggestion": "vqa-multicore-classical-cited",
+     "value": "The authors note that classical simulations can use multiple cores, citing [47] average gate times of 2.09 s and 1.22 s for 29-qubit and 40-qubit operations, while quantum simulation with multiple quantum processors is still unavailable.",
+     "anchor": "Section 6, p.14",
+     "quotes": [
+      "in [47], the average gate time is 2.09 s and 1.22 s when performing a 29-qubit and 40-qubit quantum operation",
+      "While quantum simulation with multiple quantum processors is still unavailable nowadays."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited measurement.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqa-conclusion-advantage-unlikely",
+     "value": "The authors conclude that, due to the realistic limitations not modelled, whether VQAs can perform better is still not sure, and that at a regular time-scaling quantum advantages may be unavailable with VQAs under the current workflow.",
+     "anchor": "Section 7, p.15; Section 1, p.2",
+     "quotes": [
+      "However, due to the realistic limitations mentioned above, whether VQAs can perform better is still not sure. At a regular time-scaling, quantum advantages may be unavailable with VQAs.",
+      "Therefore, quantum advantages are difficult for VQAs to achieve based on the current workflow."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusion from a modelled estimate.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqa-optimization-directions",
+     "value": "The authors propose more efficient sampling strategies and more parameter-saving ansatzes to reduce VQA time, name backpropagation-type algorithms for training QNNs as future work, and state that directly replacing the NN model with a QNN may not be the optimal way to achieve quantum advantages.",
+     "anchor": "Section 7, p.15",
+     "quotes": [
+      "examples like more efficient sampling strategies and more parameter-saving ansatzes",
+      "And one of our future works is to design backpropagation-type algorithms for efficiently training QNNs.",
+      "directly replacing the NN model with QNN may not be the optimal way to achieve quantum advantages"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' recommendations.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-backprop-query-complexity",
+     "value": "The authors state that gradient evaluation by finite differences for an NN with M weights has query complexity of order M squared, whereas backpropagation has query complexity of order M.",
+     "anchor": "Section 2.1, p.3 to 4",
+     "quotes": [
+      "then the query complexity for directly evaluating the gradient scales O(M 2)",
+      "is called the backpropagation algorithm, whose query complexity is O(M ), which establishes a reduction compared to the directly finite difference method"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Background on classical training, attributed to ref. 35.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqa-training-np-hard-cited",
+     "value": "The authors cite that training VQAs is an NP-hard problem [22] and that the optimization landscape usually has many local minimum points [23].",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "Training VQAs is an NP-hard problem [22]",
+      "there usually exists a variety of local minimum points in the optimization landscape of VQAs [23]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited results.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "liu-2023-theory-variational-high-dimensional-tensor",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Liu-et-al._2023_Theory-on-variational-high-dimensional-tensor-networks__2303.17452.pdf",
+   "title_in_file": "Theory on variational high-dimensional tensor networks",
+   "version_note": "arXiv:2303.17452v2, 22 May 2023.",
+   "pages": 21,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper that proves norm concentration, entanglement and local-typicality bounds for random 2D (isometric, unitarily embedded) tensor-network states and barren-plateau results for global and local loss functions, via a mapping to Ising partition functions counted with polyominoes, plus small numerical checks.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "tn-entropy-volume-law",
+     "verdict": "narrowed",
+     "note": "Theorem 3 holds for a fixed l by l subsystem in an L by L network with L going to infinity, physical dimension at least 2 and bond dimension at least 3; the purity concentrates on its maximal-entropy value within order D to the minus 4, by the Markov inequality. For bond dimension below a critical value, Theorem 2 gives an area law instead.",
+     "value": "The paper proves (Theorem 3) that for a subsystem A of size l by l in an L by L random tensor network with L → ∞, any physical dimension d ≥ 2 and bond dimension D ≥ 3, the averaged purity of the reduced density matrix is within order D to the minus 4 of its maximal-entropy value, so the entanglement entropy approaches the maximal volume law except for a small probability bounded by an inverse polynomial of the bond dimension; below a critical bond dimension the second Rényi entropy instead shows an area law.",
+     "anchor": "Abstract, p.1; Theorem 3, Section III B 2, p.8; Appendix B 6, p.19; Eq. (26), p.8",
+     "quotes": [
+      "(a) the entanglement entropy approaches the maximal volume law, except for a small probability that is bounded by an inverse polynomial of the bond dimension",
+      "Theorem 3. Given a subset qubits system A with volume |A| = l×l in the V = L×L tensor network with L → ∞. Then for any physical dimension d ≥ 2 and bond dimension D ≥ 3",
+      "So Zp can be upper bounded by d−|A|+O(D−4). Theorem 3 then follows from the Markov inequality.",
+      "which shows an area law [3] for the tensor network states"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3 with its conditions stated on p.8 and proved in Appendix B 6, p.19.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The page image of Theorem 3 gives the bound as Pr[|Tr(ρA squared) − d to the minus |A|| ≥ ε] ≤ O(D to the minus 4 divided by ε); the ε is lost in the text layer."
+    },
+    {
+     "id": "tn-global-barren",
+     "verdict": "narrowed",
+     "note": "Theorem 5 is for unitarily embedded random tensor-network states whose local unitaries are Haar random (the variance uses the 2-design assumption); it bounds the probability that a gradient element exceeds any precision by order d to the minus V over ε squared, V the number of sites.",
+     "value": "The paper proves (Theorem 5) that for unitarily embedded random tensor-network states, with each local unitary drawn from the Haar measure, the probability that the derivative of the global loss function along any parameter is nonzero to any precision vanishes exponentially with the number of physical sites, for an arbitrary normalized target state; the authors conclude these models suffer from barren plateaus for global loss functions, rendering training inefficient in general.",
+     "anchor": "Theorem 5, Section IV A, p.10; Fig. 1 caption, p.2; Abstract, p.1",
+     "quotes": [
+      "We define the tensor-network state |Ψ(Θ) as unitarily embedded random tensor-network states with variational parameters Θ",
+      "each D2d× D2d unitary Ui is randomly draw from Haar measure",
+      "the global loss function for the high-dimensional tensor networks also suffers from the barren plateau problem, namly the probability that the gradient along any direction is nonzero to any precision vanishes exponentially with respect to the number of physical sites",
+      "We remark that |φ can be an arbitrary state regardless of its entanglement properties.",
+      "rendering their training processes inefficient in general",
+      "The aforementioned Theorem 5 has two interpretations."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5 stated and proved on p.10; its random-initialization condition is quoted from Section II and Fig. 1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The page image of Theorem 5 gives Pr(|derivative| > ε) ≤ O(d to the minus V divided by ε squared); this is a statement about random (Haar) initialization."
+    },
+    {
+     "id": "tn-local-no-barren",
+     "verdict": "narrowed",
+     "note": "The two halves rest on different theorems with conditions: Theorem 6 (off-site) gives a decay factor 0.93 per unit distance and neglects a term only when L is much larger than the distance; Theorem 7 (on-site) gives a variance lower bound polynomial in 1/D, assuming Tr(O squared) and d are constant and that U+ or U− forms a 2-design.",
+     "value": "The paper proves that for local loss functions, with Tr(O squared), the physical dimension d and the bond dimension D treated as constants independent of system size: when the derivative site and the observable site coincide, the gradient variance is lower bounded by a polynomial in 1/D independent of system size, so no barren plateau occurs, assuming U+ or U− forms a 2-design; when they differ, the gradient is bounded in probability by a factor decaying exponentially in their distance with decay factor κl = 0.93.",
+     "anchor": "Abstract, p.1; Theorems 6 and 7, Section IV B, p.11 to 12",
+     "quotes": [
+      "for local loss functions, we prove that the gradient is independent of the system size (thus no barren plateau occurs), but decays exponentially with the distance between the region where the local observable acts and the site that hosts the derivative parameter.",
+      "we treat Tr(Oˆ2), the physical dimension d, and the bond dimension D as constant values and independent of the system size",
+      "where the decay factor κl = 0.93",
+      "We assume that the Tr(Oˆ2) and physical bond dimension d are constant. Then ∀ θk(i) ∈ Θ, the variance of ∂k(i)Ll has a lower bound: Var(∂k(i)Ll) ≥ O(poly( 1 D ))",
+      "If U+ forms 2-design, we have"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorems 6 and 7 stated with conditions and proved on p.11 to 12.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Theorem 6's proof neglects the long-ESS term when L is much greater than the distance; the 'much greater' sign is lost in the text layer and was read from the page image."
+    },
+    {
+     "id": "tn-numerics-scope",
+     "verdict": "widened",
+     "note": "The paper gives more of the setup: periodic boundary conditions, TensorFlow and TensorNetwork, lattice sizes from 2 by 2 to 4 by 5 (global loss only to 4 by 4), and that the global-loss variance decays exponentially while the local-loss variance converges to a finite value.",
+     "value": "The authors report numerical benchmarks with TensorFlow and TensorNetwork on general tensor-network states with periodic boundary conditions, on lattices {(2×2), (2×3), (2×4), (2×5), (3×4), (4×4), (4×5)} with physical dimension d = 2 and bond dimension D = 2: the global-loss gradient variance decays exponentially with system size and is uniform across sites, the local-loss gradient variance converges to a finite value and is largest at the observable site, consistent with Theorems 5 and 7; the decay with distance may not strictly follow an exponential trend in finite size, but they state the results confirm Theorem 6.",
+     "anchor": "Section V, p.12 to 13; Fig. 7 caption, p.13",
+     "quotes": [
+      "we utilize open-source libraries , Tensor- 2. The on-site case Flow [83] and TensorNetwork [84]",
+      "including {(2×2), (2×3), (2×4), (2×5), (3×4), (4×4), (4×5)} (note that we only plot up to (4×4) for the global loss function)",
+      "Here we fix the physical dimension d = 2 and the bond dimension D = 2.",
+      "the global loss function exhibits an expo- In this case",
+      "for the local loss function, Var(∂θLl) converges to a finite value. Those results are consistent with Theorem 5 and Theorem 7.",
+      "For the global loss function, we have found that Var(∂θLg) is uniformly distributed across all sites.",
+      "We note that the decay behavior may not strictly follow an exponential trend.",
+      "Nonetheless, our numerical results confirm the analytical results presented in Theorem 6."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Small-size numerical results from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text layer interleaves the two columns on p.12, so some quotes cut across column text; the page image confirms the reading."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "tn-setup-isometric-haar",
+     "value": "The authors study random tensor-network states in an isometric form, a higher-dimensional generalization of the canonical form of MPS, built by unitarily embedding each local projector and drawing each local unitary from the Haar measure; the mean norm uses each local unitary forming a 1-design and the variance a 2-design.",
+     "anchor": "Section I, p.2; Section II, p.2; Section III A, p.3",
+     "quotes": [
+      "we focus on the random tensor-network states in an isometric form, which is a generalization of the canonical form for the matrix product states to higher dimensions [58]",
+      "each D2d× D2d unitary Ui is randomly draw from Haar measure",
+      "Assuming that each local unitary forms a 1-design",
+      "Under the assumption that each local unitary forms a 2-design"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own model definition, Sections I to III, p.2 to 3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tn-theorem1-norm-concentration",
+     "value": "The paper states as Theorem 1 that a random tensor-network state in a square lattice of volume L×L, where L ≥ 2, has its norm exponentially concentrated around one as L increases, with κ = 0.7 for a 2D random tensor-network state; the printed conditions read D ≤ 2 and d ≤ 2, while the proof assumes d, D ≥ 2, first giving a factor of 0.97 that a reflection trick improves to 0.7.",
+     "anchor": "Theorem 1, Section III A, p.3; proof p.6 to 7 and Appendix A, p.13 to 16",
+     "quotes": [
+      "Theorem 1. Consider a random tensor-network state |Ψ with bond dimension D ≤ 2 and physical dimension d ≤ 2 in a square lattice with volume V = L×L, where L ≥ 2. The norm of the random tensor-network state is exponentially concentrated around one as L increases",
+      "with κ = 0.7 for a 2D random tensor-network state",
+      "For d, D ≥ 2, we can choose η = 25/26 < 0.97, therefore Z ≤ 1+O(0.97L).",
+      "In the appendix we propose a reflection trick that can improve the bound from 0.97 to 0.7."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proved theorem, but its printed conditions (D ≤ 2, d ≤ 2) conflict with the proof's assumption (d, D ≥ 2), so the conditions as stated cannot be relied on.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The page image confirms the printed signs are ≤; this is most likely a typo for ≥. The page image gives the bound as Pr(|⟨Ψ|Ψ⟩ − 1| ≥ ε) ≤ O(κ to the L divided by ε squared)."
+    },
+    {
+     "id_suggestion": "tn-ising-imaginary-coupling-method",
+     "value": "The authors map the Haar averages to partition functions of high-dimensional classical Ising models and state that introducing an imaginary part to the Ising coupling coefficient substantially reduces the complexity of computing the partition function, which they bound with an excited-spin-string method based on counting polyominoes.",
+     "anchor": "Section III A, p.3; Eq. (11), p.4; Section I, p.2",
+     "quotes": [
+      "by introducing an imaginary part to the coupling coefficient in the Ising Hamiltonian, one can reduce the complexity of computing the partition function of the highdimensional Ising model substantially",
+      "where the Ising coupling coefficient J2 = iπ+log(D2d), J1 = −log(D)",
+      "we propose a powerful excited-spin-string (ESS) method, which is derived from counting the number of polyominoes in a high-dimensional lattice [65]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A description of the proof method, not a stated theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tn-lemma2-configuration-bound",
+     "value": "The paper proves (Lemma 2) that a non-zero configuration's value is bounded by the area parameter raised to the area times the perimeter parameter raised to the perimeter, and hence by a factor that decays exponentially with the area and the upper perimeter.",
+     "anchor": "Lemma 2, Section III A 2, p.6",
+     "quotes": [
+      "Lemma 2. Let σ ∈ Σ be a configuration with area m, perimeter p, and upper perimeter n, then A[σ] ≤ qamqpp ≤ qamqun",
+      "This lemma implies that A[σ] exponentially decays with the area and the upper perimeter."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 2 stated and proved on p.6.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tn-lemma1-directed-polyominoes-cited",
+     "value": "The authors cite (Lemma 1, from reference [79]) the generating function for directed polyominoes by area and upper perimeter, whose power series converges to a finite value for suitable q and p in (0, 1].",
+     "anchor": "Lemma 1, Section III A 2, p.6",
+     "quotes": [
+      "Lemma 1 ([79]). Let Dm,n be the number of directed polyominoes rooted at (0, 0) with area m and upper perimeter n.",
+      "This lemma implies that when q, p ∈ (0, 1] such that"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited lemma.",
+     "result_type": "cited",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tn-lemma4-bridge-transformation",
+     "value": "The paper proves, in a lemma on its bridge transformation, that the bridge transformation turns a toric polyomino of area m and upper perimeter n into k plane polyominoes each of area at least L, with k ≤ m/L ≤ L, total area m, and total upper perimeter between n and n+k.",
+     "anchor": "Lemma 4, Appendix A 1, p.14",
+     "quotes": [
+      "The output of the bridge transformation is k plane polyominoes with area mi and upper perimeter ni (i = 1, 2, · · · , k), respectively. We have k ≤ m/L ≤ L and m1, · · · , mk ≥ L (A1) m1+· · ·+mk = m (A2) n ≤ n1+· · ·+nk ≤ n+k (A3)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 4 stated and proved in Appendix A, p.14 to 15.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tn-lemma7-polyomino-count",
+     "value": "The paper proves (Lemma 7) that there is a constant c such that for any m, n ≥ 1 the number of directed polyominoes with area m and upper perimeter n is at most c times 1.9 raised to the power m plus 2n.",
+     "anchor": "Lemma 7, Appendix B 4, p.18",
+     "quotes": [
+      "Lemma 7. There exists a constant c such that for any m, n ≥ 1, Dm,n ≤ c(1.9)m+2n"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 7 stated and proved on p.18.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tn-theorem2-purity-bounds-area-law",
+     "value": "The paper proves (Theorem 2) two-sided bounds on the averaged purity of an l×l subsystem of an L×L random tensor network with L → ∞, bond dimension D ≥ 3 and physical dimension d ≥ 2, in terms of the subsystem's volume and boundary; when D is below a critical value the second Rényi entropy equals the boundary size times log(D), an area law, and above it the bulk part dominates and the entropy concentrates to the maximum.",
+     "anchor": "Theorem 2, Section III B 1, p.7; Eq. (26), p.8; Appendix B, p.16 to 19",
+     "quotes": [
+      "Theorem 2. Given a subset qubits system A with a volume |A| = l×l in the V = L×L tensor network with L → ∞, we set the bond dimension D ≥ 3, and physical dimension d ≥ 2.",
+      "the averaged purity of the reduced density matrix ρA can be bounded by the following relations",
+      "S2(ρA) = |∂A|log(D), (26) which shows an area law [3] for the tensor network states",
+      "when D > Dc, the bulk part dominates, and the entanglement entropy will concentrate to the maximum"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2 stated on p.7 and proved in Appendix B, p.16 to 19.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The appendix also needs l larger than a constant for the upper bound to be meaningful (p.18)."
+    },
+    {
+     "id_suggestion": "tn-2d-tighter-than-1d",
+     "value": "The authors state that the purity concentration bound for 2D random tensor networks, of order D to the minus 4, is tighter than the one-dimensional bounds of order D to the minus 2 for disordered random MPS and D to the minus one-fifth for translation invariant MPS, and expect order D to the minus 6 in three spatial dimensions.",
+     "anchor": "Section III B 2, p.8",
+     "quotes": [
+      "For a disordered random MPS in one-dimensional cases, the concentration of purity on the maximal entangled states is bounded by O(D−2) [34], whereas for translation invariant MPS, it is bounded by O(D−1/5) [37, 38].",
+      "In contrast, the bound for 2D cases is O(D−4), which is tighter than the one-dimensional case.",
+      "So we expect that the concentration is bounded by O(D−6)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A comparison of the proved 2D bound with cited 1D bounds; the 3D figure is an expectation, not proved.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tn-theorem4-local-typicality",
+     "value": "The paper proves (Theorem 4) that for an L×L random tensor-network state and an arbitrary single-site local observable, the expectation value concentrates with probability bound of order Tr(O squared) times D to the minus 4; the variance upper bound is tight, the traceless assumption loses no generality, and the proof neglects excitations of order exponentially small in L, assuming a sufficiently large system.",
+     "anchor": "Theorem 4, Section III C, p.8 to 9",
+     "quotes": [
+      "Theorem 4. Given a L×L random tensor network state |Ψ and an arbitrary local observable Oˆ acting on a single site, the expectation value of such a local observable obeys the following inequality",
+      "Pr | Ψ|Oˆ|Ψ | ≥ Tr(Oˆ2)D−4 ≤O",
+      "Therefore, this upper bound is tight.",
+      "we assume a sufficiently large system and thus neglect the effect from the second and third types ESSs",
+      "This does not diminish the generality as a generic observable can be written as the sum of a traceless observable and a constant factor multiple of the identity operator."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4 stated on p.8 and proved on p.8 to 9 with its assumptions quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The page image gives the bound as Pr[|⟨Ψ|O|Ψ⟩| ≥ ε] ≤ O(Tr(O squared) D to the minus 4 divided by ε squared)."
+    },
+    {
+     "id_suggestion": "tn-local-variance-2d-vs-1d",
+     "value": "The authors state that the bound for the variance of a local observable expectation scales as D to the minus 2 in 1D [34] but can be tightened to D to the minus 4 in 2D, so local expectations concentrate more quickly with bond dimension, and they connect this to barren plateaus.",
+     "anchor": "Section III C, p.9",
+     "quotes": [
+      "In the 1D case, the bound for the variance of local observable expectation scales D−2 with the bond dimension D [34]. In contrast, the bound can be tighten to D−4 in 2D case.",
+      "One may also notice that this phenomenon has a profound connection to the barren plateau problem in training a variational ansatz."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A comparison with a cited 1D result.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tn-lemma3-derivative-site",
+     "value": "The paper proves (Lemma 3), for parameters entering through sequential gates generated by Hermitian generators, that on an L×L spin grid one of the two right or lower neighbours of the site hosting the derivative parameter must be spin up for a non-zero configuration.",
+     "anchor": "Lemma 3, Section IV B 1, p.11",
+     "quotes": [
+      "Lemma 3. Consider a L×L spin grid, where the site that hosts derivative parameter locates at (x, y). Then, one of the spins at (x, (y+1)%L) or ((x+1)%L, y) should be ↑ to obtain a non-zero configuration.",
+      "where G is a hermitian generator"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 3 stated and proved on p.11.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tn-global-typicality-link",
+     "value": "The authors interpret Theorem 5 as showing a connection between the trainability of tensor-network states and their global typicality, as in the one-dimensional case.",
+     "anchor": "Section IV A, p.10",
+     "quotes": [
+      "Second, the results demonstrate a connection between the trainability of tensor-network states and their global typicality.",
+      "The aforementioned Theorem 5 has two interpretations."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' interpretation.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tn-open-problems",
+     "value": "The authors list as open questions extending their random tensor network techniques to specific models such as quantum generative models based on PEPS, and to other structures such as MERA and tree tensor-network states, and suggest the methods may help with Ising partition functions arising in random quantum circuits.",
+     "anchor": "Section VI, p.13",
+     "quotes": [
+      "Many important questions remain unexplored and deserve further investigations.",
+      "it would be worthwhile to extend our random tensor network techniques to more specific models, such as the quantum generative models based on projected entangled pair states [85]",
+      "including the multi-scale entanglement renormalization ansatz and tree tensor-network states, would be an interesting direction"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of open problems, Section VI p.13.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "peps-contraction-sharp-p-cited",
+     "value": "The authors cite that contracting a generic PEPS is a #P-hard problem [9], making expectation values unattainable on classical computers for large system sizes, and that isometric tensor networks enable efficient numerical contraction and relate to states that can be prepared efficiently in experiments.",
+     "anchor": "Section I, p.1 to 2",
+     "quotes": [
+      "However, contracting a generic PEPS is proven to be a #P-hard problem [9].",
+      "Such models feature an advantage of enabling efficient numerical methods for contraction [58–62] and are related to a set of tensornetwork states that can be experimentally prepared in an efficient way [63, 64]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited results.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "liu-2023-towards-provably-efficient-quantum-algorithms",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Lieu-et-al._2023_Towards-provably-efficient-quantum-algorithms-for-large-scale-machine__2303.03428.pdf",
+   "title_in_file": "Towards provably efficient quantum algorithms for large-scale machine-learning models",
+   "version_note": "arXiv:2303.03428v5, 28 Dec 2023.",
+   "pages": 49,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory and numerics paper that applies quantum Carleman linearization and a quantum linear system solver to (stochastic) gradient descent for sparse, dissipative models, with supplement proofs, a tomography scheme, and Hessian-spectrum numerics on pruned ResNets. The supplement's math symbols are lost in the text layer, so theorem statements were read from page images.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qgd-benchmark-sparse-training",
+     "verdict": "narrowed",
+     "note": "Only the smaller ResNet was trained, and the evidence is a Hessian-based error proxy, not a quantum run. For the 103 million parameter model the authors computed only the Hessian right after pruning, with no training, due to cost.",
+     "value": "The authors report training a pruned ResNet with 7.451.044 dense parameters on CIFAR-100, keeping 10% of all parameters, and tracking its Hessian spectra and a Hessian-based error proxy; for a 103 million parameter ResNet they only benchmark the Hessian immediately after pruning 90% of the parameters, without any additional training. They read these spectra as evidence that a quantum enhancement is possible at the early stage of learning after model pruning.",
+     "anchor": "Abstract, p.1; Section III, p.4 to 5; supplement Section III B, p.20 to 21 of the supplement numbering",
+     "quotes": [
+      "The parameter count for the dense model is 7.451.044.",
+      "we download sparse weights (10% of all parameters in this case) every 100 steps from the quantum ODE system",
+      "we examine the Hessian of a 103 million parameter ResNet. We start with a pre-trained model and prune 90% of the parameters.",
+      "we only benchmark the Hessian spectra to provide evidences of dissipation and potential quantum enhancements",
+      "Hessian of the pruned 103 million parameter model immediately after pruning without any additional training.",
+      "a quantum enhancement is possible at the early stage of learning after model pruning"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical proxy from one study; no quantum algorithm was run, and the larger model was not trained.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The step from the larger model's initial Hessian to manageable error growth is the authors' extrapolation from the smaller model."
+    },
+    {
+     "id": "qgd-dissipative-sparse",
+     "verdict": "narrowed",
+     "note": "The formal theorems (I.1 and I.2 in the supplement) add conditions: a small learning rate such that a stated discretization condition holds, an explicit form of the gradient descent equation, state preparation cost ignored, and a separate tomographic cost for a sparse output. The almost dissipative case is quadratic, not linear, in the number of iterations.",
+     "value": "The authors state informal theorems that, for a sparse model running T iterations, a quantum algorithm runs in time linear in T times poly log n when fully dissipative with small learning rates, and quadratic in T when almost dissipative; the formal versions also assume the learning rate is small enough for a stated condition, ignore the state preparation cost, and add a tomographic cost for a sparse output; the setup assumes an explicit form of the gradient descent equation is accessible.",
+     "anchor": "Section I, Theorems 1 and 2 (Informal), p.2 to 3; supplement Theorems I.1 and I.2, p.3 to 4 of the supplement numbering; Section II, p.4",
+     "quotes": [
+      "running T iterations, with the algorithm being fully dissipative with small learning rates (whose formal definition is given in the supplemental material), there is a quantum algorithm",
+      "running in T iterations, and the algorithm being almost dissipative with small learning rates",
+      "as long as the models are both sufficiently dissipative and sparse, with small learning rates",
+      "The algorithm ignores the state preparation cost to prepare the initial weight vector in the quantum device",
+      "we always assume that an explicit form",
+      "of the gradient descent equation is accessible, such that one"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proved result under several assumptions (dissipation, sparsity, small learning rate, explicit gradient form) whose holding for real models is only argued numerically.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qgd-no-guarantee-vs-all-classical",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that there is no guarantee that their hybrid quantum-classical algorithm will necessarily outperform all other conceivable classical algorithms for related, but different tasks.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "there is no guarantee that our hybrid quantum-classical algorithm will necessarily outperform all other conceivable classical algorithms for related, but different tasks",
+      "instead of a quantum advantage over the entire problem class"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section I p.2.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qgd-tomography-precision-scaling",
+     "value": "The authors state that the quantum ODE solver's precision scaling, one over epsilon squared, might be optimal in the quantum setting but may not be ideal compared to purely classical algorithms.",
+     "anchor": "Section I, p.3",
+     "quotes": [
+      "quantum ODE solver with the precision scaling as 1/ε2. This scaling might be optimal in the quantum setting [34], but may not be ideal compared to purely classical algorithms"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit on its precision scaling, Section I p.3.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgd-qram-not-required",
+     "value": "The authors state that sparsity is needed for efficient transfer between classical and quantum processors, that this requirement could be relaxed with QRAM, but that QRAM is not required for their scheme.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "this requirement could be relaxed in the presence of quantum random access memory (QRAM) [32], a fast uploader towards quantum data, but we stress that this is not required"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its setup, Section I p.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The numerics section still re-uploads dense weights with QRAM after the classical steps that follow each download."
+    },
+    {
+     "id_suggestion": "qgd-state-prep-ignored",
+     "value": "The authors state that the formal complexity theorems ignore the state preparation cost of loading the initial weight vector into the quantum device, which they call computationally efficient for sparse training, and that the tomographic cost to bring sparse output states back to classical devices is counted separately.",
+     "anchor": "Supplement Theorems I.1 and I.2, p.3 to 4 of the supplement numbering",
+     "quotes": [
+      "The algorithm ignores the state preparation cost to prepare the initial weight vector in the quantum device, which is also computationally",
+      "ignoring log factors to bring the quantum states to the classical devices"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The theorems' own stated scope, supplement p.3 to 4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgd-dissipative-assumption",
+     "value": "The authors list as an assumption of the setup that the model should be sufficiently dissipative, with either all eigenvalues of the Carleman matrix of the right sign or many more dissipative than divergent eigenvalues, alongside model sparsity, weight-vector sparsity and efficient upload and download.",
+     "anchor": "Supplement Section I E, p.4 to 5 of the supplement numbering",
+     "quotes": [
+      "In this part, we briefly list the assumptions made in the setup.",
+      "The model should be sufficiently dissipative, such that either the eigenvalues of",
+      "The sparsity of the weight vectors is satisfied naturally in"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's listed assumptions, supplement Section I E.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgd-hessian-dissipation-link",
+     "value": "The paper derives, for the first-order term, that the spectrum of the linear part of the Carleman matrix equals minus the learning rate times the Hessian spectrum, so more positive Hessian eigenvalues reflect more dissipative modes.",
+     "anchor": "Supplement Section II B 1, p.12 to 13 of the supplement numbering",
+     "quotes": [
+      "Thus, more positive Hessian eigenvalues reflect more dissipative modes in QCM."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A first-order derivation that sets the higher-order terms to zero; the higher-order shift is treated only by perturbation theory.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "This is the link that lets Hessian spectra stand in for the Carleman spectra in the numerics."
+    },
+    {
+     "id_suggestion": "qgd-pruning-ratio-requirement",
+     "value": "The authors state that for the weight sparsity to stay constant in the model size, the pruned-parameter ratio must approach one with a gap of order one over n, which guarantees a poly-logarithmic dependence of the cost on n.",
+     "anchor": "Supplement Section II D, p.18 of the supplement numbering",
+     "quotes": [
+      "In the actual machine learning process, the ratio of pruned parameters in sparse training",
+      "This will guarantee that the cost of our algorithm will have a poly-logarithmic dependence in"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A stated requirement; whether practical pruning meets it as models grow is not tested.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgd-truncated-qlsa-overhead",
+     "value": "The authors state that filtering out ill-conditioned eigenvalues in their truncated quantum linear system algorithm might cause additional overhead, and leave rigorous improvements on auxiliary qubits and post-selection to future research.",
+     "anchor": "Supplement Section II C, Theorem II.4, p.16 of the supplement numbering",
+     "quotes": [
+      "Finally, we claim that filtering out ill-conditioned eigenvalues might cause additional overhead on the algorithm.",
+      "Further works about this filtering algorithm require rigorous im"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit on the truncated solver, supplement p.16.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgd-mlp-ode-order-finite",
+     "value": "The paper states as a theorem a bound on the order of the gradient descent ODE for a multilayer perceptron with polynomial activations, concluding that for bounded polynomial activation functions the degree of the ODE is finite.",
+     "anchor": "Supplement Section III A, Theorem III.1, p.19 of the supplement numbering",
+     "quotes": [
+      "Thus, for a neural network with bounded polynomial activation functions, the degree"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A short derivation by order counting; it covers polynomial activations only, not the ReLU of the ResNet numerics.",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgd-resnet-numerics-setup",
+     "value": "The authors report a numerical setup of a ResNet with depth 32 and widen factor of 4 on CIFAR-100, with gradients estimated from 2048 randomly selected training samples and a learning rate of 0.01, downloading sparse weights every 100 steps.",
+     "anchor": "Section III and supplement Section III B, p.20 of the supplement numbering",
+     "quotes": [
+      "We first train a dense ResNet, where all parameters are kept as normal, with depth 32 and widen factor of 4.",
+      "update using gradient estimated from 2048 randomly selected training samples with a learning rate of 0.01",
+      "we download sparse weights (10% of all parameters in this case) every 100 steps"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its numerical setup.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgd-hessian-concentrates-after-download",
+     "value": "The authors report that the Hessian spectra immediately after sparse weights download are broad but rapidly concentrate and become dissipative within 10 steps of training, and that this broadening becomes less significant as training progresses.",
+     "anchor": "Supplement Section III B, Fig. 2 (a) and (b), p.20",
+     "quotes": [
+      "the Hessian spectra immediately after sparse weights download are broad, but rapidly concentrates and becomes dissipative within 10 steps of training",
+      "The spectra broadening effect of downloads becomes less significant as training progresses."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured result from one model and one run.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgd-error-proxy-explodes",
+     "value": "The authors report that their Hessian-based error proxy first decreases due to dissipative modes, but that the exponentially growing contribution from divergent modes eventually takes over, so they download the weights before the error becomes too unreasonable and resume classical training.",
+     "anchor": "Supplement Section III B, Fig. 2 (c), p.21",
+     "quotes": [
+      "we observe that the error proxy initially decreases due to the dominance of dissipative modes.",
+      "the exponentially growing contribution from divergent modes eventually takes over, leading to an apparently exploding error. We download the weights before the error becomes too unreasonable"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured proxy from one run; it assumes equal weights for all modes and drops eigenvalues near zero.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgd-error-proxy-drops-small-eigenvalues",
+     "value": "The authors state that the error proxy removes Hessian eigenvalues with magnitudes less than 0.4 and renormalizes the densities, because eigenvalues close to zero are extremely abundant.",
+     "anchor": "Supplement Section III B, Eq. (III.14), p.21",
+     "quotes": [
+      "since eigenvalues close to 0 are extremely abundant and lead to stationary error proxy, we remove eigenvalues with magnitudes less than 0.4 and renormalize the densities"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of its error proxy.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The cutoff removes the bulk of the spectrum, so the proxy describes only the larger-magnitude modes."
+    },
+    {
+     "id_suggestion": "qgd-accuracy-drop-after-download",
+     "value": "The authors report that test set accuracy drops after each download, but the drop becomes less significant as training progresses, and conclude that the scheme produces useful sparse models.",
+     "anchor": "Supplement Section III B, Fig. 2 (d), p.21",
+     "quotes": [
+      "Fig. 2 (d) shows that the test set accuracy drops after download,",
+      "but the drop becomes less significant as training progresses. Our quantum ODE training scheme, therefore, produces useful sparse machine learning models."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured result from classical simulation of the scheme on one model.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgd-divergent-modes-toy-ode",
+     "value": "The authors report from simulated quadratic ODEs that when not all Hessian eigenvalues are positive, divergent modes take over and lead to exponentially growing errors at large times, while fewer divergent modes suppress the error and extend the period in which it stays controlled.",
+     "anchor": "Supplement Section III C, Fig. 4, p.21 to 22",
+     "quotes": [
+      "divergent modes take over and eventually lead to exponentially growing errors in the limit of large times",
+      "reducing the number of divergent modes significantly suppresses the error"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured result on randomly generated toy ODEs, not on trained models.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgd-dequantization-implausible",
+     "value": "The authors argue that dequantization of their algorithm by classical algorithms seems highly implausible, because efficiently simulating non-dissipative linear differential equations is BQP-hard, while noting that assessing this could be a research question.",
+     "anchor": "Supplement Section V A, p.23",
+     "quotes": [
+      "efficiently simulating non-dissipative linear differential equations is BQP-hard even when the dynamics is entirely unitary",
+      "the de-quantization by classical algorithms along the lines of Ref. [96] of the presented quantum algorithm seems highly implausible, even though to assess this matter"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument by a limiting case (dissipation going to zero), not a proof about the dissipative, sparse regime the algorithm targets.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper's own future-work list says efficient classical algorithms might exist for some sparse training schemes, which weakens this argument."
+    },
+    {
+     "id_suggestion": "qgd-classical-counterparts-possible",
+     "value": "The authors state that for certain sparse training schemes with few enough non-zero weights, efficient classical algorithms might also be created that restrict the calculation to the sparse subspace.",
+     "anchor": "Supplement Section IV, Future improvements, p.22",
+     "quotes": [
+      "it might be possible that for certain sparse training schemes with sufficient few non-zero entries in the weight vectors, efficient classical algorithms might also be created"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, supplement Section IV p.22.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgd-record-claim",
+     "value": "The authors state that their simulations of around 100 million classical parameters are, as far as they know, a record for the quantum computing literature.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "simulations of around 100 million classical parameters, which is, as far as we know, a record for the quantum computing literature at the moment"
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A self-claim of novelty; for the larger model only the initial Hessian was computed.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgd-pruning-fraction-inconsistency",
+     "value": "The supplement states that the model in the main text has been pruned to 1%, while the numerics describe pruning 90% of the parameters, which keeps 10%.",
+     "anchor": "Supplement Section V E, p.39; Section III B, p.20 to 21",
+     "quotes": [
+      "In our real example in the main text, the model itself has been already significantly pruned to 1%.",
+      "We start with a pre-trained model and prune 90% of the parameters.",
+      "we download sparse weights (10% of all parameters in this case)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Both statements are quoted from the paper; the inconsistency is in the text itself.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "One of the two figures is likely a typo; the numerics description is more detailed and says 10% is kept."
+    }
+   ]
+  },
+  {
+   "record_id": "liu-2024-first-tree-like-quantum-data",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Liu-et-al._2024_First-Tree-like-Quantum-Data-Structure-Quantum-B-Tree__2405.20416.pdf",
+   "title_in_file": "First Tree-like Quantum Data Structure: Quantum B+ Tree",
+   "version_note": "arXiv:2405.20416v1, 30 May 2024.",
+   "pages": 16,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A database paper that defines quantum range queries (static, dynamic, multi-dimensional), proposes a quantum B+ tree stored in an assumed QRAM with a hybrid global-classical local-quantum search, proves average-case time bounds by proof sketch, and compares memory-access counts against classical trees in a C++ simulation. Math symbols are lost in the text layer, so theorem statements were read from page images.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qbtree-dynamic-overhead",
+     "verdict": "narrowed",
+     "note": "The 3x figure is the average memory accesses per operation in Figure 3(e) on Brightkite, in a workload where each insertion has a 1% chance to be a deletion instead; QRAM operations are counted as one access each.",
+     "value": "The authors report, from a simulated workload that inserts all records with a 1% chance per insertion to delete an existing record instead, that the dynamic quantum B+ tree needs 3x more memory accesses for insertion or deletion than the classical B+ tree, because of its more complex structure.",
+     "anchor": "Section 6, Effect of N, Figure 3(e), p.11",
+     "quotes": [
+      "there is 1% chance to delete an existing record instead of doing this insertion, and we measure the number of memory accesses for each insertion or deletion operation on average",
+      "the dynamic quantum B+ tree needs 3x more memory accesses for insertion or deletion, because the quantum B+ tree has more complex structure than the classical B+ tree"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured count from a simulation on one dataset shown, under the assumption that each QRAM operation costs one access.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The text next to Figure 3(e) says the quantum tree shows a growth linear in N, which reads as total cost; per-operation cost is proved amortized logarithmic in Lemma 5.1."
+    },
+    {
+     "id": "qbtree-memory-access-simulation",
+     "verdict": "narrowed",
+     "note": "The counting rule matters: one QRAM read or write is counted as one IO, following the assumed constant-time QRAM, and the quantum side was simulated in C++ because Qiskit and Cirq cannot simulate an efficient QRAM. The headline is about 40 against about 40K accesses on Brightkite at the default size.",
+     "value": "The authors report that, counting memory accesses with one QRAM read or write counted as 1 IO and simulating the quantum side in C++, the quantum B+ tree is up to 1000x more efficient than the classical B+ tree for static quantum range queries on Brightkite and Gowalla (around 40 against around 40K accesses on Brightkite of size 2M), and that they chose not to verify quantum supremacy.",
+     "anchor": "Section 6, p.11 to 12",
+     "quotes": [
+      "we chose to evaluate the number of memory accesses to make the comparisons",
+      "a QRAM read or write operation is counted as 1 IO",
+      "they are not capable of simulating an efficient QRAM, and thus we chose to use C++ to perform the quantum simulations",
+      "it is up to 1000x more efficient than the classical B+ tree for the (static) quantum range queries",
+      "On the dataset Brightkite of size 2M, the average number of memory access is only around 40 for the quantum B+ tree for the quantum range query, while the classical B+ tree needs around 40K memory accesses.",
+      "Thus, in this paper, we would not verify the quantum supremacy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulated count that rests on an assumed constant-cost QRAM; the classical side lists every result while the quantum side returns a state.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The comparison sets a classical output list against a quantum superposition, which are different outputs; reading out the superposition is not counted."
+    },
+    {
+     "id": "qbtree-qram-assumption",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that they assume the existence of a classical-write quantum-read QRAM, which is still discussed at the theoretical stage with no existing physical implementation yet available.",
+     "anchor": "Section 4, Quantum Random Access Memory, p.5",
+     "quotes": [
+      "we assume the existence of a classicalwrite quantum-read QRAM",
+      "Although the QRAM is still discussed at the theoretical stage and no existing physical implementation is yet available"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own stated assumption, Section 4 p.5.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "qbtree-range-query-independent-of-output",
+     "verdict": "narrowed",
+     "note": "Theorem 4.4 itself is an average-case bound (logarithmic in N to base B) proved by sketch, under the stated assumptions that each quantum oracle and QRAM load costs constant time and that the tree is weight-balanced; optimality follows from Lemma 4.2's logarithmic lower bound.",
+     "value": "The paper states as Theorem 4.4 that, on average, the quantum range query algorithm returns the answer in time logarithmic in N, and with Lemma 4.2 that this is asymptotically optimal in a quantum computer; the bound assumes that a quantum oracle costs constant time, and the authors say the execution time does not depend on the output size, making it exponentially faster than classical B+ trees.",
+     "anchor": "Section 4.2, Theorem 4.4, p.9; Section 2, p.4; Abstract; Section 8, p.13",
+     "quotes": [
+      "Theorem 4.4. On average, the quantum range query algorithm returns the answer in",
+      "By Theorem 4.4 and Lemma 4.2, this algorithm is asymptotically optimal in a quantum computer.",
+      "assume that a quantum oracle costs",
+      "We thus follow this common assumption in this paper.",
+      "Since the execution time does not depend on the output size",
+      "which is asymptotically optimal in quantum computers and is exponentially faster than classical B+ trees"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proof sketch with full proofs deferred to a technical report, resting on constant-cost QRAM and oracles; the exponential comparison holds only when the output size is large.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The classical bound is logarithmic plus the output size, so the exponential gap appears only when the output size is near linear in N."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qbtree-lower-bound-lemma",
+     "value": "The paper states as Lemma 4.2 that answering a quantum range query needs time at least logarithmic in N, because a query on a single key answers the membership problem, whose quantum lower bound is cited.",
+     "anchor": "Section 4, Lemma 4.2 and proof sketch, p.6",
+     "quotes": [
+      "Lemma 4.2. The time complexity to answer a quantum range query is Ω(log",
+      "It answers whether the key ������ exists in the dataset, which is a membership problem of time complexity Ω(log"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A direct reduction to a cited membership lower bound, stated and proved on p.6.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qbtree-candidate-set-lemma",
+     "value": "The paper states as Lemma 4.3 that, for a weight-balanced B+ tree, the global classical search returns at most two candidate nodes that contain all query results, with the results a fixed fraction (one over eight times the branching factor) of the pairs under them, so the post-selection repeats a constant number of times.",
+     "anchor": "Section 4.2.1, Lemma 4.3, p.8; Theorem 4.4 proof sketch, p.9",
+     "quotes": [
+      "Lemma 4.3. Given a query range [������, ������] and a B+ tree that is weightbalanced, the returned candidate set of the global classical search contains at most two nodes.",
+      "we need to repeat all the steps for at most 8������ times, which is a constant time"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A proof sketch; the repeat count is an expectation and grows with the branching factor.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The scheme uses repeated post-selection, not amplitude amplification."
+    },
+    {
+     "id_suggestion": "qbtree-unstructured-baseline-worse",
+     "value": "The authors state that answering a quantum range query on an unstructured QRAM with an improved Grover search costs time growing with the square root of N times the output size, which for large N is worse than a classical B+ tree.",
+     "anchor": "Section 4, p.5; Section 7, p.13",
+     "quotes": [
+      "this is even worse than the classical range query algorithms (e.g., using the B+ tree) with time complexity logarithm to",
+      "Since the query time grows linearly with the square root of"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "An analysis of a cited algorithm, not proved in the paper.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qbtree-dynamic-theorems",
+     "value": "The paper states as Lemma 5.1 that insertion or deletion in the dynamic quantum B+ tree has amortized cost logarithmic in N, and as Theorem 5.2 that the dynamic tree answers a range query on average in time of order log squared N.",
+     "anchor": "Section 5.1, Lemma 5.1 and Theorem 5.2, p.10",
+     "quotes": [
+      "Lemma 5.1. The amortized cost of an insertion or a deletion in a dynamic quantum B+ tree is",
+      "Theorem 5.2. On average, the dynamic quantum B+ tree answers a range query in"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Proof sketches that rest on the logarithmic method and partial rebuilding from cited work and on constant-cost QRAM.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qbtree-range-tree-theorem",
+     "value": "The paper states as Theorem 5.3 that the quantum range tree answers a d-dimensional quantum range query on average in time of order log to the power d of N, saving the output-size term of the classical range tree.",
+     "anchor": "Section 5.2, Theorem 5.3, p.10 to 11",
+     "quotes": [
+      "Theorem 5.3. On average, the quantum range tree answers a ������-dimensional quantum range query in"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A proof sketch under the same constant-cost QRAM assumption.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qbtree-proofs-in-report",
+     "value": "The authors give only proof sketches in the body and state that full proofs are in their technical report; the appendix proofs carry unresolved cross-references.",
+     "anchor": "Section 4, p.6; Appendix B, p.14 to 16",
+     "quotes": [
+      "we give a proof sketch for each lemma or theorem in this paper, and the full proof can be found in our technical report [7]",
+      "By Theorem ?? in this paper"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement about where its proofs are, p.6.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The arXiv version is a preprint; the cited technical report is an anonymized repository link."
+    },
+    {
+     "id_suggestion": "qbtree-experiment-setup",
+     "value": "The authors report experiments on two SNAP check-in datasets, Brightkite and Gowalla, varying the dataset size from 4K to 2M, the branching factor from 4 to 64 and the selectivity from 1% to 10%, with defaults of 2M, 16 and 5%, averaging over 10000 random range queries.",
+     "anchor": "Section 6, p.11",
+     "quotes": [
+      "We varied ������ from 4K to 2M (by randomly choosing a subset from each dataset with the target size). We varied ������ from 4 to 64 for each data structure. We varied the selectivity from 1% to 10%.",
+      "By default, ������ = 2M, ������ = 16 and the selectivity is 5%. For each type of range query, we randomly generate 10000 range queries and report the average measurement.",
+      "We used two real datasets from SNAP [39], namely Brightkite and Gowalla."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its experimental setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qbtree-dynamic-worse-small-n",
+     "value": "The authors report that for dynamic quantum range queries the dynamic quantum B+ tree has more memory accesses than the dynamic classical B+ tree for small datasets (under 100K), and scales better for larger ones.",
+     "anchor": "Section 6, Effect of N, Figure 3(d), p.11",
+     "quotes": [
+      "although our (dynamic) quantum B+ tree has larger number of memory accesses than the (dynamic) classical B+ tree for small ������ (i.e., < 100K), our quantum B+ tree shows much better scalability for larger"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured count from a simulation under the constant-cost QRAM counting rule.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qbtree-multidim-advantage",
+     "value": "The authors report that the quantum range tree does not improve as selectivity rises but is 10x to 100x better than the classical range tree in memory accesses for multi-dimensional queries.",
+     "anchor": "Section 6, Effect of Selectivity, Figure 5(a), p.11 to 12",
+     "quotes": [
+      "our quantum range tree is still efficient (since its performance does not depend on the selectivity) and is 10x–100x superior than the classical range tree"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured count from a simulation under the constant-cost QRAM counting rule.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qbtree-branching-factor-effect",
+     "value": "The authors report that the quantum data structures need slightly more memory accesses as the branching factor grows, because the post-selection success rate can drop, so they favor a smaller branching factor and set it to 16 in other experiments.",
+     "anchor": "Section 6, Effect of B, Figures 4(b), 4(d) and 5(b), p.12",
+     "quotes": [
+      "data structures needs slightly more memory accesses as ������ increases",
+      "because the success rate of the post-selection could be affected as",
+      "Thus, we set ������ to be 16 in other experiments for fair comparisons with a",
+      "data structures favor a smaller branching factor"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured trend from a simulation.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qbtree-first-claims",
+     "value": "The authors claim to be the first to study quantum range query problems and the first to propose a tree-like quantum data structure.",
+     "anchor": "Section 1, contributions, p.3",
+     "quotes": [
+      "We are the first to study the quantum range query problems. • We are the first to propose a tree-like quantum data structure, which is the quantum B+ tree."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A priority claim by the authors, not checked against the literature.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qbtree-simulation-only",
+     "value": "The authors state that their experiments were simulations, and that they expect the quantum data structures to show significant advantages in the real world.",
+     "anchor": "Section 8 Conclusion, p.13",
+     "quotes": [
+      "we did simulations to verify the superiority of our proposed quantum data structures compared with the classical data structures. We expect that the quantum data structures will show significant advantages in the real world."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement that its evidence is simulation, Section 8.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

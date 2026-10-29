@@ -1,0 +1,2682 @@
+{
+ "group": "g040",
+ "papers": [
+  {
+   "record_id": "tserkis-2026-depth-optimization-cnot-ladder-circuits",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Tserkis-Umer-Angelakis_2025_Depth-Optimization-of-Ansatz-Circuits-for-Variational-Quantum__2511.13256.pdf",
+   "title_in_file": "Depth optimization of CNOT ladder circuits",
+   "version_note": "The file is arXiv:2511.13256v2 (23 Mar 2026), titled 'Depth optimization of CNOT ladder circuits'. The file name carries a different title ('Depth Optimization of Ansatz Circuits for Variational Quantum ...'), probably that of v1; the record id matches the v2 title. Same paper and arXiv id.",
+   "pages": 8,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A short paper that replaces the CNOT gates of a CNOT ladder with measurement-based equivalents to reach constant CNOT depth 2, compares the construction with earlier ones, lists five applications, and compares unitary and non-unitary ladders with a Pauli-noise fidelity lower bound.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "tserkis-choice-depends-on-cnot-vs-idle-error",
+     "verdict": "widened",
+     "note": "Section IV's numerical comparison (Fig. 5(c)) adds a second factor: the choice also depends on the number of register qubits, not only on the error rates. The comparison is of a lower bound on process fidelity under a Pauli noise model.",
+     "value": "The authors state that the choice between the unitary and the constant-depth (non-unitary) construction depends on the relative difference between CNOT and idling error rates, and, from their comparison over register counts, also on the number of register qubits; they state that the method is most effective where CNOT error probabilities are low compared with qubit idling error probabilities.",
+     "anchor": "Abstract p.1; Section IV p.6; Section V p.6",
+     "quotes": [
+      "Our error analysis shows that the choice between these two constructions depends on the relative difference between CNOT and idling error rates.",
+      "This implies that the choice between a unitary and a non-unitary circuit depends on the number of register qubits and the error characteristics of the platform.",
+      "is most effective for platforms where CNOT error probabilities are relatively low compared to qubit idling error probabilities"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conclusion from a numerical evaluation of a fidelity lower bound under an assumed Pauli noise model; not a proved statement.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "tserkis-constant-cnot-depth-two",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section II and Table I, p.2",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "tserkis-noise-model-limits",
+     "verdict": "narrowed",
+     "note": "The stored value drops the condition the paper puts on the second clause: exact fidelity is said to be practically impossible to simulate classically only 'for circuits with very large width and depth', which is why the paper uses a lower bound.",
+     "value": "The authors state that their Pauli noise model assumes a twirling approximation to remove non-Pauli noise, even though non-Pauli noise is also expected in real quantum computers, and that for circuits with very large width and depth it is practically impossible to simulate the effect of quantum noise on classical computers and calculate the exact value of fidelity, so they use a lower bound on process fidelity as a compromise.",
+     "anchor": "Section IV, pp.4-5",
+     "quotes": [
+      "This noise p = 1−e−2λ 2 is model assumes that a twirling approximation has been applied to remove non- Pauli noise",
+      "even though in real quantum computers non-Pauli noise is also expected to be present",
+      "This benchmark choice comes as a compromise, since for circuits with very large width and depth it is practically impossible to simulate the effect of quantum noise on classical computers and calculate the exact value of fidelity."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of the limits of its noise model and benchmark, Section IV, pp.4-5.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "tserkis-cnot-ladder-definition",
+     "value": "The paper defines a CNOT ladder (or CNOT staircase) circuit as a sequence of consecutive CNOT gates where each gate shares a qubit with the next one, in descending and ascending forms.",
+     "anchor": "Section II, pp.1-2, Eqs. (2) and (3)",
+     "quotes": [
+      "A CNOT ladder (or CNOT staircase) circuit consists of a sequence of consecutive CNOT gates, where each gate shares a qubit with the next one.",
+      "A descending n-qubit CNOT ladder, shown in the upper part of Fig. 2(a), is defined as",
+      "and an ascending n-qubit CNOT ladder, shown in the upper part of Fig. 2(b), is defined as"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Section II.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tserkis-unitary-ladder-linear-depth",
+     "value": "The authors state that for the unitary CNOT ladder circuits the CNOT depth and CNOT count increase linearly, as n − 1, with the register qubit count n.",
+     "anchor": "Section II and Table I row 1, p.2",
+     "quotes": [
+      "For these circuits the CNOT depth and CNOT count increase linearly, i.e., n − 1, with the register qubit count n, as shown in the first row of Table I."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A count read from the construction; not derived in a quoted proof.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tserkis-construction-substitution",
+     "value": "The authors construct the non-unitary ladder by substituting each CNOT gate of the unitary ladder with a measurement-based equivalent that adds an auxiliary qubit initialized to |0⟩ or |+⟩, measures it, and applies a conditional X or Z gate to a register qubit based on the outcome; the resulting ladder runs on a (2n−3)-qubit circuit.",
+     "anchor": "Section II p.2; Fig. 1 and Fig. 2 captions, pp.1-2",
+     "quotes": [
+      "The non-unitary circuits in the lower part of Fig. 2 are constructed by substituting each CNOT gate of the unitary circuits at the top part of Fig. 2 with its measurement-based equivalent",
+      "include an extra qubit, called auxiliary, that is initialized to a particular state, |0⟩ or |+⟩.",
+      "Based on the measurement outcome, a conditional single-qubit gate X or Z is applied to a specific register qubit.",
+      "the same ladder is depicted as a non-unitary transformation run on a (2n−3)-qubit circuit"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its construction, Section II and Fig. 2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tserkis-first-last-cnot-not-substituted",
+     "value": "The authors state that the first and last CNOT gates of a ladder need not be substituted: the first already sits in the first CNOT layer, and the last is commuted to the second CNOT layer; the substitution proceeds left to right, with CNOT gates commuted over conditional gates by the identity (X ⊗ I )CNOT = CNOT(X ⊗ X ).",
+     "anchor": "Section II and Fig. 3, p.3",
+     "quotes": [
+      "It is important to note that the first and last CNOT gates do not need to be taken into account in this process",
+      "as the first CNOT gate is already located at the first layer of CNOT gates that is about to be constructed, while the last CNOT gate is commuted to the second layer of CNOT gates",
+      "In both CNOT ladders of Fig. 2 the substitution begins from left to right.",
+      "due to the identity (X ⊗ I )CNOT = CNOT(X ⊗ X )."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of how its construction proceeds, Section II, p.3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tserkis-measurement-based-cnot-proof",
+     "value": "The paper proves in Appendix A that the measurement-based circuit (an auxiliary middle qubit prepared in |+⟩, two CNOTs, a computational-basis measurement of the auxiliary qubit, and a conditional X on the third qubit) realizes a CNOT between the first and third qubits; the proof for the other construction (Fig. 1(c)) is said to be analogous and is omitted. The authors note the equivalence was mentioned before in the literature.",
+     "anchor": "Appendix A, pp.6-7; Section II p.2",
+     "quotes": [
+      "In this section we prove that the circuit in Fig. 1(a) corresponds to a CNOT operation between the first and third qubits shown in Fig. 1(b).",
+      "which is the CNOT transformation on qubits 1 and 3",
+      "The proof for the circuit in Fig. 1(c) is analogous, so we",
+      "The equivalence between the unitary and the measurement-based versions of the CNOT gate is a result that has been mentioned before in the literature [20]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Appendix A proves the equivalence step by step, Eqs. (A1) to (A9), pp.6-7.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The appendix's first sentence names Fig. 1(a) and Fig. 1(b) in an order that looks swapped relative to Fig. 1's caption (panel (a) is the unitary gate); the derivation itself is of the measurement-based circuit."
+    },
+    {
+     "id_suggestion": "tserkis-depth-width-tradeoff",
+     "value": "The authors state that the method reduces CNOT depth by increasing circuit width and CNOT density, and that the higher CNOT density allows for less idling noise; in active and idle volume terms, the unitary circuits are mostly idle volume and the non-unitary circuits mostly active volume.",
+     "anchor": "Section II, p.3",
+     "quotes": [
+      "Conceptually, this method reduces the CNOT depth of a circuit by increasing the width of the circuit and its CNOT density.",
+      "The higher CNOT density allows for less idling noise",
+      "the largest part of the circuit volume in the unitary core circuits in the upper of Fig. 2 consists of idle volume, whereas the largest part of the circuit volume in the non-unitary core circuits in the lower of Fig. 2 consists of active volume."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conceptual description of their method's trade-off.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tserkis-prior-unitary-construction",
+     "value": "The authors cite an alternative construction (Ref. [19]) that represents the CNOT ladder as a unitary transformation on a circuit of equal width with smaller CNOT depth, and four non-unitary approaches in the literature (Refs. [15]-[17]).",
+     "anchor": "Section II and Table I rows 2-6, p.2",
+     "quotes": [
+      "Recently, an alternative construction has been proposed [19], that manages to represent the CNOT ladder as a unitary transformation on a circuit of equal width but with smaller CNOT depth.",
+      "In rows 3-6 of Table I we present four such approaches found in the literature [15–17]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tserkis-modularity-advantage",
+     "value": "The authors state that the advantage of their method lies in its modularity, which allows it to handle both ascending and descending ladders.",
+     "anchor": "Section I Introduction, p.1",
+     "quotes": [
+      "We show that the advantage of our method lies in its modularity, which allows it to handle both ascending and descending ladders."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' claim of their method's advantage.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tserkis-five-applications",
+     "value": "The authors present five applications of CNOT ladder circuits: GHZ state preparation, long-range CNOT gates, fan-out gates, fermionic simulations (the Jordan-Wigner parity string), and ansatz circuits for variational quantum algorithms, where a CNOT ladder structure is commonly used.",
+     "anchor": "Section III, pp.3-4; Fig. 4",
+     "quotes": [
+      "CNOT ladder circuits appear in several applications in quantum computing. Below, we present five such examples.",
+      "In quantum computation, this nonlocal parity string is commonly con- structed using a CNOT ladder [26].",
+      "but a CNOT ladder structure such as the one shown in Fig. 4(e) is commonly used [30]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Uses of CNOT ladders the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tserkis-noise-model-setup",
+     "value": "The authors model noise as a Pauli channel Λ(S) = (1 − p)S + pP SP †, based on Ref. [31], aggregate all errors in a total decoherence parameter λtot summing idle, CNOT, measurement, initialization and conditional-gate terms, and estimate a lower bound on the circuit's process fidelity as Fpro ⩾ e−λtot, following Ref. [16]. Each element's λ assumes the worst case that all possible Pauli errors of its group are applied.",
+     "anchor": "Section IV, pp.4-5, Eqs. (8)-(10)",
+     "quotes": [
+      "The noise model we consider in this work is based on the one presented in Ref. [31].",
+      "Λ(S) = (1 − p)S + pP SP † , (8)",
+      "λtot = tidleλidle +κCNOTλCNOT +κmeasλmeas +κinλin +κconλcon . (9)",
+      "the entire cir- cuit [16], using the following inequality Fpro ⩾ e−λtot . (10)",
+      "it assumes the worst case scenario that all possible Pauli errors of the corresponding group are applied with a given er- ror probability."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own noise model and benchmark, Section IV.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tserkis-simulation-parameters",
+     "value": "The authors' Fig. 5 comparison uses 50 register qubits, idling error probability from 1e-5 to 1e-3 and CNOT error probability from 1e-4 to 1e-2; conditional gate, initialization and measurement error probabilities are set to pCNOT/10; conditional gate decoherence is λcon = (λidle + λX)/2; tidle is 4 for the non-unitary ladder and n squared minus 3n plus 2 for the unitary one. Fig. 5(c) extends to circuits with up to 200 register qubits, around 400 qubits in total.",
+     "anchor": "Section IV, pp.5-6",
+     "quotes": [
+      "we consider the case of 50 register qubits",
+      "On the x-axis we have the idling error probability pidle ranging from 1e-5 to 1e-3, while on the y-axis the CNOT error probability pCNOT ranging from 1e-4 to 1e-2.",
+      "We assume that each conditional single-qubit gate has an error probability equal to pcon = pCNOT/10.",
+      "i.e., pin = pCNOT/10 and pmeas = pCNOT/10. For conditional gates we assume that their decoherence is given by λcon = (λidle + λX)/2",
+      "Finally, tidle for the non-unitary ladder is equal to 4, while for the unitary one is equal to n2 − 3n + 2.",
+      "in Fig. 5(c) we consider circuits with up to 200 register qubits, and thus in total around 400 qubits including the auxiliary ones"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own simulation parameters, Section IV, pp.5-6.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tserkis-unitary-best-low-idle",
+     "value": "The authors report, from the fidelity lower bound at 50 register qubits, that the unitary circuit performs best for low idling error and the non-unitary circuit for low CNOT error.",
+     "anchor": "Section IV p.6; Fig. 5(a) and 5(b), p.5",
+     "quotes": [
+      "In particular, in Fig. 5, we consider the case of 50 register qubits",
+      "We observe that the unitary circuit performs the best for low idling error, while the opposite is true for the non-unitary circuit.",
+      "which appears to be at its highest for the unitary circuit when idling error probability is low, and for the non-unitary circuit when CNOT error probability is low."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical evaluation of a bound under assumed error parameters in one study.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tserkis-nonunitary-preferable-most-params",
+     "value": "The authors report that, over nine pairs of idling and CNOT error probabilities and up to 200 register qubits, the non-unitary construction is preferable for most of the error parameters considered, but the trends are not the same across them.",
+     "anchor": "Section IV p.6; Fig. 5(c)",
+     "quotes": [
+      "In Fig. 5(c) we select nine pairs for idling and CNOT error probabilities and plot the ∆ Fidelity against register qubits in the range up to 200.",
+      "We observe that the non-unitary construction is preferable for most of the error parameters considered in this plot, however the corresponding trends are not the same."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical evaluation of a bound under chosen error parameters in one study.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Since the comparison is of lower bounds on fidelity, not of exact fidelities, a preference shown here is a preference between bounds."
+    },
+    {
+     "id_suggestion": "tserkis-gate-teleportation-distinction",
+     "value": "The authors state that the measurement-based CNOT operation is reminiscent of the gate teleportation protocol, which differs in requiring two auxiliary qubits initialized in an entangled state, and that substituting the primitive non-unitary circuits twice retrieves the teleported CNOT gate.",
+     "anchor": "Footnote 1, p.3",
+     "quotes": [
+      "The measurement-based CNOT operation, discussed in this paragraph, is reminiscent of the gate teleportation protocol [21, 22], with the key distinction that the latter requires two auxiliary qubits which are initialized in an entangled state.",
+      "if we substitute the primitive non-unitary circuits twice, we retrieve the teleported CNOT gate."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's remark in a footnote, not proved in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tserkis-conclusion-scalable",
+     "value": "The authors conclude that their method constructs shallow depth CNOT ladder circuits by replacing standard CNOT gates with three-qubit measurement-based primitives using auxiliary qubits, mid-circuit measurements and conditional single-qubit gates, and that it enables a scalable implementation of structured circuits within the constraints of near-term quantum devices.",
+     "anchor": "Section V Conclusion, p.6",
+     "quotes": [
+      "we have presented a method for constructing shallow depth CNOT ladder circuits by replacing standard CNOT gates with their measurement-based equivalent ones, corresponding to three-qubit circuit primitives that use auxiliary qubits, mid-circuit measurements, and conditional single-qubit gates.",
+      "Overall, the technique discussed in this work enables a scalable implementation of structured circuits within the constraints of near-term quantum devices."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' concluding claim; scalability on devices is not demonstrated on hardware.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "No hardware run is reported; all results are from the fidelity bound."
+    }
+   ]
+  },
+  {
+   "record_id": "uvarov-2022-variational-quantum-algorithms-local-hamiltonian",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Uvarov_2022_Variational-quantum-algorithms-for-local-Hamiltonian-problems__2208.11220.pdf",
+   "title_in_file": "Variational quantum algorithms for local Hamiltonian problems",
+   "version_note": "arXiv:2208.11220v2, PhD (Candidate) dissertation, Skoltech 2022, advisor J. Biamonte.",
+   "pages": 145,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A 2022 Skoltech PhD dissertation on variational quantum algorithms: VQE numerics on Ising, XXZ and Hubbard-like models, a quantum classifier trained on VQE states, a causal-cone lower bound on barren-plateau gradient variance, and a telescope-Hamiltonian method for bounding GHZ and Clifford state fidelity.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "bp-depends-on-encoding",
+     "verdict": "confirmed",
+     "note": "Confirmed by the main-results list in the thesis Conclusions and by the Chapter 3 barren plateau experiments. The main-results list sits on printed p.119, not p.120 as the stored anchor says.",
+     "value": "",
+     "anchor": "Conclusions, main result 3, p.119; Section 3.3.4, p.65",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "error-exponential-in-depth",
+     "verdict": "narrowed",
+     "note": "The Conclusions sentence is accurate, but the thesis itself qualifies it: in the Hubbard experiments the convergence is slower for larger qubit counts, at 11 qubits the energy error stays roughly flat as layers are added, and the Chapter 3 discussion says the fast convergence may be a consequence of the small qubit numbers. Both quoted Conclusions sentences are on printed p.119.",
+     "value": "The thesis reports that in all models studied the scaling of the energy error with circuit depth was close to exponential and that states near the phase transition point are the hardest to approximate; it also reports that for larger qubit counts the convergence is slower (at 11 qubits the energy error stays roughly the same as layers are added) and states that the fast convergence may just be a consequence of the small number of qubits.",
+     "anchor": "Conclusions, main result 2, p.119; Section 3.3.3, p.62; Section 3.4, p.67",
+     "quotes": [
+      "In all models, the scaling of the error with circuit depth was close to exponential, agreeing with existing literature.",
+      "The states near the phase transition point are the hardest to approximate with a variational circuit.",
+      "It is also clear that for larger",
+      "11 qubits, the energy error remains roughly the same despite the increase in the number of layers.",
+      "the experiments with the Hubbard model hint that this may just be the consequence of a small number of qubits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical results on small simulated systems (up to 11 qubits) with the thesis's own caveat about qubit count.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "gradient-variance-lower-bound",
+     "verdict": "narrowed",
+     "note": "The stored value omits a condition of Theorem 5.4.1: the parametrized block must itself decompose into two local 2-designs that do not depend on the parameter, placed around the rotation. The bound (5.37) is now quoted: a sum over the Pauli strings whose causal cone contains the block, of the squared coefficient times three to the minus the causal-cone size, with a factor three quarters raised to the number of layers after the block. The proof is given in Section 5.4.4.",
+     "value": "The thesis's main barren-plateau theorem states that if each block of the ansatz is an independently parametrized local 2-design and the parametrized block also decomposes into two local 2-designs not depending on the parameter, then the variance of the cost-function derivative with respect to that parameter is bounded below by a sum over the Pauli strings whose causal cone contains the block, of the squared coefficient times 3 to the minus the number of qubits in the causal cone, with a prefactor (3/4) raised to the number of layers after the block's layer. The thesis summarizes that the bound depends mainly on the causal-cone sizes of the cost-function terms and on the position of the gate in the circuit.",
+     "anchor": "Theorem 5.4.1, Eq. (5.37), p.92; proof Section 5.4.4, pp.93-97; Conclusions, main result 5, p.119",
+     "quotes": [
+      "Let each block of the ansatz be an independently parametrized local 2-design.",
+      "Let the block ������ also be decomposable into ������ = ������������������−������������������������ ������������, where ������������ and ������������ are local 2-designs not depending on ������������.",
+      "Var ������������������ ≥ 2 · 4|������������| 4|������������| − 1 (︂ 3 )︂������−������������ 4 ∑︁ ������2������ · 3−|������(h������,������ )|",
+      "is the number of qubits in the causal cone of the",
+      "and the summation is over those Pauli strings whose causal cone contains the block",
+      "The bound mainly depends on two things: the size of the causal cones of the operators in the cost function Hamiltonian, and the position of the gate in the circuit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5.4.1 is stated with its conditions and proved in Section 5.4.4 of the thesis.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer garbles the symbols of (5.37); reading the prefactor as (3/4) to the power L minus the block's layer follows the p.9 summary of the same bound."
+    },
+    {
+     "id": "small-qubit-caveat",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 3.4 Discussion, p.67",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The thesis's own stated limit, Section 3.4.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "uvarov-aavqe-direction-dependence-xxz",
+     "value": "The thesis reports that adiabatically-assisted VQE on the XXZ Heisenberg model finds different solutions depending on the sweep direction, with the largest difference near the critical point (h = 1), and a hysteresis in which the solver stays in a suboptimal solution for a while after crossing the transition; the transverse-field Ising model shows no such behavior.",
+     "anchor": "Statements defended 1, p.8; Section 3.2.2, p.60",
+     "quotes": [
+      "Numerical experiments show that Adiabatically-assisted VQE finds different solutions depending on the direction of whether the optimization starts from",
+      "occures near the critical point of the model (h = 1).",
+      "In contrast, the transverse-field Ising model shows no such behavior near the critical point",
+      "It turns out that the solutions in this case are susceptible to a hysteresis behavior: for a while after crossing the phase transition point, the solver stays in a suboptimal solution."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numerical observation on one simulated model size.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-max-energy-error-near-criticality",
+     "value": "The thesis reports that VQE shows its largest energy error near the critical point of both spin models, with a maximum error of 0.12 units for the Ising model and 1.1 units for the Heisenberg model for the best ansatzes considered, and argues this is consistent with the logarithmic entanglement scaling of critical states, which a fixed-depth ansatz cannot attain.",
+     "anchor": "Statements defended 2, p.9",
+     "quotes": [
+      "The approximation found by VQE shows the largest energy error in the vicinity of the critical point of either spin model.",
+      "the maximum energy error is 0.12 units for the Ising model and 1.1 units for the Heisenberg model.",
+      "We argue that this is consistent with the fact that critical states demonstrate a logarithmic scaling of entanglement entropy, unattainable by a fixed-depth ansatz circuit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Simulated numerical result; the explanation is the author's argument.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-tfi-ansatz-comparison",
+     "value": "For the transverse-field Ising model the thesis reports that the tree tensor network ansatz gives no improvement over the rank-1 ansatz, nor does one checkerboard layer; the VQE overlap with the ground state never falls below 1/2, is 0.92 at h = 1.2 where the energy error is worst, and the error peaks are nearly halved with each added layer, with the peak location depending on depth.",
+     "anchor": "Section 3.2.1, p.57; Figure 3.3, p.58",
+     "quotes": [
+      "Interestingly enough, tree tensor network ansatz does not yield any improvement against the rank-1 ansatz, nor does one layer of the checkerboard ansatz.",
+      "the overlap of VQE solution in this regime is never smaller than 1/2",
+      "At h = 1.2, the point where the energy error is the worst, the overlap of the VQE solution with the ground state is equal to 0.92.",
+      "the convergence in energy looks exponential in the depth of the circuit: the peaks of the curves are nearly halved with each new layer.",
+      "What is unexpected is that the location of the peak is different for each depth."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Simulated numerical result on one chain size.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-tfi-vqe-setup",
+     "value": "The thesis's VQE experiments simulate circuits with Qiskit and update parameters with L-BFGS-B, scanning the field upward with each point started from the previous solution, also running the scan in the opposite direction and keeping the better result; a complete two-qubit block has five free parameters.",
+     "anchor": "Section 3.2.1, p.57",
+     "quotes": [
+      "Thus, a complete ansatz would have five free parameters per two-qubit block.",
+      "we use Qiskit [96] to simulate quantum circuits and the limited Broyden–Fletcher–Goldfarb–Shanno method (L-BFGS-B) to update the parameters during the classical step of VQE.",
+      "To eliminate any obviously sub-optimal solutions, we also ran the scanning in the opposite direction, and for each value of the field we kept the better result."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The thesis's own description of its numerical setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-hubbard-vqe-convergence",
+     "value": "For a next-nearest-neighbor Hubbard-like model the thesis reports that VQE found the exact solution up to machine precision with 1-2 layers for 4 qubits and fewer, and for 5-11 qubits the error with depth was fit to exponential decay with a correlation coefficient of −0.92 or less in all cases.",
+     "anchor": "Statements defended 4, p.9; Section 3.3.3, p.62; Figure 3.6, p.63",
+     "quotes": [
+      "Variational quantum eigensolver was numerically applied to a Hubbard-like model, with ansatz depth ranging from one to ten layers.",
+      "For 4 qubits and fewer, VQE found the exact solution up to machine precision with 1-2 layers.",
+      "For 5-11 qubits, the error scaling with depth was fit to exponential decay (correlation coefficient between depth and log10",
+      "was −0.92 or less in all cases)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Simulated numerical result on small systems; the thesis itself notes slower convergence at larger sizes.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-hubbard-setup",
+     "value": "The Hubbard experiments use the Jordan–Wigner encoding, a checkerboard ansatz of particle-conserving two-qubit blocks, half filling, simulation in Qiskit with OpenFermion for the encodings, and L-BFGS optimization.",
+     "anchor": "Section 3.3.2, p.62",
+     "quotes": [
+      "In our numerical experiments, we used the Jordan–Wigner encoding",
+      "We used a checkerboard ansatz whose two-qubit blocks were the particle-con",
+      "We study the model at half-filling",
+      "The Jordan–Wigner transform and the Bravyi–Kitaev transform (used further) are implemented using OpenFermion",
+      "The optimization routine in VQE uses the limited-memory Broyden–Fletcher–Goldfarb–Shanno (L-BFGS)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The thesis's own description of its numerical setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-correlation-function-qualitative-only",
+     "value": "The thesis states that the VQE density-density correlation function agreed only qualitatively with the exact one: the accuracy and the spin-chain size were too low for any reasonable quantitative estimate of its asymptotic behavior.",
+     "anchor": "Section 3.3.3, p.63",
+     "quotes": [
+      "Although we did find qualitative agreement, the accuracy of the approximation, as well as the size of the spin chain, were too low to produce any reasonable quantitative estimates of the asymptotical behavior of the correlation function."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "The thesis's own stated limit on a numerical result.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-hubbard-gradient-variance-encoding",
+     "value": "The thesis reports sampling the variance of energy derivatives for the next-nearest-neighbor Hubbard model on 4-10 qubits: under Jordan–Wigner the variance becomes constant in depth after at most 15 layers (dropping to its limiting value even for very shallow circuits for most qubit numbers), its qubit dependence is consistent with exponential decay, and under Bravyi–Kitaev there is a longer transient in depth.",
+     "anchor": "Statements defended 5, p.9; Section 3.3.4, pp.65-66; Figure 3.9",
+     "quotes": [
+      "in 4-10 qubits by random sampling of the ansatz parameters.",
+      "We observed that, under the Jordan–Wigner transformation, the dependence of the variance on circuit depth becomes constant after at most 15",
+      "The behavior of the variance as a function of the number of qubits is consistent with the prediction of exponential decay",
+      "For the Bravyi–Kitaev transform we observed a longer transient behavior with the circuit depth.",
+      "said variance drops to its limiting value even for very shallow circuits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Sampled numerical result on small systems.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-tfi-gradient-plateau-qubits",
+     "value": "For the transverse-field Ising model the thesis reports that the gradient variance decays exponentially with layers until reaching the plateau for the given qubit count: for 4 qubits the plateau is reached right away, while for 10 qubits 30 layers are still in the transition regime; criticality of the model does not seem to affect this.",
+     "anchor": "Section 3.3.4, pp.65-66; Figure 3.9 bottom",
+     "quotes": [
+      "In this case, the gradient variance decays exponentially with the number of layers until reaching the plateau regime for the particular number of qubits.",
+      "Thus, for 4 qubits",
+      "the plateau is reached right away, while for 10 qubits, 30 layers of the ansatz are still a number belonging to the transition regime.",
+      "In the meantime, the criticality of the model does not seem to affect this behavior."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Sampled numerical result on small systems.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-jw-nonlocality-possible-reason",
+     "value": "The thesis suggests that a possible reason for the observed gradient behavior is that the Jordan–Wigner mapping produces highly nonlocal operators that are difficult to optimize.",
+     "anchor": "Section 3.3.4, p.66",
+     "quotes": [
+      "a possible reason for the behavior observed in these three cases is that the Jordan–Wigner mapping produces highly nonlocal operators which are difficult to optimize."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A suggested explanation, not tested.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-plateaus-without-t-design",
+     "value": "The thesis reports observing barren plateaus with the particle-conserving ansatz, which it says is not a t-design, and infers that the condition for barren plateaus is in some cases not necessarily tied to t-designs, or alternatively that the ansatz becomes close to a t-design within the fixed-particle-number subspace.",
+     "anchor": "Section 3.4 Discussion, p.67",
+     "quotes": [
+      "Clearly, the particle-conserving ansatz is not even close to resembling a uniformly random unitary, hence it is not a t-design",
+      "Nonetheless, we observe the plateaus. This implies that in some cases the condition for observing barren plateaus is not necessarily tied to the notion of a t-design.",
+      "Alternatively, this may mean that the ansatz becomes close to a t-design when it is restricted to the subspace with the fixed number of particles."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An interpretation of a small-scale numerical observation with an alternative explanation left open.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-huang-average-vs-worst-case",
+     "value": "The thesis cites Huang and coworkers as showing that, in a very general setting, a quantum ML model brings no advantage in average-case error for predicting outcomes of quantum experiments but brings an exponential advantage in worst-case error.",
+     "anchor": "Section 4.1, p.71",
+     "quotes": [
+      "Huang and coworkers [119] show that, in a very general setting, a quantum ML model does not bring any advantage in terms of average-case error, but does bring exponential advantage in terms of worst-case error."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited from another work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-classifier-setup",
+     "value": "The thesis's quantum classifier takes VQE-prepared ground states as input, applies a checkerboard classifier circuit, measures all qubits and decides the class by majority vote, trained with a log-likelihood cost by SPSA over 300 epochs; for the transverse-field Ising model the inputs were the four-layer checkerboard VQE solutions.",
+     "anchor": "Section 4.2, pp.71-73",
+     "quotes": [
+      "measure all qubits, and decide the class by majority of the qubits.",
+      "we used the log-likelihood cost function.",
+      "(SPSA) algorithm",
+      "We optimized the log loss over 300 epochs",
+      "the one found using four layers of the checkerboard ansatz."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The thesis's own description of its classifier setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-classifier-phase-accuracy",
+     "value": "The thesis reports that the quantum classifier, tested on ten qubits, predicted the phase of VQE-approximated transverse-field Ising ground states with 97% accuracy and of Heisenberg XXZ ground states with 93% accuracy; the XXZ case needed a 6-layer classifier with data augmentation.",
+     "anchor": "Statements defended 3, p.9; Section 4.2, pp.73-75; Figure 4.3",
+     "quotes": [
+      "The classifier was tested for ten qubits on the VQE-approximated ground states of transverse-field Ising model and was able to predict the phase of the system with 97% accuracy.",
+      "A similar experiment conducted for the Heisenberg XXZ model yielded 93% accuracy.",
+      "Compared to the TFI model, we had to increase the depth of the classifier circuit to 6 layers.",
+      "This enables us to perform a procedure of data augmentation by applying these operators to the approximate ground states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Simulated result on one system size.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-tfi-phase-trivial-by-magnetization",
+     "value": "The thesis notes that the transverse-field Ising phases can be partitioned without machine learning, since total magnetization is a good predictor of the phase, which is why it also tested a more complicated model.",
+     "anchor": "Section 4.2, p.73",
+     "quotes": [
+      "The TFI model, however, can be easily partitioned without any machine learning",
+      "is also a good predictor of the phase of the system",
+      "For this reason, we also performed the same analysis for a more complicated model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "The thesis's own stated limit on the Ising test.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-classifier-random-hamiltonians",
+     "value": "The thesis reports that on a model interpolating between two random GUE Hamiltonians, with 6 qubits and four-layer VQE and classifier circuits, the classifier reached 93% accuracy, which it presents as showing the method works without simple physically-motivated criteria.",
+     "anchor": "Section 4.2, pp.74-75; Figure 4.4",
+     "quotes": [
+      "are random Hermitian matrices sampled from the Gaussian unitary ensemble.",
+      "The approach was tested for 6 qubits,",
+      "The depth of the VQE circuit and the classifier were both set to four layers.",
+      "For this configuration, the accuracy of 93% was reached.",
+      "This shows that the algorithm works even for a problem where there are no simple physically-motivated criteria."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One small simulated test.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-learning-by-confusion-no-w-shape",
+     "value": "The thesis reports that in a quantum learning-by-confusion experiment on transverse-field Ising ground states the accuracy peaks near the correct field value but the characteristic W-shaped curve seen classically is not observed, and hypothesizes that the classifier lacked expressive power.",
+     "anchor": "Section 4.3.1, p.76; Conclusions 4.4, p.78",
+     "quotes": [
+      "Surprisingly enough, even though the accuracy does peak around the correct value of h, the characteristic W-shaped curve seen in [122] is not observed.",
+      "We hypothesize that in this situation the classifier just did not have enough expressive power to mark all states with the same label."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One simulated experiment; the explanation is a hypothesis.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-vote-hamiltonian-may-offset-plateaus",
+     "value": "The thesis states that the majority-vote Hamiltonian is highly non-local but contains an exponential number of terms, which may offset the barren plateau effect.",
+     "anchor": "Section 4.3.2, p.77",
+     "quotes": [
+      "is highly non-local, but on the other hand it contains an exponential number of terms, which may offset the barren plateaus effect."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conjecture, not tested.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-classifier-on-quantum-data-novelty",
+     "value": "The thesis claims as novelty that a quantum classifier can be trained on intrinsically quantum data, stating that prior art appears to focus on classification of classical input data.",
+     "anchor": "Scientific novelty 2, p.10",
+     "quotes": [
+      "We demonstrated that a quantum classifier can be trained on intrinsically quantum data. Prior art appears to focus on classification problems based on classical input data."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author's own novelty claim.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-local-hamiltonian-qma-complete",
+     "value": "The thesis states, citing Kitaev and coworkers and later work, that finding a low-energy state of a local Hamiltonian is QMA-complete, eventually proven even for two-local Hamiltonians, and that variational quantum algorithms are effectively heuristics for QMA-complete problems.",
+     "anchor": "Section 1.5, p.29",
+     "quotes": [
+      "An ingenious construction due to Kitaev and coworkers [16] proves that the problem of finding a low-energy state of a local Hamiltonian is also QMA-complete.",
+      "until it was ultimately proven complete even for",
+      "Arguably, the entire effort of variational quantum algorithms is devoted to finding good heuristic algorithms for QMA-complete problems."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited complexity results.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The locality value in 'proven complete even for k = 2' is partly lost in the text layer; 'two-local' follows the bibliography entry [30] and the sentence."
+    },
+    {
+     "id_suggestion": "uvarov-pea-vs-vqe-precision-cost",
+     "value": "The thesis states that phase estimation needs a number of runs of order one over the precision to find the ground state energy, while VQE's energy evaluation per iteration costs about one over the precision squared, but phase estimation needs complex circuits and an initial state with significant ground-state overlap.",
+     "anchor": "Section 2.8, p.52",
+     "quotes": [
+      "the number of runs required to find the ground state energy to precision ������ is estimated as ������(������−1), whereas for VQE the evaluation of energy in each iteration is about ������(������−2)",
+      "The downsides are the complexity of the required quantum circuit and the requirement that the initial state has significant overlap with the true ground state."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A standard comparison stated without derivation.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The precision symbol is lost in the text layer; reading the exponents as minus one and minus two on the precision follows the sentence's wording."
+    },
+    {
+     "id_suggestion": "uvarov-femoco-resource-comparison",
+     "value": "The thesis cites Reiher et al. as concluding that simulating FeMoco requires resources comparable to factoring 4096-bit integers with Shor's algorithm.",
+     "anchor": "Section 2.8, p.53",
+     "quotes": [
+      "Reiher et al. conclude that the resources required for simulating FeMoco are comparable to those required for factoring 4096-bit integers using the Shor's algorithm."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited resource estimate.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-theorem-mcclean-plateau",
+     "value": "Theorem 5.3.1 (after McClean et al.) states that if either part of the circuit around the parametrized gate forms a 2-design, the number of Pauli terms is polynomial in n, and the Pauli coefficients are bounded by a constant, then the variance of the cost-function derivative is of order two to the minus n.",
+     "anchor": "Theorem 5.3.1, p.85; proof pp.85-86",
+     "quotes": [
+      "Theorem 5.3.1 (after [10]). Let either ������������ or ������������ form a 2-design. If card ������ ∈ poly(������), and the Pauli coefficients ������������ are bounded by a constant, then the variance Var ������������������ ∈ ������(2−������).",
+      "Proof of Theorem 5.3.1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem with stated conditions and a proof given in the thesis.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The order symbol and n are lost in the text layer; the reading follows Section 3.3.4's statement of exponentially vanishing variance in the qubit number."
+    },
+    {
+     "id_suggestion": "uvarov-causal-cone-definition",
+     "value": "The thesis defines the causal cone of a Pauli string under an ansatz as the gates or blocks that cannot be eliminated from the conjugated Pauli string, and its size as the number of qubits on which the conjugated string can act nontrivially.",
+     "anchor": "Definition 5.4.2, p.87",
+     "quotes": [
+      "(Causal cone).",
+      "if that gate or block cannot be eliminated from the conjugate",
+      "the support of this causal cone, i.e. the number of qubits on which"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The thesis's own definition.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-additive-variances",
+     "value": "Proposition 5.4.5 states that, under the conditions of Theorem 5.4.1, the individual Pauli string coefficients contribute independently to the total derivative variance; the thesis reports numerical agreement on a pair of two-local Hamiltonians with an ansatz on 10 qubits of 4 layers.",
+     "anchor": "Proposition 5.4.5, Eq. (5.38), p.92; Section 5.5.2, p.102; Figures 5.7-5.8",
+     "quotes": [
+      "Theorem 5.4.1, the individual Pauli string coefficients make independent contributions to the total variance",
+      "In this test, the ansatz acts on 10 qubits and consists of 4 layers of \"Cartan decomposition\" blocks.",
+      "are close to zero, up to the standard errors of the samples."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A stated proposition used in the proof of Theorem 5.4.1, with numerical agreement; its own proof is not separately displayed.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-bound-extension-side-blocks",
+     "value": "The thesis states that the requirement that one of the side blocks forms a 2-design can be removed at the cost of a constant Θ(1) factor in the lower bound, while removing the requirement for the other block is more difficult, since in the worst case the variance can go to zero.",
+     "anchor": "Section 5.4.5, p.98",
+     "quotes": [
+      "forms a 2-design at the cost of a Θ(1) multiple to the lower bound.",
+      "is a 2-design is more difficult.",
+      "causing the overall variance to go to zero."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argued extension, not a formally stated theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-two-qubit-block-design-proximity",
+     "value": "The thesis reports, from 500000 random-sampling trials (sampling-error scale 0.022 and 0.0028), that the Cartan-decomposition two-qubit block is not an exact 2-design though it can prepare any two-qubit gate, is the closest to a 2-design among the families studied, and that all blocks except the particle-conserving one are exact 1-designs up to sampling tolerance.",
+     "anchor": "Section 5.5.1, pp.98-100; Table 2, p.99",
+     "quotes": [
+      "500000 trials. From this average, we estimate",
+      "we observed the values of ������1 ≈ ������∞ = 0.022, ������2 = 0.0028.",
+      "is not an exact 2-design, although it is capable of preparing any two-qubit gate.",
+      "Nonetheless, among the gate families studied, this block is the closest",
+      "we found that all blocks, except the particle-conserving block [47], are also exact 1-designs up to sampling tolerance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Sampled numerical estimate.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-bound-numerical-check-local",
+     "value": "For a single-qubit Hamiltonian on 10 qubits with 400 samples and a ring checkerboard ansatz, the thesis reports that the causal-cone structure is evident, the theoretical lower bound is fulfilled by a large margin, and the bound does not catch the larger gradients in the middle of the causal cone versus its edges.",
+     "anchor": "Section 5.5.2, pp.100-102; Figure 5.4",
+     "quotes": [
+      "acting on ������ = 10 qubits.",
+      "For ������ = 400 samples, the derivative with respect to each parameter was evaluated",
+      "The ansatz used was the checkerboard ansatz with ring connectivity.",
+      "The theoretical lower bound is fulfilled by a large margin in both cases.",
+      "The lower bound also does not catch the difference of gradients within one layer, which tend to be more significant in the middle of the causal cone as opposed to the edges of the cone, where the gradients are much smaller."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Noise-free statevector simulation on one system size.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-global-cost-plateau-shallow",
+     "value": "The thesis reports that an all-qubit ZZ...Z Hamiltonian exhibits barren plateaus even for a very shallow ansatz, as implied by the lower bound and in line with earlier literature.",
+     "anchor": "Section 5.5.2, p.102; Figure 5.5",
+     "quotes": [
+      "As implied by the lower bound and in accordance with the results previously found in the literature",
+      "-local Hamiltonian exhibits barren plateaus even for a very shallow ansatz."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Noise-free simulation on one system size.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-ansatz-topology-gradients",
+     "value": "The thesis reports that a line-connected checkerboard ansatz gives significantly larger gradient variances than ring connectivity, with edge qubits having narrower causal cones, and that in a two-dimensional 3 × 3 lattice ansatz some blocks fall outside the causal cone so their derivatives are zero; it concludes that some hardware topologies may suit VQE better than others.",
+     "anchor": "Section 5.5.3, pp.102-104; Section 5.6, p.105; Figure 5.6",
+     "quotes": [
+      "the gradient variances are significantly larger.",
+      "Thus, the qubits closer to the edge will have narrower causal cones, and possibly higher values of the gradients.",
+      "We also tested the predictions of Theorem 5.4.1 on a two-dimensional 3 × 3 lattice.",
+      "some ansatz blocks are not included in the causal cone, and hence, the derivative over their parameters is equal to zero.",
+      "This may mean that some hardware topologies are more suited for VQE than others."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Noise-free simulation on small systems.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-plateaus-caution-random-init",
+     "value": "The thesis argues that because the barren plateau condition is that parameters are random, it is more a caution against random initialization than a no-go result, and states that gradient estimation in hardware is linear in the number of ansatz parameters while classical simulation is exponential in time or memory.",
+     "anchor": "Section 5.6 Discussion, p.105",
+     "quotes": [
+      "since the condition is that the parameters are random, it is more of a caution to not initialize circuits at random.",
+      "is linear in the number of ansatz parameters",
+      "The computational cost of simulating a quantum computer using the best known methods is exponential either in time or in memory"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author's interpretation.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-ghz-fidelity-half-entangled",
+     "value": "The thesis cites that any state, even mixed, whose fidelity with the GHZ state is above 1/2 is guaranteed to be entangled, which is why 1/2 is used as a threshold benchmark for real devices.",
+     "anchor": "Section 6.1, pp.106-107",
+     "quotes": [
+      "any state whose fidelity with the GHZ state above 1/2 is guaranteed to be entangled (this is true even for mixed states)",
+      "1/2 is used as a threshold benchmark for real quantum devices."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited result.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-mqc-27-qubit-ghz-record",
+     "value": "The thesis states that the then-current record GHZ state preparation, 27 qubits, used the multiple-quantum-coherence technique for verification.",
+     "anchor": "Section 6.1.1, p.108",
+     "quotes": [
+      "The current record of preparing the GHZ state for 27 qubits [152] uses the MQC technique for verification."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited, and dated to the thesis (2022).",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-stability-lemma",
+     "value": "The thesis's stability lemma (a proposition with proof) states that for a Hamiltonian with ground energy zero, gap ∆ and largest eigenvalue, and a density operator whose energy is at most ∆, the fidelity with the ground state lies between one minus the energy over ∆ and one minus the energy over the largest eigenvalue.",
+     "anchor": "Proposition 6.2.1, Eq. (6.2), p.109; proof p.109",
+     "quotes": [
+      "(Stability lemma). Let ������ be a Hamiltonian with eigenvalues 0 = ������0 < ∆ = ������1 ≤ ������2 ≤ ... ≤ ������max and corresponding eigenvectors |������������⟩. Let ������ be a density operator such that ������ = Tr ������������ ≤ ∆.",
+      "Substituting these two bounds into (6.3) yields the desired bounds."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition with conditions and a proof given in the thesis.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The ones in the bound (6.2) are lost in the text layer; the reading follows the proof, where the fidelity equals one minus the sum of the other diagonal elements."
+    },
+    {
+     "id_suggestion": "uvarov-telescope-hamiltonian",
+     "value": "The thesis defines the telescope Hamiltonian of a Clifford circuit as the circuit conjugating the all-zeros parent Hamiltonian; for GHZ its only ground state is the GHZ state at zero energy, and evaluating it needs two series of measurements with no scan over phase angles, unlike parity oscillations.",
+     "anchor": "Definition 6.2.2, Eqs. (6.11)-(6.13), p.111",
+     "quotes": [
+      "A telescope Hamiltonian for a Clifford circuit",
+      "Its only ground state is the GHZ state, and the constant term sets the ground state energy to zero.",
+      "Evaluating this energy requires two series of measurements",
+      "Unlike the parity oscillations technique, there is no need to scan through different values of"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The thesis's own definition and construction.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-telescope-local-depolarizing-numerics",
+     "value": "Under local depolarizing noise (p1 = 0.001, p2 = 0.01) on 8 qubits, the thesis reports that telescope bounds are substantially looser than other estimates except at small shot counts; across qubit counts the MQC method shows the worst error scaling, parity oscillations an almost constant random error, and the telescope lower bound a steadily growing random error.",
+     "anchor": "Section 6.3.1, pp.112-113; Figures 6.1-6.2",
+     "quotes": [
+      "8 qubits with the depolarizing noise model (������1 = 0.001, ������2 = 0.01).",
+      "telescope bounds in this case are substantially looser than the estimates from the other techniques, except for the small shot counts.",
+      "Surprisingly, the multiple quantum coherences method appears to show the worst scaling of the error, while the parity oscillations method gives an almost constant random error.",
+      "The telescopic lower bound has a random error steadily growing with the size of the system."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Simulated noise model, one configuration.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-telescope-global-depolarizing-numerics",
+     "value": "For globally depolarized GHZ states on 10 qubits with 1000 measurements per term, the thesis reports that telescope bounds are quite loose, parity oscillations are much closer to the true fidelity, and MQC consistently overestimates it; the lower bound becomes uninformative at p = 2/n; measurement errors are not modeled.",
+     "anchor": "Section 6.3.2, p.115; Figure 6.4",
+     "quotes": [
+      "The experiments were performed for ������ = 10 qubits.",
+      "1000 measurements were allocated for measuring coherence",
+      "are quite loose in this case, while the parity oscillations technique ends up being much closer to the correct value.",
+      "Interestingly enough, the multiple quantum coherences method in this case consistently",
+      "at ������ = 2/������. The upper bound, on the other hand, does not depend on",
+      "both of these techniques are substantially affected by measurement errors, which are not accounted for in this model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Simulated noise model, one configuration.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-telescope-limits",
+     "value": "The thesis states that the telescope method only gives bounds on fidelity, not the fidelity itself, and tends to give loose bounds; for non-Clifford circuits the number of observables grows exponentially with the number of non-Clifford gates.",
+     "anchor": "Section 6.5, p.117; Conclusions, p.118",
+     "quotes": [
+      "The obvious drawback is that the method only gives bounds to fidelity and not the fidelity itself.",
+      "although it tends to give loose bounds",
+      "albeit the number of observables to be evaluated grows exponentially with the number of non-Clifford gates"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The thesis's own stated limits.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-telescope-advantages",
+     "value": "The thesis claims the telescope method works for any Clifford state, gives some information even for small series of shots, needs no fine rotation-angle resolution unlike parity oscillations and MQC, and makes no assumptions about the noise in the device.",
+     "anchor": "Section 6.5, p.117; Conclusions main result 6, p.119",
+     "quotes": [
+      "the proposed verification technique works for any Clifford state.",
+      "On the other hand, the bounds give some information even for small series of shots.",
+      "whereas in our method there is no such requirement.",
+      "Finally, the method makes no assumptions about the nature of the noise in the device."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author's own claims for the method.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uvarov-critical-problems-need-better-strategy",
+     "value": "The thesis concludes that, combining exponential convergence of VQE with depth and barren plateaus becoming significant after logarithmically many layers, non-critical problems should be relatively easy for VQE while critical problems need a cleverer optimization strategy than naive VQE.",
+     "anchor": "Conclusions, p.118",
+     "quotes": [
+      "On the one hand, VQE for physical problems shows exponential convergence with the number of layers.",
+      "On the other hand, the barren plateaus become a significant issue after logarithmically many layers.",
+      "Combining the two observations, we can see that non-critical problems should be relatively easy for VQE, while for critical problems one will have to employ a more clever strategy of optimization than naive VQE."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A synthesis argued from small-scale numerics.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "vinkhuijzen-2024-knowledge-compilation-map-quantum-information",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Vinkhuijzen-Coopmans-Laarman_2024_A-Knowledge-Compilation-Map-for-Quantum-Information__2401.01322.pdf",
+   "title_in_file": "A Knowledge Compilation Map for Quantum Information",
+   "version_note": "arXiv:2401.01322v1, 2 Jan 2024.",
+   "pages": 30,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper (Leiden) that maps the succinctness, operation tractability and rapidity of classical data structures for quantum states (vector, ADD, SLDDx/QMDD, LIMDD, MPS, RBM), with proofs in appendices.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "kcm-fidelity-intractable",
+     "verdict": "narrowed",
+     "note": "Theorem 3 and Lemma 31 / Corollary 37 state the result with a precision condition the stored value omits: no polynomial-time algorithm computes the fidelity to 2n bits of precision unless ETH fails. Inner product hardness follows by reduction from fidelity. The value now quotes Theorem 3 rather than the introduction.",
+     "value": "The paper proves (Theorem 3, Lemma 31, Corollary 37) that, assuming the exponential time hypothesis, the fidelity of two states represented as LIMDDs or RBMs cannot be computed in polynomial time, specifically to 2n bits of precision; the proof reduces from the #EVEN SUBGRAPHS problem using graph states and Dicke states, and inner product is hard because fidelity reduces to it.",
+     "anchor": "Theorem 3, Sec. 4 p.5; Lemma 31, App. C.3 pp.20-21; Corollary 37, App. C.5 p.24",
+     "quotes": [
+      "Theorem 3. Assuming the exponential time hypothesis, the fidelity of two states represented as LIMDDs or RBMs cannot be computed in polynomial time.",
+      "The proof uses a reduction from the #EVEN SUBGRAPHS problem (Jerrum and Meeks 2017).",
+      "Lemma 31. There is no polynomial-time algorithm for LIMDD FIDELITY, i.e., for computing fidelity between two LIMDDs to 2n bits of precision, unless the Exponential Time Hypothesis (ETH) fails.",
+      "Corollary 37. There is no polynomial-time algorithm for RBM FIDELITY, i.e., for computing fidelity between two RBM to 2n bits of precision, unless the Exponential Time Hypothesis (ETH) fails.",
+      "This proof implies that inner product is hard, since fidelity reduces to inner product."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3 with its condition (ETH) and Lemma 31's precision condition quoted; proved in App. C.3-C.5 by reduction.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Lemma 26's text says the paper shows LIMDD fidelity is 'NP-hard', while Theorem 3 and Lemma 31 state ETH-conditional hardness; the theorem's form is the one entered."
+    },
+    {
+     "id": "kcm-practice-untested",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Sec. 7 Discussion, pp.7-8",
+     "quotes": [],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "kcm-succinctness-incomparable",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Sec. 1 p.2; Theorem 1, Sec. 3 p.4; App. B",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The paper's name for the structure is SLDD× (also called QMDD). Theorem 1 is proved through Lemmas 1-11 in App. B, entered separately."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "kcm-scope-data-structures",
+     "value": "The authors focus on algebraic decision diagrams (ADD), semiring-labeled decision diagrams (SLDD×, also called QMDD), local invertible map decision diagrams (LIMDD), matrix product states (MPS) and restricted Boltzmann machines (RBM), studied for succinctness, tractability and rapidity, motivated by circuit simulation, variational methods and circuit verification; ADD is a special case of SLDD×, which is a special case of LIMDD.",
+     "anchor": "Sec. 1 p.1; Sec. 2.2 p.3",
+     "quotes": [
+      "In particular, we focus on: algebraic decision diagrams (ADD), semiring-labeled decision diagrams (SLDD×, also called QMDD), local invertible map decision diagrams (LIMDD), matrix product states (MPS) and restricted Boltzmann machines (RBM).",
+      "For those, we study succinctness, tractability and rapidity:",
+      "We emphasize that an ADD can be seen as a special case of SLDD×, which is a special case of LIMDD."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of its own scope, Sec. 1-2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kcm-succinctness-definition",
+     "value": "The paper defines L1 as at least as succinct as L2 if there is a polynomial p such that every β in L2 has an equivalent α in L1 with size at most p(|β|), and more succinct if not vice versa; results assume any variable order, so 'strictly more succinct than a QDD' means no variable order makes the QDD more succinct for a worst-case state.",
+     "anchor": "Sec. 3 p.4; Sec. 2.2 p.4",
+     "quotes": [
+      "We define a language L1 to be at least as succinct as L2 (written L1 s L2), if there exists a polynomial p such that for all β ∈ L2, there exists α ∈ L1 such that |α = |β and |α| ≤ p(|β|).",
+      "We say that L1 is more succinct (L1 ≺s L2) if L1 is at least as succinct as L2 but not vice versa.",
+      "it means that there is no variable order for which the QDD is more succinct than the other structure (for representing a certain worst-case state)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Sec. 3, p.4.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kcm-tractable-definition",
+     "value": "The paper calls an operation tractable (supported) for a class of data structures if some algorithm implements it in time polynomial in the size of the operands, and studies Sample, Measure, the gates Hadamard, Pauli X,Y,Z, CZ, Swap and T, Local (k-local gates), Addition, InnerProd, Fidelity and Equal.",
+     "anchor": "Sec. 4, p.4",
+     "quotes": [
+      "We say that a class of data structures D supports a (query or manipulation) operation OP (D), if there exists an algorithm implementing OP whose runtime is polynomial in the size of the operands",
+      "Gates (Hadamard, Pauli X,Y,Z, Controlled-Z CZ, Swap, T): Given a DS representing |φ and a one- or two-qubit gate U , construct a DS representing U |φ ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition and operation list, Sec. 4, p.4.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kcm-lemma3-mps-vs-sldd",
+     "value": "Lemma 3: MPS is exponentially more succinct than SLDD×; every SLDD× translates to MPS in linear time, and the state weighting each basis state by its integer value has exponential-sized SLDD× (Fargier et al.) but an MPS of bond dimension 2.",
+     "anchor": "Lemma 3, App. B, p.13",
+     "quotes": [
+      "Lemma 3. MPS is exponentially more succinct than SLDD×.",
+      "We show in App. D.4 that MPS is at least as succinct as SLDD×, by showing that every SLDD× can be translated to MPS in linear time.",
+      "(Fargier, Marquis, and Schmidt 2013) show that this state has exponential-sized SLDD× (Prop. 10). On the other hand, it can be efficiently represented by the following MPS of bond dimension 2:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 3 stated and proved in App. B (with the SLDD× lower bound cited from Fargier et al.), p.13.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The text says SLDD× translates to MPS 'in linear time' here and 'In polynomial time' in Lemma 39."
+    },
+    {
+     "id_suggestion": "kcm-lemma4-limdd-sum-state",
+     "value": "Lemma 4: the LIMDD of the state |Sum (the uniform superposition plus a product of phase-rotated qubits) has size 2Ω(n) for every variable order; the proof shows each level-1 subfunction needs its own node.",
+     "anchor": "Lemma 4, App. B, p.14",
+     "quotes": [
+      "Lemma 4. The LIMDD of |Sum has size 2Ω(n) for every variable order.",
+      "It follows that each subfunction fa requires a separate node at level 1. So there are Ω(2n−1) nodes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 4 with its condition (every variable order) and proof, p.14.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kcm-lemma5-mps-small-limdd-large",
+     "value": "Lemma 5: there is a family of states with polynomial-size MPS but exponential-size LIMDD; |Sum, a sum of two product states, has an MPS of bond dimension 2.",
+     "anchor": "Lemma 5, App. B, p.14",
+     "quotes": [
+      "Lemma 5. There is a family of quantum states with polynomial-size MPS but exponential-size LIMDD.",
+      "MPS require only bond dimension 2 to represent the state |Sum . Namely, |Sum is the sum of two product states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 5 stated and proved, p.14.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kcm-lemma6-11-stabilizer",
+     "value": "Lemmas 6 and 11: there are states with polynomial-size LIMDD (and polynomial-size RBM) but exponential-size MPS, because LIMDD and RBM efficiently represent stabilizer states while some stabilizer states, such as the cluster state, require exponential-size MPS (results cited from Vinkhuijzen et al. and Zhang et al.).",
+     "anchor": "Lemmas 6 and 11, App. B, pp.14-15",
+     "quotes": [
+      "Lemma 6. There is a family of quantum states with polynomial-size LIMDD but exponential-size MPS.",
+      "LIMDD can efficiently represent any stabilizer state, but some stabilizer states require exponential-size MPS (in particular, the cluster state, among others",
+      "Lemma 11. There is a family of states with polynomial-size RBM but exponential-size MPS.",
+      "RBM can efficiently represent stabilizer states, as shown by (Zhang et al. 2018)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The lemmas rest on results cited from other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kcm-lemma8-rbm-ip-state",
+     "value": "Lemma 8: there is a quantum state (amplitudes given by the inner-product function IP′) with linear representation as ADD, SLDD×, LIMDD and MPS, but requiring exponential space as an RBM under any qubit order, using Martens et al.'s result for RBMs.",
+     "anchor": "Lemma 8, App. B, p.15",
+     "quotes": [
+      "Lemma 8. There is a quantum state that has linear representation both as ADD, and SLDD×, and LIMDD, and MPS, but requires exponential space when represented as RBM under any qubit order.",
+      "There exists an ADD which represents |φ in O(n) space."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 8 stated and proved, p.15, with the RBM lower bound cited from Martens et al. 2013.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The text twice says the RBM hidden-weight count is 'exponential in m' where m is the hidden-weight count itself; it presumably means exponential in n."
+    },
+    {
+     "id_suggestion": "kcm-lemma9-10-rbm-sum",
+     "value": "Lemma 9: an RBM represents |Sum with a single hidden node (all biases zero, edge weights the phases); Lemma 10: hence there is a state with an RBM of size O(n) that requires a LIMDD of size 2Θ(n) for every variable order.",
+     "anchor": "Lemmas 9 and 10, App. B, p.15",
+     "quotes": [
+      "Lemma 9. RBM can represent the state |Sum with a single hidden node.",
+      "Lemma 10. There is a state with a RBM of size O(n) but which requires LIMDD of size 2Θ(n), for every variable order."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemmas 9 and 10 stated and proved, p.15.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kcm-qdd-separations-cited",
+     "value": "Lemmas 1 and 2: SLDD× is exponentially more succinct than ADD (separation from Fargier et al.), and LIMDD is exponentially more succinct than SLDD× (separation for cluster states from Vinkhuijzen et al. 2023a).",
+     "anchor": "Lemmas 1 and 2, App. B, p.13",
+     "quotes": [
+      "Lemma 1. SLDD× is exponentially more succinct than ADD.",
+      "Lemma 2. LIMDD is exponentially more succinct than SLDD×.",
+      "(Vinkhuijzen et al. 2023a) show an exponential separation for so-called 'cluster states.'"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The separations are cited from other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kcm-novel-tractability-results",
+     "value": "The authors state their novel tractability results are the hardness of InnerProd and Fidelity on LIMDD and RBM and unsupported manipulations on SLDD× and LIMDD, and that their proof shows Fidelity is hard for any data structure that succinctly represents both all graph states and the Dicke state.",
+     "anchor": "Sec. 4 and Table 2, p.5",
+     "quotes": [
+      "The novel results in this work are the hardness results (denoted ◦) for InnerProd and Fidelity on LIMDD and RBM (Th. 3 and for InnerProd we can reduce from Fidelity) and unsupported manipulations (denoted ✖) on SLDD× and LIMDD.",
+      "More generally, our proof shows that computing Fidelity is hard for any data structure which succinctly represents both all graph states and the Dicke state, such as RBM and LIMDD."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated with Theorems 2 and 3 and proved in App. C.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Table 2's cell grid is scrambled in the text layer; the per-structure results are taken from the lemmas of App. C."
+    },
+    {
+     "id_suggestion": "kcm-sldd-hadamard-swap-hard",
+     "value": "The paper proves that SLDD× does not support Addition (cited from Fargier et al.), Hadamard (by reduction from addition), Swap (a single swap can explode it, Lemma 24) or Local in polynomial time, while it supports Pauli X, Y, Z and T gates and controlled-Z (in time linear in the number of nodes).",
+     "anchor": "Lemmas 18-21, 24, 25, App. C.2, pp.17-18",
+     "quotes": [
+      "Lemma 18. SLDD× does not support Addition in polynomial time.",
+      "Lemma 19. SLDD× does not support Hadamard in polynomial time and hence neither Local.",
+      "Lemma 20. SLDD× supports Pauli gates X,Y,Z and T in polynomial time.",
+      "Lemma 21. SLDD× supports controlled-Z in polynomial time. Proof. Alg. 1 applies a controlled-Z gate to a SLDD× in time linear in the number of nodes in the SLDD×.",
+      "Lemma 24. SLDD× does not support Swap in polynomial time."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemmas stated and proved in App. C.2 (Lemma 18 cited).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kcm-limdd-addition-hadamard-hard",
+     "value": "The paper proves that LIMDD does not support Addition (previously suspected but not proved) or Hadamard, and hence not Local, in polynomial time, while it supports Sample, Measure, Equal, X, Y, Z (cited), controlled-Z, and the T-gate (in time linear in the diagram size).",
+     "anchor": "Lemmas 26-29 and 33, App. C.3, pp.19-22",
+     "quotes": [
+      "For LIMDD, the same was suspected, but not proved in (Vinkhuijzen et al. 2023a).",
+      "Lemma 28. LIMDD does not support Addition in polytime.",
+      "Lemma 29. LIMDD does not support Hadamard in polynomial time, and hence neither does it support Local.",
+      "Lemma 33. LIMDD supports the T -gate.",
+      "We conclude that the runtime is polynomial (indeed, linear), in the size of the diagram."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemmas stated and proved in App. C.3.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The text says Lemma 28 uses states 'as defined in Lem. 23' but they are defined in Lemma 22."
+    },
+    {
+     "id_suggestion": "kcm-lemma32-eosd",
+     "value": "Lemma 32: there is no polynomial-time algorithm for EVEN ODD SUBGRAPHS DIFFERENCE (EOSD) unless ETH is false; Algorithm 2 computes #EVEN SUBGRAPHS with at most 2n calls to an EOSD subroutine. Lemma 30 (Jerrum and Meeks) states that a polynomial-time #EVEN SUBGRAPHS would make ETH false.",
+     "anchor": "Lemmas 30 and 32, Algorithm 2, App. C.3, pp.20-22",
+     "quotes": [
+      "Lemma 32. There is no polynomial-time algorithm for EOSD, unless ETH is false.",
+      "This algorithm uses at most 2n invocations of a subroutine EVENODDSUBGRAPHSDIFFERENCE",
+      "Lemma 30 ((Jerrum and Meeks 2017)). If #EVEN SUBGRAPHS is polytime, then ETH is false."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 32 proved by reduction with an induction proof of Algorithm 2's correctness; Lemma 30 is cited.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kcm-mps-supports-all",
+     "value": "The paper states that MPS supports all the listed operations: one- and two-qubit gates (Vidal 2003), any two-qubit operation including Swap and CZ, k-local gates on adjacent qubits with the largest matrix dimension not above D to the k, inner product and hence Measure and Equal, Sample by Markov Chain Monte Carlo, and Addition (Lemma 34, proved by block construction).",
+     "anchor": "App. C.4, p.23",
+     "quotes": [
+      "(Vidal 2003) shows that MPS supports efficient application of a single one-qubit gate or two-qubit gate on consecutive qubits, which includes X,Y,Z, Hadamard, T.",
+      "The largest matrix dimension during this process does not increase above Dk. Using Swap gates, one thus implements Local on any qubits.",
+      "Sample can be done by a Markov Chain Monte Carlo approach, invoking Measure as subroutine.",
+      "Lemma 34. MPS supports addition in polynomial time."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Mostly cited results; only Lemma 34 is proved here.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "Supporting a k-local gate is polynomial only for constant k, as Local is defined with constant k."
+    },
+    {
+     "id_suggestion": "kcm-rbm-operations",
+     "value": "The paper states that RBM supports Pauli gates, controlled-Z and T (and arbitrary phase gates) (Jonsson et al.), Sample by Markov Chain Monte Carlo, and Swap (Lemma 35), but that at the moment there is no efficient exact algorithm for the Hadamard gate, for Local, for Equal or for InnerProd, which can be approximated using sampling.",
+     "anchor": "App. C.5, pp.23-24",
+     "quotes": [
+      "There is at the moment no efficient exact algorithm for the Hadamard gate, which would make the list of supported gates universal.",
+      "No exact algorithm for Equal is known",
+      "Although no exact algorithm for InnerProd is known, it can be approximated using Sample as subroutine",
+      "Lemma 35. RBM supports Swap."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A mix of cited results, a short proof (Lemma 35) and statements of what is not known.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kcm-lemma36-rbm-dicke",
+     "value": "Lemma 36: an RBM can exactly represent any Dicke state using only 2n hidden nodes; together with RBMs representing graph states, this makes the LIMDD fidelity hardness proof apply to RBM.",
+     "anchor": "Lemma 36 and Corollary 37, App. C.5, pp.23-24",
+     "quotes": [
+      "Lemma 36. An RBM can exactly represent any Dicke state, using only 2n hidden nodes.",
+      "the proof for hardness of LIMDD FIDELITY (Lem. 31) is also applicable to RBM."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 36 stated and proved by construction, pp.23-24.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kcm-rapidity-definition",
+     "value": "The paper generalizes rapidity to non-canonical data structures (Definition 3): ALG1 is at most as rapid as ALG2 if a polynomial p exists such that for each input there is an equivalent input on which ALG2 runs within p of ALG1's time; unlike Lai et al., it does not allow the input to be fully read, to achieve transitivity. It proves rapidity is a preorder (Theorem 4) and equals Lai et al.'s definition for canonical structures and algorithms running in at least input-size time (Lemma 38); it shows Lai et al.'s definition is not transitive for query operations.",
+     "anchor": "Definition 3 and Theorem 4, Sec. 5 p.5; Lemma 38, App. D.1 pp.24-26",
+     "quotes": [
+      "for each input φ = (φ1, . . . , φc) there exists an equivalent input ψ = (ψ1, . . . , ψc), i.e., with |φj = |ψj for j = 1 . . . c, for which time(ALG2, ψ) ≤ p (time(ALG1, φ)).",
+      "We omit this to achieve transitivity.",
+      "Theorem 4. Rapidity is a preorder over data structures.",
+      "Lemma 38. Def. 3 is equivalent to the definition of (Lai, Liu, and Yin 2017) (Def. 7) in the case when two data structures D1, D2 are both canonical and where we restrict our attention to algorithms whose runtime is at least m, where m is the size of the input.",
+      "is not transitive for query operations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Definition 3, Theorem 4 and Lemma 38 stated with conditions and proved in App. D.1.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kcm-theorem5-sufficient-condition",
+     "value": "Theorem 5 gives a sufficient condition for rapidity: if D1 is at least as succinct as D2, OP on D2 needs time linear in operand size (A1), every algorithm for OP on D2 has an at-least-as-rapid runtime monotonic algorithm (A2), a weakly minimizing transformation from D1 to D2 runs in time polynomial in its output (A3), and, for manipulation operations, a polynomial-time transformation from D2 to D1 exists (A4), then D1 is at least as rapid as D2 for OP. For canonical structures A2 and the weak-minimizing part of A3 hold automatically.",
+     "anchor": "Theorem 5, Sec. 5.1 p.6; proof App. D.2 pp.26-27",
+     "quotes": [
+      "Theorem 5 (A sufficient condition for rapidity). Let D1, D2 be data structures with D1 s D2 and OP a c-ary operation.",
+      "A1 OP (D2) requires time Ω(m) where m is the sum of the sizes of the operands",
+      "A3 there exists a transformation from D1 to D2 which is (i) weakly minimizing and (ii) runs in time polynomial in the output size",
+      "A4 if OP is a manipulation operation (as opposed to a query), then there also exists a polynomial time transformation from D2 to D1",
+      "Then D1 is at least as rapid as D2 for operation OP .",
+      "we emphasize that for canonical data structures D, each algorithm is runtime monotonic and any transformation D1 → D is weakly minimizing."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 5 stated with all four conditions and proved in App. D.2 (for c = 1, extended pointwise).",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kcm-theorem7-mps-rapid",
+     "value": "Theorem 7: MPS is at least as rapid as SLDD× for all operations satisfying A1 and A2, proved with a polynomial-time SLDD×-to-MPS transformation (bipartite adjacency matrices, Lemma 39) and a weakly minimizing MPS-to-SLDD× transformation running in time polynomial in the input MPS and resulting SLDD× (Lemma 40). Theorem 6 states the rapidity relations of the paper's figure among LIMDD, MPS, SLDD× and ADD.",
+     "anchor": "Theorems 6 and 7, Sec. 5.2 p.6; App. D.3-D.4 pp.27-29",
+     "quotes": [
+      "Theorem 7. MPS is at least as rapid as SLDD× for all operations satisfying A1 and A2.",
+      "Lemma 39 (SLDD× to MPS). In polynomial time, a SLDD× can be converted to an MPS representing the same state.",
+      "Lemma 40 (MPS to SLDD×). There is a weakly minimizing transformation from MPS to SLDD×, that runs in time polynomial in the size of the input MPS and the resulting SLDD×.",
+      "Theorem 6. The rapidity relations in Fig. 9 hold."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 7 stated with its condition and proved in App. D.4.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The introduction says the paper shows 'MPS is strictly more rapid than SLDD×', but Theorem 7 states only 'at least as rapid'; strictness is not proved as a theorem in the text read. Lemma 40's runtime depends on the size of the resulting SLDD×, which can be exponential."
+    },
+    {
+     "id_suggestion": "kcm-succinct-often-rapid",
+     "value": "The authors conclude that, contrary to the common view of a trade-off between succinctness and speed, more succinct data structures are often also more rapid: ADD, SLDD× and MPS are each successively more succinct and more rapid.",
+     "anchor": "Sec. 7 Discussion, p.7",
+     "quotes": [
+      "Common knowledge says that there is a trade-off between the succinctness, and the speed of a data structure. In contrast, we find that, the more succinct data structures are often also more rapid.",
+      "For example, we find that algebraic decision diagrams, SLDD×, and matrix product states are each successively more succinct and more rapid."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conclusion summarizing several theorems; 'often' is the authors' generalization.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kcm-sldd-practice-mps-origin",
+     "value": "The authors state that in practice SLDD× has achieved striking performance on realistic benchmarks due to sustained optimization of its software implementation, and that MPS was developed for quantum simulation rather than circuit simulation, and SLDD× vice versa.",
+     "anchor": "Sec. 7 Discussion, pp.7-8",
+     "quotes": [
+      "However, in practice, the SLDD× has achieved striking performance on realistic benchmarks, (Zulehner and Wille 2018) due to a successful sustained effort to optimize the software implementation.",
+      "But we emphasize that e.g. MPS was not developed with the intention for circuit simulation but for quantum sim-"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A practical observation attributed to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kcm-no-numerical-stability",
+     "value": "The authors state that, like Fargier et al., they do not analyze numerical stability and focus on asymptotic behavior, although floating point behavior interacts with canonicity constraints and significantly affects performance in practice.",
+     "anchor": "Sec. 6 Related work, p.7",
+     "quotes": [
+      "Moreover, in practice the behavior of floating point calculations interacts with the canonicity constraints (Zulehner, Hillmich, and Wille 2019), significantly affecting performance.",
+      "we do not analyze numerical stability and focus on asymptotic behavior."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Sec. 6, p.7.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kcm-omitted-structures-open",
+     "value": "The authors omit AADD (not yet applied to quantum computing to their knowledge) and stabilizer-decomposition methods (no superpolynomial size lower bounds known); they note AADD's succinctness relation to RBM is still open, and name unbounded operations, tree tensor networks and AADD as future work.",
+     "anchor": "Sec. 6 p.7; Sec. 7 p.8",
+     "quotes": [
+      "so its succinctness relation with respect to RBM is still open.",
+      "We omit Affine ADD (AADD) (Sanner and McAllester 2005), since to the best of our knowledge these have not been applied to quantum computing yet.",
+      "no superpolynomial lower bounds on their size are known at the moment, making it less useful to include them in a knowledge compilation map.",
+      "In future work, we could also consider unbounded operations (multiple applications of the same gates) and other data structures, e.g., tree tensor networks"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of what it leaves out and leaves open, pp.7-8.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kcm-single-application-scope",
+     "value": "The authors state that their tractability table considers a single application of each operation and only deterministic algorithms (for some unknown entries a probabilistic algorithm exists, e.g., InnerProd on RBM), and that they do not treat unitary matrices, which all the data structures can also represent.",
+     "anchor": "Table 2 caption, p.5; Sec. 2.1, p.2",
+     "quotes": [
+      "Tractability of queries and manipulations on the data structures analyzed in this paper (single application of the operation).",
+      "The table only considers deterministic algorithms (for some ? a probabilistic algorithm exists, e.g., for InnerProd on RBM).",
+      "This extends to unitary matrices (gates), which all data structures from this paper can represent also, but which we will not treat for simplicity."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its scope, pp.2 and 5.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "vlasic-2026-geodesics-quantum-feature-maps-space",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Vlasic_2025_Geodesics-of-Quantum-Feature-Maps-on-the-space-of-Quantum-Operators__2509.02795.pdf",
+   "title_in_file": "Geodesics of Quantum Feature Maps on the Space of Quantum Operators",
+   "version_note": "The file is arXiv:2509.02795v6 (9 Sep 2026; the paper is dated September 11, 2026), a later version than the 2025 folder suggests.",
+   "pages": 16,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A single-author (Deloitte) mathematical paper that builds a Riemannian structure on the range of Hamiltonian quantum feature maps, derives tangent spaces, a metric, geodesics, curvature, volume and harmonic-map equations, and illustrates curvature with angle and IQP encodings of a patch of the Poincare half-plane.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "vlasic-geodesic-simplification",
+     "verdict": "widened",
+     "note": "Proposition 28 states more than the summary sentence: under Assumption 4, every geodesic on the range U(M) has the form exp L(γ(·)) for a geodesic γ on the data manifold, and the paper says geodesics on M and U(M) are bijective. The one direction is shown from the Levi-Civita connection of Eq. (34), whose metric compatibility is shown in Claim 35 and whose other conditions the paper omits 'for brevity'.",
+     "value": "The paper states (Proposition 28) that for a quantum feature map satisfying Assumption 4, every geodesic on U(M) has the form exp L(γ(·)) for a geodesic γ on the data manifold M, and that geodesics on M and U(M) are bijective, which simplifies computing geodesic distance on U(M).",
+     "anchor": "Proposition 28, Section III, p.8; Section V.1, p.14",
+     "quotes": [
+      "The following proposition shows that geodesics on M and U (M ) are bijective, thus simplifying the computation of distances on U (M ).",
+      "Proposition 28. For a quantum feature map that holds Assumption 4, every geodesic on U (M ), γU : [a, b] → U (M ), has the form γU (·) = exp L γ(·) for γ(·) a geodesic on M .",
+      "One of the more important results shows that geodesic on the embedded manifold is also the geodesic on the range of the quantum feature map."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 28 is stated with its condition (Assumption 4) and a proof, p.8; the proof's first direction leans on the Levi-Civita connection whose remaining conditions are omitted for brevity (p.9), which the coordinator may weigh.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "vlasic-performance-link-posited",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section V.2 Future Directions, p.14",
+     "quotes": [],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "vlasic-riemannian-framework",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Abstract, p.1",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "For harmonic maps the paper gives the Euler-Lagrange equation (53) and leaves their classification for Hamiltonian feature maps to another paper (p.14)."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "vlasic-feature-map-class",
+     "value": "The paper studies quantum feature maps of the form U(p) = exp of a sum of fk(p)Lk, with Lk in su(2N) and fk smooth real functions (Hamiltonian encodings), and states that this form covers the vast majority of encoding schemes because many implementations use a first-degree Suzuki-Trotter approximation that agrees with it to lowest order.",
+     "anchor": "Section II.A, Eq. (1) and Remark 3, p.3",
+     "quotes": [
+      "where Lk ∈ su(2N ), and fk : Rn → R is smooth with R = [−π, π] or R = [0, 2π].",
+      "Feature maps in Equation (1) are typically referred to as Hamiltonian encodings [27]",
+      "use the first degree Suzuki-Trotter approximation in circuits, which agrees with Equation (1) to the lowest order",
+      "Thus, this assumption encompasses the vast majority of encoding schemes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of the class its results cover, Section II.A, p.3; the 'vast majority' coverage is the author's claim.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vlasic-not-all-encodings-covered",
+     "value": "The author states that not all unitary encodings in QML are of the paper's form, naming feature maps with creation and annihilation operators, and data re-uploading with Hadamard layers.",
+     "anchor": "Section II.A, p.3",
+     "quotes": [
+      "However, not all unitary encodings in the context of QML are of the form (1).",
+      "For example, a feature map with creation and annihilation operators, motivated from fermions",
+      "Also, there is the concept of data-uploading [8, 32, 33] that use multiple layers, one layer being that of the Hadamard gate, which is a unitary operator and not a special unitary operator."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of what its class leaves out, p.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vlasic-assumption-4",
+     "value": "The paper's Assumption 4: the domain of the feature map is an embedded Riemannian manifold (M, l) of dimension m, the map p → U(p) is bijective, and each fk is smooth; Assumption 11 adds that the Lk are pairwise commutative.",
+     "anchor": "Assumption 4, p.3; Assumption 11, p.4",
+     "quotes": [
+      "Assumption 4. For a quantum feature map given by Equation (1), we assume that the domain of a feature map is an embedded Riemannian manifold (M, l) of dimension m, the map p → U (p) is bijective, and fk is smooth for all k.",
+      "Assumption 11. A quantum feature map given by Equation (1) holds Assumption 4 and Lk are all pairwise commutative."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's stated assumptions, pp.3-4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Bijectivity of p → U(p) is a strong condition for periodic rotation encodings; the paper does not discuss when it holds."
+    },
+    {
+     "id_suggestion": "vlasic-range-not-lie-subgroup",
+     "value": "The author states that the range of a quantum feature map is in general not a Lie subgroup (or a group) of SU(2N), so the standard results that rely on group structure and a left-invariant metric do not apply and the structure is built from definitions up.",
+     "anchor": "Section I.A p.2; Section I.B p.2; Section V.1 p.14",
+     "quotes": [
+      "Since, in general, quantum feature maps do not hold a group structure, this negates many standard assumptions found in the literature.",
+      "since the space U (M ) is not a Lie subgroup of SU(2N )—or a group—and so derivations and characterizations have to be constructed from the 'base' level.",
+      "Since this subset is only a Lie subgroup, or even just a subgroup, in extremely rare scenarios, the establishment required a ground-up approach"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of why its setting differs from the standard one, pp.2 and 14.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vlasic-tangent-space-form",
+     "value": "The paper derives a closed form for tangent vectors of U(γ(t)) from Hall's derivative formula for the matrix exponential, and states that the tangent space at U(p) equals e to the L(p) times the dynamic Lie algebra suL generated by the root operators in the derivative.",
+     "anchor": "Section II.B-C, Eqs. (7)-(12), pp.4",
+     "quotes": [
+      "We utilize [24, Theorem 5.4], which states",
+      "Denote suL(p) as the dynamic Lie algebra generated by the root operators in the sum L(γ)(0) for an arbitrary smooth path γ with γ(0) = p.",
+      "closing the set with scalars from the field R and closure under addition yields the equality TU(p)U (M ) = eL(p)suL. (12)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The equality is argued informally ('The claim is further explored and made more formal in the immediate Sections'), not proved as a numbered result.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vlasic-lemma-13",
+     "value": "Lemma 13: for a feature map satisfying Assumption 11 (commuting generators), the matrix basis elements of the tangent space are the roots that generate L(·); the proof notes the commutator of any two tangent vectors is zero.",
+     "anchor": "Lemma 13, Section II.D, p.5",
+     "quotes": [
+      "Lemma 13. Take a feature map where Assumption 11 holds. Then the matrix basis elements of the tangent space are the roots that generate the function L(·).",
+      "since the skew-Hermitian matrices in the encoding scheme commute, [Uˆ1, Uˆ2] = 0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 13 with its condition and a short proof, p.5.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vlasic-proposition-14-isomorphism",
+     "value": "Proposition 14: for a Riemannian manifold M and a feature map of the paper's form satisfying Assumption 11 (commuting generators), the tangent space of M at every p is isomorphic to the tangent space of U(M) at U(p); the paper states this property does not hold in the general (noncommuting) case.",
+     "anchor": "Proposition 14, Section II.D, p.5",
+     "quotes": [
+      "Proposition 14. Let M be a Riemannian manifold and a quantum feature map of the form in Equation (1) where Assumption 11 holds. Then for all p ∈ M , TpM =∼ TU(p)U (M ) (15)",
+      "we show the natural isomorphic characteristic between tan- gent vector fields between Riemannian manifolds. How- ever, as we will see, this property does not hold in the general case."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 14 with its conditions and proof, p.5.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vlasic-commuting-roots-classical-cited",
+     "value": "The author cites Goh et al. for the observation that if the roots generating a circuit commute then the circuit is easy to approximate and simulate classically, and states the paper adds the local equivalence of tangent vector spaces to that work.",
+     "anchor": "Remark 16, p.5",
+     "quotes": [
+      "The authors note that if roots that generate the circuit commute then the circuit is quite easy to approximate and simulate classically.",
+      "Interestingly, we added to the authors work by noting the local equivalence between tangent vector space."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to Goh et al. [35].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vlasic-lie-algebra-latent-unshown",
+     "value": "The author states that it is posited, but not shown, that the Lie algebra induced from the tangent space contains latent information about the vector space.",
+     "anchor": "Section II.D, p.5",
+     "quotes": [
+      "As previously noted, it is posited that this Lie algebra contains latent information about the vector space, but this is not shown."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement that a claim is not shown, p.5.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vlasic-proposition-20-lie-algebra",
+     "value": "Proposition 20: for a feature map of the paper's form, a data manifold M and a point p, the Lie algebra generated from the tangent vector space has the general form of a direct sum over l of e to the L(p) to the power l times suL(p); Assumption 22 then requires that each element in use is a single such power term.",
+     "anchor": "Proposition 20 and Assumption 22, Section II.E, p.6",
+     "quotes": [
+      "Proposition 20. Given a feature map of the form in Equation (1), a data manifold M , and a point p ∈ M the Lie algebra generated from the tangent vector space on the subspace of SU(N ) has the general form",
+      "Assumption 22. For elements X,X2, . . . , Xn ∈ Up there is a positive natural number l such that for all i, Xi = eL(p) lLXi"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The proposition's formula is garbled in the text layer, and its derivation in the text before it uses Remark 19's commutativity step for the general case.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Remark 19 derives its equalities 'from the commutativity of the operators', yet is used in the noncommutative subsection; the general-case derivation may depend on that."
+    },
+    {
+     "id_suggestion": "vlasic-metric-eq27",
+     "value": "The paper shows (Claim 25) that the trace form gsu(H, K) = Tr(H†K)/N, applied to the generated Lie algebra, gives real values on (H, H) and is symmetric, but states that this metric is incomplete for the tangent space and adopts g(H, L) = (Tr(H†L) + Tr(L†H))/2N, the real part of gsu, as the Riemannian metric.",
+     "anchor": "Claim 25, Remark 26 and Eq. (27), Section III, pp.7-8",
+     "quotes": [
+      "the function gsu(H, K) = Tr(H†K)/N (24) applied to su(N ) is a Riemannian metric on Te SU(N ).",
+      "However, as we will show, this met- ric is incomplete and requires adjustment that satisfies the definition of a metric applied to our tangent space TU(p)U (M ).",
+      "Claim 25. Given a smooth Riemannian manifold M and a feature map of the form in Equation (1)",
+      "we have that gsu(H, H) ∈ R, l=1 and gsu(H, K) = gsu(K, H).",
+      "This is the metric that will be applied to the tangent vector spaces.",
+      "For computation, notice that g(H, L) is to just the real part of gsu(H, L).",
+      "g(H, L) := Tr(H†L) + Tr(L†H) (27) 2N holds the properties of the definition of a Riemannian metric."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Claim 25 has a proof but its formulas are garbled; Eq. (27)'s formula is split by the text layer and is paraphrased here.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vlasic-levi-civita-claims",
+     "value": "The paper claims the Levi-Civita connection on U(M) is half the commutator of X and Y (Eq. (34)); Claim 32 (the adjoint action is skew-symmetric for elements satisfying Assumption 22) is stated without proof 'for brevity', the other conditions of the theorem used are said to hold with details omitted, and Claim 35 proves metric compatibility for smooth vector fields.",
+     "anchor": "Claims 32 and 35, Eq. (34), Section III.A, p.9",
+     "quotes": [
+      "Claim 32. For X, Y, Z ∈ Up that hold Assumption 22, then ⟨(adX)Y, Z⟩ = − ⟨Y, (adX)Z⟩.",
+      "Since the proof is simple analysis that does not yield any insight, it is not included for brevity.",
+      "It is clear that all assumptions in the theorem hold for ∇X Y , except for the last assumption of metric compatibility. For brevity, these details are omitted.",
+      "Claim 35. For smooth vector fields X, Y, Z ∈ Γ(T U (M )) and for ∇X Y given by Equation (34)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Part proved (Claim 35), part stated without proof (Claim 32 and the remaining conditions); the formula (34) is split in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vlasic-curvature-formulas",
+     "value": "Following Milnor's logic with Claim 32, the paper gives the curvature tensor as a quarter of the adjoint of the commutator (Eq. (37)), sectional curvature for orthonormal X, Y as ⟨[X, Y], [X, Y]⟩ (Eq. (40)), and Ricci and scalar curvature from an orthonormal basis; it remarks that Milnor's left-invariance assumption is not needed beyond the skew-symmetric property.",
+     "anchor": "Section III.A, Eqs. (36)-(42) and Remark 38, p.10",
+     "quotes": [
+      "Taking Claim 32 and following the logic in Milnor [22], we may simplify the curvature tensor to RXY = ad[X, Y ], 4 (37)",
+      "When X and Y are orthonormal we may simplify the computation of the sectional curvature to κ(X, Y ) = [X, Y ], [X, Y ] . (40)",
+      "While the logic in Milnor [22] does take the assumption of left-invariance, the skew-symmetric property and equalities derived in Milnor are all that is required to derive analogous results."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Formulas derived by analogy with Milnor; they rest on Claim 32, whose proof is omitted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Read from the layer, Eq. (37) is R_XY = ad[X,Y]/4."
+    },
+    {
+     "id_suggestion": "vlasic-claim-44-commuting-flat",
+     "value": "Claim 44: an encoding scheme whose generators commute (the form of Eq. (10)) has flat curvature, with respect to the Lie algebra root system and with respect to the coordinate basis mapped onto the Lk; the proof is that all elements and differentials commute. For angle encoding the sectional curvature is κ = 0.",
+     "anchor": "Claim 44, Section III.B, p.11",
+     "quotes": [
+      "Claim 44. An encoding scheme in the form of Equation (10) will have flat curvature with respect to the Lie algebra root system, as well as when the independent co- ordinate basis has the mapping",
+      "The fact that all of the elements and differentials are commutative yields the claim.",
+      "Applying the sectional curvature from Equation (40) yields a flat curvature of κ = 0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Claim 44 with its condition and a one-line proof that follows from Eq. (40), p.11.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vlasic-poincare-example-setup",
+     "value": "The illustrative example samples a restricted Poincare half-plane (Gaussian curvature κ = −1), with x ∈ [−1, 1] and y ∈ [.1, 1.1] discretized in steps of .1, encoded by angle encoding on two qubits and an IQP (XY Hamiltonian) encoding with an XX coupling term; the 3rd degree approximation of the derivative was used for distances, and geodesics are mapped directly using Proposition 28.",
+     "anchor": "Section III.B, p.11; Fig. 1, p.12",
+     "quotes": [
+      "for the two dimension case the Gaussian curvature is κ = −1",
+      "we restrict the real values for the pair (x, y), where x ∈ [−1, 1] and y ∈ [.1, 1.1], and for computation, both intervals are discretized at increments of .1.",
+      "For the distances, the 3rd degree approximation of the derivative was used, and since angle has commutative roots, no approximation was necessary.",
+      "given Proposition 28, we directly map the geodesics on the Poincar ́e half-plane to the space of quantum operators."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its example's setup, p.11.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vlasic-poincare-distance-heatmaps",
+     "value": "The author reports that distance heatmaps for the half-plane, angle and IQP encodings all show the small-distance lines of the half-plane and a symmetric 'perforated' line, which the author reads as a high potential of similar curvature, at least locally.",
+     "anchor": "Section III.B, p.11; Fig. 1, p.12",
+     "quotes": [
+      "Interestingly, the small distance lines on the half-plane heatmap, which show the borders carved out from the lines, are exhibited in both encoding schemes.",
+      "Importantly, the symmetric 'perforated' line is evident in all heatmaps, indicating a high potential of similar curvature, at least, locally."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A visual reading of a computed example in one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vlasic-iqp-curvature-nonconstant",
+     "value": "For the IQP (XY Hamiltonian) encoding, using the first degree approximation and a Gram-Schmidt coordinate basis, the author reports a non-constant but strictly positive sectional curvature; from the dynamic Lie algebra perspective, 5 of the 15 possible sectional curvature directions were zero, so the curvature is non-constant and not necessarily positive, and the manifold is not Einstein but locally dependent. The author states the dichotomy between the two perspectives requires further investigation.",
+     "anchor": "Section III.B, p.11",
+     "quotes": [
+      "But, for simplicity, we apply the first degree approximation.",
+      "The non-constant curvature with such a simple example is quite curious, but not too surprising.",
+      "Interestingly, though, all curvature is strictly positive.",
+      "For the sectional curvatures, out of the possible 15 directions, 5 were zero. Therefore, the curvature is non-constant and not necessarily positive.",
+      "The dichotomy between the coordinate vector field and the dynamic Lie algebra requires further investigation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A computed example under a first degree approximation in one study.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vlasic-volume-energy-harmonic",
+     "value": "The paper gives a closed form for the volume of U(M) through the pullback metric (Eq. (49)), an energy density (Eq. (51)) and energy map, and the Euler-Lagrange equation (53) for harmonic maps of a Hamiltonian feature map; it states that large energy values indicate significant distortion and small values a similar structure, and leaves the classification of harmonic Hamiltonian feature maps for another paper.",
+     "anchor": "Section IV, pp.11-14",
+     "quotes": [
+      "Combining Equation (49) and Equation (51) yields a closed formula for computation, albeit, some work is required to simplify the energy density function.",
+      "the values of E yield information about how naturally a manifold maps to another with large values indicating significant distortion, and small values indicating a similar structure.",
+      "Equation (53) is called the Euler-Lagrange equation.",
+      "This paramount classification is left for another paper."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derivations adapted from Jost; the formulas are garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vlasic-data-preparation-not-addressed",
+     "value": "The author states that the manuscript does not address the data preparation step, which has the potential to deform the original manifold.",
+     "anchor": "Section I.B, p.2",
+     "quotes": [
+      "Furthermore, this manuscript does not address the data preparation step, which has the potential to deform the original manifold."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, p.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vlasic-expressibility-unvetted",
+     "value": "The author states that expressibility and expressivity, while sound, have not been fully mathematically vetted, so their computational results are potentially ambiguous.",
+     "anchor": "Section I.B, p.2",
+     "quotes": [
+      "While these method are sound, since the methods have not been fully mathematically vetted, the computational results are potentially ambiguous."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The author's claim about other methods, without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vlasic-flat-no-advantage-claim",
+     "value": "In Future Directions the author states that, as was shown, a flat structure indicates no quantum advantage, that IQP has been shown to generate an exponential concentration of states, and that these observations are fairly superficial.",
+     "anchor": "Section V.2 Future Directions, p.14",
+     "quotes": [
+      "For instance, as was shown, a flat structure indicates no quantum advantage.",
+      "Moreover, IQP has been shown to generate an exponential concentration of states, and the curvature of a simple example was shown to be non-constant.",
+      "These observations are fairly superficial, and further research of this Riemannian manifold structure should yield deeper insight to circuit derivation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper shows flatness for commuting encodings (Claim 44) but does not itself show the link from flatness to absence of quantum advantage; the author calls these observations superficial.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The link from flat curvature to no quantum advantage is not derived in this paper; it may rest on the cited classical simulability of commuting circuits (Remark 16)."
+    },
+    {
+     "id_suggestion": "vlasic-information-loss-future",
+     "value": "The author states that characterizing the information loss of different classes of manifolds and feature maps is essential future work, that the framework could be used to derive a feature map that retains the base manifold's geometric structure or to show none exists, and that the closed form for harmonic functions will be essential in deriving information loss.",
+     "anchor": "Section V.1-2, p.14",
+     "quotes": [
+      "the closed analytic form to identify harmonic functions will be essential in deriving information loss.",
+      "The characterization of information loss of different classes of manifolds and respective quantum feature maps is an essential to further obtain rigorous insight into selecting encoding schemes.",
+      "can be leveraged to derive a quantum feature map that retains the geometric structure of of the base manifold. Or mathematically show such a map does not exist with a given manifold."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's statement of what it leaves open, p.14.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "volkoff-2021-large-gradients-correlation-random-parameterized",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2020-05_Volkoff_Large-gradients-via-correlation-in-random-parameterized-quantum-circuits.pdf",
+   "title_in_file": "Large gradients via correlation in random parameterized quantum circuits",
+   "version_note": "arXiv:2005.12200v2, 26 Jan 2021.",
+   "pages": 21,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper (Volkoff and Coles, LANL) showing that spatially or temporally correlating the parameters of random parameterized quantum circuits can avoid barren plateaus in separable circuits, a QAOA ring-of-disagrees example, and variational versions of Grover's search.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "volkoff-correlation-avoids-vanishing-gradients",
+     "verdict": "narrowed",
+     "note": "The body limits the abstract's claim: it is shown for specific variational quantum algorithms and modules, and the large gradients of the correlated circuits hold for pure input states; with mixed input states the barren plateau returns even with correlated parameters (Fig. 2, Section 4), and a cited result has noise-induced barren plateaus hold for correlated circuits too.",
+     "value": "The authors prove that reducing the dimensionality of the parameter space by using circuit modules with spatially or temporally correlated gate layers can circumvent the vanishing gradient phenomenon in specific variational quantum algorithms; they state that the scaling that avoids it is valid only for pure input states, and that even with correlated parameters trainability can depend sensitively on the purity of the input register.",
+     "anchor": "Abstract p.1; Section 3.1 pp.5-6; Section 6 p.14",
+     "quotes": [
+      "we prove that reducing the dimensionality of the parameter space by utilizing circuit modules containing spatially or temporally correlated gate layers can allow one to circumvent the vanishing gradient phenomenon",
+      "We have shown that correlation of RPQC parameters spatially or temporally can be used to mitigate or avoid barren plateau landscapes (BPL) in specific variational quantum algorithms.",
+      "However the scaling in (5) is valid only for pure",
+      "The data show that even when the RPQC parameters are correlated, trainability of a variational quantum algorithm can depend sensitively on the purity of the input register."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A summary across several derivations; the individual results are entered separately with their conditions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "volkoff-correlation-complexity-tradeoff",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 6 Conclusions, p.14",
+     "quotes": [],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "volkoff-grover-trainability-transition",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Abstract and Introduction, pp.1-2",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The precise depth thresholds are entered as separate assertions from Sections 5.1 and 5.2."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "volkoff-bpl-definition",
+     "value": "The paper defines a barren plateau landscape (BPL): the cost function exhibits a BPL with respect to a parameter if it is continuously differentiable on a compact subset of the parameter space and the probability that the magnitude of its partial derivative exceeds any fixed threshold is in O(b to the n) for some constant b (the text layer drops the bounds on b and the threshold symbol); presence of the BPL on a set containing the global minima precludes efficient trainability by gradient descent.",
+     "anchor": "Definition 1, Section 2, p.3",
+     "quotes": [
+      "Definition 1 (Barren plateau landscape) The cost function X(θ) exhibits a BPL with respect to θj if it is continuously differentiable on a compact subset A ⊂ Ω of the parameter space",
+      "∈ O(bn), where PA is the probability measure on A induced from p.",
+      "In this case, presence of the BPL for A precludes efficient trainability of the variational quantum algorithm by gradient descent."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own Definition 1, Section 2, p.3; part of the inequality is lost in the text layer.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "volkoff-uncorrelated-separable-vanishing",
+     "value": "The authors cite Ref. [29] for the result that, for the uncorrelated separable circuit of single-qubit Y rotations with a global cost function, the variance of the partial derivative vanishes exponentially with n.",
+     "anchor": "Section 3.1, p.5",
+     "quotes": [
+      "In [29] it was shown that, with respect to uniformly distributed θ, the variance of ∂νCL(θ) vanishes exponentially with n"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to Ref. [29].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "volkoff-correlated-separable-no-bpl",
+     "value": "The paper proves (Eq. (5), Appendix A) that perfectly correlating the single-qubit rotation angles across qubits (the permutation-invariant circuit M(θ)) gives a gradient variance that increases polynomially with n, so there is no BPL for this variational compiling task with the global projection cost and pure input; the result is independent of the number of layers L. The correlated circuit does not lose descriptive power for this compiling task with product inputs from the xz-plane.",
+     "anchor": "Section 3.1, p.5, Eq. (5); Appendix A, p.18",
+     "quotes": [
+      "Because (5) is polynomially increasing with n, there is no BPL phenomenon for this variational quantum compiling task.",
+      "Note that the result is independent of L.",
+      "the correlated RPQC M(θ) does not lose descriptive power compared to L(θ) for variational quantum compiling of the ground state"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved in Appendix A, but Eq. (5)'s formula is garbled in the text layer and cannot be quoted whole.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "volkoff-mixed-input-bpl-monte-carlo",
+     "value": "The authors report Monte Carlo integration with L = 4 of the gradient variance for the pure-input cost and for a mixed input with δ = 0.01 and δ = 0.10, for n = 1 to 60 qubits with 5 × 104 samples per n: the pure case follows the predicted growth, δ = 0.01 shows a crossover rather than growth, and δ = 0.10 clearly shows the BPL phenomenon.",
+     "anchor": "Section 3.1, p.6; Figure 2, p.7",
+     "quotes": [
+      "Figure 2 shows the results of Monte Carlo integration over [−π, π)×L with L = 4 of Var ∂νCM(θ) for cost functions (4) and (6) with δ = 0.01 and δ = 0.10 for n = 1,",
+      ". . . , 60 qubits. For δ = 0.01, which corresponds to input states close to the pure state manifold, the variance of the gradient of (6) does not increase asymptotically, but instead exhibits a crossover.",
+      "The BPL phenomenon is clearly seen in the curve in Fig. 2 corresponding to δ = 0.10 in (6).",
+      "5 × 104 samples are used for each n."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical integration in one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "'5 × 104' is the text layer's flat print of 5 times 10 to the 4th."
+    },
+    {
+     "id_suggestion": "volkoff-noise-induced-bpl-cited",
+     "value": "The authors cite a recent analysis of noisy circuits (Ref. [48]) indicating barren plateaus for noisy circuit depths scaling at least linearly in n, and state that this result holds even when parameters are correlated.",
+     "anchor": "Section 3.1, p.6",
+     "quotes": [
+      "indicate the appearance of BPL for noisy circuit depths scaling at least linearly in n with a noise-dependent coefficient [48].",
+      "The result holds even when parameters are correlated in the RPQC."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to Ref. [48].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "volkoff-noncommuting-layers-no-bpl",
+     "value": "The authors show that BPL can also be avoided in spatially correlated separable circuits whose layers do not commute (alternating collective Jx and Jy rotations with angles scaled by the square root of n): the circuit generates an asymptotically normal quantum statistical model, and the global cost is asymptotically nonzero and independent of n, so it cannot exhibit BPL; adding temporal correlations only increases the derivative magnitude.",
+     "anchor": "Section 3.1, p.6, Eqs. (7)-(8)",
+     "quotes": [
+      "The BPL phenomenon can also be avoided in spatially correlated, separable RPQC when the circuit layers do not commute.",
+      "The RPQC in (7) generates an asymptotically normal quantum statistical model",
+      "Equation (8) is nonzero and independent of n as n → ∞, therefore it cannot exhibit the BPL phenomenon.",
+      "only increases |∂αj CR(β,α)L|, thereby enhancing trainability."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An asymptotic derivation; the formula (8) is garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "volkoff-local-cost-correlated-no-bpl",
+     "value": "The authors show that a faithful local cost function for the correlated circuit M(θ) is independent of n by permutation invariance, so the variance of its derivative is independent of n, which precludes BPL.",
+     "anchor": "Section 3.2, p.7",
+     "quotes": [
+      "Local cost functions also allow to circumvent the BPL phenomenon in the case of the correlated RPQC M(θ).",
+      "Due to permutation invariance of the RPQC, it is clear that CM (L)(θ) is independent of n, and it follows that the variance of ∂νCM (L)(θ) is independent of n, which precludes BPL behavior."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A short argument stated in full, Section 3.2, p.7.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "volkoff-ring-of-disagrees-local-vs-global",
+     "value": "The authors show (Appendix C) that a local cost function for the ring-of-disagrees MaxCut QAOA does not exhibit BPL, while with a global cost function BPL is avoided only if the circuit has parameters correlated between layers of the same structure and depth exponential in n; they state this suggests faithful local cost functions, where they exist, are preferable for training QAOA with uncorrelated layers.",
+     "anchor": "Section 3.2, p.8; Appendix C, pp.19-21",
+     "quotes": [
+      "we show in Appendix C that a local cost function for a simple quantum approximate optimization algorithm (namely MaxCut on regular, degree 2, connected graphs, i.e., the ring of disagrees [33]) does not exhibit BPL.",
+      "then BPL is avoided only if the RPQC has correlated parameters between layers of the same structure, and the RPQC has depth exponential in n.",
+      "This suggests that when faithful local cost functions exist, they are preferable for training quantum approximate optimization algorithms with uncorrelated layers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived to linear order in the driver parameter in Appendix C; the formulas are garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "volkoff-ring-global-depth-thresholds",
+     "value": "In Appendix C, for the global cost with correlated driver and mixer parameters expanded to linear order in γ, the authors find that BPL is encountered if L ∼ 2cn− 2 3 log2 n with c < 2/3, while no BPL is encountered if L ln L scales as 2n−log2 n; they also state that uncorrelated mixer angles imply a subset of mixer angles exhibits BPL regardless of circuit depth.",
+     "anchor": "Appendix C, p.20, Eqs. (C.3)-(C.5)",
+     "quotes": [
+      "Therefore, BPL is encountered if L ∼ 2cn− 2 3 log2 n with c < 2/3.",
+      "from which it follows that no BPL is encountered if L ln L scales as 2n−log2 n.",
+      "Using uncorrelated mixer angles βj implies that a subset of mixer angles exhibits BPL regardless of circuit depth"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An asymptotic derivation to linear order in γ; exponents are printed flat in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Read from the layer, the thresholds are L about 2 to the power (cn minus two-thirds log2 n), and L ln L about 2 to the power (n minus log2 n)."
+    },
+    {
+     "id_suggestion": "volkoff-layer-correlated-qaoa-suboptimal",
+     "value": "The authors report numerically, for the ring of disagrees with 4 ≤ n ≤ 10, that the maximum of the local cost with all mixer angles equal and all driver angles equal increases with L, suggesting layer-correlated QAOA is a suboptimal but low-dimensional approach; they note that QAOA's computational universality proof requires the parameters to vary, so whether QAOA for MaxCut still works with correlated layers remains open.",
+     "anchor": "Appendix C, pp.20-21",
+     "quotes": [
+      "For the ring of disagrees problem with 4 ≤ n ≤ 10, we find numerically that maxβ,γ C(L)(β, γ) with (β1 = . . . = βL and γ1 = . . . = γL)",
+      "is increasing with L, suggesting that in this case, layer-correlated QAOA provides a suboptimal, but low-dimensional, approach to the ring of disagrees problem.",
+      "so the question remains whether the quantum approximate optimization approach to MaxCut still works for an RPQC defined by QAOA having correlated driver or mixer layers."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A small numerical study and an open question stated by the authors.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "volkoff-xi-separable-haar",
+     "value": "The authors show for ξ-separable circuits (n qubits grouped into ξ registers of m qubits, with a permutation-invariant tensor product of Haar-distributed unitaries) that the gradient variance can be written as a contour integral evaluated through a Harish-Chandra-Itzykson-Zuber integral; in the case m = 1 with input ρ = diag(1 − δ, δ), the BPL phenomenon is avoided for a pure input state but encountered for a mixed one, and a constant variance as ξ grows needs the input purity to approach 1 at a rate set by log ξ.",
+     "anchor": "Section 4, pp.8-10, Eqs. (9)-(16)",
+     "quotes": [
+      "In this section, we show that the BPL phenomenon is avoided in a generic correlated separable setting, namely when n qubit registers are grouped into ξ registers of m qubits",
+      "The integral over Haar measure in (13) is an example of a Harish-Chandra-Itzykson- Zuber integral and can be evaluated explicitly.",
+      "in the simple case of m = 1, ρ = diag(1 − δ, δ), where 0 < δ < 1/2",
+      "one finds that the BPL phenomenon is avoided for pure input state (δ = 0), but is encountered for δ = 0.",
+      "To maintain a constant variance as ξ → ∞, the input state ρ can be taken with δ = log ξ 4ξ−4"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation whose formulas are garbled in the text layer; the second 'δ = 0' is evidently a lost not-equal sign.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer prints 'encountered for δ = 0', which must be δ not equal to 0 in the PDF; the value says 'mixed' accordingly."
+    },
+    {
+     "id_suggestion": "volkoff-less-efficient-grover-bpl-threshold",
+     "value": "For the less efficient variational Grover algorithm with perfectly correlated rotation angles, the authors derive that if L ∼ 2cn−log2 n with 0 < c < 1/3 the probability bound (23) is O(b−n) with b = (1/4)1−3c, so the cost exhibits BPL at insufficient depth; and the expected derivative magnitude is bounded away from zero if L ∼ 2cn− 1 2 log2 n with c ≥ 1/2, so the circuit can be efficiently optimized at depths comparable to those needed for successful algorithm performance.",
+     "anchor": "Section 5.1, pp.12-13, Eqs. (21)-(24); Appendix B",
+     "quotes": [
+      "one concludes that if L ∼ 2cn−log2 n and 0 < c < 1/3, then the right hand side πn/2 of (23) is O(b−n) with b = (1/4)1−3c.",
+      "This fact implies that at O(γ2), the cost function (21) exhibits the BPL phenomenon if the RPQC is not taken to have sufficient depth.",
+      "The asymptotic inequality (24) shows that the expectation is bounded away from zero if L ∼ 2cn− 1 2 log2 n, with c ≥ 1/2.",
+      "One concludes that the circuit M(θ, γ)L can be efficiently optimized by gradient descent methods at circuit depths comparable to those required for successful algorithm performance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation at second order in γ with exponents printed flat; the bound (22) rests on a step the authors call expected ('Like the Dirichlet kernel, the global maximum of g(θ) is expected to occur at a zero of the denominator').",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof of (22) in Appendix B uses an expected, not proved, location of the maximum of g(θ)."
+    },
+    {
+     "id_suggestion": "volkoff-uncorrelated-grover-untrainable",
+     "value": "The authors show that if the rotation angles of the less efficient variational Grover circuit vary independently, then at a depth that avoids BPL for correlated angles, parameters at layers far enough from the end exhibit BPL, so allowing the angles to be uncorrelated implies that an exponential number of them are untrainable.",
+     "anchor": "Section 5.1, p.13, Eq. (25)",
+     "quotes": [
+      "To show that it is not possible to avoid the BPL phenomenon for (20), consider a circuit depth L ∼ (2n/2− 1 2 log2 n) which we have shown allows to avoid BPL if the angles θk are perfectly correlated.",
+      "Therefore, allowing the angles in θ to be uncorrelated implies that an exponential number of them are untrainable."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An asymptotic derivation with formulas garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "volkoff-grover-fit-critical-c",
+     "value": "For the efficient variational Grover algorithm with temporally correlated rotations and the optimal oracle (γk = π), the authors report from numerical second moments that at fixed depth the cost exhibits BPL; least squares fits give a ≈ 5 for the L dependence (n ≥ 16) and r ≈ 1.8 for the n dependence (n ≥ 14; r ≈ 1.9 for the less efficient version), so if L ∼ 2cn with c < 1.8/5 = 0.36 BPL is encountered, compared with the analytical critical value c = 1/3 for the less efficient version.",
+     "anchor": "Section 5.2, p.14; Figure 3, p.11",
+     "quotes": [
+      "Therefore, for a fixed depth, the cost function (26) exhibits the BPL phenomenon.",
+      "we note that for n ≥ 16, a least squares fit of the second moment of the derivative of (26) to the function bLa produces a ≈ 5.",
+      "for every L, a least squares fit of the second moment of the derivative of (26) to the function d2−rn for n ≥ 14 produces r ≈ 1.8, whereas the same fit for second moment of the derivative of (21) gives r ≈ 1.9.",
+      "In particular, if L ∼ 2cn with c < 1.8/5 = 0.36, the BPL phenomenon is encountered.",
+      "this critical value of c = 0.36 derived from a fitting analysis can be compared to the analytical estimate of the critical value c = 1/3 derived from (23)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A fit to numerical integration in one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "volkoff-fig3-sampling",
+     "value": "The authors' third figure uses Monte Carlo integration for n = 4, 6, . . . , 28 and L = 4, 8, . . . , 48, each point the mean of 20,000 samples, and observes the O(La2−bn) scaling, which they state supports their predicted crossover from BPL at low L to absence of BPL at high L.",
+     "anchor": "Figure 3, p.11; Section 5.1, p.13",
+     "quotes": [
+      "(Left) Logarithm of the result of Monte Carlo integration (n = 4, 6, . . . , 28 and L = 4, 8, . . . , 48) of the O(γ4) contribution",
+      "Each data point is the mean of 20,000 samples from [0, 2π).",
+      "The O(La2−bn) scaling behavior is observed, which supports our prediction of an asymptotic crossover from BPL phenomenon at low L to absence of BPL phenomenon at high L."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical integration in one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "volkoff-jiang-grover-cited",
+     "value": "The authors cite Ref. [34] for the result that the alternating circuit with αk = 2π/n and γk = π obtains asymptotic fidelity 1 with the solution bitstring when L ∼ 2n/2, achieving the optimal oracle complexity, and for the less efficient version's expected success rate O(n−1/2) compared with O(1) in Grover's original algorithm.",
+     "anchor": "Section 5.2, p.13; Section 5.1, p.12",
+     "quotes": [
+      "the RPQC R(α, γ)L in (18) with αk = 2π/n and γk = π for all k obtains asymptotic fidelity 1 with the solution bitstring |0 ⊗n when L ∼ 2n/2, thereby achieving the optimal oracle complexity for quantum unstructured search.",
+      "the solution bitstring can be obtained probabilistically with expected success rate O(n−1/2) [34]. One can compare this success rate to the success rate O(1) in Grover's original algorithm"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results attributed to Ref. [34].",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "volkoff-initialization-scheme-framing",
+     "value": "The authors state that their strategy of spatially or temporally correlated circuits to avoid BPL can be considered as an initialization scheme, and compare it with other schemes in the literature (identity-block compilation, classical-network-computed updates, Clifford-point initialization).",
+     "anchor": "Section 2.1, p.4",
+     "quotes": [
+      "In general, the strategy proposed in the present work of using spatially or temporally correlated RPQC to avoid BPL can be considered as an initialization scheme.",
+      "A different initialization scheme proposed in Ref. [40] circumvents generic BPL by compiling identity operator blocks in the RPQC"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' framing; other schemes are cited.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "volkoff-correlation-reduces-volume",
+     "value": "The authors conclude that the main consequence of correlating parameters is a reduction in the volume of state space the circuit can access, a tradeoff that can be quantified by e.g. expressibility; for variational unstructured search, which needs exponential depth even in the optimal case, correlated circuits increase trainability while maintaining algorithm performance and complexity. They propose correlating parameters as a pre-training approach, followed by training with the correlation relaxed, as future work.",
+     "anchor": "Section 6 Conclusions, p.14",
+     "quotes": [
+      "The main consequence of correlation of RPQC parameters is the reduction in volume (in quantum state space) that can be accessed by the RPQC.",
+      "This tradeoff can be quantified by, e.g., the expressibility of the RPQC [58, 59].",
+      "the use of correlated RPQCs increases trainability while maintaining algorithm performance and complexity.",
+      "it would be interesting to explore the idea of correlating parameters as a pre-training approach (followed by training where the correlation is relaxed)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusions, summarizing the derivations.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

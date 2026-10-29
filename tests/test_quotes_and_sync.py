@@ -110,6 +110,21 @@ def test_sync_brings_every_field_to_the_script(synthetic_store, column):
         conn.close()
 
 
+def test_sync_moves_a_claim_to_absence_with_its_search_scope(synthetic_store):
+    """Sprint 13 Task G's trial apply, 2026-10-27: the sync wrote one column at a time, so a claim moving to
+    'absence' broke the table's CHECK (an absence needs a search scope) on the claim_type step, before
+    search_scope was written. Proven to fail by injection, 2026-10-27: with the one-statement UPDATE put back to
+    one UPDATE per column, this test went red with "CHECK constraint failed"."""
+    conn = connect(synthetic_store)
+    try:
+        wanted = replace(_stored(conn), claim_type="absence", search_scope="the paper's own text, as read")
+        assert sorted(sync_assertion(conn, wanted, "note", "2026-10-27")) == ["claim_type", "search_scope"]
+        assert tuple(conn.execute("SELECT claim_type, search_scope FROM assertion_fields WHERE record_id = 'claim-one'"
+                                  ).fetchone()) == ("absence", "the paper's own text, as read")
+    finally:
+        conn.close()
+
+
 def test_sync_adds_relations_and_documents_and_never_removes_them(synthetic_store):
     """claim-one's `supports` link to learning-fixture was written by
     another step (conftest, as F46's merges are in the store); a reading
@@ -147,5 +162,54 @@ def test_a_field_with_no_storage_group_is_refused(synthetic_store, monkeypatch):
     try:
         with pytest.raises(TypeError, match="citation_context"):
             sync_assertion(conn, _stored(conn), "note", "2026-10-17")
+    finally:
+        conn.close()
+
+
+def test_a_row_re_read_in_full_is_left_alone_by_an_older_script(synthetic_store):
+    """Sprint 13 Task G (F113): once a whole-paper re-read has synced a row,
+    an older reading script's sync (its second-apply test runs it again)
+    must not put the partial read's value back; Task G's own next sync still
+    goes through. Proven to fail, 2026-10-25: with the guard in
+    sync_assertion removed, the older script's value replaced Task G's.
+
+    Review of 0765e9a: the guard first asked only whether the note named the
+    full read, so a LATER correction from any other script was refused too,
+    and so was a row Task G only annotated. The test is now the date: older
+    or same-day syncs are refused and leave the history as it was; a later
+    one goes through. Proven to fail, 2026-10-26: with the date test removed
+    from the guard, the later correction was refused.
+
+    Review of 6d8dec7: a sync naming the full read skipped the date test, so
+    Task G's next apply, which re-syncs every reviewed group at its review
+    date, put an older value back over a later correction and moved
+    `updated` back. A full-read sync dated before the row's last change is
+    now refused too, once the row's history carries the full read.
+
+    Review of 9c79048: the same-day refusal looked for the full read anywhere
+    in the history, so a second correction on the day of a first was refused.
+    It now asks whether the last change was the full read."""
+    conn = connect(synthetic_store)
+    try:
+        older = _stored(conn)
+        task_g = replace(older, value="the value from the whole paper")
+        assert "value" in sync_assertion(conn, task_g, f"Sprint 13 Task G: {ingest.FULL_READ_MARK}", "2026-10-25")
+        history = conn.execute("SELECT updated_reason FROM records WHERE id = 'claim-one'").fetchone()[0]
+        for day in ("2026-10-23", "2026-10-25"):
+            assert sync_assertion(conn, older, f"{day} (Sprint 12 reading): corrected", day) == []
+        assert tuple(conn.execute("SELECT value, updated_reason FROM records WHERE id = 'claim-one'").fetchone()) == (
+            task_g.value, history)
+        again = replace(task_g, value="a corrected value from the whole paper")
+        assert sync_assertion(conn, again, f"Sprint 13 Task G: {ingest.FULL_READ_MARK}", "2026-10-26") == ["value"]
+        later = replace(again, value="a correction made after the full read")
+        assert sync_assertion(conn, later, "2026-11-02 (Sprint 14): corrected", "2026-11-02") == ["value"]
+        assert conn.execute("SELECT value FROM records WHERE id = 'claim-one'").fetchone()[0] == later.value
+        # review of 6d8dec7: Task G's next apply re-syncs every reviewed group at its review date
+        assert sync_assertion(conn, again, f"Sprint 13 Task G: {ingest.FULL_READ_MARK}", "2026-10-26") == []
+        assert tuple(conn.execute("SELECT value, updated FROM records WHERE id = 'claim-one'").fetchone()) == (
+            later.value, "2026-11-02")
+        # review of 9c79048: a second correction on the day of a first is not a re-apply of the full read
+        second = replace(later, value="a second correction the same day")
+        assert sync_assertion(conn, second, "2026-11-02 (Sprint 14): corrected again", "2026-11-02") == ["value"]
     finally:
         conn.close()

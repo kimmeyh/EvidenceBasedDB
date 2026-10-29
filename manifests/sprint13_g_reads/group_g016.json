@@ -1,0 +1,2271 @@
+{
+ "papers": [
+  {
+   "record_id": "holmes-2022-connecting-ansatz-expressibility-gradient-magnitudes",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2021-01_Holmes_Connecting-ansatz-expressibility-to-gradient-magnitudes-and-barren-plateaus.pdf",
+   "title_in_file": "Connecting ansatz expressibility to gradient magnitudes and barren plateaus",
+   "version_note": "arXiv:2101.02138v2 (29 Mar 2022); the record names the PRX Quantum 2022 publication of the same paper.",
+   "pages": 23,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper with numerics that upper-bounds the variance of the cost gradient of a layered parameterized quantum circuit in terms of the ansatz's distance from a 2-design (its expressibility), extending the barren plateau result to arbitrary ansatze.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "expressibility-bounds-limits",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section IV Discussion and footnote 2 state both limits.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "expressibility-gradient-numerics",
+     "verdict": "widened",
+     "note": "The paper adds why the bounds are loose and that the correlation is weaker for global costs; the stored value omits both.",
+     "value": "The authors report that their numerics typically showed a strong correlation, especially for local cost functions, between expressibility and the variance of the gradient, and that the bounds are not perfectly tight, which they say may arise from the repeated use of the triangle and Cauchy-Schwarz inequalities in the derivation; they report the correlation is weaker for global costs.",
+     "anchor": "Section IV Discussion, p.7; Section III B, Correlation and tightness of bounds, p.6",
+     "quotes": [
+      "we typically observed a strong correlation (especially for local cost functions) between the expressiblity and the variance of the gradient. However, the bounds are not perfectly tight.",
+      "This may arise from the repeated use of the triangle and Cauchy-Schwarz inequalities in the derivation",
+      "The correlation is weaker in the case of global costs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "expressive-ansatze-flatter-landscapes",
+     "verdict": "narrowed",
+     "note": "The bounds are upper bounds only. The paper states that inexpressive ansatze can also show vanishing gradients and that the bounds leave open how reducing expressibility changes the landscape, so the flatter-landscape reading applies to highly expressive ansatze and does not imply that inexpressive ones train well.",
+     "value": "The authors state that their resulting bounds indicate highly expressive ansatze exhibit flatter cost landscapes and will be harder to train; they also state that the bounds are upper bounds, that highly inexpressive ansatze need not have large gradients and may also have vanishing gradients, and that the bounds leave open how reducing expressibility changes the cost landscape.",
+     "anchor": "Abstract, p.1; Section I, p.2; Section III A, p.4",
+     "quotes": [
+      "Our resulting bounds indicate that highly expressive ansätze exhibit flatter cost landscapes and therefore will be harder to train.",
+      "Since our analytic bounds are upper bounds, they leave open the questions of how reducing the expressiblity of an ansatz changes the cost landscape",
+      "highly inexpressive ansätze need not always experience large cost gradients, and in fact they may exhibit vanishing gradients."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' reading of their bounds, not itself a theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "gradient-variance-bounded-by-expressibility",
+     "verdict": "widened",
+     "note": "Theorem 1's statement and its conditions are now quoted: a generic cost of the form of Eq. (1), a layered ansatz of the form of Eq. (2) with uncorrelated parameters, and an upper bound (not a two-sided bound) whose correction term grows with the distance from a 2-design. The text layer lost the inequality signs of Eqs. (14) to (16).",
+     "value": "The paper proves (Theorem 1, Appendix D) that for a generic cost function of the form of Eq. (1) and a layered ansatz of the form of Eq. (2), whose parameters are supposed uncorrelated, the variance of the cost partial derivative is upper bounded by the variance it would have if part of the circuit formed a 2-design plus a correction term set by the expressibility measures, so that the smaller the distance from a 2-design, the smaller the upper bound; the bounds hold for any ansatz of that form.",
+     "anchor": "Theorem 1, Section III A, p.4 (Eqs. 14 to 17; inequality signs lost in the text layer); Section II D, p.3; proof Appendix D",
+     "quotes": [
+      "Theorem 1. Consider a generic cost function Cρ,H (θ), Eq. (1), using a layered ansatz U (θ) of the general form in Eq. (2).",
+      "variance of the cost partial derivative obeys the following bounds",
+      "our main result consists of a non-trivial upper bound for the variance of the cost function partial derivative for a general ansatz U (θ) in terms of the expressibility in (4).",
+      "Namely, the higher the expressibility of the ansatz, that is the smaller εLH or εRρ , the smaller the upper bound on the variance of the cost partial derivative.",
+      "Note that since we suppose the parameters θj are uncorrelated, the circuits UL and UR are independent.",
+      "the bounds in Eqs. (14)–(16) all hold for any generic ansatz of the form in Eq. (2)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 is proved in Appendix D; its statement and conditions are quoted from Section III A and II D, though the inequality signs are lost in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "expressibility-superoperator-definition",
+     "value": "The paper defines expressibility through a superoperator comparing the Haar average with the average over the ansatz's ensemble of unitaries up to the t-th moment, and uses the state and operator measures for t equal to 2; small values of these measures indicate a highly expressive ansatz.",
+     "anchor": "Section II B, Eqs. (4) to (7), p.3",
+     "quotes": [
+      "the expressibility of a circuit can be defined in terms of the following superoperator [47, 48]",
+      "For our purposes it suffices to consider the behavior of A(t) for t = 2.",
+      "Small values of ερU and εHU indicate that the ansatz is highly expressive."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Section II B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cost-gradient-unbiased",
+     "value": "The paper proves, by integrating over each rotation angle, that for a generic ansatz of the paper's form the cost gradients average out to zero over the parameters, so trainability is set by the variance of the gradient.",
+     "anchor": "Section II C, Eq. (8), p.3; proof Appendix C",
+     "quotes": [
+      "the cost gradients are not biased in any single direction but rather average out to zero.",
+      "We show this in Appendix C, where we prove that ∂kC = 0 by explicitly integrating over θk.",
+      "to assess the trainability of an ansatz U (θ), we now recall the Chebyshev inequality."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix C by direct integration.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "barren-plateau-definition",
+     "value": "The paper defines a barren plateau as gradients that vanish exponentially with the number of qubits, typically relaxed to a probabilistic definition that follows from the Chebyshev inequality if the variance of the partial derivative vanishes exponentially.",
+     "anchor": "Section II D, p.3",
+     "quotes": [
+      "a cost C is said to exhibit a barren plateau if its gradients vanish exponentially with the number of qubits n.",
+      "This is typically relaxed to a probabilistic definition, where the gradient vanishes exponentially with high probability."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition, Section II D.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "two-design-exact-barren-plateau-cited",
+     "value": "The authors restate an earlier cited result that if the left or right part of the circuit forms a 2-design, the variance of the gradient vanishes exponentially in the number of qubits, so maximally expressive ansatze exhibit barren plateaus.",
+     "anchor": "Section II D, Eq. (13), p.3; explicit expressions Appendix E",
+     "quotes": [
+      "Thus if UL or UR form a 2-design, the variance in the gradient vanishes exponentially in n. In other words, maximally expressive ansätze exhibit barren plateaus."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to Ref. [27]; Appendix E gives higher-order terms.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "no-meaningful-lower-bound-from-expressibility",
+     "value": "The authors state that it is not possible to meaningfully lower bound the gradients of an ansatz in terms of its expressibility, citing examples such as rotations commuting with the measurement operator and inexpressive product-rotation ansatze that show barren plateaus for global costs, so they derive only an upper bound.",
+     "anchor": "Section III A, p.4",
+     "quotes": [
+      "It follows from these observations that it is not possible to meaningfully lower bound the gradients of an ansatz in terms of its expressiblity.",
+      "Therefore to relate cost gradients to expressibility we instead derive an upper bound.",
+      "Since this ansatz does not generate entanglement it is inexpressive; however, it has also been shown to exhibit a barren plateau for global cost functions [7, 28]."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its main result (an upper bound only) in Section III A.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bound-tightness-by-layer",
+     "value": "The authors state that each of the three bounds becomes an equality when the corresponding part of the circuit tends to a 2-design, so the bound using the right part is tightest for derivatives in the final layer, the one using the left part for the first layer, and the combined bound for parameters near the middle of the circuit.",
+     "anchor": "Section III A, p.4 to 5",
+     "quotes": [
+      "Eq. (14) becomes an equality in the limit that UR tends to a 2-design",
+      "If we are looking at the derivative with respect to the final layer then UR is typically closer to being a 2-design than UL and so (14) will be tightest.",
+      "for parameters in a layer close to the middle (i.e. at depth D/2) and (16) will be tightest"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated from the structure of the bounds, not proved as a separate result.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "generalized-cost-extension",
+     "value": "The authors extend Theorem 1 in Appendix D to costs summed over multiple input states and measurement operators, and state that the results therefore also apply to quantum machine learning approaches that use training data.",
+     "anchor": "Section III A, p.5; footnote 1, p.2; Appendix D, Eqs. (D14) to (D23), (D33)",
+     "quotes": [
+      "In Appendix D, we extend Theorem 1 to cost functions of the form",
+      "which allow for multiple input states and measurements.",
+      "This cost allows for multiple input states {ρi} and measurement operators {Hi}, opening up quantum machine learning approaches that employ training data [50–53]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Proved in Appendix D, but the extended bounds' statements lose their signs in the text layer and are not quoted here.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "imperfect-expressibility-leeway",
+     "value": "The paper derives that the variance for an arbitrary ansatz is bounded by the exact 2-design variance plus an expressibility-dependent correction; if that correction scales exponentially small the ansatz again exhibits a barren plateau, while a non-exponentially scaling correction leaves leeway for imperfectly expressive ansatze to avoid barren plateaus.",
+     "anchor": "Section III A, Generalizing the Barren Plateau phenomenon, Eq. (18), p.5",
+     "quotes": [
+      "Theorem 1 may be viewed as an extension of the barren plateau phenomenon introduced in Ref. [27] to ansätze that form approximate, rather, than exact 2-designs.",
+      "then Var ∂kC again vanishes exponentially and the ansatz exhibits a barren plateau.",
+      "Thus, there is leeway for imperfectly expressive ansätze to avoid barren plateaus."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A consequence of an upper bound; the bound allows but does not prove non-vanishing gradients.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "An upper bound that allows a non-vanishing variance does not guarantee one."
+    },
+    {
+     "id_suggestion": "cost-concentration-with-expressibility",
+     "value": "The authors state that, by the cited equivalence of barren plateaus and cost concentration, their bounds imply that cost concentration about the mean increases with expressibility, and in Appendix F they generalize a concentration proof for local costs from maximally expressive ansatze to non-perfectly expressive ansatze with an expressibility-dependent correction.",
+     "anchor": "Section III A, p.5; Appendix F, Eqs. (F1) to (F6)",
+     "quotes": [
+      "Thus our bounds also imply that the degree to which the cost concentrates about its mean increases with increasing expressibility.",
+      "Here we show that this proof may be generalised to non-perfectly expressive ansätze."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Appendix F's inequality is not quotable with its signs from the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem2-diamond-norm-bounds",
+     "value": "The paper proves (Theorem 2) bounds of the same form using the diamond-norm expressibility, for a generic cost and a layered ansatz; the authors state the state-dependent bound of Theorem 1 becomes exponentially loose for local costs on large systems, the diamond-norm right-side bound does not, and the diamond-norm left-side bound may become loose, so they expect the Theorem 1 left-side bound to generally be more useful.",
+     "anchor": "Theorem 2, Section III A, Eqs. (19) to (21), p.5 to 6; proof Appendix D 4",
+     "quotes": [
+      "Theorem 2. Consider a generic cost function Cρ,H (θ), Eq. (1), using a layered ansatz U (θ) of the general form in Eq. (2).",
+      "For local costs the term ||H||22 scales exponentially with the size of the system and therefore for large systems (14) becomes",
+      "does not experience the same looseness for local costs of large systems as (14).",
+      "(20) may become loose for large systems and therefore we expect (15) to generally be more useful than (20)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 2 is stated with its conditions in Section III A and proved in Appendix D 4; the inequality signs are lost in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "numerics-setup-hardware-efficient",
+     "value": "The authors' numerics use a layered hardware efficient ansatz of alternating random single-qubit rotations and controlled-phase ladders, a 2-local cost and a global cost of Pauli-z measurements, implemented in TensorFlow Quantum, with the derivative taken with respect to the first qubit's first-layer angle and variances over an ensemble of 1000 unitaries.",
+     "anchor": "Section III B, Eqs. (22) to (24), Fig. 2 and Fig. 3 captions, p.5 to 6",
+     "quotes": [
+      "We further consider a layered hardware efficient ansatz",
+      "both a 2-local cost where the measurement operator is composed of Pauli-z measurements on the first and second qubits",
+      "Our numerics are implemented using TensorFlow Quantum [61].",
+      "derivative is taken with respect to θ11, the rotation angle of the first qubit in the first layer, and the variance is taken over an ensemble of 1000 unitaries."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its numerical setup, Section III B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "depth-numerics-local-vs-global",
+     "value": "The authors report that for the global cost the gradient variance is seemingly independent of circuit depth and vanishes exponentially with n, while for the local cost exponentially vanishing partial derivatives are observed up to 12 qubits for depths D 100 and shallow circuits D 50 show approximately constant scaling for n 8 (the comparison signs are lost in the text layer).",
+     "anchor": "Section III B, Circuit depth, Fig. 3(A) and 3(D), p.6",
+     "quotes": [
+      "is seemingly independent of the depth of the circuit and vanishes exponentially with the size of the system n.",
+      "exponentially vanishing partial derivatives are observed for systems up to 12 qubits for depths D 100. However shallow circuits D 50 exhibit an approximately constant scaling for n 8."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "correlated-parameters-numerics",
+     "value": "The authors report that correlating both qubits and layers gives the least expressive ansatz and an approximately constant gradient variance, while correlating only qubits or only layers increases gradients and reduces the scaling but an exponential scaling is still observed, with similar results for local and global costs.",
+     "anchor": "Section III B, Correlating parameters, Fig. 3(B) and 3(E), p.6",
+     "quotes": [
+      "In contrast to varying circuit depth, here we obtain similar results irrespective of whether a local or global cost is used.",
+      "Correlating both the qubits and the layers results in the least expressive ansatz and correspondingly the largest variation in cost gradients is observed. Indeed, in this case the variance in the cost gradient is approximately constant.",
+      "correlating just the qubits, or just the layers, increases the cost gradients and reduces the scaling of the cost gradient with system size but an exponential scaling is still observed."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "restricted-rotation-direction-numerics",
+     "value": "The authors report that restricting single-qubit rotations to a single direction seemingly removes the exponential gradient scaling for a local cost but not for a global cost, and that z-only rotations commute with the measurement operators so the landscape is entirely flat.",
+     "anchor": "Section III B, Restricting rotation direction, Fig. 3(C) and 3(F), p.6",
+     "quotes": [
+      "the ansatz by restricting to single direction rotations seemingly removes the",
+      "However, for a global cost the scaling remains exponential.",
+      "and so the cost landscape is entirely flat."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "restricted-angle-numerics",
+     "value": "The authors report that with random initialization, restricting the range of rotation angles does not change the observed partial derivatives, while with initialization near the solution, small angle ranges r 0.1 make the local-cost partial derivative cease to scale exponentially, an effect visible for the global cost only at r ≈ 0.025.",
+     "anchor": "Section III B, Restricting rotation angles, Fig. 4, p.6",
+     "quotes": [
+      "for a random initialization, restricting the ansatz to a limited range of rotation angles does not change the partial derivatives observed.",
+      "However, for small angle ranges, r 0.1, as shown in blue, we find that the partial derivative of a local cost ceases to exhibit an exponential scaling.",
+      "only visible in the data here for r ≈ 0.025."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The comparison sign before 0.1 is lost in the text layer."
+    },
+    {
+     "id_suggestion": "angle-restriction-needs-near-solution-init",
+     "value": "The authors state that restricting the angle range is practical only when initializing close to the solution, which requires prior knowledge of an approximate solution or an effective pre-training strategy, and that the viability of either warrants further investigation.",
+     "anchor": "Section III B, Outlook for ansatz design, p.6",
+     "quotes": [
+      "but for it to be practical it is necessary to initialize close to the solution.",
+      "This, of course, requires either prior knowledge of an approximate solution to the problem at hand or an effective pre-training strategy to obtain such an approximate solution.",
+      "The viability of either of these options warrants further investigation."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in its Outlook for ansatz design.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "perturbative-growth-strategy",
+     "value": "The authors suggest that when deep or uncorrelated circuits are required, a perturbative strategy may be effective: start with a shallow, highly correlated ansatz and gradually grow it and decorrelate the parameters as the cost is minimized.",
+     "anchor": "Section III B, Outlook for ansatz design, p.6",
+     "quotes": [
+      "then a perturbative strategy may instead be effective.",
+      "one could start the variational algorithm using a shallow, highly correlated ansatz and as the cost is iteratively minimized gradually grow the ansatz [8, 15, 38] and decorrelate the parameters [37]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's suggestion, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bound-correlation-spearman-local-global",
+     "value": "The authors report a Spearman value of at least 0.9 with a p-value of less than 0.05 in all local-cost cases between their upper bound and the actual gradient variance, a weaker correlation for global costs, bounds tight to within a couple of orders of magnitude, and for an 8-qubit local cost a bound that is moderately loose at low depths and tight for deep circuits.",
+     "anchor": "Section III B, Correlation and tightness of bounds, Fig. 5 and Fig. 6, p.6 to 7",
+     "quotes": [
+      "For local costs we obtain a Spearman value of at least 0.9 with a p-value of less than 0.05 in all cases",
+      "The correlation is weaker in the case of global costs",
+      "tight to within a couple of orders of magnitude",
+      "for the 8 qubit local cost",
+      "While moderately loose at low depths, the bound becomes tight for deep circuits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "frame-potential-correlation-appendix-g",
+     "value": "The authors report, combining all ways of tuning expressibility, a Spearman coefficient of 0.78 with a p-value of 1.19 × 10−7 between the gradient variance and the state-dependent frame potential ratio, and 0.80 with a p-value of 1.18 × 10−7 for the Hamiltonian-dependent one, and state the correlation is not perfect.",
+     "anchor": "Appendix G, Figs. 7 and 8",
+     "quotes": [
+      "was found to be 0.78 with a p-value of 1.19 × 10−7.",
+      "Similarly, for the correlations with H was 0.80 with a p-value of 1.18 × 10−7.",
+      "Nonetheless, the correlation between the variance in the cost partial derivative and the expressibility is not perfect"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (n of 4, ensembles of 5000 unitaries per the figure captions).",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hamiltonian-frame-potential-captures-locality",
+     "value": "The authors report that the Hamiltonian-dependent frame potential captures the effect of cost locality as depth is tuned, decreasing with depth for a local cost and staying effectively constant for a global cost, whereas the state-dependent frame potential cannot capture this because it is independent of the measurement operator.",
+     "anchor": "Appendix G",
+     "quotes": [
+      "It is noteworthy that the Hamiltonian dependent frame potential captures the effect of locality on cost gradients as the circuit depth is tuned.",
+      "The state dependent frame potential cannot capture this effect since it is independent of the choice in measurement operator H"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "global-cost-shallow-barren-cited",
+     "value": "The authors cite earlier work as showing that even very shallow or non-entangling, highly inexpressive circuits may exhibit barren plateaus with global costs, and state that expressibility is therefore not the only phenomenon that may induce a barren plateau.",
+     "anchor": "Section III B, p.6 to 7",
+     "quotes": [
+      "highlighting that in the case of a global cost expressibility is not the only phenomenon that may induce a barren plateau.",
+      "which show even very shallow and/or non-entangling circuits (i.e. highly inexpressive circuits) may exhibit barren plateaus when using global costs."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to Ref. [28].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "open-problems-tightening-global",
+     "value": "The authors state as open problems whether their bounds can be further tightened, whether they can be generalized to account for parameter correlations, the nature of barren plateaus for global costs, the extent to which the observed trends are universal, and whether analytic results can support them.",
+     "anchor": "Section IV Discussion and footnote 2, p.7",
+     "quotes": [
+      "Thus a natural question to ask is whether our bounds can be further tightened.",
+      "Another direction would be to explore the nature of barren plateaus for global costs",
+      "it would be interesting to investigate whether our bounds can be generalised to account for such correlations.",
+      "Further work is required to ascertain the extent to which the trends observed here are universally observed."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Open problems the paper states in Section IV.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-expressibility-smaller-gradients",
+     "value": "The authors conclude that their bounds demonstrate increasing expressibility can result in smaller cost gradients, that highly expressive ansatze being highly entangling suggests the results imply those of Refs. [33, 44], and that correlating parameters and restricting rotation angles, especially when initializing near the solution, significantly mitigated barren plateaus in their numerics.",
+     "anchor": "Section IV Discussion, p.7",
+     "quotes": [
+      "Our bounds demonstrate that increasing the expressibility of an ansatz can result in smaller cost gradients.",
+      "since highly expressive ansätze are necessarily highly entangling, our results would seem to imply those in Refs. [33, 44].",
+      "correlating parameters and restricting rotation angles (especially when initializing near the solution) are two strategies that significantly mitigated barren plateaus in our numerics."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusions; the mitigation part is empirical from one study.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "useful-ansatz-need-only-contain-solution",
+     "value": "The authors state that an ansatz does not strictly need to be highly expressive to be used successfully, only to contain a solution to the problem at hand, and that their result highlights the importance of developing trainable problem-inspired ansatze.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "We note that an ansatz does not strictly need to be highly expressive to be used successfully, rather it just needs to contain a solution to the problem at hand.",
+      "Thus our result highlights the importance of developing trainable problem-inspired ansatze."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "hu-2022-finitely-repeated-adversarial-quantum-hypothesis",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Hu-Zhu_2022_Finitely-Repeated-Adversarial-Quantum-Hypothesis-Testing__2212.02314.pdf",
+   "title_in_file": "Finitely Repeated Adversarial Quantum Hypothesis Testing",
+   "version_note": "arXiv:2212.02314v1 (2 Dec 2022).",
+   "pages": 7,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A short game-theoretic paper that models an attacker distorting n repeated quantum states seen by a passive (naive) quantum hypothesis-testing detector, derives a worst-case asymptotic miss-rate exponent under separability and norm-bounded attacks, and illustrates it on a conceptual quantum radar case.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "naive-detector-miss-rate-slower",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical (numerical) result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "quantum-radar-case-conceptual",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 5 Conclusion states it.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "worst-case-error-exponential-decay",
+     "verdict": "narrowed",
+     "note": "Theorem 1 needs more than separable attacker strategies: Lemma 1's eigenvector condition, the same distortion on every copy, and Assumption 1 (local robustness, a diamond-norm tolerance). The paper states that separability alone cannot give a non-vacuous bound. The theorem characterizes the miss-rate exponent, not an average error; the text layer lost its inequality sign and tolerance symbol.",
+     "value": "The authors derive (Theorem 1) a worst-case asymptotic exponent for the miss rate of the passive detector, as minus an infimum of quantum relative entropy over distorted states within a Wasserstein-distance tolerance, under the assumptions that the attacker's optimal strategy is separable (Lemma 1), that the same distortion is applied to every copy, and that the attacker's operations are locally robust within a diamond-norm tolerance (Assumption 1); they state that separability alone cannot guarantee a bound, since an unconstrained attacker could make the detection rate arbitrarily small.",
+     "anchor": "Section 3, Lemma 1, Assumption 1, Theorem 1 and proof, p.3 to 4 (inequality and tolerance symbol lost in the text layer)",
+     "quotes": [
+      "Theorem 1. Assume the attacker's distorted quantum system ρ(n)∗ meets (10) with α(1) . . . α(n) be the optimal strategies for every copy of the true quantum state.",
+      "Assume also that the attacker's quantum operations meet assumption 1.",
+      "Then the worst-case error bound can be character- ized as follows",
+      "further assume also that the attacker applies the same distortion (denoted as E1, E0 ∈ E(1)) for every of the n quantum states.",
+      "The separability of the attacker's optimal strategies cannot guarantee an upper bound of the asymptotic detection rate.",
+      "To obtain a non-vacuous error bound we constrain the attacker's quantum operations by a norm"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Theorem 1's displayed bound is not quotable from the text layer (signs lost), and the proof is a short sketch via cited large-deviation theorems.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The proof applies the quantum Stein lemma and quantum Sanov theorem to the distorted states and then takes a supremum; it is brief."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "passive-detector-setup",
+     "value": "The authors assume a passive detector that does not know the quantum states have been distorted and so does not change its decision rule, using a Bayesian risk computed as if the states were untainted, with a decision threshold depending only on the number of states received.",
+     "anchor": "Section 2, Eqs. (2) to (5), p.2",
+     "quotes": [
+      "A passive quantum detector does not know that the quantum states have been distorted. Hence we assume that she does not change her decision rule based on the quantum states she receives.",
+      "a weighting sum of counterfactual miss rate and counterfactual false alarm rate in (2) as if the quantum state were untainted",
+      "The detector's decision threshold τ (n) only depends on the number of quantum states received."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own model setup, Section 2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "stackelberg-game-definition",
+     "value": "The paper defines the relationship between the passive detector and the attacker as a Stackelberg game, with the attacker choosing collective noisy operations to minimize the detection rate plus a relative-entropy regularization whose parameter is set proportional to n.",
+     "anchor": "Section 2, Definition 1, Eqs. (6) and (7), p.2",
+     "quotes": [
+      "We define the relationship between the passive quantum detector and the attacker as a Stackelberg game Gn",
+      "where we adopt the Von-Neumann relative entropy",
+      "For simplicity, we set βn = λn with λ 0 being a constant."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 1 of the paper.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The text writes that the detector designs her optimal strategies by minimizing the attacker's utility in Eq. (7); from context this is the attacker."
+    },
+    {
+     "id_suggestion": "attacker-optimal-strategy-proposition1",
+     "value": "The paper derives (Proposition 1, proof in Appendix A by first-order conditions, before imposing the trace constraints) that the attacker leaves the hypothesis-0 state undistorted and distorts the hypothesis-1 state into a normalized exponential of the log of the true state minus the detector's measurement scaled by the inverse regularization parameter.",
+     "anchor": "Proposition 1, Section 2.1, Eqs. (8) and (9), p.3; Appendix A",
+     "quotes": [
+      "Proposition 1. (Attacker's optimal strategies).",
+      "ρ(0n)∗ = ρ0⊗n, (8)",
+      "We apply first-order conditions by taking partial derivatives of u(An) in terms of ρ(0n), ρ1(n) and set them to be zero, respectively",
+      "Thus without considering the constraints ρ(0n), ρ(1n) ∈ S⊗n"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Eq. (9) is garbled in the text layer and the proof is a first-order-condition sketch.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The proof does not show the first-order point is a minimum."
+    },
+    {
+     "id_suggestion": "lemma1-separable-attacker-condition",
+     "value": "The paper states (Lemma 1) that if the operator formed from the n-fold true state minus the scaled measurement has only separable eigenvectors, the attacker's optimal strategies in (8)(9) are separable, a product of single-copy states; the authors note that in general the distortions cannot be decomposed into tensor products.",
+     "anchor": "Lemma 1, Section 3, Eqs. (10) and (11), p.3",
+     "quotes": [
+      "Notice that in general the attacker's distortions characterized in (8)(9) can not be decomposed into tensor products of elements in S.",
+      "has only separable quantum states as its eigenvectors, then the attacker's optimal strategies (8)(9) are separable",
+      "We can then construct α(1) . . . α(n) by taking partial traces upon the right hand side of (11)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 1's condition and conclusion are quoted from Section 3; its proof is two sentences.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-wasserstein-definition-cited",
+     "value": "The paper adopts the quantum Wasserstein distance of order 1 from De Palma et al. to measure distance between density matrices, and uses it with the diamond-norm robustness assumption in Lemma 2 and Theorem 1.",
+     "anchor": "Definition 2 and Lemma 2, Section 3, p.3 to 4",
+     "quotes": [
+      "The quantum Wasserstein distance of order 1 is generalized from the classical Wasserstein distance Villani (2008).",
+      "Definition 2. (Quantum Wasserstein distance).",
+      "where · refers to the diamond norm for quantum operations Watrous (2018)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition 2 of the paper, adopted from cited work.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radar-case-setup",
+     "value": "The authors' radar case study assumes coherent, non-entangled photonic states truncated to finite dimension, a noise state per Lloyd's quantum illumination protocol, and parameters NB = 0.4, l = 2, k = 1, x = 0.8 with an n-dependent threshold.",
+     "anchor": "Section 4, Eqs. (15) and (16), p.4",
+     "quotes": [
+      "We assume that the quantum radar produces coherent, non-entangled quantum photonic states",
+      "For simplicity, we apply finite- dimensional truncated Gaussian states",
+      "We choose NB = 0.4, l = 2, k = 1, x = 0.8 in (16)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own case-study setup, Section 4.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radar-attacker-distortion-pattern",
+     "value": "The authors report in the radar case that the attacker does not distort the hypothesis-0 state, since it aims at minimizing detection rates, and attenuates the lower-photon-number components and enhances the higher ones in the hypothesis-1 state.",
+     "anchor": "Section 4, Fig. 2, p.4",
+     "quotes": [
+      "We can observe that the attacker does not distort ρ0, as she aims at minimizing detection rates and does not focus on false alarm rates.",
+      "the attacker attenuates the quantum states representing lower mean photon numbers and enhances those with higher photon numbers in ρ1"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "radar-miss-rate-slower-for-cheaper-attacks",
+     "value": "The authors report in the radar case that both false alarm and miss rates converge to zero exponentially at different rates, that lower regularization parameter (cheaper distortion for the attacker) gives a slower exponential decay of the miss rate, and that false alarm rates decay at the same rate regardless of the parameter since the attacker does not distort the hypothesis-0 state.",
+     "anchor": "Section 4, Fig. 3, p.4 to 5",
+     "quotes": [
+      "both the false alarm rate and the miss rate (equal to 1−PFn(Π1n∗)) converge to zero exponentially yet at different rates.",
+      "leading to a slower exponential rate of decaying of miss rates, which is consistent with our analysis developed in section 3.",
+      "the false alarm rates converge to zero exponentially at the same rate, in spite of the attacker's regularization parameter λ since the attacker does not distort ρ0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The text gives the miss rate as one minus the false alarm rate, which appears to be a typo for one minus the detection rate."
+    },
+    {
+     "id_suggestion": "sequential-vs-fixed-sample-cited",
+     "value": "The authors state, citing Levy, that sequential hypothesis testing generally requires fewer samples than fixed sample size tests for the same error rate, while fixed sample size testing still has advantages for analysis.",
+     "anchor": "Section 1 Introduction, p.1",
+     "quotes": [
+      "Although sequential hypothesis testing requires in general fewer samples than fixed sample size tests to reach the same error rate Levy (2008)",
+      "the framework of hypothesis testing with finite repeated observations still admits its own advantages, especially for analytical purposes."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adversarial-qht-future-directions",
+     "value": "The authors state as future directions sequential adversarial hypothesis testing, particularly when observations incur costs, and attackers constrained to simple patterns, under which the detector could reach a lower bound.",
+     "anchor": "Section 5 Conclusion, p.5",
+     "quotes": [
+      "One possible direction to extend our work includes sequential adversarial hypothesis testing",
+      "in particular under the scenario where observations incur costs themselves.",
+      "Also, the attacker may be constrained to launch attacks obeying some simple pattern, thus the detector could reach a lower bound under those constraints for the attacker."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Open directions the paper states in Section 5.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "variation-of-quantum-sanov",
+     "value": "The authors conclude that they characterized the passive detector's fundamental limits as a worst-case asymptotic error bound that serves as a variation of quantum Sanov's theorem.",
+     "anchor": "Section 5 Conclusion, p.5",
+     "quotes": [
+      "characterized the results as a worst-case asymptotic error bound, which serves as a variation of quantum Sanov's theorem."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' summary of Theorem 1, whose statement is not quotable.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "hu-2024-generalization-error-quantum-machine-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Hu-Gao_2024_Generalization-Error-in-Quantum-Machine-Learning-in-the-Presence-of-Sampling-Noise__2410.14654.pdf",
+   "title_in_file": "Generalization Error in Quantum Machine Learning in the Presence of Sampling Noise",
+   "version_note": "arXiv:2410.14654v2 (28 Oct 2024).",
+   "pages": 18,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A statistical-mechanics (replica method) calculation of average training and generalization errors for quantum reservoir computing with finite training data and finite measurement shots, used to justify truncating high-noise eigentasks (Eigentask Learning), with 6-qubit numerics.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "replica-generalization-error-eigentask",
+     "verdict": "narrowed",
+     "note": "The calculation is not exact: the authors call the replica method an approximation trick, and it relies on a Gaussian approximation of the data, a replica-symmetry ansatz and a saddle-point approximation that assumes large N. It is also restricted to quantum reservoir computing schemes.",
+     "value": "The authors use statistical-mechanics methods to calculate training and generalization errors of quantum reservoir computing with finite training data and finite shots, describing the replica method as an approximation trick that relies on a Gaussian approximation, the replica-symmetry ansatz and a saddle-point approximation assuming large N, and state that the findings justify Eigentask Learning as minimizing generalization error.",
+     "anchor": "Abstract; Section I, p.1 to 2; Section III, p.3; Section V, p.5; Appendices B 4 and C",
+     "quotes": [
+      "we use methodologies from statistical mechanics to calculate the training and generalization errors of a generic quantum machine learning system when the input training dataset and output measurement sampling shots are both finite.",
+      "We use the replica method as the approximation trick to evaluate the training and generalization errors.",
+      "we adopt the Gaussian approximation used in Ref. [31]",
+      "this is exactly the well-known replica symmetry ansatz (RSA)",
+      "one needs to take the saddle point approximation and assume N to be large",
+      "Therefore, we will restrict our discussion to QRC schemes in this article.",
+      "offer solid justification that Eigentask Learning provides optimal learning in the sense of minimizing generalization errors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A replica-method calculation with stated approximations, not a rigorous proof.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The paper calls the solution rigorous in places, but the replica trick with replica symmetry is a non-rigorous method."
+    },
+    {
+     "id": "replica-numerics-6-qubit",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "replica-open-limits",
+     "verdict": "widened",
+     "note": "Section V names a first open problem the stored value omits (the distribution of the eigen-NSR spectrum is unknown in general), and adds that the replica trick is not easily generalized to estimate the coefficients' numerical deviation.",
+     "value": "The authors state as open directions that, given the input distribution and encoding circuit, the distribution of the eigen-NSR spectrum is still not clear in general; that the Eigentask Analysis and replica methods only consider first- and second-order cumulants of input data; and that the analysis works when the eigentask combination coefficients are accurately known, which in practice they are not, and the replica trick is not easy to generalize to compute their numerical deviation.",
+     "anchor": "Section V Discussion, p.5",
+     "quotes": [
+      "First of all, given the prior distribution p(u) and encoding circuit U (u), the distribution of spectrum {βk2} is still not clear in general.",
+      "Secondly, both the Eigentask Analysis and replica methods in Ref. [24] only consider the first- and second-order cumulants of input data",
+      "Third, the analysis in this paper works when accurate values of r(k) in the combination coefficients in eigentasks are known. In practice, those coefficients are unknown",
+      "The replica trick in this work is not easy to be generalized to compute numerical deviation of r(k)"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Limits the paper states in Section V.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "two-stochasticities-qsn",
+     "value": "The authors state that even in an ideal quantum computer, quantum machine learning has two main stochasticities: the randomness of a finite training input dataset, and quantum sampling noise from finite measurement shots on the output side.",
+     "anchor": "Section I Introduction, p.1",
+     "quotes": [
+      "Even in an ideal quantum computer, we emphasize that QML contains two main types of stochasticities.",
+      "The second stochasticity is called quantum sampling noise (QSN) [25]"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's framing of its problem, Section I.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrc-scope-only-output-weights",
+     "value": "The authors restrict the discussion to quantum reservoir computing, in which only the output weights are optimized and all randomly initialized internal parameters stay untrained.",
+     "anchor": "Section I Introduction, p.1",
+     "quotes": [
+      "and only the output weights are optimized, leaving all randomly initialized internal parameters untrained.",
+      "Therefore, we will restrict our discussion to QRC schemes in this article."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Scope stated in Section I.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "eigentask-analysis-cited",
+     "value": "The authors cite Eigentask Analysis as showing a unique shot-independent set of eigen-noise-to-signal ratios and combination coefficients, obtained from a generalized eigenproblem of the Gram matrix and mean noise matrix, that diagonalizes both signals and noises, and as showing they can be estimated from noisy features by an empirical correction.",
+     "anchor": "Section II, Eqs. (3) and (4), p.2",
+     "quotes": [
+      "Theory of Eigentask Analysis [25] shows that there exists a unique S-independent tuple",
+      "where G = Eu[xxT ] is the Gram matrix and V = Eu[Σ] is the mean noise matrix.",
+      "they can be accurately estimated from noisy fea"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to Ref. [25].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "generalization-error-definition",
+     "value": "The paper defines the generalization error of weights as the expectation over inputs and output samples of the single-input loss, justified in Appendix A as the large-test-set limit of the testing error via Hoeffding's inequality and Monte Carlo integration, and defines the average training and generalization errors as ensemble averages over all datasets.",
+     "anchor": "Section III, Eqs. (8) to (10), p.3; Appendix A",
+     "quotes": [
+      "We define it as εg(w) = Eu[EX (u)[L(w, X (u))]].",
+      "we need to take the ensemble average over all",
+      "This can shown formally by Hoeffding's inequality."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definitions in Section III with justification in Appendix A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "replica-error-formulas",
+     "value": "The authors derive by the replica trick closed-form average training and generalization errors under the eigentask representation, in terms of N, S and the eigen-NSRs, with the training error equal to the generalization error times a ratio of the regularizer to the self-consistent Signal Capture Threshold, which must be solved self-consistently.",
+     "anchor": "Section III, Eqs. (11) to (14), p.3; Appendices D and E",
+     "quotes": [
+      "By using the replica trick, we can show that (see Appendix D and E) the average training and generalization errors under eigentask representation are",
+      "The value of κ must be solved self-consistently from Eq. (13).",
+      "the training and generalization errors can be fully captured merely in terms of N, S and {βk2}, under the eigentask representation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A replica-method derivation with approximations; the formulas are garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noiseless-limit-reproduces-kernel-regression",
+     "value": "The authors state that in the noiseless limit of infinitely many shots their generalization error reproduces known kernel regression results with a unit flat RKHS spectrum, and that with small regularization and infinite training data the training and generalization errors coincide at one minus the functional capacity.",
+     "anchor": "Section III, Eq. (15), p.3; Appendix C remark; Appendix E, Eq. (E7)",
+     "quotes": [
+      "First of all, by taking the noiseless limit S → ∞, we get",
+      "Reproducing Kernel Hilbert Space (RKHS) spectrum [24, 31].",
+      "there should be no difference between training and generalization errors",
+      "is called the functional capacity"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Consistency checks of the replica result, stated by the authors.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "phase-transition-interpolation",
+     "value": "The authors derive that for vanishing regularization the threshold is zero when N exceeds K − 1 and non-zero below, indicating a phase transition at N = K − 1; below it the reservoir interpolates with near-zero training error and high generalization error, peaking at N = K − 1.",
+     "anchor": "Section III, p.3 to 4; Appendix E, Eqs. (E8) and (E9)",
+     "quotes": [
+      "we can show that κ is zero if N is larger than K − 1, while κ is non-zero if N is smaller than K − 1 (see Appendix E). It hints a phase transition at N = K − 1.",
+      "As a result, the generalization error Eg maintains a relatively high value and reaches its maximum at N = K −1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A replica-method result.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Appendix E's line after Eq. (E8) says the threshold is zero for N less than K minus 1, which contradicts the main text and looks like a typo."
+    },
+    {
+     "id_suggestion": "feature-dropping-crucial",
+     "value": "The authors state that because the number of features is exponentially large and typically larger than N, quantum reservoir computing without properly dropping features is always in the interpolation phase, so a certain dropping of features is crucial for learning.",
+     "anchor": "Section III, p.4; Section IV, p.4",
+     "quotes": [
+      "is always in the interpolation phase N < K − 1.",
+      "This observation means a certain dropping of features is crucial for learning",
+      "Therefore, truncating the number of used features for training and testing is necessary."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's inference from the replica result.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "numerics-phase-transition-double-descent",
+     "value": "The authors report that their 6-qubit numerics are consistent with the predicted phase transition, with near-zero training error and high generalization error below it, then decreasing generalization error, a phenomenon they call double descent, and that replica theory is more accurate at larger N.",
+     "anchor": "Section III, Fig. 1, p.3 to 4",
+     "quotes": [
+      "The underlying quantum system is a 6-qubit quantum Ising model with a random drive.",
+      "We find that our numerical is consistent with the theoretical prediction of phase transition at N = K − 1.",
+      "Such phenomenon in generalization errors is called double-descent",
+      "Therefore, the larger N is, the more accurate the replica theory produces."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "truncation-tradeoff-optimal-kl",
+     "value": "The paper derives that with truncation to the leading eigentasks, increasing their number raises an overfitting prefactor while lowering the noise term, so the opposing trends indicate an optimal number of eigentasks that minimizes the generalization error.",
+     "anchor": "Section IV, Eqs. (16) and (17), p.4",
+     "quotes": [
+      "It means this prefac- tor contributes to the generalization error as a characterization of overfitting.",
+      "The different trends of the prefactor and the term in parenthesis of Eq. (16) as we increase KL indicates an optimal KL which minimize Eg."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived from the replica-method formula.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "optimal-truncation-estimate-assumption",
+     "value": "The authors state that the optimal truncation index is task-dependent and the task weights are unknown in most practical settings, so they estimate it by assuming equal weights for all eigentasks, giving an equation involving the Resolvable Expressive Capacity.",
+     "anchor": "Section IV, Eq. (18), p.4 to 5",
+     "quotes": [
+      "Such KL∗ must be task-dependent.",
+      "However, the weights a are unknown in most practical",
+      "where Resolvable Expressive Capacity"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit and its approximating assumption in Section IV.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fig2-optimal-truncation-numerics",
+     "value": "The authors report for the same task with K = 64 that the theoretical optimal truncation index is 15 and 18 for N of ten squared and ten cubed respectively (printed flat in the text layer), matching the index that minimizes numerical generalization error, and that truncating at 15 is of order a hundred times better than keeping all 64 features in the small-N case.",
+     "anchor": "Section IV, Fig. 2, p.4 to 5",
+     "quotes": [
+      "number of used eigentasks KL for S = 103, where K = 64.",
+      "it gives a theoretical estimation KL∗ (S) = 15 and KL∗ (S) = 18, for N = 102 and 103 respectively. They also match the KL, which minimizes the numerical generalization errors.",
+      "we find applying Eigentask Learning order-truncation at KL = 15 is O(102) times better than keeping all features (namely KL = 64)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "eigentask-learning-essential-small-n",
+     "value": "The authors state that Eigentask Learning should be an essential procedure, especially when there is not sufficient data for learning in the small-N regime, and that the work establishes a framework for leveraging fewer output features to fit a target function accurately.",
+     "anchor": "Section IV, p.5; Section V, p.5",
+     "quotes": [
+      "It presents that Eigentask Learning should be an essential procedure, especially when there is no sufficient data for learning in the small N regime.",
+      "This presented work establishes a theoretical framework for leveraging fewer output features to fit a specified target function accurately."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's conclusion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "first-to-analyze-both-noises-claim",
+     "value": "The authors claim that, to the best of their knowledge, this is the first work to analyze training and generalization while accounting for both input and output sampling noise in quantum machine learning.",
+     "anchor": "Section I Introduction, p.2",
+     "quotes": [
+      "To the best of our knowledge, this work is the first to analyze training and generalization while accounting for both input and output sampling noise in QML."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's priority claim.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "huang-2021-information-theoretic-bounds-quantum-advantage",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2021-01_Huang_Information-theoretic-bounds-on-quantum-advantage-in-machine-learning.pdf",
+   "title_in_file": "Information-theoretic bounds on quantum advantage in machine learning",
+   "version_note": "arXiv:2101.02464v2 (2 Apr 2021). The text layer drops the epsilon symbol throughout, so statements read 'O( )' and '/ 4' where the paper has epsilon.",
+   "pages": 34,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A learning-theory paper proving that for average-case prediction of outcomes tr(O E(|x><x|)) a restricted classical ML model needs at most O(m NQ / epsilon) runs of the process compared with NQ for any quantum ML model, while for worst-case prediction of all Pauli expectation values there is an exponential separation in copies.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "bounds-scope-query-count-only",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section I states the scope of the comparison.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "exponential-advantage-worst-case-pauli",
+     "verdict": "widened",
+     "note": "Theorems 2 and 3 are now quoted with their conditions. Theorem 3 holds even for adaptive POVM measurements, and the separation is for worst-case error over all Pauli observables. The appendix lower bounds behind Theorem 3 are of order n times 2 to the n for non-adaptive and 2 to the n over 3 for adaptive single-copy measurements.",
+     "value": "The paper proves (Theorem 3) that any classical ML model must use a number of copies of ρ exponential in n (printed 2Ω(n), an exponent printed flat) to predict expectation values of all Pauli observables up to a small error with constant success probability, even when its POVM measurements are adaptive, and (Theorem 2) that its quantum ML model needs only O(log(M/δ)/ epsilon to the fourth) copies to predict any M Pauli observables, so O(n) copies for all of them to constant error; combined, Theorem 3 with Theorem 2 establishes an exponential gap.",
+     "anchor": "Theorems 2 and 3, Section IV, p.4 to 5; proofs Appendix E 2 and E 4",
+     "quotes": [
+      "Theorem 3. Any classical ML must use NC ≥ 2Ω(n) copies of ρ to predict expectation values of all Pauli observables up to a small error with a constant success probability.",
+      "This theorem holds even when the POVM measurements performed by the classical ML model could depend on the previous POVM measurement outcomes adaptively.",
+      "Theorem 2. The quantum ML model only needs NQ = O(log(M/δ)/ 4) copies of ρ to predict expectation values of any M Pauli observables to error with probability at least 1 − δ.",
+      "we only need NQ = O(n) to predict expectation values of all 4n Pauli observables up to a constant error.",
+      "When combined with Theorem 2, Theorem 3 establishes an exponential gap separating classical ML models from fully quantum ML models."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorems 2 and 3 are stated with their conditions in Section IV and proved in Appendix E; only the epsilon symbol is lost in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "no-large-advantage-average-case",
+     "verdict": "widened",
+     "note": "Theorem 1 is now quoted with its conditions: fixed input distribution, an m-qubit observable of norm at most one, a set F of CPTP maps, and the comparison with a restricted classical model that measures O directly, with NC = O(m NQ / epsilon) and error O(epsilon). The stored value's 'comparable' hides the factor m over epsilon.",
+     "value": "The paper proves (Theorem 1) that for a fixed n-bit input distribution D, an m-qubit observable O of norm at most one and a set F of CPTP maps, if a quantum ML model accessing the map NQ times produces with high probability a function with average-case prediction error epsilon, then a model in the restricted classical setting accesses the map NC = O(m NQ / epsilon) times and achieves average prediction error O(epsilon) with high probability.",
+     "anchor": "Theorem 1, Section III, p.3; proof Appendix C (epsilon lost in the text layer)",
+     "quotes": [
+      "Theorem 1. Fix an n-bit probability distribution D, an m-qubit observable O ( O ≤ 1) and a set F of CPTP maps with n input qubits and m output qubits.",
+      "Suppose there is a quantum ML model which accesses the map E ∈ F NQ times, producing with high probability a function hQ(x) that achieves",
+      "Then there is an ML model in the restricted classical setting which accesses E NC = O(mNQ/ ) times and produces with high probability a function hC that achieves"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 is stated with its conditions in Section III and proved in Appendix C; only the epsilon symbol is lost in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "pauli-numerics-product-states-marginal",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "learning-task-definition",
+     "value": "The paper studies predicting functions of the form tr(O E(|x x|)) where x is a classical input, E an arbitrary possibly unknown CPTP map and O a known observable, with the figure of merit the number of runs of E needed.",
+     "anchor": "Abstract; Section I, Eq. (1), p.1",
+     "quotes": [
+      "we are interested in predicting functions of the form f (x) = tr(O E(|x x|)), (1)",
+      "where x is a classical input, E is an arbitrary (possibly unknown) completely positive and trace preserving (CPTP) map, and O is a known observable.",
+      "Our figure of merit is the number of runs of E required to achieve a desired prediction performance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's task definition, Section I.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-restricted-quantum-ml-settings",
+     "value": "The paper defines three settings: classical ML that performs a POVM measurement after each run of E and keeps classical data; restricted classical ML that measures the target observable O on the output state; and quantum ML that can compose multiple runs of E coherently and store the output in quantum memory. It states the quantum setting is strictly more powerful.",
+     "anchor": "Section II, a to c, Eq. (3), p.2 to 3",
+     "quotes": [
+      "a measurement is performed after each query to E; the classical measurement outcomes collected during the learning phase are consulted during the prediction phase.",
+      "Rather than performing arbitrary POVM measurements, we restrict the ML model to measure the target observable O on the output state",
+      "multiple queries to E may be included in a single coherent quantum circuit, yielding an output state stored in a quantum memory",
+      "The quantum ML setting is strictly more powerful than the classical ML setting."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definitions in Section II and Figure 1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bitstring-input-scope",
+     "value": "The authors assume the observable has norm at most one and is known, the process is an unknown CPTP map in a known set F from n qubits to m qubits, and inputs are n-bit strings, which they state is not a severe restriction since continuous parameters can be truncated to finitely many digits.",
+     "anchor": "Section II, p.2",
+     "quotes": [
+      "We assume that the observable O (with O ≤ 1) is known and the physical experiment E is an unknown CPTP map that belongs to a set of CPTP maps F.",
+      "This is not a severe restriction, since floating-point representations of continuous parameters can always be truncated to a finite number of digits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's stated assumptions, Section II.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "computational-advantage-not-excluded",
+     "value": "The authors state that while there is no large advantage in query complexity for average-case error, a substantial quantum advantage in computational complexity is possible, citing a contrived factoring-based learning problem.",
+     "anchor": "Section I, p.2; Appendix A a",
+     "quotes": [
+      "We note, though, that while there is no large advantage in query complexity, a substantial quantum advantage in computational complexity is possible [80].",
+      "a contrived learning problem is constructed based on factoring."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result attributed to Ref. [80].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "holevo-query-lower-bound",
+     "value": "The paper proves, via a communication protocol over a maximal packing net, Fano's inequality and Holevo's theorem, that each query to E can increase the Holevo chi quantity by at most (2 log 2) times m, so any quantum ML model needs a number of queries of order the log of the packing-net size divided by m.",
+     "anchor": "Appendix C 1 b, Eqs. (C16) to (C37)",
+     "quotes": [
+      "obeys χ(X : ρEt X ) ≤ (2 log 2)mt.",
+      "each additional application of Es can increase χ by at most O(m).",
+      "Rearranging this display yields a lower bound on the minimal query complexity in terms of packing net size"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved by induction in Appendix C 1 b with the bound quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "polynomial-method-weaker-bound",
+     "value": "The paper gives a second proof by a polynomial method that yields somewhat weaker query lower bounds that apply only if m is at most n.",
+     "anchor": "Appendix C 1 c, Eqs. (C38) to (C55)",
+     "quotes": [
+      "It leads to somewhat weaker results that only apply if m ≤ n."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit of this proof strategy in Appendix C 1 c.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-upper-bound-proposition1",
+     "value": "The paper proves (Proposition 1) that the restricted classical model which minimizes empirical training error over a maximal packing net achieves average prediction error less than 12 epsilon with probability at least 1 − δ from training data of size N of order 38 log(4 times the packing-net size over δ) over epsilon, a 1/epsilon scaling that the authors note is better than the standard 1/epsilon squared.",
+     "anchor": "Proposition 1, Appendix C 2, Eqs. (C57) to (C97) (epsilon lost in the text layer)",
+     "quotes": [
+      "Proposition 1. Let f∗ : {0, 1}n → R be the packing net element that minimizes the empirical training error in Equation (C57).",
+      "Then, for δ ∈ (0, 1), training data of size N ≥ 38 log(4 |M4p (F f )| /δ)/ implies",
+      "E |f ∗(x) − fE (x)|2 < 12 with probability at least 1 − δ.",
+      "We note that the training data size N in Equation (C66) scales as 1/ rather than 1/ 2, an improvement over the standard scaling typically encountered in statistical learning theory [15, 68]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 1 is stated with conditions and proved in Appendix C 2; epsilon symbols are lost in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "maximal-packing-net-is-covering-net",
+     "value": "The paper proves (Lemma 2, Appendix C) that a maximal packing net is a covering net: every target function has a packing-net element within average squared distance 4 epsilon (epsilon lost in the text layer).",
+     "anchor": "Lemma 2, Appendix C 2 d, Eqs. (C80) and (C81)",
+     "quotes": [
+      "Lemma 2 (Maximal packing nets are covering nets).",
+      "The proof is standard, see e.g. [90], and based on contradicting the assumption that M4p (F f ) is a maximal packing net."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A standard lemma; its displayed inequality is not quotable from the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "partial-trace-lemma1-appendix-c",
+     "value": "The paper proves (Lemma 1, Appendix C) that tracing out the m output qubits of a CPTP map applied to part of a state equals tracing out its n input qubits, which lets the Holevo-chi induction ignore the action of each query.",
+     "anchor": "Lemma 1, Appendix C 1 b",
+     "quotes": [
+      "Lemma 1. Fix a CPTP map E from n qubits to m qubits and let I denote the identity map on n ≥ 0 qubits.",
+      "the action of a CPTP map can be traced out"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 1 is stated and proved via the Kraus representation in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem1-tight-proposition2",
+     "value": "The paper proves (Proposition 2, Appendix D) that the relation NC = O(m NQ / epsilon) is tight for restricted classical models: for any epsilon in (0, 1/3) and positive integer m there is a learning problem with n = m−1 where one quantum query suffices but any restricted classical model needs NC = Ω(m NQ / epsilon); whether the separation is tight for unrestricted classical ML is left open.",
+     "anchor": "Section III, p.4; Proposition 2, Appendix D",
+     "quotes": [
+      "The relation NC = O(mNQ/ ) is tight. We give an example in Appendix D with NC = Ω(mNQ/ ).",
+      "Proposition 2. For any ∈ (0, 1/3), and positive integer m, there exists a learning problem (1)",
+      "where n = m−1",
+      "We see that a single quantum query (NQ = 1) suffices to extract the label a with certainty.",
+      "We leave open the question of whether the separation between unrestricted classical ML and quantum ML is tight or not."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 2 is stated with its conditions and proved in Appendix D; epsilon symbols are lost in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem4-pauli-procedure",
+     "value": "The paper proves (Theorem 4) that for any M Pauli operators a procedure using two-copy Bell measurements for absolute values and gentle majority-vote measurements on a quantum memory for signs estimates all expectation values to error epsilon with probability at least 1 − δ from O(log(M/δ)/epsilon to the fourth) copies, so O(n/epsilon to the fourth) copies suffice for all Pauli operators with probability at least 0.99.",
+     "anchor": "Theorem 4, Appendix E 2, Eqs. (E5) to (E28)",
+     "quotes": [
+      "Theorem 4. For any M Pauli operators P1, . . . , PM , there is a procedure that produces pˆ1, . . . , pˆM with",
+      "under probability at least 1 − δ by performing POVM measurements on",
+      "From Theorem 4, we only need O(log(100 × 4n)/ 4) = O(n/ 4) copies to accurately predict all 4n Pauli operators with probability at least 0.99."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4 is stated and proved in Appendix E 2; epsilon symbols are lost in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bell-basis-two-copy-key-idea",
+     "value": "The authors state that although Pauli operators may anticommute, the tensor products of each with itself all commute, so all squared Pauli expectation values can be determined from Bell-basis measurements on two copies of ρ.",
+     "anchor": "Section IV, p.4; Appendix E 2 a, Eqs. (E8) to (E10)",
+     "quotes": [
+      "it is possible to measure Px ⊗ Px simultaneously for all x using two copies of ρ.",
+      "can be determined by measuring pairs of qubits in the Bell basis, which is highly efficient."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix E 2 a, Eqs. (E8) to (E10).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma3-corollary1-abs-values",
+     "value": "The paper proves (Lemma 3 and Corollary 1) that with N1 of order log(1/δ) over epsilon squared Bell-measurement repetitions the squared Pauli expectation is estimated to error epsilon, and with N1 of order log(1/δ) over epsilon to the fourth its absolute value is estimated to error epsilon, each with probability at least 1 − δ.",
+     "anchor": "Lemma 3 and Corollary 1, Appendix E 2 a, Eqs. (E12) to (E15)",
+     "quotes": [
+      "Lemma 3. Given N1 = Θ(log(1/δ)/ 2).",
+      "Corollary 1. Given N1 = Θ(log(1/δ)/ 4).",
+      "with probability at least 1 − δ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated and proved via Hoeffding's inequality in Appendix E 2 a; epsilon symbols lost in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma5-sign-measurement",
+     "value": "The paper proves (Lemma 5), using the cited quantum union bound (Lemma 4), that with N2 of order log(M/δ) over epsilon squared stored copies, sequential majority-vote measurements correctly obtain the signs of M Pauli expectation values whose absolute values exceed epsilon, with probability at least 1 − δ.",
+     "anchor": "Lemmas 4 and 5, Appendix E 2 b, Eqs. (E16) to (E20)",
+     "quotes": [
+      "Lemma 4 (Quantum union bound [1]).",
+      "Lemma 5. For any δ, , M > 0, let N2 = Θ(log(M/δ)/ 2).",
+      "then we can correctly obtain sign(tr(Piρ)), ∀i = 1, . . . , M, (E18) with probability at least 1 − δ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 5 is stated and proved in Appendix E 2 b; Lemma 4 is cited.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "restricted-classical-pauli-lower-bound",
+     "value": "The paper proves, by reduction to learning point functions (Lemma 6), that restricted classical ML needs a number of inputs of order 4 to the n to predict all Pauli expectation values to small worst-case error; Lemma 6 itself gives N at least one quarter of 2 to the n for point functions on n bits (exponents printed flat).",
+     "anchor": "Lemma 6 and Appendix E 3, Eqs. (E29) to (E34)",
+     "quotes": [
+      "Lemma 6. Consider a set of point functions fa : {0, 1}n → {0, 1}, where n ≥ 2",
+      "Then N ≥ (1/4)2n = Ω(2n).",
+      "Then, the number of inputs must obey N ≥ (1/4)22n = Ω(4n)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 6 and its consequence are stated and proved in Appendix E 3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nonadaptive-classical-lower-bound",
+     "value": "The paper proves (Lemmas 7 and 8) that classical ML with non-adaptive single-copy measurements needs of order n times 2 to the n copies (printed Ω(n2n)), since each outcome carries mutual information at most 1/(2 to the n plus 1), and this matches the upper bound of classical shadows with random Clifford measurements.",
+     "anchor": "Appendix E 4 a, Lemmas 7 and 8, Eqs. (E35) to (E53)",
+     "quotes": [
+      "show that any procedure needs to measure Ω(n2n) copies of the state ρ.",
+      "Lemma 8. I(a : oi) ≤ 1/(2n + 1).",
+      "Lemma 7. Fix a pure state |ψ ψ| and set ρa,s = (I + sPa)/2n",
+      "This matches with the lower bound for non-adaptive measurements."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemmas 7 and 8 and the bound are stated and proved in Appendix E 4 a.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adaptive-classical-lower-bound-not-tight",
+     "value": "The paper proves (Lemma 9) that for adaptive single-copy measurements the total variation distance between the two hypotheses is at most 2N over (2 to the n plus 1) to the one third, giving a lower bound of order 2 to the n over 3 copies, and states this result is not yet tight.",
+     "anchor": "Appendix E 4 b, Lemma 9, Eqs. (E54) to (E76)",
+     "quotes": [
+      "Lemma 9. TV (p1(o1, . . . , oN ), p2(o1, . . . , oN )) ≤ 2N/(2n + 1)1/3.",
+      "We also give a lower bound of Ω(2n/3) for adaptive measurements",
+      "However, the actual result is not (yet) tight."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 9 is stated and proved in Appendix E 4 b, and the paper states the limit.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-ml-pauli-lower-bound",
+     "value": "The paper proves, by Holevo's theorem, a lower bound of order n copies for quantum ML models with general entangled measurements, matching its quantum ML procedure.",
+     "anchor": "Appendix E 5, Eqs. (E77) to (E82)",
+     "quotes": [
+      "We establish a lower bound of N = Ω(n) for quantum ML models that can perform general entangled measurements on N copies of ρ.",
+      "This matches with the sample complexity of the quantum ML model considered in Section E 2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated and proved in Appendix E 5.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mixed-state-numerics-scalings",
+     "value": "The authors report that for mixed states the restricted classical exhaustive search shows sample complexity of order 4 to the n, the classical-shadow classical model of order n times 2 to the n, and the quantum model a linear scaling of order n, each confirmed by their numerical experiments.",
+     "anchor": "Appendix B 1, Figure 3",
+     "quotes": [
+      "This results in a sample complexity of O(4n) – a scaling that is confirmed by our numerical experiments and matches the lower bound Ω(4n).",
+      "this upper bound simplifies to O(n2n). The numerical experiments confirm this",
+      "The required sample complexity is O(log(4n)) = O(n) and the numerical experiments confirm this linear scaling."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "product-state-numerics-scalings",
+     "value": "The authors report that for product stabilizer states restricted classical ML needs about 6n Pauli measurements, standard classical ML of order log(n) repetitions, and the quantum model uses two-copy Bell measurements then a final-copy measurement, with the scalings confirmed numerically.",
+     "anchor": "Appendix B 2",
+     "quotes": [
+      "In turn, we expect to require 6n Pauli measurements to unambiguously characterize the underlying stabilizer state. This scaling is confirmed by the numerical experiments.",
+      "We expect to require O(log(n)) measurement repetitions to unambiguously determine the underlying product state. Numerical experiments confirm this scaling behavior."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "average-case-pauli-easy",
+     "value": "The authors state that average-case prediction of Pauli observables is a much easier task, because most of the expectation values are exponentially small in n.",
+     "anchor": "Section V, p.5",
+     "quotes": [
+      "Note that average-case prediction of Pauli observables is a much easier task, because most of the 4n expectation values are exponentially small in n."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "coherent-vs-incoherent-separation",
+     "value": "The authors state the exponential advantage may be viewed as an exponential separation between coherent and incoherent measurements, which had been challenging to establish because incoherent measurements are difficult to analyze in the adaptive setting, and that their proof technique overcomes this.",
+     "anchor": "Section VI, p.5; Appendix A g",
+     "quotes": [
+      "This exponential advantage of quantum ML over classical ML may be viewed as an exponential separation between coherent measurements",
+      "Such a separation has been challenging to establish because incoherent measurements are difficult to analyze in the adaptive setting",
+      "Our proof technique overcomes this challenge"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's interpretation of the theorems.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-classical-ml-effective",
+     "value": "The authors conclude that Theorem 1 establishes a fundamental limit on quantum advantage for average prediction error that holds for any quantum ML model, that the classical setting can be surprisingly effective while the coherent quantum setting may be infeasible until far in the future, and that identifying further learning problems allowing substantial quantum advantage is an important future direction.",
+     "anchor": "Section VI Conclusion and Outlook, p.5",
+     "quotes": [
+      "This result establishes a fundamental limit on quantum advantage in machine learning that holds for any quantum ML model [47, 53, 79].",
+      "Theorem 1 means that the classical ML setting, in which a measurement is performed after each query to E, can be surprisingly effective.",
+      "is far more challenging and may be infeasible until far in the future.",
+      "An important future direction will be identifying further learning problems which allow substantial quantum advantage"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusions; the feasibility remark is an author's judgment.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-pac-no-advantage-cited",
+     "value": "The authors cite quantum PAC learning work as having rigorously established the absence of information-theoretic quantum advantage for learning classical Boolean functions, and state that Theorem 1 closes the open questions left by restricting to quantum samples and worst-case input distributions.",
+     "anchor": "Appendix A a",
+     "quotes": [
+      "The latter rigorously established the absence of information-theoretic quantum advantage for learning classical Boolean functions",
+      "Theorem 1 closes these open questions showing that no large quantum advantage in sample complexity (or query complexity) is possible even in the much more general setting"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The first part is a cited result; the second restates Theorem 1.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "huang-2021-power-data-quantum-machine-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2021\\Huang-et-al._2021_The-power-of-data-in-quantum-machine-learning__2011.01938.pdf",
+   "title_in_file": "Power of data in quantum machine learning",
+   "version_note": "arXiv:2011.01938v2 (10 Feb 2021). The text layer drops the epsilon symbol and square-root signs in several bounds.",
+   "pages": 34,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory-plus-numerics paper showing that training data can make classical ML competitive on quantum-generated labels, giving kernel prediction-error bounds, a geometric-difference test for potential quantum prediction advantage, projected quantum kernels, and simulations up to 30 qubits.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "classical-ml-with-data-not-guaranteed-advantage",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The Discussion's summary; the bounds behind it are entered separately.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "power-of-data-open-limits",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The Discussion states both limits.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "prediction-error-bounds-method",
+     "verdict": "narrowed",
+     "note": "The appendices limit both halves of the abstract's claim. Asymptotic tightness is shown by a matching lower bound for the quantum kernel case when a large Hilbert space dimension is assumed. Empirical predictiveness is a similar trend with a non-negligible gap between bound and actual error (Appendix M).",
+     "value": "The authors state they develop a methodology for assessing potential quantum advantage on rigorous prediction error bounds that are tight asymptotically and empirically predictive; the appendices show tightness through a matching lower bound for the quantum kernel case assuming a large Hilbert space dimension, and report that the bound and the actual prediction error of classical models have a non-negligible gap but follow a similar trend.",
+     "anchor": "Abstract; Results B, p.4; Appendix H; Appendix M, Fig. 8",
+     "quotes": [
+      "Using rigorous prediction error bounds as a foundation, we develop a methodology for assessing potential quantum advantage in learning tasks. The bounds are tight asymptotically and empirically predictive for a wide range of learning models.",
+      "In Appendix H, we give a matching lower bound showing that a scaling of Tr(O2) is unavoidable if we assume a large Hilbert space dimension.",
+      "prediction error bound and the actual prediction error has a non-negligible gap, the two figures follow a similar trend."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Mixes a proved bound with an empirical observation.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "projected-kernel-30-qubits",
+     "verdict": "narrowed",
+     "note": "The outperformance is on data sets engineered to saturate the geometric difference between the projected quantum kernel and the classical kernels, with 10 percent random label noise. The advantage shrinks as the training set grows, and the quantum kernel comparison runs only to n = 28.",
+     "value": "The authors report that on data sets engineered to saturate the geometric difference between the projected quantum kernel and classical models, with labels flipped to random values with probability 0.1, projected quantum kernels outperform all tested classical models in prediction error in numerical tests up to 30 qubits, with an advantage reaching more than 20% for large sizes; they also report that as the number of training data N increases all methods improve and the advantage gradually diminishes.",
+     "anchor": "Abstract; Results D, Fig. 4, p.6 to 7; Discussion; Appendix L 4, Eq. (L15); Appendix M, Fig. 7",
+     "quotes": [
+      "On engineered data sets, projected quantum kernels outperform all tested classical models in prediction error.",
+      "in one of the largest numerical tests for gate-based quantum machine learning to date, up to 30 qubits.",
+      "The advantage of projected quantum kernel closely follows the geometric difference g and reaches more than 20% for large sizes.",
+      "when we increase the number of training data N , all methods improve, and the advantage will gradually diminish.",
+      "random ± 1, with prob. 0.1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on engineered data.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "proposition1-bpp-bqp",
+     "value": "The paper proves (Proposition 1, Appendix A) that if a classical algorithm without training data can compute the amplitude-encoded quantum model's expectation value efficiently for any quantum neural network and observable (up to 0.15-error with high probability), then BPP=BQP.",
+     "anchor": "Results A, Proposition 1, p.3; Proposition 2 and proof, Appendix A",
+     "quotes": [
+      "Proposition 1. If a classical algorithm without training data can compute f (x) efficiently for any UQNN and O, then BPP=BQP.",
+      "up to 0.15-error with high probability over the randomness in the classical algorithm"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated with conditions in Results A and Appendix A, and proved in Appendix A.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "amplitude-example-classical-learnable",
+     "value": "The paper shows that for the same amplitude-encoded model, a classical ML model trained on N examples predicts the function with average error at most a constant times the square root of p squared over N (square root lost in the text layer), so N proportional to p squared over epsilon squared training data suffices for additive error epsilon.",
+     "anchor": "Results A, Eq. (2), p.3; Appendix A, Eq. (A5)",
+     "quotes": [
+      "which is a quadratic function with p2 coefficients",
+      "Hence, with N ∝ p2/ 2 training data, one can train a classical ML model to predict the function f (x) up to an additive prediction error",
+      "This elevation of classical models through some training samples is illustrative of the power of data."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix A from the quantum kernel bound.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bpp-samp-complexity-class",
+     "value": "The paper defines BPP/samp for classical algorithms that learn from sampled data, shows it contains BPP and is contained in P/poly, exhibits a language separating it from BPP using an undecidable unary language, and leaves open whether BPP/samp is strictly contained in P/poly.",
+     "anchor": "Appendix B, Fig. 5",
+     "quotes": [
+      "which we refer to as BPP/samp.",
+      "Hence BPP is contained inside BPP/samp.",
+      "It is not hard to show that BPP/samp is contained in P/poly based on the same proof strategy for Adleman's theorem.",
+      "We leave open the question of whether BPP/samp is strictly contained in P/poly.",
+      "Hence the language L is not in"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Definitions and inclusions are proved in Appendix B; the open question is stated there.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "proposition3-qnn-kernel-equivalence",
+     "value": "The paper proves (Proposition 3) that training an arbitrarily deep quantum neural network with a trainable observable is equivalent to training a quantum kernel method with the kernel Tr(ρ(xi)ρ(xj)), and states this does not imply learning with a parsimonious amount of data, often requiring exponential data and precision.",
+     "anchor": "Appendix C, Proposition 3",
+     "quotes": [
+      "Proposition 3. Training an arbitrarily deep quantum neural network UQNN with a trainable observable O is equivalent to training a quantum kernel method with kernel kQ(xi, xj) = Tr(ρ(xi)ρ(xj)).",
+      "it does not imply that it allows learning with a parsimonious amount of data.",
+      "in many cases it requires both an exponential amount of data and exponential precision in evaluation due to the fidelity type metric."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition 3 is stated and proved in Appendix C (with the regularization set to zero).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem1-general-kernel-bound",
+     "value": "The paper proves (Theorem 1, Appendix D) that for an observable of spectral norm at most one, a unitary, an encoding, and N training data with the kernel rescaled so that the diagonal sums to N, for any λ ≥ 0, with probability at least 1 − δ a model can be learned whose expected prediction error is bounded in terms of a training-error operator, a generalization-error operator and log(1/δ) over N; in the limit λ → 0 this becomes order the square root of sK(N) over N (square roots lost in the text layer).",
+     "anchor": "Theorem 1, Appendix D, Eqs. (D1) to (D4); Results B, Eq. (3)",
+     "quotes": [
+      "Theorem 1. Consider an observable O with O ∞ ≤ 1, a quantum unitary U (e.g., a quantum neural network or a general Hamiltonian evolution)",
+      "Suppose that k(x, x ) can be evaluated efficiently and the kernel function is re-scaled to satisfy N i=1 k(xi, xi) = N.",
+      "For any λ ≥ 0, with probability at least 1 − δ over the sampling of the training data, we can learn a model h(x) from the training data, such that the expected prediction error is bounded by",
+      "When we take the limit of λ → 0, we have Atra = 0",
+      "+ log(1/δ) N , (D1)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 1 is stated with its conditions and proved in Appendix D; square-root signs are lost in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "model-complexity-definition",
+     "value": "The paper defines the model complexity sK(N) of the trained kernel model as the squared norm of its weight vector, computable classically by inverting an N by N kernel matrix, with a smaller value implying better generalization to new data.",
+     "anchor": "Results B, Eq. (4), p.4",
+     "quotes": [
+      "The quantity sK(N ) is equal to the model complexity of the trained function h(x) = w†φ(x)",
+      "A smaller value of sK (N ) implies better generalization to new data x sampled from the distribution D.",
+      "The computation of sK(N ) can be performed efficiently on a classical computer by inverting an N"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition in Results B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "geometric-difference-test",
+     "value": "The paper defines an asymmetric geometric difference between two kernels that depends on the data set but not on the labels, shows the model complexity of one kernel is at most the squared geometric difference times that of the other, so a small classical-quantum geometric difference means the classical model will always have similar or better model complexity than the quantum model.",
+     "anchor": "Results B, Eqs. (5) and (6), p.4 to 5; Appendix F 3",
+     "quotes": [
+      "The separation can be characterized by defin- ing an asymmetric geometric difference that depends on the dataset, but is independent of the function values or labels.",
+      "One can show that sK1 ≤ g122sK2",
+      "the classical ML model will always have a similar or better model complexity sK(N ) compared to the quantum ML model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The inequality is derived in Appendix F 3; the definition is in Results B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "saturating-dataset-construction",
+     "value": "The paper shows that if the classical-quantum geometric difference is large, a data set exists whose labels saturate the inequality with the quantum model superior, and constructs it efficiently by a generalized eigenvalue problem, with the authors stating that if this data set shows no quantum advantage there will likely be none.",
+     "anchor": "Results B, p.5; Appendix G, Eqs. (G1) to (G4)",
+     "quotes": [
+      "In contrast, if gCQ is large we show that there exists a data set",
+      "An efficient method to explicitly construct such a maximally divergent data set is given in Appendix G",
+      "which has an exact√solution given√by a generalized eigenvalue problem.",
+      "If there is no quantum advantage in this dataset, there will likely be none."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The construction is shown; the last sentence is an author's judgment.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "geometric-difference-min-over-suite",
+     "value": "The authors state that a formal statement requires the minimum over all efficient classical methods, but in practice they take the geometric difference as the minimum over a suite of optimized classical ML models with tuned hyperparameters.",
+     "anchor": "Results B, p.4 to 5; Appendix L 3",
+     "quotes": [
+      "While a formal statement about classical methods generally requires defining it over all efficient classical methods",
+      "we consider gCQ to be the minimum geometric difference among a suite of optimized classical ML models."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its practical test in Results B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-kernel-dimension-bound",
+     "value": "The paper derives that for the quantum kernel method the prediction error is bounded by a constant times the square root of min(d, Tr(O2)) over N, where d is the effective dimension of the training-set quantum state space, so a quantum kernel method can learn any quantum neural network when d or Tr(O2) is much smaller than N; most observables such as Pauli operators have exponentially large Tr(O2), so d is the central quantity.",
+     "anchor": "Results B, Eqs. (7) and (8), p.5; Appendix E 1",
+     "quotes": [
+      "which defines the effective dimension of the quantum state space spanned by the training data.",
+      "This prediction error bound shows that a quantum kernel method can learn any UQNN when the dimension of the training set space d or the squared Frobenius norm of observable Tr(O2) is much smaller than the amount of data N .",
+      "most observables, such as Pauli operators, will have exponentially large Tr(O2), so the central quantity is the dimension d.",
+      "min(d, Tr(O2"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix E 1 from Theorem 1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem3-lower-bound-trO2",
+     "value": "The paper proves (Appendix H) that in the worst case any learning algorithm needs a number of training data of order B over epsilon squared for observables with Tr(O2) at most B when the input states can spread over a sufficiently large Hilbert space, and that the quantum kernel method matches this lower bound.",
+     "anchor": "Appendix H, Theorem 3, Eqs. (H1) to (H8)",
+     "quotes": [
+      "This result says that in the worst case, the number N of training data has to be at least Ω(Tr(O2)/ 2) when the input quantum state can be distributed across a sufficiently large Hilbert space.",
+      "Quantum kernel method matches this lower bound.",
+      "Then we must have N ≥ Ω(B/ 2).",
+      "any unknown observable O with bounded Frobenius norm Tr(O2) ≤ B"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 3 is stated with conditions and proved in Appendix H; epsilon is lost in the text layer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-kernel-exponential-limitation",
+     "value": "The paper proves (Appendix I) a simple example, computational-basis encoding measured by a single Z, where a linear regression learns the function from training data of size n but the quantum kernel method needs training data of order 2 to the n (printed flat), and states that in exponentially large state spaces the quantum kernel is exponentially close to zero for distinct inputs, needing exponentially many measurements to resolve.",
+     "anchor": "Appendix I, Eqs. (I1) to (I3); Results C, p.5",
+     "quotes": [
+      "Hence a linear regression or a single-layer neural network can learn the function f (x) from training data of size n with high probability.",
+      "We now show that a quantum kernel method will need a training data of size N ≥ Ω(2n) to learn this simple function f (x).",
+      "we will need an exponential number of measurements to resolve such an exponentially small difference."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The example and its bound are proved in Appendix I.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "projected-quantum-kernel-definition",
+     "value": "The paper proposes projected quantum kernels, which project quantum states to an approximate classical representation such as one-particle reduced density matrices or classical shadows, and states that in numerics the projection increases rather than decreases the geometric difference with classical ML.",
+     "anchor": "Results C, Eq. (9), p.5; Appendix J",
+     "quotes": [
+      "To circumvent this setback, we propose a family of projected quantum kernels as a solution.",
+      "These kernels work by projecting the quantum states to an approximate classical representation, e.g., using reduced physical observables or classical shadows",
+      "In numerical experiments, we find that the classical projection increases rather than decreases the geometric difference with classical ML models."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition in Results C; the numerical part is entered separately.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "discrete-log-projected-kernel-advantage",
+     "value": "The paper proves (Appendix K) that the discrete-logarithm-based learning problem, assumed classically hard, can be solved by a projected quantum kernel method using a sample complexity independent of the input size n, via a VC-dimension bound for a quadratic function class with VC-dimension 3.",
+     "anchor": "Appendix K, Definition 1, Theorem 4, Eqs. (K1) to (K7)",
+     "quotes": [
+      "This concludes the proof showing that the discrete logarithm-based learning problem can be solved with a projected quantum kernel method using a sample complexity independent of the input size n.",
+      "is classically hard and logg(x) is one-to-one.",
+      "the VC-dimension [18, 59] for the function class {sign(az2 + bz + c)|a, b, c ∈ R} is 3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix K under the stated hardness assumption.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "numerics-setup-fashion-mnist",
+     "value": "The authors' numerics use fashion-MNIST reduced by principal component analysis to n-dimensional vectors, 800 sub-sampled points, three quantum embeddings (separable rotation, IQP-type, Hamiltonian evolution), quantum labels from a local observable after a Trotterized 1D Heisenberg-like quantum neural network with random couplings, and TensorFlow Quantum.",
+     "anchor": "Results D, p.6; Appendix L 1, L 2, L 4",
+     "quotes": [
+      "we conduct our experiments around the fashion-MNIST data set [48]",
+      "Finally, we sub-sample 800 data points from the dataset without replacement.",
+      "For quantum embeddings, we explore three options, E1 is a separable rotation circuit [32, 51, 52], E2 is an IQP-type embedding circuit [15], and E3 is a Hamiltonian evolution circuit",
+      "resembling the Trotter evolution of 1DHeisenberg model with random couplings.",
+      "We use Tensorflow-Quantum [47] for implementing the original/projected quantum kernel methods."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its numerical setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "compute-scale-petaflops",
+     "value": "The authors report a peak throughput of up to 1.1 quadrillion floating point operations per second, with overall floating point operations across all experiments of approximately 2 quintillion.",
+     "anchor": "Results D, p.6",
+     "quotes": [
+      "reaching a peak throughput of up to 1.1 quadrillion floating point operations per second (petaflop/s).",
+      "with the overall floating point operations across all experiments totalling approximately 2 quintillion (exaflop)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A reported measurement from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-competitive-on-quantum-data",
+     "value": "The authors report that with N = 600 classical ML performs best on the classical data set and is very competitive on the quantum data sets, even outperforming existing quantum ML models, especially for embeddings E1 and E2, and that small geometric difference always resulted in classical ML being competitive or better.",
+     "anchor": "Results D, Fig. 3, p.6",
+     "quotes": [
+      "with number of data N = 600.",
+      "the prediction performance for the classical methods on the quantum datasets is also very competitive and can even outperform existing quantum ML models",
+      "is especially strong on Dataset (Q, E1) and Dataset (Q, E2).",
+      "We see that small geometric difference g always results in classical ML being competitive or outperforming the quantum ML model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dimension-grows-geometric-difference-small",
+     "value": "The authors report that the dimension of the original quantum state space grows quickly and the geometric difference of the standard quantum kernel becomes small as the dimension becomes too large, while the projected quantum space has low dimension and higher geometric difference for all embeddings and sizes; only for the projected kernel with embedding E3 is some mild advantage over the best classical method seen.",
+     "anchor": "Results D, Fig. 3, p.6",
+     "quotes": [
+      "the geometric difference g becomes small as the dimension becomes too large (d ∝ N ) for the standard quantum kernel.",
+      "In contrast, the projected quantum space has a low dimension even when d grows, and yields a higher geometric difference g for all embeddings and system sizes.",
+      "Only when the geometric difference g is large (projected kernel method with embedding E3) can we see some mild advantage over the best classical method."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "more-qubits-naive-kernel-worse",
+     "value": "The authors state that adding more qubits to naive quantum kernel methods is likely to lead to tiny inner products and even worse performance.",
+     "anchor": "Results D, p.6",
+     "quotes": [
+      "doing this for na ̈ıve quantum kernel methods is likely to lead to tiny inner products and even worse performance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An inference from one study's numerics.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "original-kernel-engineered-no-advantage",
+     "value": "The authors report that on data sets engineered for the original quantum kernel, no substantial advantage is found at large system size due to the small geometric difference.",
+     "anchor": "Results D, p.7; Appendix M, Fig. 6",
+     "quotes": [
+      "No substantial advantage is found using quantum kernel methods at large system size due to the small geometric difference g(C||QK)."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "advantage-shrinks-with-n",
+     "value": "The authors report a non-trivial advantage of the projected quantum kernel over the best classical model at small training size N = 100 on the E2 quantum data set, which shrinks as the training size increases.",
+     "anchor": "Appendix M, Fig. 7",
+     "quotes": [
+      "there is a non-trivial advantage for small training size N = 100 when comparing projected quantum kernel and the best classical ML model.",
+      "However, as training size N increases, every model will improve and the prediction advantage will shrink.",
+      "Prediction error (lower the better) on quantum data set (E2) over different training set size N ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "first-large-separation-claim-and-conjecture",
+     "value": "The authors claim this is, to their knowledge, the first empirical demonstration of such a large separation between quantum and classical ML models, and conjecture that the procedure could create data sets easy to learn with a quantum device, hard to learn classically and easy to verify classically, possibly persisting under moderate noise.",
+     "anchor": "Results D, p.7; Discussion",
+     "quotes": [
+      "To the authors' knowledge, this is the first empirical demonstration of such a large separation between quantum and classical ML models.",
+      "We conjecture that this procedure could be used with a quantum computer to create challenging data sets that are easy to learn with a quantum device, hard to learn classically",
+      "the size of the margin implies that this separation may even persist under moderate amounts of noise in a quantum device."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's priority claim and conjecture.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "advantage-claims-need-classical-approximations",
+     "value": "The authors state that claims of true advantage in quantum machine learning require benchmarking not only classical ML models but also classical approximations of quantum models.",
+     "anchor": "Discussion, p.7",
+     "quotes": [
+      "Claims of true advantage in a quantum machine learning setting require not only benchmarking classical machine learning models, but also classical approximations of quantum models."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "A limit the paper states in its Discussion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "kernel-expressivity-cited",
+     "value": "The authors cite that training neural networks with large hidden layers is equivalent to a neural tangent kernel, and that the Gaussian kernel can learn any continuous function in a compact space, though the data required could be very large in the worst case.",
+     "anchor": "Introduction, p.2; Results A, p.4",
+     "quotes": [
+      "training neural networks with large hidden layers is equivalent to training an ML model with a particular kernel, known as the neural tangent kernel [19–21].",
+      "can learn any continuous function in a compact space [36], which includes learning any QNN.",
+      "the required amount of data N to achieve a small prediction error could be very large in the worst case."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Cited results.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
