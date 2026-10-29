@@ -13,7 +13,26 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-10-24 onward (Sprint 13, in progress)
+### 2026-10-29 onward (Sprint 14, in progress)
+
+- **chore**: Sprint 14 opened (2026-10-29). The team lead merged PR #131
+  into develop (bb4cb80) and PR #139 to main (952c9e3); `sprint-13`
+  tagged on 952c9e3; branch `feature/20261029_Sprint_14` cut from the
+  Sprint 13 branch (6.6 carry-forward). PR #139 is titled "Sprint 12:
+  Develop to Main"; it was Sprint 13's release. Phase 1.1
+  reconciliation: every commit since 2026-10-28 has its entry
+- **docs**: Backlog refinement 2026-10-29 (Sprint 14 Phase 1.2 to 1.4):
+  Sprint 13's shipped cards pruned by hand (F107, F108, F109 to F112,
+  and F113, whose definitions of a full read and acceptance move into
+  F114); F120 carded from Phase 2's Sprint 29 work at 22d16c3 (F156,
+  F158, F160 and F166 results); snapshots refreshed on F95 (166 unnamed
+  PDFs: 165 are Task G's downloads of store records, 1 is F119's paper),
+  F98 (Roadmap-to-QML at ea6f42a7c0: 4 new arXiv ids, 7 withdrawn or
+  retracted marks), F57 (unchanged: 654 with no read row) and F51 (hold
+  unchanged). Phase 1.3: 0 re-checks due; no ADR or schema change in
+  Sprint 13. Slate presented
+
+### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
 - **chore**: Sprint 13 opened (2026-10-24). The team lead merged PR #122
   into develop (0c554bb) and PR #130 to main (a3ad99a); `sprint-12`
