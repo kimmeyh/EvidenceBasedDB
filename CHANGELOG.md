@@ -240,7 +240,22 @@ this project keeps having to replace with a step.
   takes a local read over a cloud result, does not count Boyd's cloud
   result as a read, waits for each local reader's group file, and leaves
   g113's other 3 records for F114's next release. `finalize` names the
-  local reader and Task F's tag. Tests proven red by injection
+  local reader and Task F's tag. Tests proven red by injection (1cb63bb)
+- **fix**: the fresh-eyes review of 1cb63bb (Sprint 14 Task F, #146,
+  2026-10-30). Two of the new guards had tests that could not fail:
+  the test patched WAIT, and its brief held no unread record. WAIT is now
+  `waiting()`, read from the briefs and the readers' group files, and
+  the test exercises both. The builder takes a local read from the
+  reader's checked group file, not its `done\` file. In a group that
+  mixes cloud and local reads, `finalize` writes a per-record `tags`.
+  The applier reads that field, so abbas, bucher and Boyd will not carry
+  "F114 cloud read". The applier also says "first-pass subagent" for a
+  local read, where it said "cloud session" for every Sprint 14 group.
+  `f114_cloud.records()` stops at g329: g330 has no cloud brief, so
+  `launch` and `run` crashed on it. F125 is carded for g113's 3 unread
+  records, which have no way back in, and for the stale status script.
+  Each fix was proven red by injection. g079's group file was built
+  before the fix, and it matches the reader's checked file.
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

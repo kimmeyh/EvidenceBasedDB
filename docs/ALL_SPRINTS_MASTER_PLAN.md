@@ -762,6 +762,25 @@ and in git. Remaining items below.
   unchanged; a second apply writes nothing.
 - Depends on: none
 
+**F125. A way back in for a record left unread in a reviewed group (~30m) Priority 40** (NEW 2026-10-30, the fresh-eyes review of 1cb63bb, Sprint 14 Task F)
+- Phase: Reading (F114's next release)
+- Value: lets F114's next release enter the records Sprint 14 left
+  unread inside a group it reviewed, instead of losing them.
+- Platform: `scripts/f117_build_groups.py`, `scripts/f117_review.py`,
+  `scripts/sprint13_g_reading.py`; `scripts/sprint13_g_status.py`.
+- g113's chen-2026-quantum-adaptive-self-attention-quantum,
+  chen-2026-safe-quantum-machine-learning-variational and
+  chen-2026-stochastic-quantum-spiking-neural-networks are marked
+  unread in g113's review (Sprint 14 Task F read 50 papers, Q1 = 2). The
+  group file and the review file are never overwritten and the records
+  stay in g113 in the ledger, so nothing today can enter them later.
+- Also: `scripts/sprint13_g_status.py` still points at Sprint 13's Temp
+  folder, so it cannot show F114's local readers' progress.
+- Acceptance: a record unread in a reviewed group can be read, reviewed
+  and entered under its own group file and review file, with a test
+  proven red; the status script reads `work\f114\local\`.
+- Depends on: none
+
 ### Released for Sprint 14 (2026-10-30)
 
 **F122. F95 release for Sprint 14: new papers in `Papers\` (~5m) Priority 20** (NEW 2026-10-30, released copy of F95)

@@ -183,6 +183,25 @@ def test_a_cloud_group_reads_under_its_own_tag_and_reader(synthetic_store, monke
         conn.close()
 
 
+LOCAL_TAG = "Sprint 14 Task F, F114 (local read)"
+
+
+def test_a_local_read_in_a_cloud_group_carries_its_own_tag(monkeypatch):
+    """Sprint 14 Task F (review of 1cb63bb): abbas, read locally in g079, a group otherwise read in the cloud, would
+    have carried "F114 cloud read" and "a first-pass cloud session" in its provenance. Proven to fail by injection,
+    2026-10-30: with tag() ignoring RECORD_TAG, the local read's detail held the cloud tag; with first_pass() keyed
+    on GROUP_TAG as before, a wholly local group's read named a cloud session."""
+    g = _script()
+    monkeypatch.setattr(g, "GROUP_TAG", {"g079": CLOUD_TAG, "g104": LOCAL_TAG})
+    monkeypatch.setattr(g, "RECORD_TAG", {"abbas": LOCAL_TAG})
+    detail = g.read_detail("g079", {"record_id": "abbas", "read_extent": "full"})
+    assert LOCAL_TAG in detail and CLOUD_TAG not in detail
+    assert g.tag("g079", "other") == CLOUD_TAG and g.first_pass("g079", "other") == "cloud session"
+    assert g.first_pass("g079", "abbas") == "subagent" and g.first_pass("g104", "x") == "subagent"
+    assert g.first_pass("g001", "x") == "subagent"
+    assert g.is_mine("Claude Sonnet 5.5", detail)
+
+
 def test_a_record_marked_unread_is_left_out_of_its_group(tmp_path, monkeypatch):
     """Sprint 14 Task E: udaru-2025-qml-credit-risk (page images only) stays unread, so its group g076 holds four
     reader entries for five ledger records. The first load, before the mark, is the proof that the mark is what

@@ -32,38 +32,39 @@ def _build(tmp_path: Path, monkeypatch, results: dict[str, list[dict]]):
     monkeypatch.setattr(b, "READS_DIR", tmp_path / "reads")
     monkeypatch.setattr(b, "held_elsewhere", lambda ids: {})
     monkeypatch.setattr(b, "LOCAL", work / "local")
-    monkeypatch.setattr(b, "WAIT", set())
+    (work / "local" / "briefs").mkdir(parents=True)
+    (work / "local" / "reads").mkdir()
     (tmp_path / "reads").mkdir()
     return b
 
 
 def test_a_local_read_is_taken_over_the_cloud_result_and_its_group_waits_for_the_reader(tmp_path, monkeypatch):
-    """Sprint 14 Task F: a local reader's done file is the paper's read; a cloud result named in NOT_A_READ (Boyd's,
+    """Sprint 14 Task F: a local reader's group file is the paper's read; a cloud result named in NOT_A_READ (Boyd's,
     which sampled the book) is not; a group with a local brief waits for its reader's group file; a record the brief
-    trims that has no cloud result is left for the next release. Proven to fail by injection, 2026-10-30: with entry()
-    reading the cloud result first, g079's b held the cloud assertion; with NOT_A_READ empty, g079 was built from
-    b's cloud result before b's local read existed."""
+    trims that has no cloud result is left for the next release, and a record the brief holds is not. Proven to fail
+    by injection, 2026-10-30: with entry() reading the cloud result first, g079's b held the cloud assertion; with
+    NOT_A_READ empty, g079 was built from b's cloud result before b's local read existed; with waiting() always empty,
+    g079 was built while its reader was at work (review of 1cb63bb: the test patched WAIT, so this never ran); with
+    local_unread() not checking the brief, c, briefed and not yet read, was marked for the next release."""
     b = _build(tmp_path, monkeypatch, {"b": [{"id": "cloud"}], "a": [], "c": [], "d": []})
     monkeypatch.setattr(b, "NOT_A_READ", {"b"})
-    done = tmp_path / "work" / "local" / "tmp_g079" / "done"
-    done.mkdir(parents=True)
-
-    def read(rid):
-        (done / f"{rid}.json").write_text(json.dumps({"papers": [{"record_id": rid, "assertions": [
-            {"id_suggestion": f"{rid}-local"}]}]}), encoding="utf-8")
-    read("abbas")
+    local = tmp_path / "work" / "local"
+    (local / "briefs" / "g079.json").write_text(json.dumps({"records": [{"record_id": r} for r in ("b", "abbas")]}),
+                                                encoding="utf-8")
+    group = local / "reads" / "group_g079.json"
     assert "g079" not in b.buildable()  # b has only the cloud result, which is not a read
-    read("b")
-    monkeypatch.setattr(b, "WAIT", {"g079"})
-    assert "g079" not in b.buildable()
-    monkeypatch.setattr(b, "WAIT", set())
+    assert b.waiting() == {"g079"}
+    group.write_text(json.dumps({"papers": [{"record_id": r, "assertions": [{"id_suggestion": f"{r}-local"}]}
+                                            for r in ("abbas", "b")]}), encoding="utf-8")
+    assert b.waiting() == set()
     assert b.buildable()["g079"] == ["b", "abbas"]
-    assert b.entry("b")["assertions"] == [{"id_suggestion": "b-local"}]
-    briefs = tmp_path / "work" / "local" / "briefs"
-    briefs.mkdir()
-    (briefs / "g080.json").write_text(json.dumps({"records": [{"record_id": "c"}]}), encoding="utf-8")
-    (tmp_path / "work" / "results" / "d.json").unlink()
+    assert b.entry("b") == {"record_id": "b", "assertions": [{"id_suggestion": "b-local"}]}
+    assert b.local_file("abbas") == group
+    (local / "briefs" / "g080.json").write_text(json.dumps({"records": [{"record_id": "c"}]}), encoding="utf-8")
+    for r in ("c", "d"):
+        (tmp_path / "work" / "results" / f"{r}.json").unlink()
     assert b.local_unread() == {"d": b.NEXT_RELEASE}
+    assert "g080" not in b.buildable()  # c's reader is at work
 
 
 def test_only_whole_groups_are_built_and_ids_are_renamed(tmp_path, monkeypatch):

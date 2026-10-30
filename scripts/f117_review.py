@@ -171,7 +171,9 @@ def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> 
     if local and local == held:  # read wholly by Task F's local readers
         review["tag"], review["reader"] = LOCAL_TAG, LOCAL_READER
     readers = {r: UNRECORDED for r in held if r in UNRECORDED_MODEL and r not in local}
-    readers.update({r: LOCAL_READER for r in local if local != held})
+    if local and local != held:  # a mixed group: each local read names its own reader and tag (review of 1cb63bb)
+        readers.update({r: LOCAL_READER for r in local})
+        review["tags"] = {r: LOCAL_TAG for r in sorted(local)}
     if readers:
         review["readers"] = readers
     return review

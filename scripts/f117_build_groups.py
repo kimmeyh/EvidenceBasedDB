@@ -52,20 +52,30 @@ UNREAD = {
 }
 
 
-# Sprint 14 Task F (F114 at 50 papers): a paper read by a local reader is taken from its `done\` file, which has a
-# cloud result's shape. Boyd's cloud result was labeled full and sampled the book (the team lead kept it unread,
-# 2026-10-27), so only its local read counts. A record of a group F reads in part is left for F114's next release.
+# Sprint 14 Task F (F114 at 50 papers): a paper read by a local reader is taken from its reader's group file
+# (`local\reads\group_<g>.json`), the file the reader's full check passed, not its `done\` file, which a fix made
+# after the check would not reach (review of 1cb63bb). Boyd's cloud result was labeled full and sampled the book (the
+# team lead kept it unread, 2026-10-27), so only its local read counts. A record of a group F reads in part is left
+# for F114's next release.
 LOCAL = cloud.WORK / "local"
 NOT_A_READ = {"boyd-2004-convex-optimization"}
 NEXT_RELEASE = ("left for F114's next release: Sprint 14 Task F read 50 papers (Q1 = 2), and this group's other "
                 "records were among them")
 
 
+def local_reads() -> dict[str, Path]:
+    """record -> the local reader's group file that holds it."""
+    out: dict[str, Path] = {}
+    for f in sorted((LOCAL / "reads").glob("group_g*.json")):
+        for p in json.loads(f.read_text(encoding="utf-8"))["papers"]:
+            if p["record_id"] in out:
+                raise ValueError(f"{p['record_id']}: read by two local readers: {out[p['record_id']].name}, {f.name}")
+            out[p["record_id"]] = f
+    return out
+
+
 def local_file(rid: str) -> Path | None:
-    hits = sorted(LOCAL.glob(f"tmp_*/done/{rid}.json"))
-    if len(hits) > 1:
-        raise ValueError(f"{rid}: read by two local readers: {hits}")
-    return hits[0] if hits else None
+    return local_reads().get(rid)
 
 
 def local_unread() -> dict[str, str]:
@@ -82,15 +92,21 @@ def local_unread() -> dict[str, str]:
 
 
 UNREAD.update(local_unread())
-# A group with a local brief waits until its local reader's group file exists (each paper's `done\` file is then
-# final), so a group is never built from a reader still at work.
-WAIT = {b.stem for b in (LOCAL / "briefs").glob("g*.json") if not (LOCAL / "reads" / f"group_{b.stem}.json").exists()}
+
+
+def waiting() -> set[str]:
+    """The groups with a local brief whose reader's group file does not exist yet, so a group is never built from a
+    reader still at work."""
+    return {b.stem for b in (LOCAL / "briefs").glob("g*.json")
+            if not (LOCAL / "reads" / f"group_{b.stem}.json").exists()}
 
 
 def entry(rid: str) -> dict:
     local = local_file(rid)
     path = local or cloud.WORK / "results" / f"{rid}.json"
     papers = json.loads(path.read_text(encoding="utf-8"))["papers"]
+    if local:
+        papers = [p for p in papers if p["record_id"] == rid]
     if [p["record_id"] for p in papers] != [rid]:
         raise ValueError(f"{rid}: its result holds {[p['record_id'] for p in papers]}")
     p = papers[0]
@@ -105,11 +121,11 @@ def entry(rid: str) -> dict:
 def buildable(exclude: set[str] = frozenset()) -> dict[str, list[str]]:
     """group -> its records with a result, for every group from FIRST_GROUP whose records all have a result or
     are unread; groups in `exclude` are left out."""
-    have = ({p.stem for p in (cloud.WORK / "results").glob("*.json")} - NOT_A_READ) | {
-        p.stem for p in LOCAL.glob("tmp_*/done/*.json")}
+    have = ({p.stem for p in (cloud.WORK / "results").glob("*.json")} - NOT_A_READ) | set(local_reads())
+    wait = waiting()
     out = {}
     for g, v in sorted(json.loads(cloud.LEDGER.read_text(encoding="utf-8"))["groups"].items()):
-        if g < cloud.FIRST_GROUP or g in exclude or g in WAIT:
+        if g < cloud.FIRST_GROUP or g in exclude or g in wait:
             continue
         rids = [r["record_id"] for r in v["records"]]
         if all(r in have or r in UNREAD for r in rids) and any(r in have for r in rids):
