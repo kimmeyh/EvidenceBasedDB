@@ -39,8 +39,8 @@ term. Models follow `.claude/model_assignment_heuristics.json` as Sprint
 | B | **F122, the F95 release.** Every PDF in `Papers\` no record names (166 on 2026-10-29: 165 are Task G's downloads of store records, which keep their records and are read by F114; 1 is A's paper); any file the team lead saves before the task is included; counts before and after | 5m | none (local files) | Claude, top tier |
 | C | **F123, the F98 release.** Roadmap-to-QML's commit recorded (ea6f42a7c0 on 2026-10-29, or newer on the day); the 4 arXiv ids not in the store entered through the intake door and read in full; the 7 withdrawn or retracted marks each compared with the store, a record corrected only from the arXiv or publisher page | 60m | 4 arXiv PDFs serial at 18 s (about 2 min) inside F52's cap; the 4 reads by first-pass readers in the background | Claude, top tier (certainty); first-pass readers at Sonnet 5.5 |
 | D | **F120, Phase 2's Sprint 29 results.** Read through the GitHub API at Sprint 29's merged head (PR #63, 6242b8a, merged 2026-10-30; no `git fetch` in Phase 2, so not by local refs, which stop at 22d16c3): F166 (best result per algorithm on ULB), F158 (the per-type cascade), F160 (Experiment 3's room check on IEEE-CIS) and F156 (the Henze-Penrose bound), Phase 2's numbers; F159 and F167 entered only if they state a result; the F108 and F162 document changes compared with the stored values. Each result with its limits and `SIM` or hardware tag, related by ADR-0004 A8 (b) to the claims it bears on | 90m | a few GitHub API reads | Claude, top tier (certainty) |
-| E | **F117, the 302 cloud results.** First, the recovery found at planning: the local copies (`WORK/results/`) and `launches.json` are no longer in the Temp folder (cause unknown; the run log and the briefs remain), so `fetch` is rebuilt from the 302 `cloud/f114/<record>` branches, each branch's base taken as its merge-base with the Sprint 13 branch, the stray-file check unchanged, and the work folder moved out of Temp (Q3). Then the review by protocol: a script for the quote check, schema, ids and a verdict on every stored assertion; Haiku 5.5 flags a result whose own words contradict its label ("full" beside "sampled"), a HIGH suggestion with no settling passage, and figures or tables named but not entered; Sonnet 5.5 checks each changed verdict and HIGH suggestion against the passage it quotes and drafts each group's decisions; Opus 5.5 checks consistency across groups and signs off each decision file; the team lead decides any certainty change a review makes. A tier that confirms every record with no rejection is re-run with source access. Flagged results handled per Q2. Applied through `scripts/sprint13_g_reading.py` with its verified backup; each tier's outcome logged in the heuristics' `learning_log` | 20m (rebuild) + 480m | [unbounded] until piloted: the dominant term is Sonnet's per-record pass over 302 papers with their text, 5 at once; the first 5 records are the pilot, and their time sizes the rest before the next batch starts (heartbeat to a file); Haiku's pass reads the result files only; the apply a few minutes | Claude, top tier (sign-off, certainty); Haiku 5.5 and Sonnet 5.5 subagents as listed |
-| F | **F114 at 50 papers.** Groups g103 to g112 of `manifests/sprint13_g_ledger.json` in ledger order (50 records, all with a local copy, among them boyd-2004-convex-optimization, whose session's partial read resumes from its branch under the prompt's "Progress and restart"; Q1). Read in full by local first-pass readers (the cloud credit is $0), each group reviewed by the coordinator as Task G's were, then applied after E's apply (one writer at a time) | 120m (coordinator review) | no estimate as a limit (no reading budget). [unbounded] until piloted: the dominant term is the whole-paper reads, 10 groups of 5, sharing the 5 reader slots with E; the first group's time sizes the rest (heartbeat to a file) | Claude, top tier (certainty); up to 5 first-pass readers at Sonnet 5.5 |
+| E | **F117, the 302 cloud results (301 after approval: Boyd moves to F).** First, the recovery found at planning: the local copies (`WORK/results/`) and `launches.json` are no longer in the Temp folder (cause unknown; the run log and the briefs remain), so `fetch` is rebuilt from the 302 `cloud/f114/<record>` branches, each branch's base taken as its merge-base with the Sprint 13 branch, the stray-file check unchanged, and the work folder moved out of Temp (Q3). Then the review by protocol: a script for the quote check, schema, ids and a verdict on every stored assertion; Haiku 5.5 flags a result whose own words contradict its label ("full" beside "sampled"), a HIGH suggestion with no settling passage, and figures or tables named but not entered; Sonnet 5.5 checks each changed verdict and HIGH suggestion against the passage it quotes and drafts each group's decisions; Opus 5.5 checks consistency across groups and signs off each decision file; the team lead decides any certainty change a review makes. A tier that confirms every record with no rejection is re-run with source access. Flagged results handled per Q2. Applied through `scripts/sprint13_g_reading.py` with its verified backup; each tier's outcome logged in the heuristics' `learning_log` | 20m (rebuild) + 480m | [unbounded] until piloted: the dominant term is Sonnet's per-record pass over 302 papers with their text, 5 at once; the first 5 records are the pilot, and their time sizes the rest before the next batch starts (heartbeat to a file); Haiku's pass reads the result files only; the apply a few minutes | Claude, top tier (sign-off, certainty); Haiku 5.5 and Sonnet 5.5 subagents as listed |
+| F | **F114 at 50 papers (Q1 = 2, with Boyd).** abbas-2020-power-quantum-neural-networks; the completion of boyd-2004-convex-optimization, resuming from its branch's partial read under the prompt's "Progress and restart"; then the next 48 records in ledger order from g103 with no cloud branch (g103 to g113). Read in full by local first-pass readers (the cloud credit is $0), each group reviewed by the coordinator as Task G's were, then applied after E's apply (one writer at a time) | 120m (coordinator review) | no estimate as a limit (no reading budget). [unbounded] until piloted: the dominant term is the whole-paper reads, 10 groups of 5, sharing the 5 reader slots with E; the first group's time sizes the rest (heartbeat to a file) | Claude, top tier (certainty); up to 5 first-pass readers at Sonnet 5.5 |
 | G | **F118, what the store says, after E's apply.** The six steps on the card: the questions from Phase 2's PoC plan draft and open cards, plus the team lead's own questions (QC in general, where advantage shows and at how many qubits, how each classical model family fits a hybrid, GenAI); the inventory computed; about sixteen themes by query; up to 5 Sonnet 5.5 readers per theme group; Opus 5.5's synthesis with 10 citations checked against the store; implications per question; at least 5 experiments ranked; the Phase 2 prompt drafted; the gaps carded. One memo under `docs/spikes/`, every count dated, every finding citing assertion ids. F's applied records are included if F is applied by then | 360m | the theme readers about 1 to 2 hours in the background | Claude, top tier (synthesis); Sonnet 5.5 theme readers; Haiku 5.5 only where keywords leave a theme unclear |
 
 **F118's estimate is 360 minutes, not the 240 in the selection list.**
@@ -105,11 +105,33 @@ commit runs `python scripts/run_suite.py --changed`.
 - Scope as above; F114 at 50 papers; Q3 = 1 (F118 answers the team
   lead's questions after F117); PR #139 retitled (Q2 = 1).
 
-Open at approval:
+The team lead approved the plan as amended (2026-10-30: "q1 2, include
+the completion of the Boyd book q2 1 q3 1"; "All Sprint tasks and
+sub-tasks are approved"). The plan absorbs it in this commit (Sprint 7
+retrospective I2).
 
-- **Q1**: which 50 papers F114 reads.
-- **Q2**: what happens to a cloud result E flags as not read in full.
-- **Q3**: where the cloud results and briefs live from now on.
+- **Q1 = 2, with the Boyd book completed.** F's 50 papers are
+  abbas-2020-power-quantum-neural-networks first, then the completion of
+  boyd-2004-convex-optimization from its branch's partial read, then the
+  next 48 records in ledger order from g103 that have no cloud branch
+  (bucher-2024-towards-robust-benchmarking-quantum-optimization to
+  chen-2026-photonic-quantum-enhanced-knowledge-distillation, groups
+  g103 to g113). **Correction to Q1's option 2**: it named "the two
+  abbas-2020 papers (g079)", but only one is unread;
+  abbas-2020-quantum-ensembles-quantum-classifiers is one of the 302
+  cloud results, so E reviews it. The 50 stays 50 with the next record
+  in ledger order. **Boyd moves from E to F**: its branch holds a
+  `done/` file, so it was counted in the 302, but the team lead kept it
+  unread (2026-10-27); E reviews the other 301, and F finishes Boyd.
+- **Q2 = 1.** A result E finds was not read in full is read again in full
+  by a local reader this sprint, resuming from the cloud session's file,
+  then reviewed and applied with the rest.
+- **Q3 = 1.** The cloud results, `launches.json` and the group briefs
+  move to `D:\Data\Harold\EvidenceBasedDB\work\f114\`, outside git and
+  outside Temp; `scripts/f114_cloud.py` points there.
+
+Issues, one per task: A #141, B #142, C #143, D #144, E #145, F #146,
+G #147. Draft PR #140.
 
 ## Premise falsifier
 

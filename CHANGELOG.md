@@ -54,6 +54,12 @@ this project keeps having to replace with a step.
   and Task E rebuilds from them first. Phase 2's Sprint 29 merged (PR
   #63 at 6242b8a), so F120 reads it through the GitHub API. Draft PR
   #140
+- **docs**: Sprint 14 plan approved as amended (team lead, 2026-10-30):
+  Q1 = 2 with the Boyd book completed (F114's 50: abbas-2020-power, Boyd,
+  then the next 48 in ledger order; the other abbas-2020 paper is one of
+  the cloud results, so the plan corrects the option's "two"); Q2 = 1
+  (a result not read in full is re-read this sprint); Q3 = 1 (the cloud
+  work folder moves to `work\f114\` outside Temp). Issues #141 to #147
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
