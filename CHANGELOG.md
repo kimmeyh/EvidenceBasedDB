@@ -92,7 +92,19 @@ this project keeps having to replace with a step.
   beside the repository's limits); two values' repository and thread
   text now quoted and checked; the stress limit adds that rejections are
   not a solution of the task. A second apply writes nothing; tests
-  proven red by injection
+  proven red by injection (6d5bcec)
+- **feat**: F117's first step (Sprint 14 Task E, #145, 2026-10-30): the
+  F114 cloud results rebuilt from their 302 branches, since Temp lost
+  the only local copy and `launches.json`. `scripts/f114_cloud.py`
+  gains `rebuild`: each branch's base is its merge-base with the Sprint
+  13 branch (5 launch commits), the stray-file check runs from it, and
+  the session and attempt come from the run log where it names them
+  (297 of 302). Its work folder moves out of Temp to
+  `D:\Data\Harold\EvidenceBasedDB\work\f114\` (Q3 = 1), with the 329
+  briefs and the run log, each copied and checked by SHA-256 before the
+  Temp copy was removed. Result: 302 results saved, 0 refused, 0 stale;
+  the two papers never to be launched again (udaru-2025, abbas-2020) are
+  marked. Test proven red by injection three ways
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
