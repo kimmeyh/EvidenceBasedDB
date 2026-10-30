@@ -124,7 +124,19 @@ this project keeps having to replace with a step.
   left out of their group with why (udaru-2025 in g076). Task G's 42
   groups dry-run unchanged (5,489 assertions from 210 records). The
   rebuilt 302 results all pass `sprint13_g_check.py` against their PDFs
-  again (0 problems). Tests proven red by injection
+  again (0 problems). Tests proven red by injection (de1efff)
+- **fix**: F117 review fixes and the group build (Sprint 14 Task E,
+  #145, 2026-10-30). Review of 92d7634: `rebuild` refuses a result
+  branch already merged into the launch branch (its merge-base would be
+  its own tip, so the stray-file check would see nothing; none is
+  merged today); `scripts/sprint13_g_ledger.py` writes briefs to
+  `work\f114\briefs`, where they now live. Correction to the 92d7634
+  entry: the run log gave a session for 295 of the 302 branches, not
+  297 (297 counts the 2 unread entries). New
+  `scripts/f117_build_groups.py` assembles the per-paper results into
+  group reader files in ledger order, renaming `id` to `id_suggestion`
+  in 22 results; only whole groups are built (59 groups, 294 records:
+  g079 and g103 wait for Task F). Tests proven red by injection
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

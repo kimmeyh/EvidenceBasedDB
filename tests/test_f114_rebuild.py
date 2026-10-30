@@ -40,7 +40,8 @@ def test_rebuild_restores_each_result_from_its_branch_and_refuses_a_stray_one(tm
     taken as the launch branch's tip instead of the merge-base, the base
     assertion went red; with the UNREAD marks dropped, the unread paper had
     no entry; with the stray-file check disabled, the stray branch's result
-    was saved."""
+    was saved; with the merged-branch refusal removed (review of 92d7634), the
+    merged branch r3, which holds a stray file, was saved unchecked."""
     repo = tmp_path / "repo"
     repo.mkdir()
     _git(repo, "init", "-q", "-b", "launch")
@@ -50,14 +51,16 @@ def test_rebuild_restores_each_result_from_its_branch_and_refuses_a_stray_one(tm
     base = _git(repo, "rev-parse", "HEAD").strip()
     _result_branch(repo, "r1", base)
     _result_branch(repo, "r2", base, extra="stray.txt")
+    _result_branch(repo, "r3", base, extra="stray3.txt")
     _git(repo, "checkout", "-q", "launch")
+    _git(repo, "merge", "-q", "--no-ff", "-m", "r3 merged", "cloud-r3")
     (repo / "later").write_text("y", encoding="utf-8")
     _git(repo, "add", "-A")
     _git(repo, "commit", "-q", "-m", "later work on the launch branch")
 
     ledger = tmp_path / "ledger.json"
     ledger.write_text(json.dumps({"groups": {"g043": {"records": [
-        {"record_id": r, "file": f"D:\\{r}.pdf"} for r in ("r1", "r2", "u")]}}}), encoding="utf-8")
+        {"record_id": r, "file": f"D:\\{r}.pdf"} for r in ("r1", "r2", "r3", "u")]}}}), encoding="utf-8")
     work = tmp_path / "work"
     (work / "logs").mkdir(parents=True)
     (work / "logs" / "run.txt").write_text("  launch r1: launched session_0123456789abcdefghijKL (attempt 2), sent 9 "
@@ -69,8 +72,9 @@ def test_rebuild_restores_each_result_from_its_branch_and_refuses_a_stray_one(tm
 
     tally = cloud.rebuild(remote=False)
     assert sorted(p.name for p in (work / "results").glob("*.json")) == ["r1.json"]
-    assert tally["refused"] == ["r2: touches ['stray.txt']"]
+    assert tally["refused"] == ["r2: touches ['stray.txt']", "r3: already in launch, so its commits cannot be checked"]
     d = json.loads((work / "launches.json").read_text(encoding="utf-8"))
+    assert "r3" not in d
     assert d["r1"]["base"] == d["r2"]["base"] == base
     assert (d["r1"]["session"], d["r1"]["attempts"]) == ("session_0123456789abcdefghijKL", 2)
     assert d["u"]["unread"] == "page images only"

@@ -201,22 +201,31 @@ def logged_launches() -> dict[str, dict]:
 def rebuild(remote: bool = True) -> dict:
     """launches.json and results/ again from the result branches, after the local copy was lost. Each branch's
     base is its merge-base with LAUNCH_BRANCH; `fetch` then runs the same stray-file check from it and saves
-    each result. Never overwrites an entry launches.json already holds."""
+    each result. An entry launches.json already holds keeps its fields (only the unread mark is set). A branch
+    already merged into LAUNCH_BRANCH is refused: its merge-base is its own tip, so base..ref would be empty and
+    the stray-file check would see nothing (review of 92d7634)."""
     if remote:
         git("fetch", "--quiet", "origin", "+refs/heads/cloud/f114/*:refs/remotes/origin/cloud/f114/*")
     groups = {r["record_id"]: g for g, v in json.loads(LEDGER.read_text(encoding="utf-8"))["groups"].items()
               for r in v["records"]}
     logged = logged_launches()
     d = launches()
+    merged = []
     for ref in git("for-each-ref", "--format=%(refname:short)", "refs/remotes/origin/cloud/f114/").split():
         rid = ref.rsplit("/", 1)[1]
-        d.setdefault(rid, {"group": groups[rid], "base": git("merge-base", ref, LAUNCH_BRANCH).strip(),
-                           **logged.get(rid, {}), "launched": None, "rebuilt": datetime.now().date().isoformat()})
+        base = git("merge-base", ref, LAUNCH_BRANCH).strip()
+        if base == git("rev-parse", ref).strip():
+            merged.append(f"{rid}: already in {LAUNCH_BRANCH}, so its commits cannot be checked")
+            continue
+        d.setdefault(rid, {"group": groups[rid], "base": base, **logged.get(rid, {}), "launched": None,
+                           "rebuilt": datetime.now().date().isoformat()})
     for rid, why in UNREAD.items():
         d.setdefault(rid, {"group": groups[rid], **logged.get(rid, {}), "launched": None,
                            "rebuilt": datetime.now().date().isoformat()})["unread"] = why
     save_launches(d)
-    return fetch(remote)
+    tally = fetch(remote)
+    tally["refused"] += merged
+    return tally
 
 
 def run_all(max_inflight: int = 5, poll: int = 300, model: str = "sonnet") -> None:
