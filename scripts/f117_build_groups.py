@@ -299,14 +299,27 @@ def assemble(groups: dict[str, list[str]], written: set[str] = frozenset()) -> t
     return built, renames
 
 
+def decided_ids(g: str) -> set[str]:
+    """The ids a group's review decisions name: a group rebuilt after its file was deleted is prefixed against a
+    different batch, so an id can change under its decisions (review of 7914e80)."""
+    path = cloud.WORK / "review" / "decisions" / f"{g}.json"
+    return set(json.loads(path.read_text(encoding="utf-8"))) if path.exists() else set()
+
+
 def main(argv: list[str]) -> int:
     groups = buildable()
     new = {g: rids for g, rids in groups.items() if not (READS_DIR / f"group_{g}.json").exists()}
     for g in sorted(set(groups) - set(new)):
-        print(f"exists group_{g}.json")
+        print(f"exists group_{g}.json (not rebuilt: delete it to take up a changed reader file)")
     # Only groups with no file are assembled, so a file's ids never change and the renames listed are the ones written
     # (review of cecf20d).
     built, renames = assemble(new, written_ids())
+    lost = {g: sorted(decided_ids(g) - {a.get("id_suggestion") or a.get("id") for p in papers for a in
+                                        p.get("assertions", []) + p.get("existing", [])})
+            for g, papers in built.items()}
+    lost = {g: ids for g, ids in lost.items() if ids}
+    if lost:
+        raise SystemExit(f"a rebuild would change ids its review decisions name, so nothing is written: {lost}")
     for g, papers in built.items():
         path = READS_DIR / f"group_{g}.json"
         if "--write" in argv:

@@ -406,6 +406,15 @@ this project keeps having to replace with a step.
   (snapshot as of 2026-10-30). Keeping a stored MODERATE on a vendor's
   claim stays a "keep" decision, since store.grading writes a vendor's
   own claim LOW
+- **fix**: the fresh-eyes review of 7914e80 (Sprint 14 Task E, #145,
+  2026-10-30). No test held an id a written file holds bare and the new
+  batch holds once, or drove `main`, so two of 7914e80's guards were
+  unproven; both now have a test proven red. A group rebuilt after its
+  file is deleted is prefixed against a different batch, so its ids
+  could change under its review decisions: the builder now writes
+  nothing when a rebuilt group lacks an id its decisions name (proven
+  red). An existing file is reported as not rebuilt. Three low findings
+  added to F127
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

@@ -822,6 +822,16 @@ and in git. Remaining items below.
   begins another's (rand-2022-...-assessment and
   ...-assessment-appendix-b) counts as the same source. The builder's
   test is a whole token since Sprint 14 (review of cecf20d).
+- Three more from the review of 7914e80, none live on 2026-10-30:
+  - `f117_build_groups.written_ids` does not count an `id_fix` target
+    (3 in the review files), so a new paper could be prefixed onto one
+    in a reviewed, unapplied group; the applier's duplicate check stops
+    it at apply time.
+  - `held_elsewhere` returns nothing when the store file is missing, so
+    every store check in the builder passes without a word.
+  - `same_source` treats "." as a token end, so a record id ending in a
+    digit matches inside a longer id that continues with a dot (no
+    record id holds a dot today).
 - Acceptance: each with a test proven red, then green.
 - Depends on: none
 

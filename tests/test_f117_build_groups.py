@@ -255,6 +255,31 @@ def test_a_group_built_late_never_takes_an_id_a_written_file_holds(tmp_path, mon
                    "chen-2024-e": "chen-2024-e-z", "rand-2022-assessment": "rand-2022-w", "zed-2023-k": "zed-2023-x"}
 
 
+def test_a_written_files_bare_id_is_never_taken_and_a_rebuild_keeps_its_decided_ids(tmp_path, monkeypatch):
+    """Review of 7914e80: no test held an id that a written file holds bare and the new batch holds once, or drove
+    main, so neither `aid in written` nor main passing written_ids() was proven; a group rebuilt after its file was
+    deleted was prefixed against another batch, so its ids could change under its review decisions. Proven to fail by
+    injection, 2026-10-30: with `or aid in written` removed, chen-2024-a kept x; with main calling assemble(new), the
+    same; with the decided-id check removed, the rebuild wrote chen-2024-x under decisions naming chen-2024-a-x."""
+    b = _build(tmp_path, monkeypatch, {})
+    entries = {"chen-2024-a": [{"id_suggestion": "x"}]}
+    monkeypatch.setattr(b, "entry", lambda rid: {"record_id": rid, "assertions": [dict(a) for a in entries[rid]]})
+    monkeypatch.setattr(b, "buildable", lambda: {"g076": ["chen-2024-a"]})
+    (tmp_path / "reads" / "group_g080.json").write_text(json.dumps({"papers": [
+        {"record_id": "other", "assertions": [{"id_suggestion": "x"}]}]}), encoding="utf-8")
+    b.main(["--write"])
+    g076 = tmp_path / "reads" / "group_g076.json"
+    assert json.loads(g076.read_text(encoding="utf-8"))["papers"][0]["assertions"][0]["id_suggestion"] == "chen-2024-x"
+    g076.unlink()
+    (tmp_path / "reads" / "group_g080.json").unlink()
+    decisions = tmp_path / "work" / "review" / "decisions"
+    decisions.mkdir(parents=True)
+    (decisions / "g076.json").write_text(json.dumps({"chen-2024-a-x": {}}), encoding="utf-8")
+    with pytest.raises(SystemExit, match="chen-2024-a-x"):
+        b.main(["--write"])
+    assert not g076.exists()
+
+
 def test_two_different_ids_on_one_assertion_are_refused(tmp_path, monkeypatch):
     b = _build(tmp_path, monkeypatch, {"c": [{"id": "one", "id_suggestion": "two"}], "d": []})
     with pytest.raises(ValueError, match="two ids"):
