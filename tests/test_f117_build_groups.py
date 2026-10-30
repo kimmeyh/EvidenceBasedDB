@@ -119,7 +119,10 @@ def test_page_lists_sections_and_punctuation(tmp_path, monkeypatch):
     "pp.7-16, 14"; with pages joined as one range, "Abstract; Section V.B, pp.6-8" became "pp.1-7"; with
     _without_pages's cleanup removed, "Section 3.1, p.4 (Figure 4)" became "Section 3.1, (Figure 4)"; with unfound
     quotes kept in `on`, "Section 2.1, p.13" lost its page; with `keep` empty, the pages an unfound quote may be on
-    were lost ("pp.6-7 and 9" became "p.10")."""
+    were lost ("pp.6-7 and 9" became "p.10"). Review of 8f2b408, proven to fail by injection 2026-10-30: with the
+    "printed" prefix case-sensitive, "Printed p.145" became "Printed p.3"; with no lookahead after a list item,
+    "p.12, 4.3" became "p.7.3"; without "to" ranges, "pp. 12 to 15" became "p.14 to 15"; without compressed ranges,
+    "pp.12-5" became "p.13"; without the new cleanup, a drop left "(, Figure 2)"."""
     b = _build(tmp_path, monkeypatch, {})
     norm = tuple(b._norm(p) for p in PAGES)
     cases = [
@@ -138,6 +141,20 @@ def test_page_lists_sections_and_punctuation(tmp_path, monkeypatch):
         ("Section 4, PDF p.9 (printed p.145)", [3], "Section 4, PDF p.3 (printed p.145)"),
         ("Section 2, pp.6, 8", [6, 8], "Section 2, pp.6, 8"),
         ("Fig. 3, Eq. (5), Section 2", [3], "Fig. 3, Eq. (5), Section 2"),
+        # Review of 8f2b408: a capitalized or colon "printed" clause, a number after a page list, "to" ranges,
+        # leftovers of a drop, and a compressed range.
+        ("Section 4, Printed p.145", [3], "Section 4, Printed p.145"),
+        ("Section 4, printed: p.145", [3], "Section 4, printed: p.145"),
+        ("Section 4, p.12, 4.3", [7], "Section 4, p.7, 4.3"),
+        ("Section 4, p.12, 4 qubits", [7], "Section 4, p.7, 4 qubits"),
+        ("Fig. 2 p.3, 2024 edition", [9], "Fig. 2 p.9, 2024 edition"),
+        ("Section 4, p.12, 4", [4], "Section 4, p.12, 4"),
+        ("Section 3, pp. 12 to 15", [14], "Section 3, pp. 12 to 15"),
+        ("Section 3, pp. 2 to 5", [8], "Section 3, p.8"),
+        ("Section 3 (p.4, Figure 2), Section 5, p.9", [2], "Section 3 (Figure 2), Section 5"),
+        ("Theorem 2 on p.4; Section 5, p.9", [2], "Theorem 2; Section 5"),
+        ("Section 3 [p.4] and Section 5 [p.9]", [2], "Section 3 and Section 5"),
+        ("Lemma 1, pp.12-5", [13], "Lemma 1, pp.12-5"),
     ]
     got = []
     for anchor, on, _ in cases:

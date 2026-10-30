@@ -87,15 +87,22 @@ def local_file(rid: str) -> Path | None:
 # anchor each of whose found quotes is on a page it names is kept. Otherwise, an anchor with one page clause whose
 # found quotes are each on one page takes those pages, listed where they are not one run; any other anchor loses its
 # page clauses and keeps its sections. A "printed p.N" clause is not a PDF page and is left alone. Every change is
-# listed (review of 11d443a: page lists, a range across sections, stray punctuation, an unfound quote).
-_PAGES = r"\d+(?:\s*[-–—]\s*(?:pp?\.\s*)?\d+)?"
-PAGE = re.compile(rf"(?:\b(?:PDF|printed)\s+)?(?:\b[Pp]p?\.|\b[Pp]ages?\b)\s*{_PAGES}(?:\s*(?:,|and|&)\s*{_PAGES}\b)*")
+# listed (review of 11d443a: page lists, a range across sections, stray punctuation, an unfound quote). A list goes on
+# only to a bare number that ends its clause, so "p.12, 4.3" keeps its section and "p.3, 2024 edition" its year; a
+# range may say "to" or be compressed ("pp.112-15"); "Printed" and "printed:" are printed pages too (review of
+# 8f2b408).
+_TO = r"(?:\s*[-–—]\s*|\s+to\s+)(?:pp?\.\s*)?"
+_PAGES = rf"\d+(?:{_TO}\d+)?"
+PAGE = re.compile(rf"(?:\b(?i:PDF|printed)[\s:]+)?(?:\b[Pp]p?\.|\b[Pp]ages?\b)\s*{_PAGES}"
+                  rf"(?:\s*(?:,|\band\b|&)\s*{_PAGES}(?![.\d])(?=\s*(?:[,;()\[\]]|\band\b|&|$)))*")
 PAGE_NOTES: list[str] = []
 
 
 def _numbers(clause: str) -> set[int]:
     out = set()
-    for lo, hi in re.findall(r"(\d+)(?:\s*[-–—]\s*(?:pp?\.\s*)?(\d+))?", clause):
+    for lo, hi in re.findall(rf"(\d+)(?:{_TO}(\d+))?", clause):
+        if hi and int(hi) < int(lo):  # a compressed range: "112-15" is 112 to 115
+            hi = lo[:len(lo) - len(hi)] + hi
         out.update(range(int(lo), int(hi or lo) + 1))
     return out
 
@@ -115,8 +122,11 @@ def _without_pages(anchor: str, clauses: list[re.Match]) -> str:
     s = anchor
     for m in reversed(clauses):
         s = s[:m.start()] + s[m.end():]
-    s = re.sub(r"\(\s*[,;]?\s*\)", "", s)
-    s = re.sub(r"\s+([,;:)])", r"\1", s)
+    s = re.sub(r"(?:\(\s*[,;]?\s*\)|\[\s*[,;]?\s*\])", "", s)
+    s = re.sub(r"([(\[])\s*[,;]\s*", r"\1", s)
+    s = re.sub(r"\s*[,;]\s*([)\]])", r"\1", s)
+    s = re.sub(r"\s+\b(?:on|at|in|see)\b(?=\s*(?:[,;)\]]|$))", "", s)
+    s = re.sub(r"\s+([,;:)\]])", r"\1", s)
     s = re.sub(r"([,;])(?:\s*[,;])+", lambda m: ";" if ";" in m.group(0) else ",", s)
     s = re.sub(r"[,;]\s*\(", " (", s)
     s = re.sub(r"\s{2,}", " ", s).strip(" ,;")
@@ -148,7 +158,7 @@ def fix_pages(rid: str, a: dict, pages: tuple[str, ...]) -> None:
     aid = a.get("id_suggestion") or a.get("id")
     if len(clauses) == 1 and all(len(s) == 1 for s in on):
         m = clauses[0]
-        pdf = "PDF " if m.group(0).startswith("PDF") else ""
+        pdf = "PDF " if m.group(0).lower().startswith("pdf") else ""
         # A quote not found may be on the pages named, so they are kept beside the computed ones.
         keep = want if len(on) < len(every) else set()
         new = anchor[:m.start()] + pdf + _page_text(sorted(set().union(*on) | keep)) + anchor[m.end():]

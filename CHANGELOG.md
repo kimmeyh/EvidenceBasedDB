@@ -296,6 +296,19 @@ this project keeps having to replace with a step.
   The applier test also could not fail with RECORD_TAG left out of
   `is_mine`: its GROUP_TAG held the local tag too. Each fix was proven
   red by injection
+- **fix**: the fresh-eyes review of 8f2b408 (Sprint 14 Task F, #146,
+  2026-10-30). The page fix still wrote wrong anchors in 5 ways:
+  - "Printed p.145" and "printed: p.145" were taken as PDF pages.
+  - A list took in the number after it: "p.12, 4.3" became "p.7.3",
+    and "p.3, 2024 edition" lost its year.
+  - A range with "to" ("pp. 12 to 15") left " to 15" behind.
+  - A drop left "(, Figure 2)", "[]" or a dangling "on".
+  - A compressed range ("pp.112-15") named no page.
+  A list now goes on only to a bare number that ends its clause. The
+  rebuild of the 13 local groups (g079, g103 to g113, g330) changed 9
+  anchors, all damaged before by "to" ranges, such as "pp.6, 9 to 6 and
+  9" and "Section 5, to, Fig. 6" (snapshot as of 2026-10-30). No id
+  changed, so the reviews stand. Each fix was proven red by injection
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
