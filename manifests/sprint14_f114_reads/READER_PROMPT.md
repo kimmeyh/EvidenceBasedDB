@@ -115,7 +115,12 @@ only in memory.
    - each theorem, lemma, proposition and corollary: its statement and
      its conditions (assumptions, regime, constants) quoted from where
      the paper states them, not from the abstract's summary of them;
-     `anchor` names it ("Theorem 2, Section 4, p.9");
+     `anchor` names it ("Theorem 2, Section 4, p.9"). A page in an
+     anchor is the PDF's page, counted from the PDF's first page, never
+     the page number printed on the page. Extract the text with
+     `pdftotext` without `-nopgbrk`, so each page ends in a form feed,
+     and count the form feeds to the quote (added 2026-10-30: the
+     first local readers' anchors ran up to 15 pages off);
    - each proof's result where the paper proves something without
      naming a theorem;
    - each measured result: what was run, on what, with what outcome;

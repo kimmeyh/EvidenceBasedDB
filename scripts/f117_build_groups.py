@@ -17,9 +17,12 @@ file is never overwritten.
 """
 from __future__ import annotations
 
+import functools
 import importlib.util
 import json
+import re
 import sqlite3
+import subprocess
 import sys
 from collections import Counter
 from pathlib import Path
@@ -78,6 +81,61 @@ def local_file(rid: str) -> Path | None:
     return local_reads().get(rid)
 
 
+# A local reader's page anchors are set to the PDF page its quotes are on (review of g104: the readers' text layers
+# had lost their page breaks, and anchors ran up to 15 pages off; Carlesso's cited the printed page numbers). A page
+# is computed, never taken from the reader: an anchor naming one page or range whose quotes of 25 characters or more
+# are each found on one PDF page is set to those pages; one whose found quotes fall off its pages otherwise loses its
+# pages and keeps its sections. Every change is listed.
+PAGE = re.compile(r"\bpp?\.\s*(\d+)(?:\s*[-–]\s*(\d+))?")
+PAGE_NOTES: list[str] = []
+
+
+def _norm(s: str) -> str:
+    return re.sub(r"[^a-z0-9]", "", s.lower())
+
+
+@functools.cache
+def pdf_pages(path: str) -> tuple[str, ...]:
+    """The PDF's pages as pdftotext splits them (form feeds), each normalized."""
+    out = subprocess.run(["pdftotext", "-enc", "UTF-8", path, "-"], capture_output=True, check=True).stdout
+    return tuple(_norm(p) for p in out.decode("utf-8", "replace").split("\f"))
+
+
+def fix_pages(rid: str, a: dict, pages: tuple[str, ...]) -> None:
+    anchor = a.get("anchor") or ""
+    named = PAGE.findall(anchor)
+    qs = [q for q in (_norm(x) for x in a.get("quotes") or []) if len(q) >= 25]
+    if not named or not qs:
+        return
+    want = {n for lo, hi in named for n in range(int(lo), int(hi or lo) + 1)}
+    on = [{i + 1 for i, t in enumerate(pages) if q[:80] in t} for q in qs]
+    found = set().union(*on)
+    if not found or found <= want:  # no quote found is no evidence against the page
+        return
+    aid = a.get("id_suggestion") or a.get("id")
+    if len(named) > 1 or not all(len(s) == 1 for s in on):
+        # A quote is found off the pages named, and no one page or range can be computed: the pages are wrong, so
+        # they are dropped and the anchor keeps its sections. An anchor that would name nothing is left for the
+        # coordinator.
+        bare = re.sub(r"\s*([,;])\s*(?=[,;]|$)", "", PAGE.sub("", anchor)).strip(" ,;")
+        bare = re.sub(r"\s*,\s*;", ";", bare)
+        if not re.search(r"[A-Za-z]{3}", bare):
+            PAGE_NOTES.append(f"{rid}: {aid}: anchor {anchor!r}, quotes on pages {[sorted(s) for s in on]}: left for "
+                              "the coordinator")
+            return
+        a["anchor"] = bare
+        PAGE_NOTES.append(f"{rid}: {aid}: {anchor!r} -> {bare!r} (pages dropped: quotes on {[sorted(s) for s in on]})")
+        return
+    lo, hi = min(found), max(found)
+    a["anchor"] = PAGE.sub(f"p.{lo}" if lo == hi else f"pp.{lo}-{hi}", anchor)
+    PAGE_NOTES.append(f"{rid}: {aid}: {anchor!r} -> {a['anchor']!r}")
+
+
+def local_pdf(path: Path, rid: str) -> str:
+    brief = LOCAL / "briefs" / f"{path.stem.removeprefix('group_')}.json"
+    return next(r["file"] for r in json.loads(brief.read_text(encoding="utf-8"))["records"] if r["record_id"] == rid)
+
+
 def local_unread() -> dict[str, str]:
     """The records of a group F's local briefs trim that have no cloud result."""
     ledger = json.loads(cloud.LEDGER.read_text(encoding="utf-8"))["groups"]
@@ -110,6 +168,10 @@ def entry(rid: str) -> dict:
     if [p["record_id"] for p in papers] != [rid]:
         raise ValueError(f"{rid}: its result holds {[p['record_id'] for p in papers]}")
     p = papers[0]
+    if local:
+        pages = pdf_pages(local_pdf(local, rid))
+        for a in p.get("assertions", []) + p.get("existing", []):
+            fix_pages(rid, a, pages)
     for a in p.get("assertions", []):
         if "id" in a:
             if a.setdefault("id_suggestion", a["id"]) != a["id"]:
@@ -186,6 +248,7 @@ def main(argv: list[str]) -> int:
             path.write_text(json.dumps({"papers": papers}, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
         print(f"{'wrote' if '--write' in argv else 'would write'} {path.name} ({len(papers)} records)")
     print("\n".join(f"rename {x}" for x in renames))
+    print("\n".join(f"page   {x}" for x in PAGE_NOTES))
     print(f"{len(groups)} groups, {sum(map(len, groups.values()))} records, {len(renames)} ids prefixed")
     return 0
 

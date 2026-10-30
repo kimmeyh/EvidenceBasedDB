@@ -255,7 +255,25 @@ this project keeps having to replace with a step.
   `launch` and `run` crashed on it. F125 is carded for g113's 3 unread
   records, which have no way back in, and for the stale status script.
   Each fix was proven red by injection. g079's group file was built
-  before the fix, and it matches the reader's checked file.
+  before the fix, and it matches the reader's checked file (f599950)
+- **fix**: F114's local reads anchor the PDF page (Sprint 14 Task F,
+  #146, 2026-10-30). g104's reviewer found page anchors 1 to 3 pages
+  off. A check against the PDFs' pages found the same in every local
+  group: g105, g106 and g107 ran up to 15 pages off, and Carlesso's
+  lecture notes cited the printed page numbers. The readers' text layers
+  had lost their page breaks. The cloud groups g095, g100 and g101 were
+  mostly right (0 to 6 misses a paper, nearly all one page). The group
+  builder now computes a local read's page from the PDF. An anchor
+  naming one page or range takes the pages its quotes are on. An anchor
+  with a quote off its pages, whose page cannot be computed, loses its
+  pages and keeps its sections. An anchor with no quote found is left as
+  it is. Each change is listed. The rebuild changed 288 anchors in g079
+  and g104 to g107: 211 set and 77 dropped (snapshot as of 2026-10-30).
+  The reader prompt now says a page is the PDF's page, counted with
+  pdftotext's form feeds, and the readers still at work were told.
+  g079's and g104's group files and g104's provisional review were
+  deleted and rebuilt. None was committed, decisions are keyed by id, and
+  the item counts did not change. Proven red by injection
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

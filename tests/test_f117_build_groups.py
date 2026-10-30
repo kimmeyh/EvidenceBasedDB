@@ -32,6 +32,9 @@ def _build(tmp_path: Path, monkeypatch, results: dict[str, list[dict]]):
     monkeypatch.setattr(b, "READS_DIR", tmp_path / "reads")
     monkeypatch.setattr(b, "held_elsewhere", lambda ids: {})
     monkeypatch.setattr(b, "LOCAL", work / "local")
+    monkeypatch.setattr(b, "local_pdf", lambda path, rid: rid)
+    monkeypatch.setattr(b, "pdf_pages", lambda path: ())
+    monkeypatch.setattr(b, "PAGE_NOTES", [])
     (work / "local" / "briefs").mkdir(parents=True)
     (work / "local" / "reads").mkdir()
     (tmp_path / "reads").mkdir()
@@ -65,6 +68,41 @@ def test_a_local_read_is_taken_over_the_cloud_result_and_its_group_waits_for_the
         (tmp_path / "work" / "results" / f"{r}.json").unlink()
     assert b.local_unread() == {"d": b.NEXT_RELEASE}
     assert "g080" not in b.buildable()  # c's reader is at work
+
+
+QUOTE_A = "the bound holds for every n at least two and is tight"
+QUOTE_B = "the same experiment was repeated on hardware with ten seeds"
+QUOTE_C = "we thank the referees for their careful reading of the draft"
+
+
+def test_a_local_reads_page_anchor_is_set_to_the_pdf_page_its_quotes_are_on(tmp_path, monkeypatch):
+    """Review of g104 (Sprint 14 Task F): the local readers' text layers had lost their page breaks, so their page
+    anchors ran up to 15 pages off. A page is set where it can be computed, dropped where it is wrong and cannot
+    be, and an anchor left with no section is listed. Proven to fail by injection, 2026-10-30: with entry() not
+    calling fix_pages, the anchor kept p.9; with the one-page check removed, the anchor naming two pages was rewritten
+    to one; with the empty-anchor check removed, "p.9" became ""; with `not found` removed from the first check, an
+    anchor none of whose quotes was found lost its page."""
+    b = _build(tmp_path, monkeypatch, {})
+    pages = ("front matter", f"intro {QUOTE_A}", f"results {QUOTE_B} {QUOTE_C}", f"appendix {QUOTE_C}")
+    monkeypatch.setattr(b, "pdf_pages", lambda path: tuple(b._norm(p) for p in pages))
+    local = tmp_path / "work" / "local"
+    (local / "briefs" / "g079.json").write_text(json.dumps({"records": [{"record_id": "abbas"}]}), encoding="utf-8")
+    (local / "reads" / "group_g079.json").write_text(json.dumps({"papers": [{"record_id": "abbas", "assertions": [
+        {"id_suggestion": "off", "anchor": "Theorem 1, Section 2, p.9", "quotes": [QUOTE_A]},
+        {"id_suggestion": "right", "anchor": "Section 2, pp.1-2", "quotes": [QUOTE_A]},
+        {"id_suggestion": "section-only", "anchor": "Section 4", "quotes": [QUOTE_B]},
+        {"id_suggestion": "two-pages-named", "anchor": "Section 2, p.5; Section 4, p.7", "quotes": [QUOTE_A]},
+        {"id_suggestion": "repeated-quote", "anchor": "Section 4, p.1", "quotes": [QUOTE_C]},
+        {"id_suggestion": "page-only", "anchor": "p.9", "quotes": [QUOTE_C]},
+        {"id_suggestion": "not-found", "anchor": "Section 5, p.6", "quotes": ["a sentence the text layer garbled"]}],
+        "existing": [{"id": "stored", "anchor": "Section 2 and 4, p.1", "quotes": [QUOTE_A, QUOTE_B]}]}]}),
+        encoding="utf-8")
+    anchors = {a.get("id_suggestion") or a["id"]: a["anchor"] for p in [b.entry("abbas")]
+               for a in p["assertions"] + p["existing"]}
+    assert anchors == {"off": "Theorem 1, Section 2, p.2", "right": "Section 2, pp.1-2", "section-only": "Section 4",
+                       "two-pages-named": "Section 2; Section 4", "repeated-quote": "Section 4",
+                       "stored": "Section 2 and 4, pp.2-3", "page-only": "p.9", "not-found": "Section 5, p.6"}
+    assert [n.split(": ")[1] for n in b.PAGE_NOTES if "left for the coordinator" in n] == ["page-only"]
 
 
 def test_only_whole_groups_are_built_and_ids_are_renamed(tmp_path, monkeypatch):
