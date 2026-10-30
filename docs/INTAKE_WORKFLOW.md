@@ -2637,3 +2637,50 @@ Every count is a snapshot as of 2026-10-30. Written before the apply.
   earlier read and its blob SHA-256 kept in the evidence, and each gets a
   second read row (the Sprint 13 pattern).
 - `scripts/sprint14_f120_phase2.py`; `tests/test_sprint14_f120.py`.
+
+## 57. Applied 2026-10-30: Roadmap-to-QML's release for Sprint 14 (Sprint 14 Task C, F123, F98)
+
+Every count is a snapshot as of 2026-10-30. Written before the apply.
+
+- **The list, at one commit.** Roadmap-to-QML read at commit
+  `ea6f42a7c0` (pushed 2026-10-27; the head on 2026-10-30), 9 commits
+  after F104's `a239747648` (section 46). Its 13 files are saved under
+  `References\Roadmap-to-QML_ea6f42a7c0\`, outside git; the manifest
+  records each file's SHA-256.
+- **1,450 arXiv ids listed; 32 linked for the first time since
+  a239747648; 4 new to the store.** 28 of the 32 are papers the store
+  already holds: the list replaced a publisher link with the arXiv link
+  (Montanaro 2016, Huang et al. 2021 and 26 more) or named a withdrawn
+  paper's replacement (2405.13351, 2210.14450). The 4 new ones
+  (2609.19983, 2610.32762, 2610.34430, 2610.35126) enter through the door
+  at `seen` under `qml`, each naming the file that lists it.
+- **Routes only for the newly linked.** Each of the 28 held papers gets a
+  `found_via` route naming the list at `ea6f42a7c0` and its file. The
+  papers the list linked at `a239747648` already carry F104's route; a
+  route at each new commit would restate the same match about 1,400
+  times, so none is added.
+- **Free copies: 4 of 4**, fetched by the paced fetcher (18 s apart),
+  each named with its SHA-256 in `evidence`. 2610.32762 (Ortiz Cordero et
+  al.) carries no arXiv stamp on page 1; its first page was checked by
+  hand and its title and authors match the arXiv metadata.
+- **Seven marks, compared with the store; no record changed.** The list
+  now marks six papers WITHDRAWN by their authors (2308.08167,
+  2304.05672, 2409.10932, 2403.17444, 2410.03853, 2503.23408) and one
+  RETRACTED (Valdez and Melin 2022, DOI 10.1007/s00500-022-07037-4,
+  marked "RETRACTED 10 March 2026"). Each is already held at `seen` with
+  a disposition that says withdrawn or retracted (F33), so the store and
+  the list agree. A record would be corrected only from the arXiv or
+  publisher page, never from the list's mark. The manifest's `marks`
+  lists each with its record.
+- **20 other links carried, 7 with a DOI** (25 at F104). The 5 that left
+  the carried list are the publisher links the list replaced with arXiv
+  links the store holds. The malformed `2108.0131` (section 46) is still
+  listed and still held as `2108.01311`.
+- **Reading.** The 4 are read in full by local first-pass readers under
+  the Sprint 13 Task G reader prompt (no budget), as one group beside
+  Task F's, and applied with F's groups.
+- `scripts/sprint14_f123_roadmap.py` loads F104's script and points it at
+  this commit; dry run by default, which writes
+  `manifests/sprint14_f123_roadmap.json`; `--apply` takes a verified
+  backup; a second apply enters nothing and adds no route.
+  `tests/test_sprint14_f123.py`.

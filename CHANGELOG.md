@@ -198,6 +198,17 @@ this project keeps having to replace with a step.
   are read in context too and that a reviewer names any item it did not
   read; each launch repeats it and gives the reviewer its own scratch
   folder, after two reviewers overwrote each other's scratch files
+- **feat**: F123, Roadmap-to-QML's release for Sprint 14 (Sprint 14 Task
+  C, #143, 2026-10-30), read at ea6f42a7c0, 9 commits after F104's
+  a239747648. 1,450 arXiv ids listed; 32 linked for the first time, 28 of
+  them already held (the list replaced publisher links with arXiv links).
+  The 4 new papers entered at `seen` with their free copies; the 28 held
+  ones get a route naming the list at this commit, and no other route is
+  restated. The list's 7 withdrawn or retracted marks all agree with the
+  store (F33); no record changed. 20 non-arXiv links carried (25 at
+  F104). `scripts/sprint14_f123_roadmap.py` reuses F104's script.
+  INTAKE section 57. A second apply enters nothing and adds no route.
+  Tests proven red by injection. The 4 reads run beside Task F's
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
