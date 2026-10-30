@@ -91,10 +91,12 @@ def local_file(rid: str) -> Path | None:
 # only to a bare number that ends its clause, so "p.12, 4.3" keeps its section and "p.3, 2024 edition" its year; a
 # range may say "to" or be compressed ("pp.112-15"); "Printed" and "printed:" are printed pages too (review of
 # 8f2b408). A list may end its sentence with a period, and a "to" range ends its clause too, so "p.4 to 6 qubits" is
-# one page and a count (review of aa8c75f).
+# one page and a count (review of aa8c75f). Only a "to" range may be followed by "of", and "p.4.2" is a section, not
+# page 4 (review of ee397c6).
 _TO = r"(?:\s*[-–—]\s*|\s+to\s+)(?:pp?\.\s*)?"
-_ENDS = r"(?!\.\d)(?=\s*(?:[,;.()\[\]]|\band\b|\bof\b|&|$))"
-_PAGES = rf"\d+(?:\s*[-–—]\s*(?:pp?\.\s*)?\d+|\s+to\s+(?:pp?\.\s*)?\d+{_ENDS})?"
+_ENDS = r"(?!\.\d)(?=\s*(?:[,;.()\[\]]|\band\b|&|$))"
+_TO_ENDS = r"(?!\.\d)(?=\s*(?:[,;.()\[\]]|\band\b|\bof\b|&|$))"
+_PAGES = rf"\d+(?!\.\d)(?:\s*[-–—]\s*(?:pp?\.\s*)?\d+|\s+to\s+(?:pp?\.\s*)?\d+{_TO_ENDS})?"
 PAGE = re.compile(rf"(?:\b(?i:PDF|printed)[\s:]+)?(?:\b[Pp]p?\.|\b[Pp]ages?\b)\s*{_PAGES}"
                   rf"(?:\s*(?:,|\band\b|&)\s*{_PAGES}{_ENDS})*")
 PAGE_NOTES: list[str] = []
@@ -123,7 +125,7 @@ def _page_text(pages: list[int]) -> str:
 def _without_pages(anchor: str, clauses: list[re.Match]) -> str:
     s = anchor
     for m in reversed(clauses):  # a preposition that led into a page goes with it ("Theorem 2 on p.4")
-        s = re.sub(r"\s+\b(?:on|at|in|see)\s*$", "", s[:m.start()]) + s[m.end():]
+        s = re.sub(r"(?:^|(?<=[(\[])|\s+)(?i:on|at|in|see)\s*$", "", s[:m.start()]) + s[m.end():]
     s = re.sub(r"(?:\(\s*[,;]?\s*\)|\[\s*[,;]?\s*\])", "", s)
     s = re.sub(r"([(\[])\s*[,;]\s*", r"\1", s)
     s = re.sub(r"\s*[,;]\s*([)\]])", r"\1", s)

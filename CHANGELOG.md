@@ -322,6 +322,14 @@ this project keeps having to replace with a step.
   clause it led into. The rebuild of the 13 local groups changed no
   anchor (snapshot as of 2026-10-30). Each fix was proven red by
   injection
+- **fix**: the fresh-eyes review of ee397c6 (Sprint 14 Task F, #146,
+  2026-10-30). Allowing "of" after a list item let a count join the
+  list ("p.12, 4 of 10 qubits" lost its 4): "of" now ends only a "to"
+  range. A preposition after "(" or first in the anchor, in any case,
+  now goes with its page clause ("(see p.4)" left "(see)"). "p.4.2" is a
+  section, not page 4. The rebuild of the 13 local groups changed no
+  anchor (snapshot as of 2026-10-30). Each fix was proven red by
+  injection
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

@@ -125,7 +125,9 @@ def test_page_lists_sections_and_punctuation(tmp_path, monkeypatch):
     "pp.12-5" became "p.13"; without the new cleanup, a drop left "(, Figure 2)". Review of aa8c75f, proven to fail
     the same day: with a period refused after a list item, "pp.6, 8." became "p.8, 8."; with a "to" range not ending
     its clause, "p.4 to 6 qubits" became "p.12 qubits"; with every "on" before a comma removed, "(noise turned on)"
-    lost its last word."""
+    lost its last word. Review of ee397c6, proven to fail the same day: with "of" ending a list item, "p.12, 4 of 10
+    qubits" lost its 4; with a preposition removed only after a space, "(see p.4)" left "(see)"; with no guard on
+    the first page, "p.4.2" became "p.12.2"."""
     b = _build(tmp_path, monkeypatch, {})
     norm = tuple(b._norm(p) for p in PAGES)
     cases = [
@@ -165,6 +167,11 @@ def test_page_lists_sections_and_punctuation(tmp_path, monkeypatch):
         ("Section 3, p.3 to 5 of the appendix", [8], "Section 3, p.8 of the appendix"),
         ("Section 5 (noise turned on), p.4; Section 6, p.9", [2], "Section 5 (noise turned on); Section 6"),
         ("Section 3 in p.4 and Section 5, p.9", [2], "Section 3 and Section 5"),
+        # Review of ee397c6: "of" after a count, a preposition after "(" or first, a section after "p.".
+        ("Section 4, p.12, 4 of 10 qubits", [7], "Section 4, p.7, 4 of 10 qubits"),
+        ("Section 3 (see p.4); Section 5, p.9", [2], "Section 3; Section 5"),
+        ("See p.4; Section 3, p.9", [2], "Section 3"),
+        ("Section 3, p.4.2", [12], "Section 3, p.4.2"),
     ]
     got = []
     for anchor, on, _ in cases:
