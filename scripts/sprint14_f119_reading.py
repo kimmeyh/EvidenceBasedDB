@@ -14,7 +14,9 @@ predictions/solvers"):
   quoted as checked text;
 - the author's own repositories `phi-infinity-runtime` (4ee4ea3) and `m-omnia-validation` (d3e45f3), read
   only where they bear on the paper's claims (Sprint 13 Manual Validation Q11 = 1): the stress-test summary,
-  the README, `src/` and `validation/` searched for the paper's mechanisms, and THEORY.md.
+  the research status note of 27 September, the README, `src/` and `validation/` searched for the paper's
+  mechanisms, and THEORY.md. The status note was missed at the first apply and found by its fresh-eyes review
+  (2026-10-30); the runtime's read row is corrected in place by `correct_runtime_read`.
 
 The Zenodo archive DOI:10.5281/zenodo.19857066 bears on none of the paper's claims: none of its 610 file
 entries holds PHI-OMEGA, M-OMNIA, "dS = 0", arc-length, the seed 20260925, symplectic or Hamiltonian
@@ -22,9 +24,10 @@ entries holds PHI-OMEGA, M-OMNIA, "dS = 0", arc-length, the seed 20260925, sympl
 entered.
 
 Grades come from store.grading. The paper's own definitions and setup are graded on their basis; whether
-its axioms hold is the author's claim. The author's own repository states the limits the paper leaves out,
-and the one that cannot hold beside the paper's claim is linked `contradicts` (ADR-0004 A8 (b): both cannot
-hold for the same test).
+its axioms hold is the author's claim. The author's own repository states the limits the paper leaves out:
+that one seed shows no absolute immunity, and that the test is a simulator result, not a general proof. Each
+cannot hold beside the paper's claim that the test demonstrates immunity, so each is linked `contradicts`
+(ADR-0004 A8 (b): both cannot hold for the same test).
 
 Every quote is checked by `require_verbatim`, with the value, against its source before anything is
 written. DRY-RUN BY DEFAULT; `--apply` takes a verified backup first. Idempotent.
@@ -41,8 +44,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from store import connect, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
 from store.grading import grade, high_grades, low_grade  # noqa: E402
-from store.ingest import (AssertionRecord, insert_paper, insert_verified_assertion,  # noqa: E402
-                          sync_verified_assertion, validate_assertion)
+from store.ingest import (AssertionRecord, append_updated_reason, insert_paper,  # noqa: E402
+                          insert_verified_assertion, sync_verified_assertion, validate_assertion)
 from store.quotes import require_verbatim, source_text  # noqa: E402
 
 _spec = importlib.util.spec_from_file_location("intake", Path(__file__).with_name("intake.py"))
@@ -61,6 +64,7 @@ POSTS_MD = DATA / "References" / "2026-09_Brighindi_PHI-OMEGA_LinkedIn-post-and-
 REPOS = DATA / "GitHubRepos"
 RUNTIME = REPOS / "phi-infinity-runtime"
 STRESS_MD = RUNTIME / "docs" / "validation" / "ADVERSARIAL_STRESS_TEST_2026-09-25.md"
+STATUS_MD = RUNTIME / "docs" / "M_OMNIA_STATO_RICERCA_2026-09-27.md"
 RUNTIME_README = RUNTIME / "README.md"
 OMNIA = REPOS / "m-omnia-validation"
 OMNIA_README = OMNIA / "README.md"
@@ -84,6 +88,7 @@ TEXTS = {
     "paper": (PAPER_PDF, PAPER_ID),
     "posts": (POSTS_MD, POSTS_ID),
     "stress": (STRESS_MD, RUNTIME_ID),
+    "status": (STATUS_MD, RUNTIME_ID),
     "runtime": (RUNTIME_README, RUNTIME_ID),
     "omnia": (OMNIA_README, OMNIA_ID),
     "theory": (OMNIA_THEORY, OMNIA_ID),
@@ -149,6 +154,10 @@ def posts_entry() -> dict:
     }
 
 
+def read_detail(rid: str, detail: str) -> str:
+    return f"{detail} at {COMMITS[rid]}; the rest not read (Q11 = 1: only what bears on the paper's claims)"
+
+
 def repo_entry(rid: str, name: str, disposition: str, detail: str) -> dict:
     return {
         "id": rid, "kind": "repo", "context": "ml", "tier": "read",
@@ -160,13 +169,21 @@ def repo_entry(rid: str, name: str, disposition: str, detail: str) -> dict:
                       "named by the team lead with the paper"),
         "cited_as": f"github.com/phiomegaruntime-rgb/{name}",
         "checked_against_source": f"{TODAY}, Claude, read {detail} at {COMMITS[rid]}",
-        "reads": [["Claude", TODAY, "partial", f"{detail} at {COMMITS[rid]}; the rest bears on none of the paper's "
-                                               "claims (Q11 = 1)"]],
+        "reads": [["Claude", TODAY, "partial", read_detail(rid, detail)]],
         "applicability": [["ml", "the author's own code and validation notes for the PHI-OMEGA paper's stress test "
                                  "and claims -- read where they bear on them"]],
         "updated_reason": f"{TODAY}: added by scripts/sprint14_f119_reading.py ({TAG})",
     }
 
+
+# What the first apply recorded for the runtime: it missed docs/M_OMNIA_STATO_RICERCA_2026-09-27.md, so its
+# "the rest bears on none of the paper's claims" was wrong. correct_runtime_read replaces it, matched exactly.
+RUNTIME_DETAIL_FIRST = ("docs/validation/ADVERSARIAL_STRESS_TEST_2026-09-25.md and README.md in full, with src/ and "
+                        "validation/ searched for the paper's mechanisms (sum of dS, conservation, M_gate, arc-length)")
+RUNTIME_READ_FIRST = f"{RUNTIME_DETAIL_FIRST} at 4ee4ea3; the rest bears on none of the paper's claims (Q11 = 1)"
+RUNTIME_DETAIL = ("docs/validation/ADVERSARIAL_STRESS_TEST_2026-09-25.md, docs/M_OMNIA_STATO_RICERCA_2026-09-27.md "
+                  "and README.md in full, with src/ and validation/ searched for the paper's mechanisms (sum of dS, "
+                  "conservation, M_gate, arc-length)")
 
 ENTRIES = {
     PAPER_ID: paper_entry,
@@ -176,8 +193,7 @@ ENTRIES = {
         ("Code repository: Brighindi's PHI-INFINITY runtime (no license file). Its validation notes hold the "
          "PHI-OMEGA paper's 25 September stress test, which they say is a fixed-seed simulation separate from "
          "the repository's src/ engine, with the raw files and the generator unpublished"),
-        "docs/validation/ADVERSARIAL_STRESS_TEST_2026-09-25.md and README.md in full, with src/ and validation/ "
-        "searched for the paper's mechanisms (sum of dS, conservation, M_gate, arc-length)"),
+        RUNTIME_DETAIL),
     OMNIA_ID: lambda: repo_entry(
         OMNIA_ID, "m-omnia-validation",
         ("Code repository: Brighindi's evidence-first validation of Relational Substrate Mechanics "
@@ -199,6 +215,9 @@ HIGH = high_grades({
                         "4ee4ea3, states it"),
     "m-omnia-validation-claims-no-empirically-verified-result": (
         "stated limit", "the author's own repository, README.md and THEORY.md at d3e45f3, state it"),
+    "phi-infinity-runtime-calls-the-closure-a-hypothesis-and-the-test-no-general-proof": (
+        "stated limit", "the author's own repository, docs/M_OMNIA_STATO_RICERCA_2026-09-27.md at 4ee4ea3, "
+                        "states it"),
 })
 
 
@@ -277,7 +296,7 @@ ASSERTIONS: list[tuple[str, AssertionRecord]] = [
                         'unmanaged drift, triggering critical '
                         'corruption at cycle 16, whereas the PHI-OMEGA substrate maintains metric bounds via alge- '
                         'braic rejections" (Figure 1 caption); "without requiring a hard fail-closed stop" (Figure '
-                        '1 caption)'),
+                        '1 caption); "sono metriche diverse" (the repository\'s stress-test summary)'),
       evidence_tag="SIM",
       otherwise=low_grade("measured result",
                           "one seed and a control the author built; the raw files and the generator are not "
@@ -299,13 +318,16 @@ ASSERTIONS: list[tuple[str, AssertionRecord]] = [
       provenance="the whole paper, read in full; the comment thread",
       citation_context=('"The architecture of Relational Substrate Mechanics is governed by three primary '
                         'axioms" (Section 2); "Algebraic Metric Closure (ΣdS = 0)" (Section 2); "Every state '
-                        'transition is bound by a strict conservation equation" (Section 2)'),
+                        'transition is bound by a strict conservation equation" (Section 2); "If that theorem '
+                        'exists, that would be the real smoking gun." (comment)'),
       claim_type="absence",
       search_scope=("the whole paper (3 pages, text and page images); phi-infinity-runtime at 4ee4ea3 (src/ and "
                     "validation/ searched for the sum of dS, conservation, M_gate and arc-length; the stress-test "
-                    "summary and README read); m-omnia-validation at d3e45f3 (README.md, THEORY.md); the Zenodo "
-                    "archive 10.5281/zenodo.19857066 (610 file entries searched); GitHub repository search for "
-                    "PHI-OMEGA, M-OMNIA and Brighindi, 2026-10-28")),
+                    "summary, the research status note docs/M_OMNIA_STATO_RICERCA_2026-09-27.md and README read); "
+                    "m-omnia-validation at d3e45f3 (README.md, THEORY.md); the Zenodo archive "
+                    "10.5281/zenodo.19857066 (610 file entries searched; the repositories' own Zenodo deposits "
+                    "not searched); GitHub repository search for PHI-OMEGA, M-OMNIA and Brighindi, 2026-10-28; "
+                    "the status note read 2026-10-30")),
     A("posts", id="brighindi-post-claims-energy-drift-mathematically-impossible",
       value=("In his LinkedIn post \"The End of Patchwork Physics\", Brighindi claims that any scheme using an external time "
              "step dt inevitably violates intrinsic conservation, and that enforcing the algebraic metric closure "
@@ -342,16 +364,34 @@ ASSERTIONS: list[tuple[str, AssertionRecord]] = [
              "simulation, not a physical observation and not a test of the repository's src/ engine; that the "
              "raw files and the original simulation.py are not published there, so the counts are not "
              "reproducible from the repository; that the rejections also record an availability limit (80 "
-             "proposals not executed); and that no absolute immunity, physical performance or universal "
-             "superiority is inferred from one seed and an ad hoc control (in Italian; translated here)"),
+             "proposals not executed) and are not a solution of the task; and that no absolute immunity, "
+             "physical performance or universal superiority is inferred from one seed and an ad hoc control (in "
+             "Italian; translated here)"),
       provenance="docs/validation/ADVERSARIAL_STRESS_TEST_2026-09-25.md at 4ee4ea3",
       citation_context=('"simulazione comparativa a seed fissato, non osservazione fisica e non test del motore" '
                         '(Classe di evidenza); "non sono pubblicati in questo repository" (on the raw files and '
                         'simulation.py); "i conteggi non sono pertanto riproducibili da questo checkout" '
                         '(introduction); "registrano anche una limitazione di disponibilità (80 proposte non '
-                        'eseguite)" (results); "Non si inferiscono immunità assoluta, prestazioni fisiche o '
+                        'eseguite)" (results); "I rifiuti non equivalgono a una soluzione del compito" (results); '
+                        '"Non si inferiscono immunità assoluta, prestazioni fisiche o '
                         'superiorità universale da un singolo seed e da un controllo costruito ad hoc." (results)'),
-      contradicts=["phi-omega-paper-claims-full-reproducibility"]),
+      contradicts=["phi-omega-paper-claims-full-reproducibility",
+                   "phi-omega-paper-claims-closure-makes-structural-failure-impossible"]),
+    A("status", id="phi-infinity-runtime-calls-the-closure-a-hypothesis-and-the-test-no-general-proof",
+      value=("The author's own runtime repository, in its research status note of 27 September, calls the closure "
+             "(the sum of dS = 0) a formalization hypothesis whose variables and boundary must be declared in each "
+             "test; calls the 25 September comparison a result in the defined simulator, not a general physical "
+             "proof, and not reproducible from the repository; and says the executable definition, derivation and "
+             "proof of its proposed projection and threshold for extreme states remain open (in Italian; "
+             "translated here)"),
+      provenance="docs/M_OMNIA_STATO_RICERCA_2026-09-27.md at 4ee4ea3",
+      citation_context=('"stato della ricerca al 27 settembre 2026" (title); "\\(\\sum dS=0\\)" (section C table); '
+                        '"Ipotesi di formalizzazione; le variabili e il confine vanno dichiarati nel singolo test." '
+                        '(section C table); "il confronto del 25 settembre è un artefatto separato" (section C '
+                        'table); "Risultato nel simulatore definito; non dimostrazione fisica generale." (version '
+                        'table); "il risultato non è riproducibile da esso" (Confini della prova); "definizione '
+                        'eseguibile, derivazione e prova restano aperte" (section C table)'),
+      contradicts=["phi-omega-paper-claims-closure-makes-structural-failure-impossible"]),
     A("stress", id="phi-infinity-stress-test-counts-20-commits-80-rejections",
       value=("By the author's repository's reading of the stress test's CSV (SEED = 20260925): 100 cycles; the open "
              "control first corrupted at step 16 with drift 177.08721760057597; the PHI-OMEGA simulator accepted "
@@ -380,8 +420,12 @@ ASSERTIONS: list[tuple[str, AssertionRecord]] = [
                         'validity are separate claims." (THEORY)')),
 ]
 
-# Two quotes come from THEORY.md, not the README: their source is chosen per quote below.
-SPLIT = {"m-omnia-validation-claims-no-empirically-verified-result": ("omnia", "theory")}
+# Assertions quoting more than one file: every quote is checked against the files named here.
+SPLIT = {
+    "m-omnia-validation-claims-no-empirically-verified-result": ("omnia", "theory"),
+    "phi-omega-paper-control-corrupts-at-cycle-16": ("paper", "stress"),
+    "phi-omega-paper-gives-no-proof-for-its-closure-claim": ("paper", "posts"),
+}
 
 
 def text_of(key: str) -> str:
@@ -405,6 +449,23 @@ def counts(conn) -> str:
     return f"papers {sum(tiers.values())} ({', '.join(f'{k} {v}' for k, v in sorted(tiers.items()))}); assertions {n}"
 
 
+def correct_runtime_read(conn, apply: bool) -> list[str]:
+    """Replace the runtime's first read row, which missed the status note, matched on its exact detail."""
+    first = conn.execute("SELECT 1 FROM paper_reads WHERE record_id = ? AND reader = 'Claude' AND read_on = ? "
+                         "AND detail = ?", (RUNTIME_ID, TODAY, RUNTIME_READ_FIRST)).fetchone()
+    if not first:
+        return []
+    if apply:
+        conn.execute("UPDATE paper_reads SET detail = ? WHERE record_id = ? AND reader = 'Claude' AND read_on = ? "
+                     "AND detail = ?", (read_detail(RUNTIME_ID, RUNTIME_DETAIL), RUNTIME_ID, TODAY, RUNTIME_READ_FIRST))
+        conn.execute("UPDATE paper_fields SET checked_against_source = ? WHERE record_id = ?",
+                     (f"{TODAY}, Claude, read {RUNTIME_DETAIL} at {COMMITS[RUNTIME_ID]}", RUNTIME_ID))
+        append_updated_reason(conn, RUNTIME_ID, f"{TODAY} ({TAG}): read row corrected: the research status note "
+                                                "docs/M_OMNIA_STATO_RICERCA_2026-09-27.md was read after the "
+                                                "fresh-eyes review found it (INTAKE_WORKFLOW.md section 54)", TODAY)
+    return [f"read {RUNTIME_ID}: status note added"]
+
+
 def apply_changes(conn, apply: bool) -> list[str]:
     checked = verify_all()
     log = []
@@ -415,6 +476,7 @@ def apply_changes(conn, apply: bool) -> list[str]:
         if apply:
             insert_paper(conn, record)
         log.append(f"source {record.id} [{record.tier}]")
+    log += correct_runtime_read(conn, apply)
     for key, a, verified in checked:
         if conn.execute("SELECT 1 FROM records WHERE id = ?", (a.id,)).fetchone() is None:
             if apply:

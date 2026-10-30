@@ -33,6 +33,7 @@ def test_only_definitions_setup_absence_and_stated_limits_are_graded_up():
         "phi-omega-paper-gives-no-proof-for-its-closure-claim",
         "phi-infinity-stress-test-not-reproducible-and-no-immunity-inferred",
         "m-omnia-validation-claims-no-empirically-verified-result",
+        "phi-infinity-runtime-calls-the-closure-a-hypothesis-and-the-test-no-general-proof",
     }
     by_id = {a.id: a for _, a in f119.ASSERTIONS}
     for aid in ("phi-omega-paper-control-corrupts-at-cycle-16", "phi-infinity-stress-test-counts-20-commits-80-rejections"):
@@ -44,14 +45,20 @@ def test_only_definitions_setup_absence_and_stated_limits_are_graded_up():
 
 @pytest.mark.live_store
 def test_every_quote_and_figure_is_in_its_source():
-    """Proven to fail by injection, 2026-10-30: with the stress test's
-    "Passo 16" quoted as "Passo 17", require_verbatim refused the entry."""
+    """Every quote is checked against each file its assertion quotes,
+    including the repository's words in a paper-yielded value (SPLIT).
+    Proven to fail by injection, 2026-10-30: with the stress test's
+    "Passo 16" quoted as "Passo 17", require_verbatim refused the entry;
+    and with "sono metriche diverse" checked against the paper alone, it
+    refused the Figure 1 assertion."""
     f119 = _script()
-    assert len(f119.verify_all()) == 11
+    assert len(f119.verify_all()) == 12
 
 
 @pytest.mark.live_store
 def test_the_store_holds_f119_and_a_second_apply_writes_nothing(live_conn, live_copy):
+    """Proven to fail by injection, 2026-10-30: with the status-note
+    assertion's id changed in the script, its yield was missing."""
     from store import connect
     f119 = _script()
     for key, a in f119.ASSERTIONS:
@@ -60,8 +67,15 @@ def test_the_store_holds_f119_and_a_second_apply_writes_nothing(live_conn, live_
     links = live_conn.execute("SELECT from_assertion_id, to_assertion_id, relation FROM assertion_relations "
                               "WHERE from_assertion_id IN (%s)" % ",".join("?" * len(f119.ASSERTIONS)),
                               [a.id for _, a in f119.ASSERTIONS]).fetchall()
-    assert [tuple(r) for r in links] == [("phi-infinity-stress-test-not-reproducible-and-no-immunity-inferred",
-                                          "phi-omega-paper-claims-full-reproducibility", "contradicts")]
+    central = "phi-omega-paper-claims-closure-makes-structural-failure-impossible"
+    stress = "phi-infinity-stress-test-not-reproducible-and-no-immunity-inferred"
+    assert {tuple(r) for r in links} == {
+        (stress, "phi-omega-paper-claims-full-reproducibility", "contradicts"),
+        (stress, central, "contradicts"),
+        ("phi-infinity-runtime-calls-the-closure-a-hypothesis-and-the-test-no-general-proof", central, "contradicts"),
+    }
+    detail = live_conn.execute("SELECT detail FROM paper_reads WHERE record_id = ?", (f119.RUNTIME_ID,)).fetchone()[0]
+    assert "M_OMNIA_STATO_RICERCA_2026-09-27.md" in detail and "bears on none" not in detail
     for rid in f119.ENTRIES:
         assert tuple(live_conn.execute("SELECT tier FROM paper_fields WHERE record_id = ?", (rid,)).fetchone()) \
             == ("read",), rid

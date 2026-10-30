@@ -80,7 +80,19 @@ this project keeps having to replace with a step.
   ledger groups g295 to g329, linked by the ledger; `access` names each
   file when F114 reads its group (the narrower reading of step (2),
   disclosed in INTAKE section 55). The hand-download list holds 53
-  records, none with a local copy. No store write
+  records, none with a local copy. No store write (ebff67c)
+- **fix**: F119 corrected after its fresh-eyes review (Sprint 14 Task A,
+  #141, 2026-10-30; INTAKE section 54, dated correction). The runtime
+  read had missed `docs/M_OMNIA_STATO_RICERCA_2026-09-27.md`, which calls
+  the closure a formalization hypothesis and the stress test a simulator
+  result, not a general proof: read in full, a 12th assertion (HIGH,
+  stated limit) entered, the read row and the absence claim's search
+  scope corrected. Two `contradicts` links added to the paper's central
+  claim (its "demonstrating absolute structural immunity" cannot hold
+  beside the repository's limits); two values' repository and thread
+  text now quoted and checked; the stress limit adds that rejections are
+  not a solution of the task. A second apply writes nothing; tests
+  proven red by injection
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

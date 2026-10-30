@@ -2478,6 +2478,47 @@ Every count is a snapshot as of 2026-10-30. Written before the apply.
   claim of its own.
 - `scripts/sprint14_f119_reading.py`; a second apply writes nothing.
 
+**Corrected 2026-10-30, after the fresh-eyes review of 1b987dd** (written
+before the second apply). Three statements above were wrong or short:
+
+- **The runtime read missed a file that bears on the claims.**
+  `docs/M_OMNIA_STATO_RICERCA_2026-09-27.md`, which the README links,
+  calls the closure "Ipotesi di formalizzazione" (a formalization
+  hypothesis) and the 25 September result "Risultato nel simulatore
+  definito; non dimostrazione fisica generale" (a result in the defined
+  simulator, not a general physical proof). It is now read in full and
+  yields a 12th assertion, HIGH as the repository's stated limit. The
+  runtime's read row said "the rest bears on none of the paper's
+  claims"; it now names the note and says the rest was not read. The
+  absence claim's search scope names the note, and says the
+  repositories' own Zenodo deposits were not searched.
+- **"Nothing else is linked" was wrong.** The repository's "no absolute
+  immunity is inferred from one seed" and the paper's abstract,
+  "demonstrating absolute structural immunity", cannot both hold for the
+  same test, so the stress-test limit is also linked `contradicts` to
+  the central claim, and so is the new status-note assertion. The first
+  link (to the reproducibility claim) stands on its immunity half: "not
+  reproducible from this checkout" and "the logs ensure full
+  reproducibility" can both hold, since the logs exist with the author.
+  The absence claim is still not linked: a claim made without proof does
+  not contradict the absence of the proof.
+- **Two values held text no quote checked.** The Figure 1 assertion's
+  "different metrics" (the repository's "sono metriche diverse") and the
+  absence claim's thread quote are now quoted and checked against their
+  own files. The stress-test limit adds "I rifiuti non equivalgono a una
+  soluzione del compito" (the rejections are not a solution of the task).
+- **Two descriptions above are corrected here.** Only the 25 September
+  post's assertion says its image restates the post; the 23 September
+  assertion does not name its image. The comment thread is a reader's
+  challenge and the author's reply, which claims again, with no proof,
+  that energy drift is "mathematically impossible".
+- **Known and not changed:** the stored reason on a HIGH from a
+  repository reads "the paper's own stated limit", because the template
+  in `store/grading.py` says "paper" for every source; its "why" names
+  the repository. The stress-test summary speaks of "l'autore" in the
+  third person, so "the author's own repository" means the repository,
+  not that Brighindi wrote every line.
+
 ## 55. The F95 release for Sprint 14: new papers in `Papers\` (Sprint 14 Task B, F122)
 
 Every count is a snapshot as of 2026-10-30. Nothing is written to the
