@@ -429,6 +429,11 @@ and in git. Remaining items below.
   `access` names the arXiv id or DOI, not the file). The one new file
   is the PHI-OMEGA paper, which F119 enters. So the next release holds
   nothing beyond F119 unless a file is saved first.
+- **Snapshot as of 2026-10-30** (Sprint 14 Task B, F122, intake
+  section 55): 374 PDFs; 165 named by no record's `access`, all Task G
+  downloads in ledger groups g295 to g329, linked by the ledger and
+  named in `access` when F114 reads their group. The hand-download list
+  holds 53 records, none with a local copy.
 - **The hand-download list** (team lead, 2026-10-22, Sprint 11 Manual
   Validation Q2: "Keep an on going list of these in relative priority
   order and will likely download in the future"): computed by

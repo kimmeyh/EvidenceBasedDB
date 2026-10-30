@@ -74,6 +74,13 @@ this project keeps having to replace with a step.
   is not reproducible from it and proves no immunity. The Zenodo archive
   holds 610 file entries (not 608) and bears on none of the claims. A
   second apply writes nothing; tests proven red by injection
+- **docs**: F122 (Sprint 14 Task B, #142, 2026-10-30): the F95 release.
+  374 PDFs in `Papers\`; 166 unnamed before, 165 after (Task A named the
+  PHI-OMEGA paper). The 165 are Task G downloads of store records in
+  ledger groups g295 to g329, linked by the ledger; `access` names each
+  file when F114 reads its group (the narrower reading of step (2),
+  disclosed in INTAKE section 55). The hand-download list holds 53
+  records, none with a local copy. No store write
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

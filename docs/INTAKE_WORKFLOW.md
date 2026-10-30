@@ -2477,3 +2477,29 @@ Every count is a snapshot as of 2026-10-30. Written before the apply.
   the post's assertion and named in the absence claim, not entered as a
   claim of its own.
 - `scripts/sprint14_f119_reading.py`; a second apply writes nothing.
+
+## 55. The F95 release for Sprint 14: new papers in `Papers\` (Sprint 14 Task B, F122)
+
+Every count is a snapshot as of 2026-10-30. Nothing is written to the
+store: every unnamed file is already a store record.
+
+- **Before** (2026-10-29, Sprint 14 Phase 1.2): 374 PDFs in `Papers\`
+  and its subfolders; 166 named by no record's `access` (file-name match).
+- **After** (2026-10-30, after Task A): 374 PDFs; 165 named by no
+  record's `access`. Task A named the one new file, the PHI-OMEGA paper.
+  No file was saved between the two counts.
+- **The 165 are linked by the ledger, not by `access` now.** Each is
+  Sprint 13 Task G's download of 2026-10-25 for a record already in the
+  store: all 165 are in `manifests/sprint13_g_ledger.json`, in groups
+  g295 to g329 (34 groups), each record at tier `seen`. Its `access`
+  names the arXiv id or DOI. The g-reading apply adds the file to
+  `access`, with its SHA-256, when its group is read (F114), the same
+  as for every earlier group. This is the narrower reading of F95's
+  step (2): the file is matched to its record and is not entered twice,
+  but `access` is not written ahead of the read, so the hash and the
+  read land together.
+- **The hand-download list holds 53 records; none has a local copy.**
+  No target path exists under `D:\Data\Harold\EvidenceBasedDB\`. A text
+  match on `aimeur-2013` was a false hit: the line was aimeur-2007's
+  reason, which names its 2013 journal version.
+- Nothing to enter, nothing to read in this release beyond F119.
