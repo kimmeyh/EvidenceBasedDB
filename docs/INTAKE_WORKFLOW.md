@@ -2717,3 +2717,66 @@ Every count is a snapshot as of 2026-10-30. Written before the apply.
   `manifests/sprint14_f123_roadmap.json`; `--apply` takes a verified
   backup; a second apply enters nothing and adds no route.
   `tests/test_sprint14_f123.py`.
+
+## 58. F114's first release: groups g043 to g113 and g330, reviewed by F117 (Sprint 14 Tasks E and F)
+
+Every count is a snapshot as of 2026-10-30. Written before the apply; the
+counts that enter are added when it runs.
+
+- **What is read.** 72 ledger groups, 351 records, every paper read in
+  full under Task G's rules (section 53; no budget):
+  - Task E: groups g043 to g102 and the cloud records of g103 to g113,
+    read in cloud sessions in Sprint 13 and Sprint 14
+    (`scripts/f114_cloud.py`; its results restored to
+    `work\f114\results\`).
+  - Task F: 54 records read by local first-pass readers under
+    `manifests/sprint14_f114_reads/READER_PROMPT.md`: 50 papers of g079
+    and g103 to g113 (Q1 = 2), and g330, Task C's 4 papers (section 57).
+    Boyd and Vandenberghe's textbook (g103) was read by two readers in
+    turn: the first stopped with its context full at PDF page 520, the
+    second read the rest and checked every seed after it.
+  - The readers proposed 13,660 new assertions and judged 633 stored ones
+    (394 confirmed, 185 narrowed, 48 widened, 6 corrected).
+- **Page anchors are computed for local reads.** A local reader's page
+  is replaced by the PDF page its quotes are on, counted with pdftotext's
+  form feeds (`fix_pages` in `scripts/f117_build_groups.py`); a "printed"
+  page is left alone, and every change is listed when the group file is
+  built. The readers' text layers had lost their page breaks, so anchors
+  had run up to 15 pages off. Five fresh-eyes reviews of the fixer found
+  defects, each fixed and proven red; F126 holds what is left (none of it
+  in these groups).
+- **How each group is reviewed (F117).** One Sonnet 5.5 reviewer per
+  group decides every item from its passage read in context
+  (`manifests/f117_reviews/REVIEW_PROMPT.md`); the coordinator (Opus 5.5)
+  reads the decisions and signs the group off; `scripts/f117_review.py
+  finalize` writes `manifests/sprint13_g_reviews/gNNN.json`. Boyd's 1,033
+  items were reviewed in ten parts and merged by id (none lost or twice).
+- **Every certainty change on a stored assertion is the team lead's.**
+  Finalize stops on one and writes it to
+  `work\f114\review\escalations\gNNN.pending.json`. 16 groups wait on
+  them; they enter after the team lead's decisions at Manual Validation.
+  56 groups are finalized: 2,910 graded HIGH and 630 theoretical results
+  kept LOW. Any other result is LOW by default.
+- **The sign-off's edits.** Value replacements, extra quotes and
+  re-quotes are added to a group's review file (the applier's existing
+  tables). Each replacement is checked as the applier checks it: its
+  passages verbatim in the source and every number in its quotes. The
+  text-layer slips (2^16 printed as 216, 10^4 as 104 and 10^5 as 105, a
+  lost negation in Boyd) were read from the page image.
+- **One grading rule across groups.** A proof that rests on a cited or
+  unproved result is LOW, and its why names that result; standard
+  background mathematics does not make a result LOW; a value shown only
+  in part is LOW. Two consistency passes (Boyd's nine parts; the other
+  groups' cited results and news or vendor pages) propose the corrections
+  the coordinator applies, and stored assertions among them go to the
+  team lead.
+- **Left out.** 8 records are marked unread in their group's review, with
+  why: among them g113's 3 chen-2026 papers, beyond Task F's 50 (F125).
+  muta-hardware-scope-photonic-gkp keeps its stored page (F126).
+- **How a read is recorded.** As in section 53: a `full` row naming the
+  reader, with the group's tag; a local read in a group otherwise read in
+  the cloud names its own tag and reader (`tags` and `readers` in the
+  review file).
+- **The apply.** `scripts/sprint13_g_reading.py` enters each finalized
+  group. It is tried first on a copy of the store, then run with a
+  verified backup; a second apply writes nothing.

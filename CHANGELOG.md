@@ -345,6 +345,12 @@ this project keeps having to replace with a step.
   "of 10" after a dropped "to" range, "p.12a", and
   muta-hardware-scope-photonic-gkp's stored page, which the apply cannot
   correct (its reader entry has no quotes to rebuild it from)
+- **docs**: INTAKE 58 written before the apply (Sprint 14 Tasks E and F,
+  #145 and #146, 2026-10-30): F114's first release, 72 groups and 351
+  records, reviewed by F117; 56 groups finalized and 16 waiting on the
+  team lead's escalations (snapshot as of 2026-10-30). The sprint status
+  note records the changed commitments (the review chain stopped at
+  five rounds; one stored page left for F126)
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
