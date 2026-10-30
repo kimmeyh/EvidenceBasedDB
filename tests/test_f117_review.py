@@ -126,3 +126,64 @@ def test_a_certainty_change_waits_for_the_team_lead(review):
     out = review.finalize("g050", "2026-10-30", review.STORED)
     assert "st-hi" not in out["graded_high"] and out["requote"]["st-hi"].startswith("regraded LOW")
     assert "narrow" not in out["graded_high"]
+
+
+def test_a_moderate_change_waits_and_a_settlement_is_checked(review):
+    """Review of 46d088d: a stored MODERATE went to LOW unasked (only HIGH and LOW were checked); a settlement was
+    taken as written ("HIGH" or a typo passed); the team lead could not keep a stored HIGH, having no way to name its
+    basis; each settlement must be the item's own. Proven to fail by injection, 2026-10-30: with the old
+    `was in ("high", "low")` test, nothing waited for "narrow"; with `_settled` returning its input, "HIGH" passed;
+    with every item reading the first settlement, "st-hi" took "narrow"'s low."""
+    stored = {**review.STORED, "narrow": "moderate"}
+    _decide(review, {**GOOD, "narrow": {"decision": "accept", "grade": "low", "why": "a measured result"}})
+    with pytest.raises(ValueError, match="1 certainty changes"):
+        review.finalize("g050", "2026-10-30", stored)
+    esc = review.REVIEW / "escalations" / "g050.json"
+    esc.write_text(json.dumps({"narrow": "HIGH"}), encoding="utf-8")
+    with pytest.raises(ValueError, match="settled decision"):
+        review.finalize("g050", "2026-10-30", stored)
+    _decide(review, {**GOOD, "st-hi": {"decision": "low", "why": "an interpretation"},
+                     "narrow": {"decision": "accept", "grade": "low", "why": "a measured result"}})
+    esc.write_text(json.dumps({"narrow": "low", "st-hi": ["high", "setup", "Section 2 states the setup"]}),
+                   encoding="utf-8")
+    out = review.finalize("g050", "2026-10-30", stored)
+    assert out["graded_high"]["st-hi"] == ["setup", "kept HIGH at the team lead's decision: Section 2 states the setup"]
+    assert "narrow" not in out["graded_high"] and "st-hi" not in out["requote"]
+    esc.write_text(json.dumps({"narrow": "low", "st-hi": "low", "nobody": "low"}), encoding="utf-8")
+    with pytest.raises(ValueError, match="settled decisions for no item"):
+        review.finalize("g050", "2026-10-30", stored)
+
+
+def test_a_vendor_claim_is_never_high_and_stray_decisions_are_refused(review):
+    """Review of de1efff: 10 signed HIGHs on vendors' own claims would have been written LOW without a word; a
+    decision for no item was ignored. Proven to fail by injection, 2026-10-30: with the vendor check removed from
+    _grade, the HIGH passed; with the stray check removed, the extra decision passed."""
+    path = review.READS_DIR / "group_g050.json"
+    group = json.loads(path.read_text(encoding="utf-8"))
+    group["papers"][0]["assertions"][0]["claim_type"] = "vendor-self-claim"
+    path.write_text(json.dumps(group), encoding="utf-8")
+    _decide(review, GOOD)
+    with pytest.raises(ValueError, match="vendor's own claim"):
+        review.finalize("g050", "2026-10-30", review.STORED)
+    _decide(review, {**GOOD, "thm": {"decision": "low", "why": "a vendor's own claim"}, "nobody": GOOD["sketch"]})
+    with pytest.raises(ValueError, match="decisions for no item"):
+        review.finalize("g050", "2026-10-30", review.STORED)
+
+
+def test_the_coordinators_sign_off_is_merged_on_every_finalize(review):
+    """A re-finalize must not lose the coordinator's sign-off edits. Proven to fail by injection, 2026-10-30: with
+    _merge_signoff not called, the value_replace was missing; with the id check removed, an edit for an id outside
+    the group passed."""
+    _decide(review, GOOD)
+    so = review.REVIEW / "signoff"
+    so.mkdir()
+    (so / "g050.json").write_text(json.dumps({"value_replace": {"thm": "the corrected value"},
+                                              "requote": {"st-lo": "anchor moved"}}), encoding="utf-8")
+    out = review.finalize("g050", "2026-10-30", review.STORED)
+    assert out["value_replace"] == {"thm": "the corrected value"} and out["requote"] == {"st-lo": "anchor moved"}
+    (so / "g050.json").write_text(json.dumps({"value_replace": {"elsewhere": "v"}}), encoding="utf-8")
+    with pytest.raises(ValueError, match="not in the group"):
+        review.finalize("g050", "2026-10-30", review.STORED)
+    (so / "g050.json").write_text(json.dumps({"regrade_high": {"thm": "x"}}), encoding="utf-8")
+    with pytest.raises(ValueError, match="does not read"):
+        review.finalize("g050", "2026-10-30", review.STORED)

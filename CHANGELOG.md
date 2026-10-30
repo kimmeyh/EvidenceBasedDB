@@ -351,6 +351,27 @@ this project keeps having to replace with a step.
   team lead's escalations (snapshot as of 2026-10-30). The sprint status
   note records the changed commitments (the review chain stopped at
   five rounds; one stored page left for F126)
+- **fix**: the fresh-eyes reviews of de1efff, 46d088d and 7f18e9f
+  (Sprint 14 Task E, #145, 2026-10-30). The review script and the
+  applier disagreed on what is written, so certainty could change
+  without the team lead:
+  - A stored MODERATE (98 in the store) could go to LOW with no
+    escalation (g097's pennylane-gradient-method-fallback-order): every
+    stored certainty now counts. A stored NULL is not escalated; it has
+    no grade to override.
+  - A signed HIGH on a vendor's own claim was written LOW without a word
+    (10 new assertions in g049, g052, g054, g056, g067 and g068).
+    Finalize and the applier now both refuse it; the store's rule (a
+    vendor's own claim is LOW) stands.
+  - A settled escalation was taken as written; it is now "low" or
+    ["high", basis, why], so the team lead can keep a stored HIGH.
+  - A requote of an entry with no value would have blanked the stored
+    value; the applier refuses an empty value.
+  - Decisions or settlements for no item are refused; finalize needs
+    `models.json`.
+  - Finalize merges the coordinator's sign-off edits from
+    `review\signoff\<g>.json`, so a re-finalize keeps them.
+  Each guard was proven red by injection
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

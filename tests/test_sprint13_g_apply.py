@@ -7,6 +7,8 @@ import importlib.util
 import sqlite3
 from pathlib import Path
 
+import pytest
+
 from store.grading import high_grades
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -253,3 +255,23 @@ def test_an_apply_that_rewrites_a_read_row_is_rolled_back_unless_named(synthetic
         assert g.commit_apply(conn, update_reads=False) == ["update readout-2024-x [value]"]
     finally:
         conn.close()
+
+
+def test_a_high_the_applier_would_not_write_and_an_empty_value_are_refused(monkeypatch):
+    """Review of de1efff: a signed HIGH on a vendor's own claim was written LOW without a word, and a requoted
+    confirmed entry with no value of its own would have blanked the stored value. Proven to fail by injection,
+    2026-10-30: with the vendor check removed from certainty(), the record came back LOW; with the value check
+    removed from record(), the record carried an empty value."""
+    g = _script()
+    base = {"value": "v", "anchor": "p.1", "quotes": ["a quote"], "context": "qml", "result_type": "setup"}
+    paper = {"record_id": "src", "assertions": [{"id_suggestion": "vend", "claim_type": "vendor-self-claim", **base}],
+             "existing": [{"id": "conf", "verdict": "confirmed", "claim_type": "positive", **base, "value": ""}]}
+    monkeypatch.setattr(g, "load_groups", lambda: [("g1", paper)])
+    monkeypatch.setattr(g, "HIGH", high_grades({"vend": ("definition", "the product's own definition")}))
+    monkeypatch.setattr(g, "REQUOTE", {})
+    with pytest.raises(ValueError, match="vendor's own claim"):
+        g.assertions()
+    monkeypatch.setattr(g, "HIGH", high_grades({}))
+    monkeypatch.setattr(g, "REQUOTE", {"conf": "the anchor moved"})
+    with pytest.raises(ValueError, match="no value to write"):
+        g.assertions()

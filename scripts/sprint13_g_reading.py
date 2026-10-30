@@ -231,6 +231,8 @@ def quotes_of(aid: str, a: dict) -> list[str]:
 
 def certainty(aid: str, a: dict) -> tuple[str, str]:
     if a["claim_type"] == "vendor-self-claim":
+        if aid in HIGH:  # a signed HIGH would be written LOW without a word (review of de1efff)
+            raise ValueError(f"{aid}: graded HIGH, but a vendor's own claim is LOW; correct the review")
         if aid in VENDOR_DESCRIPTIONS:
             return "moderate", f"{f80.VENDOR_START}. Not upgraded: a description of the product, not a result"
         return low_grade("vendor claim")
@@ -262,8 +264,11 @@ def record(g: str, rid: str, aid: str, a: dict, why: str, sid: str | None = None
     sid = sid or aid
     cert, reasons = certainty(aid, a)
     anchor = anchor_safe(ANCHOR_FIX.get(sid) or a["anchor"])
+    value = " ".join((VALUE_REPLACE.get(sid) or a.get("value") or "").split())
+    if not value:  # a confirmed entry may carry no value; a requote would blank the stored one (review of de1efff)
+        raise ValueError(f"{sid}: no value to write; give it a value_replace or leave it out of REQUOTE")
     return AssertionRecord(
-        id=sid, value=" ".join((VALUE_REPLACE.get(sid) or a["value"]).split()),
+        id=sid, value=value,
         provenance=f"{rid}, {anchor}",
         citation_context="; ".join(f'"{q}" ({anchor})' for q in quotes_of(sid, a)),
         evidence_tag="N/A", context=CONTEXT_FIX.get(sid) or a["context"], certainty=cert,

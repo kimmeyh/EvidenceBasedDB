@@ -14,8 +14,9 @@ The Sonnet 5.5 reviewer writes WORK/review/decisions/<g>.json: {"<item id>": {"d
 
 `finalize <g> <reviewed_on>` turns the decisions into the review file, refusing a missing or malformed decision. A
 stored assertion whose grade the decisions would change (HIGH to LOW, or LOW to HIGH) is a certainty change, which
-the team lead decides (F117's card): it is listed in WORK/review/escalations/<g>.json and the group is not finalized
-until the decision is recorded there as {"<id>": "high" | "low"}.
+the team lead decides (F117's card): it is listed in WORK/review/escalations/<g>.pending.json and the group is not
+finalized until the decision is recorded in WORK/review/escalations/<g>.json as {"<id>": "low" | ["high", basis,
+why]}. Any stored certainty counts, MODERATE included; a vendor's own claim is never HIGH.
 """
 from __future__ import annotations
 
@@ -74,7 +75,8 @@ def papers(g: str) -> list[dict]:
 
 def _show(rid: str, a: dict, aid: str) -> dict:
     return {"id": aid, "record": rid, "anchor": a.get("anchor"), "value": a.get("value"), "quotes": a.get("quotes"),
-            "result_type": a.get("result_type"), "suggested": a.get("certainty_suggestion"),
+            "result_type": a.get("result_type"), "claim_type": a.get("claim_type"),
+            "suggested": a.get("certainty_suggestion"),
             "suggested_basis": a.get("high_basis"), "reader_reason": a.get("certainty_reason")}
 
 
@@ -116,7 +118,19 @@ def _grade(item: dict, d: dict) -> tuple[str, str, str]:
     basis = d.get("basis") or ""
     if grade == "high" and basis not in BASES:
         raise ValueError(f"{item['id']}: a HIGH names a basis in {sorted(BASES)}, not {basis!r}")
+    if grade == "high" and item.get("claim_type") == "vendor-self-claim":  # the applier writes it LOW (review of de1efff)
+        raise ValueError(f"{item['id']}: a vendor's own claim is LOW (store.grading); decide it low with why")
     return grade, basis, why
+
+
+def _settled(aid: str, v) -> tuple[str, str, str]:
+    """The team lead's decision on an escalation: "low", or ["high", basis, why] (review of 46d088d: a bare "high"
+    could not name its basis, and a mistyped value was taken without a word)."""
+    if v == "low":
+        return "low", "", ""
+    if isinstance(v, list) and len(v) == 3 and v[0] == "high" and v[1] in BASES and str(v[2]).strip():
+        return "high", v[1], v[2]
+    raise ValueError(f"{aid}: a settled decision is \"low\" or [\"high\", basis, why], not {v!r}")
 
 
 def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> dict:
@@ -125,8 +139,14 @@ def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> 
     missing = [i["id"] for i in its if i["id"] not in decisions]
     if missing:
         raise ValueError(f"{g}: no decision for {missing}")
+    stray = sorted(set(decisions) - {i["id"] for i in its})
+    if stray:
+        raise ValueError(f"{g}: decisions for no item: {stray}")
     esc_path = REVIEW / "escalations" / f"{g}.json"
     settled = json.loads(esc_path.read_text(encoding="utf-8")) if esc_path.exists() else {}
+    stray = sorted(set(settled) - {i["id"] for i in its})
+    if stray:
+        raise ValueError(f"{g}: settled decisions for no item: {stray}")
     review = {"group": g, "reviewed_on": reviewed_on, "tag": TAG, "reader": READER, "coordinator_note": "",
               "graded_high": {}, "theory_low": {}, "keep_stored": {}, "requote": {}}
     escalate = {}
@@ -141,15 +161,17 @@ def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> 
             if d.get("decision") != "accept":
                 raise ValueError(f"{item['id']}: a changed verdict is accept or keep")
         grade, basis, why = _grade(item, d)
-        was = item.get("stored")
-        if was in ("high", "low") and grade != was:
+        # Any stored certainty the applier would overwrite, MODERATE included (review of 46d088d: only HIGH and LOW
+        # were checked); a stored NULL has no grade to override and is not escalated.
+        was = (item.get("stored") or "").lower()
+        if was and grade != was:
             if item["id"] not in settled:
                 escalate[item["id"]] = {"record": item["record"], "stored": was, "proposed": grade, "why": why,
                                         "value": item["value"], "anchor": item["anchor"]}
                 continue
-            grade = settled[item["id"]]
-            if grade == "high" and basis not in BASES:
-                raise ValueError(f"{item['id']}: the team lead kept it HIGH; its basis must be named")
+            grade, s_basis, s_why = _settled(item["id"], settled[item["id"]])
+            if grade == "high":
+                basis, why = s_basis, f"kept HIGH at the team lead's decision: {s_why}"
         if grade == "high":
             review["graded_high"][item["id"]] = [basis, why]
         elif item["result_type"] == "theoretical":
@@ -176,7 +198,34 @@ def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> 
         review["tags"] = {r: LOCAL_TAG for r in sorted(local)}
     if readers:
         review["readers"] = readers
+    _merge_signoff(g, review, ps=papers(g))
     return review
+
+
+# The coordinator's sign-off edits, in the applier's own tables, kept per group in WORK/review/signoff/<g>.json so a
+# re-finalize writes them again instead of losing them.
+SIGNOFF_TABLES = {"value_replace", "extra_quotes", "quote_edits", "anchor_fix", "context_fix", "requote", "drop",
+                  "result_type_fix"}
+
+
+def _merge_signoff(g: str, review: dict, ps: list[dict]) -> None:
+    path = REVIEW / "signoff" / f"{g}.json"
+    if not path.exists():
+        return
+    edits = json.loads(path.read_text(encoding="utf-8"))
+    unknown = sorted(set(edits) - SIGNOFF_TABLES)
+    if unknown:
+        raise ValueError(f"{g}: sign-off tables the applier does not read: {unknown}")
+    ids = {a["id_suggestion"] for p in ps for a in p.get("assertions", [])} | {
+        x["id"] for p in ps for x in p.get("existing", [])}
+    for table, entries in edits.items():
+        stray = sorted(set(entries) - ids)
+        if stray:
+            raise ValueError(f"{g}: sign-off {table} names ids not in the group: {stray}")
+        clash = sorted(set(entries) & set(review.get(table, {})))
+        if clash:
+            raise ValueError(f"{g}: sign-off {table} names ids the review already holds: {clash}")
+        review.setdefault(table, {}).update(entries)
 
 
 # The 15 results whose commits carry no Co-Authored-By trailer (checked 2026-10-30); filled by `models`.
@@ -196,6 +245,8 @@ def main(argv: list[str]) -> int:
         out.write_text(json.dumps(its, indent=1, ensure_ascii=False), encoding="utf-8")
         print(f"{g}: {len(its)} items -> {out}")
     elif cmd == "finalize":
+        if not models.exists():  # without it the 15 results with no recorded model take the cloud reader's name
+            raise SystemExit(f"{models} is missing; finalize names each result's reader from it")
         review = finalize(g, argv[2])
         path = REVIEWS_DIR / f"{g}.json"
         if path.exists():
