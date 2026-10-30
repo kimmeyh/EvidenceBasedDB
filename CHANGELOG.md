@@ -60,6 +60,20 @@ this project keeps having to replace with a step.
   the cloud results, so the plan corrects the option's "two"); Q2 = 1
   (a result not read in full is re-read this sprint); Q3 = 1 (the cloud
   work folder moves to `work\f114\` outside Temp). Issues #141 to #147
+- **feat**: F119 (Sprint 14 Task A, #141, 2026-10-30): Brighindi's
+  PHI-OMEGA paper read in full and entered with its posts, comment
+  thread, three images (read by eye, described, not quoted) and the two
+  author repositories that bear on its claims
+  (`scripts/sprint14_f119_reading.py`, INTAKE section 54). 4 source
+  records and 11 assertions under `ml`: the paper's definitions, its
+  test's setup, the absence of any proof, and the repositories' own
+  stated limits graded HIGH on those bases; its central claim, its
+  reproducibility claim and both posts LOW as the author's claims; the
+  Figure 1 result and the repository's counts LOW as one-seed measured
+  results. One `contradicts` link: the author's repository says the test
+  is not reproducible from it and proves no immunity. The Zenodo archive
+  holds 610 file entries (not 608) and bears on none of the claims. A
+  second apply writes nothing; tests proven red by injection
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

@@ -2431,3 +2431,49 @@ assertions... than some budget". Written before any read is applied
     chan-2024) carry the reader's version note, which says the
     bibliography was "skimmed" or "skipped", so they leave a later slice
     only through their reader files (fresh-eyes review of 2bab87b).
+
+## 54. Applied 2026-10-30: Brighindi's PHI-OMEGA paper, posts, images and code (Sprint 14 Task A, F119)
+
+Every count is a snapshot as of 2026-10-30. Written before the apply.
+
+- **Four source records, all under `ml`** (team lead, 2026-10-28: "the
+  paper is ML-related as it is rlated to predictions/solvers"):
+  - the paper, read in full: its text through the quote check's
+    extractor, and its 3 pages viewed as images for the symbols the text
+    layer keeps and Figure 1;
+  - the LinkedIn posts and comment thread, read in full from the team
+    lead's paste in `References\`, with the three images read by eye;
+  - the author's repositories `phi-infinity-runtime` (4ee4ea3) and
+    `m-omnia-validation` (d3e45f3), at `read` with a `partial` read row:
+    only the files that bear on the paper's claims (Sprint 13 Manual
+    Validation Q11 = 1).
+- **The images are described, never quoted.** The quote check reads
+  text, and an image has none (F116 does not exist yet). Each image is
+  named with its SHA-256 in the posts record's evidence, with what it
+  shows; the post's assertion says its image restates the post.
+- **The Zenodo archive bears on none of the paper's claims.** Of its 610
+  file entries (the reference said 608), none holds PHI-OMEGA, M-OMNIA,
+  "dS = 0", arc-length, the seed 20260925, symplectic or Hamiltonian. It
+  is named in the absence claim's search scope and not entered.
+- **11 assertions, graded through `store.grading`.**
+  - HIGH, each on its basis: the paper's definitions of its own axioms
+    and gate (not that they hold); its stress test's setup; that it gives
+    no proof for its closure claim (an absence claim, scoped to the whole
+    paper, both repositories, the archive and a GitHub search); and the
+    author's own repositories' stated limits.
+  - LOW: the paper's central claim (failure "mathematically impossible"),
+    its claim of full reproducibility, and both posts, each as the
+    author's claim with no theorem, proof or data behind it; the
+    Figure 1 result and the repository's counts as measured results from
+    one seed, whose files are not published.
+- **One `contradicts` link** (ADR-0004 A8 (b)): the repository's
+  statement that the test is not reproducible from it and that no
+  absolute immunity follows from one seed cannot hold beside the paper's
+  claim that its logs ensure full reproducibility and prove immunity.
+  Nothing else is linked: a claim made without proof does not contradict
+  the absence of the proof.
+- **The comment thread** is one reader's challenge (which systems does
+  the closure preserve exactly, and is there a theorem); it is quoted in
+  the post's assertion and named in the absence claim, not entered as a
+  claim of its own.
+- `scripts/sprint14_f119_reading.py`; a second apply writes nothing.
