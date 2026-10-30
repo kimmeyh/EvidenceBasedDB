@@ -28,7 +28,10 @@ Read every item's passage in the paper text, in context: find the quotes
 (Grep is quickest), then read the surrounding paragraph, and for a
 theorem, its statement, its conditions and whether the paper proves it.
 There is no budget: every item gets a decision from the passage, never
-from the reader's suggestion alone.
+from the reader's suggestion alone. Setup items too: a quote that is
+verbatim can still be lifted from a passage that says something else.
+In your reply, name any item decided without reading its passage (there
+should be none).
 
 ## The five bases for HIGH
 

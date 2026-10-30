@@ -188,6 +188,16 @@ this project keeps having to replace with a step.
   A8 (b)); each reason names what it bears on. A live test checks the
   headline figures against the run files. INTAKE section 56. A second
   apply writes nothing. Tests proven red by injection. Closes #144
+  (1f904ba)
+- **process**: F117's review prompt names the reading rule outright
+  (Sprint 14 Task E, #145, 2026-10-30). Five of the first reviewers
+  (g044 to g047, g049) decided some items, mostly setup items, from the
+  quote or a grep snippet. Each was sent back and re-read them in
+  context; g044 changed one decision and g045 thirteen (LOW to HIGH,
+  once the full statements were read). The prompt now says setup items
+  are read in context too and that a reviewer names any item it did not
+  read; each launch repeats it and gives the reviewer its own scratch
+  folder, after two reviewers overwrote each other's scratch files
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
