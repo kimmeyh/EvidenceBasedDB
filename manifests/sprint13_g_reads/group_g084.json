@@ -1,0 +1,3203 @@
+{
+ "papers": [
+  {
+   "record_id": "akhalwaya-2024-topological-data-analysis-noisy-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Akhalwaya-et-al._2022_Exponential-advantage-on-noisy-quantum-computers__2209.09371.pdf",
+   "title_in_file": "TOPOLOGICAL DATA ANALYSIS ON NOISY QUANTUM COMPUTERS",
+   "version_note": "The text is the ICLR 2024 conference version (arXiv 2209.09371v4, 19 Mar 2024), titled Topological data analysis on noisy quantum computers. The record's file name carries the earlier title, Exponential advantage on noisy quantum computers, with the same arXiv number. The abstract here matches the stored quotes. The footnote on p.25 and the acknowledgements say an earlier version had a flaw in the algorithm that was fixed with qubitization.",
+   "pages": 34,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A conference paper presenting NISQ-TDA, a hybrid quantum-classical algorithm that estimates normalized Betti numbers with a short-depth circuit, an error analysis, small hardware and noisy-simulation runs, and classical CMB-style experiments.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "nisq-tda-abstract-claim",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Abstract p.1",
+     "quotes": [
+      "we present NISQ-TDA, a fully implemented end-to-end quantum machine learning algorithm needing only a short circuit-depth, that is applicable to high-dimensional classical data, and with provable asymptotic speedup for certain classes of problems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The hardware runs shown in Section 4 are Laplacian applications on an edge, a square and a cube, and the Betti-number estimates come from noisy simulations, so 'fully implemented' is the authors' wording and not a full end-to-end hardware run."
+    },
+    {
+     "id": "nisq-tda-few-high-betti-examples",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Section 3, remark after Theorem 1, p.7",
+     "quotes": [
+      "We wish to remark that known examples of simplicial complexes with exponentially many holes (Betti number) are limited."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "nisq-tda-likely-exponential-advantage",
+     "verdict": "narrowed",
+     "note": "The paper limits the claim elsewhere: it says it is unclear whether the algorithm gives substantial speedups on arbitrary data for Betti number estimation, and that it is unlikely to give quantum advantage for exact Betti numbers of clique complexes.",
+     "value": "The authors state that their algorithm still likely achieves exponential advantage over known classical approaches in efficiently answering whether a given simplicial complex has exponentially many holes. In Appendix A they also state that it is unclear whether NISQ-TDA will achieve substantial speedups on arbitrary data for Betti number estimation, and that NISQ-TDA is unlikely to achieve quantum advantage for estimation of exact Betti numbers of clique complexes.",
+     "anchor": "Section 3, remark after Theorem 1, p.7; Appendix A.1, p.17 footnote 2 and p.18-19",
+     "quotes": [
+      "More importantly, our algorithm still likely achieves exponential advantage over known classical approaches in efficiently answering the question: does the given simplicial complex have exponentially many holes or not?",
+      "it is unclear whether NISQ-TDA will achieve substantial speedups on arbitrary data for Betti number estimation",
+      "NISQ-TDA is unlikely to achieve quantum advantage for estimation of exact Betti numbers of clique complexes"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "nisq-tda-small-datasets-preliminary",
+     "verdict": "narrowed",
+     "note": "The hardware results (Figure 1) are Laplacian applications (circuit depths and probability histograms), not Betti-number estimates; the Betti-number errors come from noisy simulations of the non-qubitized version. Results for larger n are extrapolated, not run.",
+     "value": "The authors state that the algorithm was successfully executed on quantum computing devices and on noisy quantum simulators, applied to small datasets, and that preliminary empirical results suggest it is robust to noise. The hardware results are Laplacian applications on a 12-qubit trapped-ion machine, and the noisy-simulation results are for the non-qubitized version of the algorithm; the surface for 16 to 64 vertices is an extrapolation.",
+     "anchor": "Abstract p.1; Section 4, p.8-9 and Figures 1 and 2",
+     "quotes": [
+      "The algorithm was successfully executed on quantum computing devices, as well as on noisy quantum simulators, applied to small datasets.",
+      "Preliminary empirical results suggest that the algorithm is robust to noise.",
+      "Figure 1: Results from real hardware of Laplacian applications",
+      "we employed the public-cloud accessible 'H1' 12-qubit trappedion quantum computer from Quantinuum",
+      "we present results from extensive noisy quantum simulations of the non-qubitized version of the algorithm",
+      "the translucent region (from 16 to 64 vertices) corresponds to an extrapolation of the surface for larger n"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The abstract wording 'successfully executed' covers hardware runs of the Laplacian circuit only; no hardware run of the full Betti-number estimation is reported in the text."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "bne-problem-definition",
+     "value": "The paper defines normalized Betti number estimation (BNE), following Gyurik et al. (2020), as: given a set of n points, its Vietoris-Rips complex, an order k and two parameters, find a value in the unit interval that is within an additive error of the normalized Betti number with the stated probability.",
+     "anchor": "Section 2, p.4",
+     "quotes": [
+      "of normalized Betti number estimation (BNE) is defined as (Gyurik et al., 2020): Given a set of n points, its corresponding Vietoris–Rips complex Γ, an integer 0 ≤ k ≤ n − 1,",
+      "find the value χk ∈ [0, 1] that satisfies with probability 1 − η the condition"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Defined in Section 2, p.4, equation (3).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "betti-number-definition",
+     "value": "The paper defines the kth Betti number as the dimension of the k-homology group, and states through the Hodge theorem that it equals the dimension of the kernel of the combinatorial Laplacian.",
+     "anchor": "Section 2, p.3",
+     "quotes": [
+      "The kth Betti Number βk is the dimension of this k-homology group, namely βk := dim Hk.",
+      "βk := dim ker(∆k)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition in Section 2, p.3, equation (2).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vietoris-rips-construction",
+     "value": "The paper builds the Vietoris-Rips complex by connecting points whose distance under the metric is at most a scale, and adding a simplex for every clique of connected points.",
+     "anchor": "Section 2, p.3",
+     "quotes": [
+      "connecting points xi and xj whenever D(xi, xj) ≤ ε, forming a so-called 1-skeleton",
+      "for every k-clique, the associated k-simplex is added"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition in Section 2, p.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "algorithm-three-components",
+     "value": "The authors state that NISQ-TDA has three key components: a representation of the full boundary operator as a sum of Pauli operators, a quantum rejection sampling technique that projects onto the data-defined simplicial complex, and a stochastic rank estimation method that estimates the Betti numbers.",
+     "anchor": "Section 3, p.4",
+     "quotes": [
+      "(a) an efficient representation of the full boundary operator as a sum of Pauli operators; (b) a quantum rejection sampling technique to project onto the data-defined simplicial complex; and (c) a stochastic rank estimation method to estimate the output signature Betti numbers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 3, p.4 sets out the algorithm's design.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "input-is-pairwise-distances-edges",
+     "value": "The authors state that the algorithm needs only the pairwise distances of the data points, and that the edge data is not stored on the quantum computer but enters through the presence or absence of multiqubit control gates of the projector.",
+     "anchor": "Section 1 p.2; Section 3, p.5",
+     "quotes": [
+      "The algorithm only requires pairwise distances of the n data-points as input",
+      "The input edge data is not stored on the quantum computer but enters through the presence or absence of the multiqubit control gates of the projector."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own input model, Section 3, p.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fermionic-boundary-resources",
+     "value": "The authors state that the fermionic boundary operator B needs n qubits, a number of gates of order n squared and a depth of order n in the overview, and a circuit of order n gates in the complexity discussion; details are deferred to earlier work by some of the same authors.",
+     "anchor": "Section 3, p.4 and p.7; Appendix C.2, p.28",
+     "quotes": [
+      "The implementation of this fermionic boundary operator B on a quantum computer requires only n qubits, O(n2) gates, and an O(n)-depth circuit",
+      "The operator B, involving the sum of n Pauli operators, can be implemented using a circuit with O(n) gates."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The two gate counts for B differ (order n squared against order n); the paper does not reconcile them in the text."
+    },
+    {
+     "id_suggestion": "projection-onto-complex-mechanism",
+     "value": "The authors describe the projection onto the complex as checking pairs of vertices in parallel with Toffoli gates into a flag register, measuring the register in each round, proceeding only on all zeros, and repeating until the all-in flag is read; the procedure succeeds when repeated 1/ζk times, where ζk is the fraction of order-k simplices that are in the complex.",
+     "anchor": "Section 3, p.4-5",
+     "quotes": [
+      "we measure the flag register and proceed only if we receive all zeros",
+      "The procedure succeeds when repeated 1 ζk times, where ζk is the fraction of all possible simplices of order k that are in Γ"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "data-defined-laplacian-form",
+     "value": "The paper writes the all-orders data-defined Laplacian as the product PΓ B PΓ B PΓ of the complex projector and the boundary operator, and the order-k Laplacian as Pk applied to it on both sides.",
+     "anchor": "Section 3, p.5",
+     "quotes": [
+      "The 'all-orders' data-defined Laplacian can thus be expressed as ∆ = PΓBPΓBPΓ.",
+      "The data-defined Laplacian corresponding to simplicial order k can thus be written as ∆k = Pk∆Pk."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the operator in Section 3, p.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "order-projection-depth",
+     "value": "The authors state that the projection onto a simplicial order uses controlled-increment circuits into a count register and costs a depth of order log squared n.",
+     "anchor": "Section 3, p.5",
+     "quotes": [
+      "The cost in depth is only O(log2 n)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "partial-self-correction-claim",
+     "value": "The authors state that, because the data is injected afresh by each projection, NISQ-TDA is suggested to be partially self-correcting, with the last application of the projector mitigating noise.",
+     "anchor": "Section 3, p.5; Appendix A.1, p.18",
+     "quotes": [
+      "This suggests that NISQ-TDA is partially selfcorrecting, and under noise presence, the last application of PΓ mitigates the noise."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No experiment in the text isolates this effect from the other noise-mitigating factors."
+    },
+    {
+     "id_suggestion": "stochastic-chebyshev-method",
+     "value": "The paper states that the Betti number is estimated as the dimension of the Laplacian kernel by a stochastic rank estimate, the trace of a step function of the Laplacian, approximated with a truncated Chebyshev series and Hutchinson's stochastic trace estimator, using random Hadamard columns as the random vectors.",
+     "anchor": "Section 3, p.5-6",
+     "quotes": [
+      "Stochastic rank estimation recasts the eigen-decomposition problem into the estimation of the matrix function trace.",
+      "It can be shown that a set of random columns of the Hadamard matrices works well as",
+      "Sampling a random Hadamard state vector in a quantum computer can be conducted with a short-depth circuit."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem-1-betti-estimate-error",
+     "value": "The paper states Theorem 1: given the pairwise distances of any n data points and the encoding of the close pairs, an order k and parameters, and assuming the eigenvalues of the scaled Laplacian lie in the set containing zero together with the interval from δ to 1, then for the stated choices of nv and m the NISQ-TDA estimate χk satisfies, with probability at least 1 − η, an absolute difference from βk over |Sk| of at most ϵ.",
+     "anchor": "Theorem 1, Section 3, p.6; proof in Appendix C.1, p.26-28",
+     "quotes": [
+      "Theorem 1. Assume we are given the pairwise distances of any n data points and the encoding of the corresponding ε-close pairs, together with an integer 0 ≤ k ≤ n − 1 and the parameters (ϵ, δ, η) ∈ (0, 1).",
+      "Further assume the eigenvalues of the scaled Laplacian ∆˜ k are in the interval {0} ∪ [δ, 1], and choose nv and m such that",
+      "Then, the Betti number estimation χk ∈ [0, 1] by NISQ-TDA, with probability at least 1 − η, satisfies"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement and conditions quoted from Theorem 1 (p.6); the proof is in Appendix C.1 (p.26-28).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof bounds the polynomial approximation, the stochastic trace estimator and shot noise; hardware noise is not bounded (see the separate assertion). The sample-count and degree formulas (nv of order log(1/η) over ϵ squared; m above log(1/ϵ) over the square root of δ) are printed in a garbled layout in the text. The proof applies Lemma 1 with the matrix size set to |Sk|; I did not check that step."
+    },
+    {
+     "id_suggestion": "theorem-1-excludes-hardware-noise",
+     "value": "The authors state that hardware noise is much harder to characterize than shot noise, that it depends on hardware and technology, and that to account for it the whole experiment must be repeated several times and statistics drawn; the proof of the main theorem therefore bounds approximation, trace-estimator and shot-noise errors only.",
+     "anchor": "Appendix C.1, p.28; Section 3, p.6",
+     "quotes": [
+      "The hardware noise is much more difficult to characterize, since it is hardware and technology dependent.",
+      "we will need to repeat the whole experiment several times and draw statistics to compute the Betti numbers",
+      "Our analysis accounts for errors due to (a) polynomial approximation of the step function; (b) stochastic trace estimator; and (c) also shot noise"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its own error analysis in Appendix C.1, p.28.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "proposition-1-chebyshev-surrogate",
+     "value": "The paper states Proposition 1: for the surrogate polynomial of Lemma 2 with α = (1 − δ) and a degree m at least log(1/ϵ) over the square root of δ, the estimate ξ obtained from the trace of the polynomial of the scaled Laplacian, divided by |Sk|, is within ϵ of βk over |Sk|; the proof assumes the Laplacian eigenvalues lie in {0} ∪ [δ, 1].",
+     "anchor": "Proposition 1, Appendix C.1, p.27",
+     "quotes": [
+      "Proposition 1. The Betti number estimate ξ given by",
+      "where p˜(x) = p(1 − x) and p(·) is the polynomial in Lemma 2, for parameters α = (1 − δ), and",
+      "Proof. Suppose the eigenvalues of ∆˜ k are in the interval {0} ∪ [δ, 1]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement and conditions quoted from Proposition 1 and its proof, Appendix C.1, p.27.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma-1-hadamard-trace-cited",
+     "value": "The paper states Lemma 1, attributed to Theorem 16 of Avron and Toledo: for a Hermitian matrix, random Hadamard columns and a sufficient sample count, the stochastic trace estimate is within ϵ times N of the trace with probability at least 1 − η.",
+     "anchor": "Lemma 1, Appendix C.1, p.26",
+     "quotes": [
+      "Lemma 1. (Avron & Toledo, 2011, Theorem 16) Assume we are given a Hermitian matrix A ∈",
+      "where rH (A) = maxi Aii, we have"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lemma-2-chebyshev-minimizing-cited",
+     "value": "The paper states Lemma 2, attributed to Musco and Musco (2015): a degree m polynomial p exists with p equal to (1 + γ)α at (1 + γ)α, p(x) at least x for all x at least (1 + γ)α, and a bound on |p(x)| on the interval from 0 to α.",
+     "anchor": "Lemma 2, Appendix C.1, p.27",
+     "quotes": [
+      "Lemma 2 (Chebyshev Minimizing Polynomial (Musco & Musco, 2015)). Let α > 0 be a specified parameter, and the gap γ ∈ (0, 1], and let q ≥ 1.",
+      "p((1 + γ)α) = (1 + γ)α,",
+      "p(x) ≥ x for all x ≥ (1 + γ)α,"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shot-noise-bound",
+     "value": "The paper states that, under an independent-noise assumption, the shot-noise error in the Chebyshev moments propagates to the Betti number estimate as the sum of the absolute coefficients times the moment error, and that with the step-function expansion the coefficient bound gives an error of at most four times the moment error.",
+     "anchor": "Appendix C.1, p.28",
+     "quotes": [
+      "If we use the step function expansion, then we have |cj| ≤ (2/j) and the shot noise error will be errshot ≤ 4εT"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "A coefficient bound of 2/j summed over the degrees j grows with the degree, so the constant four is not derived in the text; I did not verify it."
+    },
+    {
+     "id_suggestion": "total-time-complexity",
+     "value": "The authors state that the total time complexity of the algorithm is of order one over ϵ squared times the larger of two terms, n log(1/ϵ) over the square root of δ and n over ζk.",
+     "anchor": "Section 3, p.7; Appendix C.2, p.28-29",
+     "quotes": [
+      "Therefore, the total time complexity of our algorithm is",
+      "1 ϵ2 max n lo√g(1/ϵ) , n δ ζk"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "Derived by operation counting in Appendix C.2, not stated as a theorem. Table 1 prints the time entry for Approach 1 in a different form (the text layer garbles it)."
+    },
+    {
+     "id_suggestion": "speedup-conditions",
+     "value": "The authors state that QTDA algorithms can achieve superpolynomial to exponential speedups over the best-known classical algorithms whenever three conditions hold: the complex is simplices/clique dense, the spectral gap is not exponentially small, and the Betti number is large.",
+     "anchor": "Section 3, p.7",
+     "quotes": [
+      "speedups over the best-known classical algorithms whenever we have:",
+      "Simplices/Clique dense complexes – the given complex Γ is simplices/clique dense, i.e., ζk is large or |Sk| ∼ O(poly(n));",
+      "Large Betti number – the Betti number βk (and the ratio βk/|Sk|) needs to be large so that a large ϵ suffices to estimate it to a reasonable precision."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the conditions of its speedup claim in Section 3, p.7.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "best-known-classical-complexity-cited",
+     "value": "The authors state that the best-known classical algorithm for Betti number estimation of order k has a time complexity attributed to Gyurik et al. and to Apers et al.",
+     "anchor": "Section 3, p.7",
+     "quotes": [
+      "The best-known classical algorithm for Betti number estimation of order k has a time complexity of O(poly(nk)) (Gyurik",
+      "or O(n1/δ log(1/ϵ)) (Apers et al., 2022)"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "exact-betti-hard-for-quantum",
+     "value": "The authors state that recent results show estimating exact Betti numbers of clique complexes to be hard even for quantum computers, and that NISQ-TDA is therefore unlikely to achieve quantum advantage for exact Betti numbers of clique complexes.",
+     "anchor": "Appendix A.1, footnote 2, p.17; Section 2, p.4",
+     "quotes": [
+      "have shown the problem of estimating exact Betti numbers of clique complexes to be hard (QMA-1 and NP hard) even for quantum computers",
+      "decision clique homology has been proven to be QMA1-hard (Crichigno & Kohler, 2022) for clique complexes"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bne-dqc1-hardness-cited",
+     "value": "The authors state that normalized Betti number estimation has been shown DQC1-hard for general chain complexes by Cade and Crichigno (2021), and is conjectured to hold for clique complexes.",
+     "anchor": "Section 2, p.4",
+     "quotes": [
+      "This normalized Betti number estimation problem has been shown to be DQC1-hard for general chain complexes (Cade & Crichigno, 2021) and is conjectured to hold for clique complexes"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qtda-fault-tolerance-claim",
+     "value": "The authors state that many components of the Lloyd et al. (2016) algorithm require fault tolerance: Grover's search, quantum phase estimation, and repeated access to the input data.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "Many components of the Lloyd et al. (2016) algorithm require fault-tolerance: Grover’s search (Grover, 1996), Quantum Phase Estimation (Nielsen & Chuang, 2010), and repeated access to the input data."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "prior-qtda-assumes-oracle-access",
+     "value": "The authors state that Gunn and Kornerup and Gyurik et al. do not address the efficient quantum construction of the boundary operator or Laplacian from pairwise distances, and assume oracle access to its nonzero entries.",
+     "anchor": "Appendix A.3, Remark 1, p.20",
+     "quotes": [
+      "do not address the issue of efficient quantum construction of B˜ or ∆k from the pairwise distances of the n points, and assume that oracle access is given to the nonzero entries of B˜ and their locations."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fault-tolerance-years-away",
+     "value": "The authors state that fault tolerance has not been achieved on currently available quantum devices and is likely several years away from full realization.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "is likely several years away from full realization"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "no-practical-quantum-advantage-yet",
+     "value": "The authors state that quantum advantage, meaning quantum computers outperforming current classical supercomputers, has not yet been achieved for any problem of practical value.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "However, this has not yet been achieved for any problem of practical value."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "first-generically-useful-nisq-claim",
+     "value": "The authors state that their theoretical and numerical results demonstrate that NISQ-TDA has the potential to be the first generically useful NISQ algorithm.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "Our presented theoretical and numerical results demonstrate that NISQ-TDA has the potential to be the first generically useful NISQ algorithm."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "linear-connectivity-claim",
+     "value": "The authors state that the circuit for the complex projection needs all-to-all connectivity as used in their experiments, and that it could be implemented on devices with only linear connectivity using a sorting-network approach; the conclusions list efficient deployment on sparsely connected devices as future work.",
+     "anchor": "Section 3, p.5; Section 5, p.9",
+     "quotes": [
+      "suggests a requirement of quantum computers with all-to-all connectivity (as used in our experiments)",
+      "we can indeed implement it on quantum computers with only linear qubit connectivity using a sorting network approach",
+      "improvements to the algorithm in order to efficiently deploy it on sparsely connected quantum devices"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-tda-cannot-do-64-vertices",
+     "value": "The authors state that currently optimized classical TDA algorithms cannot compute all Betti numbers for 64 generic vertices, that they empirically verified this with GUDHI, and that quantum advantage could therefore possibly be achieved by running NISQ-TDA on 64 vertices; no run or timing is reported in the text.",
+     "anchor": "Section 4, p.7",
+     "quotes": [
+      "Currently optimized classical TDA algorithms cannot compute all Betti numbers for 64 generic vertices",
+      "Hence, quantum advantage could possibly be achieved when running NISQ-TDA on 64 vertices."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No NISQ-TDA run on 64 vertices is reported; the largest hardware complex has 8 vertices."
+    },
+    {
+     "id_suggestion": "hardware-depth-linear-in-vertices",
+     "value": "The authors report that the circuit depth for the Laplacian scales linearly with the number of data points, as measured on the Quantinuum H1 compiler and a simulator for degree m = 1 and 3; the edge count chosen was the most conservative, to cover the worst-case depth.",
+     "anchor": "Section 4, Figure 1A, p.8",
+     "quotes": [
+      "We observe that the circuit depth for the Laplacian scales linearly with respect to the number of data points.",
+      "Circuit depth versus the number of vertices for degree m = 1 and 3",
+      "We selected the most conservative number of edges to cover the worst-case depth scenario."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hardware-histograms-agreement",
+     "value": "The authors report that, on the trapped-ion hardware, the top-probability simplices for an edge (2 vertices), a square (4 vertices) and a cube (8 vertices) agree with noise-free simulation, and name three visible error types: reduced probability mass on correct simplices, some mass on incorrect simplices, and correct simplices with incorrect flag readings.",
+     "anchor": "Section 4, Figure 1B-D, p.8",
+     "quotes": [
+      "These sub-figures clearly show that there is agreement between hardware and noise-free simulations on which simplices receive the top probability measurements.",
+      "Three types of errors are, however, visible by the hardware: reduced probability mass for correct simplices, some small probability mass on incorrect simplices",
+      "for three different datasets namely, an edge (2 vertices), a square (4 vertices), and a cube (8 vertices)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Three complexes of at most 8 vertices; the text gives no numeric error rates for these runs."
+    },
+    {
+     "id_suggestion": "hardware-coherence-claim",
+     "value": "The authors state that Figure 1 unequivocally demonstrates that at real-world noise levels there is sufficient coherence to reproduce the correct interference at the depths of these circuits.",
+     "anchor": "Section 4, p.8",
+     "quotes": [
+      "Even with these errors, Figure 1 unequivocally demonstrates that at real-world noise-levels there is sufficient coherence to reproduce the correct interference at the depths of these circuits."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The evidence is three small complexes; 'unequivocally' is the authors' word."
+    },
+    {
+     "id_suggestion": "cube-is-not-vietoris-rips",
+     "value": "The authors state that the cube used in the 8-vertex experiment is not a Vietoris-Rips complex, since the cube would then have been filled in, but is a complex with a three-dimensional hole on 8 vertices.",
+     "anchor": "Appendix A.1, p.18",
+     "quotes": [
+      "the cube (n = 8 instance) considered in our experiments is not a Vietoris-Rips complex (in that case, the cube would have been filled in)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its own test complexes, Appendix A.1, p.18.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noisy-simulation-setup",
+     "value": "The authors state that for the noisy simulations they chose complexes with large eigenvalue gaps and sufficiently many random vectors and shots, set the Chebyshev parameters so that the noise-free algorithm is almost exact, and take an error below 0.5 as tolerable since it rounds to the correct Betti number.",
+     "anchor": "Section 4, p.8-9",
+     "quotes": [
+      "For this we chose complexes with large eigenvalue gaps, and sufficiently many random vectors and shots.",
+      "the error that can naturally be considered tolerable is 0.5, since any error less than 0.5 rounds to exactly the correct Betti number"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Setup stated in Section 4, p.8-9.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noisy-simulation-mean-converges",
+     "value": "The authors report that in noisy simulation with 8 vertices, degree 5 and noise level (0.001, 0.01), the estimated Betti number converges to about 1.84 against a true value of 2, and the variance falls as the number of random vectors increases.",
+     "anchor": "Section 4, Figure 2B, p.9",
+     "quotes": [
+      "Mean and the variance of the Betti number estimated as a function of the number of random vectors nv with n = 8 vertices, degree m = 5 and the noise-level: (0.001, 0.01).",
+      "We note that the mean converges to ∼ 1.84 (the true Betti number is β0 = 2) and, most importantly, the variance reduces as we increase nv."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The error of about 0.16 is below the 0.5 tolerance the authors set; this is one complex and one noise level."
+    },
+    {
+     "id_suggestion": "error-surface-extrapolation",
+     "value": "The authors state that the mean-error surface is simulated for 2 to 8 vertices and extrapolated for 16 to 64 vertices, that even 16 vertices could not be simulated on a large classical machine with 2 GPUs, and that the extrapolation provides the minimum noise-level requirements for future larger NISQ devices.",
+     "anchor": "Section 4, Figure 2A, p.9",
+     "quotes": [
+      "the solid region (for n = 2 to n = 8) corresponds to actual noisy simulations and the translucent region (from 16 to 64 vertices) corresponds to an extrapolation",
+      "even n = 16 was not simulatable using a large classical machine with 2 GPUs",
+      "The surface plot extrapolations provide the minimum noise-level requirements for NISQ-TDA to successfully run on future larger NISQ devices."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The requirements for 16 to 64 vertices rest on an extrapolation, not on a run."
+    },
+    {
+     "id_suggestion": "chebyshev-moments-as-features",
+     "value": "The authors state that the Chebyshev moments carry more information than the Betti numbers, and that the PΓ-corrected noisy moments could be used directly as input features for downstream machine learning classification.",
+     "anchor": "Section 3, p.7",
+     "quotes": [
+      "the Chebyshev moments capture the spectral information of ∆k and have even more information than the Betti numbers.",
+      "noisy moments to be used directly as input features in downstream contexts such as machine learning classification"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "desiderata-self-assessment",
+     "value": "The authors propose seven criteria for a useful quantum algorithm and assess NISQ-TDA against them: provable speedup is likely satisfied for certain instances, noise resilience seems satisfied as suggested by preliminary simulation and hardware results, and usefulness is likely satisfied.",
+     "anchor": "Appendix A.1, p.17-19",
+     "quotes": [
+      "Criterion 2, that of NISQ-TDA achieving provable asymptotic speedups is likely satisfied for certain instances and classes of complexes",
+      "Criterion 4 seems to be satisfied as suggested by the preliminary simulation and hardware implementation results, which show that NISQ-TDA is noise-resilient.",
+      "Criterion 7 is likely satisfied in that it can certainly solve interesting useful problems"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Self-assessment by the authors; the paper itself says it is unclear whether speedups hold on arbitrary data."
+    },
+    {
+     "id_suggestion": "spectral-gap-random-dense-cited",
+     "value": "The authors cite Adhikari et al. (2020) for the limiting spectral gap of the normalized Laplacian of random dense complexes approaching 1/2, and conclude that random dense complexes will likely have a large spectral gap.",
+     "anchor": "Appendix C.3, p.30",
+     "quotes": [
+      "It was recently shown by Adhikari et al. (2020) that, for random dense graphs/complexes, the limiting spectral gap (between zero and nonzero eigenvalues) of the",
+      "approaches 1/2.",
+      "These results therefore suggest that random dense complexes will likely have a large spectral gap between zero and nonzero eigenvalues."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "approximate-bne-filter",
+     "value": "The authors state that when the spectral gap is below the chosen threshold, the algorithm solves the approximate Betti number estimation problem defined by Gyurik et al. (2020), filtering out small eigenvalues and counting only the larger ones.",
+     "anchor": "Appendix C.3, p.30-31",
+     "quotes": [
+      "This was defined in Gyurik et al. (2020) as the problem of approximate Betti number estimation (ABNE).",
+      "our method provides an approach to filter out small (noisy) eigenvalues and only consider larger (dominant) eigenvalues for estimating the Betti number"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Scope stated in Appendix C.3, p.30-31.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-chebyshev-experiment",
+     "value": "The authors report from classical runs on eight-vertex complexes that a small polynomial degree gives fairly accurate Betti numbers for well-connected complexes with a large spectral gap, while a higher degree is required for weakly connected complexes with a small spectral gap.",
+     "anchor": "Appendix D.1, Figure 7A-B, p.31-32",
+     "quotes": [
+      "We note that the Betti number estimated by our method for such complexes are fairly accurate and a small degree polynomial approximation suffices to get a good estimate of the Betti numbers.",
+      "We note that, we require a higher degree approximation for accurate Betti number estimation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellinger-fidelity-vs-depth",
+     "value": "The authors report from noisy simulations that the Hellinger distance between noisy and noiseless output probabilities, restricted to the top 10% of the noise-free outcomes, increases with circuit depth, for four noise levels.",
+     "anchor": "Appendix D.1, Figure 7C, p.32",
+     "quotes": [
+      "We plot the Hellinger distance restricted to the top 10% of the noise-free outcomes",
+      "As expected, the Fidelity/noise-error increases as the circuit depth (and number of qubits) increase."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cmb-experiment-setup",
+     "value": "The authors report a classical experiment on simulated data: 64 sample points in three dimensions drawn from Gaussian and exponential distributions, forced to zero mean and unit variance, 50 sample sets split 30 train and 20 test, persistence diagrams from GUDHI, and a Bayesian classifier (BayesTDA) scored by area under the curve.",
+     "anchor": "Appendix D.2, Figures 8-9, p.32-34",
+     "quotes": [
+      "We consider random sets of n = 64 sample points in three dimensions from Gaussian and exponential distributions.",
+      "(forced to have zero-mean and unit-variance, making the task much more difficult)",
+      "of all 50 sample sets (30 train and 20 test)",
+      "we simply calculate the Area Under the Curve (AUC) measure of classification accuracy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Setup stated in Appendix D.2, p.32-34.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cmb-experiment-result",
+     "value": "The authors report that the Bayes factors clearly distinguish the Gaussian and exponential distributions using the first and second Betti numbers, and that the different Betti numbers contain independent valuable information; the AUC values are in the figure and are not in the text.",
+     "anchor": "Appendix D.2, Figure 9, p.34",
+     "quotes": [
+      "We observe that we can clearly distinguish the two distributions using the Bayes factors.",
+      "Moreover, we note that the different Betti numbers contain independent valuable information."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The Betti numbers were computed classically with GUDHI; NISQ-TDA was not run on this data."
+    },
+    {
+     "id_suggestion": "cmb-expected-sensitivity-claim",
+     "value": "The authors state that by computing all relevant Betti numbers of the CMB data with NISQ-QTDA they expect to detect non-Gaussianity in the CMB data at higher sensitivity than is possible classically.",
+     "anchor": "Appendix D.2, p.34",
+     "quotes": [
+      "we expect to detect non-Gaussianity in the CMB data to higher sensitivity levels than is possible classically"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "earlier-version-flaw-qubitization",
+     "value": "The authors state that a previous version of the paper proposed an algorithm without qubitization that used the relationship between Chebyshev polynomials and moments of the Laplacian, and that this approach had key limitations pointed out by two readers, which necessitated the qubitization method; the acknowledgements thank them for pointing out a flaw in an earlier version.",
+     "anchor": "Appendix B.3, footnote 6, p.25; Acknowledgements, p.10",
+     "quotes": [
+      "A previous version of this paper proposed an algorithm that did not make use of qubitization",
+      "pointing out a flaw in the algorithm of an earlier version of the paper"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Version history stated by the authors in footnote 6, p.25, and the acknowledgements, p.10.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-full-algorithm-demonstrated",
+     "value": "The authors conclude that the implementation and successful execution of the entire algorithm on real quantum hardware and noisy simulations was demonstrated, illustrating noise-resiliency at realistic noise levels.",
+     "anchor": "Section 5, p.9",
+     "quotes": [
+      "The implementation and successful execution of the entire algorithm on real quantum hardware and noisy simulations was demonstrated, illustrating noise-resiliency at realistic noise-levels."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Section 4 reports hardware results for the Laplacian circuit only; the Betti-number errors come from noisy simulation."
+    },
+    {
+     "id_suggestion": "conclusion-data-loading-fault-tolerance",
+     "value": "The authors conclude that the algorithm neither suffers from the data-loading problem nor likely requires fault-tolerant coherence for even mid-size datasets.",
+     "anchor": "Section 5, p.9",
+     "quotes": [
+      "Our algorithm neither suffers from the data-loading problem nor does it likely require fault-tolerant coherence for even mid-size datasets."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-future-directions",
+     "value": "The authors list as future directions: improving the algorithm for efficient deployment on sparsely connected devices, achieving substantial asymptotic speedups under more general settings, and identifying domain problems where NISQ-TDA can be used for practical purposes.",
+     "anchor": "Section 5, p.9",
+     "quotes": [
+      "achieving substantial asymptotic speedups under more general settings; and identifying interesting domain problems for which NISQ-TDA can be employed for practical purposes."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Open problems stated by the authors in Section 5, p.9.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "akhtyamov-2026-harness-as-only-mutable-surface",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2026-10_Akhtyamov_The-Harness-as-the-Only-Mutable-Surface-Compliance-Bounded_2610.10629.pdf",
+   "title_in_file": "The Harness as the Only Mutable Surface: Compliance-Bounded Self-Evolution of LLM Agents in Credit Pipelines, with a Measured Admission Gate",
+   "version_note": "arXiv:2610.10629v1 [cs.AI], 7 Oct 2026; the text is the record's paper. Preprint, not peer reviewed.",
+   "pages": 14,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A position paper with a simulation study measuring an admission gate that confines LLM-agent self-evolution to the runtime harness in a synthetic credit-screening pipeline, with an EU AI Act mapping.",
+   "bears_on_context": "world",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "akhtyamov-gate-admission-results",
+     "verdict": "narrowed",
+     "note": "The numbers are right. Section 10 limits the claim: the held-out history (Hval) is an interleaved half of the same pre-shift stream, labelled by the same deterministic rule as the gate pool, so zero false admissions is expected for any gated arm. The informative contrast is against the no-gate arm and on the post-shift held-out window. Section 7.1 also limits the no-gate harm: under the threshold family the no-gate arm's missed-flag rate stays near the oracle's; the loosening is a scope and structural effect.",
+     "value": "The authors report that the gated dual loop admitted 144 of 7,449 candidate changes, none of which worsened error on held-out history, and that the no-gate arm admitted 309 harmful changes and left missed flags above 10% in 49 of 90 runs; the authors state that the false-admission audit is weak by construction, because the gate half and the audit half are interleaved halves of the same pre-shift stream labelled by the same deterministic rule.",
+     "anchor": "Abstract, p1; Section 10, p12",
+     "quotes": [
+      "the gated dual loop admitted 144 of 7,449 candidate changes, none of which worsened error on held-out history",
+      "the same loops admitted 309 harmful changes and left missed flags above 10% in 49 of 90 runs",
+      "The false-admission audit is weak by construction.",
+      "Hsel and Hval are interleaved halves of the same pre-shift stream labelled by the same deterministic rule"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one synthetic study. Not upgraded.",
+     "result_type": "measured",
+     "context": "world",
+     "reader_inference": "The held-out history that the 144 admissions are checked against is the same pre-shift stream the gate used, so the zero is close to guaranteed. The 49 of 90 comparison is the informative result."
+    },
+    {
+     "id": "akhtyamov-gate-tolerance-failure",
+     "verdict": "confirmed",
+     "note": "Right as stored. Detail in Section 7.6 and Table 6: at the highest structural severity with the tolerance at 0.005 the dual loop recovered in 5 of 10 seeds; at 0.010 it recovered in 10 of 10.",
+     "value": "The authors report that at the highest structural severity the gate's fixed tolerance blocked the correct replacement in half the seeds.",
+     "anchor": "Abstract, p1; Section 7.6, p10",
+     "quotes": [
+      "at the highest structural severity the gate’s fixed tolerance blocked the correct replacement in half the seeds"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Started LOW: an empirical result from one synthetic study. Not upgraded.",
+     "result_type": "measured",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id": "akhtyamov-no-supervisor-review",
+     "verdict": "confirmed",
+     "note": "Right as stored. Section 8 repeats it: no examiner has reviewed any artefact.",
+     "value": "The authors state that no supervisor has reviewed the regulatory mapping.",
+     "anchor": "Section 1, p2; Section 8, p11",
+     "quotes": [
+      "No supervisor has reviewed the mapping."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope limit in the introduction.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id": "akhtyamov-synthetic-no-llm",
+     "verdict": "widened",
+     "note": "The paper also says the agent is not a language model (a deterministic rule with a 2% outcome flip) and that the typed library contains the correct primitive by construction.",
+     "value": "The authors state that the proposer is a seeded search over a stated edit space and not a language model, that the agent is a deterministic rule that applies the harness with a 2% outcome flip standing in for execution error, and that all data are synthetic.",
+     "anchor": "Section 1, p2; Section 10, p12",
+     "quotes": [
+      "The proposer in our experiments is a seeded search over a stated edit space, not a language model",
+      "All data are synthetic.",
+      "The agent is a deterministic rule that applies the harness, with a 2% outcome flip standing in for execution error"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own setup and scope in Section 1 and Section 10.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "akhtyamov-harness-only-position",
+     "value": "The authors argue that the runtime harness is the only legitimate mutable surface for self-evolution in a regulated credit pipeline, because it is the auditable one: weights cannot be diffed into named changes and a harness can.",
+     "anchor": "Section 1, p1",
+     "quotes": [
+      "the runtime harness is the only legitimate mutable surface, because it is the auditable one",
+      "Weights cannot be diffed into named changes; a harness can."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's position argument; no experiment in the paper tests it against a weight-update alternative.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-design-bound-setup",
+     "value": "The authors state that the engine may rewrite instruction text, tool-call logic and primitive composition, may not fine-tune, and that the served model is pinned by digest; they state this is a design commitment and that no model is pinned in the simulation.",
+     "anchor": "Section 1, p2; Section 4, p3",
+     "quotes": [
+      "The engine may rewrite instruction text, tool-call logic and primitive composition; it may not fine-tune, and the served model is pinned by digest.",
+      "(a design commitment: no model is pinned in our simulation)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own design and what the simulation does not do (Section 1 and Section 4).",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-hash-chain-verified",
+     "value": "The authors report that all 540 of the 540 gate logs written in their experiments, 43,814 records in all, verify under the hash chain.",
+     "anchor": "Section 4, p4",
+     "quotes": [
+      "all 540 of the 540 logs written in our experiments, 43,814 records in all, verify"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table 7 (p11) says 90 logs verified; Section 4 says 540. The two counts differ in the paper itself (90 runs against 540 logs, perhaps one log per arm and run, but the paper does not say)."
+    },
+    {
+     "id_suggestion": "akhtyamov-admission-rule",
+     "value": "The authors define the admission rule: a candidate harness is admitted only if the 95% lower bound of the paired reduction in errors of the relevant kind on the gate half of the retrospective pool is above zero, and the share of cases the deployed harness answers correctly that the candidate turns wrong is at most ε = 0.005.",
+     "anchor": "Section 5.1, Eq. (1), p4; Table 2, p6",
+     "quotes": [
+      "paired 95% lower bound of reduction > 0; ε = 0.005",
+      "The candidate is admitted iff",
+      "The tolerance ε = 0.005 is not zero because execution noise makes strict non-regression unsatisfiable"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its gate in Section 5.1 and Table 2.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-admission-is-a-write",
+     "value": "The authors state that admission is a write and not only a decision: before a candidate reaches the runtime the gate appends a record (including the digests of the deployed and candidate harness, the counts behind the decision and the decision itself), and rejections are written with the same schema.",
+     "anchor": "Section 5.1, p4",
+     "quotes": [
+      "Admission is a write, not only a decision. Before a candidate reaches the runtime the gate appends",
+      "Rejections are written with the same schema."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its record schema in Section 5.1.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-feedback-model",
+     "value": "The authors state that operational feedback arrives in windows of 500 cases, that every flagged case is reviewed by an analyst so its false positive becomes visible, and that cleared cases are audited at 5%, so most misses stay invisible; they call this asymmetry deliberate and realistic.",
+     "anchor": "Section 5.2, p4",
+     "quotes": [
+      "Operational feedback arrives in windows of 500 cases.",
+      "Every flagged case is reviewed by an analyst, so its false positive becomes visible; cleared cases are audited at 5%, so most misses stay invisible.",
+      "This asymmetry is deliberate and realistic"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own feedback model in Section 5.2.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-loops-setup",
+     "value": "The authors state that the local loop may change one parameter or one clause of the deployed primitive per candidate, that the global loop may replace the primitive with another from a typed library (here a check on the first-layer stake against a check on the effective stake along the ownership chain), and that the global loop has no privileged path to deployment because the same gate applies.",
+     "anchor": "Section 5.2, p4",
+     "quotes": [
+      "The local loop (Algorithm 1) may change one parameter or one clause of the deployed primitive per candidate.",
+      "The global loop (Algorithm 2) may replace the primitive with another from a typed library",
+      "a check on the stake held through the first-layer vehicle versus a check on the effective stake along the ownership chain",
+      "path to deployment: the same gate applies."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own engine in Section 5.2.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-shift-families",
+     "value": "The authors define ground truth as a versioned rule: before T flag when the hit type is in scope and the stake held through the first-layer vehicle is at least 25%; from T one of three re-interpretations applies: a threshold rise to 30, 40 or 50%, a narrowing of the qualifying hit types, or a threshold on the effective stake with multi-layer chains in 30, 50 or 70% of cases.",
+     "anchor": "Section 6.1, p5",
+     "quotes": [
+      "Before T (rule v1): flag when the hit type is in scope and the stake held through the first-layer vehicle is at least 25%.",
+      "the ownership threshold rises to 30, 40 or 50%",
+      "with multi-layer chains in 30, 50 or 70% of cases.",
+      "No threshold or scope edit to the first-layer check can express this rule."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its three shift families in Section 6.1.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-stream-and-seeds",
+     "value": "The authors state the experimental design: a stream of 23,000 screening alerts with the shift at T = 70%, adaptation on [T, 85%), held-out evaluation on [85%, 100%] (3,450 alerts per run), and 10 seeds per cell over 3 families × 3 severities = 9 cells, 90 runs.",
+     "anchor": "Table 2, p6; Section 6.4, p6",
+     "quotes": [
+      "23,000 screening alerts; shift at T = 70%; adaptation on [T, 85%); held-out evaluation on [85%, 100%]",
+      "The held-out window holds 3,450 alerts per run",
+      "10 per cell; 3 families × 3 severities = 9 cells, 90 runs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Table 2 and Section 6.4.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-relabelling-design",
+     "value": "The authors state that at T the retrospective pool is relabelled by applying rule v2 to the stored case facts, which makes the adaptation supervised at the level of the rule and autonomous at the level of the harness, and that a mis-encoded rule would be faithfully optimised towards.",
+     "anchor": "Section 6.2, p5-p6",
+     "quotes": [
+      "At T the pool is relabelled by applying rule v2 to the stored case facts.",
+      "the adaptation is supervised at the level of the rule and autonomous at the level of the harness",
+      "a mis-encoded rule would be faithfully optimised towards"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own design commitment and its risk in Section 6.2.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-arm-definitions",
+     "value": "The authors define the no-gate arm as the dual loop with Eq. (1) replaced by the check an unbounded self-evolution system applies, admitting a candidate if it makes fewer errors visible in the current window, and define the stale-label arm as the dual loop with the gate pool under v1 labels.",
+     "anchor": "Section 6.3, p6",
+     "quotes": [
+      "No gate: the dual loop with Eq. (1) replaced by the check an unbounded self-evolution system applies",
+      "admit if the candidate makes fewer errors visible in the current window",
+      "Gate on stale labels: the dual loop with Hsel under v1 labels."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its arms in Section 6.3.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-metric-definitions",
+     "value": "The authors define, on the held-out window with FLAG as the positive class, the false-positive rate as FP/(FP + TN) and the missed-flag rate as FN/(FN + TP); false admissions are admitted changes that increased true error on Hval, which the gate never sees; means are over seeds with 95% t-intervals, clipped to [0, 100].",
+     "anchor": "Section 6.4, p6",
+     "quotes": [
+      "false-positive rate = FP/(FP + TN); missed-flag rate = FN/(FN + TP)",
+      "false admissions, admitted changes that increased true error on Hval, which the gate never sees",
+      "Means are over seeds with 95% t-intervals, clipped to [0, 100]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its metrics in Section 6.4.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-dual-loop-oracle-missed-flag",
+     "value": "The authors report that with the gate the dual loop ends at the oracle missed-flag rate in all three families at mid severity, with 0 false admissions over 144 admissions in 90 runs.",
+     "anchor": "Section 7.1, p7; Table 3, p8; Table 5, p9",
+     "quotes": [
+      "the dual loop ends at the oracle",
+      "with 0 false admissions over 144 admissions in 90 runs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The zero false admissions is a weak test by the paper's own account (Section 10); see the narrowed verdict on akhtyamov-gate-admission-results."
+    },
+    {
+     "id_suggestion": "akhtyamov-no-gate-loosens-screen",
+     "value": "The authors report that without the gate the final missed-flag rate exceeded 10% in 49 of 90 runs, reaching a mean of 79.7% in the mid scope cell while the false-positive rate matched the oracle, and that under scope and structural re-interpretations false positives fall because flagging stops.",
+     "anchor": "Section 7.1, p7; Table 4, p9",
+     "quotes": [
+      "the final missed-flag rate exceeded 10% in 49 of 90 runs, reaching a mean of 79.7% in the mid scope cell while its false-positive rate matched the oracle",
+      "under scope and structural re-interpretations, false positives fall because flagging stops"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-no-gate-threshold-exception",
+     "value": "The authors report that under the threshold family the visible-failure check points in the right direction, because raising the threshold is the repair, and the no-gate arm's missed-flag rate stays near the oracle's.",
+     "anchor": "Section 7.1, p7",
+     "quotes": [
+      "Under the threshold family the visible-failure check happens to point in the right direction",
+      "raising the threshold is the repair",
+      "missed-flag rate stays near the oracle"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "This limits the no-gate harm to the scope and structural families. Table 4 (p9) lists a 3.1% missed-flag rate for the no-gate arm in the high threshold cell against 2.0% for the dual loop."
+    },
+    {
+     "id_suggestion": "akhtyamov-no-gate-churn",
+     "value": "The authors report that the no-gate arm made up to 13 admissions in a run against at most 4 for the dual loop, accumulated more excess errors during adaptation than leaving the pipeline degraded (940 against 780 in the mid scope cell), and admitted 550 changes across the runs, 309 of them harmful.",
+     "anchor": "Section 7.1, p7; Section 11, p12",
+     "quotes": [
+      "The no-gate arm also churns: up to 13 admissions in a run against at most 4 for the dual loop",
+      "more excess errors during adaptation than leaving the pipeline degraded (940 against 780 in the mid scope cell)",
+      "the same loops without it admitted 550 changes, 309 of them harmful"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-stale-labels-reject-all",
+     "value": "The authors report that the gate on v1 labels rejected all 8,490 of its candidates, every one for lack of significant improvement, including the exactly correct harness 470 times, and left the pipeline at the degraded false-positive rate in every cell.",
+     "anchor": "Section 7.2, p7; Table 5, p9",
+     "quotes": [
+      "The gate on v1 labels rejected all 8,490 of its candidates, every one for lack of significant improvement",
+      "including the exactly correct harness 470 times",
+      "left the pipeline at the degraded false-positive rate in every cell"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Supports the paper's design commitment that the pool must be relabelled by the new rule (Section 6.2)."
+    },
+    {
+     "id_suggestion": "akhtyamov-local-repairs-thr-scope",
+     "value": "The authors report that parametric (thr) and clause (scope) shifts are repaired by the local loop alone and that the global-only arm, whose library offers only primitive replacements, cannot repair them; in the mid scope cell the local-only arm recovered in 9/10 seeds.",
+     "anchor": "Section 7.3, p7; Table 4, p9",
+     "quotes": [
+      "Parametric (thr) and clause (scope) shifts are repaired by the local loop alone, and the global-only arm, whose library offers only primitive replacements, cannot repair them.",
+      "in the mid cell it recovered in 9/10 seeds"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-local-fails-structural",
+     "value": "The authors report that the local-only arm proposed 1,890 candidates across the three structural cells and admitted 0, all rejected for regression because no threshold on the first-layer stake reproduces a rule on the effective stake, and that the compute-matched local-only arm does no better (27.4% against 27.4% in the mid cell).",
+     "anchor": "Section 7.3, p7",
+     "quotes": [
+      "the local-only arm proposed 1,890 candidates across the three structural cells and admitted 0; 1,890 were rejected for regression",
+      "because no threshold on the first-layer stake reproduces a rule on the effective stake",
+      "does no better (27.4% against 27.4% in the mid cell)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-dual-loop-routing-cost",
+     "value": "The authors report that the dual loop repairs all three families because escalation routes each problem to the loop that can express its fix, and that it recovers more slowly than the right single loop on the structural family (excess errors 228 against 156 for global-only in the mid cell).",
+     "anchor": "Section 7.3, p7",
+     "quotes": [
+      "The dual loop repairs all three families because escalation routes each problem to the loop that can express its fix.",
+      "It recovers more slowly than the right single loop on the structural family",
+      "(excess errors 228 against 156 for global-only in the mid cell)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-division-by-construction",
+     "value": "The authors state that the division of labour between the loops is in part true by construction, because the local edit space cannot express a rule on the effective stake and the library contains one.",
+     "anchor": "Section 7.3, p7",
+     "quotes": [
+      "This division of labour is, in part, true by construction",
+      "the local edit space cannot express a rule on the effective stake, and the library contains one"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit on its own result in Section 7.3.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-manual-update-comparison",
+     "value": "The authors report that under an assumed 2,000-case lag the manual update accumulates more excess errors during adaptation than the dual loop in every family at mid severity, but in the high-severity structural cell, where the dual loop recovers in only half the seeds, the dual loop accumulates 500 against the manual update's 408; they state the comparison depends entirely on the lag, which is an assumption.",
+     "anchor": "Section 7.4, p9",
+     "quotes": [
+      "Under our assumed 2,000-case lag, the manual update accumulates more excess errors during adaptation than the dual loop in every family at mid severity",
+      "it accumulates 500 against the manual update’s 408",
+      "The comparison depends entirely on that lag, which is an assumption"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-worked-rejection",
+     "value": "The authors report a worked rejection in the mid structural cell, seed 0: the local loop's first candidate (stop treating a designation as a qualifying hit) removed 287 false positives and introduced 4 among 4,561 true CLEAR cases, a reduction of 6.2 points (95% interval [5.5, 6.9]), but 864 of the 6,696 cases the deployed harness answered correctly (12.9%) would turn wrong, so the record was written as rejected for regression on C.",
+     "anchor": "Section 7.5, p9",
+     "quotes": [
+      "In the mid structural cell, seed 0",
+      "it removes 287 false positives and introduces 4 among 4,561 true CLEAR cases, a reduction of 6.2 points (95% interval [5.5, 6.9])",
+      "But 864 of the 6,696 cases the deployed harness answered correctly (12.9%) would turn wrong",
+      "is written as rejected: regression on C."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-worked-admission",
+     "value": "The authors report that in the same seed, after 21 local rejections the cluster escalates and the global loop, at case 17099, proposes the primitive replacement direct_stake_check to effective_stake_check, which reduces false positives by 26.3 points (lower bound 25.0) with 21 regressions on C (0.31%, attributable to execution noise) and is admitted as record 25.",
+     "anchor": "Section 7.5, p9-p10",
+     "quotes": [
+      "After 21 local rejections the cluster escalates",
+      "at case 17099 it proposes",
+      "which reduces false positives by 26.3 points (lower bound 25.0) with 21 regressions on C (0.31%, attributable to execution noise), and is admitted as record 25"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-tolerance-cost",
+     "value": "The authors report that in the high-severity structural cell the dual loop recovered in 5/10 seeds at ε = 0.005, rejecting the exactly correct harness 24 times, with a mean false-positive rate of 18.1%, and that doubling the tolerance to ε = 0.010, tested on the structural family only, recovers 10/10 seeds without any false admission.",
+     "anchor": "Section 7.6, p10; Table 6, p10",
+     "quotes": [
+      "the correct replacement exceeds ε = 0.005",
+      "The dual loop recovered in 5/10 seeds, rejecting the exactly correct harness 24 times, and its mean false-positive rate stayed at 18.1%",
+      "Doubling the tolerance to ε = 0.010, which we tested on the structural family only, recovers 10/10 seeds without any false admission."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-tolerance-protective-side-unmeasured",
+     "value": "The authors state that no harmful change was admitted at either tolerance value, so the protective side of the trade-off between regression guarding and rejecting correct changes is not measured by this track.",
+     "anchor": "Section 7.6, p10",
+     "quotes": [
+      "No harmful change was admitted at either value, so the protective side of the trade-off is not measured by this track."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in Section 7.6.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-noise-scaled-tolerance-proposal",
+     "value": "The authors state that a fixed ε conflates noise with regression and that a tolerance scaled to the expected noise on the cases a candidate changes would separate them and is the next revision of the rule; until then ε is a policy parameter.",
+     "anchor": "Section 7.6, p10",
+     "quotes": [
+      "A fixed ε conflates noise with regression; a tolerance scaled to the expected noise on the cases a candidate changes would separate them",
+      "Until then, ε is a policy parameter"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's proposal; the paper does not implement or test a noise-scaled tolerance.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-harness-growth",
+     "value": "The authors report that the harness's rendered text ranged from 151 to 253 characters across all runs, and that the gated dual loop made at most 4 admissions in a run against up to 13 for the no-gate arm.",
+     "anchor": "Section 7.7, p10",
+     "quotes": [
+      "its rendered text ranged from 151 to 253 characters across all runs",
+      "The gated dual loop made at most 4 admissions in a run, the no-gate arm up to 13."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The bound on length holds because the edit space is parametric; the paper says an LLM proposer that writes free text would make length and rule count the quantities to bound."
+    },
+    {
+     "id_suggestion": "akhtyamov-eu-ai-act-art-43-4",
+     "value": "The authors argue that a harness-only engine with a fixed edit space, a fixed library and a fixed admission rule is a way of making change pre-determinable under the EU AI Act provision on pre-determined changes, because the reachable harnesses and the admitting rule can be written into the technical documentation before deployment.",
+     "anchor": "Section 8, p10",
+     "quotes": [
+      "A harness-only engine with a fixed edit space, a fixed library and a fixed admission rule is a way of making change pre-determinable",
+      "the set of reachable harnesses and the rule that admits them can be written into the technical documentation before deployment"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's regulatory reading; the paper states no examiner has reviewed it.",
+     "result_type": "claim",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-eu-ai-act-dates",
+     "value": "The authors state, citing the Digital Omnibus on AI, that after it the high-risk obligations for creditworthiness-evaluation systems apply from 2 December 2027.",
+     "anchor": "Section 8, p10",
+     "quotes": [
+      "after the Digital Omnibus on AI the corresponding obligations apply from 2 December 2027"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to the EU regulation (reference 2); not checked against the regulation here.",
+     "result_type": "cited",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-us-guidance-scope",
+     "value": "The authors state that the interagency guidance of 17 April 2026 replaced SR 11-7 and OCC Bulletin 2011-12, states that generative and agentic AI models are not within its scope, and that the agencies announced a forthcoming request for information on AI use.",
+     "anchor": "Section 2, p2; Section 8, p10-p11",
+     "quotes": [
+      "The interagency guidance of 17 April 2026 replaced SR 11-7 and OCC Bulletin 2011-12",
+      "not within its scope; the agencies announced a forthcoming request for information on AI use, including generative and agentic AI"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to the agency guidance (references 3 and 4); not checked against the guidance here.",
+     "result_type": "cited",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-us-no-template-claim",
+     "value": "The authors state that there is, as of writing, no US supervisory template for change control in agentic systems, and that they claim no more than that their architecture is a candidate answer: the guidance does not endorse the design and their mapping is to the EU text.",
+     "anchor": "Section 8, p11",
+     "quotes": [
+      "There is, as of writing, no US supervisory template for change control in agentic systems",
+      "the guidance does not endorse the design, and our mapping is to the EU text"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim about the state of US guidance.",
+     "result_type": "claim",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-mapping-limits",
+     "value": "The authors state that the regulatory mapping is a design argument and not a compliance opinion, that bias monitoring under Article 10 has no mechanism and no evidence because the benchmark carries no protected attributes, and that no examiner has reviewed any artefact.",
+     "anchor": "Table 7 caption, p11; Section 8, p11",
+     "quotes": [
+      "This is a design argument, not a compliance opinion.",
+      "Bias monitoring under Article 10 has no mechanism in our design and no evidence in our experiments, because the benchmark carries no protected attributes.",
+      "no examiner has reviewed any artefact"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its regulatory mapping in Table 7 and Section 8.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-cace-bench-reference-run",
+     "value": "The authors report from the CACE-Bench reference run (seed 0, 23,000 cases, seven Latin American jurisdictions) that undecidable cases are 15.6% of the stream, an availability-blind pipeline decides 55.1% of them, the judge-and-recovery layer brings that to 6.5%, false positives fall from 22.5% to 5.0% and missed flags from 15.3% to 3.5%.",
+     "anchor": "Section 9, p11-p12; Table 8, p12",
+     "quotes": [
+      "(seed 0, 23,000 cases, seven Latin American jurisdictions, provider registry 2026-08-03)",
+      "Undecidable cases are 15.6% of the stream",
+      "and an availability-blind pipeline decides 55.1% of them. The judge-and-recovery layer brings that to 6.5%.",
+      "False positives fall from 22.5% to 5.0%, and missed flags fall too, from 15.3% to 3.5%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-silent-decision-definition",
+     "value": "The authors define the silent-decision rate as the share of undecidable cases on which the pipeline decided anyway; a case is undecidable when the sources needed for the compliance conclusion did not all answer, and escalation is then the correct outcome.",
+     "anchor": "Section 9, p11",
+     "quotes": [
+      "The silent-decision rate is the share of such undecidable cases on which the pipeline decided anyway.",
+      "when the sources needed for the compliance conclusion did not all answer, escalation is the correct outcome"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its metric in Section 9.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-recovery-layer-parametric",
+     "value": "The authors state that the judge-and-recovery layer in the reference run is a documented parametric model in which each first-pass error is detected with probability 0.85 and corrected with probability 0.92, so the run establishes where the failure concentrates and not how well any particular implementation repairs it.",
+     "anchor": "Section 9, p12",
+     "quotes": [
+      "each first-pass error is detected with probability 0.85 and corrected with probability 0.92",
+      "so this run establishes where the failure concentrates, not how well any particular implementation repairs it"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit on its reference run in Section 9.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-execution-noise-model",
+     "value": "The authors state that execution noise flips the outcome with probability 0.02 per case, with the draw shared across harness versions (common random numbers), and that real LLM noise is not shared across versions, which would raise the noise floor of the regression clause.",
+     "anchor": "Table 2, p6; Section 10, p12",
+     "quotes": [
+      "outcome flipped with probability 0.02 per case, draw shared across harness versions",
+      "Execution noise is modelled as common random numbers.",
+      "Real LLM noise is not shared across versions, which would raise the noise floor of the regression clause"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in Section 10 and its setting in Table 2.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-false-admission-audit-weak",
+     "value": "The authors state that the false-admission audit is weak by construction, because the gate half and the audit half are interleaved halves of the same pre-shift stream labelled by the same deterministic rule, so zero false admissions on Hval is expected for any gated arm and the informative contrasts are against the no-gate arm and on the post-shift held-out window.",
+     "anchor": "Section 10, p12",
+     "quotes": [
+      "The false-admission audit is weak by construction.",
+      "Zero false admissions on Hval is therefore expected for any gated arm; the informative contrasts are against the no-gate arm and on the post-shift held-out window."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit on its own audit in Section 10.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-synthetic-assumptions",
+     "value": "The authors state that distributions, shift families and the feedback model are theirs, and that the no-gate failure depends on misses being less visible than false positives, an asymmetry they believe realistic but whose size is an assumption.",
+     "anchor": "Section 10, p12",
+     "quotes": [
+      "Synthetic throughout. Distributions, shift families and the feedback model",
+      "The no-gate failure depends on misses being less visible than false positives; we believe that asymmetry is realistic, but its size is an assumption."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in Section 10.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-llm-proposer-not-tested",
+     "value": "The authors state that the track measures the bound and the gate and not proposal quality, and that an LLM proposer would produce candidates outside the tested edit space, including free-text edits whose regression surface is larger.",
+     "anchor": "Section 10, p12",
+     "quotes": [
+      "The track measures the bound and the gate, not proposal quality",
+      "an LLM proposer will produce candidates outside this space, including free-text edits whose regression surface is larger"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in Section 10.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-baselines-not-run",
+     "value": "The authors state that they did not run a static prompt-optimisation baseline or direct implementations of the cited self-evolution methods, and that the no-gate arm stands in for the latter's admission logic only.",
+     "anchor": "Section 10, p12",
+     "quotes": [
+      "We did not run a static prompt-optimisation baseline or direct implementations of the cited self-evolution methods"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in Section 10.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-single-primitive-single-shift",
+     "value": "The authors state that interacting primitives and concurrent shifts are not tested, that the relabelled pool is only as correct as the rule that relabels it, and that there is no protected attribute and no fairness claim.",
+     "anchor": "Section 10, p12",
+     "quotes": [
+      "Interacting primitives and concurrent shifts are not tested.",
+      "The relabelled pool is only as correct as the rule that relabels it."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these limits in Section 10.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-threat-model",
+     "value": "The authors state a threat model of five failure modes: F1 silent drift, F2 retro-test overfitting, F3 untraceable change, F4 objective capture and F5 exogenous model change, the last of which their design does not mitigate.",
+     "anchor": "Section 3, p3",
+     "quotes": [
+      "F1 Silent drift: a change improves the target metric while degrading an unmeasured one",
+      "F2 Retro-test overfitting: a candidate is tuned until it passes the pool",
+      "F3 Untraceable change: mitigated by making the log write a precondition of deployment",
+      "F4 Objective capture: evolution objective and audit evidence from the same judge",
+      "F5 Exogenous model change: the provider updates a hosted model beneath a fixed harness; not mitigated by our design"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own threat model in Section 3.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-auditability-not-reproducibility",
+     "value": "The authors state that auditability of the change is delivered by the log but reproducibility of behaviour is not delivered by the same mechanism, because identical harnesses on a hosted model can behave differently if the provider changes the model, the decoding settings drift, a tool returns different data or retrieval state moves.",
+     "anchor": "Section 4, p4",
+     "quotes": [
+      "Reproducibility of behaviour is not delivered by the same mechanism",
+      "identical harnesses on a hosted model can behave differently if the provider changes the model, the decoding settings drift, a tool returns different data, or retrieval state moves"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in Section 4.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-cost-of-bound",
+     "value": "The authors state that the cost of the bound is real: the system cannot learn anything that instruction text and primitive composition cannot express, and a task the base model cannot do falls outside the loop.",
+     "anchor": "Section 4, p4",
+     "quotes": [
+      "the system cannot learn anything that instruction text and primitive composition cannot express",
+      "A task the base model cannot do falls outside the loop and remains engineering work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in Section 4.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-novelty-scope",
+     "value": "The authors state that they do not claim either loop as new, that the field closes its loops on a task metric and produces no change record intended for a third party, and that they make no claim that their engine optimises better than any of the cited systems.",
+     "anchor": "Section 2, p2",
+     "quotes": [
+      "We do not claim either loop as new.",
+      "The field closes its loops on a task metric and produces no change record intended for a third party",
+      "we make no claim that our engine optimises better than any of these systems"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Scope statement plus an author's characterisation of the field; the survey is not a measurement.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-deterministic-labels-no-llm-judge",
+     "value": "The authors state that every number reported is computed against deterministic labels and that no LLM judge is involved anywhere in the results.",
+     "anchor": "Section 2, p2",
+     "quotes": [
+      "Every number reported here is computed against deterministic labels; no LLM judge is involved anywhere in the results."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Section 2.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-generative-ai-and-data-availability",
+     "value": "The authors state that a generative AI assistant (Anthropic Claude) was used to write and debug simulation and analysis code, run the experiments and draft the text, that no generative AI system is a component of the experiments, and that code, configuration and per-run outputs including every gate log are in the CACE-Bench repository, release v0.6.0.",
+     "anchor": "Declarations, p13",
+     "quotes": [
+      "A generative AI assistant (Anthropic Claude) was used in preparing this work",
+      "No generative AI system is a component of the experiments reported",
+      "available in the CACE-Bench repository at https://github.com/rav11l/cace-bench, release v0.6.0"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own method and materials in the Declarations.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "akhtyamov-conclusion",
+     "value": "The authors conclude that the gate needs labels under the new rule, which makes adaptation supervised at the level of the rule, that it divides work between a local and a global loop by the kind of re-interpretation, that its fixed tolerance rejects some large correct changes, and that replacing the proposer with a language model is the experiment that will show whether the bound survives contact with free text.",
+     "anchor": "Section 11, p12-p13",
+     "quotes": [
+      "The gate needs labels under the new rule, which makes adaptation supervised at the level of the rule",
+      "its fixed tolerance rejects some large correct changes, which a noise-scaled tolerance should fix",
+      "replacing it with one is the experiment that will show whether the bound survives contact with free text"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper's conclusions; the open test is stated by the authors.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "akpinar-2024-evaluating-impact-different-quantum-kernels",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Akpinar-Islam-Oduncuoglu_2024_Evaluating-the-Impact-of-Different-Quantum-Kernels-on-the__2407.09930.pdf",
+   "title_in_file": "Evaluating the Impact of Different Quantum Kernels on the Classification Performance of Support Vector Machine Algorithm: A Medical Dataset Application",
+   "version_note": "The text layer lost the Greek and math glyphs (rotation-gate names print as private-use characters), and Table 1 and Figure 1 are images. The gate names of the best and worst feature maps therefore cannot be read; their values in Table 1 are not in the text layer.",
+   "pages": 11,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "An empirical study that runs a simulated QSVM-Kernel (PennyLane, scikit-learn SVM) with 9 quantum feature maps on the Wisconsin Breast Cancer (original) and TCGA Glioma datasets and compares accuracy, AUROC and total execution time.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "akpinar-breast-time-cost",
+     "verdict": "confirmed",
+     "note": "The Results section adds the two times: 19.25 min and 44.1 min.",
+     "value": "",
+     "anchor": "V. Conclusion; III. Results and Discussion",
+     "quotes": [
+      "the QSVM Kernel algorithm achieves equal classification performance when",
+      "since the total execution time is about 2 times higher for the parametrized quantum circuit"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "akpinar-glioma-low-performance",
+     "verdict": "confirmed",
+     "note": "The Results section gives the numbers: accuracy 0.40, AUROC 0.5, 33.97 min for the lowest-performing map.",
+     "value": "",
+     "anchor": "V. Conclusion; III. Results and Discussion",
+     "quotes": [
+      "the classification performance value is too low to be generalized when it is used as a feature map",
+      "gives better results in terms of total processing time"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "akpinar-setup-nine-maps-pca5",
+     "verdict": "confirmed",
+     "note": "Section II.A.b agrees: both datasets were compressed with PCA and the first 5 dimensions used.",
+     "value": "",
+     "anchor": "Abstract; V. Conclusion; II.A.b",
+     "quotes": [
+      "quantum kernel matrices obtained from 9 different quantum feature maps were used",
+      "Considering the limitations of the NISQ computers in both datasets, the PCA value was set to 5."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in the abstract and the conclusion.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "akpinar-datasets-breast-tcga",
+     "value": "The authors report that the Wisconsin Breast Cancer dataset has 699 patients (Benign: 458, Malignant: 241), and that the TCGA dataset has 839 patients after exclusions, 487 belonging to LGGs and 352 belonging to HGGs.",
+     "anchor": "II.A Data and Preprocessing",
+     "quotes": [
+      "The Wisconsin Breast Cancer dataset has 699 patients (Benign: 458, Malignant: 241)",
+      "The remaining dataset contain information for a total of 839 patients, with 487 belonging to LGGs and the remaining 352 belonging to HGGs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own datasets in Section II.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "value": "The authors state that both datasets were compressed with PCA and that the first 5 dimensions represent the raw data, and that PCA does not guarantee the selection of the most discriminative components.",
+     "anchor": "II.A.b Dimension reduction with PCA",
+     "quotes": [
+      "we compressed both datasets using PCA and utilized the first 5 dimensions to represent the raw data",
+      "it does not guarantee the selection of the most discriminative"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its own preprocessing in Section II.A.b.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Reduction to 5 features limits every result below to 5 qubit-sized inputs.",
+     "id_suggestion": "akpinar-preprocessing-pca-5"
+    },
+    {
+     "value": "The authors state that the quantum kernels were computed by simulation in PennyLane 0.35.1, that the QSVMs with ZFeatureMap and ZZFeatureMap ran with a repetition of 2 on the lightning.qubit simulator, and that the other feature maps ran with a repetition of 1 on the default.qubit simulator.",
+     "anchor": "III. Results and Discussion",
+     "quotes": [
+      "Quantum simulations provided by the PennyLane 0.35.1 framework were utilized",
+      "The QSVM algorithms with ZFeatureMap and ZZFeatureMap were executed with a repetition of 2 using the lightning.qubit PennyLane simulator.",
+      "QSVMs with other feature maps were run with a repetition of 1 using the default.qubit simulator."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own simulation setup in Section III.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Execution times come from simulators of two kinds, so they are not hardware times and the two simulator groups are not strictly like for like.",
+     "id_suggestion": "akpinar-simulators-repetitions"
+    },
+    {
+     "value": "The authors report that on the Wisconsin Breast Cancer (original) dataset one rotational gate and one parametrized circuit with CX gave equal and optimal performance, accuracy and AUROC of 0.98, with total execution times of 19.25 min and 44.1 min respectively.",
+     "anchor": "III. Results and Discussion, Table 1 (image)",
+     "quotes": [
+      "it achieves equal and optimal performance with accuracy and AUROC score values of 0.98 in distinguishing malignant and benign tumors",
+      "is 19.25 min when employing the",
+      "44.1 min when utilizing"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The gate names print as private-use characters in the text layer, so which gate is which cannot be read here.",
+     "id_suggestion": "akpinar-breast-best-equal"
+    },
+    {
+     "value": "The authors report that on the Wisconsin Breast Cancer (original) dataset one rotational gate and one parametrized circuit with CZ gave equal and worst classification results, accuracy 0.65 and AUROC 0.5, with total execution times of 15.38 min and 47.1 min respectively.",
+     "anchor": "III. Results and Discussion, Table 1 (image)",
+     "quotes": [
+      "they yield equal and worst classification results with an accuracy of 0.65 and AUROC score of 0.5",
+      "are 15.38 min and 47.1 min, respectively"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "An AUROC of 0.5 is chance level for a binary task.",
+     "id_suggestion": "akpinar-breast-worst-equal"
+    },
+    {
+     "value": "The authors report that across all feature maps on the breast dataset the malignant cohort's precision, recall and F1 ranged from 0.40 to 0.95, 0.43 to 0.99 and 0.5 to 0.97, and the benign cohort's from 0.65 to 0.99, 0.97 to 1.0 and 0.78 to 0.98.",
+     "anchor": "III. Results and Discussion, Table 1 (image)",
+     "quotes": [
+      "the precision, recall, and F1 score values for the malignant cohort range from 0.40 to 0.95, 0.43 to 0.99, and 0.5 to 0.97, respectively",
+      "they vary between 0.65 to 0.99, 0.97 to 1.0, and 0.78 to 0.98, respectively"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "akpinar-breast-metric-ranges"
+    },
+    {
+     "value": "The authors report that on the TCGA Glioma dataset the best rotational-gate feature map reached accuracy 0.86 and AUROC 0.87, the next reached accuracy 0.85 and AUROC 0.87, and the lowest reached accuracy 0.40 and AUROC 0.5, with total execution times of 38.83 min, 37.78 min and 33.97 min respectively.",
+     "anchor": "III. Results and Discussion, Table 1 (image)",
+     "quotes": [
+      "with an accuracy value of 0.86 and an AUROC of 0.87",
+      "an accuracy of 0.85 and an AUROC value of 0.87 are achieved",
+      "with an accuracy of 0.40 and an AUROC of 0.5",
+      "are 38.83 min, 37.78 min, and 33.97 min, respectively"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text layer does not carry the gate names for these three maps.",
+     "id_suggestion": "akpinar-glioma-best-three"
+    },
+    {
+     "value": "The authors report that across the feature maps on the glioma dataset, precision, recall and F1 for LGGs ranged from 0.60 to 0.97, 0.78 to 1.0 and 0.75 to 0.87, and for HGGs from 0.40 to 0.76, 0.91 to 1.0 and 0.57 to 0.85.",
+     "anchor": "III. Results and Discussion, Table 1 (image)",
+     "quotes": [
+      "for LGGs range from 0.60 to 0.97, 0.78 to 1.0, and 0.75 to 0.87, respectively",
+      "these values vary between 0.40 to 0.76, 0.91 to 1.0, and 0.57 to 0.85, respectively"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "akpinar-glioma-metric-ranges"
+    },
+    {
+     "value": "The authors state as a finding that using two-qubit quantum gates in a parametrized quantum circuit during the data mapping process significantly increases the total execution time, reducing efficiency.",
+     "anchor": "IV. Findings and Implications",
+     "quotes": [
+      "Using two-qubit quantum gates in a parametrized quantum circuit during the data mapping process significantly increases the total execution time, reducing efficiency."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; no significance test is reported in the text.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The word significantly is not backed by a statistical test in the text; times are single runs on simulators.",
+     "id_suggestion": "akpinar-two-qubit-gates-cost"
+    },
+    {
+     "value": "The authors state that the choice of quantum feature maps significantly influences the outcome of classification and the execution time of the QSVM algorithm.",
+     "anchor": "IV. Findings and Implications",
+     "quotes": [
+      "The choice of quantum future maps significantly influences the outcome of classification and execution time of the QSVM algorithm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical conclusion from one study on two datasets.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Supported by the spread between 0.98 and 0.65 accuracy on one dataset, with a single split reported.",
+     "id_suggestion": "akpinar-feature-map-matters-claim"
+    },
+    {
+     "value": "The authors state that the study shows the potential of quantum kernels for improving the performance of SVMs.",
+     "anchor": "IV. Findings and Implications",
+     "quotes": [
+      "shows the potential of quantum kernels for improving the performance of SVMs"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The text carries no classical-SVM baseline, so the paper compares quantum feature maps with each other only.",
+     "id_suggestion": "akpinar-contribution-svm-improve-claim"
+    },
+    {
+     "value": "The authors conclude that, because the total execution time is about 2 times higher for the parametrized circuit with equal performance, and to ensure energy efficiency in quantum circuits, it is more advantageous to use only the rotational gate on the breast dataset.",
+     "anchor": "V. Conclusion",
+     "quotes": [
+      "and to ensure energy efficiency in quantum circuits, it is more advantageous to use only the",
+      "since the total execution time is about 2 times higher for the parametrized quantum circuit"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's conclusion from one study; no energy measurement is reported in the text.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper reports simulator wall time, not energy.",
+     "id_suggestion": "akpinar-conclusion-single-gate-advice"
+    },
+    {
+     "value": "The authors state that in the future they aim to develop efficient feature mapping techniques, especially for medical datasets, that affect both classification result and execution time.",
+     "anchor": "V. Conclusion",
+     "quotes": [
+      "In the future, we aim to develop efficient feature mapping techniques, especially for medical datasets"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own open work in the conclusion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "akpinar-future-work"
+    },
+    {
+     "value": "The authors state that the kernel matrices computed from the quantum states of feature maps significantly influence the classification outcomes of the QSVM-Kernel algorithm, so selecting an appropriate feature map is fundamentally important.",
+     "anchor": "II.B.b Quantum Kernel and Quantum Feature Maps",
+     "quotes": [
+      "The kernel matrices computed from the quantum states of feature maps significantly influence the classification outcomes of the QSVM-Kernel algorithm."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim stated before the results.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "akpinar-kernel-matrix-influences-claim"
+    },
+    {
+     "value": "The authors give pseudocode in the supplementary materials that initializes the quantum device with n_qubits and shots=1000.",
+     "anchor": "Supplementary Materials, pseudocode",
+     "quotes": [
+      "Initialize quantum device with n_qubits and shots=1000"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A pseudocode line; the main text does not state the shot count.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The main text does not say whether the reported kernels used finite shots or exact state vectors.",
+     "id_suggestion": "akpinar-pseudocode-shots"
+    }
+   ]
+  },
+  {
+   "record_id": "aktar-2024-graph-neural-networks-parameterized-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Aktar-et-al._2024_Graph-Neural-Networks-for-Parameterized-Quantum-Circuits-Expressibility__2405.08100.pdf",
+   "title_in_file": "Graph Neural Networks for Parameterized Quantum Circuits Expressibility Estimation",
+   "version_note": "",
+   "pages": 16,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A graph transformer model that predicts the expressibility of parameterized quantum circuits on noiseless and noisy IBM backends.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "gnn-expressibility-dataset",
+     "verdict": "confirmed",
+     "note": "Section 3.1.2 and 4.1 give the breakdown: 25,000 noiseless PQCs and 4,000 PQCs on each of three noisy fake backends (12,000 in total).",
+     "value": "",
+     "anchor": "Abstract p.1; Section 3.1.2 p.5",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "gnn-expressibility-extrapolation-limit",
+     "verdict": "narrowed",
+     "note": "The 0.22 and 0.3 figures belong to the model trained on up to 3 qubits only; the quoted sentences are on p.11 (Section 4.5), with Figure 11 on p.12. The paper also reports the up-to-8-qubit model reaches 0.05 on 10-qubit circuits.",
+     "value": "The authors report that the RMSE of the model trained on circuits of up to 3 qubits spikes to 0.22 and 0.3 when extrapolating to 6 and 10-qubit circuit sizes, which they describe as significant deviation from expected values.",
+     "anchor": "Section 4.5, p.11; Figure 11, p.12",
+     "quotes": [
+      "For instance, the RMSE for the ‘up to 3-qubit’ model spikes to 0.22 and 0.3 for extrapolating to 6 and 10-qubit circuit sizes, respectively, indicating significant deviation from expected values."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "gnn-expressibility-rmse",
+     "verdict": "narrowed",
+     "note": "The RMSE figures are on the held-out test split of random PQCs of 1 to 8 qubits; the noisy figure is per backend (0.06, 0.05 and 0.06), and the noisy backends are IBM fake (simulated) backends.",
+     "value": "The authors report that on the test split of random PQCs the model reaches an RMSE of 0.05 on the noiseless simulator and RMSE values of 0.06, 0.05, and 0.06 on the FakeGuadalupe, FakeMumbai, and FakeHanoi backends, respectively.",
+     "anchor": "Section 4.2, p.8; Abstract p.1",
+     "quotes": [
+      "achieving RMSE values of 0.06, 0.05, and 0.06, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "expressibility-definition-kl",
+     "value": "The paper defines expressibility as the Kullback-Leibler divergence of the PQC fidelity distribution from the fidelity distribution of Haar random states, and states that lower values mean a more expressible circuit.",
+     "anchor": "Section 2.3, p.4",
+     "quotes": [
+      "Thus, Expressibility is the Kullback-Leibler (KL) divergence [18] of PP QC (F ; θ⃗) from PHaar(F ) [43].",
+      "lower KL divergence values indicate a closer approximation to the maximally expressive ensemble of Haar random"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 2.3 gives the definition (Equation 1) the results depend on; the definition is credited to Sim et al. [43].",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fidelity-estimation-cost-sim",
+     "value": "The authors state that Sim et al. used 5,000 fidelity samples for four-qubit circuits to compute expressibility, and that directly measuring expressibility needs many fidelity samples.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "However, directly measuring expressibility poses challenges due to the requirement for many fidelity samples. For instance, experiments in Sim et al. [43] utilized 5,000 fidelity samples for four-qubit circuits."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited result about another paper's experiments.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "random-pqc-generation-setup",
+     "value": "The authors state that the random PQCs range from 1 to 10 qubits, repeated up to three times, built from random single-qubit gates (RX, RY, RZ, H, I) and random multi-qubit gates (CX, CRX, CRY, CRZ, SWAP).",
+     "anchor": "Section 3.1.1, p.5",
+     "quotes": [
+      "The circuit construction begins with an initial layer where random single-qubit gates (RX, RY, RZ, H, I) are applied to each qubit.",
+      "randomly placing multi-qubit gates (CX, CRX, CRY, CRZ, SWAP) between randomly chosen pairs of qubits",
+      "The random PQCs range from ‘1’ to ‘10’ qubits, repeated up to three times."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own dataset construction in Section 3.1.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ground-truth-expressibility-procedure",
+     "value": "The authors state that the ground truth expressibility of each PQC is computed from 5,000 runs on a backend, with a histogram bin size of 75, after transpiling to native gates.",
+     "anchor": "Section 3.1.2, p.5",
+     "quotes": [
+      "run the experiments on a quantum backend 5,000 times to attain a distribution of quantum state fidelities for each PQC",
+      "using a histogram with a bin size of 75 and calculate the expressibility value of the PQC using Equation (1)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own ground truth procedure in Section 3.1.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dataset-composition-and-backends",
+     "value": "The authors state that the dataset holds 3,000 PQCs for each qubit count from 1 to 8 and 500 PQCs for 9 and 10 qubits, for 25,000 random PQCs on the noiseless IBM QASM simulator, plus 4,000 PQCs on each of three noisy backends (IBM FakeGuadalupe, FakeMumbai, and FakeHanoi).",
+     "anchor": "Section 3.1.2, p.5; Section 4.1, p.7",
+     "quotes": [
+      "We generate 3,000 PQCs each on 1 ≤ n ≤ 8 qubits, and 500 PQCs for n = 9, 10; for a total of 25,000 random PQCs.",
+      "we collect the expressibility of 4,000 PQCs on three noisy backends (IBM FakeGuadalupe, FakeMumbai, and FakeHanoi)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own dataset scope in Section 3.1.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The noisy backends are fake (simulated) IBM backends; real hardware appears only in the five-circuit IBM Hanoi check."
+    },
+    {
+     "id_suggestion": "evaluation-circuit-sets",
+     "value": "The authors state that the validation sets are 64 RealAmplitudes hardware-efficient circuits (up to four qubits, up to four repetitions) and 19 reference circuits from Sim et al. replicated with up to three repetitions.",
+     "anchor": "Section 3.1.3, p.6",
+     "quotes": [
+      "tailored explicitly for systems of up to four qubits, with a maximum of four circuit repetitions",
+      "generate a comprehensive set of 64 hardwareefficient circuits",
+      "our datasets encompass 19 reference circuits, originally employed in prior experiments [43], and these are replicated with up to three circuit repetitions"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own validation scope in Section 3.1.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gnn-architecture",
+     "value": "The authors state that the model has three TransformerConv layers with ReLU, global mean pooling, three fully connected layers for the global features, concatenation, and a regressor of three fully connected layers that outputs one expressibility value, trained with the Huber loss.",
+     "anchor": "Section 3.2.2, p.7",
+     "quotes": [
+      "The model starts with three TransformerConv [42] layers",
+      "The learned features are aggregated using Global Mean Pooling",
+      "the global features of the circuits are propagated through three fully connected (FC) layers",
+      "fed to the regressor consisting of three fully connected layers",
+      "optimized to minimize the Huber loss between the predicted and the ideal expressibility values"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own model design in Section 3.2.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "node-feature-encoding",
+     "value": "The authors state that each node feature vector has length 23: six digits for node type (one-hot), ten digits for the targeted qubits, and seven digits for backend noise information, with global features of circuit depth, number of parameterized gates, number of qubits and gate counts.",
+     "anchor": "Section 3.2.1, p.6-7; Figure 2, p.4",
+     "quotes": [
+      "The feature vector employed has a length of 23, with the first six digits corresponding to node types (one-hot encoded), the following ten digits representing the targeted qubit(s), and",
+      "the last seven digits encoding backend noise information",
+      "global feature sets, i.e., circuit depth, number of parameterized gates, number of qubits, and counts of different gates"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own feature encoding in Section 3.2.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aktar-2024-training-setup",
+     "value": "The authors state that the random PQCs on n ≤ 8 qubits are split 70% training, 10% validation and 20% testing, and that training uses the Adam optimizer for 300 epochs, learning rate 10−4, weight decay 10−6, batch size 1, 500 and Huber loss.",
+     "anchor": "Section 4.1, p.7-8",
+     "quotes": [
+      "random PQCs on n ≤ 8 qubits into three distinct subsets: 70% for training, 10% for validation, and 20% for testing",
+      "Our training procedure utilizes the Adam optimizer for 300 epochs, with a learning rate of 10−4 and a weight decay of 10−6.",
+      "We utilize a batch size of 1, 500 and employ the Huber loss"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training setup in Section 4.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noiseless-vs-noisy-test-rmse",
+     "value": "The authors report test RMSE of 0.05 on the noiseless simulator and 0.06, 0.05, and 0.06 on FakeGuadalupe, FakeMumbai, and FakeHanoi, and state that the noiseless simulator gives better predictions while the model keeps decent performance on noisy backends.",
+     "anchor": "Section 4.2, p.8; Figure 5",
+     "quotes": [
+      "The leftmost plot illustrates predictions for the noiseless simulator where the predicted expressibility values closely match the actual values, resulting in an RMSE of 0.05.",
+      "achieving RMSE values of 0.06, 0.05, and 0.06, respectively.",
+      "the noiseless simulator offers better predictions while the model maintains decent performance even on noisy backends"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Each RMSE is one training run on one split; the paper reports no repeat runs or confidence interval."
+    },
+    {
+     "id_suggestion": "global-feature-correlation",
+     "value": "The authors report that circuit depth, number of parameters and number of single-qubit gates show a negative correlation with expressibility, others near zero correlation, and that adding global features lowers test RMSE on all backends, notably the noisy ones.",
+     "anchor": "Section 4.3, p.9; Figure 6, p.7",
+     "quotes": [
+      "We find that circuit depth, number of parameters, and number of single-qubit gates show an excellent negative correlation with the expressibility of PQC.",
+      "incorporating global circuit features alongside node features reduces the RMSE loss on the testing dataset for both noiseless and noisy backends",
+      "The model accuracy notably improves for the noisy backends."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text says excellent negative correlation; the Figure 6 caption says good negative correlation. The paper gives no coefficient in the text."
+    },
+    {
+     "id_suggestion": "sample-size-analysis",
+     "value": "The authors report that, on samples from a noisy simulator, a model trained with only 8 × 500 samples reaches an RMSE of 0.073, with slight further improvement as the sample size grows.",
+     "anchor": "Section 4.3, p.9; Figure 8",
+     "quotes": [
+      "We find that with only 8 × 500 samples, the model achieves an RMSE of 0.073.",
+      "we observe a slight improvement in model accuracy as more samples are included"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The paper does not name which noisy backend this analysis used."
+    },
+    {
+     "id_suggestion": "scalability-claim-samples",
+     "value": "The authors state that the analysis suggests the model can be extended to more qubits in a scalable manner in the number of samples.",
+     "anchor": "Section 4.3, p.9",
+     "quotes": [
+      "The analysis suggests that the model can be seamlessly extended to more qubits in a scalable manner in the number of samples."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the sample-size test covers 1 to 8 qubits only.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The sample-size experiment stops at 8 qubits, so scaling to more qubits is not shown by that experiment."
+    },
+    {
+     "id_suggestion": "reference-circuits-noiseless-rmse",
+     "value": "The authors report that on the noiseless simulator the model reaches RMSE of 0.05 on the reference circuits of Sim et al. and an overall RMSE of 0.06 on the RealAmplitudes circuits, with more disparity for the 4-qubit circuits.",
+     "anchor": "Section 4.4, p.9-10; Figure 7, p.8",
+     "quotes": [
+      "achieving an RMSE of 0.05",
+      "achieves an overall RMSE of 0.06",
+      "the 4-qubit circuits exhibit more disparity between predicted and actual values"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "layers-improve-expressibility",
+     "value": "The authors state that adding multiple layers improves the expressibility of the reference PQCs, giving more capability to explore the Hilbert space.",
+     "anchor": "Section 4.4, p.10; Figure 7",
+     "quotes": [
+      "adding multiple layers improves the expressibility of the PQCs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "This describes the computed values of the 19 reference circuits at one to three layers, not the model."
+    },
+    {
+     "id_suggestion": "noise-changes-expressibility",
+     "value": "The authors state that the actual expressibility values of the 19 reference circuits differ between the noiseless simulator and the noisy backends, and that hardware noise has a significant impact on the expressibility of the RealAmplitudes sets.",
+     "anchor": "Section 4.4, p.10-11",
+     "quotes": [
+      "The actual expressibility values of the 19 reference circuits in a noiseless simulator and noisy backends are different.",
+      "We observe a significant impact of hardware noise on the expressibility of these hardware-efficient ansatz sets."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "reference-circuits-noisy-rmse",
+     "value": "The authors report that on the reference circuits of Sim et al. in the noisy backends the overall RMSE is 0.07, 0.08, and 0.07 for FakeGuadalupe, FakeHanoi, and FakeMumbai.",
+     "anchor": "Section 4.4, p.10; Figure 9",
+     "quotes": [
+      "The prediction achieved an overall RMSE of 0.07, 0.08, and 0.07 in FakeGuadalupe, FakeHanoi, and FakeMumbai backend, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "realamplitude-noisy-rmse-inconsistent",
+     "value": "The authors report an RMSE of 0.08 for the FakeGuadalupe, FakeHanoi, and FakeMumbai backends on the RealAmplitudes sets in the text, while the figure caption reports 0.09, 0.05, and 0.09 for FakeGuadalupe, FakeHanoi, and FakeMumbai.",
+     "anchor": "Section 4.4, p.11; Figure 10, p.10",
+     "quotes": [
+      "Overall, we achieve an RMSE of 0.08 for the FakeGuadalupe, FakeHanoi, and FakeMumbai backends.",
+      "achieving overall RMSE of 0.09, 0.05, and 0.09 in FakeGuadalupe, FakeHanoi, and FakeMumbai backends, respectively"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text and the Figure 10 caption disagree; the paper does not say which holds. The contribution list (p.3) gives 0.08 as the average."
+    },
+    {
+     "id_suggestion": "ibm-hanoi-hardware-check",
+     "value": "The authors report that, for five reference circuits of Sim et al. run on IBM Hanoi hardware, a model trained on all three noisy backends gives overall RMSE 0.1 and a model trained on FakeHanoi only gives overall RMSE 0.19.",
+     "anchor": "Section 4.4, p.10; Table 1, p.11",
+     "quotes": [
+      "We find that the model trained with samples with different noise levels gives better prediction (overall RMSE 0.1) than the model trained with only FakeHanoi samples (overall RMSE 0.19)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Only five circuits were run on real hardware; the rest of the noisy results use fake backends."
+    },
+    {
+     "id_suggestion": "ibm-hanoi-table1-values",
+     "value": "The authors report in the IBM-Hanoi comparison table expressibility on IBM-Hanoi, the FakeHanoi-trained prediction and the combined-model prediction for five reference circuits, in the printed order:0.280, 0.497, 0.402; 0.237, 0.262, 0.080; 0.451, 0.524, 0.330; 0.266, 0.395, 0.237; 0.302, 0.639, 0.401.",
+     "anchor": "Table 1, p.11",
+     "quotes": [
+      "0.280 0.497 0.402",
+      "0.237 0.262 0.080",
+      "0.451 0.524 0.330",
+      "0.266 0.395 0.237",
+      "0.302 0.639 0.401"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text layer holds the table as three-number lines; the mapping of each line to an ID follows the column order printed in the table."
+    },
+    {
+     "id_suggestion": "extrapolation-interpolation-rmse",
+     "value": "The authors report that the average interpolation RMSE across the different trained-range models is 0.05, and that the model trained on circuits of up to 8 qubits reaches an RMSE of 0.05 on unseen 10-qubit circuits.",
+     "anchor": "Section 4.5, p.11; Figure 11, p.12",
+     "quotes": [
+      "The average RMSE for interpolation across different qubit models is 0.05",
+      "when the model is trained on up to higher qubit PQC sizes, such as the ‘up to 8-qubit’ model, it achieves an RMSE of 0.05 for predicting expressibility values for unseen ‘10’ qubit circuits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "extrapolation-threshold-5-qubits",
+     "value": "The authors report that extrapolation is good from the model trained on up to 5 qubits onwards, and that for models trained on up to 4 qubits extrapolation has a very high RMSE.",
+     "anchor": "Section 4.5, p.11; Figure 11 caption, p.12",
+     "quotes": [
+      "Notably, the plot indicates good extrapolation accuracy already from the ‘up to 5-qubit’ model onwards.",
+      "For models trained only on PQCs on up to 4 qubits, extrapolation has a very high RMSE."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The abstract says low extrapolation RMSE for models trained on up to 5 qubits; the conclusion's claim of strong extrapolation holds only above this training range."
+    },
+    {
+     "id_suggestion": "conclusion-cost-reduction-claim",
+     "value": "The authors state that the trained model can significantly reduce the exponential computational cost of fidelity distribution estimation in expressibility computation.",
+     "anchor": "Section 6, p.13",
+     "quotes": [
+      "our prediction model can significantly reduce the exponential computational cost associated with fidelity distribution estimation in expressibility computation"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; no runtime comparison is given in the text.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The text reports no timing of the model against the sampling method."
+    },
+    {
+     "id_suggestion": "conclusion-strong-extrapolation-claim",
+     "value": "The authors state in the conclusion that the model demonstrates strong extrapolation abilities by accurately predicting expressibility for out-of-range qubit circuits.",
+     "anchor": "Section 6, p.13",
+     "quotes": [
+      "Additionally, our model demonstrates strong"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; Section 4.5 shows it holds only for models trained on 5 or more qubits.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Section 4.5 reports RMSE 0.22 and 0.3 for the up-to-3-qubit model, so the claim is conditional on the training range."
+    },
+    {
+     "id_suggestion": "no-prior-ml-expressibility-work",
+     "value": "The authors state that, to the best of their knowledge, no prior work predicts the expressibility of PQCs with machine learning.",
+     "anchor": "Section 5.2, p.13",
+     "quotes": [
+      "To the best of our knowledge, no prior work has been done to predict the expressibility of PQCs using ML techniques."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim of novelty.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "akter-2023-software-supply-chain-vulnerabilities-detection",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Akter-et-al._2023_Software-Supply-Chain-Vulnerabilities-Detection-in-Source-Code-Performance__2306.08060.pdf",
+   "title_in_file": "Software Supply Chain Vulnerabilities Detection in Source Code: Performance Comparison between Traditional and Quantum Machine Learning Algorithms",
+   "version_note": "",
+   "pages": 8,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A comparison of a quantum neural network run on a simulator with a classical neural network on 5 to 100 percent portions of the ClaMP malware dataset.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qnn-nn-accuracy-random",
+     "verdict": "confirmed",
+     "note": "Table 2 holds NN precision at a constant 1.00 for every proportion, so 'random' fits accuracy, recall and f1 better than precision.",
+     "value": "",
+     "anchor": "Section V, p6",
+     "quotes": [
+      "The accuracy, f1 score, precision, and recall results show that the quantum machine learning neural network model and the classical machine learning model does not have an impact on various portions of the dataset.",
+      "The results show a random pattern throughout the entire dataset."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Each proportion is one run with no repeats reported, so 'random' cannot be told apart from run-to-run noise."
+    },
+    {
+     "id": "qnn-simulator-qubit-limit",
+     "verdict": "confirmed",
+     "note": "The paper also says it built the QNN in TensorFlow Quantum (Section IV.C) while naming Pennylane as the simulator (Abstract, Section VI); the two statements are not reconciled.",
+     "value": "",
+     "anchor": "Section VI, p6",
+     "quotes": [
+      "Due to the limited availability of the quantum computer, the QML model was applied on an open-source Penny lane simulator.",
+      "the current version of quantum simulators comes with a limited number of qubits, which is not appropriate for software supply chain attacks"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section VI states the setup and the limit in the authors' own words.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qnn-slower-than-nn",
+     "verdict": "widened",
+     "note": "The Conclusion also says the QNN time is quite higher than the NN time; the Abstract limits it to higher dataset percentages.",
+     "value": "The authors report that execution time for the QNN is slower than for the NN at higher percentages of the dataset, and that the QNN model's execution time is quite higher than the NN model's.",
+     "anchor": "Abstract, p1; Section VI, p6",
+     "quotes": [
+      "The demonstration result indicates that execution time for QNN is slower than NN with a higher percentage of datasets.",
+      "The experimental results indicate that QNN and NN differ in execution time where the QNN model provides quite higher than the NN model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 1 lists QNN times near nine to twelve minutes and Table 2 lists NN times from seconds to under one and a half minutes, so the QNN is slower at every proportion. The QNN ran on a simulator, so the gap is simulation cost, not hardware speed."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "clamp-dataset-size-split",
+     "value": "The authors state that they split the entire dataset of 5,210 rows into 20 smaller datasets, starting at 5 percent of the rows and increasing by 5 percent up to 100 percent.",
+     "anchor": "Section III, p3-4",
+     "quotes": [
+      "we split the entire dataset comprising 5,210 rows into different smaller portions.",
+      "We separated the dataset into 20 smaller datasets; the number of rows started from 5 percent of the total dataset and gradually increased by 5 percent up to 100 percent."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III states the data split in the authors' own words.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "clamp-dataset-features",
+     "value": "The authors state that the ClaMP dataset has two versions, ClaMP_raw and ClaMP_Integrated, and that the features they selected from ClaMP_Integrated total 68.",
+     "anchor": "Section IV.A, p4",
+     "quotes": [
+      "ClaMP dataset has two versions such as ClaMP_raw and ClaMP_Integrated.",
+      "which contains a total of 68 features"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV.A states the dataset used.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "clamp-column-count",
+     "value": "The authors state that the dataset contains a total of 108 columns, including one target variable.",
+     "anchor": "Section IV.B, p4",
+     "quotes": [
+      "The dataset contains a total of 108 columns, including one target variable."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV.B states the dataset's size.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Section IV.A says 68 features and Section IV.B says 108 columns; the paper does not reconcile them."
+    },
+    {
+     "id_suggestion": "pca-16-components-qubit-limit",
+     "value": "The authors state that the simulator does not accept large dimensions, that the dataset contains 108 dimensions, and that they selected the first 16 principal components because of the qubit limit of the existing simulator.",
+     "anchor": "Section IV.C, p4",
+     "quotes": [
+      "The present quantum simulator does not accept large dimensions as input while our dataset contains 108 dimensions, which we cannot feed into the simulator.",
+      "We selected the first 16 principal components, due to the limitation of qubit numbers in the existing simulator."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section IV.C states the setup and the constraint behind it.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-training-setup",
+     "value": "The authors state that the QNN was a two-layer model trained with hinge loss on labels converted to the -1 to 1 range for 100 epochs, and that the classical NN was applied directly to the reduced dataset.",
+     "anchor": "Section IV.C, p4-5",
+     "quotes": [
+      "a model circuit layer was developed for the QNN comprising of a two-layer model with the matched size of the data circuit",
+      "We adopt an optimization function known as hinge loss during the training phase.",
+      "converted to the -1 to 1 label. Finally, we trained the QNN for 100 epochs.",
+      "First, the classical NN was directly applied to the reduced dataset."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV.C states the training setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper gives no NN architecture, optimizer or hyperparameters, and no repeats or random seeds."
+    },
+    {
+     "id_suggestion": "preprocessing-standardization",
+     "value": "The authors state that they standardized all features to a mean of zero and a standard deviation of one, and converted the categorical 'packer type' feature to numbers.",
+     "anchor": "Section IV.B, p4",
+     "quotes": [
+      "We used a standardization technique to transform all the features to a mean of zero and a standard deviation of one.",
+      "We converted the categorical values from the feature called 'packer type' of ClaMP data since this type of data cannot be directly entered into the model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV.B states the preprocessing.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-results-5-and-20-percent",
+     "value": "The authors report QNN results of 57 percent accuracy, 73 percent f1, 100 percent precision and 57 percent recall at 5 percent of the dataset, and 28 percent accuracy, 28 percent f1, 28 percent recall and 30 percent precision at 20 percent of the dataset.",
+     "anchor": "Section IV.D, p5; Table 1",
+     "quotes": [
+      "for 5 percent of the dataset, the accuracy is 57 percent, the f1 score is 73 percent, precision is 100 percent, and recall is 57 percent",
+      "for 20 percent of the dataset, the accuracy is 28 percent, f1 score is 28 percent, recall is 28 percent, and precision is 30 percent"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-accuracy-not-monotone",
+     "value": "The authors report that QNN accuracy jumps from 30, 35 and 40 percent of the data to 45 percent and drops off at 50 percent, and that the number of instances does not affect accuracy.",
+     "anchor": "Section IV.D, p5",
+     "quotes": [
+      "The accuracy suddenly jumps from 30, 35, and 40, to 45 percent and drops off 50 percent of the dataset.",
+      "The number of instances does not affect the accuracy, while it does affect the total execution time."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text says 70 percent accuracy at 45 percent of the data while Table 1 lists 0.73; the paper's text and table differ in places."
+    },
+    {
+     "id_suggestion": "qnn-execution-time-pattern",
+     "value": "The authors report that QNN execution time was 12min 24s at 5 percent and 11min 42s at 10 percent of the dataset, stayed at 9 min 19s to 9min 48s from 15 to 80 percent except at 35 and 55 percent, and rose from 10 min to 11 min from 85 to 100 percent.",
+     "anchor": "Section IV.D, p5; Table 1",
+     "quotes": [
+      "Table 1 shows that for 5 percent and 10 percent of the total dataset, the execution times are 12min 24s and 11min 42s respectively.",
+      "From 15 percent to 80 percent dataset, except from 35 percent and 55 percent, the execution time remains 9 min 19s to 9min 48s.",
+      "From 85 to 100 percent data, the execution time increases from 10 min to 11 min."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The QNN times are simulator wall-clock times from single runs; no variance is reported."
+    },
+    {
+     "id_suggestion": "nn-results-5-percent",
+     "value": "The authors report NN results of 50 percent accuracy, 67 percent f1, 100 percent precision and 50 percent recall at 5 percent of the dataset, and state that NN performance has no impact from dataset proportion in terms of accuracy.",
+     "anchor": "Section IV.E, p5; Table 2",
+     "quotes": [
+      "Considering 5 percent of the dataset, the accuracy is 50 percent, the f1 score is 67 percent, the precision is 100 percent, and the recall is 50 percent",
+      "Therefore, the model's performance does not have any impact on different proportions of the dataset in terms of the accuracy metrics."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 2 lists NN accuracy between 0.46 and 0.58 for a two-class task, near chance level."
+    },
+    {
+     "id_suggestion": "nn-execution-time-pattern",
+     "value": "The authors report NN execution times of 22.1s, 15.2s, 19.8s, 44s, 26.8s, 41.9s, 36.4s, 42.3s and 46.3s for the smaller portions of the dataset, and state that different portions of the dataset significantly affect NN execution time.",
+     "anchor": "Section IV.E, p6; Table 2",
+     "quotes": [
+      "the execution times required are 22.1s, 15.2s, 19.8s, 44s, 26.8s, 41.9s, 36.4s, 42.3s, and 46.3s respectively.",
+      "in terms of the total number of execution times, different portions of the dataset significantly affect the neural network model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-nn-time-opposite-trends",
+     "value": "The authors state that the QNN execution time decreases with dataset proportion until a threshold, that the NN execution time increases with dataset proportion, and that the two are totally opposite.",
+     "anchor": "Section V, p6",
+     "quotes": [
+      "For the QNN, the execution time decreases with the increment portion of the dataset until a certain threshold of data proportion, for a large number of instances.",
+      "For the second model, the execution time increases with the increment proportion of the dataset.",
+      "Therefore, the required execution time is totally opposite of the quantum machine learning model and the classical neural network model using the software vulnerability datasets."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 1 shows QNN time falling only from the 5 and 10 percent runs to about nine minutes, then flat; the Conclusion also says QNN time slows down with a higher proportion, which differs from this statement."
+    },
+    {
+     "id_suggestion": "masum-cited-qml-faster",
+     "value": "The paper attributes to prior research the finding that quantum machine learning surpasses classical machine learning in processing speed and computational time.",
+     "anchor": "Section II, p2-3",
+     "quotes": [
+      "According to the research findings, quantum machine learning surpasses classical machine learning in terms of processing speed and computational time."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "This paper's own execution times (QNN slower than NN) do not support that cited finding; the paper does not comment on the difference."
+    },
+    {
+     "id_suggestion": "future-work-more-experiments",
+     "value": "The authors state that a large level of experiments shall be carried out in future research to understand both models accurately.",
+     "anchor": "Abstract, p1",
+     "quotes": [
+      "Due to recent advancements in QNN, a large level of experiments shall be carried out to understand both models accurately in our future research."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The Abstract states the authors' own limit on the study.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "more-qubits-may-help",
+     "value": "The authors state that a large number of qubits that converges with quantum machine learning models may play a big role in improving classification performance and reducing computation time.",
+     "anchor": "Section VI, p6",
+     "quotes": [
+      "A large number of qubits that converges with quantum machine learning models may play a big role in terms of improving classification performance and reducing computation time."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper runs no experiment with more qubits."
+    }
+   ]
+  }
+ ]
+}

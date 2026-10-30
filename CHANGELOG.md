@@ -136,7 +136,21 @@ this project keeps having to replace with a step.
   `scripts/f117_build_groups.py` assembles the per-paper results into
   group reader files in ledger order, renaming `id` to `id_suggestion`
   in 22 results; only whole groups are built (59 groups, 294 records:
-  g079 and g103 wait for Task F). Tests proven red by injection
+  g079 and g103 wait for Task F). Tests proven red by injection (d2fcc8d)
+- **feat**: F117's 59 group reader files written (Sprint 14 Task E,
+  #145, 2026-10-30): `manifests/sprint13_g_reads/group_g043.json` to
+  `group_g102.json` less g079, 290 records. Two build changes first.
+  (1) 36 new-assertion ids that another paper also suggested (each
+  session saw one paper, so `conclusion-summary` and the like repeat)
+  or that the store holds for another source take their paper's author
+  and year as a prefix, listed by the build. (2) Four results whose file
+  gave nothing to read (mancilla-2026 and qci-2026 PDFs with no text
+  layer; two qci-research web pages saved without their article) are
+  left out unread, on the team lead's udaru precedent. The applier's dry
+  run over the 59 groups finds no duplicate or clashing id. The Haiku
+  tier flagged 69 of 302 results; every flag is a limit of the file
+  (equations, tables, figures or supplements lost by the text layer, or
+  no text), none a reader omission. Tests proven red by injection
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
