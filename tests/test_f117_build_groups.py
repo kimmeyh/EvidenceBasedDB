@@ -127,7 +127,8 @@ def test_page_lists_sections_and_punctuation(tmp_path, monkeypatch):
     its clause, "p.4 to 6 qubits" became "p.12 qubits"; with every "on" before a comma removed, "(noise turned on)"
     lost its last word. Review of ee397c6, proven to fail the same day: with "of" ending a list item, "p.12, 4 of 10
     qubits" lost its 4; with a preposition removed only after a space, "(see p.4)" left "(see)"; with no guard on
-    the first page, "p.4.2" became "p.12.2"."""
+    the first page, "p.4.2" became "p.12.2". Review of ccaedc2: that guard backtracked, so with ccaedc2's guard
+    "p.12.3" became "p.72.3" (proven red the same day)."""
     b = _build(tmp_path, monkeypatch, {})
     norm = tuple(b._norm(p) for p in PAGES)
     cases = [
@@ -172,6 +173,9 @@ def test_page_lists_sections_and_punctuation(tmp_path, monkeypatch):
         ("Section 3 (see p.4); Section 5, p.9", [2], "Section 3; Section 5"),
         ("See p.4; Section 3, p.9", [2], "Section 3"),
         ("Section 3, p.4.2", [12], "Section 3, p.4.2"),
+        # Review of ccaedc2: the guard backtracked, so "p.12.3" matched "p.1".
+        ("Section 4, p.12.3", [7], "Section 4, p.12.3"),
+        ("Section 3, p.12.3 and p.9", [2], "Section 3, p.12.3 and p.2"),
     ]
     got = []
     for anchor, on, _ in cases:

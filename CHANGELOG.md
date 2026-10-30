@@ -330,6 +330,13 @@ this project keeps having to replace with a step.
   section, not page 4. The rebuild of the 13 local groups changed no
   anchor (snapshot as of 2026-10-30). Each fix was proven red by
   injection
+- **fix**: the fresh-eyes review of ccaedc2 (Sprint 14 Task F, #146,
+  2026-10-30). Its guard for "p.4.2" held only for a one-digit page:
+  the regex backtracked, so "p.12.3" matched "p.1" and became "p.72.3".
+  The first number now may not be followed by a digit either. A
+  two-digit case was added and proven red. The rebuild of the 13 local
+  groups changed no anchor (snapshot as of 2026-10-30). Left as it is,
+  cosmetic and older: a dropped "p.4 to 6 of 10" leaves "of 10"
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
