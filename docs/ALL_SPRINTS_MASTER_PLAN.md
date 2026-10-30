@@ -741,6 +741,27 @@ and in git. Remaining items below.
   second apply writes nothing.
 - Depends on: none (reads at a named commit)
 
+### Carded during Sprint 14 (2026-10-30)
+
+**F124. Re-read and repoint Phase 2's F151, F153 and F154 source records at a current commit (~45m) Priority 30** (NEW 2026-10-30, the fresh-eyes review of 1f904ba, Sprint 14 Task D)
+- Phase: Inbound evidence (F79)
+- Value: prevents three Phase 2 source records from failing the
+  local-file check and their assertions from resting on documents Phase
+  2 has since changed.
+- Platform: the store; `hsbc-qfraud-phase2` read only at a named commit
+  (`git show`); the Sprint 13 repoint pattern (F110, F111, F114) and
+  Sprint 14's (F108, F162, INTAKE_WORKFLOW.md section 56).
+- `hsbc-qfraud-phase2-f151-sprint28-result`, `-f153-` and `-f154-` point
+  at Phase 2 commit 10086da; Phase 2 changed their documents by 9cbe5ba.
+  They failed the local-file check before Sprint 14 (snapshot as of
+  2026-10-30). F120's reasons name f151, f153 and f154 as claims its new
+  results bear on.
+- Acceptance: each document re-read whole at the commit; each stored
+  value whose source changed corrected or confirmed by name; the earlier
+  read and blob SHA-256 kept; the local-file check reads all three as
+  unchanged; a second apply writes nothing.
+- Depends on: none
+
 ### Released for Sprint 14 (2026-10-30)
 
 **F122. F95 release for Sprint 14: new papers in `Papers\` (~5m) Priority 20** (NEW 2026-10-30, released copy of F95)

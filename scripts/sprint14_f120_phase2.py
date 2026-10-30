@@ -69,6 +69,10 @@ REASON = f"{TODAY} ({TAG}): extracted from hsbc-qfraud-phase2 at commit 6242b8a,
 SYNC_REASON = (f"{TODAY} ({TAG}): corrected against the document at 6242b8a, where Phase 2 recomputed three of the "
                "ratios the stored value carried (F164; INTAKE_WORKFLOW.md section 56)")
 NOT_LINKED = "not linked (ADR-0004 A8 (b))"
+EVIDENCE_NOTE = (f"{TODAY} ({TAG}): evidence rewritten so its first SHA-256 is the access path document's, which the "
+                 "local-file check compares (fresh-eyes review of 1f904ba; INTAKE_WORKFLOW.md section 56)")
+SYNC_REASON_2 = (f"{TODAY} ({TAG}): wording corrected against the documents at 6242b8a on the fresh-eyes review of "
+                 "1f904ba (INTAKE_WORKFLOW.md section 56)")
 
 ALG = "docs/phase2/algorithms/"
 # key -> (file, SHA-256 of the blob at COMMIT)
@@ -126,7 +130,9 @@ def set_text(name: str) -> str:
 
 
 def _shas(keys: list[str]) -> str:
-    return "; ".join(f"{BLOBS[k][0]} {BLOBS[k][1]}" for k in keys)
+    """The first key's is the first "SHA-256 <hex>" in the evidence, the one the local-file check
+    (store/recheck.py) compares with the access path's document (fresh-eyes review of 1f904ba)."""
+    return "; ".join(f"{BLOBS[k][0]} SHA-256 {BLOBS[k][1]}" for k in keys)
 
 
 def set_entry() -> dict:
@@ -214,7 +220,8 @@ F166 = [
       value=("On deduplicated ULB (a 60/20/20 split, ten seeds 42-51), seven algorithms each tuned on validation "
              "over configurations named before any score rank by mean test AUPRC: CatBoost 0.8329, LightGBM 0.8270, "
              "XGBoost 0.8229, HGB 0.8124, Phase 2's CVQBoost proxy 0.7925, a linear SVM 0.7419 and logistic "
-             "regression 0.7270. Of the six adjacent pairs, two differ reliably under the entry's exact Wilcoxon test "
+             "regression 0.7270. The proxy uses its configuration's own top-k features (k 17 in the full "
+             "configuration, chosen on every seed); the six classical lanes use all 30 columns. Of the six adjacent pairs, two differ reliably under the entry's exact Wilcoxon test "
              "at Bonferroni 0.05 / 6: the proxy above the SVM and the SVM above logistic regression. The order among "
              "the four boosting libraries and the proxy is not established; HGB against the proxy (mean difference "
              "0.0198, p 0.0098) is above the Bonferroni level. Phase 2's limits: one protocol and one grid per "
@@ -229,7 +236,11 @@ F166 = [
                         'BLUF); "HGB reaches a mean test AUPRC of 0.8124" (ULB_HGB.md, BLUF); "CVQBoost proxy reaches '
                         'a mean test AUPRC of 0.7925" (ULB_CVQBOOST_PROXY.md, BLUF); "SVM reaches a mean test AUPRC '
                         'of 0.7419" (ULB_SVM.md, BLUF); "Logistic regression reaches a mean test AUPRC of 0.7270" '
-                        '(ULB_LOGISTIC_REGRESSION.md, BLUF); "the exact two-sided Wilcoxon signed-rank test on '
+                        '(ULB_LOGISTIC_REGRESSION.md, BLUF); "each configuration uses its own top-k features." '
+                        '(ULB_CVQBOOST_PROXY.md, Setup); "The full configuration (k 17, order 3) was chosen on every '
+                        'seed." (ULB_CVQBOOST_PROXY.md, Configurations tried); "all 30 columns." (ULB_CATBOOST.md, '
+                        'ULB_LIGHTGBM.md, ULB_XGBOOST.md, ULB_HGB.md, ULB_SVM.md and ULB_LOGISTIC_REGRESSION.md, '
+                        'Setup); "the exact two-sided Wilcoxon signed-rank test on '
                         'per-seed AUPRC differences is primary, at Bonferroni 0.05 / 6." (ULB_COMPARISON.md, Adjacent '
                         'pairs); "Of the six adjacent pairs, 2 differ reliably under the entry\'s test: CVQBoost proxy '
                         'above SVM; SVM above logistic regression." (ULB_COMPARISON.md, BLUF); "so the order among '
@@ -249,8 +260,8 @@ F166 = [
              "(k 17, order 3) of its three on every seed and reached mean test AUPRC 0.7925 (95% t interval 0.7705 to "
              "0.8146), fifth of seven. Its mean train-test AUPRC gap was the largest of the seven, 0.2075, against "
              "0.0190 for the linear SVM and 0.0291 for logistic regression, the smallest. The full configuration's "
-             "pool came from F159's 32-worker parallel build, which F159 showed gives the same pool as the serial "
-             "build"),
+             "pool came from F159's 32-worker parallel build, which, Phase 2 says, F159 showed gives the same pool as "
+             "the serial build"),
       provenance="ULB_CVQBOOST_PROXY.md BLUF and Configurations tried, ULB_COMPARISON.md Notes",
       citation_context=('"Over 10 seeds (42-51)" (ULB_COMPARISON.md, BLUF); "The full configuration (k 17, order 3) '
                         'was chosen on every seed." (ULB_CVQBOOST_PROXY.md, Configurations tried); "3 configurations, '
@@ -263,7 +274,8 @@ F166 = [
                         '(ULB_CVQBOOST_PROXY.md, Configurations tried)'),
       certainty_reasons=(OWN + ". HIGH for the measured gap and choice. Scope: one data set, ten seeds, the proxy "
                          "and not Dirac hardware. Phase 2 does not say why the gap is largest, so the value does not "
-                         "either")),
+                         "either. F159's run file holds one seed (42) and one cell (full), while F166 ran seeds 42-51, "
+                         "so the pool's equality on the other nine seeds is Phase 2's statement, attributed as such")),
     A(SET_ID, id="f166-ulb-recall-at-alert-budget-spread-narrower-than-auprc",
       value=("At a 0.5% alert budget, the seven tuned algorithms of Phase 2's ULB comparison caught on average 0.8305 "
              "to 0.8589 of the test frauds, a narrower spread than their mean test AUPRC (0.7270 to 0.8329). The "
@@ -333,7 +345,8 @@ RES = [
       certainty_reasons=(OWN + ". HIGH for the measured counts, which the run file's summary holds (contains 2, "
                          "narrow 0 of 5). Scope: one simulator, five seeds, the main arm deciding. Bears on "
                          "f108-no-ceiling-method-recovered-known-ceiling and f114-calibrated-plugin-misses-known-ceiling "
-                         "(a fifth and sixth method that miss the same known ceiling); " + NOT_LINKED + ": a different "
+                         "(F108's methods and F114's calibrated plug-in missed the same known ceiling; this bound is "
+                         "the sixth method to miss it); " + NOT_LINKED + ": a different "
                          "estimator, which confirms neither whole")),
     A(RES_ID, id="f158-per-type-cascade-below-one-model-on-simulator",
       context="ml",
@@ -344,7 +357,8 @@ RES = [
              "below one model. A reference with the type labels shuffled among the training frauds was also below, "
              "by less. Phase 2's step on real data (clustering ULB and IEEE-CIS) did not run, its condition being a "
              "cascade above. Phase 2 had named the risk before the run: gradient boosting already concentrates on "
-             "hard rows"),
+             "hard rows, so the gain may be small. Every model is HGB (l2_regularization 1.0) on features beyond "
+             "F108's three, which cannot see terminal fraud, so F108's Bayes posterior does not bound these models"),
       provenance="SPRINT_29_VALIDATION.md V7; PREREGISTRATION_DRAFT.md, the F158 entry",
       citation_context=('"S2 (a compromised terminal) and S3 (a compromised customer, amount x5)" '
                         '(PREREGISTRATION_DRAFT.md, F158, Data); "Every fraud is S2, S3 or both" '
@@ -358,7 +372,11 @@ RES = [
                         'and IEEE-CIS clustering)" (PREREGISTRATION_DRAFT.md, F158, markdown bold dropped); "Step 2 '
                         'did not run (its condition is a cascade above)." (SPRINT_29_VALIDATION.md, V7); "Gradient '
                         'boosting already concentrates on hard rows, so the gain may be small (the card\'s named '
-                        'risk)." (PREREGISTRATION_DRAFT.md, F158, Hypothesis and prediction)'),
+                        'risk)." (PREREGISTRATION_DRAFT.md, F158, Hypothesis and prediction); "each '
+                        '`HistGradientBoostingClassifier(l2_regularization= 1.0, random_state=seed)` (F151\'s setting)" '
+                        '(PREREGISTRATION_DRAFT.md, F158, Models); "F108\'s three features cannot see terminal fraud, '
+                        'so F108\'s Bayes posterior does not bound these models and is not used." '
+                        '(PREREGISTRATION_DRAFT.md, F158, Features)'),
       certainty_reasons=(OWN + ". HIGH for the measured difference under the entry's test (the run file reads "
                          "\"below\", Wilcoxon p 0.0156, interval excluding zero). Scope: one simulator with two fraud "
                          "types, eight seeds; why the cascade is below is not tested")),
@@ -382,18 +400,20 @@ RES = [
                          "frauds); " + NOT_LINKED + ": a description, not that test")),
     A(RES_ID, id="f160-exp3-room-check-passes-on-ieee-cis",
       value=("Phase 2's Experiment 3 room check (F160) passes on IEEE-CIS. Its reason, stated before the run and "
-             "inferred: on ULB (fraud rate about 0.17%) the room is about 0.007, below the 0.01 the falsifier "
-             "requires; on IEEE-CIS (about 3.5%) it is about 0.14. A positive control passed first. On IEEE-CIS "
+             "inferred: learners that predict legitimate on every row reach a data term of 4 x fraud rate, which on "
+             "ULB (fraud rate about 0.17%) is about 0.007, below the 0.01 the falsifier requires, and on IEEE-CIS "
+             "(about 3.5%) about 0.14. A positive control passed first. On IEEE-CIS "
              "(seeds 42-44, 60 and 136 variables), greedy selection ended 0.096-0.098 above the floor on every "
              "instance (the largest gap 0.0985), against the 0.01 rule, and F104's resolution gate passes; the "
              "guide-based resolution check fails on every instance, as on the control, and the falsifier needs both "
              "checks to fail, so it does not fire. SCIP stopped at its 300 s cap on every instance without beating "
-             "greedy; its dual bound puts the true optimum between greedy and about 0.08-0.18 below it, so no solver "
-             "has yet been shown to beat greedy. The design reopens on IEEE-CIS; F25 stays on HOLD for its own "
-             "reason (F102 not filed)"),
+             "greedy; its dual bound puts the true optimum between greedy and about 0.08-0.18 below it. No solver has "
+             "yet been shown to beat greedy. F25's card records the reopened design, and F25 stays on HOLD for its "
+             "own reason (F102 not filed)"),
       provenance="SPRINT_29_VALIDATION.md V5; PREREGISTRATION_DRAFT.md, Experiment 3's F160 amendment",
       citation_context=('"Why another dataset, stated before any run (inferred)." (PREREGISTRATION_DRAFT.md, F160 '
-                        'amendment, markdown bold dropped); "On ULB (fraud rate about 0.17%) that is about 0.007, '
+                        'amendment, markdown bold dropped); "every row reach `4 x fraud rate`." '
+                        '(PREREGISTRATION_DRAFT.md, F160 amendment); "On ULB (fraud rate about 0.17%) that is about 0.007, '
                         'below the 0.01 the falsifier requires" (PREREGISTRATION_DRAFT.md, F160 amendment); "On '
                         'IEEE-CIS (about 3.5%) it is about 0.14, so the rule can pass there in principle." '
                         '(PREREGISTRATION_DRAFT.md, F160 amendment); "The positive control passed first." '
@@ -420,8 +440,9 @@ RES = [
              "serial, and the longest single learner took 2.0 s. Per-learner time rose with the worker count (summed "
              "learner time 738.6 s at 1 worker, 1101.6 s at 32); what takes the rest of the wall time is not "
              "measured. The first run stopped with a MemoryError at 32 workers on the 0.5 fraction and its resume "
-             "hung for 9 hours; the cause is unverified, and each parallel build is now stopped after 2 times its "
-             "fraction's serial time"),
+             "hung for 9 hours; that the pool then waited on the dead worker is inferred, not shown, and the "
+             "MemoryError's cause is unverified. Each parallel build is now stopped after 2 times its fraction's "
+             "serial time"),
       provenance="SPRINT_29_VALIDATION.md V2",
       citation_context=('"Every parallel pool equals the serial pool on the validation rows, at all four row '
                         'fractions and all five worker counts." (SPRINT_29_VALIDATION.md, V2); "Full ULB rows: serial '
@@ -431,14 +452,17 @@ RES = [
                         'time 738.6 s at 1 worker, 1101.6 s at 32); what takes the rest of the wall time is not '
                         'measured." (SPRINT_29_VALIDATION.md, V2); "the first run stopped with a `MemoryError` at 32 '
                         'workers on the 0.5 fraction; its resume then hung for 9 hours" (SPRINT_29_VALIDATION.md, V2); '
+                        '"that the pool then waited on the dead worker is inferred, not shown." '
+                        '(SPRINT_29_VALIDATION.md, V2); '
                         '"The cause of the `MemoryError` is unverified" (SPRINT_29_VALIDATION.md, V2, markdown bold '
                         'dropped); "each parallel build is stopped after 2 times its fraction\'s serial time" '
                         '(SPRINT_29_VALIDATION.md, V2)'),
       certainty_reasons=(OWN + ". HIGH for the measured equality and times, which the run file holds (serial 730.3 s, "
-                         "16 workers 11.24 times, all pools equal). Scope: one machine, one configuration; the cause "
-                         "of the MemoryError is unverified, as Phase 2 says. Bears on "
-                         "f110-cvqboost-pool-build-grows-faster-than-rows (the serial build at full rows, 773 s on "
-                         "average); " + NOT_LINKED + ": a different measure")),
+                         "16 workers 11.24 times, all pools equal). Scope: one machine, one seed (42) and one cell "
+                         "(full), as the run file records; the cause of the MemoryError is unverified, as Phase 2 says. "
+                         "Bears on f110-cvqboost-pool-build-grows-faster-than-rows (the serial build at full rows, 773 "
+                         "s on average; its reason says the parallel builder needs fork, and this run used spawn, per "
+                         "its run file); " + NOT_LINKED + ": a different measure")),
 ]
 
 _f108 = next(a for a in f93.ASSERTIONS if a.id == "f108-hgb-plugin-overstates-bayes-error-5-to-12-percent")
@@ -450,12 +474,20 @@ CORRECTED: list[AssertionRecord] = [
         _f108,
         value=_f108.value.replace(
             "ratios 1.053 to 1.118:",
-            "ratios 1.053 to 1.119 (three of the five corrected by Phase 2 on 2026-10-26, recomputed from the rows):"),
+            "ratios 1.053 to 1.119 (three of the five corrected by Phase 2 on 2026-10-26, recomputed from the rows):"
+        ).replace(
+            "The three misses fall 0.5-1.8 points past the 10% margin",
+            "Phase 2's summary puts the three misses 0.5-1.8 points past the 10% margin, a range its correction left "
+            "as it was (see the reasons)"),
         citation_context=_f108.citation_context.replace(_OLD_QUOTE, (
             '"plug-in 0.0064-0.0070 against 0.0060-0.0063, ratios 1.053, 1.097, 1.106, 1.116 and 1.119" (Results, '
             'main arm); "(Corrected 2026-10-26, F164: the last three read 1.105, 1.114 and 1.118; recomputed from the '
             'rows as the plug-in estimate over the Bayes error. The count is unchanged.)" (Results, main arm)')),
-        certainty_reasons=_f108.certainty_reasons.replace("commit eef3349", "commit 6242b8a (first read at eef3349)"),
+        certainty_reasons=_f108.certainty_reasons.replace("commit eef3349", "commit 6242b8a (first read at eef3349)")
+        + (". Phase 2's F164 corrected the Results ratios but not the BLUF's 0.5-1.8 points. Recomputed by this "
+           "repository from experiments/phase2/results/f108_ceiling.json at 6242b8a (plug-in estimate over Bayes "
+           "error, arm none): ratios 1.1057, 1.1191 and 1.1156 on seeds 42, 43 and 46 put the misses 0.57, 1.91 and "
+           "1.56 points past the margin, about 0.6-1.9; Phase 2 does not state this range"),
         updated=TODAY, updated_reason=SYNC_REASON),
 ]
 
@@ -508,9 +540,15 @@ def apply_changes(conn) -> list[str]:
     checked = verify_all()
     log = []
     for entry in (set_entry(), results_entry()):
-        if conn.execute("SELECT 1 FROM paper_fields WHERE record_id = ?", (entry["id"],)).fetchone() is None:
+        row = conn.execute("SELECT evidence FROM paper_fields WHERE record_id = ?", (entry["id"],)).fetchone()
+        if row is None:
             insert_paper(conn, intake.build_record(entry, today=TODAY))
             log.append(f"paper  {entry['id']}")
+        elif row[0] != entry["evidence"]:
+            conn.execute("UPDATE paper_fields SET evidence = ? WHERE record_id = ? AND evidence = ?",
+                         (entry["evidence"], entry["id"], row[0]))
+            append_updated_reason(conn, entry["id"], EVIDENCE_NOTE, TODAY)
+            log.append(f"evidence {entry['id']}")
     for key in REREAD:
         rid = REREAD[key][0]
         if not conn.execute("SELECT 1 FROM paper_reads WHERE record_id = ? AND read_on = ? AND detail = ?",
@@ -530,7 +568,9 @@ def apply_changes(conn) -> list[str]:
             insert_verified_assertion(conn, a, verified, yielded_by=src)
             log.append(f"assert {a.id}")
         else:
-            changed = sync_verified_assertion(conn, a, verified, SYNC_REASON, TODAY)
+            stored = conn.execute("SELECT value FROM records WHERE id = ?", (a.id,)).fetchone()[0]
+            first = src == f93.SRC and "1.053 to 1.118" in stored  # the F164 correction itself, not a later fix
+            changed = sync_verified_assertion(conn, a, verified, SYNC_REASON if first else SYNC_REASON_2, TODAY)
             if changed:
                 log.append(f"synced {a.id}: {', '.join(changed)}")
     return log

@@ -7,6 +7,7 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -23,14 +24,23 @@ def _script():
     return mod
 
 
-def test_the_correction_changes_only_the_ratios_phase2_recomputed():
-    """Proven to fail by injection, 2026-10-30: with the corrected value's
-    "1.119" put back to "1.118", the first assert named it."""
+def test_the_correction_changes_only_the_ratios_and_names_the_stale_range():
+    """The value is the old one with exactly two edits: the ratio range
+    Phase 2 recomputed, and its summary's 0.5-1.8 points attributed, since
+    F164 left that range as it was (fresh-eyes review of 1f904ba). Proven
+    to fail by injection, 2026-10-30: with the corrected value's "1.119"
+    put back to "1.118", the equality named it."""
     f120 = _script()
     assert len(f120.CORRECTED) == 1
     a = f120.CORRECTED[0]
     old = next(x for x in f120.f93.ASSERTIONS if x.id == a.id)
-    assert "1.053 to 1.119" in a.value and "1.118:" not in a.value
+    assert a.value == old.value.replace(
+        "ratios 1.053 to 1.118:",
+        "ratios 1.053 to 1.119 (three of the five corrected by Phase 2 on 2026-10-26, recomputed from the rows):"
+    ).replace("The three misses fall 0.5-1.8 points past the 10% margin",
+              "Phase 2's summary puts the three misses 0.5-1.8 points past the 10% margin, a range its correction "
+              "left as it was (see the reasons)")
+    assert "0.57, 1.91 and 1.56 points" in a.certainty_reasons and "Phase 2 does not state" in a.certainty_reasons
     assert "1.106, 1.116 and 1.119" in a.citation_context
     assert (a.context, a.certainty, a.provenance, a.evidence_tag) == (old.context, old.certainty, old.provenance,
                                                                       old.evidence_tag)
@@ -98,6 +108,61 @@ def test_the_headline_figures_match_the_run_files():
     assert (round(full["serial_s"], 1), full["speedup"]["16"], round(full["serial_s"] / full["speedup"]["32"], 1)) == (
         730.3, 11.24, 45.8)
     assert run["f159"]["analysis"]["all_equal"] is True
+    assert (run["f159"]["seed"], run["f159"]["cell"], run["f159"]["start_method"]) == (42, "full", "spawn")
+    # F166, the review's gap: the ranking, the means, HGB against the proxy, the gaps, recall and the RBF seeds.
+    f166 = run["f166"]["analysis"]
+    assert f166["order_by_mean_test_auprc"] == ["catboost", "lightgbm", "xgboost", "hgb", "proxy", "svm", "logreg"]
+    per = f166["per_algorithm"]
+    assert {k: round(v["auprc"]["mean"], 4) for k, v in per.items()} == {
+        "catboost": 0.8329, "lightgbm": 0.8270, "xgboost": 0.8229, "hgb": 0.8124, "proxy": 0.7925, "svm": 0.7419,
+        "logreg": 0.7270}
+    assert [round(x, 4) for x in per["proxy"]["auprc"]["t95"]] == [0.7705, 0.8146]
+    gaps = {k: round(v["train_test_auprc_gap"]["mean"], 4) for k, v in per.items()}
+    assert (gaps["proxy"], gaps["svm"], gaps["logreg"]) == (0.2075, 0.0190, 0.0291) and max(gaps.values()) == 0.2075
+    recall = [v["recall_at_budget_on_test"]["mean"] for v in per.values()]
+    assert (round(min(recall), 4), round(max(recall), 4)) == (0.8305, 0.8589)
+    pair = next(p for p in f166["adjacent_pairs"] if (p["a"], p["b"]) == ("hgb", "proxy"))
+    assert (round(pair["mean_diff"], 4), round(pair["wilcoxon"]["p"], 4), pair["reading"]) == (
+        0.0198, 0.0098, "no reliable difference")
+    assert sum(p["reading"] != "no reliable difference" for p in f166["adjacent_pairs"]) == 2
+    assert f166["svm_form"] == {"rbf_beats_linear_seeds": 2, "kept": "linear"}
+
+
+@pytest.mark.live_store
+def test_every_record_named_as_borne_on_exists(live_conn):
+    f120 = _script()
+    named = {i for a in f120.F166 + f120.RES for i in re.findall(r"\b(f1\d\d-[a-z0-9-]+[a-z0-9])\b", a.certainty_reasons)}
+    assert len(named) >= 7
+    assert [i for i in sorted(named) if not live_conn.execute("SELECT 1 FROM records WHERE id = ?", (i,)).fetchone()] == []
+
+
+@pytest.mark.live_store
+def test_the_unchanged_f108_and_f162_quotes_hold_at_6242b8a():
+    """Section 56 says the other three F108 values and both F162 values
+    were confirmed at 6242b8a; this holds it (fresh-eyes review of 1f904ba)."""
+    from store.quotes import plain, require_verbatim
+    f120 = _script()
+    corrected = {a.id for a in f120.CORRECTED}
+    for key, group in (("f108", f120.f93.ASSERTIONS), ("f162", f120.f108.F162)):
+        text = plain(f120.source_bytes(key).decode("utf-8").replace("**", ""))
+        for a in group:
+            if a.id not in corrected:
+                require_verbatim(a.id, a.citation_context, text, value=a.value)
+
+
+@pytest.mark.live_store
+def test_each_written_paper_passes_the_local_file_check(live_conn):
+    """The first "SHA-256 <hex>" in the evidence is the access path
+    document's, so the local-file check reads the copy as unchanged. Proven
+    to fail by injection, 2026-10-30: on the store as 1f904ba wrote it, the
+    two new records read "local copy changed"."""
+    from store.recheck import check_local
+    f120 = _script()
+    for rid in (f120.SET_ID, f120.RES_ID, *(f120.REREAD[k][0] for k in f120.REREAD)):
+        access, evidence = live_conn.execute("SELECT access, evidence FROM paper_fields WHERE record_id = ?",
+                                             (rid,)).fetchone()
+        status, note = check_local(access, evidence)
+        assert status == "local copy present (SHA-256 unchanged)", (rid, status, note)
 
 
 @pytest.mark.live_store

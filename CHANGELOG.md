@@ -209,6 +209,25 @@ this project keeps having to replace with a step.
   F104). `scripts/sprint14_f123_roadmap.py` reuses F104's script.
   INTAKE section 57. A second apply enters nothing and adds no route.
   Tests proven red by injection. The 4 reads run beside Task F's
+  (577380e)
+- **fix**: F120's fresh-eyes review of 1f904ba (Sprint 14 Task D, #144,
+  2026-10-30). High: the two new Phase 2 source records failed the
+  local-file check, because their evidence named the documents' hashes
+  without "SHA-256" and the check read a run file's hash first; the
+  evidence is rewritten, and a live test runs the check on all four
+  paper records (red on the pre-fix backup). Medium: the corrected F108
+  value carried Phase 2's BLUF range (0.5-1.8 points), which F164 left
+  as it was; the value now attributes it, and the reasons give the range
+  from the corrected ratios (0.57, 1.91, 1.56), computed here. Medium:
+  F166's ranking now says the proxy uses its own top 17 features and the
+  classical lanes all 30 columns. Low: five values reworded against the
+  sources (F158's named risk and its models' features, F159's inferred
+  wait and one seed, F160's data term, its "so" and F25's card, F166's
+  attributed equality, F156's fifth and sixth methods). Tests now check
+  the corrected value exactly, F166's figures against its run file, the
+  named records exist, and the unchanged F108 and F162 quotes at
+  6242b8a. F124 carded for the stale f151, f153 and f154 pointers.
+  INTAKE section 56 addendum. A second apply writes nothing
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

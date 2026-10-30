@@ -2637,6 +2637,38 @@ Every count is a snapshot as of 2026-10-30. Written before the apply.
   earlier read and its blob SHA-256 kept in the evidence, and each gets a
   second read row (the Sprint 13 pattern).
 - `scripts/sprint14_f120_phase2.py`; `tests/test_sprint14_f120.py`.
+- **A second apply, the same day: the fresh-eyes review of 1f904ba.**
+  Written before the apply.
+  - **The two new records failed the local-file check.** Their evidence
+    named each document's hash with no "SHA-256" before it, so the check
+    (`store/recheck.py`) compared the access path's document with a run
+    file's hash and reported "local copy changed". The evidence now
+    writes "SHA-256" before each hash, the access path's document first;
+    the apply rewrites the two records' evidence. A live test runs the
+    check on all four paper records this script writes.
+  - **The corrected F108 value contradicted itself.** F164 corrected the
+    Results ratios but left the BLUF's "0.5-1.8 points past the 10%
+    margin". The value now attributes that range to Phase 2's summary.
+    The reasons give the range from the corrected ratios, computed here
+    from `f108_ceiling.json` and marked as not stated by Phase 2: 0.57,
+    1.91 and 1.56 points (about 0.6-1.9).
+  - **Wording against the sources.** F166's ranking now says the proxy
+    uses its own top-k features (k 17) and the classical lanes all 30
+    columns. F158's cascade value carries "so the gain may be small" and
+    that its models (HGB, l2 1.0) see more than F108's three features.
+    F159's value says the dead-worker wait is inferred, not shown, and
+    its reasons give the one seed and cell the run file holds. F160's
+    value states the room as Phase 2 does (a data term of 4 x fraud
+    rate), drops a "so" the source does not have, and says F25's card
+    records the reopened design. F166's gap value attributes F159's
+    equality to Phase 2. F156's reasons name the fifth and sixth methods
+    correctly.
+  - **Not changed here.** The f151, f153 and f154 source records still
+    point at Phase 2 commit 10086da, although Phase 2 changed their
+    documents by 9cbe5ba; they failed the local-file check before this
+    sprint. Carded as F124, not repointed here, because each
+    needs its document re-read whole. Phase 2's own BLUF is Phase 2's to
+    correct, by a prompt the team lead pastes there.
 
 ## 57. Applied 2026-10-30: Roadmap-to-QML's release for Sprint 14 (Sprint 14 Task C, F123, F98)
 
