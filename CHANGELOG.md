@@ -93,6 +93,16 @@ this project keeps having to replace with a step.
   text now quoted and checked; the stress limit adds that rejections are
   not a solution of the task. A second apply writes nothing; tests
   proven red by injection (6d5bcec)
+- **fix**: F119 corrected again after the review of 6d5bcec (Sprint 14
+  Task A, #141, 2026-10-30; INTAKE section 54, second dated
+  correction). The status-note assertion's `contradicts` link withdrawn:
+  a simulator-only result can hold beside a claim of immunity inside
+  that simulator (ADR-0004 A8 (b)); one link to the central claim
+  remains, from the stress-test limit. The m-omnia read row now records
+  its search (30 tracked files, no hits); each corrected row keeps its
+  first text in updated_reason. A new test puts the first rows and the
+  link back on a store copy and checks the apply corrects them; proven
+  red by injection
 - **feat**: F117's first step (Sprint 14 Task E, #145, 2026-10-30): the
   F114 cloud results rebuilt from their 302 branches, since Temp lost
   the only local copy and `launches.json`. `scripts/f114_cloud.py`

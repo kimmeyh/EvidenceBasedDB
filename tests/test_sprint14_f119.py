@@ -72,15 +72,45 @@ def test_the_store_holds_f119_and_a_second_apply_writes_nothing(live_conn, live_
     assert {tuple(r) for r in links} == {
         (stress, "phi-omega-paper-claims-full-reproducibility", "contradicts"),
         (stress, central, "contradicts"),
-        ("phi-infinity-runtime-calls-the-closure-a-hypothesis-and-the-test-no-general-proof", central, "contradicts"),
     }
-    detail = live_conn.execute("SELECT detail FROM paper_reads WHERE record_id = ?", (f119.RUNTIME_ID,)).fetchone()[0]
-    assert "M_OMNIA_STATO_RICERCA_2026-09-27.md" in detail and "bears on none" not in detail
+    for rid, (_, detail) in f119.READ_CORRECTIONS.items():
+        rows = live_conn.execute("SELECT detail FROM paper_reads WHERE record_id = ?", (rid,)).fetchall()
+        assert [r[0] for r in rows] == [f119.read_detail(rid, detail)], rid
+        assert detail in live_conn.execute("SELECT checked_against_source FROM paper_fields WHERE record_id = ?",
+                                           (rid,)).fetchone()[0], rid
     for rid in f119.ENTRIES:
         assert tuple(live_conn.execute("SELECT tier FROM paper_fields WHERE record_id = ?", (rid,)).fetchone()) \
             == ("read",), rid
     conn = connect(live_copy)
     try:
+        assert f119.apply_changes(conn, True) == []
+    finally:
+        conn.close()
+
+
+@pytest.mark.live_store
+def test_the_first_read_rows_and_the_withdrawn_link_are_corrected(live_copy):
+    """The first apply's read rows and the withdrawn link, put back on a copy
+    of the store, are corrected by the apply, once. Proven to fail by
+    injection, 2026-10-30: with the correct_reads call removed from
+    apply_changes, the first rows stayed; with withdraw_links removed, the
+    link stayed."""
+    from store import connect
+    f119 = _script()
+    conn = connect(live_copy)
+    try:
+        for rid, (first, detail) in f119.READ_CORRECTIONS.items():
+            conn.execute("UPDATE paper_reads SET detail = ? WHERE record_id = ? AND detail = ?",
+                         (first, rid, f119.read_detail(rid, detail)))
+        from_id, to_id, relation, _ = f119.WITHDRAWN[0]
+        conn.execute("INSERT INTO assertion_relations (from_assertion_id, to_assertion_id, relation) VALUES (?, ?, ?)",
+                     (from_id, to_id, relation))
+        assert len(f119.apply_changes(conn, True)) == 3
+        for rid, (first, detail) in f119.READ_CORRECTIONS.items():
+            rows = [r[0] for r in conn.execute("SELECT detail FROM paper_reads WHERE record_id = ?", (rid,))]
+            assert rows == [f119.read_detail(rid, detail)], rid
+        assert not conn.execute("SELECT 1 FROM assertion_relations WHERE from_assertion_id = ? AND to_assertion_id = ?",
+                                (from_id, to_id)).fetchone()
         assert f119.apply_changes(conn, True) == []
     finally:
         conn.close()

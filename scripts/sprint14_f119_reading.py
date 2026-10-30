@@ -16,7 +16,7 @@ predictions/solvers"):
   only where they bear on the paper's claims (Sprint 13 Manual Validation Q11 = 1): the stress-test summary,
   the research status note of 27 September, the README, `src/` and `validation/` searched for the paper's
   mechanisms, and THEORY.md. The status note was missed at the first apply and found by its fresh-eyes review
-  (2026-10-30); the runtime's read row is corrected in place by `correct_runtime_read`.
+  (2026-10-30); both repositories' read rows are corrected in place by `correct_reads`.
 
 The Zenodo archive DOI:10.5281/zenodo.19857066 bears on none of the paper's claims: none of its 610 file
 entries holds PHI-OMEGA, M-OMNIA, "dS = 0", arc-length, the seed 20260925, symplectic or Hamiltonian
@@ -25,9 +25,10 @@ entered.
 
 Grades come from store.grading. The paper's own definitions and setup are graded on their basis; whether
 its axioms hold is the author's claim. The author's own repository states the limits the paper leaves out:
-that one seed shows no absolute immunity, and that the test is a simulator result, not a general proof. Each
-cannot hold beside the paper's claim that the test demonstrates immunity, so each is linked `contradicts`
-(ADR-0004 A8 (b): both cannot hold for the same test).
+that one seed shows no absolute immunity, and that the test is a simulator result, not a general proof. The
+first cannot hold beside the paper's claim that the test demonstrates absolute immunity, so it is linked
+`contradicts` (ADR-0004 A8 (b): both cannot hold for the same test). The second can (a result may be absolute
+inside its simulator), so it is not linked; the link the first correction gave it is withdrawn.
 
 Every quote is checked by `require_verbatim`, with the value, against its source before anything is
 written. DRY-RUN BY DEFAULT; `--apply` takes a verified backup first. Idempotent.
@@ -176,14 +177,28 @@ def repo_entry(rid: str, name: str, disposition: str, detail: str) -> dict:
     }
 
 
-# What the first apply recorded for the runtime: it missed docs/M_OMNIA_STATO_RICERCA_2026-09-27.md, so its
-# "the rest bears on none of the paper's claims" was wrong. correct_runtime_read replaces it, matched exactly.
-RUNTIME_DETAIL_FIRST = ("docs/validation/ADVERSARIAL_STRESS_TEST_2026-09-25.md and README.md in full, with src/ and "
-                        "validation/ searched for the paper's mechanisms (sum of dS, conservation, M_gate, arc-length)")
-RUNTIME_READ_FIRST = f"{RUNTIME_DETAIL_FIRST} at 4ee4ea3; the rest bears on none of the paper's claims (Q11 = 1)"
+# What the first apply recorded: "the rest bears on none of the paper's claims". For the runtime it was wrong (it
+# missed docs/M_OMNIA_STATO_RICERCA_2026-09-27.md); for m-omnia no search was recorded behind it. correct_reads
+# replaces each, matched on its exact first text.
+RUNTIME_READ_FIRST = ("docs/validation/ADVERSARIAL_STRESS_TEST_2026-09-25.md and README.md in full, with src/ and "
+                      "validation/ searched for the paper's mechanisms (sum of dS, conservation, M_gate, arc-length) "
+                      "at 4ee4ea3; the rest bears on none of the paper's claims (Q11 = 1)")
+OMNIA_READ_FIRST = "README.md and THEORY.md in full at d3e45f3; the rest bears on none of the paper's claims (Q11 = 1)"
 RUNTIME_DETAIL = ("docs/validation/ADVERSARIAL_STRESS_TEST_2026-09-25.md, docs/M_OMNIA_STATO_RICERCA_2026-09-27.md "
                   "and README.md in full, with src/ and validation/ searched for the paper's mechanisms (sum of dS, "
                   "conservation, M_gate, arc-length)")
+OMNIA_DETAIL = ("README.md and THEORY.md in full, with all 30 tracked files searched for PHI-OMEGA, the sum of dS, "
+                "dS = 0, M_gate, the seed 20260925 and immunity (no hits, 2026-10-30)")
+READ_CORRECTIONS = {RUNTIME_ID: (RUNTIME_READ_FIRST, RUNTIME_DETAIL), OMNIA_ID: (OMNIA_READ_FIRST, OMNIA_DETAIL)}
+
+# Links an earlier apply wrote that fail ADR-0004 A8 (b), each with why (sync only ever adds a link).
+WITHDRAWN = [
+    ("phi-infinity-runtime-calls-the-closure-a-hypothesis-and-the-test-no-general-proof",
+     "phi-omega-paper-claims-closure-makes-structural-failure-impossible", "contradicts",
+     "contradicts withdrawn (second fresh-eyes review): \"a result in the defined simulator, not a general physical "
+     "proof\" can hold beside a claim of absolute immunity inside that simulator, and a closure stated as an axiom "
+     "is already a hypothesis, so both can hold (ADR-0004 A8 (b))"),
+]
 
 ENTRIES = {
     PAPER_ID: paper_entry,
@@ -198,7 +213,7 @@ ENTRIES = {
         OMNIA_ID, "m-omnia-validation",
         ("Code repository: Brighindi's evidence-first validation of Relational Substrate Mechanics "
          "(M-OMNIA / Phi-Infinity), a preregistration that claims no empirically verified result"),
-        "README.md and THEORY.md in full"),
+        OMNIA_DETAIL),
 }
 
 # The coordinator's HIGH grades, each with its basis (store.grading).
@@ -380,18 +395,20 @@ ASSERTIONS: list[tuple[str, AssertionRecord]] = [
     A("status", id="phi-infinity-runtime-calls-the-closure-a-hypothesis-and-the-test-no-general-proof",
       value=("The author's own runtime repository, in its research status note of 27 September, calls the closure "
              "(the sum of dS = 0) a formalization hypothesis whose variables and boundary must be declared in each "
-             "test; calls the 25 September comparison a result in the defined simulator, not a general physical "
-             "proof, and not reproducible from the repository; and says the executable definition, derivation and "
-             "proof of its proposed projection and threshold for extreme states remain open (in Italian; "
-             "translated here)"),
+             "test; calls the 25 September manuscript on runtime invariance and its comparison a result in the "
+             "defined simulator, not a general physical proof, and the comparison not reproducible from the "
+             "repository; and says the executable definition, derivation and proof of its proposed projection "
+             "and threshold for extreme states remain open (in Italian; translated here). It is not linked "
+             "`contradicts` to the paper's central claim: a result that holds only in its simulator can still be "
+             "absolute there"),
       provenance="docs/M_OMNIA_STATO_RICERCA_2026-09-27.md at 4ee4ea3",
       citation_context=('"stato della ricerca al 27 settembre 2026" (title); "\\(\\sum dS=0\\)" (section C table); '
                         '"Ipotesi di formalizzazione; le variabili e il confine vanno dichiarati nel singolo test." '
-                        '(section C table); "il confronto del 25 settembre è un artefatto separato" (section C '
-                        'table); "Risultato nel simulatore definito; non dimostrazione fisica generale." (version '
-                        'table); "il risultato non è riproducibile da esso" (Confini della prova); "definizione '
-                        'eseguibile, derivazione e prova restano aperte" (section C table)'),
-      contradicts=["phi-omega-paper-claims-closure-makes-structural-failure-impossible"]),
+                        '(section C table); "il confronto del 25 settembre" (section C table); "Manoscritto '
+                        'sull\'invarianza runtime" (version table); "Risultato nel simulatore definito; non '
+                        'dimostrazione fisica generale." (version table); "il risultato non è riproducibile da '
+                        'esso" (Confini della prova); "definizione eseguibile, derivazione e prova restano aperte" '
+                        '(section C table)')),
     A("stress", id="phi-infinity-stress-test-counts-20-commits-80-rejections",
       value=("By the author's repository's reading of the stress test's CSV (SEED = 20260925): 100 cycles; the open "
              "control first corrupted at step 16 with drift 177.08721760057597; the PHI-OMEGA simulator accepted "
@@ -449,21 +466,43 @@ def counts(conn) -> str:
     return f"papers {sum(tiers.values())} ({', '.join(f'{k} {v}' for k, v in sorted(tiers.items()))}); assertions {n}"
 
 
-def correct_runtime_read(conn, apply: bool) -> list[str]:
-    """Replace the runtime's first read row, which missed the status note, matched on its exact detail."""
-    first = conn.execute("SELECT 1 FROM paper_reads WHERE record_id = ? AND reader = 'Claude' AND read_on = ? "
-                         "AND detail = ?", (RUNTIME_ID, TODAY, RUNTIME_READ_FIRST)).fetchone()
-    if not first:
-        return []
-    if apply:
-        conn.execute("UPDATE paper_reads SET detail = ? WHERE record_id = ? AND reader = 'Claude' AND read_on = ? "
-                     "AND detail = ?", (read_detail(RUNTIME_ID, RUNTIME_DETAIL), RUNTIME_ID, TODAY, RUNTIME_READ_FIRST))
-        conn.execute("UPDATE paper_fields SET checked_against_source = ? WHERE record_id = ?",
-                     (f"{TODAY}, Claude, read {RUNTIME_DETAIL} at {COMMITS[RUNTIME_ID]}", RUNTIME_ID))
-        append_updated_reason(conn, RUNTIME_ID, f"{TODAY} ({TAG}): read row corrected: the research status note "
-                                                "docs/M_OMNIA_STATO_RICERCA_2026-09-27.md was read after the "
-                                                "fresh-eyes review found it (INTAKE_WORKFLOW.md section 54)", TODAY)
-    return [f"read {RUNTIME_ID}: status note added"]
+def correct_reads(conn, apply: bool) -> list[str]:
+    """Replace each repository's first read row, matched on its exact detail; the old text is kept in the
+    record's updated_reason. A row already corrected is left alone."""
+    log = []
+    for rid, (first, detail) in READ_CORRECTIONS.items():
+        new = read_detail(rid, detail)
+        rows = {r[0] for r in conn.execute("SELECT detail FROM paper_reads WHERE record_id = ? AND reader = 'Claude' "
+                                           "AND read_on = ?", (rid, TODAY))}
+        if first not in rows:
+            continue
+        if apply:
+            if new in rows:
+                conn.execute("DELETE FROM paper_reads WHERE record_id = ? AND reader = 'Claude' AND read_on = ? "
+                             "AND detail = ?", (rid, TODAY, first))
+            else:
+                conn.execute("UPDATE paper_reads SET detail = ? WHERE record_id = ? AND reader = 'Claude' "
+                             "AND read_on = ? AND detail = ?", (new, rid, TODAY, first))
+            conn.execute("UPDATE paper_fields SET checked_against_source = ? WHERE record_id = ?",
+                         (f"{TODAY}, Claude, read {detail} at {COMMITS[rid]}", rid))
+            append_updated_reason(conn, rid, f"{TODAY} ({TAG}): read row corrected after the fresh-eyes reviews "
+                                             f"(INTAKE_WORKFLOW.md section 54); it said: \"{first}\"", TODAY)
+        log.append(f"read {rid}: corrected")
+    return log
+
+
+def withdraw_links(conn, apply: bool) -> list[str]:
+    log = []
+    for from_id, to_id, relation, why in WITHDRAWN:
+        if not conn.execute("SELECT 1 FROM assertion_relations WHERE from_assertion_id = ? AND to_assertion_id = ? "
+                            "AND relation = ?", (from_id, to_id, relation)).fetchone():
+            continue
+        if apply:
+            conn.execute("DELETE FROM assertion_relations WHERE from_assertion_id = ? AND to_assertion_id = ? "
+                         "AND relation = ?", (from_id, to_id, relation))
+            append_updated_reason(conn, from_id, f"{TODAY} ({TAG}): {why}", TODAY)
+        log.append(f"unlink {from_id} -{relation}-> {to_id}")
+    return log
 
 
 def apply_changes(conn, apply: bool) -> list[str]:
@@ -476,7 +515,8 @@ def apply_changes(conn, apply: bool) -> list[str]:
         if apply:
             insert_paper(conn, record)
         log.append(f"source {record.id} [{record.tier}]")
-    log += correct_runtime_read(conn, apply)
+    log += correct_reads(conn, apply)
+    log += withdraw_links(conn, apply)
     for key, a, verified in checked:
         if conn.execute("SELECT 1 FROM records WHERE id = ?", (a.id,)).fetchone() is None:
             if apply:

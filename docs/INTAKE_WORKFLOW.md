@@ -2479,7 +2479,7 @@ Every count is a snapshot as of 2026-10-30. Written before the apply.
 - `scripts/sprint14_f119_reading.py`; a second apply writes nothing.
 
 **Corrected 2026-10-30, after the fresh-eyes review of 1b987dd** (written
-before the second apply). Three statements above were wrong or short:
+before the second apply). Four statements above were wrong or short:
 
 - **The runtime read missed a file that bears on the claims.**
   `docs/M_OMNIA_STATO_RICERCA_2026-09-27.md`, which the README links,
@@ -2518,6 +2518,29 @@ before the second apply). Three statements above were wrong or short:
   the repository. The stress-test summary speaks of "l'autore" in the
   third person, so "the author's own repository" means the repository,
   not that Brighindi wrote every line.
+
+**Corrected again 2026-10-30, after the fresh-eyes review of 6d5bcec**
+(written before the third apply):
+
+- **The status-note assertion's `contradicts` link is withdrawn.** It
+  failed ADR-0004 A8 (b): "Risultato nel simulatore definito; non
+  dimostrazione fisica generale" (a result in the defined simulator,
+  not a general physical proof) can hold beside a claim of absolute
+  immunity inside that simulator, and a closure the paper states as an
+  axiom is already a hypothesis. The assertion keeps the limit in its
+  value. One `contradicts` link to the central claim remains, from the
+  stress-test limit, on "no absolute immunity is inferred from one
+  seed" against "demonstrating absolute structural immunity". The
+  value now says the note's row covers the 25 September manuscript on
+  runtime invariance, the paper itself, not only its comparison.
+- **The m-omnia read row now records its search.** It said "the rest
+  bears on none of the paper's claims" with no search behind it. All 30
+  tracked files at d3e45f3 were searched for PHI-OMEGA, the sum of dS,
+  dS = 0, M_gate, the seed 20260925 and immunity, with no hits; the row
+  says so. Each corrected read row's first text is kept in its record's
+  updated_reason.
+- **The read correction now has a test** that puts the first row back
+  on a copy of the store and checks the apply corrects it.
 
 ## 55. The F95 release for Sprint 14: new papers in `Papers\` (Sprint 14 Task B, F122)
 
