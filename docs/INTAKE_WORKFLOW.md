@@ -2709,8 +2709,9 @@ Every count is a snapshot as of 2026-10-30. Written before the apply.
   links the store holds. The malformed `2108.0131` (section 46) is still
   listed and still held as `2108.01311`.
 - **Reading.** The 4 are read in full by local first-pass readers under
-  the Sprint 13 Task G reader prompt (no budget), as one group beside
-  Task F's, and applied with F's groups.
+  `manifests/sprint14_f114_reads/READER_PROMPT.md` (Task G's prompt with
+  its paths moved to F114's work folder; no budget), as ledger group g330
+  beside Task F's, and applied with F's groups.
 - `scripts/sprint14_f123_roadmap.py` loads F104's script and points it at
   this commit; dry run by default, which writes
   `manifests/sprint14_f123_roadmap.json`; `--apply` takes a verified

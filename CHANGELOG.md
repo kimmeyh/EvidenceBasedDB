@@ -227,7 +227,20 @@ this project keeps having to replace with a step.
   the corrected value exactly, F166's figures against its run file, the
   named records exist, and the unchanged F108 and F162 quotes at
   6242b8a. F124 carded for the stale f151, f153 and f154 pointers.
-  INTAKE section 56 addendum. A second apply writes nothing
+  INTAKE section 56 addendum. A second apply writes nothing (454c7a4)
+- **feat**: F114's local reads set up (Sprint 14 Task F, #146,
+  2026-10-30). A new reader prompt,
+  `manifests/sprint14_f114_reads/READER_PROMPT.md`: Task G's text with
+  every path under `work\f114\local\` (the `s13g` folders are empty since
+  Q3 moved the work). `scripts/sprint14_f114_local.py` writes the briefs
+  for F's 50 papers in 12 groups (g079's abbas-2020, g103's Boyd and
+  bucher, g104 to g112, g113's first 2), adds ledger group g330 for Task
+  C's 4 papers, and seeds Boyd's resume in `partial\`, never `done\`,
+  from page 1, since its cloud read sampled the book. The group builder
+  takes a local read over a cloud result, does not count Boyd's cloud
+  result as a read, waits for each local reader's group file, and leaves
+  g113's other 3 records for F114's next release. `finalize` names the
+  local reader and Task F's tag. Tests proven red by injection
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

@@ -38,6 +38,7 @@ def review(tmp_path, monkeypatch):
     r.STORED = {"st-hi": "high", "st-lo": "low", "narrow": "high"}
     r.TEXT = {"st-hi": ("the stored value", "\"the stored quote\" (Section 2)")}
     monkeypatch.setattr(r, "stored_text", lambda ids: r.TEXT)
+    monkeypatch.setattr(r.build, "local_file", lambda rid: None)
     return r
 
 
@@ -75,6 +76,24 @@ def test_finalize_writes_the_applier_tables(review):
     assert out["theory_low"] == {"sketch": "a sketch, not a proof"}
     assert out["unread"] == {"u": "no text"}
     assert (out["tag"], out["reader"]) == (review.TAG, review.READER)
+
+
+def test_a_local_read_names_task_fs_reader(review, monkeypatch):
+    """Sprint 14 Task F: a group read wholly by local readers takes F's tag and reader; in a group that mixes cloud and
+    local reads, each local record names the local reader. Proven to fail by injection, 2026-10-30: with the local
+    check removed from finalize, the wholly local group kept the cloud session's reader."""
+    _decide(review, GOOD)
+    monkeypatch.setattr(review.build, "local_file", lambda rid: Path(f"{rid}.json"))
+    out = review.finalize("g050", "2026-10-30", review.STORED)
+    assert (out["tag"], out["reader"]) == (review.LOCAL_TAG, review.LOCAL_READER) and "readers" not in out
+    path = review.READS_DIR / "group_g050.json"
+    group = json.loads(path.read_text(encoding="utf-8"))
+    group["papers"].append({"record_id": "p2", "assertions": [], "existing": []})
+    path.write_text(json.dumps(group), encoding="utf-8")
+    monkeypatch.setattr(review.build, "local_file", lambda rid: Path("p1.json") if rid == "p1" else None)
+    out = review.finalize("g050", "2026-10-30", review.STORED)
+    assert (out["tag"], out["reader"]) == (review.TAG, review.READER)
+    assert out["readers"] == {"p1": review.LOCAL_READER}
 
 
 def test_a_missing_or_malformed_decision_is_refused(review):

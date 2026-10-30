@@ -41,6 +41,8 @@ READS_DIR = build.READS_DIR
 REVIEWS_DIR = ROOT / "manifests" / "sprint13_g_reviews"
 TAG = "Sprint 14 Task E, F117 (F114 cloud read)"
 READER = "Claude Sonnet 5.5 (F114 cloud session)"
+LOCAL_TAG = "Sprint 14 Task F, F114 (local read)"
+LOCAL_READER = "Claude Sonnet 5.5 (F114 local reader, manifests/sprint14_f114_reads/READER_PROMPT.md)"
 UNRECORDED = "Claude (F114 cloud session; the model is not in the result's commits, the launcher's default was Sonnet)"
 CHANGED = {"corrected", "narrowed", "widened", "contradicted"}
 
@@ -165,7 +167,11 @@ def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> 
     if unread:
         review["unread"] = unread
     held = {p["record_id"] for p in papers(g)}
-    readers = {r: UNRECORDED for r in held if r in UNRECORDED_MODEL}
+    local = {r for r in held if build.local_file(r)}
+    if local and local == held:  # read wholly by Task F's local readers
+        review["tag"], review["reader"] = LOCAL_TAG, LOCAL_READER
+    readers = {r: UNRECORDED for r in held if r in UNRECORDED_MODEL and r not in local}
+    readers.update({r: LOCAL_READER for r in local if local != held})
     if readers:
         review["readers"] = readers
     return review
