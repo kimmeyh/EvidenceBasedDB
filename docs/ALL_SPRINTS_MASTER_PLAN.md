@@ -876,7 +876,7 @@ and in git. Remaining items below.
   tier's outcome logged in the heuristics' `learning_log`.
 - Depends on: F113's groups g001 to g042 applied (Sprint 13)
 
-**F118. Learn what the store says about QC, ML, QML, tensor networks and related physics, for the QML and ML credit card fraud challenge (~240m [no-history] timebox) Priority 22** (NEW 2026-10-27, team lead: "suggest an approach to look at the EvidenceBasedDB and determine what we have been able to learn about QC, ML, QML, Tensors and other quantum physics-related items that apply to QC and that could be related to QML/ML Credit Card Fraud challenge")
+**F118. Learn what the store says about QC, ML, QML, tensor networks and related physics, for the QML and ML credit card fraud challenge (~360m [no-history] timebox) Priority 22** (NEW 2026-10-27, team lead: "suggest an approach to look at the EvidenceBasedDB and determine what we have been able to learn about QC, ML, QML, Tensors and other quantum physics-related items that apply to QC and that could be related to QML/ML Credit Card Fraud challenge")
 - Phase: Use of the evidence
 - Value: the store exists to serve the fraud submission
   (`hsbc-qfraud-phase2`); this turns its assertions into answers to the
@@ -892,6 +892,52 @@ and in git. Remaining items below.
   (its number is not reused); its three outputs and its approach are
   this card's. **Placed in Sprint 14, after F117 completes**, so it
   reads the 302 reviewed results too.
+- **The team lead's own questions, added 2026-10-30** (pasted under "Not
+  asked yet"; kept verbatim). The memo answers each from the store, or
+  says the store cannot and cards the gap:
+  - "What have we learned about Quantum Computing in general:"
+  - "how gates work, what sets of gates can be used for what purpose
+    (guessing that there are micro algorithms (small set of gates) that
+    can be used to do X that are useful"
+  - "what are the micro algorithms that appear to be useful (math, how
+    to store data, how to read data in, how to get data out)"
+  - "is there anything useful that is not hybrid between QC and
+    Classical?"
+  - "what are the best practices for hybrid algorithms"
+  - "how can the unique properties of QC (entanglement, superposition,
+    interference and ???) be taken advantage of and for what use cases"
+  - "where does quantum advantage show itself": "what use cases are
+    proven/nearly proven (just need more qubits or gates or ???)"; "what
+    use cases are most likely for quantum advantage (all)"; "about how
+    many qubits would it take for each use case to reach advantage";
+    "are the use cases limited to search and optimization (grouping,
+    routing, selection, scheduling,...)"
+  - "how does ML using QC/Classical hybrid fit in": Gradient Boost
+    (XGBoost, CatBoost, LightGBM); Bagging ensembles (Random Forest,
+    Balanced RF, Extra Trees); linear and probabilistic (Logistic
+    Regression, Linear SVM, Naive Bayes); Anomaly detection (One-Class
+    SVM, Local Outlier Factor, Isolation Forest); Neural Networks (MLP,
+    ResNet, Deep Learning); "Any others that might be useful to try?"
+  - "how might QC be applied to GenAI training or Inference and how many
+    qubits would be needed?"
+- **Coverage, by keyword (snapshot as of 2026-10-30; a rough count of
+  assertion values matching each topic, not a classification)**: data
+  encoding and loading 832; hybrid and variational 874; readout and
+  measurement 737; advantage 694 (dequantization 61); neural networks
+  354; optimization (QUBO, annealing, routing, scheduling) 346;
+  entanglement, superposition or interference 344; gate sets 293;
+  primitives (QFT, phase and amplitude estimation, swap test, HHL,
+  block encoding) 179; tensor networks 108; GenAI, LLM or transformer
+  80; fraud 63; qubit resource estimates 37; gradient boosting 37;
+  linear and probabilistic models 38; bagging and random forests 32;
+  anomaly detection 26. The thin topics (qubit counts per use case, the
+  classical model families, GenAI) are likely gaps: a qubit count is
+  given only where a stored assertion states one, never estimated in
+  the memo.
+- **Estimate raised from ~240m to ~360m** for the team lead's questions:
+  about six more themes (gates and primitives, data in and out,
+  non-hybrid uses, hybrid practice, resource estimates, GenAI) and one
+  section per classical model family.
 - Three outputs, in one memo under `docs/spikes/` (each count stated as a
   snapshot of its date, every finding citing assertion ids):
   - what the store has taught us so far, per theme;

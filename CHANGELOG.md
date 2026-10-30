@@ -40,7 +40,11 @@ this project keeps having to replace with a step.
   sprint 14 after F117 completes"): F121 retired, its three outputs
   (what was learned, what it means for the approach, which experiments)
   and its approach moved into F118, which is placed in Sprint 14 after
-  F117
+  F117. The team lead's own questions (pasted 2026-10-30 under "Not
+  asked yet": gates and micro algorithms, data in and out, non-hybrid
+  uses, hybrid practice, where advantage shows and at how many qubits,
+  how each classical model family fits a hybrid, GenAI) added to F118
+  verbatim, with a keyword coverage snapshot; estimate 240m to 360m
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
