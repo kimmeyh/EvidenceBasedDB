@@ -122,7 +122,10 @@ def test_page_lists_sections_and_punctuation(tmp_path, monkeypatch):
     were lost ("pp.6-7 and 9" became "p.10"). Review of 8f2b408, proven to fail by injection 2026-10-30: with the
     "printed" prefix case-sensitive, "Printed p.145" became "Printed p.3"; with no lookahead after a list item,
     "p.12, 4.3" became "p.7.3"; without "to" ranges, "pp. 12 to 15" became "p.14 to 15"; without compressed ranges,
-    "pp.12-5" became "p.13"; without the new cleanup, a drop left "(, Figure 2)"."""
+    "pp.12-5" became "p.13"; without the new cleanup, a drop left "(, Figure 2)". Review of aa8c75f, proven to fail
+    the same day: with a period refused after a list item, "pp.6, 8." became "p.8, 8."; with a "to" range not ending
+    its clause, "p.4 to 6 qubits" became "p.12 qubits"; with every "on" before a comma removed, "(noise turned on)"
+    lost its last word."""
     b = _build(tmp_path, monkeypatch, {})
     norm = tuple(b._norm(p) for p in PAGES)
     cases = [
@@ -155,6 +158,13 @@ def test_page_lists_sections_and_punctuation(tmp_path, monkeypatch):
         ("Theorem 2 on p.4; Section 5, p.9", [2], "Theorem 2; Section 5"),
         ("Section 3 [p.4] and Section 5 [p.9]", [2], "Section 3 and Section 5"),
         ("Lemma 1, pp.12-5", [13], "Lemma 1, pp.12-5"),
+        # Review of aa8c75f: a list ending its sentence, a "to" before a count, a word that led into no page.
+        ("Section 1, pp.6, 8.", [8], "Section 1, pp.6, 8."),
+        ("Section 1, pp.6 and 8.", [9], "Section 1, p.9."),
+        ("Section 3, p.4 to 6 qubits", [12], "Section 3, p.12 to 6 qubits"),
+        ("Section 3, p.3 to 5 of the appendix", [8], "Section 3, p.8 of the appendix"),
+        ("Section 5 (noise turned on), p.4; Section 6, p.9", [2], "Section 5 (noise turned on); Section 6"),
+        ("Section 3 in p.4 and Section 5, p.9", [2], "Section 3 and Section 5"),
     ]
     got = []
     for anchor, on, _ in cases:

@@ -309,6 +309,19 @@ this project keeps having to replace with a step.
   anchors, all damaged before by "to" ranges, such as "pp.6, 9 to 6 and
   9" and "Section 5, to, Fig. 6" (snapshot as of 2026-10-30). No id
   changed, so the reviews stand. Each fix was proven red by injection
+- **fix**: the fresh-eyes review of aa8c75f (Sprint 14 Task F, #146,
+  2026-10-30). Two regressions and one new defect:
+  - A page list ending its sentence lost its tail: "pp.6, 8." became
+    "p.8, 8.".
+  - A "to" took a count after it: "p.4 to 6 qubits" became "p.12
+    qubits".
+  - The preposition cleanup removed any "on", "at", "in" or "see"
+    before a comma: "(noise turned on)" lost its last word.
+  A list item may now end with a period; a "to" range must end its
+  clause or be followed by "of"; a preposition goes only with the page
+  clause it led into. The rebuild of the 13 local groups changed no
+  anchor (snapshot as of 2026-10-30). Each fix was proven red by
+  injection
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
