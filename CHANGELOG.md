@@ -45,6 +45,14 @@ this project keeps having to replace with a step.
   uses, hybrid practice, where advantage shows and at how many qubits,
   how each classical model family fits a hybrid, GenAI) added to F118
   verbatim, with a keyword coverage snapshot; estimate 240m to 360m
+- **docs**: Sprint 14 scope selected (team lead, 2026-10-30): F119, F95,
+  F98, F120, F117, F118 (after F117) and F114 at 50 papers; released
+  copies F122 (F95) and F123 (F98); F39 not selected. Plan drafted
+  (`docs/sprints/SPRINT_14_PLAN.md`). Pre-flight finding: the 302 cloud
+  results' local copies and `launches.json` are gone from the Temp
+  folder (cause unknown); the 302 `cloud/f114/<record>` branches remain,
+  and Task E rebuilds from them first. Phase 2's Sprint 29 merged (PR
+  #63 at 6242b8a), so F120 reads it through the GitHub API
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

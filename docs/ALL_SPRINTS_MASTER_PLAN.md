@@ -314,8 +314,13 @@ F25 D1-D3 so it measures adjudication of corrected records.
 Sprint 13 carry-forward, after PR #131 merged to develop and PR #139 merged
 develop to main).
 
-- **Scope**: not yet selected (Phase 1.4 slate presented 2026-10-29).
-- **Plan**: none yet.
+- **Scope** (DEFINED, team lead 2026-10-30): F119, F95, F98, F120, F117,
+  F118 (after F117) and F114 at 50 papers ("Q1 50 papers"). The
+  permanent items are released as copies: F122 (F95) and F123 (F98).
+  F39 was recommended and not selected; it is not in scope. F118's
+  question timing: Q3 = 1 (answered in F118, after F117).
+- **Plan**: `docs/sprints/SPRINT_14_PLAN.md` (drafted 2026-10-30, waiting
+  for approval).
 
 ## Next Sprint Candidates
 
@@ -730,6 +735,29 @@ and in git. Remaining items below.
   stored value whose source changed corrected or confirmed by name; a
   second apply writes nothing.
 - Depends on: none (reads at a named commit)
+
+### Released for Sprint 14 (2026-10-30)
+
+**F122. F95 release for Sprint 14: new papers in `Papers\` (~5m) Priority 20** (NEW 2026-10-30, released copy of F95)
+- Phase: Sourcing / intake, then reading
+- Value: F95's, for the files in hand when the task starts.
+- Platform: `D:\Data\Harold\EvidenceBasedDB\Papers\`; `scripts/intake.py`
+- F95's steps (1) to (5). On 2026-10-29 the one new file was the
+  PHI-OMEGA paper, which F119 enters; the 165 Task G downloads are store
+  records F114 reads. Any file saved before the task starts is included.
+- Acceptance: F95's per release.
+- Depends on: F119 (its paper record)
+
+**F123. F98 release for Sprint 14: Roadmap-to-QML from a239747648 to ea6f42a7c0 (~60m) Priority 22** (NEW 2026-10-30, released copy of F98)
+- Phase: Sourcing / intake, then reading
+- Value: F98's, for the list at its commit on the task's day.
+- Platform: github.com/Christophe-pere/Roadmap-to-QML, read only; the intake door
+- The diff from a239747648 (ea6f42a7c0 on 2026-10-29): 4 arXiv ids not in
+  the store (2609.19983, 2610.32762, 2610.34430, 2610.35126), each
+  entered and read in full; 7 withdrawn or retracted marks, each
+  compared with the store.
+- Acceptance: F98's per release.
+- Depends on: none
 
 ### Carded during Sprint 13 (2026-10-26 to 2026-10-28)
 
