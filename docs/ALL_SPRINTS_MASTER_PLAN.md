@@ -729,6 +729,64 @@ and in git. Remaining items below.
   second apply writes nothing.
 - Depends on: none (reads at a named commit)
 
+**F121. Spike: what the store has taught us so far, what it means for the competition approach, and which experiments to run (~120m [no-history] timebox) Priority 10** (NEW 2026-10-30, team lead at Sprint 14 Phase 1.4: "Before selecting sprint 14 scope, have a spike card (little research) to determine what we have learned so far, what it means for our approach to the competition and what experiments we should do")
+- Phase: Use of the evidence (spike)
+- Value: this enables Sprint 14's scope, and Phase 2's experiments before
+  its 14 Nov 2026 notification date, to be chosen from what the store
+  already holds rather than from memory.
+- Platform: the store, read only, as it stands (the 302 cloud results of
+  F117 are not in it); `hsbc-qfraud-phase2` read only at the commit
+  current when the spike starts (`docs/phase2/PHASE2_POC_PLAN_DRAFT.md`,
+  its six experiments and assumption register, and its open cards); one
+  memo under `docs/spikes/`, its counts each stated as a snapshot of its
+  date, every finding citing assertion ids
+- A spike, not F118: a timeboxed first pass over the evidence as it is,
+  to steer scope now. F118 stays as the full synthesis after F117 has
+  been reviewed and applied.
+- Steps:
+  1. **Questions** (15m): the decisions the competition work faces, read
+     from Phase 2's PoC plan draft and open cards (for example: is any
+     quantum or quantum-inspired model expected to beat a tuned
+     gradient-boosted baseline on imbalanced tabular fraud data; what
+     encoding and qubit count the feature set needs; what Dirac-3 style
+     cardinality-constrained selection can add).
+  2. **Inventory, computed** (10m): assertions by context, certainty,
+     claim type and SIM or hardware tag. Snapshot as of 2026-10-29:
+     10,735 assertions; `qml` 6,626, `qc` 3,151, `ml` 541, `world` 115,
+     `method` 114, `hsbc-2026` 82, the Dirac platforms 106; 4,059 HIGH.
+  3. **Themes, by query** (30m): keyword and SQL selection into about ten
+     themes: advantage and dequantization on classical data; kernel
+     concentration and bandwidth; trainability (barren plateaus); data
+     loading and encoding cost; noise and error mitigation limits;
+     sample complexity and generalization bounds; tensor networks and
+     quantum-inspired methods; QUBO, annealing and Dirac-style solvers
+     for feature selection; fraud detection and class imbalance in
+     classical ML; benchmarking practice (fair baselines, tuning).
+  4. **Read per theme** (40m): up to 5 Sonnet 5.5 readers, one per group
+     of themes, each given its assertions with quotes and grades; each
+     returns what is settled (HIGH: a proof or a stated limit), what is
+     only measured or claimed and under what conditions (simulated or
+     hardware, qubit count, data size), where assertions conflict, and
+     what is missing. Opus 5.5 coordinates and checks a sample of
+     citations against the store.
+  5. **Implications and experiments** (25m): per competition question,
+     what the evidence implies for the approach; then a ranked list of
+     experiments, each with its hypothesis, the assertion ids behind it,
+     its cost (simulator minutes or device seconds), the Phase 2
+     experiment it extends or the gap it fills, and the result that
+     would change the approach. Experiments go to Phase 2 as a pasted
+     prompt (writes never cross); store gaps become reading targets.
+- Limits stated in the memo: about 62 percent of assertions are LOW; most
+  reads are `partial`; the 302 cloud results and F114's unread records
+  are not yet in the store.
+- Acceptance: the memo exists with the question list and its Phase 2
+  source; one section per theme citing assertion ids, 10 citations
+  checked against the store; per question an implication; a ranked
+  experiment list of at least 5; the Phase 2 prompt drafted; new backlog
+  cards for the gaps; finished inside the timebox or stopped at it with
+  what is left named.
+- Depends on: none
+
 ### Carded during Sprint 13 (2026-10-26 to 2026-10-28)
 
 **F114. Read in full the papers in Task G groups g043 to g329, with no reading budget (no estimate: as long as the reads take) Priority 10** (NEW 2026-10-26, team lead at Sprint 13 Task G: "pause after the 5 current agents complete and backlog the remaining for the next sprint")

@@ -31,6 +31,11 @@ this project keeps having to replace with a step.
   retracted marks), F57 (unchanged: 654 with no read row) and F51 (hold
   unchanged). Phase 1.3: 0 re-checks due; no ADR or schema change in
   Sprint 13. Slate presented
+- **docs**: PR #139 retitled "Sprint 13: Develop to Main" (team lead,
+  2026-10-30, Q2 = 1). F121 carded (team lead, 2026-10-30): a spike over
+  the store as it stands, for what has been learned, what it means for
+  the competition approach, and which experiments to run, before Sprint
+  14's scope is selected; F118 stays as the full synthesis after F117
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
