@@ -15,8 +15,10 @@ The Sonnet 5.5 reviewer writes WORK/review/decisions/<g>.json: {"<item id>": {"d
 `finalize <g> <reviewed_on>` turns the decisions into the review file, refusing a missing or malformed decision. A
 stored assertion whose grade the decisions would change (HIGH to LOW, or LOW to HIGH) is a certainty change, which
 the team lead decides (F117's card): it is listed in WORK/review/escalations/<g>.pending.json and the group is not
-finalized until the decision is recorded in WORK/review/escalations/<g>.json as {"<id>": "low" | ["high", basis,
-why]}. Any stored certainty counts, MODERATE included; a vendor's own claim is never HIGH.
+finalized until the decision is recorded in WORK/review/escalations/<g>.json as {"<id>": "low" | ["low", why] |
+["high", basis, why]}; a LOW against the reviewer's HIGH names its own cause. Any stored certainty counts, MODERATE
+included; a vendor's own claim is never HIGH. Finalize refuses a sign-off edit the applier would ignore or could not
+enter.
 """
 from __future__ import annotations
 
@@ -124,13 +126,16 @@ def _grade(item: dict, d: dict) -> tuple[str, str, str]:
 
 
 def _settled(aid: str, v) -> tuple[str, str, str]:
-    """The team lead's decision on an escalation: "low", or ["high", basis, why] (review of 46d088d: a bare "high"
-    could not name its basis, and a mistyped value was taken without a word)."""
+    """The team lead's decision on an escalation: "low", ["low", why], or ["high", basis, why] (review of 46d088d: a
+    bare "high" could not name its basis, and a mistyped value was taken without a word; review of aabdd49: a LOW
+    settled against a HIGH proposal names its own cause)."""
     if v == "low":
         return "low", "", ""
+    if isinstance(v, list) and len(v) == 2 and v[0] == "low" and str(v[1]).strip():
+        return "low", "", v[1]
     if isinstance(v, list) and len(v) == 3 and v[0] == "high" and v[1] in BASES and str(v[2]).strip():
         return "high", v[1], v[2]
-    raise ValueError(f"{aid}: a settled decision is \"low\" or [\"high\", basis, why], not {v!r}")
+    raise ValueError(f"{aid}: a settled decision is \"low\", [\"low\", why] or [\"high\", basis, why], not {v!r}")
 
 
 def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> dict:
@@ -169,9 +174,17 @@ def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> 
                 escalate[item["id"]] = {"record": item["record"], "stored": was, "proposed": grade, "why": why,
                                         "value": item["value"], "anchor": item["anchor"]}
                 continue
+            proposed = grade
             grade, s_basis, s_why = _settled(item["id"], settled[item["id"]])
             if grade == "high":
+                if item.get("claim_type") == "vendor-self-claim":  # the applier refuses it (review of aabdd49)
+                    raise ValueError(f"{item['id']}: settled HIGH, but a vendor's own claim is LOW (store.grading)")
                 basis, why = s_basis, f"kept HIGH at the team lead's decision: {s_why}"
+            elif s_why:
+                why = s_why
+            elif proposed == "high":  # the reviewer's why argues for HIGH and is no cause of a LOW (review of aabdd49)
+                raise ValueError(f"{item['id']}: a LOW settled against a HIGH proposal names its cause: "
+                                 "[\"low\", why]")
         if grade == "high":
             review["graded_high"][item["id"]] = [basis, why]
         elif item["result_type"] == "theoretical":
@@ -198,14 +211,53 @@ def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> 
         review["tags"] = {r: LOCAL_TAG for r in sorted(local)}
     if readers:
         review["readers"] = readers
-    _merge_signoff(g, review, ps=papers(g))
+    own_requotes = set(review["requote"])
+    ps = papers(g)
+    _merge_signoff(g, review, ps=ps)
+    _check_written(g, review, ps, own_requotes, stored)
     return review
 
 
 # The coordinator's sign-off edits, in the applier's own tables, kept per group in WORK/review/signoff/<g>.json so a
-# re-finalize writes them again instead of losing them.
+# re-finalize writes them again instead of losing them. theory_low is here for a requoted theoretical stored LOW,
+# which is no item (review of aabdd49).
 SIGNOFF_TABLES = {"value_replace", "extra_quotes", "quote_edits", "anchor_fix", "context_fix", "requote", "drop",
-                  "result_type_fix"}
+                  "result_type_fix", "theory_low"}
+EDIT_TABLES = ("value_replace", "extra_quotes", "quote_edits", "anchor_fix", "context_fix", "result_type_fix")
+
+
+def _check_written(g: str, review: dict, ps: list[dict], own_requotes: set[str],
+                   stored: dict[str, str] | None) -> None:
+    """Refuse what the applier would ignore without a word or could not enter (review of aabdd49): an edit on an id
+    it does not write, a drop of a stored id, a requote of an entry it does not rebuild, a sign-off requote that
+    changes a stored certainty nobody decided, and a rewritten entry with no value."""
+    new = {a["id_suggestion"]: a for p in ps for a in p.get("assertions", [])}
+    old = {x["id"]: x for p in ps for x in p.get("existing", [])}
+    keep = set(review.get("keep_stored", {}))
+    problems = [f"drop {i}: not a new assertion" for i in review.get("drop", {}) if i not in new]
+    for i in review["requote"]:
+        x = old.get(i)
+        if x is None or x["verdict"] != "confirmed" or i in keep:
+            problems.append(f"requote {i}: not a confirmed stored entry the applier rebuilds")
+    written = ({i for i in new if i not in review.get("drop", {})}
+               | {i for i, x in old.items() if i not in keep and (x["verdict"] in CHANGED or i in review["requote"])})
+    for table in EDIT_TABLES:
+        problems += [f"{table} {i}: an id the applier does not write" for i in review.get(table, {}) if i not in written]
+    signed = [i for i in review["requote"] if i not in own_requotes and i in old]
+    if signed and stored is None:
+        stored = stored_certainty(signed)
+    for i in signed:
+        will = "high" if i in review["graded_high"] else "low"
+        was = (stored.get(i) or "").lower()
+        if was and was != will:
+            problems.append(f"requote {i}: rewrites stored {was} as {will}; decide its grade as an item, not a "
+                            "sign-off")
+    for i in written:
+        a = new.get(i) or old[i]
+        if not " ".join((review.get("value_replace", {}).get(i) or a.get("value") or "").split()):
+            problems.append(f"{i}: written with no value; give it a value_replace")
+    if problems:
+        raise ValueError(f"{g}: " + "; ".join(sorted(problems)))
 
 
 def _merge_signoff(g: str, review: dict, ps: list[dict]) -> None:

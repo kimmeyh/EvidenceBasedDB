@@ -187,3 +187,64 @@ def test_the_coordinators_sign_off_is_merged_on_every_finalize(review):
     (so / "g050.json").write_text(json.dumps({"regrade_high": {"thm": "x"}}), encoding="utf-8")
     with pytest.raises(ValueError, match="does not read"):
         review.finalize("g050", "2026-10-30", review.STORED)
+
+
+def _retype(review, aid: str, **fields) -> None:
+    path = review.READS_DIR / "group_g050.json"
+    group = json.loads(path.read_text(encoding="utf-8"))
+    for p in group["papers"]:
+        for a in p["assertions"] + p["existing"]:
+            if a.get("id", a.get("id_suggestion")) == aid:
+                a.update(fields)
+    path.write_text(json.dumps(group), encoding="utf-8")
+
+
+def test_a_settled_low_names_its_cause_and_a_settled_high_is_never_a_vendors(review):
+    """Review of aabdd49: a LOW settled against a HIGH proposal kept the reviewer's case for HIGH as its cause; a
+    settled HIGH on a vendor's own claim passed finalize and failed only at the apply. Proven to fail by injection,
+    2026-10-30: with the proposed-HIGH check removed, a bare "low" passed; with the settled vendor check removed, the
+    HIGH passed."""
+    _retype(review, "narrow", result_type="theoretical")
+    stored = {**review.STORED, "narrow": "low"}
+    _decide(review, GOOD)
+    esc = review.REVIEW / "escalations" / "g050.json"
+    esc.parent.mkdir()
+    esc.write_text(json.dumps({"narrow": "low"}), encoding="utf-8")
+    with pytest.raises(ValueError, match="names its cause"):
+        review.finalize("g050", "2026-10-30", stored)
+    esc.write_text(json.dumps({"narrow": ["low", "only sketched in Section 5"]}), encoding="utf-8")
+    out = review.finalize("g050", "2026-10-30", stored)
+    assert out["theory_low"]["narrow"] == "only sketched in Section 5" and "narrow" not in out["graded_high"]
+    _retype(review, "st-hi", claim_type="vendor-self-claim")
+    _decide(review, {**GOOD, "st-hi": {"decision": "low", "why": "a vendor's own claim"}})
+    esc.write_text(json.dumps({"narrow": ["low", "sketched"], "st-hi": ["high", "setup", "x"]}), encoding="utf-8")
+    with pytest.raises(ValueError, match="settled HIGH, but a vendor's own claim"):
+        review.finalize("g050", "2026-10-30", stored)
+
+
+def test_a_sign_off_the_applier_would_ignore_or_could_not_enter_is_refused(review):
+    """Review of aabdd49: a sign-off requote rewrote a stored MODERATE as LOW unasked; a drop of a stored id, a
+    requote of a changed entry and an edit on an id not written were ignored by the applier without a word; a blank
+    entry settled LOW reached the apply. Proven to fail by injection, 2026-10-30: with each check in _check_written
+    removed in turn, its case passed."""
+    _decide(review, GOOD)
+    so = review.REVIEW / "signoff"
+    so.mkdir()
+    cases = [({"requote": {"st-lo": "fuller quotes"}}, {**review.STORED, "st-lo": "moderate"}, "rewrites stored"),
+             ({"drop": {"st-lo": "x"}}, review.STORED, "not a new assertion"),
+             ({"requote": {"narrow": "x"}}, review.STORED, "not a confirmed stored entry"),
+             ({"value_replace": {"st-lo": "v2"}}, review.STORED, "does not write")]
+    for edits, stored, match in cases:
+        (so / "g050.json").write_text(json.dumps(edits), encoding="utf-8")
+        with pytest.raises(ValueError, match=match):
+            review.finalize("g050", "2026-10-30", stored)
+    (so / "g050.json").unlink()
+    _retype(review, "st-hi", value="")
+    _decide(review, {**GOOD, "st-hi": {"decision": "low", "why": "an interpretation"}})
+    esc = review.REVIEW / "escalations" / "g050.json"
+    esc.parent.mkdir()
+    esc.write_text(json.dumps({"st-hi": "low"}), encoding="utf-8")
+    with pytest.raises(ValueError, match="no value"):
+        review.finalize("g050", "2026-10-30", review.STORED)
+    (so / "g050.json").write_text(json.dumps({"value_replace": {"st-hi": "the value"}}), encoding="utf-8")
+    assert review.finalize("g050", "2026-10-30", review.STORED)["requote"]["st-hi"].startswith("regraded LOW")

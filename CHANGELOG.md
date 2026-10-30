@@ -386,6 +386,26 @@ this project keeps having to replace with a step.
   changed. F127 carded for two latent defects the review also found
 - **docs**: F127 carded: `f114_cloud.fetch`'s merged-branch path and the
   applier's substring match on a stored provenance
+- **fix**: the fresh-eyes review of aabdd49 (Sprint 14 Task E, #145,
+  2026-10-30). Finalize now refuses:
+  - a LOW the team lead settles against the reviewer's HIGH without its
+    own cause (the reviewer's case for HIGH had become the LOW's cause);
+    the settlement form `["low", why]` carries it;
+  - a settled HIGH on a vendor's own claim (the applier refused it only
+    after the signed review was written);
+  - a sign-off requote that rewrites a stored certainty nobody decided
+    (a stored MODERATE would have gone LOW unasked);
+  - a sign-off drop of a stored id, a requote of an entry the applier
+    does not rebuild, and an edit on an id it does not write, which the
+    applier ignored without a word;
+  - a rewritten entry with no value (91 confirmed stored-HIGH entries in
+    the F114 reads have none).
+  `theory_low` joins the sign-off tables, for a requoted theoretical
+  stored LOW. Each guard was proven red by injection. A dry finalize of
+  all 72 groups: 56 pass, 16 wait for the team lead, none refused
+  (snapshot as of 2026-10-30). Keeping a stored MODERATE on a vendor's
+  claim stays a "keep" decision, since store.grading writes a vendor's
+  own claim LOW
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
