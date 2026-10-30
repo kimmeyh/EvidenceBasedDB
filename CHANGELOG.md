@@ -337,6 +337,14 @@ this project keeps having to replace with a step.
   two-digit case was added and proven red. The rebuild of the 13 local
   groups changed no anchor (snapshot as of 2026-10-30). Left as it is,
   cosmetic and older: a dropped "p.4 to 6 of 10" leaves "of 10"
+- **docs**: F126 carded (Sprint 14 Task F, 2026-10-30): the page-anchor
+  leftovers. The fresh-eyes review of 59233c1 found no new defect and
+  one older low-severity gap (a dash range's end has no ".digit"
+  guard). Sprint 14 stopped the review chain there, after five rounds,
+  rather than start a sixth for a one-token change. The card also holds
+  "of 10" after a dropped "to" range, "p.12a", and
+  muta-hardware-scope-photonic-gkp's stored page, which the apply cannot
+  correct (its reader entry has no quotes to rebuild it from)
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

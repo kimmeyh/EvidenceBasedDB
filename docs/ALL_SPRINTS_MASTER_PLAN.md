@@ -781,6 +781,30 @@ and in git. Remaining items below.
   proven red; the status script reads `work\f114\local\`.
 - Depends on: none
 
+**F126. Page-anchor leftovers from Sprint 14's local reads (~20m) Priority 50** (NEW 2026-10-30, the fresh-eyes reviews of ccaedc2 and 59233c1, and the F117 sign-off, Sprint 14 Task F)
+- Phase: Reading (F114's next release)
+- Value: closes the anchor defects Sprint 14 found and left, so no
+  stored page names the wrong PDF page.
+- Platform: `scripts/f117_build_groups.py` (`_PAGES`, `_without_pages`);
+  `scripts/sprint13_g_reading.py` (ANCHOR_FIX on a confirmed stored
+  assertion).
+- The page fixer leaves three low-severity cases, none present in the
+  13 local groups rebuilt on 2026-10-30 (snapshot as of that date):
+  - The end of a dash range has no ".digit" guard: "p.12-15.3" with its
+    quote on page 7 becomes "p.7.3".
+  - A dropped "p.4 to 6 of 10" leaves "of 10".
+  - "p.12a" becomes "p.7a".
+  Sprint 14 stopped the review chain there (five rounds, each finding
+  less) rather than start a sixth for a one-token change.
+- muta-hardware-scope-photonic-gkp's stored anchor says "Section V,
+  p.9"; g104's review found the passage on PDF p.8. The reader's entry
+  for it has no quotes or anchor, so the apply has nothing to rebuild it
+  from (REQUOTE), and an ANCHOR_FIX on a confirmed stored assertion is
+  never written.
+- Acceptance: each case above has a test proven red and then green; the
+  muta anchor is corrected through a path a test covers.
+- Depends on: none
+
 ### Released for Sprint 14 (2026-10-30)
 
 **F122. F95 release for Sprint 14: new papers in `Papers\` (~5m) Priority 20** (NEW 2026-10-30, released copy of F95)
