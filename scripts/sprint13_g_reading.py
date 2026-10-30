@@ -111,6 +111,14 @@ RESULT_TYPE_FIX: dict[str, str] = {}  # the coordinator's result type where it d
 EXTENT_FIX: dict[str, list[str]] = {}  # record id -> [extent, detail]: the coordinator's reading of a read's extent
 ID_FIX: dict[str, str] = {}  # a new assertion's id where the reader's suggestion is already another source's
 
+# F114's groups (g043 on, Sprint 14 Task E, F117) were read in cloud sessions and entered in Sprint 14, so their
+# review names its own tag and reader; a group without them is one of Task G's. "readers" overrides the reader for
+# one record (a result whose commits do not record the model). "unread" leaves a record out of its group with why.
+GROUP_TAG: dict[str, str] = {}
+GROUP_READER: dict[str, str] = {}
+RECORD_READER: dict[str, str] = {}
+UNREAD: dict[str, dict[str, str]] = {}
+
 REVIEWS_DIR = ROOT / "manifests" / "sprint13_g_reviews"
 _TABLES = {"quote_edits": QUOTE_EDITS, "extra_quotes": EXTRA_QUOTES, "value_replace": VALUE_REPLACE,
            "context_fix": CONTEXT_FIX, "anchor_fix": ANCHOR_FIX, "drop": DROP, "keep_stored": KEEP_STORED,
@@ -130,6 +138,13 @@ def _load_reviews() -> dict[str, tuple[str, str]]:
         if path.stem != g:
             raise ValueError(f"{path.name} holds group {g}")
         REVIEWED_ON[g] = review["reviewed_on"]
+        if "tag" in review:
+            GROUP_TAG[g] = review["tag"]
+        if "reader" in review:
+            GROUP_READER[g] = review["reader"]
+        RECORD_READER.update(review.get("readers", {}))
+        if review.get("unread"):
+            UNREAD[g] = review["unread"]
         for key, table in _TABLES.items():
             for aid, v in review.get(key, {}).items():
                 if aid in table:
@@ -158,6 +173,14 @@ HIGH = high_grades(_load_reviews())
 ONLY: list[str] = []
 
 
+def tag(g: str) -> str:
+    return GROUP_TAG.get(g, TAG)
+
+
+def reader(g: str, rid: str) -> str:
+    return RECORD_READER.get(rid) or GROUP_READER.get(g, SUBAGENT_READER)
+
+
 def ledger() -> dict:
     return json.loads(LEDGER.read_text(encoding="utf-8"))
 
@@ -176,7 +199,7 @@ def load_groups() -> list[tuple[str, dict]]:
     out, L = [], ledger()
     for g in groups():
         papers = json.loads((READS_DIR / f"group_{g}.json").read_text(encoding="utf-8"))["papers"]
-        want = {r["record_id"] for r in L["groups"][g]["records"]}
+        want = {r["record_id"] for r in L["groups"][g]["records"]} - set(UNREAD.get(g, {}))
         got = [p["record_id"] for p in papers]
         if set(got) != want or len(got) != len(want):
             raise ValueError(f"group {g}: reader file records {sorted(set(got) ^ want)} differ from the ledger")
@@ -239,8 +262,9 @@ def record(g: str, rid: str, aid: str, a: dict, why: str, sid: str | None = None
         claim_type=a["claim_type"],
         search_scope=("the paper's own text, as read" if a["claim_type"] == "absence" else None),
         updated=REVIEWED_ON.get(g, ""), updated_reason=(
-            f"{REVIEWED_ON.get(g, '')} ({TAG}): {FULL_READ_MARK}: {why} from {rid}; the paper read whole by a "
-            "first-pass subagent, every quoted passage read in context by the coordinator"))
+            f"{REVIEWED_ON.get(g, '')} ({tag(g)}): {FULL_READ_MARK}: {why} from {rid}; the paper read whole by a "
+            f"first-pass {'cloud session' if g in GROUP_TAG else 'subagent'}, every quoted passage read in context "
+            "by the coordinator"))
 
 
 def assertions() -> list[tuple[str, AssertionRecord, str, dict]]:
@@ -310,7 +334,10 @@ def read_detail(g: str, p: dict) -> str:
             detail += f" ({why.rstrip('.')})"
     else:
         detail = f"first pass, the whole paper except: {why}"
-    detail += f" (Sonnet 5.5 reader, {TAG}, group {g})"
+    if g in GROUP_TAG:
+        detail += f" ({reader(g, p['record_id'])}, {tag(g)}, group {g})"
+    else:
+        detail += f" (Sonnet 5.5 reader, {TAG}, group {g})"
     if p.get("version_note"):
         detail += f"; version: {p['version_note']}"
     return detail
@@ -324,28 +351,30 @@ def read_extent(p: dict) -> str:
     return "full" if extent == "full" else "partial"
 
 
-def is_mine(reader: str, detail: str) -> bool:
+def is_mine(name: str, detail: str) -> bool:
     """A paper_reads row this script wrote. Task F (F112) read 57 of these papers on 2026-10-25, a review day of
     Task G's, under the same reader names, and the first apply took Task F's rows for its own and rewrote their
     detail (full suite, 2026-10-27); a row is matched by its wording, never by reader, day and extent alone."""
-    return TAG in detail if reader == SUBAGENT_READER else detail.startswith(COORDINATOR_DETAIL[:40])
+    if name == "Claude":
+        return detail.startswith(COORDINATOR_DETAIL[:40])
+    return any(t in detail for t in {TAG, *GROUP_TAG.values()})
 
 
-def write_reads(conn, rid: str, day: str, detail: str, extent: str) -> list[str]:
-    """The subagent's read and the coordinator's, added or brought to this script's extent and wording; a row
+def write_reads(conn, rid: str, day: str, detail: str, extent: str, first: str = SUBAGENT_READER) -> list[str]:
+    """The first-pass read and the coordinator's, added or brought to this script's extent and wording; a row
     another script wrote under the same reader and day is left as it is."""
     log = []
     have = {(r[0], r[1]): (r[2], r[3]) for r in conn.execute(
         "SELECT reader, read_on, extent, detail FROM paper_reads WHERE record_id = ?", (rid,)) if is_mine(r[0], r[3])}
-    for reader, ext, det in ((SUBAGENT_READER, extent, detail), ("Claude", "partial", COORDINATOR_DETAIL)):
-        old = have.get((reader, day))
+    for name, ext, det in ((first, extent, detail), ("Claude", "partial", COORDINATOR_DETAIL)):
+        old = have.get((name, day))
         if old is None:
-            add_read(conn, rid, reader, day, ext, det)
-            log.append(f"read   {rid} [{reader}, {ext}]")
+            add_read(conn, rid, name, day, ext, det)
+            log.append(f"read   {rid} [{name}, {ext}]")
         elif old != (ext, det):
             conn.execute("UPDATE paper_reads SET extent = ?, detail = ? WHERE record_id = ? AND reader = ? "
-                         "AND read_on = ? AND extent = ? AND detail = ?", (ext, det, rid, reader, day, *old))
-            log.append(f"update read {rid} [{reader}, {old[0]} to {ext}]")
+                         "AND read_on = ? AND extent = ? AND detail = ?", (ext, det, rid, name, day, *old))
+            log.append(f"update read {rid} [{name}, {old[0]} to {ext}]")
     return log
 
 
@@ -359,25 +388,25 @@ def apply_changes(conn) -> list[str]:
                                               (rid,)).fetchone()
         path = p["file"].replace("/", "\\")
         if path.lower() not in {s.lower() for s in recheck.local_paths(access or "")}:
-            note = f"Local copy {f80._sha(Path(path))}, recorded {day} ({TAG})"
+            note = f"Local copy {f80._sha(Path(path))}, recorded {day} ({tag(g)})"
             conn.execute("UPDATE paper_fields SET access = ?, evidence = ? WHERE record_id = ?",
                          (f"{access} | {path}" if access else path,
                           f"{evidence.rstrip().rstrip('.')}; {note}" if evidence and evidence.strip() else note, rid))
-            append_updated_reason(conn, rid, f"{day} ({TAG}): local copy added to access", day)
+            append_updated_reason(conn, rid, f"{day} ({tag(g)}): local copy added to access", day)
             log.append(f"access {rid}")
         for aid, why in NOT_IN_PAPER.items():
             if any(e["id"] == aid for e in p.get("existing", [])):
-                note = f"{day} ({TAG}): {FULL_READ_MARK}: NOT in the paper at a full read: {why}"
+                note = f"{day} ({tag(g)}): {FULL_READ_MARK}: NOT in the paper at a full read: {why}"
                 stored = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (aid,)).fetchone()[0] or ""
                 if note not in stored:
                     append_updated_reason(conn, aid, note, day)
                     log.append(f"not in paper {aid}")
         kept = [a for a in p.get("assertions", []) if a["id_suggestion"] not in DROP]
         entered = kept or [e for e in p.get("existing", []) if e["id"] not in NOT_IN_PAPER]
-        log += write_reads(conn, rid, day, detail, read_extent(p))
+        log += write_reads(conn, rid, day, detail, read_extent(p), reader(g, rid))
         if not entered:
             why = p.get("why_not") or "; ".join(DROP.get(a["id_suggestion"], "") for a in p.get("assertions", []))
-            note = f"{day} ({TAG}): read whole at first pass and NOT entered: {why}"
+            note = f"{day} ({tag(g)}): read whole at first pass and NOT entered: {why}"
             stored = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (rid,)).fetchone()[0] or ""
             if note not in stored:
                 append_updated_reason(conn, rid, note, day)
@@ -393,7 +422,7 @@ def apply_changes(conn) -> list[str]:
         if tier != "read":
             set_tier(conn, rid, "read", checked_against_source=(
                 f"{day}, Claude, read every quoted passage in context and checked every quote and figure against "
-                "the source; the paper read whole at first pass by a subagent"))
+                f"the source; the paper read whole at first pass by a {'cloud session' if g in GROUP_TAG else 'subagent'}"))
             log.append(f"tier   {rid} -> read")
     for a, rid, _, verified in checked:
         if a.context not in contexts:
@@ -454,7 +483,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"{len(kept)} assertions entered or changed from {len(papers)} records. Every quote verbatim, every "
               "edit on named passages, every figure in its quotes. DRY RUN: nothing written. Re-run with --apply.")
         return 0
-    backup_before_write(DB_PATH, f"{TAG} full reads entered")
+    backup_before_write(DB_PATH, f"{' and '.join(sorted({TAG, *GROUP_TAG.values()}))} full reads entered")
     conn = connect(DB_PATH)
     conn.execute("PRAGMA busy_timeout = 120000")
     try:

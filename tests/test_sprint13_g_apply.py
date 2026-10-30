@@ -153,6 +153,55 @@ def test_a_whole_read_is_stored_full_and_an_earlier_subagent_row_is_moved(synthe
         conn.close()
 
 
+CLOUD_TAG = "Sprint 14 Task E, F117 (F114 cloud read)"
+CLOUD_READER = "Claude Sonnet 5.5 (F114 cloud session)"
+
+
+def test_a_cloud_group_reads_under_its_own_tag_and_reader(synthetic_store, monkeypatch):
+    """Sprint 14 Task E (F117): F114's groups were read in cloud sessions and entered in Sprint 14, so a read row
+    in Task G's wording would misstate its provenance. Proven to fail by injection, 2026-10-30: with read_detail
+    writing Task G's wording for every group, the detail held "Sprint 13 Task G"; with reader() answering the
+    subagent's name for every group, the detail named the subagent."""
+    from store import connect
+    g = _script()
+    monkeypatch.setattr(g, "GROUP_TAG", {"g050": CLOUD_TAG})
+    monkeypatch.setattr(g, "GROUP_READER", {"g050": CLOUD_READER})
+    monkeypatch.setattr(g, "RECORD_READER", {"beta-2023-unrecorded": "Claude (F114 cloud session; model not recorded)"})
+    day, rid = "2026-10-30", "alpha-2024-first-paper"
+    detail = g.read_detail("g050", {"record_id": rid, "read_extent": "full"})
+    assert CLOUD_TAG in detail and CLOUD_READER in detail and g.TAG not in detail
+    assert g.reader("g050", rid) == CLOUD_READER
+    assert g.reader("g050", "beta-2023-unrecorded").endswith("model not recorded)")
+    assert g.reader("g001", rid) == g.SUBAGENT_READER and g.tag("g001") == g.TAG
+    assert g.is_mine(CLOUD_READER, detail)
+    conn = connect(synthetic_store)
+    try:
+        log = g.write_reads(conn, rid, day, detail, "full", g.reader("g050", rid))
+        assert log == [f"read   {rid} [{CLOUD_READER}, full]", f"read   {rid} [Claude, partial]"]
+        assert g.write_reads(conn, rid, day, detail, "full", g.reader("g050", rid)) == []
+    finally:
+        conn.close()
+
+
+def test_a_record_marked_unread_is_left_out_of_its_group(tmp_path, monkeypatch):
+    """Sprint 14 Task E: udaru-2025-qml-credit-risk (page images only) stays unread, so its group g076 holds four
+    reader entries for five ledger records. The first load, before the mark, is the proof that the mark is what
+    lets the group through: without it the group is refused as differing from the ledger."""
+    import json
+    import pytest
+    g = _script()
+    ledger = {"groups": {"g076": {"records": [{"record_id": r} for r in ("a", "b", "u")]}}}
+    monkeypatch.setattr(g, "ledger", lambda: ledger)
+    monkeypatch.setattr(g, "ONLY", ["g076"])
+    monkeypatch.setattr(g, "READS_DIR", tmp_path)
+    (tmp_path / "group_g076.json").write_text(json.dumps({"papers": [{"record_id": "a"}, {"record_id": "b"}]}),
+                                              encoding="utf-8")
+    with pytest.raises(ValueError, match="differ from the ledger"):
+        g.load_groups()
+    monkeypatch.setattr(g, "UNREAD", {"g076": {"u": "page images only"}})
+    assert [p["record_id"] for _, p in g.load_groups()] == ["a", "b"]
+
+
 def test_an_apply_that_rewrites_a_read_row_is_rolled_back_unless_named(synthetic_store, monkeypatch):
     """Sprint 13 retrospective I1 (team lead, 2026-10-28): the trial log's 114 'update read' lines went unquestioned
     and the real apply rewrote Task F's rows. Proven to fail, 2026-10-28: with commit_apply committing whatever

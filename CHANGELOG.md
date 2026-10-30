@@ -114,7 +114,17 @@ this project keeps having to replace with a step.
   briefs and the run log, each copied and checked by SHA-256 before the
   Temp copy was removed. Result: 302 results saved, 0 refused, 0 stale;
   the two papers never to be launched again (udaru-2025, abbas-2020) are
-  marked. Test proven red by injection three ways
+  marked. Test proven red by injection three ways (92d7634)
+- **feat**: F117's applier (Sprint 14 Task E, #145, 2026-10-30):
+  `scripts/sprint13_g_reading.py` takes, from a group's review file, its
+  own tag and reader (F114's groups were read in cloud sessions and are
+  entered in Sprint 14, so Task G's "Sprint 13 Task G ... subagent"
+  wording would misstate their provenance), a reader per record (15
+  results whose commits do not record the model), and `unread` records
+  left out of their group with why (udaru-2025 in g076). Task G's 42
+  groups dry-run unchanged (5,489 assertions from 210 records). The
+  rebuilt 302 results all pass `sprint13_g_check.py` against their PDFs
+  again (0 problems). Tests proven red by injection
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
