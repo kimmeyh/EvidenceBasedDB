@@ -339,7 +339,9 @@ the released copies F88 and F89 (Sprint 10; F89's 8 papers with no free
 copy carried as F90); F91-F94 and the released copies F96, F97 and F99
 (Sprint 11); F100, F101, F102, F106 and the released copies F103, F104
 and F105 (Sprint 12); F107, F108, F113 and the released copies F109 to
-F112 (Sprint 13; F113's unread groups carried as F114). F39, F57, F95 and F98 are
+F112 (Sprint 13; F113's unread groups carried as F114). F121 (a spike
+carded 2026-10-30) merged into F118 the same day, team lead: "Update
+card F118 and sit this in sprint 14 after F117 completes". F39, F57, F95 and F98 are
 permanent and stay. Closed without
 implementation: F19, F29 (Sprint 5 scope selection, reasons under Sprint 5
 in "Last Completed Sprint"); F49 (Sprint 8 scope selection, Q3 = 1: moot
@@ -729,64 +731,6 @@ and in git. Remaining items below.
   second apply writes nothing.
 - Depends on: none (reads at a named commit)
 
-**F121. Spike: what the store has taught us so far, what it means for the competition approach, and which experiments to run (~120m [no-history] timebox) Priority 10** (NEW 2026-10-30, team lead at Sprint 14 Phase 1.4: "Before selecting sprint 14 scope, have a spike card (little research) to determine what we have learned so far, what it means for our approach to the competition and what experiments we should do")
-- Phase: Use of the evidence (spike)
-- Value: this enables Sprint 14's scope, and Phase 2's experiments before
-  its 14 Nov 2026 notification date, to be chosen from what the store
-  already holds rather than from memory.
-- Platform: the store, read only, as it stands (the 302 cloud results of
-  F117 are not in it); `hsbc-qfraud-phase2` read only at the commit
-  current when the spike starts (`docs/phase2/PHASE2_POC_PLAN_DRAFT.md`,
-  its six experiments and assumption register, and its open cards); one
-  memo under `docs/spikes/`, its counts each stated as a snapshot of its
-  date, every finding citing assertion ids
-- A spike, not F118: a timeboxed first pass over the evidence as it is,
-  to steer scope now. F118 stays as the full synthesis after F117 has
-  been reviewed and applied.
-- Steps:
-  1. **Questions** (15m): the decisions the competition work faces, read
-     from Phase 2's PoC plan draft and open cards (for example: is any
-     quantum or quantum-inspired model expected to beat a tuned
-     gradient-boosted baseline on imbalanced tabular fraud data; what
-     encoding and qubit count the feature set needs; what Dirac-3 style
-     cardinality-constrained selection can add).
-  2. **Inventory, computed** (10m): assertions by context, certainty,
-     claim type and SIM or hardware tag. Snapshot as of 2026-10-29:
-     10,735 assertions; `qml` 6,626, `qc` 3,151, `ml` 541, `world` 115,
-     `method` 114, `hsbc-2026` 82, the Dirac platforms 106; 4,059 HIGH.
-  3. **Themes, by query** (30m): keyword and SQL selection into about ten
-     themes: advantage and dequantization on classical data; kernel
-     concentration and bandwidth; trainability (barren plateaus); data
-     loading and encoding cost; noise and error mitigation limits;
-     sample complexity and generalization bounds; tensor networks and
-     quantum-inspired methods; QUBO, annealing and Dirac-style solvers
-     for feature selection; fraud detection and class imbalance in
-     classical ML; benchmarking practice (fair baselines, tuning).
-  4. **Read per theme** (40m): up to 5 Sonnet 5.5 readers, one per group
-     of themes, each given its assertions with quotes and grades; each
-     returns what is settled (HIGH: a proof or a stated limit), what is
-     only measured or claimed and under what conditions (simulated or
-     hardware, qubit count, data size), where assertions conflict, and
-     what is missing. Opus 5.5 coordinates and checks a sample of
-     citations against the store.
-  5. **Implications and experiments** (25m): per competition question,
-     what the evidence implies for the approach; then a ranked list of
-     experiments, each with its hypothesis, the assertion ids behind it,
-     its cost (simulator minutes or device seconds), the Phase 2
-     experiment it extends or the gap it fills, and the result that
-     would change the approach. Experiments go to Phase 2 as a pasted
-     prompt (writes never cross); store gaps become reading targets.
-- Limits stated in the memo: about 62 percent of assertions are LOW; most
-  reads are `partial`; the 302 cloud results and F114's unread records
-  are not yet in the store.
-- Acceptance: the memo exists with the question list and its Phase 2
-  source; one section per theme citing assertion ids, 10 citations
-  checked against the store; per question an implication; a ranked
-  experiment list of at least 5; the Phase 2 prompt drafted; new backlog
-  cards for the gaps; finished inside the timebox or stopped at it with
-  what is left named.
-- Depends on: none
-
 ### Carded during Sprint 13 (2026-10-26 to 2026-10-28)
 
 **F114. Read in full the papers in Task G groups g043 to g329, with no reading budget (no estimate: as long as the reads take) Priority 10** (NEW 2026-10-26, team lead at Sprint 13 Task G: "pause after the 5 current agents complete and backlog the remaining for the next sprint")
@@ -940,29 +884,69 @@ and in git. Remaining items below.
 - Platform: the store (read only); Phase 2's repository, read for its
   open questions (reads are free, writes never cross: F79); a generated
   report, so no value is copied by hand
+- **Updated 2026-10-30 (team lead, Sprint 14 Phase 1.4): F121 merged
+  into this card.** The team lead asked for a spike "to determine what
+  we have learned so far, what it means for our approach to the
+  competition and what experiments we should do", then: "Update card
+  F118 and sit this in sprint 14 after F117 completes". F121 is retired
+  (its number is not reused); its three outputs and its approach are
+  this card's. **Placed in Sprint 14, after F117 completes**, so it
+  reads the 302 reviewed results too.
+- Three outputs, in one memo under `docs/spikes/` (each count stated as a
+  snapshot of its date, every finding citing assertion ids):
+  - what the store has taught us so far, per theme;
+  - what it means for the competition approach, per question;
+  - which experiments to run, ranked, before Phase 2's 14 Nov 2026
+    notification date where possible.
 - Approach:
-  1. **Questions first.** List the decisions the fraud work faces, read
-     from Phase 2's plans and open items, for example: does any quantum
-     kernel or variational classifier beat a tuned classical model on
-     tabular, imbalanced data; what data encoding scales to the feature
-     count; what noise, barren plateaus, dequantization and sample
-     complexity rule out; what tensor-network and quantum-inspired
+  1. **Questions first** (15m). The decisions the fraud work faces, read
+     from Phase 2 at the commit current when the work starts:
+     `docs/phase2/PHASE2_POC_PLAN_DRAFT.md` (its six experiments and its
+     assumption register) and its open cards. For example: does any
+     quantum kernel or variational classifier beat a tuned classical
+     model on tabular, imbalanced data; what data encoding scales to the
+     feature count; what noise, barren plateaus, dequantization and
+     sample complexity rule out; what tensor-network and quantum-inspired
      methods offer classically; what QUBO and Dirac-3 style solvers do
-     for feature selection; which anomaly-detection results transfer.
-  2. **Inventory, computed.** Counts by context (`qc`, `ml`, `qml`,
-     `method`, `world`), certainty and result type, each stated as a
-     snapshot of its date.
-  3. **Map assertions to questions.** Keywords first, then a Haiku 5.5
-     classification pass, each mapping checked on a sample.
-  4. **Synthesis per question** (Opus 5.5): what is settled (HIGH, with
-     the proof or stated limit), what is only claimed or measured and
-     under what conditions (simulated or hardware, qubits, dataset size),
-     where assertions conflict, and what is missing. Every line cites
-     assertion ids; the report is rendered from the store, never typed.
-  5. **Gaps to backlog.** A question the store cannot answer becomes a
-     reading target or a Phase 2 experiment, sent as a pasted prompt.
-- Acceptance: the question list with its source in Phase 2; one section
-  per question generated from the store; the gaps carded.
+     for cardinality-constrained feature selection; which
+     anomaly-detection results transfer.
+  2. **Inventory, computed** (10m). Counts by context, certainty, claim
+     type and SIM or hardware tag. Snapshot as of 2026-10-29: 10,735
+     assertions; `qml` 6,626, `qc` 3,151, `ml` 541, `world` 115,
+     `method` 114, `hsbc-2026` 82, the Dirac platforms 106; 4,059 HIGH;
+     36 tagged SIM or HW.
+  3. **Themes, by query** (30m). Keyword and SQL selection into about ten
+     themes: advantage and dequantization on classical data; kernel
+     concentration and bandwidth; trainability (barren plateaus); data
+     loading and encoding cost; noise and error mitigation limits;
+     sample complexity and generalization bounds; tensor networks and
+     quantum-inspired methods; QUBO, annealing and Dirac-style solvers
+     for feature selection; fraud detection and class imbalance in
+     classical ML; benchmarking practice (fair baselines, tuning). A
+     Haiku 5.5 classification pass only where keywords leave a theme
+     unclear, each mapping checked on a sample.
+  4. **Read per theme** (60m). Up to 5 Sonnet 5.5 readers, one per group
+     of themes, each given its assertions with quotes and grades; each
+     returns what is settled (HIGH: a proof or a stated limit), what is
+     only measured or claimed and under what conditions (simulated or
+     hardware, qubit count, data size), where assertions conflict, and
+     what is missing. Opus 5.5 writes the synthesis and checks 10
+     citations against the store.
+  5. **Implications and experiments** (40m). Per competition question,
+     what the evidence implies for the approach; then a ranked list of
+     experiments, each with its hypothesis, the assertion ids behind it,
+     its cost (simulator minutes or device seconds), the Phase 2
+     experiment it extends or the gap it fills, and the result that
+     would change the approach.
+  6. **Gaps to backlog.** A question the store cannot answer becomes a
+     reading target here, or a Phase 2 experiment sent as a pasted prompt
+     (writes never cross).
+- Limits stated in the memo: the share of LOW assertions and of
+  `partial` reads on its date; F114's records not yet read.
+- Acceptance: the memo with the question list and its Phase 2 source;
+  one section per theme citing assertion ids, 10 citations checked
+  against the store; an implication per question; a ranked experiment
+  list of at least 5; the Phase 2 prompt drafted; the gaps carded.
 - Depends on: F117 (the review first, so the synthesis reads reviewed
   assertions)
 

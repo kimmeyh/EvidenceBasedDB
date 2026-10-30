@@ -35,7 +35,12 @@ this project keeps having to replace with a step.
   2026-10-30, Q2 = 1). F121 carded (team lead, 2026-10-30): a spike over
   the store as it stands, for what has been learned, what it means for
   the competition approach, and which experiments to run, before Sprint
-  14's scope is selected; F118 stays as the full synthesis after F117
+  14's scope is selected; F118 stays as the full synthesis after F117.
+  Then merged the same day (team lead: "Update card F118 and sit this in
+  sprint 14 after F117 completes"): F121 retired, its three outputs
+  (what was learned, what it means for the approach, which experiments)
+  and its approach moved into F118, which is placed in Sprint 14 after
+  F117
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
