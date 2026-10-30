@@ -805,6 +805,26 @@ and in git. Remaining items below.
   muta anchor is corrected through a path a test covers.
 - Depends on: none
 
+**F127. Two latent defects in F114's cloud path and the applier (~20m) Priority 50** (NEW 2026-10-30, the fresh-eyes review of d2fcc8d and cecf20d, Sprint 14 Task E)
+- Phase: Reading (F114's next release)
+- Value: closes two paths that would mislabel a read or let one id
+  stand for two papers; neither is live on 2026-10-30.
+- Platform: `scripts/f114_cloud.py` (`fetch`, the merged-branch
+  refusal); `scripts/sprint13_g_reading.py` (the store clash check).
+- `f114_cloud.fetch`: a merged branch is refused only when its record is
+  not yet in `launches.json`. A record already there is still checked
+  and saved, and the tally lists it as both refused and saved; a record
+  also in `UNREAD` gets an entry with no `base` and `fetch` raises
+  KeyError. None of the 302 branches is merged (snapshot as of
+  2026-10-30).
+- The applier's clash check matches a record id in the stored
+  provenance with `NOT LIKE %owner%`, a substring test: a record whose id
+  begins another's (rand-2022-...-assessment and
+  ...-assessment-appendix-b) counts as the same source. The builder's
+  test is a whole token since Sprint 14 (review of cecf20d).
+- Acceptance: each with a test proven red, then green.
+- Depends on: none
+
 ### Released for Sprint 14 (2026-10-30)
 
 **F122. F95 release for Sprint 14: new papers in `Papers\` (~5m) Priority 20** (NEW 2026-10-30, released copy of F95)

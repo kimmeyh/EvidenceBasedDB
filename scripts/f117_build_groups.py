@@ -255,29 +255,44 @@ def held_elsewhere(ids: set[str]) -> dict[str, str]:
         conn.close()
 
 
+def same_source(rid: str, provenance: str) -> bool:
+    """The provenance names this record as a whole token, not as the start of a longer record id (review of
+    cecf20d: "...-assessment" matched "...-assessment-appendix-b")."""
+    return re.search(rf"(?<![\w-]){re.escape(rid)}(?![\w-])", provenance) is not None
+
+
 def prefixed(rid: str, aid: str, taken: set[str]) -> str:
-    """The paper's author and year before the id, with more of the record id until it is free."""
+    """The paper's author and year before the id, with more of the record id until it is free here and in the
+    store (review of cecf20d: only the reader's own id was looked up in the store)."""
     words = rid.split("-")
     for n in range(2, len(words) + 1):
         new = f"{'-'.join(words[:n])}-{aid}"
-        if new not in taken:
+        if new not in taken and not held_elsewhere({new}):
             return new
     raise ValueError(f"{rid}: no free id for {aid}")
 
 
-def assemble(groups: dict[str, list[str]]) -> tuple[dict[str, list[dict]], list[str]]:
-    """Every group's entries, with repeated and taken ids prefixed; the renames listed."""
+def written_ids() -> set[str]:
+    """Every assertion id already in a group file: a group written earlier keeps its ids, and no later group takes
+    one (review of cecf20d: a lower group built late took an id a higher group's file held)."""
+    return {a.get("id_suggestion") or a.get("id") for f in READS_DIR.glob("group_g*.json")
+            for p in json.loads(f.read_text(encoding="utf-8"))["papers"] for a in p.get("assertions", [])}
+
+
+def assemble(groups: dict[str, list[str]], written: set[str] = frozenset()) -> tuple[dict[str, list[dict]], list[str]]:
+    """Every group's entries, with repeated and taken ids prefixed; the renames listed. `written` holds the ids of
+    group files already on disk."""
     built = {g: [entry(r) for r in rids] for g, rids in groups.items()}
     count = Counter(a["id_suggestion"] for ps in built.values() for p in ps for a in p.get("assertions", []))
     stored = held_elsewhere(set(count))
-    taken = set(count) | set(stored)
+    taken = set(count) | set(stored) | set(written)
     renames = []
     for ps in built.values():
         for p in ps:
             rid = p["record_id"]
             for a in p.get("assertions", []):
                 aid = a["id_suggestion"]
-                if count[aid] > 1 or (aid in stored and rid not in stored[aid]):
+                if count[aid] > 1 or aid in written or (aid in stored and not same_source(rid, stored[aid])):
                     a["id_suggestion"] = prefixed(rid, aid, taken)
                     taken.add(a["id_suggestion"])
                     renames.append(f"{rid}: {aid} -> {a['id_suggestion']}")
@@ -286,18 +301,21 @@ def assemble(groups: dict[str, list[str]]) -> tuple[dict[str, list[dict]], list[
 
 def main(argv: list[str]) -> int:
     groups = buildable()
-    built, renames = assemble(groups)
+    new = {g: rids for g, rids in groups.items() if not (READS_DIR / f"group_{g}.json").exists()}
+    for g in sorted(set(groups) - set(new)):
+        print(f"exists group_{g}.json")
+    # Only groups with no file are assembled, so a file's ids never change and the renames listed are the ones written
+    # (review of cecf20d).
+    built, renames = assemble(new, written_ids())
     for g, papers in built.items():
         path = READS_DIR / f"group_{g}.json"
-        if path.exists():
-            print(f"exists {path.name}")
-            continue
         if "--write" in argv:
             path.write_text(json.dumps({"papers": papers}, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
         print(f"{'wrote' if '--write' in argv else 'would write'} {path.name} ({len(papers)} records)")
     print("\n".join(f"rename {x}" for x in renames))
     print("\n".join(f"page   {x}" for x in PAGE_NOTES))
-    print(f"{len(groups)} groups, {sum(map(len, groups.values()))} records, {len(renames)} ids prefixed")
+    print(f"{len(groups)} groups buildable, {len(new)} new ({sum(map(len, new.values()))} records), "
+          f"{len(renames)} ids prefixed")
     return 0
 
 

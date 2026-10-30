@@ -372,6 +372,20 @@ this project keeps having to replace with a step.
   - Finalize merges the coordinator's sign-off edits from
     `review\signoff\<g>.json`, so a re-finalize keeps them.
   Each guard was proven red by injection
+- **fix**: the fresh-eyes review of d2fcc8d and cecf20d (Sprint 14 Task
+  E, #145, 2026-10-30). A group built late could take an id a group
+  file already on disk held, since prefixes were given in group order
+  over a rebuild in memory (74 author-year prefixes span groups in the
+  ledger). Now only groups with no file are assembled, every id in a
+  written file counts as taken, a prefixed id is looked up in the store
+  too, the same-source test matches the record id as a whole token, and
+  only the renames written are printed. Each guard was proven red by
+  injection. g113 was rebuilt from its repaired reader file (24
+  assertions' quotes re-taken from the canonical text, as the reader's
+  own check had failed on them; one value restated in words): no id
+  changed. F127 carded for two latent defects the review also found
+- **docs**: F127 carded: `f114_cloud.fetch`'s merged-branch path and the
+  applier's substring match on a stored provenance
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

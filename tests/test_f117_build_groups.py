@@ -201,9 +201,9 @@ def test_only_whole_groups_are_built_and_ids_are_renamed(tmp_path, monkeypatch):
     assert g076 == {"papers": [{"record_id": "a", "assertions": [{"id_suggestion": "x1"}]}]}
     g080 = json.loads((tmp_path / "reads" / "group_g080.json").read_text(encoding="utf-8"))
     assert [a for p in g080["papers"] for a in p["assertions"]] == [{"id_suggestion": "y"}, {"id_suggestion": "z"}]
-    (tmp_path / "reads" / "group_g080.json").write_text("kept", encoding="utf-8")
+    (tmp_path / "reads" / "group_g080.json").write_text('{"papers": []}', encoding="utf-8")
     b.main(["--write"])
-    assert (tmp_path / "reads" / "group_g080.json").read_text(encoding="utf-8") == "kept"
+    assert (tmp_path / "reads" / "group_g080.json").read_text(encoding="utf-8") == '{"papers": []}'
 
 
 def test_a_repeated_or_taken_id_takes_its_papers_author_and_year(tmp_path, monkeypatch):
@@ -226,6 +226,33 @@ def test_a_repeated_or_taken_id_takes_its_papers_author_and_year(tmp_path, monke
                    "ahmad-2026-quantum-vs-classical": ["ahmad-2026-conclusion-summary"],
                    "lan-2026-beyond-expressivity": ["lan-own"]}
     assert len(renames) == 3
+
+
+def test_a_group_built_late_never_takes_an_id_a_written_file_holds(tmp_path, monkeypatch):
+    """Review of cecf20d: a lower group built after a higher one took the prefix the higher group's file already held
+    (two files with one id); a prefixed id was never looked up in the store; "...-assessment" counted as the same
+    source as "...-assessment-appendix-b"; two papers with the same author and year were not tested. Proven to fail
+    by injection, 2026-10-30: with `written` not counted as taken, g079 took chen-2024-x a second time; with the store
+    check removed from prefixed, chen-2024-y kept the id the store holds; with same_source a substring test, the
+    appendix's id was kept; with `new not in taken` removed, both chen-2024 papers took chen-2024-z."""
+    b = _build(tmp_path, monkeypatch, {})
+    entries = {"chen-2024-a": [{"id_suggestion": "x"}], "chen-2024-b": [{"id_suggestion": "x"}],
+               "other-2025-p": [{"id_suggestion": "x"}], "chen-2024-c": [{"id_suggestion": "y"}],
+               "chen-2024-d": [{"id_suggestion": "z"}], "chen-2024-e": [{"id_suggestion": "z"}],
+               "rand-2022-assessment": [{"id_suggestion": "w"}], "zed-2023-k": [{"id_suggestion": "x"}]}
+    monkeypatch.setattr(b, "entry", lambda rid: {"record_id": rid, "assertions": [dict(a) for a in entries[rid]]})
+    held = {"y": "elsewhere-2020-q, p.1", "chen-2024-y": "elsewhere-2020-q, p.2",
+            "w": "rand-2022-assessment-appendix-b, p.3"}
+    monkeypatch.setattr(b, "held_elsewhere", lambda ids: {i: held[i] for i in ids if i in held})
+    first, _ = b.assemble({"g080": ["chen-2024-b"], "g090": ["other-2025-p"]})
+    (tmp_path / "reads" / "group_g080.json").write_text(json.dumps({"papers": first["g080"]}), encoding="utf-8")
+    (tmp_path / "reads" / "group_g090.json").write_text(json.dumps({"papers": first["g090"]}), encoding="utf-8")
+    assert first["g080"][0]["assertions"][0]["id_suggestion"] == "chen-2024-x"
+    late, _ = b.assemble({"g079": ["chen-2024-a", "chen-2024-c", "chen-2024-d", "chen-2024-e", "rand-2022-assessment",
+                                   "zed-2023-k"]}, b.written_ids())
+    ids = {p["record_id"]: p["assertions"][0]["id_suggestion"] for p in late["g079"]}
+    assert ids == {"chen-2024-a": "chen-2024-a-x", "chen-2024-c": "chen-2024-c-y", "chen-2024-d": "chen-2024-z",
+                   "chen-2024-e": "chen-2024-e-z", "rand-2022-assessment": "rand-2022-w", "zed-2023-k": "zed-2023-x"}
 
 
 def test_two_different_ids_on_one_assertion_are_refused(tmp_path, monkeypatch):
