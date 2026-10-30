@@ -171,6 +171,23 @@ this project keeps having to replace with a step.
   The pilot read the blank one from the store itself, so its decisions
   stand. Pilot: 204 decisions in about 8 minutes; g043 holds two
   LOW-to-HIGH changes for the team lead. Test proven red by injection
+  (7f18e9f)
+- **feat**: F120, Phase 2's Sprint 29 results entered (Sprint 14 Task D,
+  #144, 2026-10-30), read at Phase 2 commit 6242b8a with `git show`
+  (the team lead's clone now holds it; the plan said the GitHub API,
+  which gives the same bytes). Two source records: the F166 document set
+  (the ULB comparison and seven algorithm documents) and Sprint 29's
+  validation record with its three preregistered entries. Nine SIM
+  assertions: F166's tuned ranking, the proxy's train-test gap, recall
+  at the alert budget and the classical tuning choices; F156's failed
+  Henze-Penrose bound; F158's cascade below one model and the ULB frauds
+  every stored model misses; F160's room check passing on IEEE-CIS;
+  F159's parallel build. One stored value corrected: the F108 plug-in
+  ratios now top out at 1.119 (Phase 2's F164 recomputation). The F108
+  and F162 records repointed at 6242b8a. No relation linked (ADR-0004
+  A8 (b)); each reason names what it bears on. A live test checks the
+  headline figures against the run files. INTAKE section 56. A second
+  apply writes nothing. Tests proven red by injection. Closes #144
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

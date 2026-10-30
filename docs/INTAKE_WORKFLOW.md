@@ -2567,3 +2567,73 @@ store: every unnamed file is already a store record.
   match on `aimeur-2013` was a false hit: the line was aimeur-2007's
   reason, which names its 2013 journal version.
 - Nothing to enter, nothing to read in this release beyond F119.
+
+## 56. Applied 2026-10-30: Phase 2's Sprint 29 results, and one corrected F108 value (Sprint 14 Task D, F120)
+
+Every count is a snapshot as of 2026-10-30. Written before the apply.
+
+- **What is read, and at which commit.** Phase 2 commit 6242b8a, the
+  head of PR #63 (merged 2026-10-30), current when the task started.
+  The plan named the GitHub API, because local refs then stopped at
+  22d16c3 and no `git fetch` is run in a sibling repository. By the
+  task's start the team lead's own clone held 6242b8a, so the script
+  reads with `git show`, as every earlier inbound script does; the API
+  returns the same bytes (checked by SHA-256 on all 17 files). Read only
+  (F79). Changed since F108's read at 9cbe5ba: `F108_CEILING_VALIDATION.md`
+  and `F162_IN_POCKET.md` (F164's figure corrections), eight new F166
+  documents under `docs/phase2/algorithms/`, `PHASE2_POC_PLAN_DRAFT.md`
+  (new), `PREREGISTRATION_DRAFT.md`, and six new result files.
+- **Two source records, each a set of documents.** A quote is checked
+  against the set's joined text and names its document in its anchor
+  (the F119 pattern for a source that spans files).
+  - `hsbc-qfraud-phase2-f166-sprint29-ulb-algorithms`: the ULB
+    comparison and the seven algorithm documents, all read in full.
+  - `hsbc-qfraud-phase2-sprint29-results`: Phase 2's Sprint 29 Manual
+    Validation record (V2, V4, V5, V7 and Decision D1) with the three
+    preregistered entries those results ran under (F156, F158 and the
+    F160 amendment). F156, F158, F159 and F160 have no page of their own
+    under `docs/phase2/`. The validation record was corrected twice on
+    Phase 2's review, so a live test checks its headline figures against
+    the run files themselves.
+- **Nine SIM assertions, HIGH**, the consumer project's own measurement,
+  each carrying Phase 2's limits and attributing its inferences:
+  - F166 (4): the seven tuned algorithms' ranking with the two reliable
+    adjacent pairs; the proxy's train-test gap, the largest; the narrow
+    spread of recall at the 0.5% alert budget; the classical tuning
+    choices (no balanced class weights, HGB at l2 1.0 on every seed, the
+    RBF SVM kept out).
+  - F156: the Henze-Penrose bound fails on F108's simulator; F114 stays
+    blocked.
+  - F158 (2): the per-type cascade is below one model on the simulator;
+    106 of 950 (seed, fraud) pairs on ULB are missed by every stored
+    model family.
+  - F160: Experiment 3's room check passes on IEEE-CIS.
+  - F159: the parallel pool build equals the serial one and is faster.
+  **Contexts by section 43's rule**: `ml` for the classical tuning
+  choices, F156 and F158's simulator result; `hsbc-2026` for the rest,
+  which are about the project's own CVQBoost lanes and Experiment 3.
+- **F167, the PoC plan draft, states no result.** Read in full; nothing
+  entered. Its figures point to result files entered here or earlier.
+- **No relation linked (ADR-0004 A8 (b)).** Each reason names what it
+  bears on: F166 against `f151-cvqboost-proxy-below-stable-hgb-on-ulb`
+  (a different, tuned proxy below HGB by 0.0198, not reliably; both can
+  hold); F156 against the F108 and F114 misses (another estimator, not
+  the same claim); F160 against `f153-learner-selection-formulation-fails-
+  its-falsifier` (ULB against IEEE-CIS; both hold); F159 against
+  `f110-cvqboost-pool-build-grows-faster-than-rows`; F158 and F166's
+  recall note against `f154-no-stored-model-better-on-a-ulb-subset`.
+- **One stored value corrected**:
+  `f108-hgb-plugin-overstates-bayes-error-5-to-12-percent` said "ratios
+  1.053 to 1.118"; Phase 2 recomputed three of the five ratios from the
+  rows (F164, 2026-10-26), and the top is now 1.119. The value, its
+  quote and its reason change; its id, context and certainty do not. The
+  Sprint 11 script stays the record of the read at eef3349, and its store
+  test takes this value from the Sprint 14 script.
+- **Confirmed by name, unchanged**: the other three F108 values and both
+  F162 values; every quote of theirs is verbatim at 6242b8a. The noise
+  arm's corrected range (1.076-1.097) and F162's wall time (now
+  unverified) were never stored.
+- **The F108 and F162 paper records are repointed at 6242b8a**, with the
+  earlier read and its blob SHA-256 kept in the evidence, and each gets a
+  second read row (the Sprint 13 pattern).
+- `scripts/sprint14_f120_phase2.py`; `tests/test_sprint14_f120.py`.
