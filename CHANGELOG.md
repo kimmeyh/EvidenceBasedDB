@@ -52,7 +52,8 @@ this project keeps having to replace with a step.
   results' local copies and `launches.json` are gone from the Temp
   folder (cause unknown); the 302 `cloud/f114/<record>` branches remain,
   and Task E rebuilds from them first. Phase 2's Sprint 29 merged (PR
-  #63 at 6242b8a), so F120 reads it through the GitHub API
+  #63 at 6242b8a), so F120 reads it through the GitHub API. Draft PR
+  #140
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
