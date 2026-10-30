@@ -151,6 +151,18 @@ this project keeps having to replace with a step.
   tier flagged 69 of 302 results; every flag is a limit of the file
   (equations, tables, figures or supplements lost by the text layer, or
   no text), none a reader omission. Tests proven red by injection
+  (cecf20d)
+- **feat**: F117's Sonnet tier set up (Sprint 14 Task E, #145,
+  2026-10-30): `manifests/f117_reviews/REVIEW_PROMPT.md` (the five HIGH
+  bases, one decision per item, read in the paper's text, no budget)
+  and `scripts/f117_review.py`, which lists each group's items (a new
+  HIGH suggestion, a new theoretical result, a changed stored
+  assertion, a confirmed stored HIGH) and turns the reviewer's
+  decisions into the applier's review file. It refuses a missing
+  decision, a HIGH outside the five bases or a decision with no why,
+  and holds back any certainty change on a stored assertion for the
+  team lead. Pilot on g043 (204 items) running. Tests proven red by
+  injection
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
