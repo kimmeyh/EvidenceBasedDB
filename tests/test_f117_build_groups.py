@@ -105,6 +105,49 @@ def test_a_local_reads_page_anchor_is_set_to_the_pdf_page_its_quotes_are_on(tmp_
     assert [n.split(": ")[1] for n in b.PAGE_NOTES if "left for the coordinator" in n] == ["page-only"]
 
 
+def _q(n: int) -> str:
+    return f"quoted passage number {n} long enough to be matched on its page"
+
+
+PAGES = tuple(f"page {n} text {_q(n)}" for n in range(1, 17))
+
+
+def test_page_lists_sections_and_punctuation(tmp_path, monkeypatch):
+    """Review of 11d443a: a page list ("p.6, 14", "pp.6 and 8") kept its stale tail; one range stretched over
+    several sections; a drop left stray punctuation and the rest of a page list; an unfound quote forced a drop.
+    Proven to fail by injection, 2026-10-30: with PAGE matching one page or range only (11d443a's), "p.6, 14" became
+    "pp.7-16, 14"; with pages joined as one range, "Abstract; Section V.B, pp.6-8" became "pp.1-7"; with
+    _without_pages's cleanup removed, "Section 3.1, p.4 (Figure 4)" became "Section 3.1, (Figure 4)"; with unfound
+    quotes kept in `on`, "Section 2.1, p.13" lost its page; with `keep` empty, the pages an unfound quote may be on
+    were lost ("pp.6-7 and 9" became "p.10")."""
+    b = _build(tmp_path, monkeypatch, {})
+    norm = tuple(b._norm(p) for p in PAGES)
+    cases = [
+        ("Sections 6 and 9, p.6, 14", [7, 16], "Sections 6 and 9, pp.7, 16"),
+        ("Section IV.B.2, pp.6 and 8", [5, 9], "Section IV.B.2, pp.5, 9"),
+        ("Abstract; Section V.B, pp.6-8", [1, 7], "Abstract; Section V.B, pp.1, 7"),
+        ("Section 3, pp.4-5", [8, 9, 10], "Section 3, pp.8-10"),
+        ("Section 3.1, p.4 (Figure 4); Section 5, p.9", [2], "Section 3.1 (Figure 4); Section 5"),
+        ("Exercise 1.2 (p.3) and Appendix A.2 (p.9)", [5], "Exercise 1.2 and Appendix A.2"),
+        ("Section IV.B, p.8 and 9; Appendix A.1, p.11-12", [2], "Section IV.B; Appendix A.1"),
+        ("Section 2.1, p.13", [14, "unfound"], "Section 2.1, pp.13-14"),
+        ("Section II.C.2 and Section IV.B.2, pp.6-7 and 9", ["unfound", 10], "Section II.C.2 and Section IV.B.2, "
+                                                                            "pp.6-7, 9-10"),
+        ("Section 2, p.5—6", [12], "Section 2, p.12"),
+        ("Results, pages 4-5", [12], "Results, p.12"),
+        ("Section 4, PDF p.9 (printed p.145)", [3], "Section 4, PDF p.3 (printed p.145)"),
+        ("Section 2, pp.6, 8", [6, 8], "Section 2, pp.6, 8"),
+        ("Fig. 3, Eq. (5), Section 2", [3], "Fig. 3, Eq. (5), Section 2"),
+    ]
+    got = []
+    for anchor, on, _ in cases:
+        a = {"id": "x", "anchor": anchor,
+             "quotes": [_q(n) if n != "unfound" else "a sentence the text layer garbled beyond use" for n in on]}
+        b.fix_pages("r", a, norm)
+        got.append(a["anchor"])
+    assert got == [want for _, _, want in cases]
+
+
 def test_only_whole_groups_are_built_and_ids_are_renamed(tmp_path, monkeypatch):
     """A group is built when every record has a result or the team lead's unread mark; a record only set aside from
     the cloud (abbas, read by Task F) holds its group back; an unread record that has a result (u, whose file gave

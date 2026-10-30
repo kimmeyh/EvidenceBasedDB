@@ -190,7 +190,9 @@ def test_a_local_read_in_a_cloud_group_carries_its_own_tag(monkeypatch):
     """Sprint 14 Task F (review of 1cb63bb): abbas, read locally in g079, a group otherwise read in the cloud, would
     have carried "F114 cloud read" and "a first-pass cloud session" in its provenance. Proven to fail by injection,
     2026-10-30: with tag() ignoring RECORD_TAG, the local read's detail held the cloud tag; with first_pass() keyed
-    on GROUP_TAG as before, a wholly local group's read named a cloud session."""
+    on GROUP_TAG as before, a wholly local group's read named a cloud session; with RECORD_TAG's values left out of
+    is_mine, abbas's read row was not taken for this script's (the test held LOCAL_TAG in GROUP_TAG too until the
+    review of 11d443a, so that injection passed)."""
     g = _script()
     monkeypatch.setattr(g, "GROUP_TAG", {"g079": CLOUD_TAG, "g104": LOCAL_TAG})
     monkeypatch.setattr(g, "RECORD_TAG", {"abbas": LOCAL_TAG})
@@ -199,6 +201,7 @@ def test_a_local_read_in_a_cloud_group_carries_its_own_tag(monkeypatch):
     assert g.tag("g079", "other") == CLOUD_TAG and g.first_pass("g079", "other") == "cloud session"
     assert g.first_pass("g079", "abbas") == "subagent" and g.first_pass("g104", "x") == "subagent"
     assert g.first_pass("g001", "x") == "subagent"
+    monkeypatch.setattr(g, "GROUP_TAG", {"g079": CLOUD_TAG})  # abbas's tag held only per record (review of 11d443a)
     assert g.is_mine("Claude Sonnet 5.5", detail)
 
 

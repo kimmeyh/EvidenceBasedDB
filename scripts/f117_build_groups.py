@@ -83,11 +83,44 @@ def local_file(rid: str) -> Path | None:
 
 # A local reader's page anchors are set to the PDF page its quotes are on (review of g104: the readers' text layers
 # had lost their page breaks, and anchors ran up to 15 pages off; Carlesso's cited the printed page numbers). A page
-# is computed, never taken from the reader: an anchor naming one page or range whose quotes of 25 characters or more
-# are each found on one PDF page is set to those pages; one whose found quotes fall off its pages otherwise loses its
-# pages and keeps its sections. Every change is listed.
-PAGE = re.compile(r"\bpp?\.\s*(\d+)(?:\s*[-–]\s*(\d+))?")
+# is computed, never taken from the reader. Only quotes of 25 characters or more found on the PDF's pages count; an
+# anchor each of whose found quotes is on a page it names is kept. Otherwise, an anchor with one page clause whose
+# found quotes are each on one page takes those pages, listed where they are not one run; any other anchor loses its
+# page clauses and keeps its sections. A "printed p.N" clause is not a PDF page and is left alone. Every change is
+# listed (review of 11d443a: page lists, a range across sections, stray punctuation, an unfound quote).
+_PAGES = r"\d+(?:\s*[-–—]\s*(?:pp?\.\s*)?\d+)?"
+PAGE = re.compile(rf"(?:\b(?:PDF|printed)\s+)?(?:\b[Pp]p?\.|\b[Pp]ages?\b)\s*{_PAGES}(?:\s*(?:,|and|&)\s*{_PAGES}\b)*")
 PAGE_NOTES: list[str] = []
+
+
+def _numbers(clause: str) -> set[int]:
+    out = set()
+    for lo, hi in re.findall(r"(\d+)(?:\s*[-–—]\s*(?:pp?\.\s*)?(\d+))?", clause):
+        out.update(range(int(lo), int(hi or lo) + 1))
+    return out
+
+
+def _page_text(pages: list[int]) -> str:
+    runs: list[list[int]] = []
+    for n in pages:
+        if runs and n == runs[-1][-1] + 1:
+            runs[-1].append(n)
+        else:
+            runs.append([n])
+    parts = [f"{r[0]}-{r[-1]}" if len(r) > 1 else f"{r[0]}" for r in runs]
+    return f"p.{parts[0]}" if len(pages) == 1 else f"pp.{', '.join(parts)}"
+
+
+def _without_pages(anchor: str, clauses: list[re.Match]) -> str:
+    s = anchor
+    for m in reversed(clauses):
+        s = s[:m.start()] + s[m.end():]
+    s = re.sub(r"\(\s*[,;]?\s*\)", "", s)
+    s = re.sub(r"\s+([,;:)])", r"\1", s)
+    s = re.sub(r"([,;])(?:\s*[,;])+", lambda m: ";" if ";" in m.group(0) else ",", s)
+    s = re.sub(r"[,;]\s*\(", " (", s)
+    s = re.sub(r"\s{2,}", " ", s).strip(" ,;")
+    return re.sub(r"(?:\s*\b(?:and|&)\s*)+$", "", s).strip(" ,;")
 
 
 def _norm(s: str) -> str:
@@ -103,32 +136,34 @@ def pdf_pages(path: str) -> tuple[str, ...]:
 
 def fix_pages(rid: str, a: dict, pages: tuple[str, ...]) -> None:
     anchor = a.get("anchor") or ""
-    named = PAGE.findall(anchor)
+    clauses = [m for m in PAGE.finditer(anchor) if not m.group(0).lower().startswith("printed")]
     qs = [q for q in (_norm(x) for x in a.get("quotes") or []) if len(q) >= 25]
-    if not named or not qs:
+    every = [{i + 1 for i, t in enumerate(pages) if q[:80] in t} for q in qs]
+    on = [s for s in every if s]
+    if not clauses or not on:  # a quote not found is no evidence against the page
         return
-    want = {n for lo, hi in named for n in range(int(lo), int(hi or lo) + 1)}
-    on = [{i + 1 for i, t in enumerate(pages) if q[:80] in t} for q in qs]
-    found = set().union(*on)
-    if not found or found <= want:  # no quote found is no evidence against the page
+    want = set().union(*(_numbers(m.group(0)) for m in clauses))
+    if all(s & want for s in on):
         return
     aid = a.get("id_suggestion") or a.get("id")
-    if len(named) > 1 or not all(len(s) == 1 for s in on):
-        # A quote is found off the pages named, and no one page or range can be computed: the pages are wrong, so
-        # they are dropped and the anchor keeps its sections. An anchor that would name nothing is left for the
-        # coordinator.
-        bare = re.sub(r"\s*([,;])\s*(?=[,;]|$)", "", PAGE.sub("", anchor)).strip(" ,;")
-        bare = re.sub(r"\s*,\s*;", ";", bare)
-        if not re.search(r"[A-Za-z]{3}", bare):
-            PAGE_NOTES.append(f"{rid}: {aid}: anchor {anchor!r}, quotes on pages {[sorted(s) for s in on]}: left for "
-                              "the coordinator")
-            return
-        a["anchor"] = bare
-        PAGE_NOTES.append(f"{rid}: {aid}: {anchor!r} -> {bare!r} (pages dropped: quotes on {[sorted(s) for s in on]})")
+    if len(clauses) == 1 and all(len(s) == 1 for s in on):
+        m = clauses[0]
+        pdf = "PDF " if m.group(0).startswith("PDF") else ""
+        # A quote not found may be on the pages named, so they are kept beside the computed ones.
+        keep = want if len(on) < len(every) else set()
+        new = anchor[:m.start()] + pdf + _page_text(sorted(set().union(*on) | keep)) + anchor[m.end():]
+        a["anchor"] = new
+        PAGE_NOTES.append(f"{rid}: {aid}: {anchor!r} -> {new!r}")
         return
-    lo, hi = min(found), max(found)
-    a["anchor"] = PAGE.sub(f"p.{lo}" if lo == hi else f"pp.{lo}-{hi}", anchor)
-    PAGE_NOTES.append(f"{rid}: {aid}: {anchor!r} -> {a['anchor']!r}")
+    # No page can be computed for the anchor as written: its pages are dropped and it keeps its sections; an anchor
+    # that would name nothing is left for the coordinator.
+    bare = _without_pages(anchor, clauses)
+    if not re.search(r"[A-Za-z]{3}", bare):
+        PAGE_NOTES.append(f"{rid}: {aid}: anchor {anchor!r}, quotes on pages {[sorted(s) for s in on]}: left for "
+                          "the coordinator")
+        return
+    a["anchor"] = bare
+    PAGE_NOTES.append(f"{rid}: {aid}: {anchor!r} -> {bare!r} (pages dropped: quotes on {[sorted(s) for s in on]})")
 
 
 def local_pdf(path: Path, rid: str) -> str:

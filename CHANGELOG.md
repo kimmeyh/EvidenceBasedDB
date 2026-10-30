@@ -273,7 +273,29 @@ this project keeps having to replace with a step.
   pdftotext's form feeds, and the readers still at work were told.
   g079's and g104's group files and g104's provisional review were
   deleted and rebuilt. None was committed, decisions are keyed by id, and
-  the item counts did not change. Proven red by injection
+  the item counts did not change. Proven red by injection (11d443a)
+- **fix**: the fresh-eyes review of f599950 and 11d443a (Sprint 14 Task
+  F, #146, 2026-10-30). 11d443a's page fix wrote wrong anchors in 4
+  ways:
+  - A page list ("p.6, 14", "pp.6 and 8") kept its stale tail.
+  - One range stretched across several sections ("pp.1-7").
+  - A drop left stray punctuation and the rest of a page list.
+  - An unfound quote forced a drop.
+  A page clause is now the whole list, and it is read with an em dash,
+  "page 9" and "PDF p.N". A "printed p.N" clause is left alone. Pages
+  that are not one run are listed. A quote that is not found counts
+  only in that the pages it may be on are kept. Cleanup is checked
+  case by case.
+  The rebuild of g079 and g104 to g107 changed 287 anchors: 42 lost
+  their pages and none was left for the coordinator (snapshot as of
+  2026-10-30). No changed anchor shows stray punctuation or a leftover
+  page tail.
+  Those group files and the reviews of g104 to g107 were deleted and
+  rebuilt again (uncommitted). The item ids did not change, and each
+  re-finalize gave its earlier counts.
+  The applier test also could not fail with RECORD_TAG left out of
+  `is_mine`: its GROUP_TAG held the local tag too. Each fix was proven
+  red by injection
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
