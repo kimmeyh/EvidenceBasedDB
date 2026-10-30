@@ -56,7 +56,11 @@ that is not proved in this paper or whose conditions the quotes drop.
 ## Item kinds and what to decide
 
 Each item has `kind`, `id`, `record`, `anchor`, `value`, `quotes`,
-`result_type`, `suggested`, `suggested_basis`, `reader_reason`.
+`result_type`, `suggested`, `suggested_basis`, `reader_reason`. A
+`changed` or `stored-high` item also has `stored_value` and
+`stored_quotes`: the assertion as the store holds it now. A reader who
+confirmed a stored assertion may leave `value` and `quotes` empty; then
+decide on `stored_value` and `stored_quotes`.
 
 - **new-high**: the reader suggested HIGH. Decide `"high"` with a basis
   and why, or `"low"` with why.

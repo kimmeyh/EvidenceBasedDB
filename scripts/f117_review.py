@@ -54,6 +54,18 @@ def stored_certainty(ids: list[str]) -> dict[str, str]:
         conn.close()
 
 
+def stored_text(ids: list[str]) -> dict[str, tuple[str, str]]:
+    """(value, citation_context) as stored: a confirmed entry may carry no value of its own (g043's pilot found two
+    such stored-high items blank), so the reviewer reads the stored assertion itself."""
+    conn = sqlite3.connect(f"{DB_PATH.as_uri()}?mode=ro", uri=True)
+    try:
+        return {r[0]: (r[1], r[2] or "") for r in conn.execute(
+            "SELECT r.id, r.value, f.citation_context FROM records r LEFT JOIN assertion_fields f ON f.record_id = r.id "
+            f"WHERE r.id IN ({','.join('?' * len(ids))})", ids)}
+    finally:
+        conn.close()
+
+
 def papers(g: str) -> list[dict]:
     return json.loads((READS_DIR / f"group_{g}.json").read_text(encoding="utf-8"))["papers"]
 
@@ -64,10 +76,14 @@ def _show(rid: str, a: dict, aid: str) -> dict:
             "suggested_basis": a.get("high_basis"), "reader_reason": a.get("certainty_reason")}
 
 
-def items(g: str, stored: dict[str, str] | None = None) -> list[dict]:
+def items(g: str, stored: dict[str, str] | None = None,
+          text: dict[str, tuple[str, str]] | None = None) -> list[dict]:
     ps = papers(g)
+    ids = [x["id"] for p in ps for x in p.get("existing", [])]
     if stored is None:
-        stored = stored_certainty([x["id"] for p in ps for x in p.get("existing", [])])
+        stored = stored_certainty(ids)
+    if text is None:
+        text = stored_text(ids) if ids else {}
     out = []
     for p in ps:
         rid = p["record_id"]
@@ -77,11 +93,13 @@ def items(g: str, stored: dict[str, str] | None = None) -> list[dict]:
             elif a.get("result_type") == "theoretical":
                 out.append({"kind": "new-theory", **_show(rid, a, a["id_suggestion"])})
         for x in p.get("existing", []):
+            was_value, was_quotes = text.get(x["id"], ("", ""))
+            shown = {"stored_value": was_value, "stored_quotes": was_quotes}
             if x["verdict"] in CHANGED:
                 out.append({"kind": "changed", "verdict": x["verdict"], "reader_note": x.get("note"),
-                            "stored": stored.get(x["id"]), **_show(rid, x, x["id"])})
+                            "stored": stored.get(x["id"]), **_show(rid, x, x["id"]), **shown})
             elif x["verdict"] == "confirmed" and stored.get(x["id"]) == "high":
-                out.append({"kind": "stored-high", "stored": "high", **_show(rid, x, x["id"])})
+                out.append({"kind": "stored-high", "stored": "high", **_show(rid, x, x["id"]), **shown})
     return out
 
 

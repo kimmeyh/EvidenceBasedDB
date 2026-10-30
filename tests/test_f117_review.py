@@ -36,6 +36,8 @@ def review(tmp_path, monkeypatch):
     monkeypatch.setattr(r.build, "UNREAD", {"u": "no text"})
     (tmp_path / "review" / "decisions").mkdir(parents=True)
     r.STORED = {"st-hi": "high", "st-lo": "low", "narrow": "high"}
+    r.TEXT = {"st-hi": ("the stored value", "\"the stored quote\" (Section 2)")}
+    monkeypatch.setattr(r, "stored_text", lambda ids: r.TEXT)
     return r
 
 
@@ -53,6 +55,15 @@ def test_items_are_the_decisions_a_group_needs(review):
     """Proven to fail by injection, 2026-10-30: with stored-high items left out, `st-hi` was missing."""
     its = {i["id"]: i["kind"] for i in review.items("g050", review.STORED)}
     assert its == {"thm": "new-high", "sketch": "new-theory", "st-hi": "stored-high", "narrow": "changed"}
+
+
+def test_a_stored_item_carries_the_stored_value_and_quotes(review):
+    """g043's pilot: a confirmed entry may carry no value, so the reviewer saw a blank stored HIGH. Proven to fail by
+    injection, 2026-10-30: with `shown` left out of the stored-high item, its stored_value was missing."""
+    its = {i["id"]: i for i in review.items("g050", review.STORED)}
+    assert its["st-hi"]["stored_value"] == "the stored value"
+    assert its["st-hi"]["stored_quotes"].startswith('"the stored quote"')
+    assert its["narrow"]["stored_value"] == ""
 
 
 def test_finalize_writes_the_applier_tables(review):

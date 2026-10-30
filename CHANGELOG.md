@@ -162,7 +162,15 @@ this project keeps having to replace with a step.
   decision, a HIGH outside the five bases or a decision with no why,
   and holds back any certainty change on a stored assertion for the
   team lead. Pilot on g043 (204 items) running. Tests proven red by
-  injection
+  injection (46d088d)
+- **fix**: F117 items carry the stored text (Sprint 14 Task E, #145,
+  2026-10-30). The g043 pilot found two stored-HIGH items blank: a
+  reader who confirms a stored assertion may leave its value and quotes
+  empty. Each changed or stored-HIGH item now carries `stored_value` and
+  `stored_quotes` from the store, and the prompt says to decide on them.
+  The pilot read the blank one from the store itself, so its decisions
+  stand. Pilot: 204 decisions in about 8 minutes; g043 holds two
+  LOW-to-HIGH changes for the team lead. Test proven red by injection
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
