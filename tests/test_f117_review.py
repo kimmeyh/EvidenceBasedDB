@@ -262,3 +262,35 @@ def test_a_sign_off_the_applier_would_ignore_or_could_not_enter_is_refused(revie
         review.finalize("g050", "2026-10-30", review.STORED)
     (so / "g050.json").write_text(json.dumps({"value_replace": {"st-hi": "the value"}}), encoding="utf-8")
     assert review.finalize("g050", "2026-10-30", review.STORED)["requote"]["st-hi"].startswith("regraded LOW")
+
+
+def _store(path: Path, rows: dict[str, tuple[str, str]]) -> Path:
+    import sqlite3
+    conn = sqlite3.connect(path)
+    conn.execute("CREATE TABLE records (id TEXT PRIMARY KEY, certainty TEXT, updated_reason TEXT)")
+    conn.executemany("INSERT INTO records VALUES (?, ?, ?)", [(i, c, n) for i, (c, n) in rows.items()])
+    conn.commit()
+    conn.close()
+    return path
+
+
+def test_finalize_refuses_a_group_already_applied_unless_a_store_is_named(review, tmp_path, monkeypatch):
+    """Sprint 14 retrospective Q3: finalize read the applied grades back as the stored ones after an apply (g079 and
+    g094 were re-finalized against a pre-apply copy by hand). Proven to fail by injection, 2026-10-31: with the
+    refusal in main removed, the applied store was finalized without a word."""
+    _decide(review, GOOD)
+    (review.REVIEW / "models.json").write_text("{}", encoding="utf-8")
+    monkeypatch.setattr(review, "REVIEWS_DIR", tmp_path / "reviews")
+    (tmp_path / "reviews").mkdir()
+    before = {"st-hi": ("high", ""), "st-lo": ("low", ""), "narrow": ("high", "")}
+    full_read = f"2026-10-31 (x): {review.FULL_READ_MARK}: confirmed from p1; the paper read whole"
+    for name, applied in (("new", {**before, "thm": ("high", "")}), ("noted", {**before, "narrow": ("low", full_read)})):
+        monkeypatch.setattr(review, "DB_PATH", _store(tmp_path / f"{name}.db", applied))
+        with pytest.raises(SystemExit, match="already applied"):
+            review.main(["finalize", "g050", "2026-10-31"])
+    pre = _store(tmp_path / "pre.db", before)  # DB_PATH is still an applied store; --store names another
+    assert review.main(["finalize", "g050", "2026-10-31", "--store", str(pre)]) == 0
+    written = json.loads((tmp_path / "reviews" / "g050.json").read_text(encoding="utf-8"))
+    assert written["graded_high"]["narrow"] == ["stated limit", "Section 5 states it"]
+    with pytest.raises(SystemExit, match="existing store file"):
+        review.main(["finalize", "g050", "2026-10-31", "--store", str(tmp_path / "missing.db")])

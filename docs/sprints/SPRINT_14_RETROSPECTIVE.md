@@ -123,9 +123,19 @@ message opened: "Manual Validation complete". Counts are a snapshot as of 2026-1
 
 | # | Title | Source | Type | Effort | Decision (now/backlog/skip) |
 |---|---|---|---|---|---|
-| 1 | Trial apply lists fields changed on stored records that no review item names | Dev Team, categories 2 and 10 | Guard | 45m | pending |
-| 2 | Finalize takes an explicit store path, or refuses once its group is applied | Dev Team, category 9 | Tooling | 30m | pending |
-| 3 | The dry run reports every refusal at once | Dev Team, category 9 | Tooling | 30m | pending |
-| 4 | Edit settlement or review text by hand, never by pattern | Dev Team, category 1 | Process | 10m | pending |
-| 5 | Rename the full-read applier | Dev Team, category 12 | Refactor | 60m | pending |
-| 6 | Share one applied store copy among the live-store apply tests | Dev Team, category 14 | Test speed | 120m | pending |
+| 1 | Edit settlement or review text by hand, never by pattern (Q1) | Dev Team, category 1 | Process | 10m | Now (Q1 = 1) |
+| 2 | Trial apply lists fields changed on stored records that no review item names (Q2) | Dev Team, categories 2 and 10 | Guard | 45m | Now (Q2 = 1) |
+| 3 | Finalize takes an explicit store path, or refuses once its group is applied (Q3) | Dev Team, category 9 | Tooling | 30m | Now (Q3 = 1) |
+| 4 | The dry run reports every refusal at once (Q4) | Dev Team, category 9 | Tooling | 30m | Now (Q4 = 1) |
+| 5 | Rename the full-read applier (Q5) | Dev Team, category 12 | Refactor | 60m | Now (Q5 = 1) |
+| 6 | Share one applied store copy among the live-store apply tests (Q6) | Dev Team, category 14 | Test speed | 120m | Now (Q6 = 1) |
+| 7 | One period, not two, before "NOT upgraded" in 900 stored reasons (Q7; INTAKE section 59) | Fresh-eyes review of 25d3985 | Store fix | 60m | Now (Q7 = 1) |
+| 8 | Phase 2's Sprint 30 results into the store after Sprint 30 merges (Q8) | F118 memo | Intake | 60m | Carded for Sprint 15 as F130 (Q8 = 1) |
+| 9 | Three new reading gaps: production-scale timing, QRAM cost, fault-tolerant estimates (Q9) | F118 memo | Backlog | 10m | Added to F128 now (Q9 = 1) |
+
+Team lead, 2026-10-31: "q1. 1 q2. 1 q3. 1 q4. 1 q5. 1 q6. 1 q7. 1 q8. 1
+q9. 1". Each question was asked on its own, with detail, the alternative
+considered and a recommendation. Option 1 was "Now" for Q1 to Q7, "Card it
+for Sprint 15" for Q8 and "Add them to F128 now" for Q9. Claude's
+recommendations differed on Q2 to Q8; the team lead chose option 1 for
+every question, so Q2 to Q7 are done in this sprint.

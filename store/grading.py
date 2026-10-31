@@ -108,7 +108,9 @@ def low_grade(basis: str, why: str = "") -> tuple[str, str]:
         return "low", VENDOR_LOW
     if basis not in LOW_BASES:
         raise ValueError(f"LOW reason {basis!r} is not one of {', '.join(LOW_BASES)}")
-    why = why.strip()
+    # The template ends the why with its own period; a why's own made ".. NOT upgraded" in 900 stored reasons
+    # (Sprint 14 retrospective Q7, INTAKE_WORKFLOW.md section 59).
+    why = why.strip().removesuffix(".")
     if basis in LOW_NEEDS_WHY and not why:
         raise ValueError(f"a LOW {basis} names why it was not upgraded")
     return "low", f"Started LOW: {LOW_BASES[basis]}{': ' + why if why else ''}. NOT upgraded"

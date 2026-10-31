@@ -519,6 +519,44 @@ this project keeps having to replace with a step.
 - **process**: Sprint 14 Phase 7 (2026-10-31): retrospective prompt
   sent; Claude's Development Team draft in
   `docs/sprints/drafts/SPRINT_14_RETROSPECTIVE_claude_draft.md`
+- **fix**: the review of 25d3985 (2026-10-31): the barthe reason no
+  longer compares against a stored value the apply had replaced; both
+  barthe values state the paper's claim as a claim; the caro reason
+  loses a reviewer's "Gray:" label. g095 and g106 re-finalized against
+  the pre-apply copy. INTAKE 58, seventh correction. Re-applied: 3
+  records, backup 173833940424; a second apply wrote nothing
+- **docs**: F118 memo updated in place (2026-10-31, team lead: "just
+  update in place"): counts as of 2026-10-31 (23,653 assertions);
+  F176's answer; production scale and a 10,000-logical-qubit machine;
+  experiments that would raise the certainty of stored LOW claims; the
+  Phase 2 prompt split at 14 Nov
+- **process**: Sprint 14 retrospective decisions (2026-10-31, team lead
+  "q1. 1 ... q9. 1"): all nine recorded; Q1 to Q7 done now, Q8 carded
+  as F130 for Sprint 15, Q9's three gaps added to F128. Q1: INTAKE 58
+  rule, settlement and review text edited by hand, never by pattern
+- **feat**: Q2: every apply lists each field it changed on a stored
+  assertion that no review item names ("undecided" lines and a count;
+  `decided_fields`). Q4: the dry run names every refusal at once
+  (`assertions` and `verify` collect them). Q5:
+  `scripts/sprint13_g_reading.py` renamed `scripts/full_read_apply.py`,
+  its test file `tests/test_full_read_apply.py`; history keeps the old
+  name. Q6: the two live-store apply tests share one store copy and one
+  apply. Each new test proven red by injection
+- **feat**: Q3: `scripts/f117_review.py finalize` refuses a group
+  already applied on the live store, and `--store <path>` names a
+  pre-apply copy to read instead (proven red by injection; it refuses
+  g095 on the live store)
+- **fix**: Q7: `store.grading.low_grade` drops a why's own trailing
+  period, so a reason never reads ".. NOT upgraded";
+  `scripts/sprint14_q7_doubled_period.py` fixes the 900 stored reasons
+  with a format-only note (`FORMAT_ONLY_MARK`), which
+  `store.ingest.last_change` skips so a full read keeps its ownership
+  of a record. INTAKE section 59
+- **docs**: Sprint 14 Phase 7.7 (2026-10-31):
+  `docs/sprints/SPRINT_14_SUMMARY.md` with Actuals; master plan rolled
+  (Past Sprint Summary row, Last Completed Sprint); `CHECKLIST-Phase2-pre.md`
+  reconciled for Sprint 14, and Sprints 12 and 13 back-filled: neither
+  had been reconciled at its Phase 7, and no Phase 1.2 sweep caught it
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

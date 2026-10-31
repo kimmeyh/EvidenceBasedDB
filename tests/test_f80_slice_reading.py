@@ -32,10 +32,11 @@ def _script():
 
 def rewritten_by_a_full_read(conn, aid: str) -> bool:
     """The row's last change is a full read's rewrite (Sprint 13 Task G, F113, or F114): the full read owns it now,
-    not the script that entered it. A "NOT in the paper" note marks a row without rewriting it."""
-    from store.ingest import FULL_READ_MARK
+    not the script that entered it. A "NOT in the paper" note marks a row without rewriting it; a format-only note
+    (Sprint 14 retrospective Q7) is not a change of its words, and is skipped."""
+    from store.ingest import FULL_READ_MARK, last_change
     row = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (aid,)).fetchone()
-    last = (row[0] or "").rsplit(" | ", 1)[-1] if row else ""
+    last = last_change(row[0]) if row else ""
     return FULL_READ_MARK in last and "NOT in the paper" not in last
 
 

@@ -1,5 +1,7 @@
-"""Sprint 13 Task G (F113): two guards of scripts/sprint13_g_reading.py, from
-the fresh-eyes review of 6d8dec7. Neither opens the real store here.
+"""Sprint 13 Task G (F113): the guards of scripts/full_read_apply.py (named
+sprint13_g_reading.py until Sprint 14 retrospective Q5; this file was
+test_sprint13_g_apply.py), first from the fresh-eyes review of 6d8dec7. The
+live_store tests share one copy of the store and one apply (Q6).
 """
 from __future__ import annotations
 
@@ -15,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def _script():
-    spec = importlib.util.spec_from_file_location("sprint13_g_reading", ROOT / "scripts" / "sprint13_g_reading.py")
+    spec = importlib.util.spec_from_file_location("full_read_apply", ROOT / "scripts" / "full_read_apply.py")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -293,50 +295,69 @@ def test_a_refusal_note_names_the_sign_off_drop_over_the_readers_why_not(monkeyp
     assert g.refusal_reason({"why_not": "off topic", "assertions": []}) == "off topic"
 
 
+# The stored contexts an earlier intake chose, set on the shared copy and taken out of CONTEXT_FIX for its apply.
+KEPT_CONTEXTS = {"dirac3-stratification-falls-short-ballin-2026": "platform:dirac-3",
+                 "abbas-effective-dimension-generalisation-bound": "qml"}
+DARJI = "darji-2024-robust-super-resolution-classifier-nonlinear"
+_APPLIED: dict = {}
+
+
+@pytest.fixture
+def applied_once(request, tmp_path_factory) -> dict:
+    """One copy of the live store and one apply_changes, shared by the live-store tests below (Sprint 14
+    retrospective Q6: each took 8 to 10 minutes for its own copy and apply). The one apply carries every test's patch:
+    the sentinel refusal reason, and KEPT_CONTEXTS set on the copy and taken out of CONTEXT_FIX. Neither patch bears
+    on what the other test reads. The tests read the result, a copy each; nothing writes to the store copy after."""
+    from store import connect
+    from tests.conftest import _live_db, _open_read_only
+    db = _live_db(request)  # fails a test that is not marked live_store
+    if not _APPLIED:
+        target = tmp_path_factory.mktemp("applied_once") / "live_copy.db"
+        src, dst = _open_read_only(db), sqlite3.connect(target)
+        try:
+            src.backup(dst)
+        finally:
+            dst.close()
+            src.close()
+        g = _script()
+        with pytest.MonkeyPatch.context() as mp:
+            mp.setattr(g, "refusal_reason", lambda p: "SENTINEL-REASON")
+            mp.setattr(g, "CONTEXT_FIX", {k: v for k, v in g.CONTEXT_FIX.items() if k not in KEPT_CONTEXTS})
+            conn = connect(target)
+            try:
+                for rid, ctx in KEPT_CONTEXTS.items():
+                    conn.execute("UPDATE record_contexts SET context_id = ? WHERE record_id = ?", (ctx, rid))
+                conn.commit()
+                log = g.apply_changes(conn)
+                _APPLIED.update(
+                    log=tuple(log),
+                    darji_note=conn.execute("SELECT updated_reason FROM records WHERE id = ?", (DARJI,)).fetchone()[0],
+                    contexts={rid: [r[0] for r in conn.execute(
+                        "SELECT context_id FROM record_contexts WHERE record_id = ?", (rid,))] for rid in KEPT_CONTEXTS})
+            finally:
+                conn.close()
+    return {k: (dict(v) if isinstance(v, dict) else v) for k, v in _APPLIED.items()}
+
+
 @pytest.mark.live_store
-def test_the_apply_writes_its_refusal_notes_through_refusal_reason_and_nothing_else(monkeypatch, live_copy):
+def test_the_apply_writes_its_refusal_notes_through_refusal_reason_and_nothing_else(applied_once):
     """Review of ed5ab01: the test above calls refusal_reason directly, so an inline reason at the call site would
     stay green. On a copy of the store, a sentinel reason must reach every refused paper's note, and a re-apply must
     write nothing else. Proven to fail by injection, 2026-10-30: with the call site reading `why_not` inline, the
-    sentinel was absent from darji-2024's note."""
-    from store import connect
-    g = _script()
-    monkeypatch.setattr(g, "refusal_reason", lambda p: "SENTINEL-REASON")
-    conn = connect(live_copy)
-    try:
-        log = g.apply_changes(conn)
-        note = conn.execute("SELECT updated_reason FROM records WHERE id = ?",
-                            ("darji-2024-robust-super-resolution-classifier-nonlinear",)).fetchone()[0]
-    finally:
-        conn.close()
-    assert note.endswith("NOT entered: SENTINEL-REASON")
-    assert [x for x in log if not x.startswith(("exists", "refuse "))] == []
+    sentinel was absent from darji-2024's note; again on the shared apply (Q6), 2026-10-31."""
+    assert applied_once["darji_note"].endswith("NOT entered: SENTINEL-REASON")
+    assert [x for x in applied_once["log"] if not x.startswith(("exists", "refuse "))] == []
 
 
 @pytest.mark.live_store
-def test_a_stored_assertion_keeps_its_context_against_the_readers_label(monkeypatch, live_copy):
+def test_a_stored_assertion_keeps_its_context_against_the_readers_label(applied_once):
     """Sprint 14 suite after the 2026-10-31 apply: the reader's nearest-fit context replaced two stored contexts that
     no review decided, among them a `platform:dirac-3` (F65 classes every Dirac-3 assertion). On a copy of the store
     set to the contexts an earlier intake chose, an apply must leave them. The sign-off now restores both through
-    `context_fix`, which would pass this test with no check at all (review of 0eddd23), so the test takes them out of
+    `context_fix`, which would pass this test with no check at all (review of 0eddd23), so the apply takes them out of
     it. Proven to fail by injection, 2026-10-31: with the stored-context check removed from apply_changes, ballin-2026's
-    assertion came back `qc`."""
-    from store import connect
-    g = _script()
-    kept = {"dirac3-stratification-falls-short-ballin-2026": "platform:dirac-3",
-            "abbas-effective-dimension-generalisation-bound": "qml"}
-    monkeypatch.setattr(g, "CONTEXT_FIX", {k: v for k, v in g.CONTEXT_FIX.items() if k not in kept})
-    conn = connect(live_copy)
-    try:
-        for rid, ctx in kept.items():
-            conn.execute("UPDATE record_contexts SET context_id = ? WHERE record_id = ?", (ctx, rid))
-        conn.commit()
-        g.apply_changes(conn)
-        got = {rid: [r[0] for r in conn.execute("SELECT context_id FROM record_contexts WHERE record_id = ?", (rid,))]
-               for rid in kept}
-    finally:
-        conn.close()
-    assert got == {rid: [ctx] for rid, ctx in kept.items()}
+    assertion came back `qc`; again on the shared apply (Q6), 2026-10-31."""
+    assert applied_once["contexts"] == {rid: [ctx] for rid, ctx in KEPT_CONTEXTS.items()}
 
 
 def test_a_high_the_applier_would_not_write_and_an_empty_value_are_refused(monkeypatch):
@@ -357,3 +378,62 @@ def test_a_high_the_applier_would_not_write_and_an_empty_value_are_refused(monke
     monkeypatch.setattr(g, "REQUOTE", {"conf": "the anchor moved"})
     with pytest.raises(ValueError, match="no value to write"):
         g.assertions()
+
+
+def test_every_refusal_is_named_in_one_run(monkeypatch):
+    """Sprint 14 retrospective Q4: a dry run named the first refusal, and each fix found the next. Proven to fail by
+    injection, 2026-10-31: with assertions() raising at the first refused record, as before, only a1 was named; with
+    verify() raising at the first failed quote check, only `ok`'s refusal was named."""
+    from types import SimpleNamespace
+    g = _script()
+    paper = {"record_id": "p", "file": "f", "existing": [],
+             "assertions": [{"id_suggestion": "a1"}, {"id_suggestion": "a2"}, {"id_suggestion": "ok"},
+                            {"id_suggestion": "ok2"}]}
+    monkeypatch.setattr(g, "load_groups", lambda: [("g050", paper)])
+
+    def record(gg, rid, aid, a, why, sid=None):
+        if aid in ("a1", "a2"):
+            raise ValueError(f"{aid}: no value to write")
+        return SimpleNamespace(id=aid, citation_context='"q" (p.1)', value="v")
+
+    def verbatim(aid, *args, **kwargs):
+        raise ValueError(f"{aid}: not verbatim in its source")
+
+    monkeypatch.setattr(g, "record", record)
+    monkeypatch.setattr(g, "source_text", lambda f: "q")
+    monkeypatch.setattr(g, "require_verbatim", verbatim)
+    monkeypatch.setattr(g, "validate_assertion", lambda a: None)
+    with pytest.raises(ValueError) as e:
+        g.verify()
+    assert str(e.value).splitlines() == ["4 refused:", "a1: no value to write", "a2: no value to write",
+                                         "ok: not verbatim in its source", "ok2: not verbatim in its source"]
+    with pytest.raises(ValueError, match="a1"):
+        g.assertions()  # without a list to name them in, the first refusal raises, as the apply needs
+
+
+def test_a_field_no_review_item_names_is_listed(synthetic_store, monkeypatch):
+    """Sprint 14 retrospective Q2: the reader's context replaced two stored contexts that no review decided, and the
+    trial on a copy did not show it. Every field the sync changes that no review item names is now a line of the
+    apply's log. Proven to fail by injection, 2026-10-31: with decided_fields naming every field, no line was
+    logged; with CONTEXT_FIX left out of it, the context the sign-off named was listed."""
+    from types import SimpleNamespace
+    from store import connect
+    g = _script()
+    a = SimpleNamespace(id="claim-one", context="qml", updated_reason="n", updated="2026-10-31")
+    paper = {"record_id": "p", "existing": [{"id": "claim-one", "verdict": "confirmed"}]}
+    monkeypatch.setattr(g, "load_groups", lambda: [])
+    monkeypatch.setattr(g, "verify", lambda: [(a, "p", paper, None)])
+    monkeypatch.setattr(g, "sync_verified_assertion", lambda *args: ["value", "citation_context", "context"])
+    monkeypatch.setattr(g, "REQUOTE", {"claim-one": "fuller quotes"})
+    monkeypatch.setattr(g, "CONTEXT_FIX", {"claim-one": "qml"})
+    conn = connect(synthetic_store)
+    try:
+        assert g.apply_changes(conn) == ["update claim-one [value, citation_context, context]",
+                                         "undecided claim-one [value]"]
+        monkeypatch.setattr(g, "VALUE_REPLACE", {"claim-one": "v2"})
+        assert g.apply_changes(conn) == ["update claim-one [value, citation_context, context]"]
+        paper["existing"][0]["verdict"] = "corrected"
+        monkeypatch.setattr(g, "CONTEXT_FIX", {})
+        assert g.apply_changes(conn)[1:] == ["undecided claim-one [context]"]
+    finally:
+        conn.close()

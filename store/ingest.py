@@ -19,6 +19,9 @@ from store.quotes import Verified
 HAND_MARKER = "hand-transcribed from"
 # In the note of every Task G sync, so sync_assertion knows a row was re-read in full (Sprint 13 Task G, F113).
 FULL_READ_MARK = "re-read in full (Sprint 13 Task G, F113)"
+# In the note of a change to a record's format, never its words (Sprint 14 retrospective Q7, INTAKE_WORKFLOW.md
+# section 59): last_change skips it, so it never takes a full read's ownership of a record away.
+FORMAT_ONLY_MARK = "format only:"
 NOT_YET_SCREENED = "; not yet screened"  # bulk-intake disposition suffix; set_tier removes it on promotion
 MIN_VISIBLE_WORDS = 50  # below this a saved web page is a shell, not the content (Sprint 5 Task B)
 
@@ -177,6 +180,14 @@ class AssertionRecord:
     derivation: str = ""
     claim_type: str = "positive"
     search_scope: str | None = None
+
+
+def last_change(updated_reason: str | None) -> str:
+    """The last note in a record's history that is not a format-only one (FORMAT_ONLY_MARK); "" when none."""
+    for note in reversed((updated_reason or "").split(" | ")):
+        if FORMAT_ONLY_MARK not in note:
+            return note
+    return ""
 
 
 def append_updated_reason(conn, record_id: str, note: str, today: str) -> str:
@@ -694,9 +705,9 @@ def sync_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, note: str,
     if row is None:
         raise ValueError(f"{rid}: no stored assertion to sync")
     *row, updated, reason = row
-    last_change = (reason or "").rsplit(" | ", 1)[-1]
+    last = last_change(reason)
     if FULL_READ_MARK in (reason or "") and (today < (updated or "") or
-                                             (FULL_READ_MARK in last_change and FULL_READ_MARK not in note
+                                             (FULL_READ_MARK in last and FULL_READ_MARK not in note
                                               and today == updated)):
         # Sprint 13 Task G (F113): a re-read of the whole paper supersedes the
         # partial read an older script entered. Without this, re-running that

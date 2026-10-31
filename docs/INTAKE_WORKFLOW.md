@@ -2926,3 +2926,65 @@ counts that enter are added when it runs.
   were re-finalized against the pre-apply copy. Re-applied with backup
   `evidence-20261031T161240715569-...db`, first on a copy: 6 records
   updated and nothing else; a second apply wrote nothing.
+- **Seventh correction, 2026-10-31, the review of 25d3985.** Written
+  before the re-apply. barthe-necessary-conditions-tradeoff's reason
+  compared the reader's value with a stored value the apply had already
+  replaced; that comparison is removed. barthe-universality-proved's
+  value began "The paper proves" while its reason says the proofs do not
+  settle it; both barthe values now state the paper's claim as a claim
+  ("The authors state that they prove", "The paper states, as its second
+  central result"), which their quotes hold. caro-generalization-error-
+  sqrt-t-over-n's reason loses a reviewer's "Gray:" label. g095 and g106
+  re-finalized against the pre-apply copy. The review chain on these
+  settlements stops here; what is left is cosmetic: a doubled period
+  before "NOT upgraded" in about 900 reasons store-wide (it predates this
+  sprint), and update notes that name the full read but not a quote
+  extension. Re-applied with backup
+  `evidence-20261031T173833940424-...db`, first on a copy: 3 records
+  updated (the two barthe values and reasons, the caro reason) and
+  nothing else; a second apply wrote nothing.
+- **Rule, 2026-10-31 (Sprint 14 retrospective Q1 = 1): settlement and
+  review text is edited by hand, never by pattern.** A settlement reason,
+  a sign-off value or a review note is read and rewritten one record at a
+  time with the Edit tool. A regular expression or a search-and-replace
+  over several of them is not used, even when they look alike. The fifth
+  correction edited 13 reasons by pattern and missed variants in 5 of
+  them; the sixth correction found them only on review. A store-wide fix
+  of a fixed template's format (not its words) is a script, as section
+  59 is, and it names the exact string it replaces.
+
+## 59. A doubled period before "NOT upgraded" (Sprint 14 retrospective Q7)
+
+Written 2026-10-31, before the apply. Every count here is a snapshot as of
+2026-10-31.
+
+- **What is wrong.** `store.grading.low_grade` joins a LOW's reason as
+  `Started LOW: <basis>: <why>. NOT upgraded`. A why that already ends in
+  a period gives `.. NOT upgraded`. 900 stored `certainty_reasons` hold
+  it, every one of them starting "Started LOW:". It predates Sprint 14;
+  the full reads of Sprint 13 and 14 added most of them. No repository
+  file holds the doubled text: each is computed by `low_grade`.
+- **The fix at the source.** `low_grade` drops one trailing period from
+  the why, so the template's own period is the only one.
+- **The fix in the store.** `scripts/sprint14_q7_doubled_period.py`
+  replaces the exact string `.. NOT upgraded` with `. NOT upgraded` in
+  `certainty_reasons`, and nothing else. Dry run by default; `--apply`
+  takes a verified backup first. Each changed record gets the note
+  "2026-10-31 (Sprint 14 retrospective Q7): format only: ...", naming
+  this section.
+- **Why the note says "format only".** A full read owns a record whose
+  last change names it (`FULL_READ_MARK`). The format note must not take
+  that ownership away: the sync's same-day guard and the reading tests
+  ask for the last change, and both now skip a note that carries
+  `FORMAT_ONLY_MARK` (`store.ingest.last_change`). Without that, an older
+  reading script dated 2026-10-31 could re-sync over a full read, and the
+  F80 and F83 tests would hold 13 full-read records to their old scripts.
+- **Checks.** A live-store test finds no `.. NOT upgraded` left. Trial on
+  a copy first, then live; a second apply changes nothing, and an apply
+  of the full-read applier (renamed `scripts/full_read_apply.py`, Q5) on
+  the fixed copy changes nothing either: it now computes the single period
+  the store holds.
+- **Applied 2026-10-31** with backup
+  `evidence-20261031T182657101772-...db`, first on a copy: 900 records
+  fixed; a second apply fixed none; the full-read applier on the fixed
+  copy changed nothing and listed no undecided field.

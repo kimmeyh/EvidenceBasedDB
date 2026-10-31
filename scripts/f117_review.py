@@ -19,6 +19,10 @@ finalized until the decision is recorded in WORK/review/escalations/<g>.json as 
 ["high", basis, why]}; a LOW against the reviewer's HIGH names its own cause. Any stored certainty counts, MODERATE
 included; a vendor's own claim is never HIGH. Finalize refuses a sign-off edit the applier would ignore or could not
 enter.
+
+Finalize reads stored grades from the live store, so it refuses a group already applied there: the stored grades
+would be the applied ones. `--store <path>` names the store to read instead, a copy of the backup taken before the
+apply (Sprint 14 retrospective Q3: g079 and g094 were re-finalized that way by hand, with EBDB_STORE_DIR).
 """
 from __future__ import annotations
 
@@ -33,6 +37,7 @@ sys.path.insert(0, str(ROOT))
 
 from store import script_paths  # noqa: E402
 from store.grading import BASES  # noqa: E402
+from store.ingest import FULL_READ_MARK  # noqa: E402
 
 _spec = importlib.util.spec_from_file_location("f117_build_groups", ROOT / "scripts" / "f117_build_groups.py")
 build = importlib.util.module_from_spec(_spec)
@@ -73,6 +78,25 @@ def stored_text(ids: list[str]) -> dict[str, tuple[str, str]]:
 
 def papers(g: str) -> list[dict]:
     return json.loads((READS_DIR / f"group_{g}.json").read_text(encoding="utf-8"))["papers"]
+
+
+def applied(g: str) -> list[str]:
+    """The ids that show the group already applied on the store at DB_PATH: a new assertion that exists there, or a
+    stored one whose history holds the applier's full-read note from its paper. A paper read whole twice can show here
+    with no apply of this group; `--store` then names the store to read."""
+    ps = papers(g)
+    new = [a["id_suggestion"] for p in ps for a in p.get("assertions", [])]
+    old = {x["id"]: p["record_id"] for p in ps for x in p.get("existing", [])}
+    conn = sqlite3.connect(f"{DB_PATH.as_uri()}?mode=ro", uri=True)
+    try:
+        hits = [i for i in new if conn.execute("SELECT 1 FROM records WHERE id = ?", (i,)).fetchone()]
+        for i, rid in old.items():
+            row = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (i,)).fetchone()
+            if row and f"{FULL_READ_MARK}: " in (row[0] or "") and f" from {rid}; " in row[0]:
+                hits.append(i)
+    finally:
+        conn.close()
+    return hits
 
 
 def _show(rid: str, a: dict, aid: str) -> dict:
@@ -286,7 +310,15 @@ UNRECORDED_MODEL: set[str] = set()
 
 
 def main(argv: list[str]) -> int:
-    global UNRECORDED_MODEL
+    global UNRECORDED_MODEL, DB_PATH
+    argv = list(argv)
+    store = None
+    if "--store" in argv:
+        k = argv.index("--store")
+        if k + 1 >= len(argv) or not Path(argv[k + 1]).is_file():
+            raise SystemExit("--store names an existing store file")
+        store = Path(argv[k + 1]).resolve()
+        del argv[k:k + 2]
     models = REVIEW / "models.json"
     if models.exists():
         UNRECORDED_MODEL = {r for r, m in json.loads(models.read_text(encoding="utf-8")).items() if not m}
@@ -300,6 +332,14 @@ def main(argv: list[str]) -> int:
     elif cmd == "finalize":
         if not models.exists():  # without it the 15 results with no recorded model take the cloud reader's name
             raise SystemExit(f"{models} is missing; finalize names each result's reader from it")
+        if store is not None:
+            DB_PATH = store
+        else:
+            hits = applied(g)
+            if hits:
+                raise SystemExit(f"{g} is already applied on {DB_PATH} ({', '.join(hits[:3])}"
+                                 f"{', ...' if len(hits) > 3 else ''}), so its stored grades are the applied ones. "
+                                 "Finalize against a copy of the backup taken before the apply: --store <path>")
         review = finalize(g, argv[2])
         path = REVIEWS_DIR / f"{g}.json"
         if path.exists():

@@ -42,7 +42,7 @@ TAG = "Sprint 13 Task G, F113"
 
 
 def applied_records() -> set[str]:
-    """Records whose Task G first-pass read is in the store (sprint13_g_reading.read_detail names the tag)."""
+    """Records whose Task G first-pass read is in the store (full_read_apply.read_detail names the tag)."""
     if not DB_PATH.exists():
         return set()
     with connect(DB_PATH) as conn:

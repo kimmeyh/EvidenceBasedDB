@@ -49,10 +49,27 @@ repository exists. No other F# from either source repository applies here.
 | 11 | docs/sprints/SPRINT_11_SUMMARY.md | [OK] Complete | 2026-10-21 to 2026-10-23 |
 | 12 | docs/sprints/SPRINT_12_SUMMARY.md | [OK] Complete | 2026-10-23 to 2026-10-24 |
 | 13 | docs/sprints/SPRINT_13_SUMMARY.md | [OK] Complete | 2026-10-24 to 2026-10-28 |
+| 14 | docs/sprints/SPRINT_14_SUMMARY.md | [OK] Complete | 2026-10-29 to 2026-10-31 |
 
 ## Last Completed Sprint
 
-Sprint 13 is below; Sprint 12 follows it for continuity.
+Sprint 14 is below; Sprint 13 follows it for continuity.
+
+### Sprint 14: Read PHI-OMEGA, Review the 302 Cloud Reads, Then Learn What the Store Says (2026-10-29 to 2026-10-31, PR #140, waiting for the team lead's merge)
+
+Seven tasks, seven issues (#141-#147). **Papers**: Brighindi's PHI-OMEGA
+paper, posts and code (F119); the F95 and F98 releases (F122, F123).
+**Inbound**: Phase 2's Sprint 29 results (F120). **Full reads**: the 302
+cloud results rebuilt and reviewed (F117) and F114's local reads, applied
+as F114's first release (66 groups; 28 certainty settlements by the team
+lead; 18 papers kept out). **Spike**: what the store says, for the fraud
+challenge (F118, `docs/spikes/F118_WHAT_THE_STORE_SAYS.md`). Store 2,335
+-> 2,345 papers (1,653 -> 1,789 `read`), 10,735 -> 23,653 assertions;
+suite 1,424 -> 1,484 tests. Retrospective: team lead all "Very Good"; all
+nine improvements option 1: Q1 to Q7 done in the sprint (among them the
+applier renamed `scripts/full_read_apply.py` and 900 doubled periods
+fixed), Q8 carded as F130, Q9 added to F128. Full detail:
+`docs/sprints/SPRINT_14_SUMMARY.md`.
 
 ### Sprint 13: Fix Sprint 12's Two Defects, Check the Models, Then Read 800 Records (2026-10-24 to 2026-10-28, PR #131, merged to develop and to main via PR #139 on 2026-10-29; tagged sprint-13)
 
@@ -319,8 +336,9 @@ develop to main).
   permanent items are released as copies: F122 (F95) and F123 (F98).
   F39 was recommended and not selected; it is not in scope. F118's
   question timing: Q3 = 1 (answered in F118, after F117).
-- **Plan**: `docs/sprints/SPRINT_14_PLAN.md` (drafted 2026-10-30, waiting
-  for approval).
+- **Plan**: `docs/sprints/SPRINT_14_PLAN.md` (approved as amended
+  2026-10-30). Manual Validation complete and the retrospective recorded
+  on 2026-10-31; PR #140 waits for the team lead's merge.
 
 ## Next Sprint Candidates
 
@@ -767,7 +785,7 @@ and in git. Remaining items below.
 - Value: lets F114's next release enter the records Sprint 14 left
   unread inside a group it reviewed, instead of losing them.
 - Platform: `scripts/f117_build_groups.py`, `scripts/f117_review.py`,
-  `scripts/sprint13_g_reading.py`; `scripts/sprint13_g_status.py`.
+  `scripts/full_read_apply.py`; `scripts/sprint13_g_status.py`.
 - g113's chen-2026-quantum-adaptive-self-attention-quantum,
   chen-2026-safe-quantum-machine-learning-variational and
   chen-2026-stochastic-quantum-spiking-neural-networks are marked
@@ -786,7 +804,7 @@ and in git. Remaining items below.
 - Value: closes the anchor defects Sprint 14 found and left, so no
   stored page names the wrong PDF page.
 - Platform: `scripts/f117_build_groups.py` (`_PAGES`, `_without_pages`);
-  `scripts/sprint13_g_reading.py` (ANCHOR_FIX on a confirmed stored
+  `scripts/full_read_apply.py` (ANCHOR_FIX on a confirmed stored
   assertion).
 - The page fixer leaves three low-severity cases, none present in the
   13 local groups rebuilt on 2026-10-30 (snapshot as of that date):
@@ -810,7 +828,7 @@ and in git. Remaining items below.
 - Value: closes two paths that would mislabel a read or let one id
   stand for two papers; neither is live on 2026-10-30.
 - Platform: `scripts/f114_cloud.py` (`fetch`, the merged-branch
-  refusal); `scripts/sprint13_g_reading.py` (the store clash check).
+  refusal); `scripts/full_read_apply.py` (the store clash check).
 - `f114_cloud.fetch`: a merged branch is refused only when its record is
   not yet in `launches.json`. A record already there is still checked
   and saved, and the tally lists it as both refused and saved; a record
@@ -866,6 +884,16 @@ and in git. Remaining items below.
   - Split candidates F117 found, where one stored assertion holds two
     claims of different grade: arute-fidelity-not-directly-computable,
     two-way-partitioning-dual-sdp-lower-bound, qaoa-qa-conditions.
+  - Added 2026-10-31 (Sprint 14 retrospective Q9 = 1), from the memo's
+    production-scale and fault-tolerant sections:
+    - Production-scale timing: classical training and scoring at 20 to
+      100 million rows a day (the LightGBM and XGBoost papers' scaling
+      sections), against a quantum lane's loading, shots and scoring.
+    - QRAM feasibility and cost at that scale (a QRAM architecture
+      paper and a critical review beyond those already stored).
+    - Fault-tolerant resource estimates: Babbush et al. 2021 ("Focus
+      beyond quadratic speedups"), Chakrabarti et al. on derivative
+      pricing, and an amplitude-estimation risk-model estimate.
 - Acceptance: each target is in `Papers\` or on the hand-download list
   with its reason, and each read source's assertions are entered by
   F57's path.
@@ -875,7 +903,7 @@ and in git. Remaining items below.
 - Phase: Reading (F114's next release)
 - Value: makes F117's early groups agree with the cross-group rule the
   later groups used, so one grade means one thing.
-- Platform: the store; `scripts/sprint13_g_reading.py` (a sign-off
+- Platform: the store; `scripts/full_read_apply.py` (a sign-off
   table); the team lead decides each stored certainty change.
 - F117's cross-group rule (2026-10-30) holds that a textbook-standard
   result is background and does not by itself make an item LOW. Groups
@@ -891,6 +919,24 @@ and in git. Remaining items below.
   each proposed change put to the team lead as a certainty change;
   the keyword cut's misses sampled.
 - Depends on: none
+
+**F130. Phase 2's Sprint 30 results into the store (~60m) Priority 30** (NEW 2026-10-31, Sprint 14 retrospective Q8 = 1)
+- Phase: Intake (`docs/INTAKE_WORKFLOW.md`, "Phase 2 results"), as
+  F120 did for Sprint 29
+- Value: the store's F118 answers rest on Phase 2's own measurements;
+  Sprint 30's change two of them (F176 answers the solver question on
+  IEEE-CIS; F170 and F171 locate the frauds every model misses).
+- Platform: `hsbc-qfraud-phase2` read at the merged Sprint 30 commit
+  (local refs, no fetch); the store.
+- Entries: F176 (classical solvers below greedy on IEEE-CIS), F169 (the
+  second ceiling estimator), F170 and F171 (frauds missed by every
+  model, on ULB and IEEE-CIS), F174 (best result per algorithm on
+  IEEE-CIS, once its run completes). Each a measurement of record with
+  provenance naming the repository, commit, file and run, linked
+  `supports` or `contradicts` to the published LOW claims it bears on.
+- Acceptance: each result entered from the merged commit, not an
+  unmerged branch; links reviewed; a second apply writes nothing.
+- Depends on: Phase 2's Sprint 30 merged to develop.
 
 ### Released for Sprint 14 (2026-10-30)
 
@@ -926,7 +972,7 @@ and in git. Remaining items below.
   g001 to g042 shipped; its card is in git at 83b2e99):
   `manifests/sprint13_g_reads/READER_PROMPT.md` (with its "Progress and
   restart" section), up to 5 first-pass readers, the coordinator review
-  of each group, and `scripts/sprint13_g_reading.py` for the apply with
+  of each group, and `scripts/full_read_apply.py` for the apply with
   its verified backup (it stops if a read row would be rewritten, unless
   `--update-reads` is named)
 - What a full read is (carried from F113): every section, appendix and
@@ -1028,7 +1074,7 @@ and in git. Remaining items below.
   counts.
 - Platform: the results saved by `scripts/f114_cloud.py fetch` and their
   branches `cloud/f114/<record>`; the review tooling of Task G (one
-  decision file per group); `scripts/sprint13_g_reading.py` for the apply
+  decision file per group); `scripts/full_read_apply.py` for the apply
   with its verified backup; `.claude/model_assignment_heuristics.json`
 - Split by protocol, not by tier alone. The heuristics' own evidence
   (Sprint 3, `learning_log[0]`): a per-record review with no source access

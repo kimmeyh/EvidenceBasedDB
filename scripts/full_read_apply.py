@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 """Sprint 13 Task G (F113): the full re-read entered, one ledger, no budget.
+Named `sprint13_g_reading.py` until Sprint 14 (retrospective Q5): it enters
+F114's groups too, so the name now says what it does. History before the
+rename (CHANGELOG, INTAKE_WORKFLOW.md) keeps the old name.
 
 Team lead, 2026-10-25, at Manual Validation: "fully read all the papers that
 are not marked 'read' and update all conclusions ... It is far more
@@ -46,14 +49,20 @@ a theoretical result kept LOW needs its cause in THEORY_LOW, and the run
 refuses one without; a setup statement not graded HIGH is the authors'
 claim.
 
-    python scripts/sprint13_g_reading.py                     # dry run of every reviewed group
-    python scripts/sprint13_g_reading.py --groups g001,g002  # dry run of named groups
-    python scripts/sprint13_g_reading.py --apply             # verified backup first
-    python scripts/sprint13_g_reading.py --apply --update-reads  # also rewrite read rows, when intended
+    python scripts/full_read_apply.py                     # dry run of every reviewed group
+    python scripts/full_read_apply.py --groups g001,g002  # dry run of named groups
+    python scripts/full_read_apply.py --apply             # verified backup first
+    python scripts/full_read_apply.py --apply --update-reads  # also rewrite read rows, when intended
 
 An apply that would rewrite a read row this script wrote earlier is rolled
 back unless --update-reads names the rewrite as intended (Sprint 13
 retrospective I1).
+
+The dry run reports every refusal at once, not the first (Sprint 14
+retrospective Q4). Every apply, the trial on a copy first, lists each field
+it changed on a stored assertion that no review item names, as "undecided"
+lines and a count (Sprint 14 retrospective Q2: the reader's context label
+replaced two stored contexts, and only the live suite found it).
 """
 from __future__ import annotations
 
@@ -285,9 +294,20 @@ def record(g: str, rid: str, aid: str, a: dict, why: str, sid: str | None = None
             "by the coordinator"))
 
 
-def assertions() -> list[tuple[str, AssertionRecord, str, dict]]:
-    """(group, record, paper id, paper) for every new claim entered and every stored one changed."""
+def assertions(problems: list[str] | None = None) -> list[tuple[str, AssertionRecord, str, dict]]:
+    """(group, record, paper id, paper) for every new claim entered and every stored one changed. With `problems`,
+    a record that is refused is named there and left out, so every refusal is found in one run (Sprint 14
+    retrospective Q4); without it, the first refusal raises."""
     out = []
+
+    def add(g, rid, p, *args):
+        try:
+            out.append((g, record(g, rid, *args), rid, p))
+        except ValueError as e:
+            if problems is None:
+                raise
+            problems.append(str(e))
+
     for g, p in load_groups():
         rid = p["record_id"]
         for e in p.get("existing", []):
@@ -295,12 +315,37 @@ def assertions() -> list[tuple[str, AssertionRecord, str, dict]]:
             if aid in KEEP_STORED or aid in NOT_IN_PAPER:
                 continue
             if e["verdict"] in CHANGED or (e["verdict"] == "confirmed" and aid in REQUOTE):
-                out.append((g, record(g, rid, aid, e, f"{e['verdict']} at a full read"), rid, p))
+                add(g, rid, p, aid, e, f"{e['verdict']} at a full read")
         for a in p.get("assertions", []):
             aid = a["id_suggestion"]
             if aid not in DROP:
-                out.append((g, record(g, rid, aid, a, "extracted at a full read", ID_FIX.get(aid, aid)), rid, p))
+                add(g, rid, p, aid, a, "extracted at a full read", ID_FIX.get(aid, aid))
     return out
+
+
+def decided_fields(aid: str, verdict: str | None) -> set[str]:
+    """The fields of a stored assertion that a review item names (Sprint 14 retrospective Q2). An accepted changed
+    verdict names the reader's whole entry and its grade, but not its context: the reader's context is its nearest
+    fit, and only CONTEXT_FIX decides one."""
+    named = set()
+    if verdict in CHANGED:
+        named |= {"value", "provenance", "citation_context", "certainty", "certainty_reasons", "fidelity",
+                  "claim_type", "search_scope"}
+    if aid in REQUOTE:
+        named |= {"provenance", "citation_context"}
+        if REQUOTE[aid].startswith("regraded"):
+            named |= {"certainty", "certainty_reasons"}
+    if aid in VALUE_REPLACE:
+        named.add("value")
+    if aid in QUOTE_EDITS or aid in EXTRA_QUOTES:
+        named.add("citation_context")
+    if aid in ANCHOR_FIX:
+        named |= {"provenance", "citation_context"}
+    if aid in HIGH or aid in THEORY_LOW or aid in RESULT_TYPE_FIX:
+        named |= {"certainty", "certainty_reasons"}
+    if aid in CONTEXT_FIX:
+        named.add("context")
+    return named
 
 
 def grades_not_written(conn) -> list[str]:
@@ -327,18 +372,27 @@ def grades_not_written(conn) -> list[str]:
 
 def verify() -> list[tuple[AssertionRecord, str, dict, object]]:
     """Every quote verbatim in its source, every coordinator edit resting on named passages, and every figure in
-    a value in its own quotes, BEFORE anything is written."""
+    a value in its own quotes, BEFORE anything is written. Every refusal is collected and raised together (Sprint 14
+    retrospective Q4: a dry run named one, and each fix found the next)."""
     texts: dict[str, str] = {}
     out = []
-    for _, a, rid, p in assertions():
-        quotes = QUOTE.findall(a.citation_context)
-        text = texts.setdefault(p["file"], plain(source_text(p["file"])))
-        verified = require_verbatim(a.id, a.citation_context, text, value=a.value)
-        if a.id in VALUE_REPLACE:
-            require_edit_basis(a.id, a.value, quotes, text)
-        if a.id in QUOTE_EDITS:
-            require_edit_basis(a.id, None, [n for _, n in QUOTE_EDITS[a.id] if n] or quotes, text)
+    problems: list[str] = []
+    for _, a, rid, p in assertions(problems):
+        try:
+            quotes = QUOTE.findall(a.citation_context)
+            text = texts.setdefault(p["file"], plain(source_text(p["file"])))
+            verified = require_verbatim(a.id, a.citation_context, text, value=a.value)
+            if a.id in VALUE_REPLACE:
+                require_edit_basis(a.id, a.value, quotes, text)
+            if a.id in QUOTE_EDITS:
+                require_edit_basis(a.id, None, [n for _, n in QUOTE_EDITS[a.id] if n] or quotes, text)
+            validate_assertion(a)
+        except ValueError as e:
+            problems.append(str(e))
+            continue
         out.append((a, rid, p, verified))
+    if problems:
+        raise ValueError(f"{len(problems)} refused:\n" + "\n".join(problems))
     return out
 
 
@@ -465,7 +519,7 @@ def apply_changes(conn) -> list[str]:
                 f"{day}, Claude, read every quoted passage in context and checked every quote and figure against "
                 f"the source; the paper read whole at first pass by a {first_pass(g, rid)}"))
             log.append(f"tier   {rid} -> read")
-    for a, rid, _, verified in checked:
+    for a, rid, p, verified in checked:
         if a.context not in contexts:
             raise ValueError(f"{a.id}: context {a.context!r} is not a context")
         if not conn.execute("SELECT 1 FROM records WHERE id = ?", (a.id,)).fetchone():
@@ -479,6 +533,10 @@ def apply_changes(conn) -> list[str]:
             a = replace(a, context=stored[0])
         changed = sync_verified_assertion(conn, a, verified, a.updated_reason, a.updated)
         log.append(f"update {a.id} [{', '.join(changed)}]" if changed else f"exists {a.id}")
+        verdict = next((e["verdict"] for e in p.get("existing", []) if e["id"] == a.id), None)
+        undecided = [c for c in changed if c not in decided_fields(a.id, verdict)]
+        if undecided:
+            log.append(f"undecided {a.id} [{', '.join(undecided)}]")
     return log
 
 
@@ -507,7 +565,8 @@ def main(argv: list[str] | None = None) -> int:
             print("--groups is for a dry run; an apply enters every reviewed group")
             return 1
         ONLY[:] = args[args.index("--groups") + 1].split(",")
-    kept = assertions()
+    refused: list[str] = []
+    kept = assertions(refused)
     ids = [a.id for _, a, _, _ in kept]
     dupes = [i for i, n in Counter(ids).items() if n > 1]
     owner = {a.id: rid for _, a, rid, _ in kept}
@@ -516,14 +575,17 @@ def main(argv: list[str] | None = None) -> int:
             "SELECT 1 FROM records r JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ? AND "
             "r.provenance NOT LIKE ?", (i, f"%{owner[i]}%")).fetchone()]
         unwritten = grades_not_written(conn)
-    if dupes or clash or unwritten:
+    if "--apply" not in args:
+        try:  # the quote checks too, so a dry run names every refusal at once (Q4); verify names assertions' own
+            verify()
+            refused = []
+        except ValueError as e:
+            refused = [str(e)]
+    if dupes or clash or unwritten or refused:
         print(f"duplicate assertion ids: {dupes}; ids already held by another source: {clash}")
-        print("\n".join(unwritten))
+        print("\n".join(unwritten + refused))
         return 1
     if "--apply" not in args:
-        checked = verify()
-        for a, _, _, _ in checked:
-            validate_assertion(a)
         papers = load_groups()
         print(Counter(a.certainty for _, a, _, _ in kept), Counter(a.context for _, a, _, _ in kept))
         print(f"{len(kept)} assertions entered or changed from {len(papers)} records. Every quote verbatim, every "
@@ -541,6 +603,9 @@ def main(argv: list[str] | None = None) -> int:
     finally:
         conn.close()
     print("\n".join(log))
+    undecided = [x for x in log if x.startswith("undecided ")]
+    print(f"{len(undecided)} stored assertions with a field changed that no review item names"
+          f"{'; read each before the live apply' if undecided else ''}")
     print("APPLIED")
     return 0
 

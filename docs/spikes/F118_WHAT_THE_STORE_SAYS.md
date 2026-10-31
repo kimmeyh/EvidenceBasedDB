@@ -1,10 +1,13 @@
 # F118: what the store says, what it means for the fraud challenge, and what to run next
 
-Sprint 14 Task G (F118, #147), written 2026-10-30. **Every count in this
-memo is a snapshot as of 2026-10-30**, taken after F114's corrected
-re-apply (commit 4d969d9; the first apply, b185729, was restored and
-re-run). The store grows by design; rerun
-`scripts/f118_themes.py` for current counts.
+Sprint 14 Task G (F118, #147), written 2026-10-30 and updated
+2026-10-31. **Every count in this memo is a snapshot as of 2026-10-31**,
+taken after F114's last 19 groups of the first release entered
+(0eddd23) and their corrections were applied (the last with backup
+`evidence-20261031T173833940424`). The theme readers read the store of
+2026-10-30, after F114's corrected re-apply (4d969d9); the Limits
+section says how the later entries were checked. The store grows by
+design; rerun `scripts/f118_themes.py` for current counts.
 
 ## Bottom line
 
@@ -26,11 +29,26 @@ re-run). The store grows by design; rerun
   comparison. The benchmark solvers ran at fixed settings, not tuned per
   instance, and penalty weights were not tuned. Phase 2's own falsifier
   result says the formulation, not the solver, is the limit.
-- **The cheapest, most decisive next steps are classical**: tuned
-  classical solvers and a penalty sweep on the f153 instances, an
-  equal-feature ablation, and a classical surrogate for any quantum
-  kernel. These run in minutes and decide whether any device time is
-  worth spending before 14 Nov 2026.
+- **Phase 2 has since answered the solver question on IEEE-CIS** (its
+  F176, Sprint 30, read at d14fdb7): a classical solver got below greedy
+  on 3 of 6 instances, each by under 2e-05, against room of about 0.08
+  to 0.097, and SCIP did not beat greedy in 1,200 s on any. The
+  formulation, not the solver, is the limit there, and gains that small
+  may sit below what Dirac-3S resolves.
+- **The cheapest, most decisive next steps are classical**: the same
+  solver test on the f153 instances, an equal-feature ablation, a
+  classical surrogate for any quantum kernel, and a rounding test of
+  whether Dirac-3S could resolve F176's gains. These run in minutes and
+  decide whether any device time is worth spending before 14 Nov 2026.
+- **At production scale the gap widens toward classical.** ULB (284,807
+  rows, 30 features) is toy-sized; production fraud data runs to 20 to
+  100 million rows a day. Classical training grows about linearly in
+  rows; every quantum learner that reads all rows pays at least linear
+  loading at a far slower clock, times shots, and per-transaction quantum
+  scoring cannot meet a millisecond budget. The quantum steps that fit
+  that scale act on a small summary (a feature-selection or weak-learner
+  QUBO built from streamed statistics) or on a sample (section "At
+  production scale").
 
 ## How this memo was made
 
@@ -100,37 +118,42 @@ measurements are graded HIGH as measurements of record (ADR-0004's
 consumer rule), which is not the same as a proof; this memo says so
 where it matters.
 
-## Inventory (snapshot 2026-10-30)
+## Inventory (snapshot 2026-10-31)
 
-- 18,653 assertions on 2,345 paper records.
-- By context: `qml` 9,239; `qc` 6,830; `ml` 1,484; `method` 454; `world`
-  452; `hsbc-2026` 88; Dirac platforms 106 (`dirac-3s` 50, `dirac-3` 44,
-  `dirac-1` 12). An assertion may carry more than one context.
-- By certainty: LOW 12,163 (65%); HIGH 6,389 (34%); MODERATE 98;
+- 23,653 assertions on 2,345 paper records.
+- By context: `qml` 11,497; `qc` 8,026; `ml` 1,766; `method` 1,604;
+  `world` 566; `hsbc-2026` 88; Dirac platforms 106 (`dirac-3s` 50,
+  `dirac-3` 44, `dirac-1` 12). An assertion may carry more than one
+  context.
+- By certainty: LOW 15,386 (65%); HIGH 8,167 (35%); MODERATE 97;
   very-low 1; none 2.
-- By claim type: positive 14,338; absence 3,687; vendor's own claim 628.
+- By claim type: positive 18,745; absence 4,255; vendor's own claim 653.
 - Tagged SIM 31, HW 16, PROJ 2; the rest carry no tag.
-- Paper reads: 505 `full`, 2,100 `partial`, 1,629 `subagent`, 1 `grep`.
-  Papers by tier: 1,788 `read`, 557 `seen`.
-- Theme sizes (assertions / of which HIGH): advantage 1,190 / 235;
-  kernels 718 / 232; trainability 667 / 220; encoding and readout
-  800 / 315; noise and mitigation 649 / 193; generalization 333 / 107;
-  tensor networks 288 / 86; QUBO and feature selection 1,292 / 361;
-  fraud and imbalance 262 / 98; benchmarking 1,274 / 396; gates and
-  primitives 1,780 / 581; hybrid practice 1,676 / 564; quantum resources
-  700 / 206; resource estimates 929 / 308; classical families 382 / 96;
-  GenAI 278 / 90. A keyword cut, not a classification: the readers
-  dropped what did not bear. The readers' packets were cut before the
-  store was restored and re-applied the same evening, so they were a
-  few dozen assertions larger per theme; every id cited here was checked
-  against the store after the re-apply.
+- Paper reads: 596 `full`, 2,199 `partial`, 1,629 `subagent`, 1 `grep`.
+  Papers by tier: 1,789 `read`, 556 `seen`.
+- Theme sizes (assertions / of which HIGH): advantage 1,452 / 280;
+  kernels 791 / 262; trainability 848 / 265; encoding and readout
+  966 / 372; noise and mitigation 829 / 233; generalization 506 / 150;
+  tensor networks 313 / 93; QUBO and feature selection 1,652 / 461;
+  fraud and imbalance 302 / 107; benchmarking 1,501 / 483; gates and
+  primitives 2,254 / 712; hybrid practice 2,025 / 675; quantum resources
+  828 / 253; resource estimates 1,077 / 347; classical families 436 /
+  117; GenAI 327 / 108. A keyword cut, not a classification: the readers
+  dropped what did not bear. The readers' packets were cut on
+  2026-10-30, about a fifth smaller per theme than these counts; the
+  later entries were checked as the Limits section says, and every id
+  cited here was checked against the store on 2026-10-31.
 
 **Limits of this memo.**
 - 65% of the assertions are LOW, and the `partial` reads outnumber the
   `full` ones four to one. A LOW finding is one study's report.
-- F114 is not finished: 19 groups (28 certainty changes) wait for the
-  team lead, 18 papers wait for a context decision, and 8 records are
-  marked unread (F125). Their assertions are not in this memo.
+- The theme readers read the store before F114's last 19 groups entered
+  (5,000 assertions, 2026-10-31). Those were searched for HIGH
+  assertions on advantage, fraud, imbalance, tabular data, kernels,
+  feature selection, QUBO and dequantization (119 hits); none reports a
+  quantum model beating a tuned classical one, so the bottom line
+  stands. 18 papers stay out of the store (the team lead's decision)
+  and 8 records are unread (F125).
 - The readers note that several proved theorems are graded LOW where
   the stored value does not quote the bound (for example
   kernel-exponential-concentration). Such a result is cited here with
@@ -434,12 +457,15 @@ Each answer states what the store supports and how certain it is.
    selection competitive or better against untuned comparators. The
    benchmark solvers ran at fixed settings, not tuned per instance, with
    penalty weights untuned. Phase 2's falsifier puts the limit on the
-   formulation. Implication: before more device time, test
-   whether a tuned classical solver or a penalty sweep finds anything
-   below greedy on the same instances; if nothing does, the formulation
-   is the limit and device runs cannot help. Also test the 200:1
-   resolution against the Hamiltonians. Certainty: HIGH for the setups,
-   LOW for the comparisons.
+   formulation, and its F176 (IEEE-CIS, not yet in the store) found
+   classical gains below greedy of under 2e-05 against room near 0.08 to
+   0.097. Implication: no device run on this formulation until a
+   classical rounding test shows Dirac-3S could resolve gains of that
+   size; run the same solver test on the f153 instances; and at
+   production scale this is the quantum role that fits, because the
+   QUBO is built from statistics accumulated over the rows, so its size
+   does not grow with them. Certainty: HIGH for the setups, LOW for the
+   comparisons.
 4. **Exp 4, replication under Loke's protocol.** Done in Phase 2; the
    store records the protocol's effect on HGB
    (f111-protocol-moves-hgb-not-measurably-the-knn-lane). No new
@@ -453,9 +479,12 @@ Each answer states what the store supports and how certain it is.
    classical slope of about 1.4
    (f110-cvqboost-pool-build-grows-faster-than-rows) is not a quantum
    number; a kernel lane's feasible row count is set by device seconds
-   for M squared circuits times shots. Certainty: HIGH for the scoped
-   loading bound, LOW for the Gram count, nothing for a measured quantum
-   law.
+   for M squared circuits times shots. At 100 million rows a full Gram
+   matrix is about 10^16 entries, so a kernel lane needs landmarks (the
+   Nystrom form cuts circuit runs from order N squared to order N times
+   M squared, coelho-linear-executions, LOW). Certainty: HIGH for the
+   scoped loading bound, LOW for the Gram count, nothing for a measured
+   quantum law.
 
 **The team lead's questions**
 
@@ -508,6 +537,81 @@ Each answer states what the store supports and how certain it is.
     Implication: GenAI is not a lane for this challenge. Certainty: HIGH
     for the result, nothing for a count.
 
+## At production scale
+
+ULB's 284,807 rows train in seconds classically; production fraud data
+accumulates 20 to 100 million rows a day. The comparison at that scale
+is about how each side grows, and it moves toward classical. Points
+marked (outside the store) are the coordinator's knowledge, not stored
+evidence; F128 carries them as reading targets.
+
+- **Classical** gradient boosting with histogram splits grows about
+  linearly in rows times features per tree, runs distributed, and scores
+  a transaction in about a millisecond (outside the store).
+- **Quantum, reading every row**: loading is at least linear in rows
+  (HIGH for one method, under its condition), each row costs several
+  logical operations per feature at a clock of kHz to MHz, and training
+  repeats that for every shot and every pass (Inference: 100 million
+  rows of 30 features is about 3 billion loading operations, about an
+  hour per pass and shot at an optimistic 1 MHz).
+- **QRAM does not remove the cost**: it needs physical resources of
+  order rows times features and may not give a genuine advantage once
+  all are counted (ciliberto-qram-caveats, HIGH); most QML speed-ups
+  assume a preloaded one (dunjko-qml-speedups-need-qram-assumptions,
+  LOW); one design did not support incremental data
+  (qram-fixed-ansatz-no-incremental, HIGH, for that study).
+- **Scoring** a transaction with a circuit and its shots cannot meet a
+  millisecond budget at that volume.
+
+**Methods that process rows a few at a time** (memory independent of
+rows; throughput still per row):
+
+1. Variational classifiers trained by mini-batch gradient descent:
+   about twice the parameter count in circuit runs per row per step,
+   times shots; F118's trainability limits apply.
+2. A fixed quantum feature map feeding a classical streaming learner
+   (quantum extreme learning machines, reservoirs, projected-kernel
+   features): only the classical readout trains. The nonlinearity comes
+   only from the encoding (innocenti-qelm-nonlinearity-from-encoding,
+   HIGH); highly random reservoirs make the models unscalable
+   (qelm-random-reservoir-unscalable, HIGH); local dynamics matched
+   Haar-random ones and may be classically simulable (LOW); finite shots
+   bias the prediction (shot-noise-error-scaling, LOW).
+3. Quantum kernels on M fixed landmark rows (Nystrom): M circuits per
+   new row; memory M rows and an M by M matrix
+   (coelho-nystrom-definition, HIGH; coelho-linear-executions, LOW).
+4. QUBOs on accumulated statistics (feature-selection QUBO, QBoost): a
+   classical pass over the rows updates a d by d (or K by K) matrix, and
+   only that matrix reaches the solver. **This is the quantum role that
+   fits production scale**, and it is Phase 2's Exp 3 lane.
+
+Methods that need every row loaded into quantum memory (HHL-based
+classifiers, quantum PCA, the QRAM-based quantum SVM, full Gram-matrix
+kernels) do not fit, and their low-rank cases are dequantized.
+
+## On a fault-tolerant machine (10,000 logical qubits)
+
+A thought experiment the team lead asked on 2026-10-31. The store holds
+no fault-tolerant resource estimates (F128), so the figures here are
+outside the store and marked so.
+
+- **What stays**: tuned classical models remain the bar for tabular
+  fraud; loading stays at least linear in rows; dequantization, kernel
+  concentration (worse with more qubits), barren plateaus from
+  expressive or global-cost circuits, and the generalization bound all
+  hold on perfect hardware. Only noise-induced limits go.
+- **What changes**: cost is counted in T gates and T-depth; phase and
+  amplitude estimation, Grover and QSVT become usable; non-hybrid use
+  becomes real (factoring, chemistry and materials, Monte Carlo for risk
+  and pricing). Published derivative-pricing estimates put advantage
+  near 7,500 logical qubits with very large T-depth (outside the store),
+  so the logical clock, not the qubit count, would decide it.
+  Quadratic speed-ups likely lose to classical hardware on early
+  fault-tolerant machines (Babbush et al., 2021; outside the store).
+- **For the fraud model**: the answer stays classical. The quantum case
+  moves to adjacent tasks: Monte Carlo risk (cost independent of rows)
+  and the cryptography that protects the bank.
+
 ## Experiments, ranked
 
 Ranked by how much each decides for Phase 2 before the 14 Nov 2026
@@ -523,7 +627,16 @@ where one exists; others are rough and marked so.
    CPU minutes, no device time. Changes the approach: a gap of at least
    0.01 below greedy means the formulation is not the limit and a device
    run is worth its cost; no gap means stop sending this formulation to
-   a device. Extends Exp 3.
+   a device. Extends Exp 3. **Half answered**: Phase 2's F176 ran the
+   solver part on the IEEE-CIS instances (gains under 2e-05; no
+   penalty sweep). The f153 instances and the penalty sweep remain.
+1a. **Rounding test for F176's gains.** Hypothesis: rounding the QUBO's
+   coefficients to Dirac-3S's about 200:1 resolution changes the
+   objective by more than 2e-05, so the device cannot resolve the gains
+   a classical solver found. Ids: dirac3-analog-resolution-about-200-to-1
+   and F176's result file. Cost: CPU minutes. Changes the approach: if
+   the rounding error exceeds the gains, no device run on this
+   formulation can show anything.
 2. **Equal-feature ablation.** Hypothesis: giving the classical lanes the
    proxy's 17 features closes the proxy's edge over linear models, so
    feature choice, not the quantum step, explains it. Ids:
@@ -577,6 +690,35 @@ where one exists; others are rough and marked so.
    dirac3-returns-suboptimal-answers-at-a-measurable-rate. Cost: device
    seconds at the same per-job figures as experiment 5.
 
+### Experiments that would raise the certainty of stored LOW claims
+
+An experiment never raises a published paper's assertion from LOW: the
+paper's result stays what the paper showed. What a run adds is a new
+measured assertion from Phase 2's own data, entered HIGH as a
+measurement of record and linked `supports` or `contradicts` to the LOW
+claim (ADR-0004 A8, as F65 did for Dirac-3). These are the LOW claims a
+Phase 2 run of CPU or simulator minutes would confirm or contradict.
+None can run in this repository, which holds no fraud data and has no
+route of its own for an experiment's provenance; each goes to Phase 2
+in the prompt below.
+
+- The four LOW quantum feature-selection positives
+  (orquin-qfs-competitive, varqfs-vs-classical, qaoa-fs-comparable,
+  hellstern-dataset-dependent): rerun their comparison on ULB and
+  IEEE-CIS against a tuned comparator with the same feature budget
+  (experiments 1 and 2).
+- Kernel concentration and bandwidth (quantum-kernel-ap-separation,
+  hardware-scope-limits, bandwidth-most-important-hyperparameter):
+  experiment 4, a 2 to 14 qubit sweep on fraud features.
+- Classical simulability of quantum extreme learning machines
+  (qelm-local-dynamics-match-haar-classically-simulable): a fixed
+  local reservoir against a Haar-random one on PCA-reduced ULB, with a
+  classical random-feature surrogate (experiment 3).
+- The Nystrom circuit count (coelho-linear-executions): count circuit
+  runs for a landmark kernel at three row counts; a direct measurement.
+- Shot-noise bias in the readout (shot-noise-error-scaling): vary shots
+  per sample on one simulated reservoir.
+
 ## Gaps, carded
 
 The store cannot answer these; F128 (`docs/ALL_SPRINTS_MASTER_PLAN.md`)
@@ -595,10 +737,16 @@ experiments:
 - Tuned classical anomaly-detection numbers on fraud.
 - Three stored assertions that hold two claims of different grade
   (split candidates from F117's review).
+- Production-scale timing, classical against quantum, with loading,
+  shots and per-transaction scoring at 20 to 100 million rows a day.
+- QRAM feasibility and cost at that scale.
+- Fault-tolerant resource estimates for amplitude-estimation risk
+  models and for the quadratic-speed-up break-even (Babbush et al.,
+  2021; Chakrabarti et al. on derivative pricing).
 
 ## Citations checked
 
-On 2026-10-30, every id this memo cites (113) was found in the live
+On 2026-10-31, every id this memo cites (124) was found in the live
 store. These ten were read against their stored value and grade; three
 memo statements were corrected by the read, as noted.
 
@@ -612,7 +760,7 @@ memo statements were corrected by the read, as noted.
 | f151-hgb-default-l2-zero-unstable-at-extreme-imbalance | high | AUPRC 0.375 (SD 0.170) against 0.804. Matches |
 | f153-learner-selection-formulation-fails-its-falsifier | high | Greedy equalled the best; formulation fails its falsifier. Matches |
 | dirac3-analog-resolution-about-200-to-1 | high | Resolution about 200:1. Matches |
-| caro-generalization-error-sqrt-t-over-n | high | sqrt(T log T / N). Corrected: stored HIGH, LOW proposed |
+| caro-generalization-error-sqrt-t-over-n | low | sqrt(T log T / N). Set LOW at the team lead's decision, 2026-10-31: the proof covers 2-qubit gates only |
 | f166-ulb-tuned-boosting-leads-proxy-fifth | high | Proxy fifth of seven, 17 against 30 features. Corrected: order not established |
 
 ## The Phase 2 prompt (draft, for the team lead to paste)
@@ -623,11 +771,13 @@ because a citation into this private store may not resolve there
 (ADR-0005).
 
 ```
-From EvidenceBasedDB's F118 memo (2026-10-30, store snapshot of that
-date). Card each experiment below in docs/ALL_SPRINTS_MASTER_PLAN.md if
-it is not already carded, with the source line kept, and propose its
-place against the 14 Nov 2026 notification date. Do not run anything
-on a device without the team lead's approval.
+From EvidenceBasedDB's F118 memo (store snapshot of 2026-10-31; Phase 2
+read at d14fdb7, your Sprint 30 validation draft). For each item below:
+if one of your cards already covers it, add the source line to that
+card; if none does, card it in docs/ALL_SPRINTS_MASTER_PLAN.md with the
+source line kept. Propose each one's place: before or after the 14 Nov
+2026 notification date. Do not run anything on a device without the
+team lead's approval.
 
 What the store found:
 - In the themes read, no stored result shows a quantum model beating a
@@ -637,37 +787,56 @@ What the store found:
 - No HIGH or independent result shows a quantum or quantum-inspired
   solver beating a tuned classical comparator on cardinality-constrained
   selection. Four single studies report quantum feature selection
-  competitive or better, against untuned comparators (LOW, published
-  studies). Benchmark solvers ran at fixed settings, not tuned per
-  instance, and penalty weights were not tuned. Your f153 falsifier
-  puts the limit on the formulation.
-- For one method (quantum oracle sketching), data loading is linear in
-  rows under a stated condition; one paper claims, without proof, that
-  a kernel Gram matrix needs M squared state preparations (LOW). So
-  F110's classical slope of about 1.4 says nothing about a quantum
-  lane.
+  competitive or better, against untuned comparators (LOW). Your F153
+  falsifier and your F176 (gains below greedy under 2e-05 against room
+  near 0.08 to 0.097; SCIP never beat greedy) put the limit on the
+  formulation.
+- At production scale (20 to 100 million rows a day) the comparison is
+  about growth: classical training grows about linearly in rows; a
+  quantum learner that reads every row pays at least linear loading at
+  a far slower clock, times shots; QRAM needs resources of order rows
+  times features (HIGH, a review); per-transaction quantum scoring
+  cannot meet a millisecond budget. The quantum role that fits is a
+  QUBO built from statistics accumulated over the rows (feature or
+  weak-learner selection), whose size does not grow with them.
+- On a fault-tolerant machine, tuned classical models stay the bar for
+  tabular fraud: loading, dequantization, kernel concentration and the
+  generalization bound do not depend on noise. The quantum case moves to
+  Monte Carlo risk and cryptography.
 
-Experiments, in rank order:
-1. Tuned classical solvers (greedy plus local swap, SA with a tuned
-   schedule) and a cardinality-penalty sweep on the f153 instances. A
-   gap of at least 0.01 below greedy justifies a device run; none
-   retires this formulation from the device. CPU minutes.
-2. Equal-feature ablation: give the classical lanes the CVQBoost
-   proxy's 17 features on ULB. A match leaves QUBO feature selection as
-   the only quantum role. CPU minutes.
-3. A classical surrogate (random Fourier features, MPS or a spectral
+Before 14 Nov 2026 (CPU or simulator minutes; zero metered seconds):
+1. Rounding test for F176's gains: round each instance's coefficients
+   to Dirac-3S's about 200:1 resolution and measure the objective
+   change. If it exceeds 2e-05, no device run on this formulation can
+   show anything; hold F161 and any Exp 3 device run until this is done.
+2. F176's solver test and a cardinality-penalty sweep on the F153
+   instances (F176 ran IEEE-CIS only, with no penalty sweep).
+3. Equal-feature ablation: give the classical lanes the CVQBoost
+   proxy's 17 features on ULB (and on IEEE-CIS once F174 completes). A
+   match leaves QUBO feature selection as the only quantum role.
+4. A classical surrogate (random Fourier features, MPS or a spectral
    tensor network) for any quantum kernel lane; a match means the lane
-   has no gap to exploit. CPU minutes.
-4. Kernel concentration against qubit count (2 to 14) and bandwidth on
-   fraud features, fidelity against projected kernel. Simulator minutes.
-5. Dirac-3S resolution test: rescale the Hamiltonian so distinct
-   coefficients differ by at least max/200 and compare solution
-   quality; classical rounding first, then about 75 s (91 variables) to
-   260 s (560 variables) per 100-sample job, on approval.
-6. Tiered kernel test against your tuned ULB baselines, ten seeds,
-   paired tests. Simulator minutes to hours.
-7. Sample-count sweep with a tuned classical control (Exp 6).
-   Simulator hours.
-8. Per-sample success rate on Dirac-3S against best-of-N. Device
-   seconds, on approval.
+   has no gap to exploit.
+5. Kernel concentration against qubit count (2 to 14) and bandwidth on
+   fraud features, fidelity against projected kernel.
+Each result enters EvidenceBasedDB as a measurement of record linked to
+the published LOW claims it confirms or contradicts.
+
+After 14 Nov 2026 (plan, then run as the outcome allows):
+6. Production-scale framing: measure classical training and scoring
+   time at 1, 10 and 100 million rows (synthetic growth of IEEE-CIS is
+   acceptable, labeled), and state a quantum lane's loading, shot and
+   scoring cost at the same sizes from its circuit. This replaces a
+   comparison at ULB's size.
+7. Streaming QUBO selection: build the feature- or learner-selection
+   QUBO from statistics accumulated in one pass over the rows, and test
+   that it matches the in-memory build. This is the Exp 3 design that
+   survives production scale.
+8. Fault-tolerant resource estimates (logical qubits, T-count,
+   wall-clock) for each candidate quantum step at production sizes, and
+   for an amplitude-estimation risk model.
+9. Tiered kernel test against your tuned ULB baselines, ten seeds,
+   paired tests; sample-count sweep with a tuned classical control (Exp
+   6); per-sample success rate on Dirac-3S against best-of-N (device
+   seconds, on approval).
 ```
