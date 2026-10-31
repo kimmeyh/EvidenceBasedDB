@@ -56,6 +56,8 @@ def test_a_format_note_leaves_a_full_read_as_it_was_for_the_sync_guard(synthetic
         append_updated_reason(conn, "claim-one", f"2026-10-31 (Q7): {FORMAT_ONLY_MARK} a period", "2026-10-31")
         older = replace(full, value="an older script's value")
         assert sync_assertion(conn, older, "2026-10-30 (an older script): entered", "2026-10-30") == []
+        # the date branch, read while the format note is still the last note (review of 80fcbb9)
+        assert sync_assertion(conn, older, f"2026-10-25 (x): {FULL_READ_MARK}: entered", "2026-10-25") == []
         fixed = replace(full, value="the corrected sign-off's value")
         assert sync_assertion(conn, fixed, f"2026-10-30 (x): {FULL_READ_MARK}: corrected again",
                               "2026-10-30") == ["value"]

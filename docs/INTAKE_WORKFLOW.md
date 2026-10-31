@@ -3000,5 +3000,7 @@ Written 2026-10-31, before the apply. Every count here is a snapshot as of
   an ellipsis is left alone (none is stored). No store write: the 900
   records stay as fixed. With the corrected guard, the full-read applier
   on a fresh copy of the live store changed nothing and listed no
-  undecided field, so the 365 records hold what their reviews say. A why of only "." is now refused by `low_grade`
-  as no why at all.
+  undecided field, so the 365 records hold what their reviews say. For a
+  basis that needs a why, a why of only "." is now refused by
+  `low_grade` as no why at all; for any other basis it is dropped. A why
+  that ends in two periods still gives two (none is stored).

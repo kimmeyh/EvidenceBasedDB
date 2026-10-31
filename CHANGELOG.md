@@ -565,6 +565,12 @@ this project keeps having to replace with a step.
   `decided_fields` names every synced column for a changed verdict;
   `f117_review.applied` looks for new assertions under their `id_fix` id
   and skips dropped ones. INTAKE 59 correction; no store write
+- **test**: the review of 80fcbb9 (2026-10-31, no defect found): the
+  guard test also reads the date branch while the format note is last;
+  INTAKE 59 says which bases refuse a why of only "."
+- **docs**: Copilot review of PR #140 (2026-10-31): the retrospective's
+  Development Team answer that named the applier's Sprint 13 file now
+  carries a dated note of the Q5 rename
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

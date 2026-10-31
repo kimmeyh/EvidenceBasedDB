@@ -89,7 +89,7 @@ message opened: "Manual Validation complete". Counts are a snapshot as of 2026-1
 - **Product Owner**: Very Good
 - **Scrum Master**: Very Good
 - **Lead Developer**: Very Good
-- **Claude Code Development Team**: No ADR amendment this sprint. The applier grew three guards (reenter, refusal_reason, stored context); `scripts/sprint13_g_reading.py` is now the main intake path for full reads and still carries a Sprint 13 name.
+- **Claude Code Development Team**: No ADR amendment this sprint. The applier grew three guards (reenter, refusal_reason, stored context); `scripts/sprint13_g_reading.py` is now the main intake path for full reads and still carries a Sprint 13 name. (Note, 2026-10-31, after Q5 = 1: renamed `scripts/full_read_apply.py` in 7b2179f.)
 
 ### 13. Minor Function Updates for the Next Sprint Plan
 
