@@ -507,6 +507,15 @@ this project keeps having to replace with a step.
   no check; the F80 and F83 tests skip an id only when its last change
   is a full read's rewrite. INTAKE 58 corrects two counts (138 updated,
   not 136; 100 assertions neither HIGH nor LOW). Re-applied: 13 records
+- **fix**: the review of bb82d0a (2026-10-31): 5 of the 13 settlement
+  reasons kept a stale or false sentence the pattern edit missed (one
+  still said "not in the g097 pending escalations"); each edited by hand.
+  The two-way value's "can be solved efficiently" now quoted. INTAKE 58,
+  sixth correction. Re-applied: 6 records
+- **process**: Sprint 14 retrospective recorded (2026-10-31):
+  `docs/sprints/SPRINT_14_RETROSPECTIVE.md`, the team lead's feedback
+  verbatim ("Very Good" in every rated category; none for 13, 14 and
+  16), with 6 improvement proposals pending the team lead's decision
 - **process**: Sprint 14 Phase 7 (2026-10-31): retrospective prompt
   sent; Claude's Development Team draft in
   `docs/sprints/drafts/SPRINT_14_RETROSPECTIVE_claude_draft.md`

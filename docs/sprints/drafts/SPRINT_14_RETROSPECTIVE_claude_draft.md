@@ -22,7 +22,10 @@ guard was proven red by injection. Gap: the trial apply on a copy only
 checked "a second apply writes nothing"; it did not compare the copy
 against the pre-apply backup for fields no review decided. A field diff
 after the trial would have caught the context change before the live
-apply.
+apply. And a guard proven red once can turn vacuous later: the context
+test passed with no check after the sign-off named its own ids in
+`context_fix` (found by the review of 0eddd23). A red proof is tied to
+the data at that moment; a later data change can void it.
 
 ### 3. Effort Accuracy
 

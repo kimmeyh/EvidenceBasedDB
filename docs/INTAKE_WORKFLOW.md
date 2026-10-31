@@ -2913,3 +2913,16 @@ counts that enter are added when it runs.
     on a copy: 13 records updated (the 13 certainty reasons, and the
     two-way value and quotes) and nothing else; a second apply wrote
     nothing.
+- **Sixth correction, 2026-10-31, the review of bb82d0a.** Written before
+  the re-apply. The fifth correction's edit of the 13 reasons was made by
+  pattern and missed variants: qgen-grover-lower-bound kept a dangling
+  "for it.", generalization-bound-involves-encoding kept the false
+  "Stored HIGH; not in the g097 pending escalations.", and
+  fidelity-bounds-hamiltonian-norms, qaoa-qa-conditions and
+  qaoa-qa-equivalence-proof kept a sentence asking for the team lead's
+  review that the decision now answers. Each is edited by hand. The
+  two-way value's "can be solved efficiently" now has its quote ("This
+  problem can be solved efficiently, ..."). g097, g102, g103 and g109
+  were re-finalized against the pre-apply copy. Re-applied with backup
+  `evidence-20261031T161240715569-...db`, first on a copy: 6 records
+  updated and nothing else; a second apply wrote nothing.
