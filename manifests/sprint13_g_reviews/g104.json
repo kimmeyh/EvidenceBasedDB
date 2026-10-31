@@ -1,0 +1,231 @@
+{
+ "group": "g104",
+ "reviewed_on": "2026-10-30",
+ "tag": "Sprint 14 Task F, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint14_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "bucher-penalty-condition": [
+   "definition",
+   "Section IV-B2 (text p.4; anchor p.3 is approximate): the text states rho >= f(x*) - f(x~) and the choice rho = f(x1) - min f_relaxed. This is the paper's own penalty rule, read in context with its bound argument."
+  ],
+  "bucher-problem-form-assumptions": [
+   "scope",
+   "Section IV-A, p.3: Eq. 6 has linear f and g_j over binary variables, disjoint one-hot sets D_i, and g_j integer valued (needed for the IF of Ref. 18). The paper states these as the form its method needs."
+  ],
+  "bucher-mks-dummy-knapsack": [
+   "definition",
+   "Section IV-A, p.3: the dummy knapsack y with no weight limit turns the set-packing constraint into Eq. 7 with a one-hot constraint. The paper defines the reformulation."
+  ],
+  "bucher-if-circuit-structure": [
+   "definition",
+   "Section IV-B2 (text p.4-5; anchor p.3 approximate): two QPEs per constraining function plus an ancillary register, a phase gate for the penalty (Eq. 14), and reuse of the ancilla because the compute register returns to |0>. The paper describes its own circuit, with the design taken from Ref. 18."
+  ],
+  "bucher-state-size": [
+   "setup",
+   "Section IV-C1 and IV-C3 (text p.6; anchor p.4 approximate): the state tensor has 2^K times the product of d_i entries, and K = 0 for the PP, so IF+XY needs the product of the d_i. The largest instance (Comb11_2) has about 4.9e7 entries, below 2^28. This is a counting statement from the paper's data layout and simulation threshold, not a theorem, so the basis is setup and not proved result."
+  ],
+  "bucher-ancilla-not-simulated": [
+   "setup",
+   "Section IV-C2 (text p.6; anchor p.4 approximate): the paper states its simulation method. The IF cost is brute-forced classically, so the ancillary registers are not simulated, following Ref. 18."
+  ],
+  "bucher-setup-hardware-optimizer": [
+   "setup",
+   "Section V intro (RTX 4090) and V-A (BFGS, max 100 iterations), text p.6-7; warm-start exclusion in Section III, p.2. All three are stated in the paper as its own protocol. Anchor p.5 is approximate."
+  ],
+  "bucher-setup-simulation-only": [
+   "stated limit",
+   "Section V-A (all-to-all connectivity, native two-qubit Pauli rotations; text p.7) and Section VI (real-device experiments must still be conducted; text p.10). The paper states both as limits of its simulated study. Anchor pages p.5 and p.7 are approximate."
+  ],
+  "bucher-penalty-eta-optimal": [
+   "stated limit",
+   "Section V-C1 (text p.8; anchor p.5 approximate): the paper sets eta to the optimal objective value and says this is impractical in real applications because the optimum is unknown. The phrase 'empirically determined best' is the authors' unshown claim, but the value only reports what they say they did."
+  ],
+  "bucher-metrics-definitions": [
+   "definition",
+   "Section V-A (text p.7; anchor p.5 approximate): RAAR with 0 as random sampling and 1 as the perfect solution (Eq. 18 text), and TTS from P* as layers needed to measure the optimum once at 99% confidence (Eq. 19)."
+  ],
+  "bucher-instances-binding": [
+   "setup",
+   "Section V-C1 (text p.8; anchor p.5 approximate): instances are built so each knapsack constraint is binding, with four noisy price trends per problem ID. This is the paper's generation protocol."
+  ],
+  "bucher-open-work": [
+   "stated limit",
+   "Section VI (text p.10; anchor p.7 approximate): the conclusion says application to other industry problems must still show general applicability."
+  ],
+  "bucher-architecture-setup": [
+   "definition",
+   "Abstract (p.1) and Section IV-A and IV-B (p.3-5): XY-mixers for one-hot constraints and oracle-based Indicator Functions for inequality constraints are the architecture the paper defines and builds. The restriction to the feasible subspace is the design the paper adopts from Ref. 15 and states as its own method."
+  ],
+  "bucher-simulation-scale": [
+   "setup",
+   "Section VI (text p.10) states up to 88 binary variables and 14 inequality constraints. Table I confirms Comb11_2 has N=88 and m=14 time steps. This is the size the paper simulated, a setup fact."
+  ],
+  "buessen-sparse-definition": [
+   "definition",
+   "Section 'Sparse Trotterization' (p.2): k>1 linearly connected nodes, interconnect used at fraction 1/n, Eq. 2 with step n*dt between nodes. The paper defines the scheme."
+  ],
+  "buessen-models-and-setup": [
+   "setup",
+   "Models (p.2) and Results (p.3): XY model with J=1 and domain wall state, TFI with h=0.5 and h=2.0 from a uniform state, k equal sections on linear nodes, reference step 0.1. Read in context."
+  ],
+  "buessen-reference-state-benchmark": [
+   "definition",
+   "Results (p.2-3): all approximations are benchmarked against the uniform Trotter state with step 0.1, and F_ref = |<psi_ref|psi>|^2. So the fidelities measure closeness to that reference, not to the exact state. This follows from the definition."
+  ],
+  "buessen-stochastic-setup": [
+   "setup",
+   "Main text p.4: normal distribution with mean and sigma, average over 1000 randomized instances. Supplement p.7: values below the reference step are replaced by it. Fig. 5 caption (p.5): L=18, k=3, step 0.1. The anchor 'p.3-4' is approximate (main text is p.4)."
+  ],
+  "buessen-limits-1d": [
+   "stated limit",
+   "Conclusion (text p.5; anchor p.4 approximate): the work focused on one-dimensional models, and larger models are future work with more inter-node communication expected. The conclusion also says hardware-specific error models are still required, which supports the no-hardware-error-model clause even though that sentence is not in this item's quotes."
+  ],
+  "buessen-scope-ising-xy": [
+   "scope",
+   "Abstract (p.1) and Models (p.2): the paper simulates the XY model and the transverse-field Ising model, two one-dimensional chains."
+  ],
+  "muta-definition": [
+   "definition",
+   "Section III (p.3): the paper defines Q_{i,k}, triangles T_{i,j,k}, MuTA layer (n,i) of wires of length 5, depth d as d layers, and concatenation by identifying outputs with inputs."
+  ],
+  "muta-setup-measurement-flow": [
+   "scope",
+   "Section II (p.2): the measurement form cos(a)X + sin(a)Y is assumed, angles adapt by flow, and the paper considers only graphs with flow, leaving Pauli flow aside for simplicity."
+  ],
+  "muta-property2-universality": [
+   "proved result",
+   "Section III, Property 2 (p.3): the proof uses single-qubit gates plus IsingXX(phi) with phi not in pi*Z as a universal set (cited, Refs. 35, 36), then builds both gate types on MuTA (Table I, Euler decomposition, Appendix B Eq. B1). The conditions are carried by the quotes. The universality of the gate set is cited, the rest is proved in the paper."
+  ],
+  "muta-property3-entanglement": [
+   "proved result",
+   "Section III, Property 3 (p.3; anchor p.4 approximate): the proof translates the layer to a circuit (Appendix B, Eq. B2), shows no entanglement at 0 or pi, and shows a mixed reduced state (Tr rho^2 < 1) otherwise. The paper defines 'entangling' for the claim."
+  ],
+  "muta-property5-scalability": [
+   "proved result",
+   "Section III, Property 5 (p.4): at most as many parameters as qubits, summed over layers to 4*sum(n_l) <= 4dn. The proof is short and the step from qubits to the factor 4 is not spelled out, but it is the paper's own counting argument. The value correctly limits the claim to a parameter count."
+  ],
+  "muta-property6-monotonic": [
+   "proved result",
+   "Section III, Property 6 (p.4): the proof says 'for weak monotonicity, it is sufficient to show that the expansions do not reduce the set' and shows that for the three expansions. So the proved result is weak (non-decreasing) monotonicity only, and strict increase is not shown. The term 'admissible triangles' is not defined in the paper. The value already states the weak scope. HIGH holds only if the stored wording keeps 'weak'. Flag for the coordinator."
+  ],
+  "muta-property7-two-colorable": [
+   "proved result",
+   "Section III, Property 7 (p.4): the proof shows the graph is bipartite by column parity, with 2-colorable equivalent to bipartite. The purification advantage clause is cited to Ref. 37 and is not proved here. Consider dropping that clause from the value."
+  ],
+  "muta-noisy-data-setup": [
+   "setup",
+   "Fig. 4 caption (p.6): noiseless test data, 60 and 200 training steps, 5 runs on Haar-random datasets, N=20 and N=100 split evenly between training and testing."
+  ],
+  "muta-qfi-classifier-caveat": [
+   "stated limit",
+   "Section IV-C (p.7): the authors say QFI for a known operator needs no machine learning, and that their example only suggests MB-QML can classify when no operational definition exists. The value keeps the hedge."
+  ],
+  "muta-hea-setup-heuristics": [
+   "setup",
+   "Section V (p.8) and Fig. 9 and 10 captions: angles {0, pi/4, pi/2} (homodyne gives 0 and pi/2, the T state adds pi/4), the epsilon-greedy and DQN heuristics, and the target gate (T x 1)IsingXX(-pi/4) on a (2,0) layer with injected T states. The clause 'discrete optimization can be NP-hard' is an uncited field remark inside the value. It does no harm but is not setup."
+  ],
+  "muta-translation-flow-paths": [
+   "proved result",
+   "Appendix B (p.12-13): items 1 to 4 each carry a short proof, and the translation algorithm is built by induction over the measurement order. The conditions (flow, |I|=|O|) are in the quotes and the value."
+  ],
+  "muta-layer-circuit-form": [
+   "proved result",
+   "Appendix B (p.13): Eq. B1 is derived step by step for the (2,0) layer from the translation algorithm. Eq. B2 for a general layer follows from the same algorithm and is stated with the replacement rule for unconnected rows. The derivation for B2 is brief."
+  ],
+  "muta-theorem-a2-relu": [
+   "proved result",
+   "Appendix A (p.12): Theorem A.2 with Definitions A.3 and A.4 and a proof of both directions (affine inverse, then the preimage argument). 'Monotonically expressive' is the authors' own definition, which the value states."
+  ],
+  "muta-focus-deterministic": [
+   "stated limit",
+   "Section VI (text p.9; anchor p.10 approximate): the paper says it focused on deterministic MBQC and leaves trainable probabilistic angle adaptation as an open question."
+  ],
+  "muta-code-availability": [
+   "setup",
+   "Data availability (p.10): all simulations are in Python at github.com/mentpy/mentpy."
+  ],
+  "muta-hardware-scope-photonic-gkp": [
+   "scope",
+   "Section V (text p.8; the stored anchor p.9 is wrong): 'Here, we focus on photonic GKP computation'."
+  ],
+  "muta-proposed-universal-qnn": [
+   "proved result",
+   "Abstract (p.1) and Section IV.A (p.5): MuTA is proposed, and Property 2 (Section III, p.3, proved there with a cited universal gate set) shows it represents a universal gate set. The abstract's list of features includes monotonic expressivity, which is proved only weakly (Property 6). The stored value does not repeat that list, so it holds."
+  ],
+  "callison-mlqae-description": [
+   "definition",
+   "Section 2.5 (p.7): the paper describes MLQAE as Grover-depth d_j circuits not controlled on another register, N_shot shots per depth, the likelihood of Eq. 21 combined into Eq. 22, and numerical maximization."
+  ],
+  "callison-fisher-information": [
+   "proved result",
+   "Section 2.5.1 (p.8) states Eq. 23 and Appendix A (p.24-26) derives it: single-shot score, expectation, then additivity over shots at each depth. The derivation is complete in the paper. The region where the log-likelihood is differentiable is assumed, which excludes exceptional points."
+  ],
+  "callison-analysis-limits": [
+   "stated limit",
+   "Section 6 (p.23) says the analysis assumed the Bernstein-von Mises conditions and was not completely rigorous. Section 3.1 (p.13) says noise beyond depth limitation is not considered. Appendix B (p.26) says the scaling analyses consider only power-of-2 maximum depth."
+  ],
+  "callison-simulation-setup": [
+   "setup",
+   "Section 3.2 (p.13-14): no full circuit simulation, good-state counts drawn from a binomial, log-likelihood maximized on a grid of 3/epsilon regular points where the factor 3 was chosen arbitrarily. The value says 'grid size chosen arbitrarily', which is a loose paraphrase of the factor 3."
+  ],
+  "callison-depth-jittering-definition": [
+   "definition",
+   "Section 5 (p.19-20): Algorithm 2 and its text define depth jittering with a logarithmic spread coefficient, c=2 chosen arbitrarily, and the paper calls the logarithmic spread a heuristic choice."
+  ],
+  "callison-open-work": [
+   "stated limit",
+   "Section 6 (p.23-24) lists the open questions (noise-aware likelihoods, adaptive jittering, numerical safety factors), and Section 2.5.1 (p.10) says relative error is not considered further."
+  ],
+  "callison-scope-depth-limited": [
+   "scope",
+   "Abstract (p.1) says the analysis covers scenarios where circuit depth is limited, and Section 3.1 (p.12-13) is that analysis."
+  ],
+  "canonici-framing-classical-ml": [
+   "scope",
+   "Section V (text p.9; anchor p.7 is wrong): the last conclusion paragraph says the work is framed as classical ML for quantum data, with QML models left to future work."
+  ],
+  "canonici-single-setup": [
+   "setup",
+   "Section III-A (p.3-4): nine real Pasqal runs (six 4-atom topologies plus 2, 3 and 5 atoms), 10000 sigma_R values from U(0,0.15), 20 models by 20-fold cross validation, linear regression baseline, ANNs for 150 epochs with Adam. Section VI-A (p.11) says 150 epochs is a maximum with early stopping, a small nuance to the value."
+  ],
+  "canonici-samples-per-run": [
+   "setup",
+   "Section VI-A (text p.11; anchor p.9 wrong): the Pulser option exists, preliminary experiments found it counter-productive for noise estimation, and the paper keeps one sample per run so noise is resampled each measurement. The preliminary experiments are not shown, but the value reports the stated choice."
+  ],
+  "canonici-real-data-caveats": [
+   "stated limit",
+   "Section III-A (text p.4; anchor p.5 wrong): only sigma_R is treated as variable, low standard deviation does not exclude high bias, and neglected noise sources mean the values could be effective values (repeated in the summary paragraph)."
+  ],
+  "canonici-multi-setup": [
+   "setup",
+   "Section III-B (p.5) and Section VI-B (text p.11; anchor p.9 wrong): 54000 samples, 6 qubits, 500 runs, parameter ranges as listed, best hyperparameters from 1000 models (1 hidden layer of 117 neurons, batch 16), 20 models with early stopping for at most 150 epochs."
+  ],
+  "canonici-dependence-limits": [
+   "stated limit",
+   "Section V (text p.9; anchor p.7 wrong): the techniques depend on atom topology and pulse shape, and accuracy depends on the simulator noise model."
+  ],
+  "canonici-rl-setup": [
+   "setup",
+   "Section IV (p.7; anchor p.6-7 is close): Gaussian Rabi pulse area pi/2 and 500 ns, detuning ramp -20 to 20 rad/us, correction pulse with variable area and detunings, state from 10 noisy runs at 25 states, 50 input units and two 128-unit layers, steps pi/200 and 0.2, 1000 episodes, reward 1 if the l1 distance to the ideal shrinks versus the previous step. The reader flag is right: the text says 'four possible actions' but lists six (a up and down, delta_i up and down, delta_f up and down) and the output layer has 6 neurons. This value states no count, so it is unaffected. It omits that an episode also ends when a parameter leaves its bounds."
+  ]
+ },
+ "theory_low": {
+  "muta-property1-determinism": "cross-group consistency, Rule A (coordinator, 2026-10-30): Property 1, Sec. III, p.3: the proof exhibits a flow and a compatible partial order, then concludes 'Theorem 1 from Ref. [26] explicitly states how to adapt measurement angles to obtain a deterministic outcome'. The determinism itself is the cited flow theorem (Danos and Kashefi), not proved here.",
+  "callison-scaling-assumption": "Section 2.5.1 (p.9-10): the normal approximation rests on the Bernstein-von Mises regularity conditions, which the paper says in Section 6 are not shown to hold ('not completely rigorous'). The speedup scaling follows from Suzuki et al.'s schedule, so it is conditional and partly prior work.",
+  "callison-shots-formula-scope": "Section 3 (p.10-11): Eq. 40 comes from the same asymptotic normal approximation plus an erfinv approximation, and the paper restricts to small precision to avoid contradicting that assumption. It is approximate, not proved.",
+  "callison-depth-limited-speedup": "Section 3.1 (p.12-13): the O(d) speedup is derived from Eqs. 41 to 48 and the paper itself writes 'assuming the Bernstein-von Mises theorem holds'. It is an approximate scaling argument, not a proof.",
+  "callison-tradeoff-exponential-schedule": "Section 3.1 (p.12) and Appendix B (p.26): the claim is an argument from the scaling analysis, compared to the Giurgica-Tiron et al. result (cited, Ref. 25). Appendix B shows the base tends to 2 but the scaling analyses assume a power-of-2 maximum depth. Not a proved result.",
+  "callison-exceptional-explanation": "Section 4 (p.15-19): an explanation in terms of Bernstein-von Mises conditions i and ii failing and of two close likelihood peaks. The paper only says the intuition is 'approximately confirmed' against simulation, and the exceptional region extends past the prediction. It is an interpretation checked on figures, not a proof."
+ },
+ "keep_stored": {
+  "bucher-scaling-limit": "Keep the stored value. The stored p=12 limit is a stated limit (Section V-D, text p.9). The widened value adds IF benefiting most from depth and an ideal TTS at p=5.5, which are measured data analysis results and would not be HIGH. They should be separate low assertions. The stored quote also cites the conclusion for a random-sampling remark that the stored value does not use.",
+  "noise-sim-train-real-test": "Keep the stored HIGH setup statement (trained on simulated Pasqal measurements, tested on real data, correction model trained on a simulated setting; Section V text p.7-8 and Section III). The reader's added clause, that predictions on real data do not match Pasqal's estimates (Section III-B, p.5), is a measured result and would force LOW. It should become its own low assertion. The stored page 'p.12' is wrong."
+ },
+ "requote": {},
+ "value_replace": {
+  "muta-property6-monotonic": "The paper states Property 6 (Monotonicity of expressivity) for three expansions of a MuTA (adding layers, adding disconnected wires, adding admissible triangles together with an extra layer), and its proof shows weak monotonicity: the expansions do not reduce the set of implementable gates.",
+  "muta-property7-two-colorable": "The paper states Property 7 that the graph of any MuTA is 2-colorable, because a graph is 2-colorable if and only if it is bipartite and collecting even columns and odd columns gives a bipartition.",
+  "muta-hea-setup-heuristics": "The authors state their hardware-efficient setup: the permitted measurement angles are 0, π/4 and π/2, and they propose two heuristics for the discrete optimization over measurement patterns, a slice-wise epsilon-greedy search and a deep Q-learning agent, tested on learning the gate (T ⊗ 1) · IsingXX(−π/4) on a single (2, 0)-MuTA layer with injected T states."
+ }
+}

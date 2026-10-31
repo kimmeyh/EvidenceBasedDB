@@ -2780,3 +2780,26 @@ counts that enter are added when it runs.
 - **The apply.** `scripts/sprint13_g_reading.py` enters each finalized
   group. It is tried first on a copy of the store, then run with a
   verified backup; a second apply writes nothing.
+- **Correction and the first apply, 2026-10-30 (counts a snapshot as of
+  that date).** The counts above were written before the review fixes
+  and the consistency passes, and are left as written:
+  - The coordinator set 10 reviewer HIGHs on vendors' own claims to LOW
+    (store.grading writes a vendor's own claim LOW), applied Boyd's
+    consistency ruling (56 decisions; the exercise marker wins, the scalar
+    second-derivative test is background), and applied 82 of the
+    cross-group pass's 86 proposals. The line drawn: a textbook-standard
+    result is background; a specific paper's lemma or derivation taken by
+    citation makes an item LOW. 4 proposals were rejected on it.
+  - 19 groups now wait on 28 certainty changes for the team lead (7 of
+    them from the cross-group pass). g043's qnpg-sample-complexity no
+    longer escalates: its proof rests on two cited lemmas, so the review
+    keeps it LOW, as stored.
+  - 6 groups are held: g052, g053, g054, g055, g060 and g061. Each holds
+    a paper its reader marked as bearing on no context but entered
+    assertions for anyway (184 in all); which context they take, if any,
+    is the team lead's decision.
+  - 47 groups were applied, with backup
+    `evidence-20261030T194240209474-...db`: 7,715 new assertions (2,273
+    HIGH, 5,442 LOW), 117 stored assertions updated, 106 applicability
+    rows, 119 records raised to tier `read`, 9 records refused with
+    their reason. A second apply wrote nothing.

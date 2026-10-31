@@ -415,6 +415,28 @@ this project keeps having to replace with a step.
   nothing when a rebuilt group lacks an id its decisions name (proven
   red). An existing file is reported as not rebuilt. Three low findings
   added to F127
+- **data**: F114's first apply (Sprint 14 Tasks E and F, #145 and #146,
+  2026-10-30; counts a snapshot as of that date). 47 groups entered with
+  a verified backup: 7,715 new assertions (2,273 HIGH, 5,442 LOW) and
+  117 stored assertions updated; a second apply wrote nothing. Before it,
+  the coordinator applied Boyd's consistency ruling and 82 of the
+  cross-group pass's 86 proposals, and set 10 reviewer HIGHs on vendors'
+  own claims to LOW. 19 groups wait on 28 certainty changes for the team
+  lead; 6 groups are held for a context decision on 6 off-topic papers.
+  The group files (g079, g103 to g113, g330) and the 47 signed reviews
+  are committed; INTAKE 58 has its dated correction; the
+  `learning_log` has the tiers' outcomes. The live-store suite then
+  failed 9 tests, each acted on:
+  - one stored quote held "&nbsp;" from a pricing page
+    (braket-simulator-instance-price-tables-not-in-text): cut before it
+    by a sign-off `quote_edits` and re-applied with a backup;
+  - Sprint 11's and F89's store checks now skip an assertion re-read in
+    full (as Sprint 12's did), and F89's refused records may be `read`
+    once a full read is recorded (kaur-2022 was read by F114);
+  - no paper is left at `screened`, so the applicability injection takes
+    a `read` paper, and QBoost is pinned at `read`;
+  - the F11 packet is re-rendered (QBoost's tier), and the learning_log
+    names an allowed protocol
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

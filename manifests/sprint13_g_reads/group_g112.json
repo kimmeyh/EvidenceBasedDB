@@ -1,0 +1,2787 @@
+{
+ "papers": [
+  {
+   "record_id": "chen-2023-survey-classical-quantum-sequence-models",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Chen-et-al._2023_A-Survey-of-Classical-And-Quantum-Sequence-Models__2312.10242.pdf",
+   "title_in_file": "A Survey of Classical And Quantum Sequence Models",
+   "version_note": "arXiv:2312.10242v1, 15 Dec 2023. The file is the paper its record names. Tables I and II were read from the page images as well as the text layer.",
+   "pages": 6,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A six-page survey and small re-implementation study of classical and quantum recurrent and self-attention sequence models (QRNN, QSANN), with a positional-encoding addition to QSANN, tested on small text and image tasks.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qsann-baseline-text",
+     "verdict": "confirmed",
+     "note": "Right as stored. The paper says 'accuracy' for the RP task without the word 'test'; the 73% for MC is called test accuracy. Small caveat only. The paper also says the early growth of the RP test loss indicates overfitting.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qsann-dataset-size",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section V.C, PDF p.4 to p.5, the paper's own setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qsann-near-term-scope",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section V.B, PDF p.4, the paper's own scope.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qsann-positional-encoding-text",
+     "verdict": "confirmed",
+     "note": "Right as stored. The paper's own wording has a typo ('ptrain'). Settings given: embedding dimension 2, text divided in 2 pieces, D = 2, nq = 2, learning rate 0.005.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "survey-aim-scope",
+     "value": "The authors state that their objective is a brief survey of classical and quantum neural-net sequence models, with a focus on recent quantum approaches proposed to work with near-term quantum devices.",
+     "anchor": "Abstract, PDF p.1",
+     "quotes": [
+      "Our primary objective is to conduct a brief survey of various classical and quantum neural net sequence models",
+      "with a focus on recent quantum approaches proposed to work with near-term quantum devices"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The abstract states the paper's own scope.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "survey-reimplementation",
+     "value": "The authors state that they re-implemented a representative set of existing methods, adapted an image-classification approach using quantum self-attention into a quantum hybrid transformer for text and image classification, and applied quantum self-attention and quantum recurrent neural networks to natural language processing tasks.",
+     "anchor": "Abstract, PDF p.1",
+     "quotes": [
+      "We re-implement a key representative set of these existing methods",
+      "to create a quantum hybrid transformer that works for text and image classification"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The abstract states what the authors did.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qnn-pipeline-definition",
+     "value": "The authors describe a quantum neural network as a variational algorithm with three steps: a quantum feature map encodes each classical data point, a variational model of parameterized gates is applied, and the circuit is measured with classical post-processing; for binary classification the class is given by the parity of the measured bit strings.",
+     "anchor": "Section II, PDF p.2",
+     "quotes": [
+      "QNNs are a specific category within variational quantum algorithms, consisting of quantum circuits that incorporate gate operations parameterized for optimization",
+      "First, classical data is typically transformed into a quantum state using a quantum feature map to encode each data point",
+      "the probability of class 0 is associated with the probability of encountering even-parity bit strings, and likewise, for class 1, the probability of encountering odd-parity bit strings"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section II defines the QNN setting the paper uses.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper gives the description without a derivation and cites other work for it."
+    },
+    {
+     "id_suggestion": "qnn-capacity-claim",
+     "value": "The authors state that quantum neural networks can represent a much larger state with exponentially fewer qubits than classical bits, potentially exponentially expanding their capacity for parallel processing, and that proposals allude to possible benefits such as accelerated training and enhanced processing speed.",
+     "anchor": "Section II, PDF p.2",
+     "quotes": [
+      "represent a much larger state with exponentially fewer qubits than classical bits, potentially exponentially expanding their capacity for parallel processing",
+      "allude to possible benefits such as accelerated training and enhanced processing speed"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A general statement with no evidence in this paper; the wording is hedged ('potentially', 'allude to').",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No experiment in the paper measures a capacity or speed benefit."
+    },
+    {
+     "id_suggestion": "encoding-three-methods",
+     "value": "The authors list three quantum data encodings: basis encoding, amplitude encoding (the probability amplitudes of a state represent the classical values) and angle encoding (rotation angles derived from the features), and state that angle encoding is the most commonly used in variational QML methods because of its efficiency.",
+     "anchor": "Section III, PDF p.2 to p.3",
+     "quotes": [
+      "Amplitude Encoding [18], where the probability amplitudes of a quantum state represent the values of classical data",
+      "The Angle Encoding method [19] uses one or more rotation operations, phase or otherwise, to encode each feature",
+      "is the most commonly used in variational QML methods due to its efficiency"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III defines the encodings the paper's models use.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The efficiency claim is stated without measurement here."
+    },
+    {
+     "id_suggestion": "qrnn-encoding-angle",
+     "value": "The authors state that in the QRNN the input at each step is embedded by angle encoding, with the RY rotation angle given by the inverse cosine of the input value.",
+     "anchor": "Section III, PDF p.2",
+     "quotes": [
+      "is embedded into the quantum circuit via angle encoding Uin, with angles of the RY gates via the inverse cosine function"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III states the paper's own QRNN encoding.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-definition-qrb",
+     "value": "The authors state that in fully quantum QRNNs the non-linear transformations of the recurrent blocks are replaced entirely by quantum circuits, called Quantum Recurrent Blocks, and that hybrid QRNNs typically use quantum circuits for acceleration.",
+     "anchor": "Section IV.B, PDF p.3",
+     "quotes": [
+      "In fully quantum QRNNs, the non-linear transformations of the recurrent blocks are replaced entirely by quantum circuits, making them Quantum Recurrent Blocks (QRBs).",
+      "Hybrid QRNNs typically use quantum circuits for acceleration [9]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section IV.B defines the QRB the paper uses.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-gradient-decay-claim",
+     "value": "The authors state that QRBs are in general dense, allowing parameter compression, and that QRBs can potentially avoid gradient decay because of unitary RNN structures.",
+     "anchor": "Section IV.B, PDF p.3",
+     "quotes": [
+      "The QRBs in general are dense, thus allowing parameter compression.",
+      "The QRBs can also potentially avoid gradient decay as a result of unitary RNN structures [22]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A hedged statement ('potentially') attributed to other work; not tested in this paper.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-survey-models",
+     "value": "The paper lists three earlier QRNN proposals: one built from a quantum neuron with parameterized gates combined with amplitude amplification, a variational quantum recurrent neural network built from parameterized quantum circuits, and a quantum-enhanced RNN based on continuous variable quantum neural networks; it then focuses on a fourth model, reference [9].",
+     "anchor": "Section IV.B, PDF p.3",
+     "quotes": [
+      "[22] proposed one of the first QRNN models, consisting of a quantum neuron built using parameterized gates.",
+      "[23] constructed a variational quantum recurrent neural network using parameterized quantum circuits.",
+      "Here, we focus on one [9], which is composed of many quantum recurrent blocks shown in fig4."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A literature summary of cited work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-ansatz-setup",
+     "value": "The authors state that the QRNN ansatz is built from layers of single-qubit and two-qubit gates, with an X-Z decomposition of three trainable rotation angles per single-qubit gate and two-qubit Rzz rotations for entanglement in a cyclic pattern; the Rzz gate is not intrinsic on most hardware but can be built from two CNOT gates around an RZ gate.",
+     "anchor": "Section IV.B, PDF p.3",
+     "quotes": [
+      "The X − Z decomposition was used for the single qubit gates in the circuit",
+      "Two-qubit Rzz rotation gates were used to entangle qubits",
+      "it can be implemented using two CNOT gates sandwiching an RZ gate",
+      "In fig.5, cyclic entanglement is used."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV.B states the paper's own QRNN circuit setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrnn-pqrnn-vs-sqrnn",
+     "value": "The authors state that the staggered QRNN needs less coherence time than the plain QRNN, and that they used the plain QRNN for its simple implementation in a statevector simulator, since the staggered QRNN needs dynamic circuits with a reset operation.",
+     "anchor": "Section IV.B, PDF p.3",
+     "quotes": [
+      "Thus the sQRNN needs less coherence time as compared to the pQRNN.",
+      "which we chose due to the simplicity of implementation in the statevector simulator, since sQRNN requires dynamic circuits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV.B states which QRNN variant the paper ran and why.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The QRNN results therefore come from a statevector simulation of the plain architecture, not from hardware and not from the lower-coherence staggered form."
+    },
+    {
+     "id_suggestion": "qrnn-text-experiment-setup",
+     "value": "The authors state that they tested the QRNN, along with other models, on the MC and RP datasets and on the Amazon, Yelp and IMDB datasets, vectorized the text with TF-IDF, and trained a QRNN on each dataset for 200 epochs with a learning rate of 0.08.",
+     "anchor": "Section IV.B, PDF p.3",
+     "quotes": [
+      "we tested the QRNN model (along with others), on the Meaning Classification (MC) [26] and Relative Pronoun (RP) [27] datasets, as well as the the Amazon, Yelp, and IMDB datasets [28]",
+      "We trained a QRNN on each dataset for 200 epochs and used a learning rate of 0.08."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section IV.B states the paper's own experimental setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table1-text-results",
+     "value": "The authors tabulate train and test accuracy of QSANN, a classical transformer (CT), QRNN and RNN on the MC, RP, Amazon, IMDB and Yelp text datasets in Table I; the table caption credits the result to reference [31].",
+     "anchor": "Table I, PDF p.5 (figures read from the page image)",
+     "quotes": [
+      "THE RESULT OF TEXT CLASSIFICATION USING QSANN, QRNN, RNN AND CLASSICAL TRANSFORMER (CT) FROM THE PAPER [31]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on small datasets; the caption's attribution is unclear.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table I (page image) shows test accuracy for QSANN of 1, 0.93, 0.64, 0.57 and 0.72, for CT of 1, 0.59, 0.67, 0.55 and 0.6, for QRNN of 0.967, 0.613, 0.658, 0.859 and 0.602, and for RNN of 1 on every dataset (MC, RP, Amazon, IMDB, Yelp). Reference [31] is a deep-learning textbook, so the caption does not say whose runs these are. The table lists RP QSANN test accuracy 0.93 with no positional-encoding label, against 64.5% (without) and 90.32% (with) in the text; the table also gives 130 and 105 samples for MC and RP where Section V.C gives 70 plus 30 and 74 plus 31. The table cannot be read as the same runs as the text. The QSANN test accuracy on the three large datasets is below 0.75 and the classical RNN reaches 1."
+    },
+    {
+     "id_suggestion": "qsal-architecture-definition",
+     "value": "The authors state that each quantum self-attention layer has a quantum circuit part and a classical post-processing part: three parameterized circuits with the same ansatz and different parameters represent query, key and value.",
+     "anchor": "Section V.B, PDF p.4",
+     "quotes": [
+      "QSAL consists of a quantum circuit part and a classical postprocessing part.",
+      "there are three main different parameterized quantum circuits, Uq, Uk, Uv which are employed to represent the query, key, and value components of the self-attention model"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section V.B defines the QSAL the paper runs.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qsal-gaussian-attention",
+     "value": "The authors state that the query and key outputs are used to compute a Gaussian projected self-attention coefficient, which is normalized and used to weight the value vectors in the layer output.",
+     "anchor": "Section V.B, PDF p.4",
+     "quotes": [
+      "the measurement output from the key and query's quantum parameterized circuits are used to calculate their similarity using Gaussian projected self-",
+      "where α ̃s,j is the normalized gaussian projected self attention coefficient"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section V.B defines the attention rule, eq. (1), the paper uses.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The formula for the coefficient is garbled in the text layer; the reader viewed the page image only for page 5."
+    },
+    {
+     "id_suggestion": "qsann-two-model-families",
+     "value": "The authors state that one proposed quantum self-attention model is a full quantum circuit without classical post-processing, and that it requires plenty of qubits to be executed.",
+     "anchor": "Section V.B, PDF p.4",
+     "quotes": [
+      "One can be realized by a full quantum circuit without classical post-process [29].",
+      "However, this method requires plenty of qubits to be executed."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited model and a stated limit of other work, not tested here.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qsann-text-setup",
+     "value": "The authors state that for the MC and RP text tasks each sample is a sentence with four words, QSAL takes n times (Denc plus 2) features so the vector is extended to length 6 with two zeros, and they set D to 2, use one QSAL layer and a learning rate of 0.005.",
+     "anchor": "Section V.C, PDF p.4 to p.5",
+     "quotes": [
+      "Each sample includes a sentence with four words.",
+      "we could extend the vector to a 6-length vector by adding two zeros after vectorizing the sentence",
+      "We set D = 2, one layer of QSAL, and the learning rate 0.005 for both tasks."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section V.C states the paper's own text-task setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The tasks are tiny: 70 and 74 training samples of four words."
+    },
+    {
+     "id_suggestion": "qsann-rp-position-dependence",
+     "value": "The authors state that the RP task, identifying a noun as subject or object, depends highly on word positions, and conclude that QSANN without positional information, as originally proposed, cannot predict the RP task well.",
+     "anchor": "Section V.C, PDF p.5",
+     "quotes": [
+      "The RP task is to identify a noun as a subject or an object, which is highly dependent on the word positions;",
+      "thus, QSANN without positional information, as originally proposed, cannot predict the RP task well."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation of one small run; no ablation beyond the positional-encoding comparison.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qsann-image-setup",
+     "value": "The authors state that for images they divide the image into patches (row-wise, column-wise or block-wise), embed each patch, pass them through several QSALs and a fully connected network, and that the patching type did not largely influence performance in their case, so they report row-wise patching.",
+     "anchor": "Section V.D, PDF p.5",
+     "quotes": [
+      "The patching can be done in three different ways: row-wise, column-wise, and block-wise.",
+      "We found different type of patching did not largely influence the performance of the model in our case for the chosen datasets",
+      "the output from the QSALs is then fed to a fully connected neural network for classification"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section V.D states the paper's own image-task setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The patching comparison is stated without figures."
+    },
+    {
+     "id_suggestion": "table2-image-results",
+     "value": "The authors tabulate classification accuracy of QSANN without positional encoding against a classical vision transformer (CVT) on Sklearn Digits, MNIST and FashionMNIST in Table II, with the learning rate fixed at 0.001 and 75% of images used for training and 25% for testing.",
+     "anchor": "Table II, PDF p.6 (figures read from the text layer)",
+     "quotes": [
+      "THE LEARNING RATE WAS ALSO KEPT FIXED THROUGHOUT DIFFERENT DATASETS AT 0.001.",
+      "75% WERE USED FOR THE TRAINING AND 25% FOR TESTING."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with sample sizes of 100 to 1000 images.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table II lists test accuracy (CVT then QSANN) of 1.0 and 0.98 (Digits, 2 classes, 280 samples), 0.98 and 0.9 (Digits, 10 classes, 100), 0.95 and 0.84 (Digits, 10 classes, 500), 0.96 and 0.85 (MNIST, 500), 0.94 and 0.78 (MNIST, 1000), 0.96 and 0.65 (FashionMNIST, 500). The column order is taken from the header; it is the reader's reading of the text layer. QSANN test accuracy is below the CVT on every row, while QSANN train accuracy is 0.98 or higher on five of six rows (0.88 on FashionMNIST), a train and test gap the paper does not discuss."
+    },
+    {
+     "id_suggestion": "positional-encoding-image-convergence",
+     "value": "The authors report that the model converges faster on image data when positional encoding was added, as shown in Figure 9 on the Sklearn Digits dataset.",
+     "anchor": "Section V.E, Fig. 9, PDF p.5",
+     "quotes": [
+      "We found that the model converges faster for this image data when positional encoding was added, as shown in Fig 9."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one run of one dataset.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "In the Fig. 9 page image both curves reach roughly 1.0 accuracy by about 30 epochs; the difference is in speed, not in final accuracy. The text does not say the figure is an average over runs."
+    },
+    {
+     "id_suggestion": "positional-encoding-text-loss",
+     "value": "The authors report that with positional encoding the training and test losses on the text tasks converge faster, even though there are more trainable parameters.",
+     "anchor": "Section V.E, Fig. 10 (c) and (d), PDF p.5",
+     "quotes": [
+      "Fig. 10 (c) and (d) show that the training and test losses converge faster with positional encoding, even though there are more trainable parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one run on the RP task.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "In the Fig. 10 page image the RP test loss flattens near 0.25 while the train loss goes near zero, so a train and test gap remains."
+    },
+    {
+     "id_suggestion": "positional-encoding-setup",
+     "value": "The authors state that for the positional-encoding runs they added an embedding layer and a positional encoding layer to QSANN, set the embedding dimension to 2 and the number of text pieces to 2, and kept D at 2, nq at 2 and the learning rate at 0.005.",
+     "anchor": "Section V.E, PDF p.5",
+     "quotes": [
+      "we added an embedding layer and positional encoding layer to the QSANN",
+      "We set the embedding dimension as 2 and the number of pieces that the text is divided as 2.",
+      "We keep D = 2, nq = 2, and learning rate 0.005."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section V.E states the paper's own setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The paper does not say whether the baseline and the positional-encoding runs used the same embedding, so part of the gain may come from the added embedding layer."
+    },
+    {
+     "id_suggestion": "conclusion-qsann-superior",
+     "value": "The authors conclude that QSANN, enhanced by positional encoding, achieves superior performance by leveraging its self-attention mechanism, and that QRNN faces challenges in capturing long-term dependencies due to its inherent short-term memory limitations.",
+     "anchor": "Section VI, PDF p.5 to p.6",
+     "quotes": [
+      "QSANN, enhanced by positional encoding, achieves superior performance by leveraging its self-attention mechanism to",
+      "In contrast, QRNN faces challenges in capturing long-term dependencies due to its inherent short-term memory limitations."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion; the paper compares no QRNN memory length and the QSANN comparison is on small tasks.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Table II shows QSANN below the classical vision transformer on test accuracy and Table I shows the classical RNN at 1 on every text dataset, so 'superior' holds only against QSANN without positional encoding."
+    },
+    {
+     "id_suggestion": "conclusion-quantum-potential",
+     "value": "The authors state that quantum self-attention holds the potential to leverage and expand the properties of classical self-attention and transform machine learning applications, by potentially enabling faster and more accurate solutions to intricate modeling tasks.",
+     "anchor": "Section VI, PDF p.6",
+     "quotes": [
+      "Quantum selfattention holds the potential to further leverage and expand these properties, and transform machine learning applications",
+      "by potentially enabling faster and more accurate solutions to intricate modeling tasks."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A forward-looking statement with no evidence in this paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The experiments do not show a faster or more accurate result than the classical models."
+    },
+    {
+     "id_suggestion": "hardware-immaturity-limit",
+     "value": "The authors state that practical and scalable quantum computers are still in early stages of development.",
+     "anchor": "Section I, PDF p.1",
+     "quotes": [
+      "practical and scalable quantum computers are still in early stages of development"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section I states the limit on the paper's setting.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "chen-2024-crossing-gap-variational-quantum-eigensolver",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Chen-et-al._2024_Crossing-The-Gap-Using-Variational-Quantum-Eigensolver-A-Comparative-Study__2405.11687.pdf",
+   "title_in_file": "Crossing The Gap Using Variational Quantum Eigensolver: A Comparative Study",
+   "version_note": "arXiv:2405.11687v2, 15 Jun 2024. The file is the paper its record names. Table I and Fig. 6 and Fig. 7 were read from the page 7 image as well as the text layer.",
+   "pages": 10,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A simulation study of excited-state variational quantum eigensolvers (VQD against SSVQE, three optimizers, three ansatzes, qubit tapering) on LiH, plus a proposed folded-spectrum combination (FS-VQD, FS-SSVQE) tested on H4.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "chen2024-adam-iterations",
+     "verdict": "narrowed",
+     "note": "The abstract claim holds as an iteration count, but the paper limits it: one setup (FS-VQE on LiH's first excited state, learning rate 0.07), and GD stopped at its 157th iteration still far from the target, so GD's count is the count at which its stopping rule fired, not a count to reach the same accuracy. Adam converged by its 134th iteration.",
+     "value": "The authors report that, in a folded-spectrum VQE run on the first excited state of LiH with one learning rate of 0.07 for all three optimizers, Adam converged by the 134th iteration to a final value 2.14×10−5 from the target, GD stopped at the 157th iteration with a final value 0.02247 short of the target, and QNG stopped at the 258th iteration with a final value 0.00429 from the target.",
+     "anchor": "Section III.B, Fig. 5, PDF p.6",
+     "quotes": [
+      "we maintain a consistent learning rate of 0.07 across all optimizers",
+      "GD’s cost function decays more and more slowly and stops at the 157th iteration.",
+      "The final value obtained using GD still falls 0.02247 short of the target",
+      "Finally, the cost function stops at the 258th iteration.",
+      "The final value obtained using QNG is 0.00429 away from the target.",
+      "converging by the 134th iteration",
+      "The final value is merely 2.14×10−5 from the target value."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one run of one molecule and one bond length.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Each optimizer is shown from one run, with no repeat or seed spread. The stated counts differ by 23 between Adam and GD, and GD ended much farther from the target, so the ranking by iterations is not a ranking at equal accuracy."
+    },
+    {
+     "id": "chen2024-folded-spectrum",
+     "verdict": "confirmed",
+     "note": "Right as stored. Section III.D adds that the FS-SSVQE energy variance is a bit higher than the FS-VQD one, and Section IV says FS-VQD spends fewer iterations. The abstract's phrase 'all three highly excited states' is the paper's own.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "chen2024-scope-larger-molecules",
+     "verdict": "confirmed",
+     "note": "Right as stored. The sentence on larger molecules is in the Conclusion section (PDF p.9), not in the abstract; the abstract states only the LiH comparison. The study also covers H4 for the folded-spectrum methods.",
+     "value": "The authors state that the study compares VQD and SSVQE in determining the low-lying excited states of LiH, and that investigating their effectiveness on larger chemical molecules is crucial.",
+     "anchor": "Abstract, PDF p.1; Section IV Conclusion, PDF p.8 to p.9",
+     "quotes": [
+      "we compare the performance of Variational Quantum Deflation (VQD) and SubspaceSearch Variational Quantum Eigensolver (SSVQE) methods in determining the low-lying excited states of LiH",
+      "It is crucial to investigate the effectiveness of VQD and SSVQE methodologies when applied to larger chemical molecules"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The abstract and Conclusion state the paper's own scope.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "chen2024-vqd-vs-ssvqe",
+     "verdict": "confirmed",
+     "note": "Right as stored. Section III.C adds detail: both give relative errors mostly below 0.1%, the SSVQE errors for the S1 and T1 states are higher beyond a bond length of 2.8 angstrom, and the two methods used different layer counts (2, 3 and 4 layers for VQD, 4 layers for SSVQE).",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "chen-2024-vqe-definition",
+     "value": "The authors describe VQE as a hybrid quantum algorithm that gets the lowest eigenstate of a given Hamiltonian using a variational ansatz, with the loss function equal to the expectation value of the Hamiltonian, and state that the state with the minimum expectation value is approximately the ground state.",
+     "anchor": "Section I, eq. (1), PDF p.1",
+     "quotes": [
+      "VQE is a hybrid quantum algorithm that gets the lowest eigenstate with a given Hamiltonian (H) using variational ansatz.",
+      "The state with optimal parameters θ∗, which has minimum ⟨H⟩, is approximately the ground state."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section I defines the method the paper uses.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen-2024-nisq-definition",
+     "value": "The authors state that quantum hardware with a lot of noise (gate error rates around 1 × 10−2) and a limited number of qubits (around 10 to 1000 physical qubits) is called Noisy Intermediate Scale Quantum (NISQ) devices, and that the hardware error is still too large for quantum error correction.",
+     "anchor": "Section I, PDF p.1",
+     "quotes": [
+      "the error is still too large for quantum error correction",
+      "The quantum hardware with lots of noise (gates’ error rate around 1 × 10−2) and a limited number of qubits (around 10 to 1000 physical qubits) is called Noisy Intermediate Scale Quantum (NISQ) devices [17]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section I states the paper's own working definition of NISQ.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqd-ssvqe-definitions",
+     "value": "The authors describe VQD as adding the fidelity between the target state and lower-energy states to the loss function so the target is an excited state, and SSVQE as taking the sum of the Hamiltonian expectation values of orthogonal states as the loss function, so the ground and lower excited states come from a single parameter optimization.",
+     "anchor": "Section I, PDF p.1",
+     "quotes": [
+      "adds the fidelity between target excited states and lower energy states to the loss function",
+      "takes the sum of different orthogonal states’ Hamiltonian expectation values as the loss function",
+      "obtaining both the ground and lower excited states within a single parameter optimization procedure is possible"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section I defines the two methods compared.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqd-method-details",
+     "value": "The authors state that VQD uses a different parameterized unitary for each input state and optimizes the loss function of eq. (8) individually from the lowest state up to the k-th lowest state, with an overlap penalty that can be computed by a swap test (extra qubits and an ancilla) or by inversion of the unitary.",
+     "anchor": "Section II.B.2, eq. (8), Fig. 2, PDF p.2 to p.3",
+     "quotes": [
+      "VQD has different parameterized unitaries Uk(θk) for all input initial states {|ψk⟩}",
+      "The trick to acquire k lowest energy states using VQD is to optimize the loss function in eq. 8 individually from the lowest state to k th lowest state.",
+      "the swap test circuit can be utilized, requiring additional qubits to prepare another state and one ancilla qubit to obtain the overlap value"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section II.B.2 defines the VQD procedure the paper runs.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "VQD needs a separate optimization per state; the cost comparison with SSVQE counts that."
+    },
+    {
+     "id_suggestion": "ssvqe-method-details",
+     "value": "The authors state that original SSVQE needs two unitary transformations to search the k-th excited state and that a specific ansatz for the second one is hard to find, and that weighted SSVQE gets all excited states up to the k-th through a single parameter optimization with weights chosen smaller as the index increases.",
+     "anchor": "Section II.B.1, eqs. (5) to (7), PDF p.2",
+     "quotes": [
+      "Original SSVQE requires two unitary transformations to search k-th excited state.",
+      "it’s hard to find a specific ansatz V (ϕ) that acts only on {|ψi⟩} and requires two optimization processes",
+      "which can acquire all excited states up to the k-th excited state through a single parameter optimization procedure"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section II.B.1 defines the SSVQE variants used.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fs-vqe-definition",
+     "value": "The authors state that the folded spectrum technique maps the target highly excited states to the ground state by changing the Hamiltonian to H prime equal to H minus omega, squared, where omega is an energy value close to the excited state's energy, and that FS-VQE is a normal VQE on the ground state of H prime.",
+     "anchor": "Section II.B.3, eq. (9), PDF p.3",
+     "quotes": [
+      "The FS technique is a method to map the Hamiltonian’s target highly excited states to the ground state by changing the Hamiltonian",
+      "where ω is an arbitrary scaler energy value close to the excited state’s energy level. FS-VQE is a normal VQE to the ground state of H′."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section II.B.3 defines the folded spectrum method used.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fs-vqe-cost-claim",
+     "value": "The authors state that FS-VQE was previously considered too costly because of the exponential growth of terms in the measured operator, and that the cited study uses a Pauli grouping technique that can significantly reduce the number of measurements and make FS-VQE a cost-efficient option.",
+     "anchor": "Section II.B.3, PDF p.3",
+     "quotes": [
+      "its quantum application was previously considered too costly due to the exponential growth of terms in the measured operator",
+      "employing a Pauli grouping technique, which can significantly reduce the number of required measurements and makes FS-VQE a cost-efficient option"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uccsd-cnot-cost",
+     "value": "The authors state that the UCCSD ansatz with fermionic single and double excitation operators requires many CNOT gates, which makes it challenging to implement on NISQ devices.",
+     "anchor": "Section II.C.1, PDF p.3",
+     "quotes": [
+      "UCCSD with fermionic single and double excitation operators excitation requires many CNOT gates to implement. This makes it challenging to implement the UCCSD ansatz on NISQ devices."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement without a measurement in this paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qccsd-cnot-count",
+     "value": "The authors state that, unlike fermionic excitation operators, implementing a single or double qubit excitation evolution operator requires 2 or 13 CNOT gates respectively for any system size, citing reference [27], and that they use a spin-restricted QCCSD ansatz.",
+     "anchor": "Section II.C.2, PDF p.4",
+     "quotes": [
+      "implementing these single qubit (double) evolution operators on a quantum computer requires 2 (13) CNOT gates for any system size [27]",
+      "Thus, the QCCSD ansatz employed in our simulations contains only single and double qubit excitation evolution operators that conserve the total spin number."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The CNOT counts are attributed to reference [27]; the ansatz choice is the paper's setup.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "se-ansatz-unphysical-states",
+     "value": "The authors state that the Strongly Entangled ansatz does not conserve the total spin number and charge, so excited-state energies obtained with it are unphysical unless a constraint is added to the cost function, and that they add a total-magnetization constraint with the desired magnetization set to zero.",
+     "anchor": "Section II.C.3 and Section III.C, PDF p.4 and p.7",
+     "quotes": [
+      "the ansatz doesn’t conserve the total spin number and charge. It means that the excited state energies obtained using this ansatz are unphysical.",
+      "To avoid unphysical results, we should add a constraint to the cost function.",
+      "To get Sz = 0 states, we set up mz = 0 in eq 20 for the cost function."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section II.C.3 states the limit of the ansatz and the paper's own fix.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qubit-tapering-definition",
+     "value": "The authors state that qubit tapering allows omission of qubits on which at most one Pauli operator acts in all terms of the Hamiltonian, by substituting the operator's eigenvalue plus or minus one.",
+     "anchor": "Section II.D, PDF p.4",
+     "quotes": [
+      "the qubit tapering technique allows for the omission of qubits on which, from all the terms Pl in the Hamiltonian, at most one Pauli",
+      "The Pauli operators in the Hamiltonian can be substituted by the Pauli operators’ eigenvalue ±1 so the corresponding qubits can be neglected."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section II.D defines the technique used.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qng-description-claim",
+     "value": "The authors state that Quantum Natural Gradient uses the Fubini-Study metric tensor to modulate the optimization step sizes, unlike gradient descent which assumes a Euclidean metric space, and claim that by accounting for the parameter space's geometry the QNG optimizer significantly enhances the efficiency of the optimization process.",
+     "anchor": "Section II.E.2, PDF p.4 to p.5",
+     "quotes": [
+      "Contrary to the traditional GD method, which operates under the assumption of an Euclidean metric space, QNG employs the Fubini-Study metric tensor, denoted as g, to modulate the optimization step sizes.",
+      "By accounting for the parameter space’s geometry, the QNG optimizer significantly enhances the efficiency of the optimiza"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A general claim; the paper's own optimizer comparison on LiH shows QNG slower than Adam.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The paper's Fig. 5 result (QNG stopped at the 258th iteration, Adam at the 134th) does not show the claimed efficiency gain for QNG in this setup."
+    },
+    {
+     "id_suggestion": "lih-resource-setup",
+     "value": "The authors state that LiH has 6 molecular orbitals needing 2 qubits each, so 12 qubits, and that they tested how many molecular orbitals are needed to get 99.9% accuracy for the ground and first excited state energies by exact diagonalization of the Hamiltonian.",
+     "anchor": "Section III.A, PDF p.5",
+     "quotes": [
+      "The molecular compound LiH has 6 molecular orbitals, and each molecular orbital requires 2 qubits to simulate. The number of qubits for the LiH’s VQE calculation is 12.",
+      "we test how many molecular orbitals we need to get 99.9% accuracy for the ground state and the first excited state’s energy using exactly diagonalizing the Hamiltonian"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III.A states the paper's own simulation setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lih-orbital-truncation-result",
+     "value": "The authors report that the relative error of the 5-orbital result is lower than 10 to the minus three overall, and so they ignore one molecular orbital, the core orbital of LiH, in the VQE simulation; the 5-orbital result is a bit off from the exact one at a bond length of 0.4 atomic unit.",
+     "anchor": "Section III.A, Fig. 4, PDF p.6",
+     "quotes": [
+      "Although the result with 5 molecular orbitals is a bit off from the exact one at r = 0.4 atomic unit, overall, the relative error of 5 molecular orbitals’ result is lower than 10−3.",
+      "Therefore, we ignore one molecular orbital which corresponds to core orbital of LiH compound for the VQE simulation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from exact diagonalization on one molecule.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The VQD relative errors in Section III.C are higher at short bond lengths, and the paper ties this to the excluded core orbital."
+    },
+    {
+     "id_suggestion": "optimizer-comparison-setup",
+     "value": "The authors state that the optimizer comparison uses folded-spectrum VQE on LiH's first excited state because it is intricate to implement PennyLane's QNG function with SSVQE or VQD, with a learning rate of 0.07, bond length of 1.6 angstrom, omega of −7.8 Ha, three layers of spin-restricted QCCSD with zero initial parameters, and a stop when the cost change falls below a threshold or at the 400th iteration.",
+     "anchor": "Section III.B, PDF p.6",
+     "quotes": [
+      "we select FS-VQE to simulate the excited state of LiH since it’s intricate to implement Pennylane’s QNG function with SSVQE or VQD",
+      "we maintain a consistent learning rate of 0.07 across all optimizers",
+      "fix the bond length at l = 1.6 A˚ and ω = −7.8 Ha in eq. 9",
+      "we employ three layers of spin-restricted QCCSD with initial parameters initialized to zero",
+      "or until the optimization process reaches the 400th iteration"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III.B states the paper's own comparison setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The optimizer ranking is measured with FS-VQE only, not with the VQD or SSVQE methods the paper compares in Section III.C."
+    },
+    {
+     "id_suggestion": "optimizer-adam-vs-gd-circuits",
+     "value": "The authors state that the number of circuits required for Adam equals that of GD while QNG demands additional circuits for the quantum geometric tensor, and that, considering efficiency, Adam is the most suitable optimizer for training LiH's excited states, so they use Adam for the remainder of their calculations.",
+     "anchor": "Section III.B, PDF p.6",
+     "quotes": [
+      "while the number of circuits required for Adam equals that of GD, the QNG demands additional circuits for evaluating the quantum geometric tensor",
+      "Adam stands out as the most suitable optimizer for training LiH’s excited states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conclusion drawn from one comparison run.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "comparison-vqd-ssvqe-setup",
+     "value": "The authors state that for the VQD and SSVQE comparison they use a spin-restricted QCCSD ansatz and the Adam optimizer for both methods, with learning rates of 0.3 and identical initial states, differing only in layer counts: 2, 3 and 4 layers of QCCSD for VQD's ground, first and second excited states, and 4 layers for SSVQE, with a convergence threshold of 10 to the minus five.",
+     "anchor": "Section III.C, PDF p.6",
+     "quotes": [
+      "we employ a spin-restricted QCCSD ansatz and Adam optimizer for both methods",
+      "we maintain identical learning rates of 0.3 and initial states for each",
+      "we employ 2 layers of QCCSD for the ground state, 3 layers for the first excited state, and 4 layers for the second excited state",
+      "for SSVQE, we utilize 4 layers of QCCSD as the common parameterized unitary for all states",
+      "the same stopping criterion with a convergence threshold of 10−5 here"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III.C states the paper's own comparison setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The layer counts differ between the two methods, so the comparison is not at equal circuit size."
+    },
+    {
+     "id_suggestion": "vqd-ssvqe-relative-error",
+     "value": "The authors report that the VQD energies match the exact calculation and the VQD relative errors of the energy states remain below 0.1% except for the excited state at 3.6 angstrom, while for SSVQE the S1 and T1 relative errors at bond lengths longer than 2.8 angstrom range from 0.07% to 0.4%.",
+     "anchor": "Section III.C, Fig. 6, PDF p.6",
+     "quotes": [
+      "overall, the relative errors of the energy states remain below 0.1%, except for the excited state at 3.6A˚ .",
+      "the relative errors of the S1 and T1 states’ energy, with bond lengths longer than 2.8A˚ , range from 0.07% to 0.4%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result on one molecule.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The SSVQE errors beyond 2.8 angstrom are above the 0.1% level stated for VQD, which fits the abstract's 'slight advantage' for VQD in accuracy."
+    },
+    {
+     "id_suggestion": "vqd-ssvqe-gate-counts-nisq",
+     "value": "The authors report that VQD and SSVQE with the QCCSD ansatz require 448 to 896 two-qubit gates and 800 to 1600 one-qubit gates for the parameterized circuit, which they call unfriendly for NISQ devices.",
+     "anchor": "Section III.C, Table I, PDF p.6 to p.7",
+     "quotes": [
+      "they require 448 ∼ 896 2-qubits gates, 800 ∼ 1600 1-qubit gates for the parameterized quantum circuit, which are unfriendly for NISQ devices"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A resource count from one set of circuit constructions.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table1-iterations-and-params",
+     "value": "The authors tabulate, per method, the number of one-qubit and two-qubit gates, depth, average iterations over 9 bond lengths and number of parameters; for VQD with QCCSD the ground, triplet and singlet first excited states need 800, 1200 and 1600 one-qubit gates.",
+     "anchor": "Table I, PDF p.7 (figures read from the page image)",
+     "quotes": [
+      "VQD +QCCSD S0:800 T1:1200 S1:1600 S0:448 T1:672 S1:896 S0:713 T1:1069 S1:1425 S0:66.44 T1:66.56 S1:71.89 S0:48 T1:72 S1:96",
+      "the averaging iteration to get the results (average over 9 bond length) for each method [36]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Table I (page image): VQD with QCCSD averages 66.44, 66.56 and 71.89 iterations for S0, T1 and S1 (about 205 in total) with 48, 72 and 96 parameters; SSVQE with QCCSD averages 114.11 iterations with 96 parameters, in one run. So the single SSVQE optimization uses fewer total iterations than the three VQD ones but more than any one of them. With tapering, VQD parameters fall from 48, 72, 96 to 20, 30, 40, a cut of about 58%, which differs from the 70% the text states. VQD with the strongly entangled ansatz averages 290.44, 209.56 and 163.78 iterations."
+    },
+    {
+     "id_suggestion": "qubit-tapering-resource-reduction",
+     "value": "The authors report that qubit tapering reduces the number of two-qubit gates to 246 to 492 and one-qubit gates to 446 to 892, reduces the circuit depth by 39.85% and the number of trainable parameters by 70%, while the relative error remains the same as in the untapered VQD run.",
+     "anchor": "Section III.C, Fig. 7, Table I, PDF p.6 to p.7",
+     "quotes": [
+      "the number of 2-qubit gates (1-qubit gates) is reduced to 246 ∼ 492 (446 ∼ 892). The circuit depth is reduced by 39.85%.",
+      "the number of trainable parameters is also significantly reduced by 70%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the parameter figure does not match Table I.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Table I shows parameter counts falling from 48, 72, 96 to 20, 30, 40 for VQD, about 58%, not 70%. The stated 70% is not reproduced by the table."
+    },
+    {
+     "id_suggestion": "tapering-error-improvement",
+     "value": "The authors report that, with qubit tapering, the SSVQE-with-tapering relative errors are less than 0.1% except at a bond length of 0.4 angstrom, and that qubit tapering improves the energy result at bond lengths longer than 2.4 angstrom.",
+     "anchor": "Section III.C, Fig. 7(e), PDF p.7",
+     "quotes": [
+      "shows that the qubit tapering technique improves the energy result at the bond length longer than 2.4A˚ . Except for bond length l = 0.4A˚ , the relative errors are less than 0.1%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "se-ansatz-result",
+     "value": "The authors report that the VQD run with the strongly entangled ansatz (12 to 16 layers) has relative errors not lower than VQD with QCCSD, a circuit depth of 144 for 16 layers against 429 for 2 layers of VQD with QCCSD, more than 2 times the trainable parameters of 4 layers of QCCSD, and requires more iterations to converge; they also state that 16 layers of QCCSD for SSVQE gave results not very accurate.",
+     "anchor": "Section III.C, Fig. 7(f), Table I, PDF p.6 to p.7",
+     "quotes": [
+      "although the VQD+strongly entangled ansatz’s relative errors are not lower than VQD+QCCSD’s",
+      "the circuit depth to implement 16 layers SE ansatz is just 144 which is less than 429, the 2 layers of VQD+QCCSD’s circuit depth",
+      "the number of trainable parameters for 12 layers of SE is more than 2 times that of 4 layers of QCCSD",
+      "compared to spin restricted QCCSD, SE requires more iterations to get the training result to converge",
+      "We also try 16 layers of QCCSD for SSVQE, however, the results are not very accurate."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fs-vqd-fs-ssvqe-proposal",
+     "value": "The authors propose mixing FS-VQE with VQD or SSVQE, called FS-VQD and FS-SSVQE, and state that once omega is determined they can find highly excited states near omega, while FS-VQE and adaptive VQE-X cannot find more than one highly excited state at once.",
+     "anchor": "Section III.D, eqs. (31) and (32), PDF p.7",
+     "quotes": [
+      "To investigate the highly excited states, we can use the FSVQE or adaptive VQE-X [37]. All of them cannot find more than one highly excited state at once.",
+      "Once the ω is determined, FS-VQD or FS-SSVQE can find the highly excited states near ω."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III.D defines the proposed methods; the claim about earlier methods is attributed, not shown.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "h4-test-setup",
+     "value": "The authors state that they test FS-VQD and FS-SSVQE on H4 with 8 qubits representing 8 spin-orbitals, aiming at three highly excited states with energy close to −1.0 Ha, using a learning rate of 0.3, beta of 5 for FS-VQD, w_j of 0.4 for FS-SSVQE, 5 layers of spin-restricted QCCSD with zero initial parameters and a convergence threshold of 10 to the minus five.",
+     "anchor": "Section III.D, PDF p.7 to p.8",
+     "quotes": [
+      "we select a chemical molecule H4, which requires 8 qubits representing 8 spin-orbitals from H4",
+      "Our goal is to find the three highly excited states with energy close to −1.0 Ha.",
+      "learning rate lr = 0.3, β = 5 for FS-VQD, and wj = 0.4 with all i for FS-SSVQE",
+      "we employ 5 layers of spin restricted QCCSD as the ansatz",
+      "We also implement the stopping criterion with a convergence threshold of 10−5 here."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III.D states the paper's own H4 test setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "h4-energy-variance-result",
+     "value": "The authors report that, for H4, the energy variance from FS-VQD is below 10 to the minus three except for the two highly excited states at bond length 0.8 angstrom and decreases as the bond length increases, while the FS-SSVQE energy fluctuations are a bit higher except for the states at bond length 2.0 angstrom; they use energy variance because many excited states lie near the target energy, and a zero variance means an exact eigenstate.",
+     "anchor": "Section III.D, Fig. 8, PDF p.8",
+     "quotes": [
+      "we use energy variance as the measure to see how precise the FSVQD and FS-SSVQE capture the highly excited eigenstates",
+      "the energy variance gained from FS-VQD is below 10−3 except for the two highly excited states at bond length l = 0.8A˚",
+      "the energy fluctuations gotten from FS-SSVQE are a bit higher than the FS-VQD’s except for the states at bond length l = 2.0A˚"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result on one small molecule.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "A variance below 10 to the minus three is a loose bound for calling a state an eigenstate; the paper gives no tighter figure."
+    },
+    {
+     "id_suggestion": "highly-excited-iteration-cost",
+     "value": "The authors state that, compared to the low-lying excited states, the optimization for highly excited states demands much more iterations to get the loss function converged, and that FS-VQD spends fewer iterations than FS-SSVQE to get highly excited states although FS-SSVQE can produce all of them near omega with one optimization process.",
+     "anchor": "Section III.D and Section IV, PDF p.8",
+     "quotes": [
+      "Compared to the low-lying excited states, the optimization for highly excited states demands much more",
+      "iterations to get the loss function converged.",
+      "FS-VQD spends less iterations than FS-SSVQE to get highly excited states although FS-SSVQE can produce all of highly excited states near ω with only one optimization process."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; no iteration counts are given in the text.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The text gives no iteration counts for the H4 runs, so the size of the difference cannot be checked from the paper."
+    },
+    {
+     "id_suggestion": "conclusion-simulation-scope",
+     "value": "The authors describe their results as simulations of the ansatz circuits (the QCCSD ansatz employed in our simulations), and the paper's conclusion states that all of their comparisons can be extended to larger molecules.",
+     "anchor": "Section II.C.2 and Section IV, PDF p.4 and p.9",
+     "quotes": [
+      "the QCCSD ansatz employed in our simulations",
+      "Moreover, all of our comparisons can be extended to larger molecules."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A claim about future extension; no larger molecule is run.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The paper reports no run on quantum hardware and no noise model; the results are noiseless or simulated only as far as the text says. The largest system is 12 qubits (6 after tapering) for LiH."
+    },
+    {
+     "id_suggestion": "future-qng-vs-adam-limit",
+     "value": "The authors state that prior studies indicated QNG's superiority over Adam for systems exceeding a size of 20, that these assessments were limited to XXZ model ground state tasks, and that optimizing these methods for larger molecules is left for future research.",
+     "anchor": "Section IV, PDF p.9",
+     "quotes": [
+      "While prior studies have indicated QNG’s superiority over Adam for systems exceeding a size of 20, these assessments have been limited to XXZ model’s ground state tasks.",
+      "We leave those interesting topics for future research."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The Conclusion states the limit of the paper's optimizer findings.",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": "This limits the Adam result: the paper's optimizer comparison covers one small LiH problem."
+    },
+    {
+     "id_suggestion": "scar-state-application-claim",
+     "value": "The authors state that one application of FS-VQD and FS-SSVQE is to search for many-body scar states in the spectrum, and that shallow circuit VQE for preparing scar states can help understand the circuit depth required.",
+     "anchor": "Section IV, PDF p.8 to p.9",
+     "quotes": [
+      "One of FS-VQD and FS-SSVQE’s applications is to search for the many-body scar states",
+      "employing shallow circuit VQE to prepare many-body scar states can help us understand the circuit depth required for preparing the scar states"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proposed application with no test in this paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "chen-2025-qml-classical-defi",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\QML Quantum and Classical Machine Learning in Decentralized Finance 2510.15903v1.pdf",
+   "title_in_file": "Quantum and Classical Machine Learning in Decentralized Finance: Comparative Evidence from Multi-Asset Backtesting of Automated Market Makers",
+   "version_note": "arXiv:2510.15903v1, 14 Sep 2025. The file is the paper its record names. Tables II to X were read from the text layer; the equations 2 and 7 are partly garbled there.",
+   "pages": 14,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A backtesting comparison of ten classical, pure quantum, hybrid quantum-classical and transformer models on rebalancing signals for automated market makers, on three crypto pairs over 2024, with five runs per model.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "defi-classical-strong",
+     "verdict": "confirmed",
+     "note": "Right as stored: the text and Tables III and V give Random Forest 13.16% and 1.68, Gradient Boosting 12.31% and 1.68, and QASA Sequence 13.99% and 1.76. The paper's own standard deviations over five runs (Table VI) are 2.04% for QASA Sequence return and 0.26 for its Sharpe ratio.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "defi-hybrid-vs-classical-average",
+     "verdict": "confirmed",
+     "note": "The numbers are as the abstract states them. Two caveats from the paper itself: the classical group has the higher average Sharpe ratio (1.47 against 1.42), and Table II gives the transformer group the highest average return (12.3%). The group averages in Table II do not match the model rows of Table III (see the new assertion on that).",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "defi-limitations-crypto-only",
+     "verdict": "confirmed",
+     "note": "Right as stored. The scope is also one year (2024) of daily data and 252 trading days.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section V.C and VI.A state the limit and the assets.",
+     "result_type": "field",
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id": "defi-pure-quantum-poor",
+     "verdict": "confirmed",
+     "note": "Right as stored for Section V.A and Tables III and V. Other places in the paper give other ranges for the same group: Table II lists a best return of 5.43% for pure quantum, and Section IV.H gives returns of 3.18% to 5.68%. Table III puts the 5.43% on Logistic Regression.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "defi-study-aim",
+     "value": "The authors state that the study is an empirical comparison of quantum machine learning and classical machine learning approaches in Automated Market Maker and Decentralized Finance trading strategies, through backtesting on 10 models across multiple cryptocurrency assets.",
+     "anchor": "Abstract, PDF p.1",
+     "quotes": [
+      "comprehensive empirical comparison between quantum machine learning (QML) and classical machine learning (CML) approaches",
+      "through extensive backtesting on 10 models across multiple cryptocurrency assets"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The abstract states the paper's own scope.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "defi-dataset-setup",
+     "value": "The authors state that the dataset covers the assets BTCUSDC, ETHUSDC and USDCUSDT at daily frequency, with a total of 252 trading days over a time period of January 1, 2024 to January 1, 2025.",
+     "anchor": "Section III.A.1, PDF p.2",
+     "quotes": [
+      "Time Period: January 1, 2024 - January 1, 2025",
+      "Assets: BTCUSDC, ETHUSDC, USDCUSDT • Frequency: Daily data • Total Samples: 252 trading days"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III.A.1 states the paper's own dataset.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": "The paper states 252 samples although it names crypto pairs, which trade every day; whether the 252 samples are per asset or pooled is not stated. The tables give one result per model, not one per asset, although the title says multi-asset and Section IV.B is titled asset-specific."
+    },
+    {
+     "id_suggestion": "defi-task-definition",
+     "value": "The authors state that all models learn a binary target function of market features, where y indicates whether rebalancing should occur, with a price deviation threshold of 0.02 (2%) for the DeFi liquidity pool rebalancing project and a price change threshold of 0.01 (1%) for quantum-enhanced AMM strategies.",
+     "anchor": "Section III.B, eqs. (1) to (4), PDF p.2",
+     "quotes": [
+      "where X represents market features and y indicates whether rebalancing should occur.",
+      "where τrebalance = 0.02 (2% price deviation threshold) for DeFi liquidity pool rebalancing.",
+      "where τprice = 0.01 (1% price change threshold) for quantum-enhanced AMM strategies."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section III.B defines the prediction target the paper uses.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": "The target is a rule computed from prices (equation 2 compares the price with its 20-day moving average, which the text layer garbles). Section III.C lists a price to moving-average ratio as a classical feature (equation 7), and equation 2 reads as a function of the same ratio, so the classical models may be given the label's own inputs. The paper does not discuss this. The paper also does not say how a model's 0/1 prediction becomes a position, so the return and Sharpe figures cannot be traced from the stated target."
+    },
+    {
+     "id_suggestion": "defi-data-split",
+     "value": "The authors state that the data is split in time order into 70% train, 15% validation and 15% test, to avoid future information leakage.",
+     "anchor": "Section III.D, PDF p.4; Section VI.A, PDF p.11",
+     "quotes": [
+      "Time series split to avoid future information leakage",
+      "A time-series split (70% train, 15% validation, 15% test) ensured consistency and robustness across experiments."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Sections III.D and VI.A state the paper's own split.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "A test span of 15% of 252 days is about 38 days. Section VI.A says the backtests ran over the full 2024 year, so it is not clear whether the reported returns are on the test span or on the whole year, which would include the training days."
+    },
+    {
+     "id_suggestion": "defi-feature-counts",
+     "value": "The authors state that classical ML models use 50 to 80 features and quantum models a compact 6 to 8 features, and that the appendix lists 122 features for classical ML models.",
+     "anchor": "Section VI.A, PDF p.11; Appendix, PDF p.12",
+     "quotes": [
+      "with 50–80 features for classical ML models and a compact 6–8 features for quantum models",
+      "The feature engineering process includes 122 features for classical ML models and 6-8 features for quantum models:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section VI.A and the Appendix state the paper's own feature setup.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The 122 and the 50 to 80 are not reconciled in the text. Classical and quantum models therefore see different information, so the group comparison is not at equal inputs."
+    },
+    {
+     "id_suggestion": "defi-quantum-feature-encoding",
+     "value": "The authors state that quantum models take classical features mapped to quantum angles by min-max scaling, with angle encoding in the range 0 to 2π, and that six qubits each take a pair of features chosen from a feature importance analysis.",
+     "anchor": "Section III.C.2, Table I, PDF p.3 to p.4",
+     "quotes": [
+      "Angle Encoding [0,2π]",
+      "Based on feature importance analysis, features are mapped to qubits as:",
+      "Qubit 0: {price_momentum, returns}"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III.C.2 states the paper's own quantum encoding.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The feature importance analysis is not described, and it is not stated on which data split it was done."
+    },
+    {
+     "id_suggestion": "defi-model-groups",
+     "value": "The authors list four experimental groups: classical ML (Random Forest, Gradient Boosting, Logistic Regression), pure quantum (VQE Classifier, QNN, QSVM), hybrid quantum-classical (QASA Hybrid, QASA Sequence, QuantumRWKV) and a single transformer, with counts of 3, 3, 3 and 1.",
+     "anchor": "Abstract and Table I, PDF p.1 and p.3",
+     "quotes": [
+      "classical ML models (Random Forest, Gradient Boosting, Logistic Regression), pure quantum models (VQE Classifier, QNN, QSVM), hybrid quantum-classical models (QASA Hybrid, QASA Sequence, QuantumRWKV), and transformer models",
+      "Count 3 3 3 1 Features 50-80 6-8 12 50-80"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The abstract and Table I state the paper's own model set.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The transformer group holds one model, so its 'average' in Table II is one model. The paper gives no settings for the transformer in the appendix."
+    },
+    {
+     "id_suggestion": "defi-model-hyperparameters",
+     "value": "The authors list model settings in the appendix: the VQE Classifier with 6 qubits, 2 layers and the Adam optimizer at learning rate 0.01, the QNN with 6 qubits and 3 layers, and the QSVM with an RBF kernel.",
+     "anchor": "Appendix D, PDF p.12",
+     "quotes": [
+      "VQE Classifier: 6 qubits, 2 layers, Adam optimizer, learning_rate=0.01",
+      "QNN: 6 qubits, 3 layers, parameterized quantum circuit",
+      "QSVM: RBF kernel, gamma=’scale’, C=1.0"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Appendix D states the paper's own model settings.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "An RBF kernel with gamma set to 'scale' and C set to 1.0 reads as the settings of a classical support vector machine; the paper does not say that a quantum kernel is used. The paper does not say whether any quantum circuit ran on a simulator or on hardware, or how many shots were used, so the quantum results cannot be reproduced from the text."
+    },
+    {
+     "id_suggestion": "defi-hybrid-model-definitions",
+     "value": "The authors state that QASA implements self-attention through variational quantum circuits, that QRWKV integrates quantum evolution with the receptance attention-free model, and that QASA Hybrid takes extracted features as input while QASA Sequence uses 10 time steps directly as its input.",
+     "anchor": "Sections III.G and III.H, PDF p.4 to p.5",
+     "quotes": [
+      "QASA [3] implements self-attention via VQCs, the model as shown in Fig. 1.",
+      "QRWKV [5] integrates quantum evolution with the receptance attention-free model [6]",
+      "The difference between QASA Hybrid and QASA Sequence is that QASA Hybrid takes extracted features as input, while QASA Sequence uses 10 time steps directly as its input."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Sections III.G and III.H define the hybrid models the paper tests.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "defi-hybrid-model-settings",
+     "value": "The authors list QASA Hybrid as 12 features with 2 quantum layers and 1 classical layer, and QASA Sequence as an LSTM with 64 units, 2 quantum layers and dropout of 0.2.",
+     "anchor": "Appendix E, PDF p.12",
+     "quotes": [
+      "QASA Hybrid: 12 features, 2 quantum layers, 1 classical layer",
+      "QASA Sequence: LSTM with 64 units, 2 quantum layers, dropout=0.2"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Appendix E states the paper's own model settings.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The best model, QASA Sequence, contains a classical LSTM. The paper runs no copy of it with the quantum layers removed or replaced by classical layers, so its gain over the other models cannot be attributed to the quantum layers."
+    },
+    {
+     "id_suggestion": "defi-runs-and-experiments",
+     "value": "The authors state that each of the 10 models was trained and evaluated over 5 independent runs, giving a total of 50 experiments.",
+     "anchor": "Section VI.A, PDF p.11; Table VIII, PDF p.12",
+     "quotes": [
+      "The reproducibility setup involved 10 models, each trained and evaluated over 5 independent runs, resulting in a total of 50 experiments."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section VI.A states the paper's own run count.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The paper does not say what varies between runs (seed, split or data), or whether the table values are run means."
+    },
+    {
+     "id_suggestion": "defi-group-averages",
+     "value": "The authors report group results in which classical machine learning has a 9.8% average return and the highest Sharpe ratio (1.47), pure quantum models a return of 4.4% and Sharpe 0.83, hybrid quantum approaches the highest average return among the quantum-based methods (11.2%) with volatility 11.0%, and transformer-based models the best overall returns (12.3%) with volatility 15.4% and a lower Sharpe ratio than classical methods.",
+     "anchor": "Section IV.A, Table II, PDF p.6 to p.7",
+     "quotes": [
+      "with a 9.8% average return and the highest Sharpe ratio (1.47)",
+      "Pure quantum models underperformed in both returns (4.4%) and risk-adjusted performance (Sharpe 0.83)",
+      "delivering the highest average return among the quantum-based methods (11.2%) and relatively low volatility (11.0%)",
+      "Transformerbased models yielded the best overall returns (12.3%) but at the cost of elevated volatility (15.4%)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the group averages do not match the model rows.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The group averages do not follow from Table III. The classical return average of the three models in Table III (13.16, 12.31, 5.43) is about 10.3, not 9.8. The three pure quantum returns (4.77, 4.47, 3.00) average about 4.1, not 4.4. Table II gives a best pure quantum return of 5.43%, which Table III assigns to Logistic Regression. The single transformer has a return of 11.73% in Table III, not 12.3%, and Table II lists 12.31% (the Gradient Boosting figure) as its best return. The Sharpe and volatility averages do follow from the rows. The 'hybrid superior' reading of the abstract also does not hold for Sharpe: classical 1.47 is above hybrid 1.42."
+    },
+    {
+     "id_suggestion": "defi-qasa-sequence-top-model",
+     "value": "The authors report that QASA Sequence achieved the highest return (13.99%), Sharpe ratio (1.76) and Calmar ratio (6.51) among all tested models, with volatility of 8.35%, which the paper calls the lowest.",
+     "anchor": "Section IV.B and IV.C, Table V, PDF p.6 to p.8",
+     "quotes": [
+      "return (13.99%), Sharpe ratio (1.76), and Calmar ratio (6.51), clearly outperforming both classical and purely quantum baselines.",
+      "QASA Sequence shows best risk-adjusted returns (highest Sharpe ratio 1.76) with lowest volatility (8.35%)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study of one year of data.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The Calmar ratios do not follow from the listed return and drawdown: 13.99 divided by 10.10 is about 1.4, not 6.51, so the Calmar column uses a definition the paper does not state. The run-to-run standard deviation of QASA Sequence return is 2.04% (Table VI), larger than its 0.83 percentage point margin over Random Forest (13.16%)."
+    },
+    {
+     "id_suggestion": "defi-qasa-sequence-drawdown",
+     "value": "The authors tabulate a maximum drawdown of -10.10% for QASA Sequence in Table V, the same as the deepest listed for any model, while stating that QASA Sequence delivered superior risk management.",
+     "anchor": "Table V, PDF p.8; Section V.A, PDF p.11",
+     "quotes": [
+      "Max Drawdown -10.10% -8.21% -8.10% -1.70% -8.21% -3.13% -5.38% -10.10% -3.67% -5.44%",
+      "with the best Sharpe ratio (1.76) and superior risk management"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "In Table V the rows are in the order QASA Sequence, Random Forest, Gradient Boosting, QASA Hybrid, Transformer, QuantumRWKV, Logistic Regression, QSVM, QNN, VQE Classifier, so the two drawdowns of -10.10% belong to QASA Sequence and QSVM. The 'superior risk management' wording rests on volatility and Sharpe ratio, not on drawdown."
+    },
+    {
+     "id_suggestion": "defi-qasa-hybrid-drawdown",
+     "value": "The authors report that QASA Hybrid maintained solid returns of 11.91% while minimizing drawdowns to -1.70%, and also state a lowest maximum drawdown of -1.83% for it in Section IV.F.",
+     "anchor": "Section IV.C, PDF p.7; Section IV.F, PDF p.9",
+     "quotes": [
+      "QASA Hybrid provided balanced risk control, maintaining solid returns (11.91%) while minimizing drawdowns (-1.70%).",
+      "The hybrid architecture achieves the lowest maximum drawdown (-1.83%), indicating superior risk control."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the two figures disagree.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text gives two different values (-1.70% and -1.83%) for the same quantity; the tables use -1.70%."
+    },
+    {
+     "id_suggestion": "defi-hybrid-avg-drawdown-claim",
+     "value": "The authors state that hybrid models achieve the lowest average drawdown, of -3.3%, and that transformer models show the deepest drawdowns of 8.2%.",
+     "anchor": "Section IV.B.2 and Table IV, PDF p.7 to p.8",
+     "quotes": [
+      "relatively shallow drawdowns (3.3%)",
+      "the deepest drawdowns (8.2%)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the group averages do not follow from the model rows.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The three hybrid drawdowns in Table V (-10.10%, -1.70%, -3.13%) average about -5.0%, not -3.3%, and the three classical ones (-8.21%, -8.10%, -5.38%) about -7.2%, not -6.4%."
+    },
+    {
+     "id_suggestion": "defi-uncertainty-over-runs",
+     "value": "The authors report that, across five runs, QASA Sequence has higher variance in return (2.04%) and Sharpe (0.26) yet is given the top stability ranking, and that the pure quantum models QNN and VQE Classifier show the highest volatility uncertainty (2.61% and 3.10%) and the lowest stability ranks.",
+     "anchor": "Section IV.D, Table VI, PDF p.8 and p.10",
+     "quotes": [
+      "QASA Sequence achieved top stability ranking, though with higher variance in return (2.04%) and Sharpe (0.26)",
+      "purely quantum approaches (QNN, VQE Classifier) showed the highest volatility uncertainty (2.61% and 3.10%) and ranked lowest in stability"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from five runs of one study.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": "In Table VI the stability rank runs 1 to 10 in the same order as the Sharpe ranking, and QASA Sequence has the largest return and Sharpe standard deviations of all ten models, so the stability rank looks like the performance rank and not a measure of stability. The paper does not define it."
+    },
+    {
+     "id_suggestion": "defi-significance-claims",
+     "value": "The authors state that QASA Sequence shows significantly higher returns than all other models (p below 0.01), classical ML models significantly better performance than pure quantum models (p below 0.001), and hybrid models significantly better risk-adjusted returns than pure quantum models (p below 0.01).",
+     "anchor": "Section VI.B, PDF p.11 to p.12",
+     "quotes": [
+      "QASA Sequence shows significantly higher returns than all other models (p < 0.01)",
+      "Classical ML models show significantly better performance than pure quantum models (p < 0.001)",
+      "Hybrid models demonstrate significantly better riskadjusted returns than pure quantum models (p < 0.01)"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statistical claim with no test named, no test statistic and no correction for multiple comparisons in the paper.",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": "With five runs per model, a return margin of 0.83 percentage points (13.99% against 13.16%) and a run standard deviation of 2.04% for QASA Sequence, a significant difference to every other model, including Random Forest, is not supported by the numbers shown."
+    },
+    {
+     "id_suggestion": "defi-complexity-efficiency",
+     "value": "The authors report that QASA Sequence has the highest complexity (8) and a long training time (6.0 units) with efficiency 1.30 and stability 0.95, that Random Forest and Gradient Boosting have the highest efficiency scores (1.66 and 1.61), and that pure quantum models show limited efficiency (below 0.5).",
+     "anchor": "Section IV.E, Table VII, PDF p.8 to p.10",
+     "quotes": [
+      "QASA Sequence demonstrated the highest complexity (8) and long training time (6.0 units), but its efficiency (1.30) and stability (0.95)",
+      "the highest efficiency scores (1.66 and 1.61, respectively)",
+      "Pure quantum models (QSVM, QNN, VQE Classifier) showed limited efficiency (<0.5)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with undefined scores.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The complexity, efficiency and stability scores and the 'time units' are not defined in the text, so these numbers cannot be reproduced or compared with other work."
+    },
+    {
+     "id_suggestion": "defi-classical-accuracy",
+     "value": "The authors state that Random Forest and Gradient Boosting achieve 99.48% accuracy, which they describe as superior pattern recognition in training data, and that all pure quantum models achieve less than 50% accuracy.",
+     "anchor": "Section IV.G and IV.H, PDF p.10",
+     "quotes": [
+      "Random Forest and Gradient Boosting achieve 99.48% accuracy, demonstrating superior pattern recognition in training data.",
+      "All pure quantum models achieve less than 50% accuracy, indicating poor pattern recognition."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the data it is measured on is not stated clearly.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "A 99.48% accuracy on a label that is a rule on prices fits the possibility that the label is recoverable from the features (see the task assertion). An accuracy below 50% on a binary label is below the rate of a constant guess for a balanced label, yet the same pure quantum models are reported with positive returns; the paper does not connect classification accuracy with trading return."
+    },
+    {
+     "id_suggestion": "defi-pure-quantum-section-iv-h",
+     "value": "The authors state in Section IV.H that pure quantum models show the lowest returns (3.18% - 5.68%), high volatility (15.47% - 19.89%), leading to poor risk-adjusted returns.",
+     "anchor": "Section IV.H, PDF p.10 to p.11",
+     "quotes": [
+      "Pure quantum models show the lowest returns (3.18% - 5.68%) among all model types.",
+      "Quantum models exhibit high volatility (15.47% - 19.89%), leading to poor riskadjusted returns."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; it disagrees with the paper's own tables.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Tables III and V give pure quantum returns of 3.00% to 4.77% and volatility of 14.77% to 19.76%, so Section IV.H quotes ranges that match neither table."
+    },
+    {
+     "id_suggestion": "defi-hybrid-advantage-explanation",
+     "value": "The authors state that QASA Sequence achieves the best overall performance because of LSTM temporal processing, quantum layers processing the LSTM outputs to capture nonlinear relationships that classical methods might miss, and the combination in a hybrid architecture.",
+     "anchor": "Section IV.F.1, PDF p.9",
+     "quotes": [
+      "Quantum Enhancement: Quantum layers process the LSTM outputs to capture nonlinear relationships that classical methods might miss.",
+      "The combination of classical sequence processing and quantum feature enhancement provides complementary advantages."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An explanation without an ablation or test in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No experiment separates the LSTM from the quantum layers, so the stated cause is not tested."
+    },
+    {
+     "id_suggestion": "defi-conclusion-hybrid-best",
+     "value": "The authors conclude that hybrid quantum-classical models achieve the best performance, that classical ML provides strong and stable performance, that pure quantum models show significant limitations, and that hybrid models, while achieving top performance, exhibit higher variability, while classical models provide more consistent results.",
+     "anchor": "Section V.A, PDF p.11",
+     "quotes": [
+      "Hybrid quantum-classical models achieve best performance",
+      "Classical ML provides strong and stable performance",
+      "Pure quantum models show significant limitations",
+      "hybrid models, while achieving top performance, exhibit higher variability, while classical models provide more consistent results"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion from one backtest study.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The group Sharpe ratios in Table II put classical (1.47) above hybrid (1.42), and the transformer group has the highest average return, so 'best' holds only for the single model QASA Sequence."
+    },
+    {
+     "id_suggestion": "defi-conclusion-quantumrwkv",
+     "value": "The authors state that QuantumRWKV shows excellent stability with moderate returns (7.96%) and a good Sharpe ratio (1.19), suggesting potential for quantum-enhanced sequence models.",
+     "anchor": "Section V.A, PDF p.11",
+     "quotes": [
+      "The QuantumRWKV model shows excellent stability with moderate returns (7.96%) and good Sharpe ratio (1.19), suggesting potential for quantum-enhanced sequence models."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion from one study.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Its 7.96% return is below that of Random Forest, Gradient Boosting, the transformer and both QASA models."
+    },
+    {
+     "id_suggestion": "defi-recommendation-avoid-pure-quantum",
+     "value": "The authors recommend not using pure quantum models in practice, stating that the current ones show poor performance (3.00% - 4.77% returns), and recommend classical ML models (Random Forest, Gradient Boosting) for real-time trading.",
+     "anchor": "Section V.B, PDF p.11",
+     "quotes": [
+      "Current pure quantum models show poor performance (3.00% - 4.77% returns) and are not recommended for practical applications.",
+      "Use classical ML models (Random Forest, Gradient Boosting) for fast response and consistent performance."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author recommendation from one study.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "defi-stated-limitations-model-compute",
+     "value": "The authors state two further limitations: that quantum models are still developing, so there may be optimization space, and that quantum model training time is longer, potentially limiting real-time applications.",
+     "anchor": "Section V.C, PDF p.11",
+     "quotes": [
+      "Model limitations: Quantum models are still developing; there may be optimization space.",
+      "Computational limitations: Quantum model training time is longer, potentially limiting real-time applications."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section V.C states the paper's own limits.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": "The authors do not list the single year of data, the five runs, or the missing ablation among the limitations."
+    },
+    {
+     "id_suggestion": "defi-background-quantum-capability-claim",
+     "value": "The authors state that quantum machine learning, through quantum superposition, entanglement and interference, theoretically offers superior capabilities for processing high-dimensional feature spaces and complex decision boundaries, and that the practical advantages of quantum machine learning over classical approaches remain largely unverified.",
+     "anchor": "Section I and I.A, PDF p.1",
+     "quotes": [
+      "the practical advantages of quantum machine learning over classical approaches remain largely unverified",
+      "theoretically offers superior capabilities for processing highdimensional feature spaces and complex decision boundaries"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A general statement with no evidence in this paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "chen-2025-quantum-ensemble-learning-programmable-superconducting",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Chen-et-al._2025_Quantum-ensemble-learning-with-a-programmable-superconducting-processor__2503.11047.pdf",
+   "title_in_file": "Quantum ensemble learning with a programmable superconducting processor",
+   "version_note": "arXiv:2503.11047v1, 14 Mar 2025. The file is the paper its record names: main text (PDF p.1 to p.5), Methods and algorithms (p.6 to p.8), references (p.8 to p.9) and the supplement (p.10 to p.14).",
+   "pages": 14,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "An experimental paper that proposes Adaboost.Q, a probability-weighted boosting algorithm for quantum classifiers, and runs it on a superconducting processor for MNIST (QNN) and cluster-Ising phase recognition (QCNN).",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "adaboostq-hardware-setup",
+     "verdict": "confirmed",
+     "note": "Right as stored. The paper adds that the processor has 11 x 11 frequency-tunable transmon qubits with tunable couplers, that two 10-qubit chains (20 qubits in all) ran two QNN copies in parallel, and that the single-qubit and two-qubit median Pauli errors are around 5 x 10^-4 and 6 x 10^-3.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Main text p.3 states the paper's own setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "adaboostq-mnist-accuracy",
+     "verdict": "confirmed",
+     "note": "Right as stored: 80.5% to 86.7% on the full 10,000-image MNIST test set over the first two iterations. Limits the paper states elsewhere: the training set is 3,600 images chosen by k-means from the MNIST training set, the encoding includes a trained classical matrix W, and the gain saturates after two iterations (the fourth base classifier gets a weight near zero).",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "adaboostq-qcnn-quantum-phases",
+     "verdict": "confirmed",
+     "note": "Right as stored (around 80% for a single classifier, 100% for two combined). The introduction gives 77% for the single classifier, and the second base classifier alone reaches 93%. The test states are approximate ground states prepared by variational circuits, and the test set extends to a larger parameter regime than the training set.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "adaboostq-definition",
+     "value": "The authors introduce Adaboost.Q, a quantum adaptation of classical adaptive boosting designed to enhance the learning capabilities of quantum classifiers; they state that, based on the probabilistic nature of quantum measurement, it improves prediction accuracy by refining the attention mechanism during adaptive training and combination of quantum classifiers.",
+     "anchor": "Abstract, PDF p.1",
+     "quotes": [
+      "we introduce Adaboost.Q, a quantum adaptation of the classical adaptive boosting (Adaboost) algorithm designed to enhance learning capabilities of quantum classifiers",
+      "Based on the probabilistic nature of quantum measurement, the algorithm improves the prediction accuracy by refining the attention mechanism during the adaptive training and combination of quantum classifiers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The abstract states what the paper's algorithm is.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adaboostq-abstract-headline-results",
+     "value": "The authors report an accuracy above 86% for a ten-class classification task over 10,000 test samples and an accuracy of 100% for a quantum feature recognition task over 1,564 test samples, on a programmable superconducting processor.",
+     "anchor": "Abstract, PDF p.1",
+     "quotes": [
+      "we achieve an accuracy above 86% for a ten-class classification task over 10,000 test samples, and an accuracy of 100% for a quantum feature recognition task over 1,564 test samples"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on two tasks.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adaboostq-motivation-small-datasets",
+     "value": "The authors state that the sizes of datasets used in earlier quantum learning demonstrations remain small compared with those typically used in classical machine learning, and that theoretical work suggests ensemble methods can improve the predictive performance of QNNs.",
+     "anchor": "Introduction, PDF p.1",
+     "quotes": [
+      "Yet, the sizes of datasets used in these demonstrations remain small compared with those typically used in classical machine learning.",
+      "theoretical work suggests that ensemble methods can improve the predictive performance of QNNs [25]"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement about earlier work and a cited theoretical suggestion.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adaboostq-weak-classifier-definition",
+     "value": "The authors describe ensemble methodology as combining multiple weak classifiers, each of which may only slightly outperform a random guess, into a strong classifier, with AdaBoost training the weak classifiers sequentially on the same training set and paying more attention to previously misclassified points through sample weights.",
+     "anchor": "Framework and experimental setup, PDF p.1 to p.2",
+     "quotes": [
+      "combining multiple “weak” classifiers, each of which may only slightly outperform a random guess",
+      "It works by training the weak classifiers sequentially on the same training set.",
+      "more attention is paid to data points that were previously misclassified when training the subsequent classifier"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The main text defines the AdaBoost idea the paper builds on.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adaboostq-classifier-readout-definition",
+     "value": "The authors define the quantum classifier readout: m qubits of a parameterized circuit are measured in the computational basis, the outcomes are divided equally into K groups, a sample is assigned to the k-th class if the measured state is in the k-th group, and the probability of the predicted class naturally characterizes the confidence of the prediction.",
+     "anchor": "Framework and experimental setup, PDF p.2",
+     "quotes": [
+      "We consider quantum classifiers that are built with parameterized quantum circuits.",
+      "We divide the PVM equally into K groups",
+      "characterizes the confidence of the prediction."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The main text defines the readout the algorithm uses.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adaboostq-weight-update-rule",
+     "value": "The authors state that Adaboost.Q initializes all sample weights to 1/N for the first classifier and then updates the sample weights using the output probability of the previous classifier through an exponential factor, with a normalizing factor.",
+     "anchor": "Framework and experimental setup, eq. (1), PDF p.2",
+     "quotes": [
+      "we initialize all the sample weights to be 1/N when training the first classifier",
+      "During the iterative training of the subsequent classifiers, the sample weights are updated according to"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The main text defines the algorithm's update rule; the formula itself is garbled in the text layer.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The formula (eq. 1) multiplies each weight by the exponential of the predicted-class probability times one minus twice the match indicator, so a confident wrong prediction raises the weight more than a hesitant one. This is the reader's reading of the garbled equation."
+    },
+    {
+     "id_suggestion": "adaboostq-classifier-weight-and-cl",
+     "value": "The authors state that after training the l-th classifier its weight is a logarithm of a ratio of probability-weighted correct to incorrect predictions, with an additional parameter cl that takes the value of unity by default and can be slightly tuned to optimize the training accuracy in practice.",
+     "anchor": "Framework and experimental setup, eq. (3), PDF p.2; Algorithm 1, PDF p.7",
+     "quotes": [
+      "The additional parameter cl, which takes the value of unity by default, can be slightly tuned to optimize the training accuracy in practice.",
+      "Here y˜i(αl(c)) is the prediction of the ensemble classifier composed of the first l classifiers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The main text and Algorithm 1 define the classifier weight and its tuning parameter.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Algorithm 1 sets cl for classifiers after the first by maximizing the ensemble's accuracy over the training labels. cl is therefore a fitted quantity, and the experimental weights alpha_l (Fig. 3b) depend on it."
+    },
+    {
+     "id_suggestion": "adaboostq-loss-function",
+     "value": "The authors state that the loss of the l-th classifier is a sum over a batch of terms equal to minus the sample weight times the natural logarithm of the probability the classifier gives to the true class.",
+     "anchor": "Framework and experimental setup, eq. (2), PDF p.2",
+     "quotes": [
+      "The loss function of the lth classifier is given by",
+      "Ll,b = −wl,b ln [Pyb (xb, θ)]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The main text defines the training loss.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adaboostq-ensemble-rule",
+     "value": "The authors state that the ensemble classifier is built by combining all trained weak (base) classifiers and classifies a sample by the class with the largest classifier-weighted sum of class probabilities.",
+     "anchor": "Framework and experimental setup, eq. (4), PDF p.2",
+     "quotes": [
+      "The ensemble classifier is constructed by combining all the trained weak classifiers (also referred to as base classi"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The main text defines the combination rule.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adaboostq-device-description",
+     "value": "The authors state that the processor's qubits are frequency-tunable transmons arranged in an 11 × 11 square lattice with neighboring qubits connected by tunable couplers, that the classifiers are variational circuits compiled to parameterized single-qubit gates and neighboring two-qubit CZ gates, and that the median Pauli error rates of parallel single- and two-qubit gates are around 5 × 10−4 and 6 × 10−3.",
+     "anchor": "Framework and experimental setup, PDF p.2 to p.3",
+     "quotes": [
+      "The qubits on the processor are of the frequency-tunable transmon type, which are arranged in an 11 × 11 square lattice",
+      "are around 5 × 10−4 and 6 × 10−3, respectively"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The main text states the paper's own hardware setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The supplement (Fig. S1, text layer) lists median qubit T1 near 80 to 89 microseconds, T2 near 17 to 19 microseconds and readout error near 0.9 to 1.0 percent for the QNN and QCNN chains. The paper does not say that error mitigation was applied to the classifier outputs."
+    },
+    {
+     "id_suggestion": "adaboostq-mnist-setup",
+     "value": "The authors state that the MNIST QNN uses a chain of ten qubits with 30 trainable parameters, a training set of 3,600 images of 28×28 pixels (360 for each digit), and two QNN copies run in parallel to reduce runtime, with a trainable matrix W turning each image vector into rotation angles.",
+     "anchor": "Ensemble learning with QNN, PDF p.3",
+     "quotes": [
+      "We use a chain of ten qubits to construct the QNN circuit with 30 trainable parameters.",
+      "The training dataset contains 3,600 28×28-pixel images (360 for each digit) selected from the MNIST dataset.",
+      "To reduce the runtime, we further parallelize quantum computing by constructing and running two copies of the QNN simultaneously on the processor."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The main text states the paper's own MNIST setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Section Methods says W maps a 784-dimensional vector to a 30-dimensional one and is trained jointly with the circuit. W holds 784 times 30 classical parameters against 30 circuit parameters, so a large part of the model is classical; the paper does not report the accuracy of that classical map alone."
+    },
+    {
+     "id_suggestion": "adaboostq-mnist-data-selection",
+     "value": "The authors state that the 3,600 training images were chosen with the k-means algorithm as representative images from the MNIST training dataset, that the test set holds all 10,000 images of the MNIST test dataset, and that 1,000 images randomly selected from the test set (100 per digit) monitored the testing accuracy during training.",
+     "anchor": "Methods, Data generation, PDF p.6",
+     "quotes": [
+      "we use the k-means algorithm [35] to select 3,600 representative images from the MNIST training dataset to form the training set",
+      "The test set is constructed with all 10,000 images from the MNIST test dataset.",
+      "we also randomly select 1,000 images, with 100 for each digit, from the test set to monitor the testing accuracy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Methods states the paper's own data selection.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The full-size test set is held out from training, but 1,000 of its images were used to monitor training; the paper does not say that those monitor results set any choice such as the number of epochs."
+    },
+    {
+     "id_suggestion": "adaboostq-qnn-training-procedure",
+     "value": "The authors state that the QNN is trained for 7 epochs of 120 batches of 30 images with the Adam optimizer, gradients measured on the device by the parameter shift rule, and that the loss converges to about 0.007 after 840 training steps.",
+     "anchor": "Ensemble learning with QNN and Methods, PDF p.3 and p.6; Algorithm 2, PDF p.7",
+     "quotes": [
+      "divide it evenly into 120 batches, with each batch containing 30 images",
+      "train the QNN classifier for 7 epochs",
+      "the loss function converges to about 0.007 after 840 training steps",
+      "with the gradient experimentally measured by using the parame"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Methods states the paper's own training procedure.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adaboostq-single-qnn-accuracy",
+     "value": "The authors report that a single trained QNN classifier reached an overall testing accuracy around 80.5% over all 10,000 MNIST test samples, consistent with the training accuracy, and note that an experimental test accuracy of around 62% over 500 test samples had been reported for this task before.",
+     "anchor": "Ensemble learning with QNN, PDF p.3",
+     "quotes": [
+      "we input all 10,000 samples of the MNIST test dataset to the trained classifier",
+      "obtaining an overall testing accuracy around 80.5%, which is consistent with the training accuracy, verifying the generalizability of the trained QNN model",
+      "it was not until recently that an experimental test accuracy of around 62% over 500 test samples was reported [18]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one trained classifier on hardware.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The 62% comparison point is a cited result on 500 samples with a different method, so the two are not at equal conditions."
+    },
+    {
+     "id_suggestion": "adaboostq-mnist-ensemble-saturation",
+     "value": "The authors report that the ensemble accuracy rose from 80.5% to 86.7% over the first two iterations and then saturated, consistent with the weight calculated for the fourth base classifier dropping dramatically to near zero, with an improvement across almost all digits.",
+     "anchor": "Ensemble learning with QNN, Fig. 3, PDF p.3 to p.4",
+     "quotes": [
+      "A notable increase of the accuracy is observed, from 80.5% to 86.7% over the first two iterations, after which the accuracy saturates.",
+      "which dramatically drops to near zero for the fourth base classifier (Fig. 3b)",
+      "observing an improvement of testing accuracy for the ensemble classifier across almost all digits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one hardware run of one ensemble.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The Fig. 3 caption says the error bars come from bootstrapping the test set 1,000 times; they do not show the spread over repeated trainings, since the ensemble was trained once on hardware."
+    },
+    {
+     "id_suggestion": "adaboostq-vs-adaboost-m1-simulation",
+     "value": "The authors report from numerical simulation that Adaboost.Q shows better performance than the conventional Adaboost.M1 algorithm on the same ten-class task, with four base classifiers each, the simulation performed 500 times for each algorithm with randomly generated initial parameters.",
+     "anchor": "Ensemble learning with QNN, Fig. 3d, PDF p.3 to p.4; Supplement, Numerical simulation, PDF p.10",
+     "quotes": [
+      "observe that the former shows better performance, as shown in Fig. 3d",
+      "Each ensemble classifier is composed of four base classifiers. We benchmark the accuracy of each algorithm for 500 times, with the initial trainable parameters randomly generated each time."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "This comparison is a simulation only; the paper does not run Adaboost.M1 on the processor. The Fig. 3d labels 1.6% and 5.0% in the text layer appear to be the average accuracy improvements of the two algorithms, from the page graphic, not the text."
+    },
+    {
+     "id_suggestion": "adaboostq-qcnn-setup",
+     "value": "The authors state that the QCNN is implemented on a one-dimensional chain of 15 qubits designed so all two-qubit gates can be implemented directly, with three rounds of convolution and pooling, a CZ gate on the remaining two qubits as the fully connected layer, and a total of 45 variational parameters.",
+     "anchor": "Ensemble learning with QCNN and Fig. 4 caption, PDF p.4 to p.5",
+     "quotes": [
+      "The QCNN circuit is implemented on a 1D chain of 15 qubits on our device.",
+      "After performing the convolutional and pooling layers for three rounds, we implement a CZ gate on the remaining two qubits as the fully connected layer.",
+      "resulting in a total of 45 variational parameters"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The main text and the Fig. 4 caption state the paper's own QCNN setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adaboostq-qcnn-task-and-data",
+     "value": "The authors state that the QCNN task is to classify ground states of a cluster-Ising Hamiltonian into an SPT, a paramagnetic or an Ising phase, with a training set of 2,204 points and a test set of 1,564 points, the test samples generated in a larger parameter regime than the training samples, to examine generalization.",
+     "anchor": "Ensemble learning with QCNN and Methods, PDF p.4 and p.6",
+     "quotes": [
+      "our training (test) dataset consists of 2,204 (1,564) points spanning the phase diagram of the cluster-Ising model",
+      "To examine the generalization of the QCNN classifier, we extend to the parameter regime in generating the test samples (red box in Fig. 4b).",
+      "Here, we consider a more complex task, i.e., the classification of all three phases."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The main text states the paper's own QCNN task and data.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adaboostq-qcnn-states-prepared-by-vqc",
+     "value": "The authors state that the quantum data are approximate ground states prepared with variational quantum circuits trained on a classical computer before being deployed on the quantum processor, and that the supplement reports approximate ground states with energies within the range of 1.8% above the ground state energies.",
+     "anchor": "Ensemble learning with QCNN, Methods, PDF p.4 and p.6; Supplement, PDF p.11",
+     "quotes": [
+      "We use variational quantum circuits to prepare approximate ground states for constructing the training and test datasets.",
+      "The circuit is trained on a classical computer before being deployed on the quantum processor",
+      "we obtain approximate ground states with their energies locating within the range of 1.8% above the ground state energies"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The main text and supplement state how the paper's data were made.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The test inputs are approximate states, not exact ground states, so the 100% result is on those states."
+    },
+    {
+     "id_suggestion": "adaboostq-qcnn-discarded-critical-points",
+     "value": "The authors state that model parameter sets whose variational circuit fails 10 retries are discarded in this work, and that these usually locate around the critical points.",
+     "anchor": "Supplement, Quantum data preparation, PDF p.10 to p.11",
+     "quotes": [
+      "The model parameter sets that fail 10 retries will",
+      "be discarded in this work, which usually locate around the critical points."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The supplement states how the paper's data were filtered.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Points near the phase boundaries, where a classifier is most likely to err, are therefore missing from both the training and the test sets; the 100% test accuracy is on the remaining points."
+    },
+    {
+     "id_suggestion": "adaboostq-qcnn-training-procedure",
+     "value": "The authors state that each QCNN classifier is trained for 5 epochs with 76 batches of 29 quantum states per epoch, parameters initialized in [−π, π), and the gradient evaluated by the finite difference method with an Adam learning rate of 0.02.",
+     "anchor": "Methods, PDF p.6; Algorithm 3, PDF p.8",
+     "quotes": [
+      "Each QCNN classifier is trained for 5 epochs.",
+      "divided into 76 batches, with each batch containing 29 quantum states",
+      "The gradient of the loss function with respect to θ is evaluated by using the finite difference method",
+      "γ = 0.02 is the learning rate"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Methods states the paper's own QCNN training procedure.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adaboostq-qcnn-ensemble-results",
+     "value": "The authors report that a single QCNN classifier reached a testing accuracy limited to around 80% on the three-class task, with SPT-phase states most likely misclassified, that after reweighting the second classifier reached 93%, and that the ensemble of two base classifiers achieved 100% on the whole test set, with classifier weights of 1.78 and 3.26.",
+     "anchor": "Ensemble learning with QCNN, Fig. 4, PDF p.4 to p.5",
+     "quotes": [
+      "we find that the testing accuracy for the three-class classification task is limited to around 80%",
+      "the second classifier achieves a remarkable increase in the testing accuracy, reaching a value of 93%",
+      "by combining only two base classifiers, the ensemble classifier achieves a testing accuracy of 100% on the whole test set",
+      "The classifier weights are 1.78 and 3.26, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one hardware run on one task.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The introduction gives 77% for the single classifier where this passage gives around 80%. A test set of 1,564 points gives a resolution of about 0.06 percentage points per sample, and one training of each base classifier is reported."
+    },
+    {
+     "id_suggestion": "adaboostq-introduction-claims",
+     "value": "The authors state that, by employing Adaboost.Q, they improve the testing accuracy from 80% to above 86% over the full-size MNIST test dataset with a ten-qubit QNN classifier, and from 77% to 100% over 1,564 test samples with a 15-qubit QCNN classifier.",
+     "anchor": "Introduction, PDF p.1 to p.2",
+     "quotes": [
+      "we improve the testing accuracy from 80% to above 86% over the full-size MNIST test dataset",
+      "with the testing accuracy enhanced from 77% to 100% over 1,564 test samples",
+      "classify three quantum phases of a spin chain model with a 15-qubit QCNN classifier"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adaboostq-conclusion-claims",
+     "value": "The authors state that the protocol outperforms the conventional Adaboost.M1 algorithm and that they achieve the best-known testing accuracy for ten-class MNIST classification on quantum hardware, obtained by testing over the full MNIST test set.",
+     "anchor": "Conclusion, PDF p.4",
+     "quotes": [
+      "The protocol outperforms the conventional Adaboost.M1 algorithm",
+      "we achieve the best-known testing accuracy for the ten-class classification of the MNIST handwritten digits dataset on quantum hardware"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the comparison to Adaboost.M1 is a simulation and the 'best-known' claim rests on the authors' survey of hardware results.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The only cited comparison point in the main text is the 62% over 500 samples."
+    },
+    {
+     "id_suggestion": "adaboostq-generality-claim",
+     "value": "The authors state that their approach is generally applicable to different quantum learning models and across different physical platforms in both the current noisy intermediate-scale quantum era and the coming fault-tolerant era.",
+     "anchor": "Conclusion, PDF p.4 to p.5",
+     "quotes": [
+      "different quantum learning models and across different physical platforms in both the current noisy intermediate-scale quantum era and the coming faulttolerant quantum era"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement of generality with no evidence beyond two tasks on one platform.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper tests one processor, a QNN and a QCNN, and no fault-tolerant device."
+    },
+    {
+     "id_suggestion": "adaboostq-data-availability",
+     "value": "The authors state that the data and the numerical simulation codes will be made publicly available for download upon publication.",
+     "anchor": "Data availability and Code availability, PDF p.5",
+     "quotes": [
+      "will be made publicly available for download on Zenodo/Figshare/Github upon publication",
+      "will be made publicly available for download on Github upon publication"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states that data and code are not yet public in this version.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "In this v1 the experimental data and simulation code are not available, so the results cannot be re-checked from them."
+    }
+   ]
+  },
+  {
+   "record_id": "chen-2025-quantum-machine-learning-uav-swarm",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Chen-et-al._2025_Quantum-Machine-Learning-for-UAV-Swarm-Intrusion-Detection__2509.01812.pdf",
+   "title_in_file": "Quantum Machine Learning for UAV Swarm Intrusion Detection",
+   "version_note": "arXiv:2509.01812v1, 1 Sep 2025. The file is the paper its record names. Table I was read from the text layer, whose column order matches the header.",
+   "pages": 6,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A benchmark of a quantum kernel, plain variational QNNs, hybrid QNNs with a classical head and quantum-trained neural networks against an SVM, on an 8-feature binary intrusion-detection task from a simulated UAV swarm dataset, with the quantum models simulated.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "uav-deep-qnn-trainability",
+     "verdict": "widened",
+     "note": "The stored value is right as far as it goes. The paper gives the specificity range as 0.04 to 0.23 (not only 0.04) and attributes it to barren-plateau trainability issues without measuring gradients. Table I shows the three plain QNNs (6, 8 and 10 layers) with specificity 0.066, 0.040 and 0.234, so specificity is not a monotone function of depth.",
+     "value": "The authors state that deep variational QNNs encounter barren-plateau trainability issues: as circuit depth increases, sensitivity approaches 0.99 while specificity collapses to as low as 0.04–0.23, resulting in overall accuracies approximately ten percentage points lower than classical models.",
+     "anchor": "Section III.B, Table I, PDF p.5",
+     "quotes": [
+      "Deep variational QNNs, although theoretically expressive, encounter barren-plateau trainability issues",
+      "as circuit depth increases, sensitivity approaches 0.99 while specificity collapses to as low as 0.04–0.23",
+      "resulting in overall accuracies approximately ten percentage points lower than classical models"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study; the cause is the authors' attribution.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The paper reports no gradient variance or other barren-plateau measurement. With 8 qubits and 6 to 10 layers, the plain QNNs predict almost every flow as an attack (sensitivity 0.986 to 0.999), which is a class-collapse pattern that has other possible causes than barren plateaus."
+    },
+    {
+     "id": "uav-hybrid-qnn-best",
+     "verdict": "confirmed",
+     "note": "Right as stored. The 0.948 and 0.967 are the best accuracy and F1 in Table I. Specificity of 0.838 is not the best: HybridQNN-10L has 0.920 and QT-NN (4, 2) has 0.908. The table shows one run per model, with no repeat or interval.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "uav-simulated-data-no-hardware",
+     "verdict": "corrected",
+     "note": "The abstract says the corpus covers five attack types, but Section III.A lists five categories of which Normal is one (Normal, Blackhole, Flooding, Sybil, Wormhole), so four attack types plus normal traffic; the corpus size is given as 122,171 records in the body against 120 k in the abstract. The corpus is simulated (NS-3.24). The quantum models are also simulated (the data availability section names a tensor-network simulator), and real hardware runs are left for future work.",
+     "value": "The authors state that the benchmark uses a 120 k-flow simulation corpus, described in the body as 122,171 labeled flow records across five categories (Normal, Blackhole, Flooding, Sybil and Wormhole), and that future work will incorporate real hardware runs.",
+     "anchor": "Abstract, PDF p.1; Section III.A, PDF p.4; Section IV, PDF p.5",
+     "quotes": [
+      "Leveraging a 120 k-flow simulation corpus that covers five attack types",
+      "The corpus contains 122,171 labeled flow records across five categories: Normal, Blackhole, Flooding, Sybil, and Wormhole.",
+      "Future work will extend the benchmark to federated and adversarially robust settings, incorporate real hardware runs"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The abstract, Section III.A and the Conclusion state the paper's own data and scope.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "uav-study-scope",
+     "value": "The authors state that they benchmark three quantum-machine-learning approaches (quantum kernels, variational quantum neural networks and hybrid quantum-trained neural networks) against classical baselines, with all models consuming an 8-feature flow representation under identical preprocessing, balancing and noise-model assumptions.",
+     "anchor": "Abstract, PDF p.1",
+     "quotes": [
+      "we benchmark three quantum-machine-learning (QML) approaches—quantum kernels, variational quantum neural networks (QNNs), and hybrid quantum-trained neural networks (QT-NNs)",
+      "All models consume an 8-feature flow representation and are evaluated under identical preprocessing, balancing, and noise-model assumptions."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The abstract states the paper's own scope.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The body compares against one classical model, an SVM, and the benchmark table has no noise-model column or result."
+    },
+    {
+     "id_suggestion": "uav-abstract-claims-not-in-body",
+     "value": "The authors state in the abstract that they analyse the influence of encoding strategy, circuit depth, qubit count and shot noise, reporting accuracy, macro-F1, ROC-AUC, Matthews correlation and quantum-resource footprints, and that quantum kernels and QT-NNs excel in low-data, nonlinear regimes while CNNs dominate when abundant data offset their larger parameter count.",
+     "anchor": "Abstract, PDF p.1",
+     "quotes": [
+      "We analyse the influence of encoding strategy, circuit depth, qubit count, and shot noise, reporting accuracy, macro-F1, ROC-AUC, Matthews correlation, and quantum-resource footprints.",
+      "quantum kernels and QT-NNs excel in low-data, nonlinear regimes, while deeper QNNs suffer from trainability issues, and CNNs dominate when abundant data offset their larger parameter count"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An abstract claim not backed by results in the body of the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The body reports accuracy, F1, specificity and sensitivity for one SVM and the quantum models (Table I). It reports no CNN, no low-data experiment, no ROC-AUC, no Matthews correlation, no shot-noise study and no comparison of encodings, so these abstract statements have no result behind them in this paper."
+    },
+    {
+     "id_suggestion": "uav-dataset-description",
+     "value": "The authors state that they evaluate on the UAVIDS-2025 benchmark, with traffic generated in NS-3.24 using an extended BOID mobility model, a Nakagami channel, IEEE 802.11ac PHY/MAC and AODV routing, and that each flow has 21 features.",
+     "anchor": "Section III.A, PDF p.4",
+     "quotes": [
+      "Traffic is generated in NS-3.24 with realistic UAV mobility via an extended BOID model and a Nakagami channel, using IEEE 802.11ac PHY/MAC and AODV routing.",
+      "Each flow is represented by 21 features"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III.A states the paper's own dataset.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": "The data are simulated traffic, so a detection result here says little about real UAV swarm traffic. The next paragraph says 22 raw flow attributes, against 21 features here."
+    },
+    {
+     "id_suggestion": "uav-feature-engineering",
+     "value": "The authors state that they distilled the original 22 raw flow attributes into an 8-dimensional feature vector, log-transformed the heavy-tailed rate features with log(1 + x), and standardized all features to zero mean and unit variance using statistics computed solely from the training data to prevent data leakage.",
+     "anchor": "Section III.A, PDF p.4",
+     "quotes": [
+      "We distilled the original 22 raw flow attributes into an 8-dimensional feature vector",
+      "heavy-tailed rate-based features (rp, rb, PMR) are log-transformed via log(1 + x)",
+      "All features are then standardized to zero mean and unit variance using statistics computed solely from the training data to prevent data leakage."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section III.A states the paper's own preprocessing.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uav-balanced-subset",
+     "value": "The authors state that, after feature engineering, they construct a balanced subset and evaluate each quantum approach on it, and that they compare accuracy, robustness and resource costs against classical baselines, support vector machines.",
+     "anchor": "Introduction, PDF p.2",
+     "quotes": [
+      "we construct a balanced subset and systematically evaluate each quantum approach under realistic data conditions",
+      "We compare accuracy, robustness, and resource costs against classical baselines–support vector machines (SVMs)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The Introduction states the paper's own evaluation set-up.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "Table I gives accuracy 0.786 for two QT-NN rows with specificity 0.000 and sensitivity 1.000, which is the score of a model that predicts every flow as an attack. So the evaluated set holds about 78.6% attack flows and is not balanced between normal and attack. The paper does not give the subset size, the split, the test-set size or the positive rate. Under that rate, accuracies of 0.793 to 0.824 for the plain QNNs are close to the constant-prediction score."
+    },
+    {
+     "id_suggestion": "uav-quantum-kernel-definition",
+     "value": "The authors describe a quantum kernel method that embeds data into an N-qubit state with a parameterized unitary, builds a Gram matrix of quantum-induced inner products from circuit estimates, and hands the final optimization to classical methods such as SVM; they state that finite-shot noise and readout errors bias the Gram matrix.",
+     "anchor": "Section II.B, PDF p.2 to p.3",
+     "quotes": [
+      "Collecting these values into a matrix K, we arrive at an n × n Gram matrix of quantum-",
+      "Once K is available, classical machine learning techniques",
+      "Finite-shot noise and readout errors bias the Gram matrix"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section II.B defines the kernel method the paper tests.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uav-qnn-definition-gradients",
+     "value": "The authors define a QNN as a parameterized quantum model mapping classical inputs to measurement statistics of a circuit, with a data-encoding unitary and a trainable layered unitary, and state that for gates generated by Pauli operators the parameter-shift rule gives unbiased gradients using two shifted circuit evaluations per parameter.",
+     "anchor": "Section II.C, PDF p.3",
+     "quotes": [
+      "A Quantum Neural Network (QNN) is a parameterized quantum model that maps classical inputs to measurement statistics of a quantum circuit.",
+      "the parameter-shift rule gives unbiased gradients",
+      "using two shifted circuit evaluations per parameter"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section II.C defines the QNN the paper tests.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uav-barren-plateau-statement",
+     "value": "The authors state that deep random circuits with global cost functions may exhibit barren plateaus, meaning exponentially vanishing gradient variance with the qubit count, and list mitigations including local cost functions, layer-wise training and data re-uploading.",
+     "anchor": "Section II.C, PDF p.3",
+     "quotes": [
+      "Deep random circuits with global cost functions may ex",
+      "Practical mitigations include local cost func"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A general statement of earlier theory with no result in this paper.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The sentence wraps at hyphens in the text layer, so each quote stops before the hyphenated word."
+    },
+    {
+     "id_suggestion": "uav-qtnn-definition",
+     "value": "The authors define Quantum-Trained Neural Networks as integrating a parameterized quantum circuit as a weight generator or adapter for a classical neural network, trained end-to-end, with the measurement vector of a circuit that takes no classical input mapped to classical parameters.",
+     "anchor": "Section II.D, PDF p.3 to p.4",
+     "quotes": [
+      "Quantum-Trained Neural Networks (QT-NN) integrate a parameterized quantum circuit as a weight generator or adapter for a classical neural network.",
+      "QT-NN leverages a quantum circuit U (θ) to prepare quantum states directly from the trainable angles θ without the requirement to encode the classical input x."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section II.D defines the QT-NN the paper tests.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uav-qtnn-compression-claim",
+     "value": "The authors state that, under mild smoothness or low-effective-rank assumptions on the target weight tensors, there exist constructions where the quantum-generated parameterization approximates the target weights, achieved by a polynomial-depth QNN and a tensorized mapping, with trainable quantum degrees of freedom scaling polylogarithmically in the classical parameter count.",
+     "anchor": "Section II.D, PDF p.4",
+     "quotes": [
+      "Under mild smoothness/low-effective-rank assumptions on target weight tensors, there exist constructions where the QT parameterization",
+      "achieved by a polynomial-depth QNN and a tensorized T"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A theorem-like statement given without a proof or a reference in this paper; the error bound and parameter count are in garbled equations.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No proof or citation accompanies the statement, and the experiments use classical parameter counts of 66, 162 and 450 against 14 to 36 quantum parameters, which are not a test of the polylogarithmic scaling."
+    },
+    {
+     "id_suggestion": "uav-table1-baselines",
+     "value": "The authors report that classical SVM and its quantum-kernel analogue establish solid baselines with accuracy near 0.925 and F1-scores exceeding 0.95, with the fixed kernels limiting specificity under overlapping class distributions; Table I lists SVM at accuracy 0.924 and the quantum kernel (8 qubits) at accuracy 0.926.",
+     "anchor": "Section III.B, Table I, PDF p.5",
+     "quotes": [
+      "Classical SVM and its quantum-kernel analogue establish solid baselines with accuracy near 0.925 and F1-scores exceeding 0.95",
+      "SVM - - - - 0.924 0.951 0.836 0.947 Quantum Kernel 8 - - - 0.926 0.956 0.728 0.981"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; one run per model.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "In the Table I columns accuracy, F1, specificity, sensitivity, the SVM has 0.924, 0.951, 0.836, 0.947 and the quantum kernel 0.926, 0.956, 0.728, 0.981. The two accuracies differ by 0.002; the quantum kernel has lower specificity. The quantum kernel has no accuracy advantage over the classical SVM."
+    },
+    {
+     "id_suggestion": "uav-table1-plain-qnn",
+     "value": "The authors tabulate three plain variational QNNs with 8 qubits and no classical parameters: 6 layers (48 quantum parameters), 8 layers (64) and 10 layers (80), with accuracies of 0.799, 0.793 and 0.824, specificity of 0.066, 0.040 and 0.234 and sensitivity of 0.999, 0.998 and 0.986.",
+     "anchor": "Table I, PDF p.5",
+     "quotes": [
+      "QNN-6L 8 6 0 48 0.799 0.887 0.066 0.999 QNN-8L 8 8 0 64 0.793 0.883 0.040 0.998 QNN-10L 8 10 0 80 0.824 0.898 0.234 0.986"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study; one run per model.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Specificity near 0.04 to 0.07 with sensitivity near 1 means almost every normal flow is flagged as an attack. Specificity does not fall as depth rises across the three rows."
+    },
+    {
+     "id_suggestion": "uav-table1-hybrid-qnn",
+     "value": "The authors tabulate five hybrid QNNs with 8 qubits and 18 classical parameters, with 2 to 10 layers: the 2-layer model (16 quantum parameters) has accuracy 0.926 and specificity 0.896, the 4-layer 0.933 and 0.861, the 6-layer 0.930 and 0.904, the 8-layer 0.948 and 0.838, and the 10-layer 0.944 and 0.920.",
+     "anchor": "Table I, PDF p.5",
+     "quotes": [
+      "HybridQNN-2L 8 2 18 16 0.926 0.952 0.896 0.934 HybridQNN-4L 8 4 18 32 0.933 0.957 0.861 0.953 HybridQNN-6L 8 6 18 48 0.930 0.954 0.904 0.937",
+      "HybridQNN-8L 8 8 18 64 0.948 0.967 0.838 0.972 HybridQNN-10L 8 10 18 80 0.944 0.965 0.920 0.942"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study; one run per model.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Accuracy is 0.926 to 0.948 across all five depths, a spread of 0.022, and the SVM scores 0.924. HybridQNN-10L has the same qubit count and layer count as QNN-10L (accuracy 0.824) and differs by the 18-parameter classical head, which is the likeliest source of the gain. No model with that classical head and no quantum circuit is reported."
+    },
+    {
+     "id_suggestion": "uav-table1-qtnn",
+     "value": "The authors tabulate five QT-NN configurations whose classical parameters are generated by the quantum module: (4, 2), (8, 2) and (8, 4) reach accuracies of 0.937, 0.939 and 0.938, while (4, 4) and (16, 4) have accuracy 0.786, specificity 0.000 and sensitivity 1.000.",
+     "anchor": "Table I, PDF p.5",
+     "quotes": [
+      "QT-NN (4, 2) 7 2 66* 14 0.937 0.959 0.908 0.923 QT-NN (8, 2) 8 2 162* 16 0.939 0.960 0.808 0.940",
+      "QT-NN (4, 4) 7 4 66* 28 0.786 0.879 0.000 1.000 QT-NN (8, 4) 8 4 162* 32 0.938 0.959 0.881 0.925 QT-NN (16, 4) 9 4 450* 36 0.786 0.879 0.000 1.000"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study; one run per model.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Two of five QT-NN configurations collapse to predicting every flow as an attack, and the paper does not comment on those rows. The meaning of the pair of numbers in each model name is not defined in the text."
+    },
+    {
+     "id_suggestion": "uav-qtnn-hybrid-summary",
+     "value": "The authors state that lightweight classical post-processing, via the parameter adapters in QT-NNs or the dual optimisation in QSVM, helps rebalance the trade-offs, yielding accuracies around 0.94, specificities above 0.80 and sensitivities above 0.90.",
+     "anchor": "Section III.B, PDF p.5",
+     "quotes": [
+      "yielding accuracies around 0.94, specificities above 0.80, and sensitivities above 0.90"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical summary from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The summary leaves out the two QT-NN rows with specificity 0.000, and it says QSVM where Table I lists a quantum kernel and an SVM."
+    },
+    {
+     "id_suggestion": "uav-hybrid-explanation-claim",
+     "value": "The authors state that the Hybrid QNN avoids barren-plateau regions through reduced circuit width and depth compared to deeper QNNs, and that a shallow hardware-efficient quantum encoder captures high-order correlations in network flows while a small classical head normalises and refines the observables.",
+     "anchor": "Section III.B, PDF p.5",
+     "quotes": [
+      "Compared to deeper QNNs, the Hybrid QNN avoids barren-plateau regions through reduced circuit width and depth",
+      "a small classical head normalises and refines observables, mitigating gradient noise and overactivation"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An explanation without an ablation or gradient measurement in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Table I lists HybridQNN-10L (8 qubits, 10 layers, accuracy 0.944) next to QNN-10L (8 qubits, 10 layers, accuracy 0.824). The two have the same width and depth, so the explanation by reduced width and depth does not account for the difference."
+    },
+    {
+     "id_suggestion": "uav-practical-path-claim",
+     "value": "The authors state that modest quantum expressivity combined with lightweight classical regularisation offers the most practical path to quantum advantage in UAV-swarm intrusion detection under current hardware constraints.",
+     "anchor": "Section III.B, PDF p.5",
+     "quotes": [
+      "These results suggest that modest quantum expressivity, combined with lightweight classical regularisation, offers the most practical path to quantum advantage in UAV-swarm intrusion detection under current hardware constraints."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author inference; no quantum advantage is measured in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The best model beats the SVM by 0.024 in accuracy in one simulated run, and the paper names no classical model with the same 18-parameter head, so no quantum advantage is shown."
+    },
+    {
+     "id_suggestion": "uav-conclusion-pure-qnn-limit",
+     "value": "The authors conclude that pure variational QNNs are currently hampered by trainability and noise, achieving extremely high sensitivities at the cost of false-positive inflation, and that quantum-kernel SVMs reduce this variance but inherit the classical kernel's expressivity ceiling.",
+     "anchor": "Section IV, PDF p.5",
+     "quotes": [
+      "Pure variational QNNs are currently hampered by trainability and noise, achieving extremely high sensitivities at the cost of false-positive inflation.",
+      "Quantum-kernel SVMs reduce this variance but inherit the classical kernel’s expressivity ceiling."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion from one simulation study.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper reports no noise study, so 'noise' as a cause is not tested."
+    },
+    {
+     "id_suggestion": "uav-conclusion-hybrid-outperforms",
+     "value": "The authors conclude that the Hybrid QNN simultaneously maximises accuracy, F1 and resource efficiency, outperforming all other quantum and classical contenders under identical preprocessing and imbalance protocols, and that the findings point to hybrid-first design as the most practical path toward near-term quantum advantage in network-security workloads.",
+     "anchor": "Section IV, PDF p.5 to p.6",
+     "quotes": [
+      "the Hybrid QNN simultaneously maximises accuracy, F1, and resource efficiency, outperforming all other quantum and classical contenders under identical preprocessing and imbalance protocols",
+      "These findings point to hybrid-first design as the most practical path toward near-term quantum advantage in network-security workloads."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion from one simulation run per model, with one classical baseline.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Accuracy of 0.948 against 0.944 (HybridQNN-10L) and 0.939 (QT-NN) is a gap of 0.004 to 0.009 with no interval and no stated test-set size. The classical comparison is one SVM."
+    },
+    {
+     "id_suggestion": "uav-baseline-claim",
+     "value": "The authors state that the study establishes a rigorous baseline for quantum intrusion detection in UAV swarms and clarifies when quantum resources translate into measurable benefit.",
+     "anchor": "Section IV, PDF p.5",
+     "quotes": [
+      "This study establishes a rigorous baseline for quantum intrusion detection in UAV swarms"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author self-assessment.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "uav-simulation-and-data-availability",
+     "value": "The authors state that the UAVIDS-2025 dataset is publicly available and that tensor-network-based simulation results were produced using the cuTN-QSVM framework, and the abstract states that the complete codebase and dataset partitions are publicly released.",
+     "anchor": "Data availability, PDF p.5; Abstract, PDF p.1",
+     "quotes": [
+      "Tensor-network-based simulation results were produced using the cuTN-QSVM framework [27]",
+      "The complete codebase and dataset partitions are publicly released to enable reproducible QML research in network security."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The data availability section and abstract state how the paper's results were produced and shared.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The quantum results are classical simulations. The data availability section links the cuTN-QSVM simulator repository and cites the dataset paper; it does not name a repository for this paper's benchmark code or the dataset partitions the abstract mentions."
+    }
+   ]
+  }
+ ]
+}

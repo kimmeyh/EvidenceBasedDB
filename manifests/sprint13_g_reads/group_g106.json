@@ -1,0 +1,2908 @@
+{
+ "papers": [
+  {
+   "record_id": "cara-2024-quantum-vision-transformers-quark-gluon",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Comajoan-Cara-et-al._2024_Quantum-Vision-Transformers-for-Quark-Gluon-Classification__2405.10284.pdf",
+   "title_in_file": "Quantum Vision Transformers for Quark-Gluon Classification",
+   "version_note": "The text layer holds the 14-page Axioms 2024 article twice; the first copy was read in full and the second only for quote checks. Stored anchors give pages 12 to 13 for the results and conclusions; in the text layer they fall on pages 10 to 11 (Figure 8 on page 10, discussion and conclusions on page 11).",
+   "pages": 14,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A hybrid quantum-classical vision transformer with variational quantum circuits in attention and MLP layers, simulated and tested on CMS Open Data quark versus gluon jet images against a classical ViT of similar size.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qvit-comparable-to-classical",
+     "verdict": "confirmed",
+     "note": "Right and complete. The AUC figures are in the Figure 8 legend (page 10); the sentence on the two point gap is on page 11. The test AUCs come from one run of each model and are not given with an uncertainty.",
+     "value": "",
+     "anchor": "Results, Figure 8, pages 10 to 11",
+     "quotes": [
+      "We observe that the proposed QViT results in almost the same ROC curve and obtains almost the same AUC score as the classical baseline, though it still lags by approximately two percentage points.",
+      "Classical (AUC = 0.793) Quantum (AUC = 0.775)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qvit-limits-expressiveness-no-hardware",
+     "verdict": "confirmed",
+     "note": "Right. The expressiveness remark is offered as a hypothesis, and the hardware run is listed as a plan; both are on page 11.",
+     "value": "",
+     "anchor": "Results and Conclusions, page 11",
+     "quotes": [
+      "Alternatively, the proposed VQCs might lack the expressiveness required to match or exceed the performance of the classical model.",
+      "Finally, we would also like to execute the VQCs on real quantum hardware to measure the performance of the proposed QViT in it"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit and this future work in Section 4 and Section 5, page 11.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qvit-setup-simulated-params",
+     "verdict": "confirmed",
+     "note": "Right, Section 3.2, page 9.",
+     "value": "",
+     "anchor": "Methods, Section 3.2, page 9",
+     "quotes": [
+      "We use TensorCircuit [64] to implement, train, and execute the VQCs by numerical simulation on a classical computer.",
+      "In total, the classical ViT has 5178 parameters, while the QViT has 4170 parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Section 3.2, page 9.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qvit-dataset-and-split",
+     "value": "The authors report that the dataset has 933,206 three-channel 125 by 125 jet images, half quark and half gluon, derived from simulated QCD dijet production on the CMS Open Data Portal, and that 714,510 images are used for training, 79,390 for validation and 139,306 for the final test set.",
+     "anchor": "Section 3.1 and Section 3.2, pages 5 to 6 and 9",
+     "quotes": [
+      "The dataset consists of 933,206 3-channel 125 × 125 images, with half representing quarks and the other half gluons.",
+      "714,510 images are allocated for training, 79,390 for validation, and 139,306 for the final test set"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own data and split in Sections 3.1 and 3.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "value": "The authors state that the quantum transformer encoder uses variational quantum circuits for all four linear projections in the multi-head attention and in place of the fully connected layers of the MLP, with the MLP activation functions (GELU) executed classically; each circuit encodes the features as rotation angles, applies one single-qubit rotation parameter per wire, a ring of CNOT gates, and measures each qubit.",
+     "anchor": "Section 3.2, Figures 4 and 5, page 8",
+     "quotes": [
+      "the output of the classical multi-head attention layer is computed by using VQCs to compute all four linear projections in the MHA computations (Equation (13)) instead of classical feedforward layers.",
+      "the activation functions in the MLP, which are GELU [30], are executed classically.",
+      "a layer of one-parameter single-qubit rotations acts on each wire.",
+      "Then, a ring of CNOT gates follows to entangle the qubit states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own architecture in Section 3.2, page 8.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "qvit-vqc-design"
+    },
+    {
+     "value": "The authors report that both models use a patch size of ten, a hidden size of eight, and four transformer blocks with four attention heads each and a hidden MLP size of four, with four circuits of four qubits for the quantum multi-head attention layer and four for the quantum MLP of each block; training uses a batch size of 256 for 25 epochs with the AdamW optimizer and gradient clipping at norm 1.",
+     "anchor": "Section 3.2, pages 8 to 9",
+     "quotes": [
+      "We use a patch size of ten, a hidden size of eight, and four transformer blocks with four attention heads each and a hidden MLP size of four.",
+      "four circuits made up of four qubits for the QMHA layer of each transformer block, and, likewise, four circuits made up of four qubits for the QMLs",
+      "We use a batch size of 256 and train for 25 epochs with the AdamW optimizer [60] with gradient clipping at norm 1"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Section 3.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Figure 6 and Figure 7 plot 30 epochs on the axis while the text says 25 epochs of training; the paper does not explain the difference.",
+     "id_suggestion": "qvit-model-size-and-training-setup"
+    },
+    {
+     "value": "The authors state that the QViT has fewer parameters because each of their circuits has only n free parameters, while a classical fully connected layer with bias has n squared plus n parameters, and that they chose architectures with a similar number of trainable parameters following recent work on benchmarking quantum utility.",
+     "anchor": "Section 3.2, pp.8-9",
+     "quotes": [
+      "The smaller number in the QViT is due to the fact that the proposed VQC has only n free parameters, while a classical fully connected layer with bias has n2 + n parameters.",
+      "we choose the classical and the quantum architectures to have a similar number of trainable parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states how its parameter counts arise in Section 3.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text layer prints the exponent flat as n2; the value says n squared. The paper's 5178 against 4170 parameters means the classical baseline is about 24 percent larger, so the comparison is only approximately size-matched.",
+     "id_suggestion": "qvit-parameter-count-reason"
+    },
+    {
+     "value": "The authors state that the hyperparameters were found by a random search on the classical baseline and then applied to the QViT, and that the final test AUC is computed on the hold-out test set from the epoch with the highest validation AUC.",
+     "anchor": "Section 3.2, page 9",
+     "quotes": [
+      "We execute a random hyperparameter search to find good parameters in the classical baseline and apply them to the QViT.",
+      "we select the parameters from the epoch that achieves the highest validation AUC and reevaluate them on the separate hold-out test set to obtain the final test AUC."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own protocol in Section 3.2, page 9.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The QViT was not tuned separately, which favors the classical model in the comparison.",
+     "id_suggestion": "qvit-baseline-tuned-selection-protocol"
+    },
+    {
+     "value": "The authors report that, by using TensorCircuit, the quantum model trains in around 39 minutes per epoch, and they contrast this with Di Sipio et al., who required about 100 h to train a similar hybrid transformer for one epoch.",
+     "anchor": "Section 3.2, page 9",
+     "quotes": [
+      "we are able to train the quantum model for several epochs in a relatively short amount of time (around 39 minutes per epoch).",
+      "which required about 100 h to train a similar hybrid transformer model for just one epoch"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A runtime measured once on the authors' own setup; the hardware used is not given in the text read.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Both times are for classical numerical simulation, so they say nothing about runtime on a quantum computer.",
+     "id_suggestion": "qvit-training-time-per-epoch"
+    },
+    {
+     "value": "The authors report that they see no signs of overfitting, as the training and validation curves are almost the same, and that the epoch with the highest validation AUC is the 16th for the classical ViT and the 25th for the QViT.",
+     "anchor": "Section 4, Figures 6 and 7, pages 9 to 10",
+     "quotes": [
+      "We do not observe signs of overfitting in any case, as the training and validation curves are almost the same.",
+      "The epoch that obtains the highest validation AUC is the 16th in the case of the classical ViT and 25th in the case of our hybrid QViT."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation from one training run of each model.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "qvit-training-curves-best-epochs"
+    },
+    {
+     "value": "The authors hypothesize that one potential reason for the slightly inferior quantum performance is that it is harder for the optimizer to find good parameters within the numerically simulated VQCs, and they note that the difference between the two obtained metrics is quite small.",
+     "anchor": "Section 4, page 11",
+     "quotes": [
+      "We hypothesize that one potential reason for the slightly inferior performance of the quantum model is that it is harder for the optimizer to find good parameters within the numerically simulated VQCs.",
+      "Still, we note that the difference between both obtained metrics is quite small."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A hypothesis the paper does not test.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "qvit-gap-hypotheses"
+    },
+    {
+     "value": "The authors state that the dimensions used are small so that the circuits do not require many qubits, that the simulation time is consequently not very long, and that the model can be executed on already existing quantum hardware.",
+     "anchor": "Section 3.2, page 9",
+     "quotes": [
+      "The dimensions used are small so that the circuits do not require many qubits.",
+      "the model can be executed in already existing quantum hardware."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; no hardware run is reported in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The conclusions list a hardware run as future work, so this claim is untested here.",
+     "id_suggestion": "qvit-hardware-claim"
+    },
+    {
+     "value": "The authors conclude that the trained model, benchmarked against a classical vision transformer with the same hyperparameters and a similar number of trainable parameters, was found to have comparable performance, that the results are encouraging and warrant future investigations, and they list as future work more hyperparameter configurations, the impact of the number of training samples, data augmentation, different VQC configurations, and data re-uploading to check if they obtain a quantum advantage.",
+     "anchor": "Section 5, page 11",
+     "quotes": [
+      "was found to have comparable performance. The results achieved so far are encouraging and warrant future investigations.",
+      "our plans include evaluating more hyperparameter configurations, assessing the impact of the number of training samples",
+      "evaluate the usage of data re-uploading [68] to check if we obtain a quantum advantage."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state their own conclusion and the work not yet done in Section 5, page 11.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper does not claim a quantum advantage; it lists a check for one as future work.",
+     "id_suggestion": "qvit-conclusion-comparable-and-future-work"
+    },
+    {
+     "value": "The authors state that quantum machine learning could reduce the time complexity of classical algorithms by running on quantum computers and obtain better accuracies thanks to access to the exponentially large Hilbert space, citing references 3 to 11.",
+     "anchor": "Section 1, page 1",
+     "quotes": [
+      "which could reduce the time complexity of classical algorithms by running on quantum computers and obtain better accuracies thanks to the access to the exponentially large Hilbert space [3–11]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A motivating statement attributed to cited work and not tested in this paper.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The paper's own result (a lower AUC than the classical baseline) does not show the accuracy benefit this sentence describes.",
+     "id_suggestion": "qvit-motivation-qml-claim"
+    }
+   ]
+  },
+  {
+   "record_id": "carlesso-2024-lecture-notes-quantum-algorithms-open",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\Reviews\\Carlesso_2024_Lecture-Notes-on-Quantum-Algorithms-in-Open-Quantum-Systems__2406.11613.pdf",
+   "title_in_file": "Lecture Notes on Quantum Algorithms in Open Quantum Systems",
+   "version_note": "Version 1.0, June 2024. The text layer holds the notes twice (the second copy starts after the Appendix A solutions); the first copy was read in full and the second was used only to check quotes. Page numbers in the anchors follow the printed page numbers of the contents list. The surface-code Figure 4.12 and the Steane-code figure carry garbled text in the layer; their captions and surrounding text were read.",
+   "pages": 97,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "Lecture notes (Version 1.0, June 2024) on the circuit model, variational algorithms, NISQ noise, quantum error correction, dynamical decoupling and error mitigation.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "nisq-guaranteed-algorithms-need-millions",
+     "verdict": "confirmed",
+     "note": "Right. The same paragraph adds that present devices have around 100-1000 physical qubits; that is entered as a separate assertion.",
+     "value": "",
+     "anchor": "Chapter 3 introduction, p.31",
+     "quotes": [
+      "Many quantum algorithms that come with guaranteed performance need millions of physical qubits to effectively use QEC methods.",
+      "It could take decades to build fault-tolerant quantum computers capable of reaching this scale."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "qaoa-hybrid-definition",
+     "verdict": "confirmed",
+     "note": "Right. The notes go on to derive QAOA as a Trotter decomposition of quantum annealing, entered as separate assertions.",
+     "value": "",
+     "anchor": "Section 2.5, p.27",
+     "quotes": [
+      "The Quantum Approximate Optimisation Algorithm (QAOA) is a hybrid quantum-classical algorithm that allows for optimising a cost function and finding an approximated solution."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "scope-not-comprehensive-review",
+     "verdict": "confirmed",
+     "note": "Right, Preface, page i.",
+     "value": "",
+     "anchor": "Preface, p.i",
+     "quotes": [
+      "The field is vast and the intent of these notes is not to serve as a comprehensive review article."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The author states the notes' scope in the Preface.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "no-cloning-theorem-1-1",
+     "value": "The notes state and prove as Theorem 1.1 (no-cloning) that, for two quantum systems whose Hilbert spaces have the same dimensions, no unitary operation on the joint space copies an arbitrary state of the first system over a reference state of the second.",
+     "anchor": "Section 1.2, Theorem 1.1 and proof, p.12",
+     "quotes": [
+      "Theorem 1.1 (No-cloning). Consider two quantum systems A and B with corresponding Hilbert spaces of the same dimensions HA and HB.",
+      "that copies an arbitrary state of A over an initial, reference state of B.",
+      "In both cases, one does not allow for full arbitrariness, thus proving the no-cloning theorem."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement, conditions and a proof are given in Section 1.2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qpe-single-run-error-half",
+     "value": "The notes state that a single run of the Hadamard-test phase estimation circuit estimates the phase with an error of 1/2, and that improving the accuracy takes a number of runs that scales as one over epsilon squared, where epsilon is the target error bound.",
+     "anchor": "Section 1.5.1, p.15",
+     "quotes": [
+      "Since there are no other possible outcomes with a single run, the phase is estimated with an error ε = 1/2",
+      "a number of times that scales as O(1/ε2), where ε is the target error bound"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 1.5.1 from the single-run outcome table.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The exponent is printed flat in the text layer as O(1/ε2); read as one over epsilon squared."
+    },
+    {
+     "id_suggestion": "kitaev-phase-estimation-query-count",
+     "value": "The notes state that determining the last bit of a phase given with d bits needs a precision epsilon below two to the minus d, so that the number of queries to the unitary scales as one over epsilon squared, and that access to a suitable power of the unitary reduces the number of queries (Kitaev's method).",
+     "anchor": "Section 1.5.2, p.16",
+     "quotes": [
+      "To determined the value of φ0 one needs to reach a precision of ε < 2−d.",
+      "The observation from Kitaev's method is that if we can have access to",
+      "for a suitable power j, then the number of queries to"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 1.5.2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The text layer prints the exponents flat (2−d, O(22d)); read as two to the power minus d and O of two to the power 2d."
+    },
+    {
+     "id_suggestion": "n-qubit-qpe-inverse-qft",
+     "value": "The notes state that the two earlier phase estimation algorithms need important classical post-processing, that n ancillary qubits reduce it, and that, writing the phase in its binary representation, the inverse quantum Fourier transform recovers the phase register, which is then measured.",
+     "anchor": "Section 1.5.3, pp.16-17",
+     "quotes": [
+      "Notably, both the previous algorithms necessitate an important classical post-processing.",
+      "Employing n ancillary qubits allow the reduction of such post-processing.",
+      "Now, by considering the binary representation of φ = (φn−1 . . . φ0)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 1.5.3.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The derivation assumes the phase has an exact n-bit binary representation; the notes do not treat other phases."
+    },
+    {
+     "id_suggestion": "hhl-setup-assumptions",
+     "value": "The notes set up the HHL algorithm for a linear system with an hermitian, non-singular matrix, assume a normalised right-hand side vector and eigenvalues strictly between zero and one with an exact d-bit representation, and state that the eigenvalue assumption is not general but can be reached by remapping the problem.",
+     "anchor": "Section 1.6, p.18",
+     "quotes": [
+      "where A is an hermitian and non-singular Nb × Nb matrix and b is a Nb vector, both defined on C.",
+      "First, let us assume that the entries of b are such that ||b|| = 1.",
+      "such that 0 < λ0 ≤ · · · ≤ λNb−1 < 1.",
+      "In general this will not be the case, but one can remap the problem in order to fall within this case.",
+      "We also assume that all the Nb eigeinvalues have an exact d-bit representation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The notes state the setup and assumptions of their HHL derivation in Section 1.6.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hhl-result-post-selection",
+     "value": "The notes derive that the HHL circuit ends in a register state that embeds the solution of the linear system, after a measurement of the first ancilla qubit in which one outcome is retained and the other is discarded.",
+     "anchor": "Section 1.6, pp.20-21",
+     "quotes": [
+      "If the outcome is +1 and the state collapses in |0⟩ then we discard the run; if the outcome is −1 with the state collapsed in |1⟩ then we retain the run.",
+      "Thus, |Ψ9⟩ = |0⟩⊗d |x⟩ , (1.88) embeds the solution of the linear system Ax = b."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived step by step in Section 1.6.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The notes give no success-probability, condition-number or readout analysis, so no speed-up claim follows from this section."
+    },
+    {
+     "id_suggestion": "hadamard-test-purpose",
+     "value": "The notes state that the Hadamard test computes expectation values of a unitary operator by measuring one qubit, giving the real part, and with a modified circuit the imaginary part, and that the protocol must be run several times to build statistics.",
+     "anchor": "Section 1.1.1, p.11",
+     "quotes": [
+      "The Hadamard test is a useful tool for computing expectation values of a unitary, black-box operator",
+      "Thus, by measuring only one qubit (qubit 0) one has an indication of the real part of",
+      "To estimate the imaginary part, the circuit is modified as follows:",
+      "Notably, to well characterise these probabilities, there is the need to run the protocol several times to construct a statistics."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 1.1.1 and Exercise 1.4 (solved in Appendix A.4).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "teleportation-needs-two-qubit-measurement",
+     "value": "The notes state that teleportation sends a generic state from Alice to Bob without knowing the state in advance, using three qubits and classical communication of two measurement outcomes, and that it differs from the no-cloning case because the protocol needs a measurement of two qubits and not a unitary operation.",
+     "anchor": "Section 1.4, pp.13-14",
+     "quotes": [
+      "that allows for sending a generic state |ψ⟩ = α |0⟩ + β |1⟩ from Alice to Bob without knowing a priory the state.",
+      "Here, one needs to measure two qubits to perform the protocol: this a fundamentally different procedure with respect to a unitary operation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 1.4.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "single-qubit-gate-decomposition-exercise-1-2",
+     "value": "The notes pose as Exercise 1.2 and solve in Appendix A.2 the result that, for two fixed non-parallel normalised vectors n and m, any unitary single-qubit gate can be written as a phase times a rotation about n, then one about m, then one about n.",
+     "anchor": "Exercise 1.2 and Appendix A.2",
+     "quotes": [
+      "Exercise 1.2 Prove that, given two fixed non-parallel normalised vectors n and m, any unitary single qubit gate",
+      "A.2 Solution to Exercise 1.2 To prove that, given two fixed non-parallel normalised vectors n and m, any unitary",
+      "which ends the proof."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A proof is given in Appendix A.2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The order of the three rotations is read from Eq. (1.7); the formula itself carries font-specific hat characters in the text layer, so it is not quoted."
+    },
+    {
+     "id_suggestion": "ising-mapping-subset-sum-number-partitioning",
+     "value": "The notes state that many problems can be mapped to the Ising Hamiltonian by choosing the fields and couplings, give the subset sum and number partitioning problems as explicit examples, and state that the number partitioning Hamiltonian needs no magnetic fields.",
+     "anchor": "Sections 2.1 and 2.2, pp.23-24",
+     "quotes": [
+      "Many problems can be mapped in the form in Eq. (2.1), and hence solve with a quantum computer, by choosing the appropriate values of { hi } and { Jij }.",
+      "The classical Hamiltonian in Eq. (2.10) can be quantised and one obtains that in Eq. (2.1) with no need to introduce the magnetic fields, i.e. hi = 0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The mappings are derived in Section 2.2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "adiabatic-theorem-statement-and-condition",
+     "value": "The notes state the adiabatic theorem for a Hamiltonian changing from an initial to a final Hamiltonian that do not commute, that a system prepared in the n-th eigenstate of the first goes into the n-th eigenstate of the second if the transformation is made slowly enough, and that the more the energy gap closes, the longer the evolution time must be.",
+     "anchor": "Section 2.3, Remark 2.1, pp.24, 26",
+     "quotes": [
+      "We also assume that the two Hamiltonians do not commute",
+      "The theorem states that a system prepared in the n-th eigeinstate of",
+      "if the transformation is made slowly enough, i.e. adiabatically.",
+      "Notably, the more the energy gap E1 − E0 closes, the larger value of τ one has to consider."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement, conditions (Remark 2.1) and a derivation are given in Section 2.3.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The derivation neglects a term of the coupled equations under the adiabatic approximation; Remark 2.1 states the condition for it to hold in general."
+    },
+    {
+     "id_suggestion": "annealing-repetitions-for-99-percent",
+     "value": "The notes state that to obtain the solution of an annealing problem with 99% certainty one has to repeat the annealing procedure m times, where the success probability p of one run is the squared overlap of the final state with the exact solution state.",
+     "anchor": "Section 2.4, p.27",
+     "quotes": [
+      "Such a probability (of success) is given by p = | ⟨zsol|ψ(τ )⟩ |2, where |zsol⟩ is the state encoding the exact solution.",
+      "To obtain the solution with a 99% certainty, one has to repeat the annealing procedure m times."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 2.4.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "annealing-limit-full-connectivity",
+     "value": "The notes state that a strong challenge for quantum annealing is the full connectivity of the qubits, because qubit interactions in a quantum computer are typically null beyond nearest-neighbour sites, which strongly limits the scaling.",
+     "anchor": "Section 2.4, p.27",
+     "quotes": [
+      "A strong challenge for the quantum annealing is the full connectivity of the qubits.",
+      "the qubits interactions, which are parameterised by Jij, are typically null beyond nearest-neighbour sites."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The notes state this limit in Section 2.4.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-trotter-2p-parameters",
+     "value": "The notes state that QAOA rests on a Trotter procedure for the annealing Hamiltonian, that it optimises over a set of 2p parameters instead of fixed time segments, and that the optimisation of the expectation value of the cost Hamiltonian is performed on a classical computer.",
+     "anchor": "Section 2.5, pp.27-28",
+     "quotes": [
+      "The QAOA is based on the observation that the best way to implement the annealing Hamiltonian in Eq. (2.30) is a Trotter procedure.",
+      "Crucial difference with respect to the quantum annealing case is that one optimises over a set of 2p parameters",
+      "instead of a fixed time segments.",
+      "Such an optimisation is performed on classical computer (classical optimiser)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Defines the algorithm in Section 2.5.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-circuit-implementation",
+     "value": "The notes state that the mixer unitary acts as a rotation on each single qubit and that the two-qubit interaction terms of the cost Hamiltonian are 2-local gates implemented via a rotation between two CNOT gates.",
+     "anchor": "Section 2.5, p.29",
+     "quotes": [
+      "Then, the corresponding action can be implemented with a rotation on the single i-th qubit.",
+      "On the other hand, the two qubits interactions are 2-local gates, which can be implemented via a rotation between two CNOT gates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Defines the circuit in Section 2.5.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-general-pauli-strings-local-minima",
+     "value": "The notes state that VQE is a heuristic approach combining quantum computation and classical optimisation, that QAOA can be seen as a specific implementation of VQE, that its cost Hamiltonian is a sum of Pauli strings and so is not limited to two-qubit interactions, and that the update step must deal with pitfalls such as local minima in the parameter landscape.",
+     "anchor": "Section 2.6, pp.29-30",
+     "quotes": [
+      "In particular, the QAOA can be seen as a specific implementation of the VQE algorithm.",
+      "this Hamiltonian is not limited to two qubit interactions only, but can consider n qubit interactions.",
+      "For example, the parameter landscape may have local minima where one does not want to remain stacked."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Describes the algorithm in Section 2.6.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nisq-device-size",
+     "value": "The notes state that presently quantum devices typically have around 100-1000 physical qubits, often referred to as NISQ devices, and that these devices lack error correction and are imperfect.",
+     "anchor": "Chapter 3 introduction, p.31",
+     "quotes": [
+      "Presently, quantum devices typically have around 100-1000 physical qubits, often referred to as noisy intermediate-scale quantum (NISQ) devices.",
+      "These devices lack error correction and are imperfect"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": "No source or date for the figure is given; the notes are dated June 2024."
+    },
+    {
+     "id_suggestion": "miscalibrated-gate-error-quadratic",
+     "value": "The notes model a systematic miscalibration in which the X gate rotates by pi plus epsilon, and state that for small epsilon and depth d the difference in the expectation value of the polarisation scales quadratically with the miscalibration, and that for depths with d times epsilon near an odd multiple of pi the error completely inverts the output signal.",
+     "anchor": "Section 3.1, p.32",
+     "quotes": [
+      "which scales quadratically with the miscalibration ε.",
+      "Indeed, for values of d such that dε ∼ (2n + 1)π, with n ∈ N, we have that",
+      "This means that the error completely inverts the output signal."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 3.1.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sampling-mean-mean-and-variance",
+     "value": "The notes state that the sampling mean S of N repeated measurements of a binary outcome with probability p has mean E[S] = p and variance V[S] = p(1 − p)/N.",
+     "anchor": "Section 3.2, p.34",
+     "quotes": [
+      "with mean E[S] = p and variance V[S] = p(1 − p)/N"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated in Section 3.2 with the N = 3 enumeration.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The notes call S binomially distributed; strictly, N times S is binomial."
+    },
+    {
+     "id_suggestion": "environmental-noise-model-polarisation",
+     "value": "The notes model environmental noise by adding an extra gate E with probability pE to each gate, and state that for E and G both equal to the X gate the polarisation after one noisy gate is (2pE − 1).",
+     "anchor": "Section 3.3.1, pp.37-38",
+     "quotes": [
+      "where an extra gate, say E, is added with a probability pE.",
+      "Conversely, the polarisation is ⟨Z⟩ = (2pE − 1)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 3.3.1.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "For d applications the text layer prints the result as (2pE − 1)d, with the exponent flat; read as (2pE − 1) to the power d."
+    },
+    {
+     "id_suggestion": "repetition-code-bit-flip-failure-probability",
+     "value": "The notes state that the three-bit classical repetition code with majority voting fails with a probability below the single-bit error probability for epsilon from 0 up to 1/2, and that the three-qubit bit-flip code, for noise acting independently on each qubit, has the same failing probability as the classical code.",
+     "anchor": "Sections 4.1.1 and 4.1.3, pp.42, 44",
+     "quotes": [
+      "Specifically, for 0 ≤ ε < 1/2, we have that Eq. (4.3) is satisfied.",
+      "We assume that the noise acts independently on each of the qubits that Alice sends.",
+      "which is the same as in the classical correcting algorithm seen previously"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Sections 4.1.1 and 4.1.3 under the independent-noise assumption.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "shor-code-generic-single-qubit-errors",
+     "value": "The notes state that the three-qubit bit-flip code does not correct phase-flip errors, that a change to the Hadamard basis lets it correct them, and that concatenating the two codes, the 9-qubit Shor code, protects against generic single-qubit errors.",
+     "anchor": "Sections 4.1.4 and 4.1.5, p.45",
+     "quotes": [
+      "the bit-flip QEC code developed in Sec. 4.1.3 does not correct this type of errors.",
+      "However, a phase-flip error in the computational basis { | 0⟩, | 1⟩ } corresponds to a bit-flip error in the { | +⟩, | −⟩ } basis.",
+      "4.1.5 The 9-qubit Shor code We saw how the 3-qubit bit-flip and phase flip QEC codes can correct respectively bit-flip and phase flip errors.",
+      "concatenating these two codes, one can protects for generic single qubit errors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Argued in Sections 4.1.4 and 4.1.5.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "threshold-theorem-4-1",
+     "value": "The notes state as Theorem 4.1 (threshold theorem) that if a threshold probability exists, errors can always be corrected faster than they are created by increasing the level k of encoding, with the proof resting on the physical error probability being smaller than the threshold probability, and they state that the threshold depends on the code, the components and the experimental implementation.",
+     "anchor": "Section 4.1.6, Theorem 4.1, p.50",
+     "quotes": [
+      "Theorem 4.1 (Threshold theorem). If a threshold probability pth exists, then it is always possible to correct errors at a faster than they are created. It is sufficient to increase the level k of encoding.",
+      "As long as the the occurrence of an error on the physical qubit p = ε is smaller than the threshold probability pth",
+      "Such a probability depends on varius parameters, among which the QEC code used, the physical components, the experimental implementation of the QEC protocol etc."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement, condition and proof are given in Section 4.1.6.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The theorem is conditional on a threshold existing; the notes describe the proof as trivial and do not derive a value for the threshold for any code in this section."
+    },
+    {
+     "id_suggestion": "threshold-theorem-overhead",
+     "value": "The notes state that the threshold theorem highlights the necessity of employing a very large number of physical qubits, and give the size of the full circuit as scaling polylogarithmically as the quantitative result of the threshold theorem.",
+     "anchor": "Section 4.1.6, pp.50-51",
+     "quotes": [
+      "However, it also highlights a non-trivial problem, which is the necessity of employing a very large number of physical qubits.",
+      "Thus, the size of the full circuit scales as",
+      "This is the quantitative result of the threshold theorem."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 4.1.6.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The scaling formula is garbled in the text layer, so only the sentences around it are quoted."
+    },
+    {
+     "id_suggestion": "threshold-needs-1e3-to-1e6-qubits",
+     "value": "The notes state that QEC works in theory because the threshold theorem guarantees it, but that it requires a number of physical qubits of about 103 to 106 that is often beyond what is possible with the current technology.",
+     "anchor": "Chapter 5 introduction, p.77",
+     "quotes": [
+      "QEC works in theory: the threshold theorem guarantees it. However, it requires a number of physical qubits (∼ 103 to ∼ 106) that is often beyond what possible with the current technology."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": "The text layer prints the exponents flat; read as ten to the power 3 to ten to the power 6. No source is given."
+    },
+    {
+     "id_suggestion": "correlated-noise-layers-vs-more-qubits",
+     "value": "The notes state that, for a specific correlated two-qubit bit-flip noise map, concatenated encoding layers have failure probability (3p)k at leading order with threshold 1/3, that for a single layer with more qubits the threshold does not exist, and that several layers of encoding can allow fault-tolerant computing while a single layer with more qubits has strong limits.",
+     "anchor": "Section 4.1.7, pp.53-54",
+     "quotes": [
+      "Pfail = (3p)k + . . . ,",
+      "condense towards the value of pth = 1/3.",
+      "As one can see the knee of the curves moves towards zero, meaning that the threshold does not exist.",
+      "employing several layers of encoding can allow for a fault-tolerant quantum computing, while employing only a single layer encoding with more qubits has strong limits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 4.1.7 for the noise map of Eq. (4.55).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The conclusion is for the specific noise map of Eq. (4.55) and the leading-order counting shown; the exponent k is printed flat in the text layer."
+    },
+    {
+     "id_suggestion": "qec-recovery-equivalence",
+     "value": "The notes state and prove in both directions that, for a CPTP error map E, the existence of a CPTP recovery map R with R ◦ E = id is equivalent to a condition on the Kraus operators of every Kraus representation of E.",
+     "anchor": "Section 4.2.1, p.56",
+     "quotes": [
+      "Now, we show that the following two statements are equivalent: 1) Given a CPTP map E, it exists another CPTP map R such that R ◦ E = id.",
+      "First, we prove that 1) implies 2).",
+      "We now prove that 2) implies 1)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Both directions are proved in Section 4.2.1.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "stabiliser-generators-count",
+     "value": "The notes state that for k qubits encoded in n qubits one needs (n − k) stabiliser generators to define the partitions, giving 2n−k different subspaces of dimension 2k.",
+     "anchor": "Section 4.2.3, p.62",
+     "quotes": [
+      "then we need (n − k) generators from the stabilisers to define the partitions.",
+      "we have 2n−k different subspaces of dimension 2k."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 4.2.3.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The exponents are printed flat in the text layer; read as two to the power n minus k and two to the power k."
+    },
+    {
+     "id_suggestion": "correctable-errors-times-stabiliser",
+     "value": "The notes state that the recovery operator can correct, besides a correctable error, also errors of the form of a correctable error multiplied by a stabiliser, and that an error in the class of normalisers that is not a stabiliser is non-correctable.",
+     "anchor": "Section 4.2.5, p.63",
+     "quotes": [
+      "can correct also errors of the form of a correctable error multiplied by a stabiliser",
+      "Conversely, an error in the class of normalisers which is not a stabiliser is a non-correctable error."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 4.2.5.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "surface-code-layout-minimal-array",
+     "value": "The notes state that a logical qubit is encoded in L by L physical qubits, that the logical operations need the array length L to be an odd number greater than 1, and that the minimal array has L = 3 with 5 data qubits and 4 measurement qubits.",
+     "anchor": "Section 4.3, pp.63, 66",
+     "quotes": [
+      "The idea is that a logical qubit is encoded in L × L physical qubits as in the layout presented in Fig. 4.12.",
+      "one needs to impose the length of the array of physical qubits L being an odd number > 1.",
+      "The minimal array is that having L = 3 with 5 data qubits and 4 measurement qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Defines the surface code layout used in Section 4.3.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "surface-code-measurement-vs-data-errors",
+     "value": "The notes illustrate with a small surface code that an erroneous measurement outcome appears for one cycle and is erased by later cycles unless the measurement error is systematic, while a data-qubit phase flip changes the sign of the outcomes of the adjacent X-syndrome qubits in every later cycle, which distinguishes the two kinds of error.",
+     "anchor": "Section 4.3.1, pp.67-68",
+     "quotes": [
+      "The error is only momentaneous.",
+      "This will not be the case if there is a systematic error in the measurement process, which cannot be corrected.",
+      "Importantly, the outcomes Md and Mf change sign for any subsequent cycle (if no other errors or logical operations take place).",
+      "This is how one can distinguish an error on the measurement and on the data qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Worked through in Section 4.3.1 with outcome tables.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "surface-code-error-paths-closed-loops",
+     "value": "The notes state that, with only two syndrome qubits at the ends of an error path highlighting an error, a wrongly selected correction path is harmless as long as the error path and the selected one form a closed loop, and that on the torus a path that can be closed is harmless while one that cannot be closed is harmful.",
+     "anchor": "Section 4.3.1, pp.68-69",
+     "quotes": [
+      "the errors will be highlighted only by two syndrome qubits at the ends of the error path.",
+      "as long as the error path and the selected one form a closed loop, the error is well accounted.",
+      "path can be closed, then it is harmless. If the path cannot be closed, then it is harmful."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Argued in Section 4.3.1 with stabiliser relations.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "steane-code-single-qubit-and-transversal",
+     "value": "The notes describe the Steane code as a stabiliser code employing 7 data qubits and 6 syndrome qubits for each logical qubit, state that any single-qubit error can be correctly recovered, and that logical gates built by the transversal construction confine errors so they cannot propagate within a block.",
+     "anchor": "Section 4.4.1, pp.71, 73",
+     "quotes": [
+      "The Steane code is a stabiliser code employing 7 data qubit and 6 syndrome qubits for each logical qubit.",
+      "With the Steane code, any single-qubit error can be correctly recovered",
+      "This way of implementing logical gates is called transversal construction.",
+      "This is a really easy and straightforward construction, but most importantly allows to confine errors, as they are unable to propagate."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Defines and describes the code in Section 4.4.1.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "clifford-simulable-eastin-knill-t-gate",
+     "value": "The notes state that operations using only Clifford-group elements can be simulated classically (Gottesman-Knill theorem), that one does not know how to implement the T-gate transversally with the Steane code, and that the Eastin-Knill theorem says a fault-tolerant universal set with unitary operations cannot be constructed.",
+     "anchor": "Section 4.4.1, p.74",
+     "quotes": [
+      "Notably, the Gottesman-Knill theorem indicates that operations performed using only elements of this group can be simulated classically.",
+      "Unfortunately, one does not know how to implement through unitary operations the T-gate in a transversal way using the Steane code.",
+      "The Eastin-Knill theorem indicates that it is not possible to construct a fault-tolerant universal set with unitary operations."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The notes state these theorems without proof or reference. They also attribute the non-universality of the Clifford group to the Solovay-Kitaev theorem; that attribution looks mistaken, since the Solovay-Kitaev theorem concerns approximating gates from a dense generating set."
+    },
+    {
+     "id_suggestion": "effective-t-gate-steane",
+     "value": "The notes derive an effective T-gate for the Steane code from a circuit that needs a specially prepared ancilla state and a measurement, with one measurement outcome retained and the other discarded, and state that if the measurement is also fault-tolerant, which they say can be proven but do not do, the entire circuit is fault-tolerant.",
+     "anchor": "Section 4.4.1, p.76",
+     "quotes": [
+      "This is an effective application of the T-gate. Clearly, it requires the preparation of |φ⟩.",
+      "If the measurement is also FT (this can be proven, but it will not be tackled here), then one has that the entire circuit is FT."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The fault tolerance of the measurement is stated without proof.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The notes do not say how the special ancilla state is prepared fault-tolerantly."
+    },
+    {
+     "id_suggestion": "dd-model-pure-dephasing",
+     "value": "The notes treat a qubit coupled to a thermal bath of harmonic oscillators, state that the populations are conserved so that the model is a purely decohering mechanism with no energy exchange, assume a separable initial state and a thermal bath state, and derive a coherence decay factor with a positive exponent so that the environment reduces the coherences.",
+     "anchor": "Section 5.1, pp.77, 79, 82",
+     "quotes": [
+      "and thus the model describes a purely decohering mechanism, where no energy exchange between the system and the bath is present.",
+      "it can be computed analytically under the following assumptions: 1) The total initial state is separable",
+      "2) The initial state of the bath is a thermal state of the form",
+      "Notably, Γ (t0, t) is positive.",
+      "the interaction with the environment reduces the coherences"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 5.1 under the stated assumptions.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dd-dense-pulses-cancel-decoherence",
+     "value": "The notes derive that, with spin-flip pulses applied and the system-bath interaction neglected during the pulses, in the limit of dense pulses the decoherence factor vanishes so that the decohering effect of the environment is cancelled, in the limit where the pulse duration goes to zero as the pulse strength goes to infinity.",
+     "anchor": "Section 5.1, pp.83-84, 86",
+     "quotes": [
+      "we can assume that during the pulses the contribution of",
+      "is negligible and we completely neglect it.",
+      "we can consider the limit of the time pulses that go to zero, i.e. τP → 0, as long as V → ∞ and Eq. (5.53) holds.",
+      "Finally, by taking the limit of dense pulses, i.e. ∆t → 0",
+      "Namely, the decohering effect of the environment on the system is cancelled."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 5.1 under the stated idealisations.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The result is for ideal, instantaneous, perfect pulses in a pure-dephasing model; the notes do not quantify errors from finite pulses."
+    },
+    {
+     "id_suggestion": "qem-definition-bias-variance-tradeoff",
+     "value": "The notes describe quantum error mitigation as an algorithmic scheme that reduces noise-induced bias in an expectation value by post-processing outputs from an ensemble of circuit runs, state that this often increases the variance, so more runs are needed (the sampling overhead), that unlike QEC there is no monitoring of errors during the run, and that QEM loses its usefulness if the circuit size becomes too large.",
+     "anchor": "Section 5.2, pp.86-87",
+     "quotes": [
+      "Namely, it is an algorithmic scheme that reduces noise-induced bias in the expectation value of an observable of interest by post-processing outputs from an ensemble of circuit runs.",
+      "QEM aims to reduce such a bias. Often, this implies that the corresponding variace increases.",
+      "We underline that, conversely to QEC, in QEM there is no monitoring of the errors occurring during the run of the circuit.",
+      "if the circuit size, being the product of the circuit depth times the number of qubits, becomes too large then QEM loses its usefulness."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Defines QEM in Section 5.2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zne-assumptions-and-impossibility",
+     "value": "The notes state that zero noise extrapolation is impossible if the expectation value can be an arbitrary function of the noise strength without any regularity assumption, so a linear, polynomial or exponential model is assumed, and that the derivation assumes a small noise coupling and a noise dissipator invariant under time rescaling.",
+     "anchor": "Section 5.2.1, pp.87, 89",
+     "quotes": [
+      "If the expectation value E(λ) can be an arbitrary function of λ without any regularity assumption, then ZNE is impossible.",
+      "we can assume a linear, a polynomial or an exponential dependence with respect to λ.",
+      "We assume here that the noise coupling λ is small. Moreover, we assume that the noise dissipator L is invariant under time rescaling"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The notes state the conditions of the method in Section 5.2.1.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zne-linear-unbiased-richardson-variance",
+     "value": "The notes state that the linear least-squares estimator of the zero-noise value is unbiased with a variance that follows from equal statistical uncertainty at each noise level, and that for Richardson extrapolation the variance term grows exponentially as the number of circuits increases, while the error is of order Ncir only in the limit of infinite samples.",
+     "anchor": "Section 5.2.1, pp.89-90",
+     "quotes": [
+      "is unbiased. Its variance, under the assumption that the statistical uncertainty is the same for each λj, reads",
+      "In a real scenario, Nsample is finite, and the variance term in Eq. (5.88) grows exponentially as we increase Ncir."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 5.2.1 under the stated model assumptions.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The quoted line is cut before the garbled estimator symbol so that it matches the text layer."
+    },
+    {
+     "id_suggestion": "pec-quasi-probability-unbiased-variance-cost",
+     "value": "The notes state that probabilistic error cancellation inverts the noise map on average with a quasi-probability that can take negative values, that the mitigated result is an unbiased estimator, and that the cost goes into the variance, which grows by a factor gamma squared compared to the unmitigated one.",
+     "anchor": "Section 5.2.2, pp.91-92",
+     "quotes": [
+      "which is a quasi-probability, since it can take negative values",
+      "This is an unbiased estimator. The cost of the mitigation procedure goes in the variance, which grows by a factor γ2 compared to the unmitigated one."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Section 5.2.2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The exponent on gamma is printed flat in the text layer."
+    },
+    {
+     "id_suggestion": "pec-needs-noise-knowledge-exponential-parameters",
+     "value": "The notes state that PEC works if one has an almost perfect knowledge of the noise, and that characterising the noise needs 15 parameters for 2 qubits, about 106 for 10 qubits and about 1030 for 50 qubits, so that it requires too much classical processing for a large number of qubits.",
+     "anchor": "Section 5.2.2, p.94",
+     "quotes": [
+      "The application of PEC mitigation works if one has an almost perfect knowledge of the noise.",
+      "To be quantitative, for 2 qubits one needs 15 parameters, for 10 qubits these become ∼ 106, and for 50 qubits we have ∼ 1030 parameters.",
+      "Therefore, it is an approach that requires too many classical processing to be used for a large number of qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The notes state this limit in Section 5.2.2.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The text layer prints the exponents flat; read as ten to the power 6 and ten to the power 30."
+    },
+    {
+     "id_suggestion": "scope-open-systems-theory-not-explicit",
+     "value": "The notes state that the theory of open quantum systems is part of the courses but is not explicitly discussed in these notes, that the notes are Version 1.0 of June 2024, and that some references in the bibliography are unpublished.",
+     "anchor": "Preface and Suggested Bibliography, pp.i-ii",
+     "quotes": [
+      "Although not explicitly discussed in these notes, a part of the above mentioned courses regards the theory of open quantum systems.",
+      "Version 1.0 – June 2024",
+      "Some of these are unpublished (please contact me directly for more info)."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The author states the scope in the Preface.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "carmo-2025-warm-starting-qaoa-xy-mixers",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\do-Carmo-et-al._2025_Warm-Starting-QAOA-with-XY-Mixers-A-Novel-Approach-for-Quantum-Enhanced__2504.19934.pdf",
+   "title_in_file": "Warm-Starting QAOA with XY Mixers: A Novel Approach for Quantum-Enhanced Vehicle Routing Optimization",
+   "version_note": "arXiv v1, 28 Apr 2025, 10 pages. The text layer holds the paper twice; the first copy was read in full and the second only to check quotes. Table I and the plots of Figures 1 and 2 are not legible in the text layer; their captions and the text around them were read. Section page numbers in anchors are approximate.",
+   "pages": 10,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A QAOA variant that combines a Goemans-Williamson warm start with an XY mixer, tested in noise-free simulation on 5-city TSP instances against standard X-mixer, pure warm-start and pure XY-mixer QAOA.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "setup-10-instances-depth-up-to-3",
+     "verdict": "confirmed",
+     "note": "Right, Section V.A.",
+     "value": "",
+     "anchor": "Section V.A, p.6",
+     "quotes": [
+      "We tested 10 random instances of complete graphs, each with 5 different parameter initializations and circuit depths of up to 3 layers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Section V.A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "setup-5-city-noise-free-statevector",
+     "verdict": "confirmed",
+     "note": "Right, Section V.A.",
+     "value": "",
+     "anchor": "Section V.A, pp.5-6",
+     "quotes": [
+      "we conducted numerical simulations on 5-city instances of the TSP, requiring 16 qubits under the employed encoding scheme.",
+      "All simulations were performed in a noise-free environment using the statevector method of Qiskit's AerSimulator and the COBYLA classical optimizer."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Section V.A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "warmstart-xy-outperforms-baselines",
+     "verdict": "narrowed",
+     "note": "The abstract claim holds only for the tested setting: noise-free statevector simulation of 5-city TSP instances, up to 3 layers, against QAOA variants only (standard X mixer, pure warm start, pure XY mixer). The body also reports that the pure XY mixer baseline was run without parameter reuse across depths, and that the result is called comparable, not better, against a published RS-mixer result.",
+     "value": "The authors report that, in noise-free statevector simulations of 5-city TSP instances with circuit depths up to 3 layers, the proposed warm-start combined with an XY mixer outperformed the two baselines in percentage and rank of optimal solutions, with a mean of 28.1% true solutions at p = 2 layers, and that this is an order of magnitude higher than any other tested variant.",
+     "anchor": "Abstract; Section V.B, pp.1, 5-7",
+     "quotes": [
+      "Results show that the proposed combination consistently outperforms both baselines in terms of the percentage and rank of optimal solutions",
+      "In terms of Percentage of True Solutions, it reaches the mean percentage of 28.1% at p = 2 layers, an order of magnitude higher than any other tested variant.",
+      "All simulations were performed in a noise-free environment using the statevector method of Qiskit's AerSimulator and the COBYLA classical optimizer.",
+      "we conducted numerical simulations on 5-city instances of the TSP",
+      "circuit depths of up to 3 layers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "No classical solver is a baseline, and no noisy or hardware run is reported."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qubo-fixed-start-reduces-variables",
+     "value": "The authors state that they adopt the QUBO formulation of the TSP of Lucas, fix the starting node without loss of generality, and so reduce the number of binary variables from N squared to (N − 1) squared.",
+     "anchor": "Section II.C, p.2",
+     "quotes": [
+      "We adopt the QUBO formulation of the TSP proposed by Lucas [14].",
+      "This reduces the number of binary variables from N 2 to (N − 1)2"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own encoding in Section II.C.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "With N = 5 cities this gives (5 − 1) squared = 16 qubits, matching the 16-qubit count given in Section V.A."
+    },
+    {
+     "id_suggestion": "cvrp-qubo-hundreds-of-qubits",
+     "value": "The authors state, attributing the encodings to Feld et al. and related work, that QUBO encodings that jointly capture routing and capacity constraints demand hundreds of qubits even for modest-sized instances, which exceed the capabilities of current quantum hardware.",
+     "anchor": "Section II.A, p.2",
+     "quotes": [
+      "Even for modest-sized instances, these formulations demand hundreds of qubits, which exceed the capabilities of current quantum hardware."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qaoa-optimisation-challenges",
+     "value": "The authors state, citing references 15 and 16, that barren plateaus, local minima and gradient vanishing can hinder the convergence of QAOA as the circuit depth increases, and that in the NISQ era hardware imperfections can significantly degrade the quality of quantum states, especially in deeper circuits.",
+     "anchor": "Section III.A, p.3",
+     "quotes": [
+      "Issues such as barren plateaus, local minima, and gradient vanishing can hinder convergence as the circuit depth increases [15, 16].",
+      "hardware imperfections such as gate noise, readout errors, and decoherence can significantly degrade the quality of quantum states, especially in deeper circuits."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "xy-mixer-preserves-hamming-weight-costs-gates",
+     "value": "The authors state that the XY mixer gates preserve the total excitation number (Hamming weight), so the system evolves within the subspace of valid one-hot encodings per position, and that the XY mixer is more expensive to implement than the traditional X mixer because of its two-qubit gate overhead.",
+     "anchor": "Section III.B, p.4",
+     "quotes": [
+      "These gates preserve the total excitation number (Hamming weight), allowing the system to evolve within the subspace of valid one-hot encodings per position.",
+      "Compared to the traditional X mixer used in standard QAOA, the XY mixer is more expensive to implement due to its two-qubit gate overhead"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its mixer and states its cost in Section III.B.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "constraint-subspace-only-one-class",
+     "value": "The authors state that the hybrid formulation restricts the quantum evolution to a subspace in which each tour position is assigned to a single city, thus eliminating one class of constraint violations, and that the subspace may still include infeasible solutions.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "This hybrid formulation restricts the quantum evolution to a subspace in which each tour position is assigned to a single city, thus eliminating one class of constraint violations",
+      "While this subspace may still include infeasible solutions"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its constraint handling in Section I.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The other TSP constraint (each city visited once) is not enforced by the mixer, so tours that repeat a city remain possible."
+    },
+    {
+     "id_suggestion": "warm-start-method-gw-relaxed-one-hot",
+     "value": "The authors state that the method maps the TSP to a MaxCut instance, solves it with the Goemans-Williamson algorithm, relaxes the binary result with a regularization factor ε = 0.25 as proposed in reference 18, and builds a superposition over one-hot basis states weighted by the square roots of the relaxed probabilities in each block of qubits.",
+     "anchor": "Section IV and Algorithm 1, pp.4-5",
+     "quotes": [
+      "Our initialization begins with an approximate solution obtained by mapping the TSP instance to a MaxCut problem and solving it classically using the",
+      "The resulting binary string z ∈ {0, 1} is then relaxed using a regularization factor ε = 0.25, as proposed in [18].",
+      "we prepare a superposition over the one-hot basis states weighted by the square roots of the relaxed probabilities"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own method in Section IV.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ws-qaoa-original-eps-0-25-robust",
+     "value": "The authors state, attributing it to the original warm-starting QAOA work, that setting ε = 0.25 leads to robust performance across a range of problem instances and that the regularized circuit can reproduce the Goemans-Williamson solution and, through variational refinement, surpass it.",
+     "anchor": "Section III.C, pp.4-5",
+     "quotes": [
+      "The original WS-QAOA work [18] demonstrated that setting ε = 0.25 leads to robust performance across a range of problem instances.",
+      "Furthermore, the authors showed that the regularized WS-QAOA circuit can reproduce the GW solution and, through variational refinement, surpass it."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "baselines-compared",
+     "value": "The authors state that they compared the combined approach with warm-started QAOA with a custom mixer after a TSP-to-MaxCut mapping, with standard QAOA with an XY mixer initialized in a uniform superposition over one-hot states, and, for completeness, with standard QAOA with the conventional X mixer.",
+     "anchor": "Section V.A, p.6",
+     "quotes": [
+      "(i) warm-started QAOA with a custom mixer following a TSP-to-MaxCut mapping, and (ii) standard QAOA with an XY mixer initialized in a uniform",
+      "For completeness, we also included standard QAOA with the conventional X mixer as a baseline."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own comparison set in Section V.A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "compute-gpu-three-days-per-benchmark",
+     "value": "The authors report that simulations were run on a machine with an NVIDIA GeForce RTX 3080 Ti GPU and that each full benchmark per algorithm variant required approximately 3 days to complete.",
+     "anchor": "Section V.A, p.6",
+     "quotes": [
+      "Simulations were executed on a machine equipped with an NVIDIA GeForce RTX 3080 Ti GPU with 12 GB of VRAM, and each full benchmark (per algorithm variant) required approximately 3 days to complete."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own compute in Section V.A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evaluation-metrics-and-sample-count",
+     "value": "The authors state that they evaluate by the percentage of sampled bitstrings that exactly correspond to the optimal TSP tour and by the rank of the optimal solution among sampled bitstrings ordered by frequency, rather than approximation ratios, and that frequency values are based on 1000 samples per experiment.",
+     "anchor": "Section V.A and Table I note, pp.6 and 8",
+     "quotes": [
+      "1. Percentage of True Solutions: The fraction of sampled bitstrings that exactly correspond to the optimal TSP tour.",
+      "2. Sampling Rank: The rank position of the optimal solution among all sampled bitstrings, ordered by their frequency of occurrence.",
+      "Frequency values are based on 1000 samples per experiment."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own metrics in Section V.A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "x-mixer-and-warmstart-x-results",
+     "value": "The authors report that the standard X mixer produced the poorest results, consistently failing to sample the optimal TSP tour or finding it only once or twice across all tested layers, that warm-starting with the X mixer led to modest improvements reaching a maximum of 0.5% true solutions at p = 3, and that the Sampling Rank results for the X mixer were omitted because the optimal solution often ranked beyond the 1000th position.",
+     "anchor": "Section V.B, Figure 1, pp.6-7",
+     "quotes": [
+      "the standard X mixer produced the poorest results, consistently failing to sample the optimal TSP tour, or finding it only once or twice across all tested layers.",
+      "mixer led to modest improvements (reaching a maximum of 0.5% true solutions at p = 3)",
+      "often ranking beyond the 1000th position, so we chose to omit them."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The figures carry the per-depth numbers; only the values stated in the text are entered."
+    },
+    {
+     "id_suggestion": "warm-started-xy-results-28-1-percent",
+     "value": "The authors report that the warm-started XY mixer reaches a mean of 28.1% true solutions at p = 2 layers, an order of magnitude higher than any other tested variant, and that the optimal solution consistently appears among the top three most frequently sampled bitstrings, while the standard XY mixer shows much higher variability and worse ranking.",
+     "anchor": "Section V.B, Figure 2, p.7",
+     "quotes": [
+      "In terms of Percentage of True Solutions, it reaches the mean percentage of 28.1% at p = 2 layers, an order of magnitude higher than any other tested variant.",
+      "with the optimal solution consistently appearing among the top three most frequently sampled bitstrings, whereas the pure XY mixer shows much higher variability and worse ranking."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The 28.1% is a mean over the 10 instances and 5 initializations at one depth; the text layer does not carry the spread, which the Figure 2 right panel shows."
+    },
+    {
+     "id_suggestion": "pure-xy-mixer-better-than-x-but-behind",
+     "value": "The authors report that the standard XY mixer, which preserves some feasibility by operating within a fixed Hamming weight subspace, achieved better results than the X-based methods but still lagged significantly behind the warm-started XY variant.",
+     "anchor": "Section V.B, p.7",
+     "quotes": [
+      "achieved better results than the Xbased methods, but still lagged significantly behind the warm-started XY variant."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "comparison-to-reported-xy-and-rs-mixer",
+     "value": "The authors state that each depth was optimized independently without parameter reuse, unlike other studies that report slightly better results for the standard XY mixer using layerwise learning, and that their results remain very superior to those reported for the XY mixer and are comparable to the RS-mixer for 5-city TSP instances and up to 3 layers.",
+     "anchor": "Section V.B, p.7",
+     "quotes": [
+      "Although other studies have reported slightly better results for the standard XY mixer [22], it is important to note that such works often employ a layerwise learning",
+      "In our case, each depth was optimized independently, without parameter reuse, to ensure a uniform comparison across methods.",
+      "Despite this, our results remain very superior to those reported for the XY mixer, and are comparable to the RS-mixer for 5-city TSP instances and up to 3 layers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The comparison to the XY mixer and RS-mixer is to numbers reported in reference 22, not to runs the authors made under the same conditions."
+    },
+    {
+     "id_suggestion": "rs-mixer-gate-count-cited",
+     "value": "The authors state, citing reference 22, that for a 16-qubit instance each QAOA layer using the RS-mixer requires 1728 two-qubit gates, compared with 64 two-qubit gates per layer using the XY mixer.",
+     "anchor": "Section V.B, p.7",
+     "quotes": [
+      "For a 16-qubit instance, each QAOA layer using the RS-mixer requires 1728 twoqubit gates, compared to just 64 two-qubit gates per layer when using the XY mixer [22]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "suboptimal-warm-starts-seeds-53-54",
+     "value": "The authors report that, for graph seeds 53 and 54, where the warm starts were suboptimal, their approach still outperformed all other methods, with lower ranks and higher sampling frequencies across all tested layers, and that these instances account for some of the outliers in the Sampling Rank results and for the larger standard deviations in the Percentage of True Solutions for the warm-started XY mixer.",
+     "anchor": "Section V.B and Table I, p.8",
+     "quotes": [
+      "even when initialized from suboptimal warm-starts, such as those generated for graph seeds 53 and 54, our approach still outperformed all other methods.",
+      "These specific instances also account for some of the outliers in the Sampling Rank results (Figure 1, left), as well as for the larger standard deviations observed in the Percentage of True Solutions plot for the warm-started XY mixer (Figure 2, right)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The Table I entries are garbled in the text layer, so their numbers are not entered."
+    },
+    {
+     "id_suggestion": "claim-quantum-improves-on-classical-warm-start",
+     "value": "The authors state that the question of whether QAOA can outperform the classical algorithm used to generate the warm start was addressed in the original warm-starting study for the regularization factor 0.25, and that this phenomenon is also clearly observed in their results.",
+     "anchor": "Section V.B, p.8",
+     "quotes": [
+      "An important question often raised in the context of warm-start techniques is whether QAOA can outperform the classical algorithm used to generate the warm-start in the",
+      "This phenomenon is also clearly observed in our results.",
+      "for the regularization factor ε = 0.25, the same value used in our work, the quantum algorithm can indeed improve upon the classical approximation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "No result for the Goemans-Williamson solution alone is reported in the text read, so the improvement over the classical warm start is asserted, with Table I as the only supporting numbers."
+    },
+    {
+     "id_suggestion": "carmo-2025-conclusion-and-future-work",
+     "value": "The authors conclude that numerical simulations on 5-city TSP instances showed the approach consistently outperforms both the standard XY mixer and the pure warm-starting variant in solution quality and sampling accuracy, and that the results hold even when the initial classical approximation is suboptimal, and they propose extending it to other constrained problems such as vehicle routing variants, scheduling and resource allocation.",
+     "anchor": "Section VI, pp.8-9",
+     "quotes": [
+      "Numerical simulations on 5-city TSP instances demonstrated that the proposed approach consistently outperforms both the standard",
+      "These results hold even under challenging conditions where the initial classical approximation is suboptimal",
+      "In future work, this approach could be extended to other constrained optimization problems"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "maxcut-hardness-16-over-17-cited",
+     "value": "The authors state that, even for graphs with positive edge weights, no classical polynomial-time algorithm can approximate MaxCut better than a 16/17 ratio unless P = NP.",
+     "anchor": "Appendix A, p.8",
+     "quotes": [
+      "no classical polynomial-time algorithm can approximate MaxCut better than a 16/17 ratio unless P = NP."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "No reference is given for this statement in the sentence."
+    },
+    {
+     "id_suggestion": "qubo-to-maxcut-equivalence-cited",
+     "value": "The authors state that any QUBO problem can be translated to an equivalent MaxCut problem, citing reference 20, and give the algebraic derivation in Appendix B following that reference.",
+     "anchor": "Section III.C and Appendix B, pp.5, 9",
+     "quotes": [
+      "as it is well-known that any QUBO problem can be translated to an equivalent Maxcut problem [20]",
+      "This appendix outlines the algebraic derivation that maps a generic QUBO problem into an equivalent instance of the MaxCut problem."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "carmo-2026-generalized-two-qubit-hamiltonian-projective",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Simoes-do-Carmo-Amaro-Franchini_2026_Generalized-two-qubit-Hamiltonian-for-Projective-Quantum__2606.13641.pdf",
+   "title_in_file": "Generalized two-qubit Hamiltonian for Projective Quantum Feature Maps",
+   "version_note": "arXiv v1, 11 Jun 2026, 19 pages. The text layer holds the paper twice; the first copy was read in full and the second only to check quotes. The numeric tables (III to X) and the plots of Figures 5 to 8 are partly scrambled in the text layer; their captions and the surrounding text were read, and only values stated in the running text are entered. Section page numbers in anchors are approximate.",
+   "pages": 19,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A generalized two-qubit Hamiltonian family of projected quantum feature maps, benchmarked against CD-Ising-glass and Heisenberg maps on four biomedical datasets on IBM hardware and in statevector simulation with nested cross-validation.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "gen-2q-hamiltonian-most-consistent-gains",
+     "verdict": "narrowed",
+     "note": "The abstract's sentence holds for the Molecular Toxicity hardware benchmark (Fig. 5c, Table VII). It does not hold in the other three datasets. On ISPY1 (hardware) no PQFM reached the Consistent criterion, only Promising and Suggestive cases. In the simulations, the Heisenberg map gave the best and statistically most consistent result on Breast Cancer Pathology, and gains on Cardiac Disease were modest and metric-dependent.",
+     "value": "The authors report that the generalized two-qubit Hamiltonian family gave the most consistent pattern of statistically supported gains over matched classical baselines on the Molecular Toxicity hardware benchmark, that on the ISPY1 hardware experiment no PQFM showed consistently significant gains, and that in simulation on Breast Cancer Pathology the Heisenberg map gave the best and statistically most consistent result among the simulated PQFMs.",
+     "anchor": "Abstract; Section IV.A to IV.C, pp.1, 14",
+     "quotes": [
+      "the generalized twoqubit Hamiltonian family provides the most consistent pattern of statistically supported gains over matched classical baselines, although the performance of all methods depends on the dataset, encoding strategy, measured observables, and hardware conditions.",
+      "However, the paired statistical analysis did not identify consistently significant gains for any PQFM in this experiment; only promising and suggestive gains were observed for some metrics and configurations",
+      "In this case, the Heisenberg map provided the best and statistically most consistent result among the simulated PQFMs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The abstract's wording reads as a general result across the four datasets; the body supports it for one dataset."
+    },
+    {
+     "id": "no-quantum-advantage-established",
+     "verdict": "confirmed",
+     "note": "Right, Section V. The same sentence says the results show that projected quantum feature maps can generate task-relevant information for classical machine-learning models.",
+     "value": "",
+     "anchor": "Section V, p.15",
+     "quotes": [
+      "Taken together, these results do not yet establish quantum advantage, but they provide empirical evidence that projected quantum feature maps can generate"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit in the conclusion, Section V.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "setup-ibm-up-to-156-qubits-statevector",
+     "verdict": "confirmed",
+     "note": "Right. Detail from Section III.B: three IBM processors (ibm_marrakesh, ibm_fez, ibm_kingston), 4096 shots, no error correction or error mitigation; the statevector runs use Qiskit's AerSimulator.",
+     "value": "",
+     "anchor": "Introduction, p.2; Section III.B, p.7",
+     "quotes": [
+      "The experiments include executions on real IBM quantum processors with up to 156 qubits, as well as statevector simulations for complementary benchmarks."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors state their own setup in the Introduction and Section III.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "pqfm-definition-classical-in-out",
+     "value": "The authors define a projected quantum feature map as a composite of a quantum embedding map and a measurement-based projection map, with each transformed feature the expectation value of one observable, and state that both the input and the output of a PQFM are classical quantities, with the quantum processor used only for the intermediate feature transformation.",
+     "anchor": "Section II, p.2",
+     "quotes": [
+      "where φU denotes the quantum embedding map and φM denotes the measurement-based projection map [12].",
+      "Therefore, both the input x and the output x′ of a PQFM are classical quantities. The quantum processor is used only to implement the intermediate feature transformation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines a PQFM in Section II.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pqfm-linear-vs-quadratic-kernel-cost",
+     "value": "The authors state that a fidelity-based kernel matrix needs similarities for all sample pairs, so its quantum-evaluation cost grows as O(N 2) (exponent printed flat, read as N squared), whereas for a fixed measurement protocol the quantum feature-generation stage of a PQFM grows linearly with N for a fixed number of measured observables.",
+     "anchor": "Section II, p.3",
+     "quotes": [
+      "its quantum-evaluation cost grows as O(N 2).",
+      "so that the quantum feature-generation stage grows linearly with N for a fixed number of measured observables."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows from the definitions in Section II.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The comparison counts quantum evaluations only; the per-sample cost of measuring many observables with many shots is not included."
+    },
+    {
+     "id_suggestion": "huang-fidelity-kernel-limitation-cited",
+     "value": "The authors state, citing Huang et al., that fidelity-based quantum kernels may become poorly suited for prediction when the encoded states occupy an effectively high-dimensional region of Hilbert space, so that the kernel matrix approaches the identity.",
+     "anchor": "Section II, p.3",
+     "quotes": [
+      "Huang et al. [7] showed that fidelity-based quantum kernels may become poorly suited for prediction when the encoded states",
+      "an effectively high-dimensional region of Hilbert space.",
+      "so that the associated kernel matrix approaches the identity"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "geometric-separation-necessary-not-sufficient",
+     "value": "The authors state that the projected representation defines a new geometry in the induced feature space and can increase the geometric separation between quantum and classical models, which is a necessary, although not sufficient, condition for predictive quantum advantage.",
+     "anchor": "Section II, p.3",
+     "quotes": [
+      "can increase the geometric separation between quantum and classical models, which is a necessary, although not sufficient, condition for predictive quantum advantage."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cd-ising-glass-implementation-setup",
+     "value": "The authors state that in their CD-Ising-glass implementation they use Nsteps = 1, a single Trotter step in the impulse regime following the original construction, extract one-local ⟨Zi⟩ and two-local ⟨ZiZj⟩ expectation values, encode normalized features as local fields, and estimate the couplings by mutual information.",
+     "anchor": "Section II.A, pp.4-5",
+     "quotes": [
+      "In our experiments, following the original CD-Ising-glass construction, we use Nsteps = 1, corresponding to a single Trotter step in the impulse regime.",
+      "namely ⟨Zi⟩ and ⟨ZiZj⟩.",
+      "The coupling Jij quantifies the statistical dependence between features i and j, here estimated through mutual information."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own construction in Section II.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "heisenberg-map-data-in-interaction-terms",
+     "value": "The authors state that in the Heisenberg map the data are encoded in the interaction terms rather than in local fields with no pairwise mutual-information encoding, and that each feature block contains n − 1 nearest-neighbor edges and so can encode n − 1 classical features.",
+     "anchor": "Section II.B, p.6",
+     "quotes": [
+      "Here, the data are encoded in the interaction terms rather than in local fields, and no pairwise mutual-information encoding is used.",
+      "Since each feature block contains n − 1 nearest-neighbor edges, it can encode n − 1 classical features."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines this map in Section II.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "heisenberg-mps-simulability-cited",
+     "value": "The authors state that the one-dimensional Heisenberg structure is particularly amenable to matrix-product-state simulation, that references 11 and 12 report simulations with more than 100 qubits under a one-dimensional entanglement constraint, and that classical hardness is not sufficient to guarantee improved predictive performance.",
+     "anchor": "Section II.B, p.6",
+     "quotes": [
+      "the one-dimensional Heisenberg structure makes this PQFM particularly amenable to matrix-product-state (MPS) simulation.",
+      "Refs. [11, 12] reports simulations with more than 100 qubits under a one-dimensional entanglement constraint.",
+      "Although classical hardness is not sufficient to guarantee improved predictive performance [7]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "xyz-family-definition-and-capacity",
+     "value": "The authors define a generalized two-qubit Hamiltonian PQFM family (XYZProjectiveQFM) with a set of active Pauli axes A for local encoding, an interaction graph E and active two-body channels P (diagonal, cross-axis or both), state that n qubits with |A| active axes encode up to n|A| features per layer, giving at most n|A|L features with L layers, with 24 features for n = 4, A = {x, y, z} and L = 2, and that encoding the same feature on all axes gives nL distinct features.",
+     "anchor": "Section II.C, pp.7-8",
+     "quotes": [
+      "so that a register with n qubits and |A| active axes can encode up to n|A| features per layer.",
+      "For example, with n = 4 qubits, A = {x, y, z}, and L = 2 layers, the multi-axis mode can encode up to Cmulti-axis = 4 × 3 × 2 = 24 distinct classical features.",
+      "In that case number of distinct encoded features is Cshared = nL"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own family and capacity in Section II.C.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "xyz-family-scope-limit-parameterization",
+     "value": "The authors state that a Hamiltonian with local X and Y fields but only an XX interaction channel is not part of the current XYZProjectiveQFM parameterization, because the available two-body channels are tied to the axes used for local encoding.",
+     "anchor": "Section II.C, p.7",
+     "quotes": [
+      "This construction ties the available two-body channels to the axes used for local encoding.",
+      "Consequently, a Hamiltonian with local X and Y fields but only an XX interaction channel is not part of the current XYZProjectiveQFM parameterization."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the scope of their parameterization in Section II.C.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "xyz-circuit-one-trotter-step",
+     "value": "The authors state that the circuit implementation of the two-qubit family follows the same path as the other PQFMs, a first-order Trotter approximation with only one step, although more steps can be used.",
+     "anchor": "Section II.C, p.8",
+     "quotes": [
+      "a first-order Trotter approximation with only one step, although more steps can be used."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own implementation in Section II.C.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "novelty-claim-axis-resolved-encoding",
+     "value": "The authors state that, to the best of their knowledge, this is the first Hamiltonian-based PQFM study to systematically explore axis-resolved encoding of distinct classical features.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "To the best of our knowledge, this is the first Hamiltonian-based PQFM study to systematically explore axis-resolved encoding of distinct classical features."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "datasets-four-biomedical",
+     "value": "The authors state that they use four binary-classification datasets: Molecular Toxicity CRY1 with 171 small molecules and 1203 descriptors reduced to the top 156 by mutual information with the target; Breast Cancer Radiology I-SPY1 with 161 patient samples and 370 radiomic features; Breast Cancer Pathology Wisconsin Diagnostic with 569 samples and 30 features; and Cardiac Disease Cleveland with 303 samples and 13 features.",
+     "anchor": "Section III.A, p.9",
+     "quotes": [
+      "a dataset composed of 171 small molecules designed to target functional domains of the core clock protein CRY1 [33]. The original dataset contains 1203 molecular descriptors.",
+      "we selected the top 156 features according to their mutual information with the target variable.",
+      "The tabular version used here contains 161 patient samples and 370 radiomic features",
+      "It contains 569 samples described by 30 real-valued nuclear morphology features",
+      "The version used here contains 303 samples and 13 multidimensional features"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own data in Section III.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text does not say whether the mutual-information selection of 156 features was done inside each cross-validation fold or once on all samples; if once, it uses the labels of the outer test folds."
+    },
+    {
+     "id_suggestion": "hardware-runs-shots-no-mitigation",
+     "value": "The authors state that for Molecular Toxicity they compared three IBM processors (ibm_marrakesh, ibm_fez and ibm_kingston), that all hardware executions used 4096 shots with no quantum error correction or error mitigation, and that only ibm_kingston was used for the Breast Cancer Radiology dataset because it provided the best overall performance among the tested processors on the Molecular Toxicity benchmark.",
+     "anchor": "Section III.B, p.9",
+     "quotes": [
+      "we compared three IBM quantum processors, ibm_marrakesh, ibm_fez, and ibm_kingston, accessed through IBM's open-access plan.",
+      "All hardware executions used 4096 shots, with no quantum error correction or error-mitigation techniques.",
+      "ibm_kingston provided the best overall performance among the tested processors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own hardware setup in Section III.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Choosing the processor from the Molecular Toxicity benchmark and then using it for ISPY1 is a selection on earlier results; ISPY1 is a separate dataset."
+    },
+    {
+     "id_suggestion": "simulation-statevector-same-assignment",
+     "value": "The authors state that quantum features for the Breast Cancer Pathology and Cardiac Disease datasets were generated in the statevector mode of Qiskit's AerSimulator, using the same hardware-aware feature-assignment procedure as for the real-device executions.",
+     "anchor": "Section III.B, p.9",
+     "quotes": [
+      "quantum features were generated using the statevector mode of Qiskit's AerSimulator.",
+      "these simulations were constructed using the same hardware-aware feature-assignment procedure adopted for real-device executions."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own simulation setup in Section III.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "learning-pipeline-nested-cv-gradient-boosting",
+     "value": "The authors state that they used repeated stratified 5-fold cross-validation with 10 repetitions for 50 outer evaluations, with hyperparameters chosen by an inner stratified 80/20 holdout split using AUC, a Gradient Boosting classifier with random seed 42, and the same protocol for classical, quantum-only and hybrid feature representations.",
+     "anchor": "Section III.C and III.D, pp.9-10",
+     "quotes": [
+      "The outer loop consisted of repeated stratified 5-fold crossvalidation with 10 repetitions, yielding 50 independent outer evaluations.",
+      "Hyperparameters were optimized through an inner stratified 80/20 holdout split implemented with PredefinedSplit inside GridSearchCV, using AUC as the selection criterion.",
+      "We focused on a Gradient Boosting classifier with random seed fixed to 42.",
+      "The same nested validation protocol was applied to classical, quantum-only, and hybrid classical–quantum feature representations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own protocol in Section III.C and III.D.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hybrid-selection-top30-shap-13-pca",
+     "value": "The authors state that for Breast Cancer Pathology they retained the top 30 SHAP-ranked features and for Cardiac Disease retained 13 principal components, choosing these values based on preliminary experiments, and that SHAP selections were performed without leakage within the nested validation protocol.",
+     "anchor": "Section III.D and Table III caption, pp.10, 13",
+     "quotes": [
+      "Based on our preliminary experiments, we retained the top 30 SHAP-ranked features, since this setting provided the best overall performance",
+      "retaining 13 principal components according to the same empirical criterion.",
+      "All SHAP selections were performed without leakage within the nested validation protocol."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own selection settings in Section III.D.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The preliminary experiments that fixed 30 features and 13 components are not described, so it is not stated whether they used the same samples as the reported evaluation."
+    },
+    {
+     "id_suggestion": "statistical-criteria-consistent-promising",
+     "value": "The authors state that they compare each configuration to the classical baseline on the same outer splits, compute a 95% confidence interval for the mean paired delta with the Student t distribution and a one-sided Wilcoxon signed-rank test, and label a result Consistent when the mean delta is positive, the interval lies entirely above zero and p < 0.05, Promising when p < 0.05 but the interval crosses zero, Suggestive when p is between 0.05 and 0.10 with the interval crossing zero, and a Positive trend otherwise.",
+     "anchor": "Section III.E, p.11",
+     "quotes": [
+      "We summarized the distribution of paired deltas over the 50 outer folds by its mean and computed a 95% confidence interval for the mean delta using the Studentt distribution.",
+      "Improvements are considered statistically supported, or Consistent, when the mean paired delta is positive, the 95% confidence interval lies entirely above zero, and the onesided Wilcoxon signed-rank test gives p < 0.05.",
+      "Cases with positive mean delta and Wilcoxon p < 0.05, but with a confidence interval crossing zero, are reported as Promising.",
+      "Also, we consider as Suggestive those cases with positive mean delta, confidence interval crossing zero, and 0.05 ≤ p < 0.10."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own criteria in Section III.E.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The 50 outer folds come from repeated cross-validation on the same samples, so they are not independent, and the text read states no correction for the many metric, observable and configuration comparisons; the p values and intervals are therefore likely too optimistic."
+    },
+    {
+     "id_suggestion": "moltox-cd-ising-results",
+     "value": "The authors report that on the Molecular Toxicity dataset the CD-Ising-glass gains are sparse at 52 and 78 qubits, with the only statistically supported gain at 52 qubits for ibm_kingston where the two-body ⟨ZZ⟩ observable improves AUC, and that the strongest and most consistent gains are at 156 qubits on ibm_kingston, where one-body ⟨Z⟩ features improve AUC, precision and accuracy and two-body ⟨ZZ⟩ features improve all reported metrics.",
+     "anchor": "Section IV.A, p.12",
+     "quotes": [
+      "In the most constrained regimes, with 52 and 78 qubits, the improvements depend on the metric and backend, with only a limited number of cases showing statistically supported gains over the classical baseline",
+      "In the 52-qubit regime, the only statistically supported gain is observed for ibm_kingston, where the two-body ⟨ZZ⟩ observable improves AUC over the classical baseline.",
+      "The strongest and most consistent gains are observed in the one-feature-per-qubit regime with 156 qubits, especially for ibm_kingston.",
+      "the one-body ⟨Z⟩ features improve AUC, precision, and accuracy, while the two-body ⟨ZZ⟩ features improve all reported metrics under the paired statistical criteria."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Tables V to VII list the classical baseline AUC as 0.5653, a value near chance, so the gains are measured from a weak baseline."
+    },
+    {
+     "id_suggestion": "moltox-heisenberg-weaker-three-axis-cost",
+     "value": "The authors report that on Molecular Toxicity the Heisenberg-map results are weaker than the CD-Ising-glass results, with only a small number of metrics and configurations showing statistically supported gains, and state that because this PQFM requires measurements along all three Pauli axes its execution requires approximately three times more QPU measurement time than single-axis feature maps.",
+     "anchor": "Section IV.A, p.12",
+     "quotes": [
+      "Overall, the Heisenberg-map results are weaker than those obtained with the CD-Ising-glass map.",
+      "only a small number of metrics and configurations show statistically supported gains (see Fig. 5(b)).",
+      "its execution requires approximately three times more QPU measurement time than singleaxis feature maps."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "moltox-xyz-family-results",
+     "value": "The authors report that on ibm_kingston the generalized XYZ family improves over the classical baseline in most metrics across all tested qubit budgets, that in the compressed 52- and 78-qubit regimes the cross-only one-body features improve all reported metrics, and that the best overall result is the 156-qubit full/shared-feature configuration, where one-body observables reach an AUC of 0.6222, comparable to the best CD-Ising-glass result, with F1 of 0.7520 and recall of 0.8096.",
+     "anchor": "Section IV.A, Table VII, pp.11-12",
+     "quotes": [
+      "the proposed XY Z feature-map family improves over the classical baseline in most metrics and across all tested qubit budgets on ibm_kingston.",
+      "In the compressed regimes with 52 and 78 qubits, the multi-axis strategy provides clear gains",
+      "The best overall performance is obtained in the 156qubit full/shared-feature configuration",
+      "particularly through the one-body features in the crossonly setting, which improve all reported metrics relative to the classical baseline.",
+      "In this setting, the one-body observables reach an AUC of 0.6222, comparable to the best CD-Ising-glass result, while providing larger gains in F1 and recall, with values of 0.7520 and 0.8096, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table VII lists the classical baseline as AUC 0.5653, F1 0.7135 and recall 0.7461, so the AUC gain is about 0.057 and the recall gain about 0.064."
+    },
+    {
+     "id_suggestion": "multi-axis-more-effective-than-more-blocks",
+     "value": "The authors state that, for the Molecular Toxicity benchmark, the multi-axis strategy appears more effective than increasing only the number of encoding blocks, and in the conclusion that this holds at least for the cases studied here.",
+     "anchor": "Section IV.A and Section V, pp.12, 15",
+     "quotes": [
+      "the multi-axis strategy appears more effective than increasing only the number of encoding blocks.",
+      "the multi-axis encoding strategy outperformed the alternative strategy of increasing the number of encoding blocks alone",
+      "at least for the cases studied here."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The comparison on Molecular Toxicity mixes different qubit budgets, processors for the Heisenberg map (ibm_marrakesh) and families, so it does not isolate the encoding strategy."
+    },
+    {
+     "id_suggestion": "hardware-drift-sample-order-control",
+     "value": "The authors state that hardware calibration drift can make features reflect acquisition order when a dataset is class-ordered, that running Molecular Toxicity in its original class-ordered form gave gains comparable to those reported in references 13 and 14, supporting the interpretation that part of the large apparent improvement can arise from an order-dependent hardware-drift effect, and that their reported results use shuffled samples as a more conservative estimate.",
+     "anchor": "Section IV.A.1 and Figure 6, pp.12-13",
+     "quotes": [
+      "samples appearing far apart in the submission order may pass through different noisy quantum maps, even when the nominal circuit is the same.",
+      "In that setting, the observed gains became comparable to those reported in Refs. [13, 14], supporting the interpretation that part of the large apparent improvement can arise from an order-dependent hardware-drift effect.",
+      "For this reason, the results reported here are based on shuffled samples and should be interpreted as a more conservative estimate of the predictive contribution of the PQFM itself."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "This is an empirical check by the authors of an earlier, larger reported gain; it bears on the earlier CD-Ising-glass results (references 13 and 14), not only on this paper. The control run used a different classifier setup (1000 estimators, five splits and five repetitions), given in the Figure 6 caption."
+    },
+    {
+     "id_suggestion": "drift-caution-and-bond-trading-data",
+     "value": "The authors state that order-dependent effects cannot be assessed for non-public datasets such as the institutional bond-trading data used in reference 12, and that the possibility of drift-induced feature separation should be considered whenever large gains are observed in long sequential QPU executions.",
+     "anchor": "Section IV.A.1, p.13",
+     "quotes": [
+      "Similar order-dependent effects cannot be assessed for non-public",
+      "datasets such as the institutional bond-trading data used in Ref. [12]; nevertheless, the possibility of drift-induced feature separation should be considered whenever large gains are observed in long sequential QPU executions."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ispy1-hardware-results-no-consistent-gains",
+     "value": "The authors report that on ISPY1 with all 370 features the XYZ-diagonal map increases AUC from 0.5315 to 0.5622 and recall from 0.6179 to 0.6485, and that the paired statistical analysis did not identify consistently significant gains for any PQFM in this experiment, with only promising and suggestive gains for some metrics and configurations.",
+     "anchor": "Section IV.B, Figure 8, Table VIII, pp.13-14",
+     "quotes": [
+      "here we used all 370 available features.",
+      "In particular, the XY Z-diagonal map increases AUC from 0.5315 to 0.5622 and recall from",
+      "0.6179 to 0.6485.",
+      "However, the paired statistical analysis did not identify consistently significant gains for any PQFM in this experiment; only promising and suggestive gains were observed for some metrics and configurations, as reported in Table VIII."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The AUC values are close to 0.5, so the models are near chance on this dataset with or without the quantum features."
+    },
+    {
+     "id_suggestion": "simulation-results-smaller-gains",
+     "value": "The authors report that in statevector simulation the gains were generally smaller than in the QPU experiments; on Breast Cancer Pathology, where the classical baseline was already very strong, the Heisenberg map's SHAP-selected quantum features reached an AUC of 0.9911 against 0.9847 for the classical baseline and improved precision from 0.9574 to 0.9637, and on Cardiac Disease the best gains were modest and appeared mainly in hybrid settings, with recall rising from 0.7626 to 0.7900 for the full/shared-feature XYZ map and precision from 0.8033 to 0.8305 for CD-Ising-glass.",
+     "anchor": "Section IV.C, Tables III, IV, IX and X, pp.14-15",
+     "quotes": [
+      "In contrast with the QPU experiments, the gains in the simulated setting were generally smaller.",
+      "The SHAP-selected quantum features reached an AUC of 0.9911, compared with 0.9847 for the classical baseline, and also improved precision from 0.9574 to 0.9637",
+      "the full/shared-feature XY Z map improved recall from 0.7626 to 0.7900 in the classicalplus-quantum PCA setting, while CD-Ising-glass improved precision from 0.8033 to 0.8305",
+      "However, the overall pattern was less consistent than in the hardware experiments."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The simulated runs are noiseless, so the larger gains on hardware than in simulation are on different datasets and cannot be read as an effect of noise."
+    },
+    {
+     "id_suggestion": "conclusion-one-feature-per-qubit-preferable",
+     "value": "The authors state that when enough qubits are available the one-feature-per-qubit regime remains highly competitive and often preferable, and that the shared-feature mode produced competitive results in some settings.",
+     "anchor": "Section V, p.15",
+     "quotes": [
+      "Nevertheless, when enough qubits are available, the results indicate that the one-feature-per-qubit regime remains highly competitive, and often preferable.",
+      "the shared-feature mode also produced competitive results in some settings"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "intro-claim-consistent-gains-selected-hardware",
+     "value": "The authors state that generalized multi-axis PQFMs can provide consistent and statistically supported predictive gains over matched classical baselines in selected hardware settings at utility-relevant scales, and that the usefulness of projected quantum features depends on the dataset, encoding strategy, measured observables, post-processing method and hardware conditions.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "generalized multi-axis PQFMs can provide consistent and statistically supported predictive gains over matched classical baselines in selected hardware settings at utility-relevant scales.",
+      "depends on the dataset, encoding strategy, measured observables, post-processing method, and hardware conditions."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "open-problems-noise-and-surrogates",
+     "value": "The authors state that a central open direction is to understand the role of hardware noise in PQFMs, including how to distinguish detrimental noise, drift-induced artifacts and possible noise-assisted effects, and that classical surrogate models of the quantum feature extraction could be a diagnostic benchmark, since efficient classical prediction of quantum-generated features may weaken claims of computational quantum advantage even when the representation remains practically useful.",
+     "anchor": "Section V, p.15",
+     "quotes": [
+      "A central one is to better understand the role of hardware noise in PQFMs, including how to distinguish detrimental noise, drift-induced artifacts, and possible noise-assisted effects in the extracted feature representations.",
+      "surrogate models provide a useful diagnostic benchmark, since efficient classical prediction of quantum-generated features may weaken claims of computational quantum advantage even when the resulting representation remains practically useful [7]."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state these open problems in Section V.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "intro-near-term-no-broad-advantage-cited",
+     "value": "The authors state, citing references 8 to 10, that given noise and restricted circuit depth it is unlikely that near-term devices will provide broad, general-purpose advantages for machine learning.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "it is unlikely that nearterm devices will provide broad, general-purpose advantages for machine learning [8–10]."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "caro-2022-generalization-quantum-machine-learning-few",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2021\\Caro-et-al._2021_Generalization-in-quantum-machine-learning-from-few-training-data__2111.05292.pdf",
+   "title_in_file": "Generalization in quantum machine learning from few training data",
+   "version_note": "arXiv:2111.05292v2 (5 Sep 2022), the version published as Nature Communications 13, 4919 (2022), 40 pages including the Supplementary Information. The text layer holds the paper twice; the first copy (main text, references and Supplementary Information, Appendices A to E) was read in full and the second, a two-column scramble, was used only to check quotes. The square roots in the bounds are lost in the text layer. Page numbers in anchors are approximate.",
+   "pages": 40,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "Theorems that bound the generalization error of variational quantum machine learning models by the number of trainable gates T and training data N, with extensions to gate sharing, optimization and variable structure, and simulations on QCNN phase classification and QFT compiling.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "caro-gate-sharing-and-optimization-refinement",
+     "verdict": "narrowed",
+     "note": "The bound of Theorem 3 is a minimum over K of a term that is at worst linear in K and logarithmic in M T plus a term summing the changes of the remaining gates, with the gates ordered by size of change. The improvement therefore needs the other T minus K gates to change very little; it is not a bound in K alone. Theorem C.7 and the mother theorem add the same condition, and the reference maps must be fixed independently of the training data.",
+     "value": "The paper proves in Theorem 3 that, when the tth of T independently parameterized local channels, each reused at most M times, is changed by ∆t during optimization, the generalization error is bounded by a minimum over K of a term that scales at worst linearly in K and logarithmically in M T plus a term that sums the changes ∆k of the remaining gates, so the improvement applies when only K of the T local gates have undergone a significant change.",
+     "anchor": "Theorem 3 and following paragraph, Section II.B, p.3; Theorem C.7 and Remark C.7, Appendix C",
+     "quotes": [
+      "Theorem 3 (Gate-sharing QMLM under optimization). Consider a QMLM with T independently parameterized local quantum channels, where the tth channel is reused at most M times and is changed by ∆t during the optimization.",
+      "When only K T local quantum gates have undergone a significant change, then the generalization error will scale at worst linearly with K and logarithmically in the total number of parameterized gates M T .",
+      "In fact, we can take these maps to be any fixed \"reference points\" w.r.t. which we measure distances."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper states Theorem 3 with its conditions and proves the general form as Theorem C.7 and Theorem C.4.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The abstract's summary (improves to K over N under a square root) leaves out the additive term from the remaining gates' changes."
+    },
+    {
+     "id": "caro-generalization-error-sqrt-t-over-n",
+     "verdict": "confirmed",
+     "note": "Right. The text layer drops the square root in the abstract and in Eq. (5), which print as 'T /N' and 'O T log T / N'. Theorem C.4's list of properties settles it: 'a dependence on the square root of the inverse of the training data size (N)'. Conditions: T parameterized local channels (kappa-local, with kappa independent of n), any number of non-trainable global gates, i.i.d. training data, loss bounded by the spectral norm of the loss observables; the bound hides the loss bound and the confidence level.",
+     "value": "",
+     "anchor": "Abstract; Theorem 1 and Remark 1, Section II.B, pp.2-3, 22; proof in Appendix C (Theorem C.6)",
+     "quotes": [
+      "Theorem 1 (Basic QMLM). For a QMLM with T parameterized local quantum channels, with high probability over training data of size N , we have that",
+      "For efficiently implementable QMLMs with T ∈ O(poly n), a sample size of N ∈ O (poly n/ε2) is already sufficient.",
+      "a dependence on the square root of the inverse of the training data size (N )"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper states Theorem 1 with its conditions and proves the general form as Theorem C.6.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "caro-no-quantum-advantage-and-exponential-gate-limit",
+     "verdict": "confirmed",
+     "note": "Right, Section III.C.",
+     "value": "",
+     "anchor": "Section III.C, p.8",
+     "quotes": [
+      "Our results do not prove a quantum advantage of quantum over classical machine learning.",
+      "our generalization error bounds scale exponentially with n, and hence we do not make non-trivial claims about this regime."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state these limits in Section III.C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "caro-simulated-qcnn-and-compiling-low-data",
+     "verdict": "widened",
+     "note": "Right as far as it goes. The paper adds: the QCNN run used 16 qubits and 30 training points; compiling from a near-solution initialization needed only two training points up to 40 qubits (one point was not enough); and the observed compiling scaling was better than the quadratic scaling implied by a direct application of the bounds, so the numerics are more optimistic than the theory.",
+     "value": "In classical simulation, the authors report that QCNN phase classification on 16 qubits was trained with 30 data points, that QFT compiling needed training data scaling linearly with the number of qubits for random computational basis inputs, that up to n = 9 qubits it generalizes well from a constant number of training data points for Haar random inputs, and that two training data points suffice up to 40 qubits when the circuit is initialized near the solution.",
+     "anchor": "Section II.C, Figures 2 to 4, pp.4-7",
+     "quotes": [
+      "Our numerical investigation shows a linear scaling of the training requirements when training on random computational basis states.",
+      "Up to n = 9 qubits, we generalize well from a constant number of training data points, independent of the system size.",
+      "In this case, as shown in Fig. 4, we find that two training data points suffice to obtain accurate generalization, which holds even up to a problem size of 40 qubits.",
+      "This better than the quadratic scaling implied by a direct application of our theory",
+      "Panel (a) visualizes the performance of the QCNN for 16-qubits, trained with 30 data points"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The near-solution initialization needs prior knowledge of the answer, as the authors note."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "framework-assumptions-loss-and-encoding",
+     "value": "The paper states that a QMLM is a parameterized CPTP map with no further assumption on how it depends on the parameters, that the data encoding is fixed in advance and not optimized over, that the loss is the expectation of a Hermitian observable on the output state with a uniform bound Closs on the spectral norm of the loss observables, and that the generalization error is the prediction error minus the training error.",
+     "anchor": "Section II.A, p.2",
+     "quotes": [
+      "We make no further assumptions on the form of the dependence of the CPTP map EαQMLM(·) on the parameters α.",
+      "We assume that the data encoding is fixed in advance and not optimized over.",
+      "we therefore assume Closs := supx,y ||Oxlo,sys|| < ∞,",
+      "This strategy can be justified via bounds on the generalization error gen(α) = R(α) − RˆS(α), (4) which is the key quantity that we bound in our theorems."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its framework in Section II.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem-1-conditions-remark-1",
+     "value": "The paper states that Theorem 1 applies to a QMLM with arbitrarily many non-trainable global quantum gates and T trainable local quantum gates, where local means kappa-local for an n-independent locality parameter, and that it implies a sufficient training data size of order T log T over epsilon squared for generalization error at most epsilon, effectively linear in T.",
+     "anchor": "Section II.B, Theorem 1 and Remark 1, pp.2-3",
+     "quotes": [
+      "Theorem 1 (Basic QMLM). For a QMLM with T parameterized local quantum channels, with high probability over training data of size N , we have that",
+      "We consider a QMLM that has arbitrarily many non-trainable global quantum gates and T trainable local quantum gates.",
+      "Here, by local we mean κ-local for some n-independent locality parameter κ, and a local quantum gate can be a unitary or a quantum channel acting on κ qubits.",
+      "already with training data of size N ∼ T log T/ε2, which scales effectively linearly with T , the number of parameterized gates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The text layer prints epsilon squared as ε2. This is the sufficient size from an upper bound; the paper gives no matching lower bound."
+    },
+    {
+     "id_suggestion": "theorem-2-gate-sharing",
+     "value": "The paper states in Theorem 2 that for a QMLM with T independently parameterized local channels, each reused at most M times, the generalization error is bounded on the order of the square root of T log(M T) over N with high probability, so the data size effectively scales linearly in T and only logarithmically in M, and that applying multiple copies of the QMLM in parallel does not significantly worsen the generalization.",
+     "anchor": "Section II.B, Theorem 2, pp.2-3; Corollaries C.1 and C.2",
+     "quotes": [
+      "Theorem 2 (Gate-sharing QMLM). Consider a QMLM with T independently parameterized local quantum channels, where each channel is reused at most M times.",
+      "Thus, good generalization, as in Remark 1, can already be guaranteed, with high probability, when the data size effectively scales linearly in T (the number of independently parameterized gates) and only logarithmically in M (the number of uses).",
+      "In particular, applying multiple copies of the QMLM in parallel does not significantly worsen the generalization performance compared to a single copy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The square root in the bound is lost in the text layer; Theorem C.4 states the square-root dependence on N."
+    },
+    {
+     "id_suggestion": "theorem-4-variable-structure",
+     "value": "The paper states in Theorem 4 that for a QMLM that may vary its structure, with G_T different architectures for each number T of parameterized gates, the generalization error bound depends on T and M as before plus a term logarithmic in G_T over N, so that even when G_T grows exponentially with T the added term is of order T over N.",
+     "anchor": "Section II.B, Theorem 4, pp.3-4",
+     "quotes": [
+      "Theorem 4 (Gate-sharing QMLM with variable structure). Consider a QMLM with an arbitrary number of parameterized local quantum channels, where for each T > 0, we have GT different QMLM architectures with T parameterized gates.",
+      "This logarithmic dependence is crucial as even in the cases when GT grows exponentially with T , we have log(GT )/N ∈ O(T/N)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement and its conditions are quoted from where the paper states them, and the paper proves it in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem-5-mother-theorem",
+     "value": "The paper states as Theorem 5 (mother theorem) a generalization bound for a QMLM with variable architecture, where the tth channel is reused at most M times and changed by ∆t during optimization, as a minimum over K of a term f(K) plus a logarithmic term in G_T over N, and states that Theorems 1 to 4 follow as special cases.",
+     "anchor": "Section IV.A, Theorem 5, p.8; Theorem C.4, Appendix C",
+     "quotes": [
+      "Theorem 5 (Mother theorem). Consider a QMLM with an arbitrary number of parameterized local quantum channels, where for each T > 0, we have GT different QMLM architectures with T trainable local gates.",
+      "Suppose that after optimizing on the training data, the QMLM has T independently parameterized local quantum channels, where the tth channel is reused at most M times and is changed by ∆t during the optimization.",
+      "In particular, we demonstrate how to obtain Theorems 1, 2, 3, and 4 as special cases of Theorem 5."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement and its conditions are quoted from where the paper states them, and the paper proves it in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem-c4-properties-of-bound",
+     "value": "The paper lists the properties of its most general bound (Theorem C.4): a dependence on the square root of the inverse of the training data size, an at worst slightly superlinear dependence on the number of trainable maps that can improve if only K gates change, a logarithmic dependence on the number of uses, on the number of different architectures and on the reciprocal of the confidence level.",
+     "anchor": "Appendix C, after Theorem C.4, pp.20, 22",
+     "quotes": [
+      "Some of the important aspects of the upper bound on the generalization error of a QMLM provided by Theorem C.4 are: a dependence on the square root of the inverse of the training data size (N ); an at worst slightly superlinear dependence on the number of trainable maps (T",
+      "a logarithmic dependence on the number of uses (Mt); a logarithmic dependence on the number of different architectures (GT ); and a logarithmic dependence on the reciprocal of the desired confidence level (δ)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement and its conditions are quoted from where the paper states them, and the paper proves it in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem-c1-c2-metric-entropy-bounds",
+     "value": "The paper proves metric entropy bounds in the diamond distance: for a QMLM with T parameterized 2-qubit unitary gates (Theorem C.1) the logarithm of the covering net size is bounded by 32 T times the logarithm of 12 T over epsilon, and for T parameterized 2-qubit CPTP maps (Theorem C.2) by 512 T times the logarithm of 6 T over epsilon, for every epsilon in (0, 1], with an arbitrary number of non-trainable global gates.",
+     "anchor": "Appendix C.1, Theorems C.1 and C.2",
+     "quotes": [
+      "Let EθQMLM(·) be an n-qubit QMLM with T parameterized 2-qubit unitary gates and an arbitrary number of non-trainable, global unitary gates.",
+      "such that the logarithm of its size can be upper bounded as log(|N |) 32T log 12T . ε (C6)",
+      "For any ε ∈ (0, 1], there exists an ε-covering net Nε of CPT PQMLM w.r.t. the diamond distance such that the logarithm of its size can be upper bounded as log(|N |) 512T log 6T . ε (C9)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement and its conditions are quoted from where the paper states them, and the paper proves it in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The inequality signs are lost in the text layer; the bounds are upper bounds as the surrounding text says. The bound does not depend on the number of qubits n."
+    },
+    {
+     "id_suggestion": "lemma-c1-c2-covering-numbers-two-qubit",
+     "value": "The paper proves covering number bounds for the set of 2-qubit unitaries in any unitarily invariant norm (Lemma C.1) and for the set of 2-qubit CPTP maps in the diamond distance (Lemma C.2), by bounding the covering number of a norm ball in a finite-dimensional space, and states that for the CPTP case the bound has exponent 512.",
+     "anchor": "Appendix C.1, Lemmas C.1 and C.2, pp.19-20",
+     "quotes": [
+      "Lemma C.1 (Covering number bounds for 2-qubit unitaries). Let || · || be a unitarily invariant norm on complex 4 × 4-matrices.",
+      "Lemma C.2 (Covering number bounds for 2-qubit CPTP maps). The covering number of the set of 2-qubit CPTP maps CPT P C2 ⊗ C2 w.r.t. the diamond distance can be bounded as N CPT P C2 ⊗ C2 , || · || , ε 6 512 , for 0 < ε 1. ε (C5)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement and its conditions are quoted from where the paper states them, and the paper proves it in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem-c3-reuse-logarithmic-and-kappa-local",
+     "value": "The paper states that in its metric entropy bounds the growth in the number T of independently trainable maps is at most slightly super-linear while the growth in the number of times the maps are reused is only logarithmic, that the results extend from 2-local to kappa-local gates with the same T-dependence and only the constant prefactors changing, and that for qudits the bound depends polynomially on the dimension.",
+     "anchor": "Appendix C.1, Theorem C.3 and Remark C.1, p.21",
+     "quotes": [
+      "The growth of the metric entropies in terms of T , the number of independently trainable maps, is still at most slightly super-linear. But the growth in terms of the numbers of times that the trainable maps are reused is only logarithmic.",
+      "In particular, when going from 2- to κ-local, the T -dependence remains the same.",
+      "Then the upper bound will depend polynomially on the dimension d."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement and its conditions are quoted from where the paper states them, and the paper proves it in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "proof-strategy-covering-independent-of-n",
+     "value": "The authors state that the trivial metric entropy bound from treating the maps as a subset of a Euclidean space of dimension exponential in n is not sufficient because it scales exponentially in n, and that exploiting the layer structure gives covering nets whose cardinality is independent of n and depends on K, M and T.",
+     "anchor": "Section IV.A, pp.8-9",
+     "quotes": [
+      "entropy bound obtained by considering this class of maps as compact subset of an Euclidean space of",
+      "exponential in n is not sufficient for our purposes since it scales exponentially in n.",
+      "The cardinality of a covering net built in this way, crucially, is independent of n, but depends instead on K, M , and T ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated in the proof sketch of Section IV.A and proved in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem-c6-fixed-structure-statement",
+     "value": "The paper proves as Theorem C.6 that for a QMLM with a fixed architecture of T parameterized 2-qubit CPTP maps and any number of non-trainable global CPTP maps, with probability at least 1 − δ over i.i.d. training data of size N, the gap between prediction error and training error is bounded on the order of the loss bound Closs times the square root of T log T over N plus the square root of log(1/δ) over N, and that quantum training labels must be reproducible so the data can be reused.",
+     "anchor": "Appendix C.2, Theorem C.6",
+     "quotes": [
+      "Theorem C.6 (Prediction error bound for quantum machine learning - Fixed structure). Let EθQMLM(·) be a QMLM with a fixed architecture consisting of T parameterized 2-qubit CPTP maps and an arbitrary number of non-trainable, global CPTP maps.",
+      "Then, with probability at least 1 − δ over the choice of i.i.d. training data S of size N according to P",
+      "In case the training data contains quantum labels, we assume the training data states to be reproducible so that we can use the data both for the optimization procedure and for evaluating the training error."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement and its conditions are quoted from where the paper states them, and the paper proves it in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The square roots are lost in the text layer. The proof combines McDiarmid's inequality, a ghost sample with Rademacher symmetrisation and chaining with the covering numbers."
+    },
+    {
+     "id_suggestion": "theorem-c5-preliminary-log-n-factor",
+     "value": "The paper proves a preliminary fixed-structure bound (Theorem C.5) by Hoeffding's inequality and a union bound over a covering net, and states that it is worse than Theorem C.6 by a factor logarithmic in the training data size.",
+     "anchor": "Appendix C.2.1, Theorem C.5, p.23",
+     "quotes": [
+      "Theorem C.5 (Prediction error bound for quantum machine learning - Fixed structure (Preliminary version)).",
+      "which, however, is worse than that of Theorem C.6 by a factor logarithmic in the training data size."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement and its conditions are quoted from where the paper states them, and the paper proves it in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "corollary-c1-c2-gate-sharing-and-copies",
+     "value": "The paper proves as Corollary C.1 that for a fixed architecture of T independently parameterized 2-qubit CPTP maps, the tth used Mt times, the number of uses appears only logarithmically in the bound, states that reusing parameters is preferable from a generalization perspective to having more independent parameters, and proves for M parallel copies (Corollary C.2) a bound with the logarithm of M, which fails if Closs scales badly with M.",
+     "anchor": "Appendix C.2.3, Corollaries C.1 and C.2, pp.21-22, 30",
+     "quotes": [
+      "Corollary C.1. Let EθQMLM(·) be a QMLM with a fixed architecture consisting of T independently parameterized 2-qubit CPTP maps, in which the tth of these maps is used Mt times, and an arbitrary number of non-trainable, global CPTP maps.",
+      "This clearly shows that reusing parameters is, from a generalization perspective, preferable to having more independent parameters.",
+      "If Closs, which here is the supremum over the spectral norms of the M -copy observables Oxlo,sys, scales badly (e.g., linearly) with M , the prediction error bound does so as well."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement and its conditions are quoted from where the paper states them, and the paper proves it in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "corollary-c3-variable-structure-optimization-over-structures",
+     "value": "The paper proves as Corollary C.3 that for a QMLM with variable structure the prediction error depends linearly on the number T of trainable maps in the output structure and only logarithmically on the number G_T of structures with that many gates, and states that if T is fixed in advance, optimizing over exponentially in T many structures does not worsen the asymptotic behavior of the generalization error.",
+     "anchor": "Appendix C.2.4, Corollary C.3, p.31",
+     "quotes": [
+      "Corollary C.3. Let EαQMLM(·) be a QMLM with a variable structure.",
+      "depends strongly (namely linearly) on T , the number of trainable elements that is used in the output structure of the optimization procedure, but only mildly (namely logarithmically) on",
+      "optimizing not only over the parameter settings of the model but also over exponentially-in-T many structures with T trainable elements does not worsen the asymptotic behavior of the generalization error."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement and its conditions are quoted from where the paper states them, and the paper proves it in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem-c7-c8-optimization-dependent",
+     "value": "The paper proves metric entropy (Theorem C.8) and prediction error (Theorem C.7) bounds that depend on the distances ∆t the trainable maps move from fixed reference points, states that the bound is dominated by the maps that changed more, that a good initialization can help generalization, that large steps on few gates and negligible steps on the others is preferable to comparable steps on many gates, and that the reference maps may be any points fixed independently of the training data.",
+     "anchor": "Appendix C.2.5, Theorems C.7 and C.8, Remark C.7, pp.24-26, 32, 35",
+     "quotes": [
+      "Theorem C.7 (Optimization-dependent prediction error bound for quantum machine learning).",
+      "if the optimization has only made substantial changes to few trainable maps, then the generalization error bound in Theorem C.7 is dominated by the maps that have undergone more significant changes during optimization.",
+      "Making large steps only on few trainable gates and only negligibly small steps on the remaining ones is, from a generalization perspective, preferable to making steps of comparable, non-negligible sizes on many (or even all) of the trainable gates.",
+      "proof then works without changes, as long as the reference maps are indeed fixed in advance, independently of the training data."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement and its conditions are quoted from where the paper states them, and the paper proves it in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The preferred-step-size statement is an interpretation of an upper bound; it is not shown that such an optimiser generalizes better in practice."
+    },
+    {
+     "id_suggestion": "corollary-c4-estimated-training-error",
+     "value": "The paper proves as Corollary C.4 a prediction-error bound when the training error is estimated from sigma-est subsampled measurements, with an added term decreasing with the number of measurements, and states that it suffices to choose the number of measurements roughly N over T log T, with N sufficiently larger than T log T.",
+     "anchor": "Appendix C.2.6, Corollary C.4, p.26",
+     "quotes": [
+      "Corollary C.4. Let EθQMLM(·) be a quantum machine learning model with a fixed architecture consisting of T parameterized 2-qubit CPTP maps.",
+      "It suffices to choose σest to be roughly N/T log(T ), along with N being sufficiently larger than T log(T ), to guarantee that the prediction error will not be much higher than the approximate (observed) training error."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement and its conditions are quoted from where the paper states them, and the paper proves it in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "remarks-random-optimizer-and-data-reuploading",
+     "value": "The paper states that its bounds hold with high probability over the training data and over the internal randomness of the optimization procedure, and that its results directly extend to QMLMs with data re-uploading because the metric entropy bounds already allow interleaving trainable gates with arbitrary fixed gates.",
+     "anchor": "Appendix C, Remarks C.4 and C.9, pp.28, 38",
+     "quotes": [
+      "the generalization error bound would hold with high probability over the choice of the training data and over the internal randomness of the optimization procedure.",
+      "Our results, which focus on the trainable part of the QMLM circuit, directly extend to QMLMs with data re-uploading."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states these scope extensions in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "standard-lemmas-cited",
+     "value": "The paper states that it uses Hoeffding's and McDiarmid's concentration inequalities, Massart's lemma and subadditivity of the diamond distance as known auxiliary results without proof, and proves a lemma relating the spectral norm and the diamond norm of unitary channels, adapted from another reference.",
+     "anchor": "Appendix B, p.17",
+     "quotes": [
+      "We use two standard concentration inequalities.",
+      "The third well known ingredient that we will employ in our reasoning without giving a proof is the following.",
+      "The proof is adapted from [120]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-polylog-training-size-theorem",
+     "value": "The paper states that a QCNN is a QMLM with log(n) independently parameterized 2-qubit maps, each used at most n times, and derives from Corollary C.2 that a small training error guarantees a small prediction error already for training data size N in O(poly(log(n))), stating in the introduction N in O(log2 n), so the training data needed for quantum phase recognition is polylogarithmic in the number of qubits.",
+     "anchor": "Section I; Appendix D",
+     "quotes": [
+      "consisting of log(n) independently parameterized 2-qubit maps, each of which is used at most n times.",
+      "Therefore, a small training error guarantees a small prediction error already for training data size N ∈ O(poly(log(n))).",
+      "Our theory guarantees that QCNNs have good generalization error for quantum phase recognition with only polylogarithmic training resources, N ∈ O(log2 n)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix D from Corollary C.2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "This bounds the generalization gap only. A small training error must still be reached, and the authors note that barren plateaus in the training landscape remain a challenge."
+    },
+    {
+     "id_suggestion": "qcnn-small-training-error-still-needed",
+     "value": "The authors state that, for quantum neural networks to achieve a small training error, one still needs to address challenges such as barren plateaus in the training landscape, and that the bounds apply when the network performs well on a training set with a moderate number of examples.",
+     "anchor": "Appendix A.2, p.16",
+     "quotes": [
+      "Our work shows that when a quantum neural network, such as a QCNN [45], can perform well on a training set with a moderate amount of examples, the quantum neural network will also predict well on new data.",
+      "However, in order for quantum neural networks to achieve a small training error, one still needs to address various challenges, such as barren plateau in the training landscape [22, 23]."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit in Appendix A.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qcnn-numerics-setup-and-result",
+     "value": "The authors report a QCNN phase-classification simulation on ground states of the generalized cluster Hamiltonian, where the phase was predicted by sampling 8192 measurement outcomes and taking the least frequent outcome, a 16-qubit QCNN trained with 30 data points, test accuracy measured on 10000 randomly sampled points, a random-guessing baseline of 25%, training accuracy becoming a good predictor of test accuracy as the training size grows, and a slope improvement with training size that is similar for different numbers of qubits.",
+     "anchor": "Section II.C.1 and Figure 2, pp.4-5",
+     "quotes": [
+      "Panel (a) visualizes the performance of the QCNN for 16-qubits, trained with 30 data points",
+      "We evaluated the phase assigned by the QCNN to a point in the J1-J2-plane by sampling 8192 computational basis measurement outcomes and taking the least frequent outcome as the predicted phase.",
+      "quickly becomes a good predictor for the testing accuracy on 10000 randomly sampled points",
+      "The dotted gray line shows the baseline accuracy of 25% achieved by random guessing.",
+      "the improvement in the slope with growing training data size is similar for different numbers of qubits, reflecting the at-worst polylogarithmic dependence of N on n predicted by our bounds."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Training points were chosen away from the phase transition lines (Section IV.B), which may make the task easier than a uniform sample."
+    },
+    {
+     "id_suggestion": "qcnn-training-states-away-from-transitions",
+     "value": "The authors state that the states in the training set are chosen to be away from phase transition lines, so that an accurate description of the ground states is already achieved at small bond dimension, which keeps the simulation cost small.",
+     "anchor": "Section IV.B.1, p.9",
+     "quotes": [
+      "The states in the training set (represented by blue crosses in Fig. 2(a)) are chosen to be away from phase transition lines, so accurate description of the ground states is already achieved at small bond dimension χ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training-set construction in Section IV.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "compiling-numerics-setup-qft-vans",
+     "value": "The authors state that they compile the n-qubit quantum Fourier transform into a short-depth parameterized circuit using the VAns variable ansatz algorithm, with training inputs of random computational basis states, random low-entangled states or Haar random states, and that the loss is the squared trace distance between target and circuit outputs.",
+     "anchor": "Section II.C.2, pp.5-6",
+     "quotes": [
+      "Here we consider the task of compiling the unitary U of the n-qubit Quantum Fourier Transform (QFT) [69] into a short-depth parameterized quantum circuit V (α).",
+      "we consider three such distributions: (1) random computational basis states, (2) random (non-orthogonal) low-entangled states, and (3) Haar random n-qubit states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Section II.C.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "compiling-near-solution-init-numerics",
+     "value": "The authors report that for compiling initialized close to the solution, using a textbook QFT circuit whose two-qubit gates are each perturbed to distance 0.1, a training set of size 1 is not sufficient to guarantee good generalization while 2 training data points suffice even up to 40 qubits, tested on 20 states with larger bond dimension than the training states.",
+     "anchor": "Section II.C.2, Figure 4, and Section IV.B.2, pp.6-7, 9-10",
+     "quotes": [
+      "A training data set of size N = 1 is not sufficient to guarantee good generalization: Even with decreasing training error, the testing error remains large.",
+      "In contrast, assuming favorably initialized training, N = 2 training data points suffice for good generalization, even for up to n = 40 qubits.",
+      "The results presented in Section II C are obtained with = 0.1.",
+      "The testing is performed with 20 randomly chosen initial states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "This regime needs prior knowledge of the target, as the authors note, so it does not show that generic compiling needs only two examples."
+    },
+    {
+     "id_suggestion": "compiling-numerics-vs-theory-and-state-type",
+     "value": "The authors state that the observed linear scaling for random computational basis training states is better than the quadratic scaling implied by a direct application of the theory, which holds for any data-generating distribution, and that highly entangled states were more favorable for generalization than efficiently preparable states in their unitary-compiling experiments.",
+     "anchor": "Section II.C.2 and Section III.C, pp.5-7",
+     "quotes": [
+      "This better than the quadratic scaling implied by a direct application of our theory, which holds for any arbitrary data-generating distribution.",
+      "highly entangled states were more favorable than especially efficiently preparable states from the perspective of generalization."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "compiling-implication-polynomial-data-at-cost-of-exactness",
+     "value": "The authors state that for efficiently implementable target unitaries T and hence N scale polynomially in n, that the QFT can be exactly implemented with T in O(n2) gates giving N in O(n2) training points, assuming the number of allowed structures with T gates is at most exponential in T, and that this comes at the cost of compiling the target unitary only with a certain small accuracy and success probability.",
+     "anchor": "Appendix E, p.40",
+     "quotes": [
+      "assuming that the number of allowed structures with T gates scales at most exponentially in T .",
+      "This improvement comes at the cost of not compiling the target unitary exactly, but only with a certain (small) accuracy and success probability.",
+      "the QFT discussed in Section II C 2 can be exactly implemented with T ∈ O(n2) gates. In this case, our theory implies that N ∈ O(n2) training data points are, with high probability, sufficient for good generalization."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix E from Corollary C.3.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The O(n2) exponent is printed flat in the text layer."
+    },
+    {
+     "id_suggestion": "prior-claim-exponential-training-data-arbitrary-unitaries",
+     "value": "The authors state, citing references 39 and 40, that some studies found that exponentially in n large amounts of training data would be needed when trying to train an arbitrary unitary, and that prior unitary compiling work used training sets whose size scaled exponentially with the number of qubits.",
+     "anchor": "Section I; Section III.A",
+     "quotes": [
+      "For instance, some studies have found that, exponentially in n, the number of qubits, large amounts of training data would be needed, assuming that one is trying to train an arbitrary unitary [39, 40].",
+      "However, prior work has relied on training data sets whose size scaled exponentially with the number of qubits."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "related-work-comparison-claims",
+     "value": "The authors state that, independently of their work, reference 38 also investigated covering numbers in QMLMs but that their bounds are stronger, significantly more general and broader in scope, that their optimization-dependent bounds are the first of this kind for QML, that their recommendations are not unequivocally in favour of higher expressivity contrary to reference 18, and that Theorem C.6 is tighter than the bound of reference 89.",
+     "anchor": "Section III.B and Appendix A.1, pp.5, 8, 11-12, 15-16",
+     "quotes": [
+      "Independently of this work, Ref. [38] also investigated covering numbers in QMLMs. However our bounds are stronger, significantly more general, and broader in scope.",
+      "Moreover, our optimization-dependent generalization bounds for QMLMs are the first bounds of this kind for QML and showcase a new way of using covering numbers.",
+      "Contrary to the conclusions drawn in Ref. [18], the recommendations for QMLMs which we deduce from our generalization bounds are not unequivocably in favour of higher expressivity.",
+      "We note that the generalization guarantee obtained from Theorem C.6 is tighter than that obtained in Ref. [89]"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "These are the authors' own comparisons to other work, not independently checked."
+    },
+    {
+     "id_suggestion": "advantage-discussion-guide-and-conditions",
+     "value": "The authors state that generalization bounds for QMLMs are necessary to understand their potential for quantum advantage, that QMLMs can outperform classical methods with both achieving small training error only where QMLMs generalize well and classical methods do not, and that a search for advantage must identify a task in which QMLMs with few trainable gates reach small training error but classical models need substantially higher model complexity.",
+     "anchor": "Section III.C, p.8",
+     "quotes": [
+      "However, generalization bounds for QMLMs are necessary to understand their potential for quantum advantage.",
+      "We need to identify a task in which QMLMs with few trainable gates achieve small training error, but classical models need substantially higher model complexity to achieve the same goal."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "open-questions-and-pessimism-of-bounds",
+     "value": "The authors state that the bounds say nothing non-trivial for exponentially many trainable gates but that this does not imply bad generalization there, that the bounds are valid for arbitrary data-generating distributions and may be overly pessimistic for favorable ones, and that it is an open question under what circumstances a QMLM of polynomial size will outperform the general bound.",
+     "anchor": "Section III.C, p.8",
+     "quotes": [
+      "However, this does not yet imply that exponential-size QMLMs have bad generalization behavior.",
+      "as our generalization bounds are valid for arbitrary data-generating distributions, they may be overly pessimistic for favorable distributions.",
+      "More generally, one can ask: Under what circumstances will a QMLM, even one of polynomial size, outperform our general bound."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state these limits and open questions in Section III.C.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "overtraining-recommendation",
+     "value": "The authors state that the optimization-aware bound suggests that QML researchers should be careful not to overtrain their models, especially when the decrease in training error is insufficient, and that a model with more parameters than training points could still generalize well if only some parameters changed significantly.",
+     "anchor": "Section I, pp.1-2",
+     "quotes": [
+      "This suggests that QML researchers should be careful not to overtrain their models especially when the decrease in training error is insufficient.",
+      "the QML model could still generalize well if only some of the parameters have changed significantly."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The second statement follows from Theorem 3 only under its condition that the other gates change very little."
+    }
+   ]
+  }
+ ]
+}

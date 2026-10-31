@@ -1,0 +1,2530 @@
+{
+ "papers": [
+  {
+   "record_id": "bucher-2025-efficient-qaoa-architecture-solving-multi",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Bucher-et-al._2025_Efficient-QAOA-Architecture-for-Solving-Multi-Constrained-Optimization__2506.03115.pdf",
+   "title_in_file": "Efficient QAOA Architecture for Solving Multi-Constrained Optimization Problems",
+   "version_note": "arXiv:2506.03115v2, 24 Jul 2025.",
+   "pages": 12,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A simulation study of QAOA combining XY-mixers for one-hot constraints with oracle-based indicator-function penalties for inequality constraints, benchmarked against QUBO on Multi-Knapsack and Prosumer problems.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "bucher-architecture-setup",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "bucher-ifxy-better-than-qubo",
+     "verdict": "narrowed",
+     "note": "The abstract's order-of-magnitude claim is borne out in the body by a measured average speedup of 87 over QUBO only for the instances until Comb3_0; for larger instances the advantage is an extrapolation of a fit, and the authors say the pipeline differences narrowed in TTS compared with the solution-quality results. All results are noiseless simulations.",
+     "value": "The authors report that the combined architecture gives a better solution quality and probability of sampling the optimal solution than the QUBO formulation, and that the time-to-solution is more than an order of magnitude faster than the baseline methods. In the results they report an average speedup factor of 87 of the QUBO time-to-solution over that of IF+XY across the instances until Comb3_0, and for larger instances the advantage is an extrapolation.",
+     "anchor": "Abstract; Section V-C3",
+     "quotes": [
+      "Despite more complex circuits, the time-to-solution is more than an order of magnitude faster compared to the baseline methods and exhibits more favorable scaling properties.",
+      "= = 87 TTSQ∗UBO TTS∗IF+XY across , we observe the instances until Comb3_0.",
+      "Since the search space can be directly computed for every PP instance, we extrapolate TTS∗ in Fig. 6b (shown as the dashed lines)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, in simulation.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "bucher-scaling-limit",
+     "verdict": "narrowed",
+     "note": "The paper adds that the average ideal TTS for IF+XY is reached at p = 5.5 and that the growth of solution quality with p is too small to offset the added circuit depth; it gives a second reason, the low-depth ring mixer, and says IF benefits most from more layers.",
+     "value": "The authors state that they limit evaluation to p = 12 and that deeper layers could likely lead to better TTS. They also report that data analysis shows IF is the method that benefits most from increased layers, and that for IF+XY the ideal TTS is, on average, reached at p = 5.5, because the growth of solution quality and the optimal-solution probability with p is too small to offset the increased circuit depth.",
+     "anchor": "Section V-D, p.9",
+     "quotes": [
+      "One reason is that we limit evaluation to p = 12; deeper layers could likely lead to better TTS.",
+      "However, data analysis shows that IF is the method that benefits the most from increased layers.",
+      "For IF+XY, the ideal TTS is, on average, reached at p = 5.5.",
+      "Even though solution quality and P ∗ grow with p, the growth rate is too small to offset the increased circuit depth."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own evaluation limit in Section V-D.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "bucher-simulation-scale",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "bucher-penalty-condition",
+     "value": "The authors state that the IF penalty parameter must be chosen so that no infeasible state has a lower modified objective than the best feasible solution, which requires that rho be at least the difference between the best feasible solution and the best solution that violates a single constraint, and they set rho as the objective of a heuristic feasible solution minus the minimum of the relaxed problem.",
+     "anchor": "Section IV-B2, p.4",
+     "quotes": [
+      "ρ needs to be greater or equal to the difference between the best feasible solution x∗ and the best solution that violates a single constraint",
+      "Consequently, we set ρ = f (x1) − minx f relaxed(x)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its penalty choice in Section IV-B2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-problem-form-assumptions",
+     "value": "The authors state the problem form their method needs: linear objective and linear inequality constraints over binary variables, one-hot sets that do not overlap, and every inequality function taking integer values.",
+     "anchor": "Section IV-A, p.3",
+     "quotes": [
+      "meaning one-hot constraints do not overlap since that would be impossible to encode with XY -mixers.",
+      "we assume here that the image of every gj is resolvable by integers"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its method in Section IV-A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "Problems with overlapping one-hot sets or non-integer constraint values fall outside the stated method unless converted to quadratic penalties."
+    },
+    {
+     "id_suggestion": "bucher-mks-dummy-knapsack",
+     "value": "The authors state that the Multi-Knapsack set-packing constraint (an item goes in at most one knapsack) is turned into a one-hot constraint by adding a dummy knapsack with no weight limit that holds all items not selected.",
+     "anchor": "Section IV-A, p.3",
+     "quotes": [
+      "This property can be exploited by introducing a dummy Knapsack, denoted by the binary variable y, with no weight limit.",
+      "It serves as a container for all items not selected in the main Knapsacks"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the reformulation in Section IV-A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-xy-ring-mixer",
+     "value": "The authors state that the ring mixer, which places the two-qubit XY unitary only between neighboring qubits in a brick-wall configuration, is a low-cost mixer that provides probability transfer between all states given sufficient QAOA depth.",
+     "anchor": "Section IV-B1, p.3-4",
+     "quotes": [
+      "A low-cost implementation of a mixer that provides probability transfer between all states given sufficient QAOA-depth p is the ring mixer"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The condition comes from Hadfield et al. (Ref. [15]), cited here.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-condition-feasible-start-mixer",
+     "value": "The authors state that to enforce a constraint in QAOA one needs to start in a superposition of only feasible states and to construct a mixer operator that only causes amplitude transfer in the feasible subspace.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "we need to start in a superposition of only feasible states and construct a mixer operator that only causes amplitude transfer in the feasible sub-space"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A condition the paper attributes to prior work (Ref. [15]).",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-if-circuit-structure",
+     "value": "The authors describe the IF circuit as two quantum phase estimations for each constraining function plus an ancillary register, where a phase gate adds a constant penalty if the constraint is unsatisfied, and the compute register returns to zero so the ancillary register can be reused for sequential application.",
+     "anchor": "Section IV-B2, pp.4-5",
+     "quotes": [
+      "The quantum circuit implementation of the IF consists of two QPEs for each constraining function gj and an ancillary register",
+      "Since the IF application of each constraint reverts the compute register to |0⟩, we may reuse this ancillary register for sequential application"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its circuit in Section IV-B2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-if-advantages-claimed",
+     "value": "The authors state two advantages of the IF constraint implementation: a bounded penalty magnitude that does not distort the energy spectrum as much as a quadratic penalty, and additional qubits that are not part of the optimization problem, unlike slack variables.",
+     "anchor": "Section IV-B2, p.5",
+     "quotes": [
+      "First, we have a bounded penalty magnitude that does not distort the energy spectrum as much as a quadratic penalty",
+      "these qubits are not part of the optimization problem compared to the slack variable approach"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An advantage asserted with citations and not tested in this paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-novelty-claim",
+     "value": "The authors state that, besides Ref. [19] which concerns qudit optimization, the literature has not investigated combinations of constraint-preserving architectures.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "Besides the work of Ref. [19], which focuses on qudit (quantum digit) optimization, the literature has not investigated combinations of constraintpreserving architectures."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A novelty claim made by the authors without a search method.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-state-size",
+     "value": "The authors state that the IF+XY state tensor has the most modest memory requirement, being the product of the one-hot set sizes, and stays below the simulation threshold of a 28 qubit equivalent, i.e. 4 GB memory.",
+     "anchor": "Section IV-C3, p.6",
+     "quotes": [
+      "IF+XY has the most modest memory requirements of only i di, remaining below our simulation threshold of a 28 qubit equivalent, i.e. 4 GB memory."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows from the paper's data layout in Section IV-C.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The text layer printed the product sign as a bare index; the product reading follows from the layout in Section IV-C1."
+    },
+    {
+     "id_suggestion": "bucher-ancilla-not-simulated",
+     "value": "The authors state that the ancillary registers of the IF do not need to be simulated because the classical step function is evaluated within a precomputed brute-force of the cost function.",
+     "anchor": "Section IV-C2, p.6",
+     "quotes": [
+      "the ancillary registers for the IF do not need to be simulated since the classical step function can be evaluated within the brute-forcing."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own simulation method in Section IV-C2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-setup-hardware-optimizer",
+     "value": "The authors report that all experiments ran on an NVIDIA RTX 4090 GPU, with the BFGS optimizer from scipy limited to a maximum of 100 iterations, and that warm starting is deliberately excluded.",
+     "anchor": "Section V-A; Section III",
+     "quotes": [
+      "All experiments were performed on a NVIDIA RTX 4090 GPU.",
+      "Optimization is done with the BFGS optimizer provided by scipy using a maximum of 100 iterations [41].",
+      "we deliberately exclude warm starting to avoid distorting the results."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Section V-A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-setup-simulation-only",
+     "value": "The authors state that circuit layer counts assume all-to-all connectivity and two-qubit Pauli rotations as native gates, and that experiments on real quantum devices must still be conducted.",
+     "anchor": "Section V-A; Section VI",
+     "quotes": [
+      "we assume all-to-all connectivity and two-qubit Pauli rotations being native gates.",
+      "experiments on real quantum devices must be conducted to examine the NISQera performance of this more complex architecture."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these limits in Section V-A and Section VI.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-penalty-eta-optimal",
+     "value": "The authors state that the penalty value eta in the comparison cost was set to the optimal objective value, which they found empirically returned the best results, and that this is typically impractical in real-world applications because the optimal value is unknown before solving.",
+     "anchor": "Section V-C1, p.8",
+     "quotes": [
+      "we empirically determined that setting it to the optimal objective value f (x∗) returns the best results.",
+      "While this approach is typically impractical in realworld applications—as the optimal value remains unknown before solving the problem"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "A limit the paper states about its own setup in Section V-C1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-metrics-definitions",
+     "value": "The authors define the Random-Adjusted Approximation Ratio, where 0 means random sampling and 1 means consistently sampling the perfect solution, and Time-to-Solution as the number of circuit layers needed to measure the optimal solution once with 99% confidence.",
+     "anchor": "Section V-A, p.7",
+     "quotes": [
+      "An RAAR value of 0 indicates performance equivalent to random sampling, while a value of 1 signifies consistent sampling of the perfect solution.",
+      "estimated from P ∗ as the runtime in terms of circuit layers required to measure the optimal solution once with 99% confidence"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its metrics in Section V-A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-instances-binding",
+     "value": "The authors state that the Prosumer Problem instances are generated so that the knapsack constraints are binding, with four noisy price patterns (increasing, decreasing, up-quadratic, down-quadratic) per problem ID.",
+     "anchor": "Section V-C1, p.8",
+     "quotes": [
+      "The problem instances for the prosumer problem are generated such that the Knapsack constraints are binding",
+      "noisy price patterns describing their general trend: increasing, decreasing, up-quadratic, and down-quadratic."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its instance generation in Section V-C1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-mks-vs-tae",
+     "value": "The authors report that on the Multi-Knapsack instances of Hess et al., IF+XY at p = 10 reaches an optimal-solution probability above 1% for all instances and keeps P90 above 10% (approaching 100% for most cases), while the Trotterized adiabatic evolution results taken from Hess et al. drop below 1% P90 for larger problems.",
+     "anchor": "Section V-B, Fig. 4, p.8",
+     "quotes": [
+      "IF+XY at p = 5, 10 exhibit drastically higher P ∗ values, especially at p = 10, where P ∗ > 1% for all instances.",
+      "IF+XY at p = 10 maintains P90 > 10% (approaching 100% for most cases), whereas TAE drops below P90 < 1% for larger problems."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical comparison on one set of instances against numbers taken from another paper.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The comparator values come from a different study and different code, so the comparison is not a same-simulator benchmark."
+    },
+    {
+     "id_suggestion": "bucher-mks-p1-no-slack",
+     "value": "The authors report that at p = 1, IF+XY performs similarly to the no-slack TAE, which outperforms the slack TAE in 16 of the 20 considered instances, and that increasing p consistently improves solution quality for IF+XY.",
+     "anchor": "Section V-B, p.8",
+     "quotes": [
+      "it is apparent that increasing p consistently improves solution quality for IF+XY.",
+      "At p = 1, IF+XY performs similarly to the no-slack TAE, which outperforms the slack TAE in 16 of the 20 considered instances."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-pp-raar",
+     "value": "The authors report for the Prosumer Problem that all four pipelines have RAAR consistently above 0.75, that IF+XY shows the best RAAR, above 0.95 across all instances, and that IF+XY has the highest probability of measuring the optimal solution, followed by IF, XY and QUBO.",
+     "anchor": "Section V-C2, Fig. 5, p.8",
+     "quotes": [
+      "All results show strong performance with RAAR consistently above 0.75, i.e., considerably better than random sampling.",
+      "In particular, IF+XY shows the best RAAR, remaining above 0.95 across all instances.",
+      "IF+XY demonstrates the highest probability of measuring the optimal solution, followed by IF, XY, and QUBO."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-pp-probability-small",
+     "value": "The authors report that the optimal-solution probability for IF+XY drops below 10−5 at the instance Comb11_2 with 88 binary variables, and that a performance degradation is anticipated for a problem of that size.",
+     "anchor": "Section V-C2, p.8",
+     "quotes": [
+      "Nevertheless, the probability drops below 10−5 for IF+XY at Comb11_2 instance.",
+      "Yet, a performance degradation is anticipated given the substantial size of this problem instance, which encompasses 88 binary variables"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-xy-below-random",
+     "value": "The authors report that, compared with random sampling inside only the one-hot constrained subspace, the XY and QUBO approaches partly show a lower probability of the optimal solution, and they explain XY's result as a boost of good but not optimal solutions.",
+     "anchor": "Section V-C2, p.9",
+     "quotes": [
+      "both the XY and QUBO approaches partly exhibit lower probability.",
+      "This can be explained by a boost in the probability of good quality but not optimal solutions, since the RAAR is still reasonable."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result with an explanation the paper offers without testing.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-tts-ordering-scaling",
+     "value": "The authors report that IF+XY gives the fastest TTS* in all measured instances, that the differences between pipelines narrowed compared with the solution-quality results, and that slopes of the fits cannot be compared across methods with different search spaces.",
+     "anchor": "Section V-C3, Fig. 6, p.9",
+     "quotes": [
+      "IF+XY consistently delivers the fastest overall TTS∗, even though the more complex circuit architecture.",
+      "Nevertheless, the differences between the pipelines have narrowed overall compared to the previous results.",
+      "direct comparison of slopes across all methods is inappropriate due to their different search spaces."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-tts-extrapolation-caveat",
+     "value": "The authors extrapolate TTS* from a power-law fit against search space, state that the QUBO projection should be interpreted cautiously because of the limited data points, and state that the IF+XY advantage potentially reaches more than two orders of magnitude approaching Comb11_2.",
+     "anchor": "Section V-C3, p.9",
+     "quotes": [
+      "The QUBO TTS∗ appears to increase most drastically as the problem instances grow larger, though this projection should be interpreted cautiously, given the limited data points available for QUBO.",
+      "but IF+XY maintains a performance advantage compared to them that potentially reaches more than two orders of magnitude approaching Comb11_2."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An extrapolation from a fit to limited data.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-ifxy-near-random-scaling",
+     "value": "The authors state that the scaling of IF+XY is remarkably close to random sampling from all one-hot constrained states, with TTS* growing as 1.88 raised to log2 of the search space S compared with S for random sampling, and that this might counterbalance the algorithm improvements in large-scale problems.",
+     "anchor": "Section V-D and Section VI, p.10",
+     "quotes": [
+      "However, the scaling of IF+XY is still remarkably close to the random sampling from all one-hot constrained states.",
+      "Namely, TTS∗ ∝ 1.88log2 S compared to ∝ S, which might counterbalance the algorithm improvements in large-scale problems."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical scaling fit from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-ring-mixer-limit",
+     "value": "The authors state that low-depth ring mixers may deliver too little amplitude transfer for larger one-hot sizes, and that at least p = d/2 QAOA layers are required to theoretically guarantee amplitude transfer between all states.",
+     "anchor": "Section V-D, p.9",
+     "quotes": [
+      "The second reason is the performance of low-circuit-depth ring mixers, which may work well for small d qudits but can deliver too little amplitude transfer for larger d",
+      "At least p = d/2 QAOA layers are required to theoretically guarantee amplitude transfer between"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A possible explanation stated without testing in this paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-conclusion-outperforms",
+     "value": "The authors conclude that IF+XY consistently outperforms the baseline variants in RAAR, optimal-solution probability and TTS on their instances, and that the problem-centric workflow outperforms default QUBO methods for two Knapsack-based problems.",
+     "anchor": "Section VI, p.10",
+     "quotes": [
+      "IF+XY consistently outperforms the baseline variants in terms of RAAR (solution quality), P ∗, and TTS.",
+      "This work has demonstrated successfully that our problemcentric workflow for generating QAOA circuits outperforms default QUBO methods for two Knapsack-based optimization problems."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper's conclusion from simulations on two problem families.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-open-work",
+     "value": "The authors state that further application to other industry-relevant optimization problems has to show general applicability.",
+     "anchor": "Section VI, p.10",
+     "quotes": [
+      "Further application to other industry-relevant optimization problems has to show its general applicability."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "A limit the authors state in Section VI.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bucher-cited-qaoa-limit",
+     "value": "The authors state, citing Farhi et al., that QAOA converges to the optimal solution in the limit of infinite depth p.",
+     "anchor": "Section II-B, p.2",
+     "quotes": [
+      "with the theoretical guarantee that QAOA converges to the optimal solution in the limit p → ∞ [10]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. [10].",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "buessen-2022-simulating-time-evolution-distributed-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Buessen-Segal-Khait_2022_Simulating-time-evolution-on-distributed-quantum-computers__2208.07487.pdf",
+   "title_in_file": "Simulating time evolution on distributed quantum computers",
+   "version_note": "arXiv:2208.07487v1, 16 Aug 2022. The text layer holds the paper with its supplement, then a second copy of the main text, which was used only to check quotes.",
+   "pages": 11,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A classical-simulation study of sparse Trotterization, a Trotter-Suzuki variant with coarser time steps across quantum interconnects, on XY and transverse-field Ising spin chains.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "buessen-local-ops-improve-fidelity",
+     "verdict": "narrowed",
+     "note": "The result is from noiseless classical simulation of one-dimensional spin chains and is measured against a reference state obtained from uniform Trotterization with a fixed step size, not against the exact solution. The authors say hardware-specific error models are needed to find the optimal tradeoff, and that for the fast Ising quench the fidelity falls rapidly for sparsity of 6 or more.",
+     "value": "The authors state that, for the models they study, fast local operations on monolithic devices can be leveraged to obtain an overall improved result fidelity even on distributed quantum computers where the use of interconnects is costly. They state that further calculations with hardware specific error models are required to find the optimal tradeoff.",
+     "anchor": "Abstract, p.1; Conclusion, p.4",
+     "quotes": [
+      "we show that fast local operations on monolithic devices can be leveraged to obtain an overall improved result fidelity even on distributed quantum computers where the use of interconnects is costly.",
+      "Further calculations with hardware specific error models are required to find the optimal tradeoff."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "buessen-scope-ising-xy",
+     "verdict": "confirmed",
+     "note": "Added detail: one-dimensional chains of spin-1/2 operators, 24 spins in the main figures (18 for the stochastic study).",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "buessen-smooth-degradation",
+     "verdict": "narrowed",
+     "note": "Smooth dependence is the authors' reading of the XY and slow-quench data. For the fast Ising quench the fidelity decreases rapidly for sparsity of 6 or more, and with random step sizes randomness itself lowers the fidelity more than a systematic increase of the mean step.",
+     "value": "The authors report that the overall quality of the approximation depends smoothly on the local sparsity and that the proliferation of local errors is slow, and that in the fast transverse-field Ising quench model the fidelity decreases rapidly for sparsity n ≥ 6.",
+     "anchor": "Abstract, p.1; Results, p.2",
+     "quotes": [
+      "We find that the overall quality of the approximation depends smoothly on the local sparsity and that the proliferation of local errors is slow.",
+      "In the fast TFI quench model, the fidelity decreases rapidly for n ≥ 6."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "buessen-sparse-definition",
+     "value": "The authors define sparse Trotterization for a distributed quantum computer of more than one compute node interconnected linearly, where interconnects may only be used at a fraction 1/n of the speed of each compute node, n being the sparsity, so that the step size inside each node stays the same while the interaction between qubits on different nodes uses a step size n times larger.",
+     "anchor": "Sparse Trotterization, p.2",
+     "quotes": [
+      "We assume a distributed quantum computer to consist of k > 1 compute nodes that are interconnected linearly, cf. Fig. 1.",
+      "Interconnects may only be used at a fraction 1/n of the speed at which each individual compute node operates; we refer to n as the sparsity.",
+      "yet the interac- tion between qubits on different compute nodes is computed with larger step size nδt."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its scheme in the Sparse Trotterization section.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "buessen-uniform-error-cited",
+     "value": "The authors state that the second-order Trotter-Suzuki decomposition is an approximation whose error scales as the number of steps times the cube of the step size, citing prior work, and note that tighter bounds can be formulated in some cases.",
+     "anchor": "Sparse Trotterization, pp.2, 6; note [30]",
+     "quotes": [
+      "The approximation error scales ∼ Nδt3 [30].",
+      "In some cases, tighter bounds can be formulated, depending on the structure of the underlying Hamiltonian"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A scaling the paper attributes to cited work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The text layer printed the cube flat as 3 after the step size symbol."
+    },
+    {
+     "id_suggestion": "buessen-models-and-setup",
+     "value": "The authors state their models and setup: a one-dimensional finite chain of spin-1/2 operators, an XY model with interaction energy scale J fixed to 1 and a domain wall initial state, a transverse-field Ising model with h = 0.5 (slow quench) and h = 2.0 (fast quench) from a uniformly ordered state, the chain divided into k sections of equal size mapped onto linearly connected compute nodes, and a node-local reference step size of 0.1.",
+     "anchor": "Models, p.2; Results, p.3",
+     "quotes": [
+      "Each model is based on a one-dimensional finite chain of L spin-1/2 operators",
+      "We consider the case h = 0.5, which we refer to as a slow quench, and h = 2.0, which we call a fast quench",
+      "the spin chain is divided into k sections of equal size and mapped onto k quantum compute nodes that are intercon- nected linearly",
+      "we shall assume a reference step size of δtref = 0.1 for node-local operations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its setup in Models and Results.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "buessen-reference-state-benchmark",
+     "value": "The authors state that all approximations are benchmarked against a reference state obtained from uniform Trotterization with time step 0.1, and that quality is the fidelity with that reference state, so the reported fidelities measure closeness to the reference and not to the exact solution.",
+     "anchor": "Results, pp.2-3, 8",
+     "quotes": [
+      "We evaluate all approximations by computing the associated wave functions and benchmarking against a reference state |ψref(t) that is obtained from uniform Trotterization with time step δtref [31].",
+      "reference fidelity Fref = | ψref(t)|ψ(t) |2.",
+      "obtained from a uniform Trotterization with step size δtref = 0.1"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its benchmark in the Results section.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "buessen-reference-state-quality",
+     "value": "The authors report that the reference state is close to the exact solution: with a finer reference step size of 0.01 the coarsest uniform step 0.16 gives fidelity above 0.97 for the XY model and above 0.99 for the slow Ising quench, but only 0.24 for the fast Ising quench (0.92 at step 0.08).",
+     "anchor": "Supplementary, Reference states, p.9",
+     "quotes": [
+      "For the XY model, the coarsest step size δt = 0.16 already achieves a fidelity F0.01 > 0.97, see Fig. S3a.",
+      "The solution for the slow TFI quench model reaches F0.01 > 0.99 at the same step size (Fig. S3b).",
+      "For δt = 0.16, the fidelity is reduced to F0.01 = 0.24, but reaching substantially higher values for δt = 0.08 with F0.01 = 0.92 (Fig. S3c)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "buessen-xy-fidelity-results",
+     "value": "The authors report for the XY model on two compute nodes after evolution to t = 10 that uniform Trotterization with step size 0.2 gives fidelity 0.97, sparsity 2 gives fidelity 0.99, and sparsity 4 gives fidelity 0.93, which still beats uniform Trotterization with step size 0.3 at fidelity 0.77.",
+     "anchor": "Results, p.3, Fig. 2",
+     "quotes": [
+      "We find that for increased step size δt = 0.2 in a uniform Trotterization the fi- delity remains acceptable with Fref = 0.97 after evolution to t = 10",
+      "introducing a sparsity of n = 2 still yields a fidelity of Fref = 0.99 after evolution to t = 10",
+      "Sparse Trotterization with n = 4 (Fref = 0.93) still performs better than uniform Trotterization with δt = 0.3 (Fref = 0.77)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "buessen-tfi-fidelity-results",
+     "value": "The authors report that for the slow transverse-field Ising quench the fidelity is significantly more robust against local sparsity than against a globally increased step size, that for the fast quench the fidelity decreases rapidly for larger sparsity yet remains a substantial improvement over a global step increase for small sparsity, and that they speculate the slow-quench robustness may relate to a persisting finite magnetization.",
+     "anchor": "Results, p.3, Fig. 3",
+     "quotes": [
+      "We make similar observations for the slow TFI quench model, where the fidelity is significantly more robust against local sparsity n than against a globally increased step size",
+      "The robustness may be related to the finite magnetization in the initial state, which persists well beyond t = 10 and can act self-stabilizing against local perturbations",
+      "Yet, this still marks a substantial improvement over a global increase of the step size δt, especially for small n = 2 and n = 4"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study, with a stated speculation.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "buessen-observable-deviation-xy",
+     "value": "The authors report for the XY model on two compute nodes that the maximum deviation of the magnetization from the reference is 0.03, 0.10 and 0.22 for sparsity 2, 4 and 6, against 0.15, 0.58 and 0.94 for uniform Trotterization with step sizes 0.2, 0.4 and 0.6, and that the supplement gives 0.37 for sparsity 8 and 1.59 for step size 0.8.",
+     "anchor": "Results; Supplementary",
+     "quotes": [
+      "The maximum deviation maxi,t (|∆mzi (t)|) obtained with sparsity n = (2, 4, 6) is (0.03, 0.10, 0.22).",
+      "uniform Trotterization with analogous uniform step sizes δt = (0.2, 0.4, 0.6) is significantly larger, yielding (0.15, 0.58, 0.94).",
+      "for different sparsity levels n = (2, 4, 6, 8)",
+      "a gradual increase of maximum deviation maxi,t (|∆mzi (t)|) from 0.03 to 0.37 is observed as sparsity is increased.",
+      "ranging from 0.15 for δt = 0.2 to 1.59 for δt = 0.8"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "buessen-observable-deviation-tfi",
+     "value": "The authors report in the supplement for the slow Ising quench at sparsity 6 maximum deviations of 0.04 (magnetization) and 0.03 (correlation) against 0.31 and 0.27 for uniform step size 0.6, and for the fast Ising quench at sparsity 6 deviations of 0.32 and 0.25 against 0.67 and 0.79 for uniform step size 0.6.",
+     "anchor": "Supplementary, Magnetization and magnetic correlations, p.9",
+     "quotes": [
+      "at n = 6, the maximum deviation is only 0.04.",
+      "A similarly small deviation of 0.03 is observed in the magnetic correlations",
+      "For δt = 0.6 the maximum deviation of the magnetization is 0.31 and the maximum deviation of the susceptibility is 0.27.",
+      "the maximum deviations of magnetization and magnetic correlations are 0.32 and 0.25, respectively.",
+      "the maximum deviations of magnetization and magnetic correlations are 0.67 and 0.79, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "buessen-fifty-percent-claim",
+     "value": "The authors state that for the models studied a reduction of the number of Trotter steps between a small number of qubit pairs by about 50% seems feasible, and conclude that a reduction in the number of interconnect uses by as much as 50% can be viable for the examples considered.",
+     "anchor": "Results, p.3; Conclusion, p.4",
+     "quotes": [
+      "For the models studied here, a reduction of the number of trotter steps between a small number of qubit pairs by about 50% seems feasible.",
+      "For the examples considered here, we find that a reduction in the number of interconnect uses by as much as 50% can be viable."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's estimate from simulations of a few one-dimensional models.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "buessen-error-not-proliferating",
+     "value": "The authors state that the results indicate that, for Hamiltonians with two-spin interactions, the quality of sparse Trotterization depends smoothly on the sparsity parameter and on the number of sparse qubit pairs, and that increasing the step size only between a small number of qubit pairs does not immediately lead to an error as large as a uniform increase of the step size between all pairs.",
+     "anchor": "Results, p.4",
+     "quotes": [
+      "The above results indicate that the quality of the sparse Trotterization,",
+      "Increasing the Trotter step size only between a small number of k − 1 qubit pairs does not immediately lead to a proliferation of the error to levels that are associated with a uniform increase of δt between all qubit pairs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' inference from their simulation data.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "buessen-stochastic-setup",
+     "value": "The authors state that in the stochastic sparse Trotterization the time steps on the sparse qubit pairs are drawn from a normal distribution with a mean and a standard deviation, with a minimum of the reference step size, and that fidelity is averaged over 1000 randomized configurations per parameter set, on 18 spins and three compute nodes for the XY data.",
+     "anchor": "Results, p.3-4; Supplementary, p.7; Fig. 5",
+     "quotes": [
+      "the time steps on the sparse qubit pairs are drawn from a normal distribution with mean μ and standard deviation σ .",
+      "We then calculate Fref and average it over 1000 instances of randomized configurations for each parameter set.",
+      "Data is obtained for L = 18 spins and nodelocal step size δ tref = 0.1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its stochastic setup in Results and the supplement.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "buessen-randomness-worse",
+     "value": "The authors report that randomness can have a more adverse effect than a systematic increase of the mean step size: fidelity at mean 0.3 and standard deviation 0.12 is comparable to the fidelity at mean 0.6 without randomness, and they speculate that randomness reduces the cancellation of Trotterization error terms.",
+     "anchor": "Results, p.4, Fig. 5",
+     "quotes": [
+      "Our data also indicates that randomness σ can have a more adverse effect than a systematic increase of the mean step size μ.",
+      "For example, Fref at (μ, σ ) = (0.3, 0.12) is comparable to the fidelity achieved for much larger mean step size in the absence of randomness",
+      "= (0.6, 0.0), see Fig. 5.",
+      "We speculate that the randomness leads to a reduction in the cancellation of Trotterization error terms"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study, with a stated speculation.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "buessen-dead-time-conclusion",
+     "value": "The authors conclude that their data suggest that randomized execution of additional node-local Trotter steps during the interconnect dead time quickly degrades the result quality, so that unless the overall reduction in total compute time compensates for the fidelity loss it remains more beneficial to delay the execution of additional Trotter steps.",
+     "anchor": "Conclusion, pp.4-5",
+     "quotes": [
+      "Our data suggests that the randomized execution of additional Trotter steps quickly degrades the result quality.",
+      "it remains more beneficial to delay the execution of additional Trotter steps."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical conclusion from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "buessen-no-scale-separation",
+     "value": "The authors state that the sparse Trotterization could be applied successfully although the underlying models only have a single principal energy scale, which rules out Trotter constructions that rely on scale separation.",
+     "anchor": "Conclusion, pp.4-5",
+     "quotes": [
+      "Notably, the sparse Trotterization could be applied successfully",
+      "scale and therefore ruling out"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The quotes are two fragments split by a figure caption in the text layer."
+    },
+    {
+     "id_suggestion": "buessen-interconnect-rate-cited",
+     "value": "The authors state, citing Stephenson et al., that current interconnect hardware generates entanglement between remote qubits at a rate of approximately 182 Hz, which is over an order of magnitude slower than single-QPU gate operations.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "current interconnect hardware generates entanglement between remote qubits at a rate of approximately 182 Hz, which is over an order of magnitude slower than single-QPU gate operations [23]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A hardware figure the paper attributes to Ref. [23].",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "buessen-reference-step-choice",
+     "value": "The authors state that they chose the reference step size 0.1 because it seems achievable on near-term hardware for reaching relevant time scales of around t of 2, requiring a total of 20 Trotter steps, and cite prior hardware calculations that achieved around five Trotter steps.",
+     "anchor": "Supplementary, Reference states, p.9",
+     "quotes": [
+      "We chose the reference step size δtref = 0.1 since it seems achievable on near-term hardware for reaching total time evolution until relevant time scales of around t ≈ 2, requiring a total of 20 Trotter steps.",
+      "that around five Trotter steps can be achieved [8]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's judgement about hardware, partly cited.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "buessen-limits-1d",
+     "value": "The authors state that they focused on one-dimensional models, that benchmarking for spin models with next-nearest neighbor interactions or beyond and for higher dimensions is future work in which increased inter-node communication is expected, and that no hardware-specific error models were used.",
+     "anchor": "Conclusion, p.5",
+     "quotes": [
+      "In this work, we focused on one-dimensional models.",
+      "In such generalizations, increased inter-node communication is expected and additional optimization of the interconnect usage may be necessary"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Limits the authors state in the Conclusion.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "buessen-conclusion-mitigation",
+     "value": "The authors conclude that issues in quantum simulation on distributed quantum computers arising from slow interconnect hardware can be mitigated by modifying the Trotter-Suzuki decomposition to allow a non-uniform variation of the Trotter step size, for the XY model and the Ising quench models studied.",
+     "anchor": "Conclusion, p.4",
+     "quotes": [
+      "We have demonstrated that issues in the implementation of quantum simulations on distributed quantum computers that arise from slow interconnect hardware can be mitigated"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper's conclusion from simulations of three one-dimensional models.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "calderon-2025-measurement-based-quantum-machine-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Calderon-et-al._2024_Measurement-based-quantum-machine-learning__2405.08319.pdf",
+   "title_in_file": "Measurement-based quantum machine learning",
+   "version_note": "arXiv:2405.08319v2, 30 Sep 2025 (file is dated 2024 in its name). The text layer holds the paper twice, the second copy in interleaved columns; the first copy was read and the second used only to check.",
+   "pages": 15,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A proposal of the multiple-triangle ansatz (MuTA), a universal quantum neural network native to measurement-based quantum computing, with simulated learning tasks and a photonic hardware-constrained variant.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "muta-hardware-scope-photonic-gkp",
+     "verdict": "confirmed",
+     "note": "Added detail: homodyne detection gives angles 0 and pi/2, and a T magic state adds pi/4 for universality.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "muta-numerical-evidence",
+     "verdict": "narrowed",
+     "note": "The evidence is numerical simulation on small instances: the gate-learning task uses a two-wire layer, the state classifier uses two-qubit states, and the kernel works on some toy datasets and not on the moons dataset. No hardware run and no comparison with a circuit-model QNN is reported.",
+     "value": "The authors state that they provided numerical evidence for the practical value of MuTA by learning a universal gate set, a quantum state classifier and a quantum instrument. Their gate-learning demonstration uses MuTA layer (2, 0) learning Haar-random single-qubit gates and the gate IsingXX(π/2), and for classical data they report that their kernel works for circles and blobs but not for moons.",
+     "anchor": "Section IV; Section VI",
+     "quotes": [
+      "provided numerical evidence for the practical value of MuTA by learning a universal gate set, a quantum state classifier, and a quantum instrument.",
+      "Specifically, we show how MuTA layer (2, 0), see Fig. 1b, learns Haar-random single-qubit gates on the first qubit, as well as the entangling gate IsingXX(π/2).",
+      "we find that our kernel can be used for data that does not have a strongly non-linear structure, such as circles and blobs, but not for moons."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "muta-proposed-universal-qnn",
+     "verdict": "confirmed",
+     "note": "Property 2 reads: any n-qubit unitary can be implemented exactly by a measurement pattern on a sufficiently deep MuTA of width n; the proof builds on the known universal gate set of single-qubit gates plus IsingXX.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "muta-definition",
+     "value": "The authors define the multiple-triangle ansatz (MuTA) as 1D cluster states connected by multiple triangles, built from layers of wires of length 5 joined by triangles, with a MuTA of depth d made of d such layers, and the layers joined by identifying output qubits of one layer with input qubits of the next.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "Our multiple-triangle ansatz (MuTA) consists of 1D cluster states connected by multiple triangles as shown in Fig. 1.",
+      "To build MuTA layer (n, i), we connect n wires of length 5 by a collection of triangles Ti,j,1",
+      "A MuTA of depth d consists of d MuTA layers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its ansatz in Section III.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-setup-measurement-flow",
+     "value": "The authors state their MBQC setup: measurements in the X-Y plane with a fixed form, angles adapted for determinism according to the flow of the graph state, and only graphs that have flow considered, although Pauli flow is a more general condition they leave aside for simplicity.",
+     "anchor": "Section II, p.2",
+     "quotes": [
+      "A common choice, which we assume in this paper, is Mαi = cos(α)Xi + sin(α)Yi",
+      "Throughout, we assume that measurement angles are adapted for determinism according to the flow of |G⟩.",
+      "however, for the sake of simplicity, we consider only graphs with flow."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope in Section II.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-flow-definition-cited",
+     "value": "The authors state, citing prior work, that a resource state has flow if there exists a function and a partial order meeting three listed conditions, and that with flow a negative measurement outcome can be compensated by a conditional Pauli operator, which ensures determinism.",
+     "anchor": "Section II, p.2",
+     "quotes": [
+      "has flow iff there exists a function f : V \\ O → V \\ I and a partial order < such that ∀i ∈ V",
+      "This compensation, which ensures determinism, is equiv- alent to a simple adaptation of measurement angles and a conditional Pauli operator acting on the output state."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A definition and result the paper attributes to Ref. [26].",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-property1-determinism",
+     "value": "The paper states Property 1 (Determinism) that any measurement pattern on MuTA can be performed deterministically, and proves it by exhibiting a flow f(Q_i,k) = Q_i,k+1 and a compatible partial order, so that a cited flow theorem gives the angle adaptation.",
+     "anchor": "Section III, Property 1, p.3",
+     "quotes": [
+      "Property 1 (Determinism). Any measurement pattern on MuTA can be performed deterministically.",
+      "MuTA has a flow f defined by f (Qi,k) = Qi,k+1 for each node i ∈ V \\ O."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper states the property and its proof in Section III; it relies on a cited flow theorem.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-property2-universality",
+     "value": "The paper states Property 2 (Universality): given any n-qubit unitary operator, there exists a measurement pattern on a sufficiently deep MuTA of width n that exactly implements it. The proof uses the known universal gate set of single-qubit unitaries plus an IsingXX entangling gate with angle not a multiple of pi, realised on a five-qubit wire and on a two-wire layer.",
+     "anchor": "Section III, Property 2, p.3-4",
+     "quotes": [
+      "Given any n-qubit unitary operator V ∈ U (2n), there exists a measurement pattern on a sufficiently deep MuTA of width n that exactly implements V .",
+      "The single-qubit gates V ′ ∈ U (2) and an entangling gate such as IsingXX(φ) = exp(−iφX ⊗ X/2) for φ ∈/ πZ form a universal set of gates [35, 36]",
+      "Concatenating these two types of layers with their corresponding measurement patterns yields a MuTA that exactly implements V ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper states the property, its conditions and its proof in Section III.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The depth needed is only stated as sufficiently deep; no bound on depth or parameter count for a given unitary is given in the quoted statement."
+    },
+    {
+     "id_suggestion": "muta-property3-entanglement",
+     "value": "The paper states Property 3 (Tunable entanglement): a MuTA layer with connectivity gives a non-entangling gate between two wires if the centre qubit is measured at angle 0 or pi, and an entangling gate if it is measured at another angle. The proof translates the layer to a circuit and shows the reduced state is mixed for the entangling case.",
+     "anchor": "Section III, Property 3, p.3",
+     "quotes": [
+      "Property 3 (Tunable entanglement). A MuTA layer (n, i) with connectivity (i, J) implements",
+      "non-entangling gate between wires i and j ∈ J if Ci,j is measured at αj ∈ {0, π}",
+      "an entangling gate between wires i and j ∈ J if Ci,j is measured at αj ∈/ {0, π}",
+      "Here, we call a gate G entangling for wires i and j iff there exists some n-qubit state"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper states the property, its definition of entangling and its proof in Section III.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-property4-bias",
+     "value": "The paper states Property 4 (Bias engineering): the set of transformations a given MuTA can implement depends on its geometry (depth, layer widths, inter-layer and intra-layer connectivity) and can be further restricted by restricting the measurement angles. The proof given is the single word Obvious.",
+     "anchor": "Section III, Property 4, p.4",
+     "quotes": [
+      "Property 4 (Bias engineering). The set of transformations implementable by a given MuTA depends on the chosen geometry",
+      "It can be further constraint by restricting the values of some or all variational parameters, i. e., the measurement angles."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper gives no proof beyond calling it obvious.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-property5-scalability",
+     "value": "The paper states Property 5 (Scalability): a MuTA of depth d and maximal width n has at most 4dn variational parameters, because it has at most as many variational parameters as qubits. This counts parameters, not the cost or success of training.",
+     "anchor": "Section III, Property 5, p.4",
+     "quotes": [
+      "Property 5 (Scalability). A MuTA of depth d and maximal width n has ≤ 4dn variational parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper states the bound and a short proof in Section III.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The abstract names scalable training; the property bounds the number of parameters only."
+    },
+    {
+     "id_suggestion": "muta-property6-monotonic",
+     "value": "The paper states Property 6 (Monotonicity of expressivity): adding layers, adding disconnected wires, or adding admissible triangles together with an extra layer monotonically increases the set of implementable gates. The proof it gives shows weak monotonicity, that the expansions do not reduce the set of implementable gates.",
+     "anchor": "Section III, Property 6, p.4",
+     "quotes": [
+      "Property 6 (Monotonicity of expressivity). The following expansions of a given MuTA monotonically increase the set of implementable gates",
+      "For weak monotonicity, it is sufficient to show that the expansions do not reduce the set of implementable gates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper states the property and its proof in Section III.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof quoted shows non-reduction (weak monotonicity); strict increase is not shown in the quoted text."
+    },
+    {
+     "id_suggestion": "muta-property7-two-colorable",
+     "value": "The paper states Property 7 that the graph of any MuTA is 2-colorable, because a graph is 2-colorable if and only if it is bipartite and collecting even columns and odd columns gives a bipartition. The authors say this is advantageous because of scalable purification protocols for such states, citing Ref. [37].",
+     "anchor": "Section III, Property 7, pp.4-5",
+     "quotes": [
+      "Property 7 (2-Colorable). The graph of any MuTA is 2-colorable.",
+      "Collecting all even columns into one subset and all odd columns into the other yields a bipartition of any MuTA.",
+      "Using 2-colorable graphs (Property 7) is advantageous thanks to scalable purification protocols for the corresponding states [37]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper states the property and its proof in Section III; the purification benefit is cited.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-properties-not-guaranteed",
+     "value": "The authors state that the listed properties should not be taken for granted: generic graph states do not support deterministic computation for arbitrary measurement patterns, graphs with guaranteed determinism generally lack monotonic expressivity, and adding more connections to MuTA by placing triangle tips on different wires within a layer generally yields graphs without flow.",
+     "anchor": "Section III, p.5",
+     "quotes": [
+      "Note that the properties listed above should not be taken for granted.",
+      "generic graph states do not support deterministic computation for arbitrary measurement patterns.",
+      "adding more connections to MuTA by allowing the tips of the triangles to be located on different wires within a single layer generally yields graphs without flow."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its construction in Section III.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-comparison-claims",
+     "value": "The authors claim that the staggered-wire ansatz derived from the two-dimensional cluster state needs a depth that scales with the number of input qubits to spread information, that popular variational circuits alternating single-qubit gates with fixed multi-qubit gates are usually not monotonically expressive, and that for each classical feed-forward neural network a MuTA with corresponding connectivity and a comparable number of parameters can be constructed.",
+     "anchor": "Section III, p.5",
+     "quotes": [
+      "propagating information across its width requires a depth that scales with the number of input qubits.",
+      "such ansa ̈tze are usually not monotonically expressive",
+      "for each classical feed-forward NN, we can construct a MuTA with a corresponding connectivity and a comparable number of parameters"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Comparisons the paper asserts with little or no proof in the text.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-learn-gates-setup-result",
+     "value": "The authors report that MuTA layer (2, 0) learned Haar-random single-qubit gates and the IsingXX(π/2) gate using Adam on a loss of average infidelity, with 10 Haar-random states per run split into 7 for training and 3 for testing, averaged over 20 runs, and that they observe rapid convergence in both cases.",
+     "anchor": "Section IV-A, p.5-6, Fig. 3",
+     "quotes": [
+      "Specifically, we show how MuTA layer (2, 0), see Fig. 1b, learns Haar-random single-qubit gates on the first qubit, as well as the entangling gate IsingXX(π/2).",
+      "In each run, we use N = 10 Haar-random states |ψ⟩i, Ntr = 7 for training and Nte = 3 for testing.",
+      "Figures 3a and 3b show the loss over training, averaged over 20 runs with random initializations",
+      "In both cases, we observe rapid convergence."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study on a two-wire layer.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-no-free-lunch-claim",
+     "value": "The authors state that, because of the quantum no free lunch theorem and barren plateaus, universality has to go hand in hand with the ability to implement a bias and to tailor it to specific tasks and prior knowledge.",
+     "anchor": "Section IV-A, p.5",
+     "quotes": [
+      "because of the (quantum) no free lunch theorem [43] and barren plateaus [39, 44], universality always has to go hand",
+      "in hand with the ability"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument resting on cited results.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The quotes are two fragments split by figure text in the text layer."
+    },
+    {
+     "id_suggestion": "muta-noisy-data-results",
+     "value": "The authors report that training MuTA on noisy data, with Brownian-circuit noise or bit-flip noise, reduces the fidelity of the trained circuit slowly as noise strength rises, and that for bit-flip noise the model can learn the correct parameters as long as the majority of the two-qubit dataset is not flipped, i.e. for p < 1 − √1 ≈ 0.29 as printed.",
+     "anchor": "Section IV-B, p.6, Fig. 4",
+     "quotes": [
+      "These figures show that increasing the noise strength reduces the fidelity of the trained circuit slowly",
+      "the model can learn the correct parameters as long as the majority of the twoqubit dataset is not flipped—i. e., for p < 1 − √1 ≈ 0.29."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-noisy-data-setup",
+     "value": "The authors state the noisy-data setup: the testing curves use noiseless data, models are trained for 60 steps with Brownian noise and 200 steps with bit-flip noise, each point is an average over 5 runs with different Haar-random datasets, and dataset sizes are 20 and 100 states, split evenly between training and testing.",
+     "anchor": "Section IV-B, Fig. 4 caption, p.6-7",
+     "quotes": [
+      "The testing curves are obtained using noiseless data.",
+      "Models are trained for 60 and 200 steps for Brownian and Bitflip noise, respectively.",
+      "Each datapoint is an average over 5 runs, each of which uses a different Haar-random dataset.",
+      "The dataset size is N = 20 for Brownian noise and N = 100 for bit-flip noise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its setup in the figure caption.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-depolarizing-noise",
+     "value": "The authors report that with a depolarizing channel applied to every MuTA qubit, the model tested on the ideal resource state learns measurement angles appropriate for noiseless operation up to a noise strength of about 0.4, and they suggest one could train on a cheaper noisier device and fine-tune on a lower-noise one. They note that in this noise the standard angle adaptation no longer compensates a negative outcome, so all outcome combinations were simulated.",
+     "anchor": "Appendix D, p.14, Fig. 11",
+     "quotes": [
+      "Testing on the ideal resource state reveals that the model learns the measurement angles appropriate for noiseless operation up to a quite large value of p ∼ 0.4.",
+      "one could use a less expensive, noisier device for initial training and a more expensive, lower-noise device for fine-tuning and inference.",
+      "Each run uses a different dataset of Haar-random states, 10 for training and 3 for testing."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study on one gate and five runs.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-qfi-classifier-result",
+     "value": "The authors report that a hybrid MuTA classifier of two-qubit states by quantum Fisher information, trained on 80% of a dataset of 50 states from each of two families, reaches classification accuracy 0.9725 ± 0.0042 on the remaining 20% when ignoring states with estimated QFI between 1.9 and 2.1, and accuracy of 96% and 99% on Haar-random states including or excluding states with estimated QFI between 1.9 and 2.1.",
+     "anchor": "Section IV-C, p.7",
+     "quotes": [
+      "assembling a dataset of 50 states in S1 and 50 in S2, we train our model on 80% of the data using the Adam optimizer and ε = 0.5.",
+      "The resulting model obtains a classification accuracy of 0.9725 ± 0.0042 on the remaining 20% of the dataset when ignoring all states that have an estimated QFI between 1.9 and 2.1.",
+      "which yields an accuracy of 96% and 99% including or excluding states with 1.9 < Fˆ < 2.1, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-qfi-classifier-caveat",
+     "value": "The authors state that extracting the QFI for a known operator does not require any machine learning, and suggest only that the example indicates MB-QML could classify quantum states when no operational definition of the figure of merit exists.",
+     "anchor": "Section IV-C, p.7",
+     "quotes": [
+      "Extracting the QFI for a known operator h does not require any machine learning.",
+      "our example suggests that MB-QML has the capability to classify quantum states even in the absence of an operational definition for the figure of merit."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "A limit the authors state about their own example in Section IV-C.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-teleportation-result",
+     "value": "The authors report that a MuTA ansatz with measurements conditioned on prior outcomes learned a teleportation quantum instrument, teleporting states from qubit 8 to qubit 22 with unit fidelity, averaged over 10 runs with 35 training and 15 test states each, and call this a proof of principle.",
+     "anchor": "Section IV-D, p.7-8, Fig. 6",
+     "quotes": [
+      "Figure 6 shows that the model learns to teleport states from qubit 8 to qubit 22 with unit fidelity.",
+      "This provides a proof of principle for learning quantum instruments using MuTA",
+      "We average the loss over 10 runs, each using a different Haar-random dataset with 35 training states and 15 test states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical proof-of-principle result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-kernel-result-and-gap",
+     "value": "The authors report that, trained on 160 points and tested on 40, their MuTA-based kernel SVM can classify toy datasets of circles and blobs but not moons, with accuracies similar to Ref. [57], and that designing MBQC-specific kernels for higher-dimensional and more strongly nonlinear datasets remains an open problem.",
+     "anchor": "Section IV-E, p.8, Fig. 8",
+     "quotes": [
+      "All models were trained on 160 data points and tested on 40 data points.",
+      "We obtain similar accuracies as Ref. [57].",
+      "remains an interesting open problem."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study on synthetic data.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The per-dataset accuracies are in a figure the text layer printed garbled, so none is stated."
+    },
+    {
+     "id_suggestion": "muta-hea-setup-heuristics",
+     "value": "The authors state their hardware-efficient setup: photonic GKP computation allows measurement angles 0, π/4 and π/2, discrete optimization can be NP-hard, and they propose two heuristics, a slice-wise epsilon-greedy search and a deep Q-learning agent, tested on learning the gate (T ⊗ 1) · IsingXX(−π/4) on a single (2, 0)-MuTA layer with injected T states.",
+     "anchor": "Section V, p.8-9; Appendix F",
+     "quotes": [
+      "Below, we propose heuristic algorithms for the discrete optimization over measurement patterns where the permitted angles are α ∈ {0, π/4, π/2}.",
+      "Discrete optimization can be NP-hard.",
+      "We learn the gate U = (T ⊗ 1) · IsingXX(−π/4) with T = |0⟩⟨0| + e−iπ/4 |1⟩⟨1|"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its setup in Section V.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-hea-results",
+     "value": "The authors report that both heuristic algorithms generally outperform worst-case random search on the small learning task, that the epsilon-greedy algorithm shows significantly better convergence than DQN there, and that two of five greedy runs failed to progress until the parameters were reinitialized; they expect, without testing, that DQN may be advantageous for large input states.",
+     "anchor": "Section V, pp.8-9, Figs. 9-10",
+     "quotes": [
+      "Both algorithms generally outperform worst-case random search, making them of practical interest.",
+      "For the small learning task under consideration, the epsilon-greedy algorithm shows significantly better convergence than DQN.",
+      "However, we expect DQN to be advantageous for large input states and structured target measurement patterns.",
+      "Two out of five runs failed to progress until the parameters were reinitialized."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study on one small task.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-lie-algebra",
+     "value": "The authors state that the Lie algebra of the fully connected MuTA ansatz with n rows is the simple Lie algebra su(2^n), as a direct consequence of universality, and, citing prior work on barren plateaus, that when the dynamical Lie algebra is simple the variance of the infidelity loss is bounded in terms of its dimension (their Eq. C1, printed garbled in the text layer).",
+     "anchor": "Appendix C, p.14",
+     "quotes": [
+      "We find that the Lie algebra of the (fully connected) MuTA ansatz with n rows, proposed in Section III, is the simple Lie algebra g = su(2n)",
+      "This is a direct consequence of the universality of MuTA.",
+      "In particular, if g is simple, the variance of infidelity loss is bounded by Var[l] ≤"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The variance bound is attributed to Ref. [44]; the Lie algebra statement follows from universality without a separate proof.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-translation-flow-paths",
+     "value": "The paper states, with short proofs, that for a graph state with flow and equal numbers of input and output qubits, repeatedly applying the flow function traces a path from a proper input to a proper output qubit, that different such paths do not intersect, that every qubit outside the input-output overlap lies on one, and that all such paths are induced paths; it then gives an algorithm translating each measurement into a unitary gate, so an MBQC with flow is translated to a circuit.",
+     "anchor": "Appendix B, pp.12-13",
+     "quotes": [
+      "Different f -paths do not intersect.",
+      "All f -paths are induced paths; i. e., within a single f -path, G has no edges between non-consecutive qubits.",
+      "Repeatedly applying the flow function f to a proper input qubit i traces a path from i to a proper output qubit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper states these claims with proofs in Appendix B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-layer-circuit-form",
+     "value": "The paper states that a connected MuTA layer (2, 0) has two junction qubits and is equivalent to a circuit of single-qubit rotations with an IsingXX gate between the two wires (its Eq. B1), and that a general fully connected MuTA layer implements a product of single-qubit rotations and IsingXX gates between the tip wire and each connected wire (its Eq. B2).",
+     "anchor": "Appendix B, p.13",
+     "quotes": [
+      "A (connected) MuTA layer (2, 0), see Fig. 1b in the main text, has two junction qubits, 1 and 5.",
+      "Correspondingly, a general fully connected MuTA layer (n, i) implements"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper derives the circuit in Appendix B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-theorem-a2-relu",
+     "value": "The paper states Theorem A.2 for classical neural networks: only ReLU-like neurons are monotonically expressive, where monotonic expressivity means the activation function satisfies a condition allowing an affine preimage, and a neuron is ReLU-like if the activation function is a non-constant affine function on some subset of its domain whose image equals the image of the whole domain. The proof shows an affine function has an affine inverse and that both directions of the equivalence follow.",
+     "anchor": "Appendix A, p.12",
+     "quotes": [
+      "Theorem A.2 (Monotonicity of expressivity for classical NNs). Only ReLU-like neurons are monotonically expressive.",
+      "We say that a NN is monotonically expressive if the activation function σ of its neurons fulfills ∃w, b ∈ R : σ(wx + b) = x",
+      "We call a neuron ReLU-like if ∃Ω ⊂ R such that σ|Ω is a non-constant affine function"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper states the theorem, its definitions and a proof in Appendix A.",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": "The definition assumes the input data lie within the range of the activation function, as the text states before Definition A.3."
+    },
+    {
+     "id_suggestion": "muta-relu-speculation",
+     "value": "The authors speculate that the monotonicity of expressivity is one of the main reasons why ReLU networks are so successful.",
+     "anchor": "Appendix A, p.12",
+     "quotes": [
+      "We speculate that the monotonicity of expressivity is one of the main reasons why ReLU networks are so successful [71]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A stated speculation without evidence in the paper.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-mbqc-advantage-claims",
+     "value": "The authors state that the MBQC paradigm can exhibit lower circuit depths, is naturally compatible with classical co-processing of mid-circuit measurements, and offers a promising avenue towards error correction, and, citing prior work, that the ground state of the error-correcting toric code can be obtained in constant time with MBQC.",
+     "anchor": "Abstract, p.1; Section I, p.1",
+     "quotes": [
+      "The alternative measurement-based quantum computing (MBQC) paradigm can exhibit lower circuit depths, is naturally compatible with classical co-processing of mid-circuit",
+      "For example, the ground state of the error-correcting toric code can be obtained in constant time [10]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Background advantages the paper asserts or attributes to cited work, not shown here.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-conclusion-and-limits",
+     "value": "The authors conclude that MuTA, as a flexible general-purpose quantum neural network designed for MBQC, is a promising candidate for QML on near-term MBQC devices; they also state it would be interesting to explore conditions on the data under which MB-QML is likely to outperform its gate-based counterparts, and ask whether the MuTA matching a classical network is more expressive than its classical counterpart.",
+     "anchor": "Section VI, p.9-10",
+     "quotes": [
+      "As a flexible general-purpose QNN designed for MBQC, it is a promising candidate for QML on near-term MBQC devices.",
+      "it would be interesting to explore conditions on the data under which MB-QML is likely to outperform its gate-based counterparts.",
+      "This raises the question of whether the resulting MuTA is more expressive than its direct classical counterpart."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper's conclusion and open questions; no advantage over gate-based QML is shown.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper reports no comparison against a circuit-model quantum neural network or a classical model."
+    },
+    {
+     "id_suggestion": "muta-focus-deterministic",
+     "value": "The authors state that they focused on deterministic MBQC, and that MBQC also allows channels to be implemented with fewer quantum resources by using the inherent randomness of outcomes, with trainable probabilistic adaptation of angles left for future work.",
+     "anchor": "Section VI, p.9",
+     "quotes": [
+      "We focused on deterministic MBQC because channels can be lifted to unitary operations on larger",
+      "It would be interesting to characterize the expressivity and to explore the performance of MuTA equipped with a trainable probabilistic adaptation of measurement angles."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "A limit the authors state in Section VI.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "muta-code-availability",
+     "value": "The authors state that all simulations are written in Python and available in the mentpy repository on GitHub.",
+     "anchor": "Data availability, p.10",
+     "quotes": [
+      "All simulations are written in Python and can be found at https://github.com/mentpy/mentpy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states where its code is.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "callison-2023-improved-maximum-likelihood-quantum-amplitude",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Callison-Browne_2022_Improved-maximum-likelihood-quantum-amplitude-estimation__2209.03321.pdf",
+   "title_in_file": "Improved maximum-likelihood quantum amplitude estimation",
+   "version_note": "arXiv:2209.03321v3, 17 May 2023 (file is dated 2022 in its name). The text layer holds the paper twice, the second copy used only to check quotes.",
+   "pages": 31,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "An analysis of maximum-likelihood quantum amplitude estimation that targets a given precision, explains exceptional amplitudes where it fails, and proposes a depth-jittering heuristic validated by simulation.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "callison-exceptional-amplitudes-fail",
+     "verdict": "confirmed",
+     "note": "Added detail: in the simulations, exceptional amplitudes need between 2 and 4 times more shots than the formula predicts, and the authors explain them by violations of the Bernstein-von Mises regularity conditions.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "callison-heuristic-fix",
+     "verdict": "narrowed",
+     "note": "The paper says the sharp features are largely removed (not fully), validates by noiseless numerical simulation for two parameter sets only, and says the effect of noise on the heuristic is not studied.",
+     "value": "The authors state that they propose a heuristic depth-jittering modification and validate it numerically, and report that the sharp features associated with exceptional values of the amplitude have been largely removed by the depth-jittering procedure.",
+     "anchor": "Section 5, Section 5.1 and Fig. 9 caption",
+     "quotes": [
+      "The sharp features in Fig. 4 associated with exceptional values of the amplitude a have been largely removed by the depth-jittering procedure.",
+      "It will be important to understand how these modifications would affect the exceptional values, as well as the effectiveness of our depth-jittering heuristic."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "callison-scope-depth-limited",
+     "verdict": "confirmed",
+     "note": "Added detail: depth limitation is the only way noise is treated; in the fixed-depth case there is no scaling advantage, only a constant-factor speedup.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "callison-mlqae-description",
+     "value": "The authors describe maximum-likelihood quantum amplitude estimation as running circuits with a number of Grover-like iterations (the Grover-depth) not controlled on another register, measuring a good-state outcome many times at each depth in a schedule, combining the individual likelihood functions into an overall likelihood for the whole measurement record, and numerically maximising it.",
+     "anchor": "Section 2.5",
+     "quotes": [
+      "However, here, these applications of Qˆ are not controlled on another register.",
+      "(which we will refer to as the 'Grover-depth')",
+      "The individual likelihood functions [Eq. (21)] can then be combined to produce an overall likelihood function for the entire measurement record"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the algorithm it analyses in Section 2.5.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "callison-prior-rigor-gap",
+     "value": "The authors state that the theoretical scaling analysis of maximum-likelihood quantum amplitude estimation relies on regularity and asymptotic assumptions related to the Bernstein-von Mises theorem, so the quadratic speedup is not completely analytically rigorous, and that numerical experiments in prior work show the algorithm appears to achieve the quadratic speedup in practice with low constant overhead.",
+     "anchor": "Section 1",
+     "quotes": [
+      "relies on certain regularity and asymptotic assumptions related to the Bernstein-von Mises theorem [35], and as a consequence the quadratic speedup is not completely analytically rigorous.",
+      "numerical experiments in prior work show that the algorithm appears to achieve the quadratic speedup in practice with low constant overhead"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement about prior work, with the rigor gap attributed to the algorithm's analysis.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "callison-fisher-information",
+     "value": "The authors state that the Fisher information in the measurement record about the amplitude is proportional to the number of shots times the sum over the Grover-depth schedule of the square of (two times the depth plus one), divided by a(1 minus a), and they derive it in Appendix A by additivity of the single-shot Fisher information over shots.",
+     "anchor": "Section 2.5.1; Appendix A",
+     "quotes": [
+      "It can be shown (see appendix Appendix A) that the Fisher information carried by the measurement record h regarding the amplitude a is I (a) = Nshot a(1 − a) q−1 (2dj + 1)2",
+      "As Fisher information is additive, the single shot Fisher information Isingle shot(a) can be summed over the Nshot shots at each Grover-depth dj"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper states the result and derives it in Appendix A.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The formula itself is garbled in the text layer, so the value states it in words."
+    },
+    {
+     "id_suggestion": "callison-scaling-assumption",
+     "value": "The authors state that, assuming the likelihood satisfies the regularity conditions of the Bernstein-von Mises theorem, the estimate becomes approximately normally distributed as the number of shots increases, and that with an exponential Grover-depth schedule the quadratic speedup over sampling is achieved if the maximum Grover-depth scales linearly with the inverse of the desired average accuracy.",
+     "anchor": "Section 2.5.1",
+     "quotes": [
+      "Assuming the likelihood function satisfies certain regularity conditions detailed in the Bernstein–von Mises theorem [35]",
+      "the maximum Grover-depth d to scale linearly with the desired average accuracy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation resting on an assumption the paper says is not rigorously met; the formula is not quotable from the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "This restates the analysis of Suzuki et al. in the paper's notation."
+    },
+    {
+     "id_suggestion": "callison-shots-formula-scope",
+     "value": "The authors extend the analysis to give the number of shots needed to target a given precision with failure probability at most delta for a given maximum Grover-depth, maximised over the unknown amplitude at a = 0.5, and state that they focus on small precision and failure probability to avoid contradicting the assumption that the number of shots is large enough for the Bernstein-von Mises theorem.",
+     "anchor": "Section 3",
+     "quotes": [
+      "the number of shots Nshot can be chosen to approximately target a particular precision with probability at least 1 − δ.",
+      "This maximum occurs at a = 0.5 and gives",
+      "to avoid contradicting the the assumption that the number of shots is sufficiently large for the Bernstein-von Mises theorem to apply."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An approximate derivation under an asymptotic assumption; the formula is not quotable from the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "callison-depth-limited-speedup",
+     "value": "The authors state that, assuming the Bernstein-von Mises theorem holds, a quantum processor supporting a maximum Grover-depth d gives an estimate within the target precision with a speedup factor of order d compared with classical sampling; when d is fixed and cannot grow with the precision, the number of calls scales as for classical sampling, no scaling advantage is achieved, and d only sets the constant factor.",
+     "anchor": "Section 3.1",
+     "quotes": [
+      "using a quantum processor that supports a maximum Grover-depth d (for the particular algorithm Aˆ) to run MLQAE should produce an estimate",
+      "with a O(d) factor speed-up compared to simply classically sampling from the algorithm Aˆ.",
+      "that is, no scaling advantage is achieved.",
+      "However, it is also the case in this case that the achievable Grover-depth d determines the constant factor on this scaling."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derived scaling under the Bernstein-von Mises assumption.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "callison-tradeoff-exponential-schedule",
+     "value": "The authors state that the circuit-depth versus speedup trade-off that Giurgica-Tiron et al. obtained with a polynomial Grover-depth schedule can be obtained with the standard exponential schedule by choosing the maximum Grover-depth to scale appropriately, and give an algorithm for an exponential schedule with a base near two for a maximum depth that is not a power of two.",
+     "anchor": "Section 3.1; Appendix B",
+     "quotes": [
+      "we observe here that the same trade-off can be achieved using the standard exponential schedule DEXP",
+      "both of which tend to 2 with increasing q, and thus with increasing Grover-depth d."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument from the paper's own scaling analysis, which assumes powers of two for the maximum depth.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Appendix B shows only that the base approaches two as depth grows; the scaling analysis itself covers a power-of-two maximum depth."
+    },
+    {
+     "id_suggestion": "callison-analysis-limits",
+     "value": "The authors state that their analysis assumed the conditions for the Bernstein-von Mises theorem to hold and is therefore not completely rigorous, that they do not consider noise beyond a depth limitation, and that scaling analyses consider only a maximum Grover-depth that is a power of two.",
+     "anchor": "Section 3.1; Section 6; Appendix B",
+     "quotes": [
+      "As with the prior work, our analysis assumed that the conditions required for the Bernstein-von Mises theorem to hold are satisfied, and was therefore not completely rigorous.",
+      "In this work, we do not consider the effects of noise beyond the notion of a depth limitation.",
+      "our scaling analyses consider only the case where the maximum Grover-depth d is a power of 2"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Limits the authors state in Sections 3.1 and 6 and Appendix B.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "callison-simulation-setup",
+     "value": "The authors state that they simulate MLQAE for a chosen amplitude without full circuit simulation, by drawing good-state counts from a binomial distribution at each Grover-depth, and numerically maximise the log-likelihood on a grid of regularly spaced angles with a grid size chosen arbitrarily.",
+     "anchor": "Section 3.2",
+     "quotes": [
+      "it is not necessary to perform full quantum-circuit simulations in order to simulate MLQAE for a particular pre-chosen value of the amplitude",
+      "(where the 3 has been chosen arbitrarily) and finding the maximum."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its simulation method in Section 3.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "callison-exceptional-simulation",
+     "value": "The authors report that for 1 000 000 equally spaced amplitudes, with d = 16, precision 10−3, failure probability 0.01 (1111 shots) and with d = 50, precision 10−4, failure probability 0.01 (11 688 shots), MLQAE gives an error close to or much smaller than the target for most typical amplitudes, but small regularly spaced regions of the amplitude give significantly worse estimates, near amplitudes where the maximum-depth circuit gives good states with probability 1 or 0.",
+     "anchor": "Section 3.2, Fig. 4",
+     "quotes": [
+      "for 1 000 000 equally-spaced values of the amplitude a covering the full range",
+      "The parameters for the two plots are (a) d = 16, = 10−3, δ = 0.01 (resulting in Nshot = 1111) and (b) d = 50, = 10−4, δ = 0.01 (resulting in Nshot = 11 688).",
+      "for most typical values of the amplitude a, MLQAE produces an estimate with an error that is either close to or much smaller than the target precision",
+      "These exceptional values occur in the vicinity of a-values for which the circuit with the maximum Grover-depth d produces 'good' states with probability 1 or 0"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study on two parameter sets.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "callison-exceptional-shots-needed",
+     "value": "The authors report from 10 000 runs per point that for typical amplitudes the target precision is reached at shot numbers lower than or close to the predicted value, but for exceptional amplitudes shot numbers between 2 and 4 times larger than predicted are required.",
+     "anchor": "Section 3.2, Fig. 5",
+     "quotes": [
+      "estimated from 10 000 runs of MLQAE",
+      "target precision is achieved at values of Nshot that are lower than or close to the value predicted by Eq. (40).",
+      "values of Nshot that are between 2 and 4 times larger than the value predicted by Eq. (40) are required to achieve the target precision"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "callison-exceptional-explanation",
+     "value": "The authors explain exceptional values as violations of the Bernstein-von Mises regularity conditions: where a depth in the schedule gives good-state probability 1 or 0 the log-likelihood diverges to negative infinity if the record holds both outcomes, so the theorem does not apply and the shot formula is not even approximately sufficient; informally, two likelihood peaks fall close together inside the region left by lower-depth data so the true angle cannot be told apart. They say the intuition is approximately confirmed, with exceptional values extending beyond the predicted region.",
+     "anchor": "Section 4",
+     "quotes": [
+      "for which the maximum Grover-depth d produces 'good' states with probability 1 or 0.",
+      "the logarithm of the likelihood function diverges to negative infinity, violating conditions i and ii.",
+      "the Bernstein-von Mises theorem does not apply, explaining why using a number of shots Nshot according to Eq. (40) is not even approximately sufficient for the exceptional values.",
+      "meaning that it is not possible to determine which of the two peaks correspond to the true angle θa.",
+      "This intuition is approximately confirmed, although the exceptional values do extend further out in to the lightest shaded region."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An explanation offered by the authors and checked against simulation figures, not a proved statement.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "callison-distinct-from-anomalous-targets",
+     "value": "The authors state that the exceptional values they find are a distinct phenomenon from the anomalous target values seen by Ref. [29] in noisy multiparameter likelihood maximisation, which arise from a failure to estimate the noise rate and are not relevant in the noiseless case.",
+     "anchor": "Section 3.2",
+     "quotes": [
+      "Thus, the exceptional values seen here are a distinct phenomenon to the anomalous target values seen in [29]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument by the authors about different causes.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "callison-depth-jittering-definition",
+     "value": "The authors define depth jittering as spreading the shots at some Grover-depths over a small number of nearby depths, with a logarithmic spread controlled by a coefficient they set to two, an arbitrary choice that seems to work well in practice, and they call the logarithmic spread a heuristic choice motivated by preserving the approximate scaling results.",
+     "anchor": "Section 5",
+     "quotes": [
+      "setting the spread coefficient c = 2 (this choice is arbitrary, but seems to work well in practice)",
+      "The use of depth-spreads of logarithmic size is a heuristic choice, motivated by the need to preserve the approximate scaling results presented in previous sections."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its heuristic in Section 5.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "callison-jitter-overhead",
+     "value": "The authors report that the ratio of the number of calls with and without jittering approaches one as the maximum Grover-depth grows for stricter precisions, with a visible increase at the highest depths for the looser precision because of a ceiling function when the number of shots is small, and conclude that jittering has only a negligible effect on runtime.",
+     "anchor": "Section 5, Fig. 8; Section 6",
+     "quotes": [
+      "the ratio is convincingly tending toward a value of 1.",
+      "occurs because of the ceiling function applied in the expression",
+      "We show numerically that this process has only a negligible effect on the algorithm runtime"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "callison-jitter-effectiveness",
+     "value": "The authors report that with the jittered schedule, repeating the experiments with the same parameters, the algorithm reaches the target precision at a shot number much closer to the predicted value for exceptional amplitudes, without significantly affecting performance for typical amplitudes.",
+     "anchor": "Section 5.1, Figs. 9-10",
+     "quotes": [
+      "the MLQAE algorithm with the depth-jittering heuristic now achieves the target precision at an Nshot value much closer to the value predicted by Eq. (40) for the exceptional values of the amplitude a",
+      "without significantly affecting the performance for the typical values of the amplitude a"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "callison-open-work",
+     "value": "The authors state open questions: how noise-aware likelihood modifications affect exceptional values and the jittering heuristic, whether adaptive jittering that only jitters high-depth runs when low-depth data flag a risk is possible, whether numerical factors on the shot number can guard against the approximate analysis, and they do not consider relative error further.",
+     "anchor": "Section 2.5.1; Section 6",
+     "quotes": [
+      "It will be important to understand how these modifications would affect the exceptional values, as well as the effectiveness of our depth-jittering heuristic.",
+      "A further possible extension is to investigate whether there are numerical factors by which the number of measurement shots can be scaled up to reliably guard against",
+      "While this is an interesting observation, we will not consider relative error further in this work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Limits and open problems the authors state in Section 6.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "callison-conventional-qae-cited",
+     "value": "The authors state, describing the original quantum amplitude estimation of Brassard et al., that it applies quantum phase estimation to the Grover iteration with a control register and gives a quadratic speedup over sampling, and that it involves complicated controlled operations that may be challenging for near- and mid-term hardware.",
+     "anchor": "Section 1; Section 2.2",
+     "quotes": [
+      "This constitutes a quadratic speedup over the case of simply sampling from the output of",
+      "involves quantum circuits with complicated controlled operations that may be challenging to implement in near- and mid-term quantum hardware."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A description of prior work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "callison-mlqae-comparison-cited",
+     "value": "The authors state, citing prior work, that MLQAE performs as well or better than many other quantum amplitude estimation algorithms and appears to have a smaller constant factor than the Aaronson and Rall algorithm, whose analysis is rigorous but has a large constant factor.",
+     "anchor": "Section 2.4; Section 2.5",
+     "quotes": [
+      "It has been shown that MLQAE [27] performs as well or better than many of the other QAE algorithms [21].",
+      "albeit with a large constant factor [23]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper attributes to cited work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "callison-montecarlo-cited",
+     "value": "The authors state, citing Montanaro, that quantum amplitude estimation can be used as a subroutine in Monte Carlo algorithms for a quadratic quantum speedup over the best-known fully classical approaches, and that a speedup of the underlying quantum algorithm concatenates with it.",
+     "anchor": "Section 2.3.1",
+     "quotes": [
+      "Montanaro showed that QAE can be used as a subroutine in otherwise classical Monte Carlo algorithms in order to achieve a quadratic quantum speedup",
+      "then this speedup will concatenate with the QAE Monte Carlo speedup."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. [6].",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "callison-qml-application-cited",
+     "value": "The authors state that in quantum clustering and classification algorithms a core step is estimating the inner product between two vectors, which amplitude estimation can provide by taking the product of the two loading unitaries as the algorithm and the all-zero state as the good state.",
+     "anchor": "Section 2.3.2",
+     "quotes": [
+      "a core step is the estimation of the inner product",
+      "QAE can be performed to produce an estimate of the inner product"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Background on applications, attributed to cited work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "callison-var-cited",
+     "value": "The authors state that Egger et al. showed quantum amplitude estimation can be used to gain a quantum speed-up for the calculation of Value at Risk, with a quantum algorithm that loads correlated asset uncertainty, computes total portfolio loss and thresholds it, and a classical bisection search around the amplitude estimate.",
+     "anchor": "Section 2.3.3",
+     "quotes": [
+      "Egger et al. showed that QAE can be used to gain a quantum speed-up for the calculation of VaR",
+      "A classical outer loop is then used to perform a bisection search to find the smallest x"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. [44].",
+     "result_type": "cited",
+     "context": "world",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "canonici-2023-machine-learning-based-noise-characterization",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Canonici-et-al._2023_Machine-learning-based-noise-characterization-and-correction-on-neutral__2306.15628.pdf",
+   "title_in_file": "Machine-learning based noise characterization and correction on neutral atoms NISQ devices",
+   "version_note": "arXiv:2306.15628v1, 27 Jun 2023. The text layer holds the paper twice, the second copy used only to check quotes.",
+   "pages": 11,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A study training ANN and linear-regression models on simulated Pasqal measurements to estimate noise parameters tested on real data, plus a reinforcement-learning pulse correction demonstrated in simulation.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "noise-ann-beats-linear",
+     "verdict": "narrowed",
+     "note": "The comparison of ANN with linear regression is for one parameter only, the laser intensity fluctuation, on a synthetic validation set; the paper adds that ANNs are more resource intensive. The accuracy gain with atoms and measurements is read from error bars in figures, and no values are given in the text.",
+     "value": "The authors report that, for predicting the laser intensity fluctuation on the simulated validation set, the errors of the ANN models are always lower than those of linear regression, with the difference more pronounced as the number of atoms and measurements increases, at the cost of more resource-intensive computations, and that the prediction error decreases with the number of atoms in the system.",
+     "anchor": "Section III-A, p.4-5; Section V, p.7",
+     "quotes": [
+      "In fact, the errors for the ANN models are always lower respect to the errors of linear regression models and the difference is more pronounced increasing the number of atoms and measurements.",
+      "ANN are in general more powerful respect to linear regression models (at the cost of more resource-intensive computations).",
+      "As expected, the prediction error is decreasing with the number of atoms in the system"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on one noise parameter.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "noise-more-measurements",
+     "verdict": "narrowed",
+     "note": "The paper hedges it: the basis is one comparison of a 5-atom setting against two concatenated 4-atom settings with the same number of data points, for one parameter on synthetic data, and says 'seems' and 'slightly better'.",
+     "value": "The authors state that comparing the 5-atom result with the result for two measurements seems to indicate it is more convenient to consider more measurements than to increase the number of atoms, and that it can be slightly better to use multiple measurements of the same setting than measurements of a different setting with the same number of atoms.",
+     "anchor": "Section III-A, p.4-5; Section VI-A",
+     "quotes": [
+      "comparing fig. 2(a) with 5 atoms and fig. 2(b) with number of measurements equal to 2, seems to be more convenient to consider more measurements respect to increase the number of atoms of the setting.",
+      "can be slightly better to consider multiple measurements of the same setting with the same topology respect to collect measurements of a different setting with the same number of atoms."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation from one study; the authors call it an insight.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "noise-sim-train-real-test",
+     "verdict": "narrowed",
+     "note": "Testing on real data has no ground truth: the predictions are compared with informal a priori values from Pasqal, and the paper says they do not match, with the real data coming from a prototype device. The correction model was trained and tested on a simulation only.",
+     "value": "The authors state that the characterization models were trained on simulated noisy measurements and tested on real data, that the predicted values on real data do not match those estimated by Pasqal although all 20 models converge to very similar values, and that the noise-correction model was trained on a simulated test setting.",
+     "anchor": "Section III-B, p.5; Section V, p.7",
+     "quotes": [
+      "We observe that the predicted values do not match those estimated by Pasqal, although all 20 models always converge to very similar values of the predictions.",
+      "For the noise correction we trained a RL model to find a correction pulse to counteract the effects of the noise affecting a simulated test setting."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "canonici-noise-parameters-table",
+     "value": "The paper lists five noise parameters with estimated values it says Pasqal provided informally: laser intensity fluctuation 3%, laser waist 68 micrometres, temperature 30 microkelvin, false positive measurement 3% and false negative measurement 8%.",
+     "anchor": "Section II, Table I, p.2",
+     "quotes": [
+      "Table I shows those sources of noise and their estimated values provided informally by Pasqal.",
+      "Description Parameter Value Laser Intensity fluctuation σR 3% Laser waist w 68μm Temperature T 30μK",
+      "False positive measurement ε 3% False negative measurement ε′ 8%"
+     ],
+     "kind": "cited",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor's informal estimates of its own device, relayed by the authors.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "canonici-device-description",
+     "value": "The authors state that Pasqal has developed a NISQ device called Fresnel based on a neutral atom processor capable of using up to 100 qubits, and that Pasqal registers can hold at most 100 atoms with a minimum distance of 4 micrometres in bidimensional structures within a maximum radius of 50 micrometres.",
+     "anchor": "Section I, p.1; Section II, p.2",
+     "quotes": [
+      "Pasqal [5] has developed a NISQ device called Fresnel based on a neutral atom quantum processor capable of using up to 100 qubits [6]",
+      "In Pasqal NISQ devices, it is possible to prepare registers of maximum 100 atoms with a minimum distance of 4μm between them arranged in bidimensional structures in an area of maximum radius 50μm."
+     ],
+     "kind": "cited",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A description of a vendor's own product.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "canonici-framing-classical-ml",
+     "value": "The authors state that their work is framed as a classical machine-learning approach to process quantum data, with quantum machine-learning models for noise characterization and correction left as future research.",
+     "anchor": "Section V, p.9",
+     "quotes": [
+      "our work is framed as a classical ML approach to process quantum data.",
+      "Future research lines may include the design of QML models for the noise characterization and correction"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope in Section V.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "canonici-single-setup",
+     "value": "The authors state the single-parameter setup: measurements from nine runs on real Pasqal devices (six topologies with four atoms and one each with two, three and five atoms), data simulated for the nine registers with 10 000 values of the laser intensity fluctuation drawn uniformly from 0 to 0.15, 20 models trained on each dataset by 20-fold cross validation, with linear regression as baseline and ANNs trained for 150 epochs with Adam.",
+     "anchor": "Section III-A, p.3-4",
+     "quotes": [
+      "we collected the measurements of nine different runs on the real Pasqal NISQ devices (6 different topologies with 4 atoms and single topologies with 2,3 and 5 atoms)",
+      "we preliminarily generate a sequence of 10 000 σR values extracted from a uniform distribution U(0, 0.15).",
+      "20 models are trained on each dataset through a 20-fold cross validation.",
+      "they are trained for 150 epochs with the Adam optimizer and with hyperparameter optimization."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its setup in Section III-A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "canonici-samples-per-run",
+     "value": "The authors state that the Pulser simulator allows specifying the number of samples per run, but they found in preliminary experiments that this is counter-productive for noise estimation because the noise is then not resampled, so they keep the number of samples per run equal to 1.",
+     "anchor": "Section VI-A, p.11",
+     "quotes": [
+      "we found in preliminary experiments that it is counter-productive in the context of noise estimation.",
+      "we keep the number of samples per run equal to 1 forcing the resampling of the noise at each single measurement."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its simulation choice in Section VI-A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "canonici-real-data-sigmaR",
+     "value": "The authors report that the laser intensity fluctuation predicted from real measurements is close to the estimated 3% for the 2-atom and 5-atom settings, lower for the 3-atom setting, and around 7% for all 4-atom settings and their concatenations, and they say a possible explanation is that the real data were collected while the device was under development.",
+     "anchor": "Section III-A, p.4, Fig. 3",
+     "quotes": [
+      "We observe in fig. 3 that the values of σR predicted for the measurements of settings with 2 and 5 atoms are close to the estimated value of 3%, however the prediction for the setting of 3 atoms is lower and the predictions for all the settings with 4 atoms, and concatenation of them, are around 7%.",
+      "An explanation for this mismatch can be that the real data used for the experiments was collected when the device was still under development."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on real data with no ground truth.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The 7% predictions for the 4-atom settings are more than double the vendor's 3% estimate."
+    },
+    {
+     "id_suggestion": "canonici-real-data-caveats",
+     "value": "The authors state that the predictions consider only the laser intensity fluctuation as a variable noise source, so variations of other parameters influence them, that low standard deviations do not exclude a high bias error but suggest a low variance error, and that having neglected several noise sources the parameter values found could be effective values.",
+     "anchor": "Section III-A, p.4",
+     "quotes": [
+      "Moreover the predictions consider only σR as a variable source for the noise, thus variations of the other noise parameters in the real machine influence the predictions of σR.",
+      "even if this does not exclude an high bias error, still suggest a low variance error for the models.",
+      "having neglected several noise sources, the parameter values found could be effective values."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Limits the authors state in Section III-A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "canonici-multi-setup",
+     "value": "The authors state the multi-parameter setup: 54 000 labelled simulated samples for a 6-qubit system with 500 runs sampled per simulation, parameters drawn uniformly (laser intensity fluctuation 0 to 0.15, laser waist 0 to 200 micrometres, temperature 0 to 100 microkelvin, false positive and false negative rates 0 to 0.15), best hyperparameters chosen from 1000 models as one hidden layer of 117 neurons, and 20 models trained by cross validation for at most 150 epochs.",
+     "anchor": "Section III-B; Section VI-B",
+     "quotes": [
+      "We simulated a dataset of 54 000 labelled samples for the 6-qubit system whose topology can be observed in fig. 1(b).",
+      "the measurement for each simulation is obtained sampling 500 runs.",
+      "the model with the most promising set of hyper-parameters is chosen from 1000 models trained with the Adam optimizer.",
+      "1 hidden layer of 117 neurons, batch size 16",
+      "The values used in the simulations for each parameter are: σR = U(0, 0.15), w(μm) = U(0, 200), T (μK) = U(0, 100), ε = U(0, 0.15) and ε′ = U (0, 0.15).",
+      "Each one of the 20 models is trained with early stopping for a maximum of 150 epochs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its setup in Sections III-B and VI-B.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "canonici-multi-results",
+     "value": "The authors report predicted noise parameters on real data as the average and standard deviation of 20 models: laser intensity fluctuation 0.079 ± 0.005, laser waist 122 micrometres ± 6, temperature 56 microkelvin ± 4, false positive rate 0.082 ± 0.010 and false negative rate 0.078 ± 0.005 (the text layer prints the table rows in a mixed order), compared with the Pasqal estimates of 0.03, 68 micrometres, 30 microkelvin, 0.03 and 0.08, and they state the predicted values do not match the estimates.",
+     "anchor": "Section III-B, Table II, p.5",
+     "quotes": [
+      "Parameter Predicted value Estimated value σR 0.079 ± 0.005 w 122μm ± 6 0.03 68μm T 56μK ± 4 30μK ε 0.082 ± 0.010 0.03 ε′ 0.078 ± 0.005 0.08",
+      "Each reported value is the average of the 20 models trained on different splits",
+      "We observe that the predicted values do not match those estimated by Pasqal"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on real data with no ground truth.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "By the quoted table only the false negative rate agrees with the Pasqal estimate; the others differ by more than a factor of two."
+    },
+    {
+     "id_suggestion": "canonici-multi-interpretation",
+     "value": "The authors suggest the mismatch could be because the predictions are effective values incorporating neglected effects such as other noise sources and neighboring atoms, or because the measurements came from a prototype device, and they expect more agreement in future with technical improvements.",
+     "anchor": "Section III-B, p.5",
+     "quotes": [
+      "could be effective values that incorporate other neglected effects (noise sources, influence of other neighboring atoms, etc.).",
+      "Therefore, we can expect more agreement in the future as a result of technical improvements."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An explanation and expectation stated without test.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "canonici-models-agree",
+     "value": "The authors state that for every set of real measurements, 40 different models (ANN and linear regression, each trained independently by 20-fold cross validation) agree on the predictions, and conclude that variance error is low.",
+     "anchor": "Section V, p.7",
+     "quotes": [
+      "for every set of measurement, 40 different models (ANN and linear regression trained independently in a 20 fold cross validation setting) agree on the predictions"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; agreement does not show the predictions are accurate.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The paper itself notes low variance does not exclude high bias."
+    },
+    {
+     "id_suggestion": "canonici-dependence-limits",
+     "value": "The authors state that the techniques depend on the atoms topology and the pulse shape, so models can be trained per gate, and that the accuracy of the predicted noise parameters depends on the accuracy of the simulation, in particular of the simulator's noise model.",
+     "anchor": "Section V, p.9",
+     "quotes": [
+      "The presented tecniques are dependent on the atoms topology and the pulse shape.",
+      "The accuracy of the predicted noise parameters depends on the accuracy of the simulation and in particular on the accuracy of the simulator noise model."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Limits the authors state in Section V.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "canonici-temporal-statistics",
+     "value": "The authors state, citing earlier work and preliminary experiments with the Pasqal simulator, that noise characterization improves when more temporal statistics are collected, that they use this for the correction study through intermediate states, and that on real devices it could be obtained by measuring incremental sub-dynamics from separate runs.",
+     "anchor": "Section V, p.9",
+     "quotes": [
+      "there is an evidence of the improvement of the noise characterization when more temporal statistics are collected.",
+      "We can obtain the same effect independently measuring incremental subdynamics from t = 0 to subsequent time steps of the full dynamic."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Evidence the paper attributes to prior work and unreported preliminary experiments.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "canonici-rl-setup",
+     "value": "The authors state the reinforcement-learning setup: a single-qubit pulse with Gaussian Rabi profile of area π/2 and 500 ns duration and a linear detuning ramp from −20 to 20 rad/μs is corrected by a following pulse of the same length with variable Rabi area and initial and final detuning; the state is occupation probabilities from the average of 10 noisy simulations at 25 states along the dynamic; the agent is an ANN with 50 inputs and two hidden layers of 128 units; fixed steps of π/200 and 0.2; an episode ends after 100 steps; reward one if the corrected noisy output moves closer to the ideal in the l1 norm; one thousand training episodes.",
+     "anchor": "Section IV, p.6-7",
+     "quotes": [
+      "P has a Gaussian profile in the Rabi frequency Ω of duration T = 500 ns and area π/2 and a ramp profile in detuning δ of duration T = 500 ns with δ0 = −20 rad/μs and δT = 20 rad/μs.",
+      "estimated from the av- erage of 10 independent noisy simulations whose prob- abilities are extracted from the amplitudes of 25 quan- tum states uniformly sampled along the simulated dy- namic.",
+      "an input layer of 50 units (2 basis for each one of the 25 inter- mediate states), two ReLU hidden layer of 128 neurons",
+      "The episode ends when the action causes a, δ0 or δf to go out of boundaries or after 100 steps.",
+      "We choose fixed values for ∆a = π/200 and ∆δi = ∆δf = 0.2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its setup in Section IV.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The text lists an output layer of 6 neurons but says the agent selects among four actions and then lists six; this is internally inconsistent."
+    },
+    {
+     "id_suggestion": "canonici-rl-result",
+     "value": "The authors report that over one thousand training episodes the average KL divergence between the corrected noisy simulation and the ideal one decreases below a reference value of 0.0011 for the uncorrected noisy simulation averaged over 100 simulations, and conclude that the approach learns to correct a simulated noisy pulse; correction was shown only in simulation.",
+     "anchor": "Section IV, Fig. 5; Section V",
+     "quotes": [
+      "it effectively decreases below the reference value of DKL(P noisy P , P ideal P ) = 0.0011",
+      "calculated with the average for 100 noisy simulations without the correction pulse.",
+      "the proposed approach successfully learns to correct a simulated noisy pulse and to make the measured probabilities closer to the ideal ones."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study on one pulse.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The text gives no final KL value, only that it falls below the uncorrected reference, so the size of the improvement is not stated."
+    },
+    {
+     "id_suggestion": "canonici-no-extra-qubits-claim",
+     "value": "The authors claim that, unlike surface-code error correction which needs many physical qubits, their proposed noise mitigation needs no additional qubits for error detection and tries to modify pulses to minimize the effect of noise.",
+     "anchor": "Section I, p.1; Section IV, p.6",
+     "quotes": [
+      "By contrast, in our proposed approach for noise mitigation, no additional qubits are needed for error detection.",
+      "we propose to verify that it is possible to mitigate the effects of quantum noise without extra qubits through the use of RL techniques."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A claim of advantage supported only by the simulated correction result.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

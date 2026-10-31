@@ -18,6 +18,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from store.ingest import FULL_READ_MARK  # noqa: E402
 from store.quotes import QUOTE, plain, source_text  # noqa: E402
 
 
@@ -128,7 +129,8 @@ def test_refused_and_no_copy_records_stay_seen_with_the_reason(live_conn):
     for rid in list(f89.REFUSE) + list(f89.NO_COPY):
         tier, = live_conn.execute("SELECT tier FROM paper_fields WHERE record_id = ?", (rid,)).fetchone()
         reason, = live_conn.execute("SELECT updated_reason FROM records WHERE id = ?", (rid,)).fetchone()
-        assert tier == "seen", rid
+        full = live_conn.execute("SELECT 1 FROM paper_reads WHERE record_id = ? AND extent = 'full'", (rid,)).fetchone()
+        assert tier == "seen" or (full and tier == "read"), rid  # a later full read (F114) raises it
         assert "Sprint 10 Task I, F89" in reason and "NOT" in reason, rid
 
 
@@ -143,6 +145,9 @@ def test_each_read_is_qualified_and_the_store_matches_the_script(live_conn):
         assert live_conn.execute("SELECT tier FROM paper_fields WHERE record_id = ?", (rid,)).fetchone()[0] == "read"
     bad = []
     for _, a, _, _ in f89.assertions():
+        if FULL_READ_MARK in (live_conn.execute("SELECT updated_reason FROM records WHERE id = ?", (a.id,)).fetchone()
+                              or ("",))[0]:
+            continue  # re-read in full by Sprint 13 Task G or F114 (Sprint 14), whose own tests check it
         row = live_conn.execute(
             "SELECT r.value, r.certainty, r.certainty_reasons, r.provenance, f.citation_context, f.claim_type "
             "FROM records r JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (a.id,)).fetchone()

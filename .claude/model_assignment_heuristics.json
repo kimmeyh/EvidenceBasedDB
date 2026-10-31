@@ -1,7 +1,7 @@
 {
   "_comment": "Model-assignment heuristics for this repository (Sprint 4 Task K, F18, 2026-09-19). Data-driven complement to the static role table in docs/SPRINT_PLANNING.md: which model tier AND which review protocol a task pattern gets, with the outcomes that justify it. Modeled on spamfilter-multi's .claude/model_assignment_heuristics.json (read-only survey, Sprint 3 Task A), rewritten for this repository. Every number in learning_log names its source document; a success_rate is null until sample_size is at least 1 real outcome, never estimated. Update at every retrospective (Category 5, Model Assignments) and whenever a delegated task's report is verified against repository state. Guarded by tests/test_model_assignment_heuristics.py.",
   "version": 1,
-  "updated": "2026-10-25",
+  "updated": "2026-10-30",
   "tiers": {
     "haiku": {
       "role": "Developers (subagents)",
@@ -551,6 +551,40 @@
         }
       ],
       "lesson": "Two sprints running, readers over-state values and over-suggest HIGH. The values are the coordinator's to cut; a reader's grade suggestion is never applied. The fresh-eyes review remains the check on meaning."
+    },
+    {
+      "date": "2026-10-30",
+      "sprint": 14,
+      "task": "F114's first release (Tasks E and F, F117): Sonnet 5.5 first-pass readers (cloud sessions and local readers), one Sonnet 5.5 reviewer per group, Sonnet consistency passes, the coordinator's sign-off on Opus 5.5, and a fresh-eyes review at each code commit",
+      "records": 351,
+      "source": "docs/INTAKE_WORKFLOW.md section 58; CHANGELOG.md (the reviews of aabdd49 and 7914e80); work/f114/review/cross_group_consistency.json in the non-repository folder. Tokens and seconds per reader were not recorded.",
+      "outcomes": [
+        {
+          "tier": "sonnet",
+          "protocol": "read-only-evidence-gathering",
+          "findings": "one local reader (g113) left 24 quotes its own check failed on; six readers entered 184 assertions for papers they marked as bearing on no context, leaving the context to the coordinator",
+          "tokens": null,
+          "seconds": null,
+          "scope": "Sprint 14 Tasks E and F first-pass reads"
+        },
+        {
+          "tier": "sonnet",
+          "protocol": "per-record-with-certainty-check",
+          "findings": "the reviewers signed 10 HIGHs on vendors' own claims, which store.grading writes LOW, and graded cited-result proofs unevenly across groups: the cross-group pass proposed 86 corrections, of which the coordinator accepted 82 and rejected 4 as textbook background",
+          "tokens": null,
+          "seconds": null,
+          "scope": "72 F114 groups"
+        },
+        {
+          "tier": "opus",
+          "protocol": "fresh-eyes-code-review",
+          "findings": "every review of the F117 scripts found real defects: the review of aabdd49 found 6 (a stored MODERATE changed unasked through a sign-off, a settled LOW keeping the case for HIGH); the review of 7914e80 found 2 unproven guards and a rebuild that could change decided ids",
+          "tokens": null,
+          "seconds": null,
+          "scope": "each code commit of Task E"
+        }
+      ],
+      "lesson": "A per-group reviewer grades its own group consistently but not the next one: a cross-group pass on one rule is needed before an apply. The readers' quote checks must be run by the coordinator, not trusted from the reader's report."
     }
   ]
 }

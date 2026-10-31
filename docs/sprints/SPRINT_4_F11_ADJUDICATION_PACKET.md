@@ -178,7 +178,7 @@ the minutes-per-record number and the protocol in `.claude/model_assignment_heur
 - **Title**: QBoost: Large Scale Classifier Training with Adiabatic Quantum Optimization
 - **Citation**: Neven, H. (Google Inc.), Denchev, V.S. (Purdue University), Rose, G., Macready, W.G. (D-Wave Systems Inc.), "QBoost: Large Scale Classifier Training with Adiabatic Quantum Optimization," JMLR: Workshop and Conference Proceedings 25:333-348, Asian Conference on Machine Learning (ACML), 2012 (hand-transcribed from title page)
 - **Access**: D:\Data\Harold\EvidenceBasedDB\Papers\QBoost - Large Scale Classifier Training with Adiabatic Quantum Optimization - Neven Denchev Rose Macready - ACML PMLR v25 2012.pdf | https://proceedings.mlr.press/v25/neven12/
-- **Tier**: screened; **primary context**: qml
+- **Tier**: read; **primary context**: qml
 - **Disposition**: SEMINAL: introduces QBoost, the adiabatic-quantum-optimization boosting algorithm that CVQBoost (the algorithm the HSBC consumer work measures on Dirac-3) directly descends from; directly relevant, high priority
 - **Applicability**:
   - `ml`: A boosting framework for large-scale binary classifiers; keywords 'machine learning, supervised learning, boosting' -- PDF p.1 keywords

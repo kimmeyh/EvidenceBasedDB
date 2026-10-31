@@ -1,0 +1,414 @@
+{
+ "group": "g077",
+ "reviewed_on": "2026-10-30",
+ "tag": "Sprint 14 Task E, F117 (F114 cloud read)",
+ "reader": "Claude Sonnet 5.5 (F114 cloud session)",
+ "coordinator_note": "",
+ "graded_high": {
+  "scope-prior-state-and-contribution": [
+   "scope",
+   "Section 1, p.3: the authors state what GPU4PySCF contained when they started and what their contributions add. Their own scope statement."
+  ],
+  "scope-density-fitting-small-medium": [
+   "scope",
+   "Section 1, p.3 and Section 2.1, p.4: the density fitting code targets small to medium molecules (under 200 atoms); larger molecules go to the existing direct SCF, which the paper does not cover."
+  ],
+  "scope-benchmark-dataset": [
+   "setup",
+   "Section 2.1, p.4 and Appendix A, Table 5, p.27: 13 molecules, 20-168 atoms, 8 elements, as the paper states. The two medium molecules are among the 13 (Table 5 lists 13 names)."
+  ],
+  "setup-dft-protocol-a100": [
+   "setup",
+   "Section 2.1, p.4 and Figure 1 caption, p.5: def2-TZVPP, B3LYP, (99,590) grids, A100-80G, def2-universal-JKFIT. The paper's own timing setup."
+  ],
+  "setup-closed-shell-density-fitting": [
+   "scope",
+   "Section 2.2, p.5: all benchmark computations in that section are closed-shell with density fitting; three modules SCF, gradient, Hessian. Stated scope."
+  ],
+  "memory-hybrid-strategy": [
+   "setup",
+   "Section 2.1, p.4: the CPU-GPU hybrid storage strategy is the authors' own implementation, described as used in this work."
+  ],
+  "speedup-hessian-qchem-finite-difference": [
+   "stated limit",
+   "Section 2.2, p.5: the Q-Chem reference Hessians are finite difference because of a Q-Chem memory issue; the 2-3 factor is the authors' stated expectation, and the value says so as an expectation."
+  ],
+  "speedup-benchmark-scope-qchem-only": [
+   "stated limit",
+   "Section 2.2, p.4-5: only Q-Chem is benchmarked, Hessian only for 20-84 atoms, and settings cannot be fully aligned. Limits the paper states about its own benchmark."
+  ],
+  "cost-aws-instances": [
+   "setup",
+   "Figure 2 caption, p.6: the AWS prices and instance specs the cost estimate uses."
+  ],
+  "gradient-pure-dft-future-work": [
+   "stated limit",
+   "Section 2.2, p.5-6: the pure DFT gradient could be faster with a more efficient algorithm; left as future work. The J matrix engine is the paper's reference [23] (White and Head-Gordon, 'A J matrix engine'), so the parenthesis is supported."
+  ],
+  "pcm-reference-caveat-two-factors": [
+   "stated limit",
+   "Section 2.3, p.6: Q-Chem 6.1 has no density fitting SCF with PCM, so the speedups mix two factors; the algorithms differ. A caveat the authors state."
+  ],
+  "pcm-solvent-models-available": [
+   "scope",
+   "Section 2.3, p.6 and Section 3.3, p.14: four PCM variants available, SMD CDS cost almost negligible, generalized Born not implemented."
+  ],
+  "pcm-implementation-details": [
+   "setup",
+   "Section 3.3, p.14: SWIG smoothing, NWChem Fortran and Python Lebedev re-implementation of SASA/CDS, SMD18 radii. The authors' own implementation description."
+  ],
+  "solvent-pcm-gpu-reengineered": [
+   "scope",
+   "Section 4.2, p.24: PCM/SMD re-engineered for GPU in Python, possible memory optimization needed, in PySCF v2.4 and Hessian in v2.6."
+  ],
+  "li-solvation-setup": [
+   "setup",
+   "Section 3.1.3, p.9: basis, auxiliary basis, IEF-PCM with UFF radii and dielectric 20.0, M06-2X-D3 zero damping, MD of 2.25M LiFSI in DMC:EC 51:49. The paper says the example is illustrative only."
+  ],
+  "chelpg-setup": [
+   "setup",
+   "Section 3.2.1, p.11: grid spacing 0.3, radial extent 2.8, Bondi radii with H at 1.1, B3LYP/def2-SVPD with density fitting."
+  ],
+  "nmr-giao-implementation": [
+   "setup",
+   "Section 3.2.2, p.13-14 and Figure 8 caption: GIAO implementation, toluene example with B3LYP/def2-TZVPP/def2-universal-JKFIT."
+  ],
+  "smd-solvation-dataset-and-uncertainty": [
+   "setup",
+   "Section 3.3, p.15 and Table 3 caption: dataset sizes for PySCF and G03, reference uncertainties, and the note that the database moved to version 2020 after SMD. The paper's stated benchmark basis."
+  ],
+  "mobh35-setup-and-limits": [
+   "stated limit",
+   "Section 3.4.1, p.15-16: subset covers three transition-metal rows, geomeTRIC used, the authors could not verify modified transition states, and no automated reaction-profile approach is provided. Setup plus limits the authors state."
+  ],
+  "api-to-gpu-to-cpu": [
+   "setup",
+   "Section 4.1, p.22: from v1.0 the patching is dropped and to_gpu/to_cpu convert objects; Listing 1 shows the water example. The paper's own API design."
+  ],
+  "func-ecp-cpu-only": [
+   "stated limit",
+   "Section 4.2, p.24: ECP is computed once on CPU via PySCF; acceptable for few heavy atoms; GPU ECP is future work."
+  ],
+  "func-dispersion-nonlocal": [
+   "scope",
+   "Section 4.2, p.23-24: dispersion corrections use dftd3/dftd4 without GPU (OpenMP disabled in the rebuild); nonlocal corrections optimized at CUDA level."
+  ],
+  "func-libraries-cuda": [
+   "setup",
+   "Section 4.3, p.25: CuPy, cuTENSOR default contraction engine, customized API for experimental CUDA LibXC (v6.2)."
+  ],
+  "func-wavefunction-preliminary": [
+   "stated limit",
+   "Section 5, p.25: only preliminary MP2 and CCSD implementations. Table 4 (Hessian rows FD or CPU for several features) agrees with the second clause; the Table 4 text layer is partly garbled but the legend defines FD and CPU."
+  ],
+  "limits-general-not-optimal": [
+   "stated limit",
+   "Section 5, p.25-26: implementations 'certainly not optimal', many limitations; the section lists wavefunction methods, direct SCF integral schemes, PBC, multi-GPU and mixed precision as future work."
+  ],
+  "limits-low-level-api-incompatible": [
+   "stated limit",
+   "Section 5, p.26: low-level APIs of PySCF and GPU4PySCF are not fully compatible, so packages using low-level PySCF APIs cannot be directly accelerated."
+  ],
+  "limits-pbc-not-ported": [
+   "stated limit",
+   "Section 5, p.25-26: CPU PBC screening techniques may not transfer directly to GPU; new techniques are under development (ref [111])."
+  ],
+  "setup-learn-unitary-from-tn-states": [
+   "setup",
+   "Introduction, p.2: 'Our setup is to learn a target unitary operator through data samples encoded into TN states'; the setup is also defined in the Tensor network machine learning section."
+  ],
+  "def-predicting-risk": [
+   "definition",
+   "Eq. (1), p.2: the predicting risk is defined as a Haar integral of a trace-norm distance between projectors; the paper calls it the prediction error. The text layer garbles the formula but the surrounding words match the value."
+  ],
+  "def-unitary-embedded-mps-and-loss": [
+   "definition",
+   "p.2: unitary embedded MPS (D x D x d tensor to Dd x Dd unitary), labeled training set S, and the squared-norm loss are all defined in the main text."
+  ],
+  "theorem1-proof-route": [
+   "scope",
+   "p.3 and SI.B: the authors state the approximations their proof rests on (approximate unitary 2-design, mapping to a 1D Ising partition function, averaging over M and S). This is a statement of the proof's assumptions, not of a result."
+  ],
+  "mps-nfl-learned-unitary-form": [
+   "scope",
+   "p.3 and SI.B (near Eq. S33): the authors state the simplifying assumption M-dagger P_S = e^{i theta} I_tk (+) Y with Y in an (n-k)-qudit subsystem 'for simplicity'. The value matches."
+  ],
+  "mpo-one-moment-integral-trace-y": [
+   "proved result",
+   "SI.A, Eqs. (S10)-(S12): the paper proves the integral of tr[Y]tr[Y*] equals 1 for a random unitary-embedded periodic MPO, by a loop-counting argument with the 1-moment Haar integral (S11); each loop gives a 1/(D'd') factor that cancels. The proof is diagrammatic but complete, and the result does not depend on D' or d'."
+  ],
+  "mps-nfl-proof-inequalities": [
+   "scope",
+   "SI.B, near (S33) and (S46): the authors state they use tr[AB] <= tr[A]tr[B] for PSD matrices and the Cauchy-Schwarz-type trace inequality for PSD F with tr(F)=1. This is a statement of proof steps that make the result a lower bound. Both inequalities are standard and correctly used."
+  ],
+  "def-directed-polyomino": [
+   "definition",
+   "SI.II.B, Definition 1: a directed polyomino as a finite subset of Z x Z rooted at (x0,y0), with the right/up closure condition. The value matches."
+  ],
+  "peps-trained-zone-assumption": [
+   "scope",
+   "SI.II.D (the step before the Eq. S34-like decomposition, Fig. S3): 'we consider the case that a subspace comprising k sites on lattice can be fully trained'. A stated simplifying assumption of the proof."
+  ],
+  "limitation-noise-finite-measurements-untested": [
+   "stated limit",
+   "Discussion, p.4: the authors name noise, finite measurement times and experimental validation on real quantum hardware as future work, so the analysis does not cover them."
+  ],
+  "scope-linearly-independent-training-set": [
+   "scope",
+   "p.2 ('for simplicity, we suppose that the states in the training set are linearly independent') and SI.I: 'we suppose that all of the MPOs or MPSs appeared in this work are unitary embedded'. Stated assumptions that limit the theorems."
+  ],
+  "data-acquisition-scale": [
+   "setup",
+   "Section 1, p.4: all data taken on Aquila on June 9, 2023, 96,250 measurements over 1,884 tasks. The paper's own data description."
+  ],
+  "rb87-room-temperature-device": [
+   "setup",
+   "Section 1.2, p.5: the paper's description of its hardware (Rb-87 atoms cooled by lasers in a vacuum cell). Vendor white paper, stated as the device setup, not a performance claim."
+  ],
+  "four-key-ingredients": [
+   "setup",
+   "Section 1.2, p.5-6: the four ingredients the authors say Aquila relies on. Architecture description by the vendor."
+  ],
+  "two-qubit-types-analog-only": [
+   "scope",
+   "Section 1.2, p.7: Aquila currently uses only the ground-Rydberg qubit in analog mode. The lifetime and interaction remarks about the two qubit types are general descriptions in the same sentence; the scope fact is what the paper settles."
+  ],
+  "readout-by-atom-presence": [
+   "setup",
+   "Section 1.2, p.7: Rydberg readout by re-trapping and fluorescence; absence means Rydberg, presence means ground. The paper's own readout description."
+  ],
+  "destructive-measurement-slow-shots": [
+   "stated limit",
+   "Section 1.2, p.7 and the full-cycle text, p.13: measurements are destructive, the array is rebuilt every shot, and the shot rate is under 10 Hz today."
+  ],
+  "site-geometry-limits": [
+   "stated limit",
+   "Section 1.2, p.9: 4 micrometer minimum site spacing and the 75 x 76 micrometer area, with premium access relaxing them. Hardware limits stated by the vendor (units garbled in the text layer but the quotes show them)."
+  ],
+  "row-constraint": [
+   "stated limit",
+   "Section 1.2, p.9: sites must lie in rows at least 4 micrometers apart; a design decision to speed sorting, not fundamental, relaxable in premium mode."
+  ],
+  "two-photon-rydberg-drive": [
+   "setup",
+   "Section 1.2, p.11: the ground-Rydberg drive is a two-photon transition at 420 and 1013 nm via an off-resonant intermediate state."
+  ],
+  "detuning-definition-and-phase": [
+   "definition",
+   "Section 1.2 derivation box, p.10: detuning is defined as the off-resonance of the laser from the transition; the phase can be set to zero at the start by U(1) symmetry."
+  ],
+  "rotating-wave-approximation-used": [
+   "setup",
+   "Section 1.2 derivation box, p.10: the paper's rotating-frame derivation neglects the fast term by the rotating wave approximation. The value states only what the paper does; it is a textbook step, not a theorem, and the paper notes it is done for a time-independent two-state case."
+  ],
+  "analog-mode-definition": [
+   "definition",
+   "Section 1.2, p.11: analog mode is defined as specifying time series of Rabi rate, detuning, phase and atom positions, with interactions always on."
+  ],
+  "analog-mode-not-universal": [
+   "stated limit",
+   "Section 1.2, p.11: the authors state analog-mode computation is not necessarily universal and is specialized for some tasks."
+  ],
+  "rydberg-hamiltonian-control-parameters": [
+   "definition",
+   "Section 1.3, p.14: the Rydberg Hamiltonian and its four control parameters are defined by the paper."
+  ],
+  "measurements-in-z-basis-only": [
+   "stated limit",
+   "Section 1.3, p.14: measurements are restricted to the logical Z basis only."
+  ],
+  "van-der-waals-sixth-power": [
+   "definition",
+   "Section 1.3 Hamiltonian and Sections 1.2 and 3, p.12 and p.23: the interaction term is defined as C6/|r|^6 between Rydberg-state atoms. A defined model term of the paper, not a measured result."
+  ],
+  "interaction-strength-examples": [
+   "definition",
+   "Section 1.2, p.12 and Section 3, p.23: worked values of the defined law. Checked: C6 = 5,420,503 gives about 20.7 at 8 um, 1,323 at 4 um and 0.32 at 16 um, matching the stated 20, 1,320 and 0.32. Units are partly lost in the text layer."
+  ],
+  "rydberg-blockade-definition": [
+   "definition",
+   "Section 1.2, p.12, the sentence 'This is the origin of the so-called Rydberg Blockade: within a certain radius, called the blockade radius, the low-energy subspace ... excludes the doubly excited Rydberg state'. Defines the blockade and the blockade radius for the paper."
+  ],
+  "static-and-dynamic-blockade-radius": [
+   "definition",
+   "Section 3, p.23: static and dynamic blockade radii are defined with their conditions (positive detuning and zero Rabi drive; zero detuning and nonzero Rabi drive) and the paper notes either may be meant."
+  ],
+  "rabi-enhancement-setup-n7": [
+   "setup",
+   "Section 3.2, p.24-25 and Figure 3.2 caption: distances, Rabi frequencies (15 for N up to 4, 5.0 for N=7) and the stated loss of scale separation for larger N. The paper's own setup."
+  ],
+  "error-source-laser-noise": [
+   "stated limit",
+   "Section 1.4, p.15: the authors state laser phase and amplitude noise as an error source of their device."
+  ],
+  "error-source-atom-motion": [
+   "stated limit",
+   "Section 1.4, p.15: the authors state thermal motion as an error source (Doppler detuning variance, position-dependent interaction)."
+  ],
+  "error-source-decoherence-scattering": [
+   "stated limit",
+   "Section 1.4, p.15: incoherent decay via the intermediate and Rydberg states is stated as a major error source, with loss possible with the drive off."
+  ],
+  "error-source-inhomogeneity-measurement": [
+   "stated limit",
+   "Section 1.4, p.15: imperfect holography gives array inhomogeneity, and state measurement (loss or imperfect anti-trapping) is a leading error source."
+  ],
+  "datasheet-conservative-limits": [
+   "scope",
+   "Section 1.5, p.16: the restrictions were set within Aquila's limits and can be relaxed; certain experiments in the paper go beyond them (10 us, 115 um). Units garbled in the text layer."
+  ],
+  "datasheet-metric-definitions": [
+   "definition",
+   "Section 1.5 datasheet, p.17: definitions of the Ramsey and spin-echo dephasing times and of the false-negative and false-positive detection errors, as stated in the datasheet table."
+  ],
+  "braket-evolution-time-restriction": [
+   "stated limit",
+   "Figure 2.2 caption, p.19: the maximum time exceeds the 4 us Braket restriction and is available in premium access mode."
+  ],
+  "short-times-restriction-wording": [
+   "stated limit",
+   "Section 2.1, p.19: short times under 100 ns are limited by finite laser rise and fall time, which restricts valid programs."
+  ],
+  "lp-analogue-not-a-gate": [
+   "stated limit",
+   "Section 3.3, p.26: the return probabilities are not gate fidelities, and no gate is executed because Aquila lacks the hyperfine states."
+  ],
+  "z2-chain-exceeds-braket-range": [
+   "stated limit",
+   "Figure 4.2 caption, p.31: the maximum time and Y extent (115.9 um greater than 76 um) may exceed the Braket range and need premium access."
+  ],
+  "2d-phases-setup": [
+   "setup",
+   "Section 4.3, p.31-32: 11 x 11 grid, adiabatic ramp from negative detuning, lattice spacings 5.9 and 7.0 um, as the paper states."
+  ],
+  "scar-exceeds-braket-time": [
+   "stated limit",
+   "Figure 5.2 caption, p.34: the maximum time exceeds the 4 us Braket restriction and is available in premium access mode."
+  ],
+  "mis-instance-setup": [
+   "setup",
+   "Section 6, p.35-36 and Figure 6.1: King's graph with 30% dropout, 16 x 16 with 183 vertices and MIS 60, spacing 5 um, final detuning optimized by a 1D grid search on one instance."
+  ],
+  "mis-post-processing-and-definition": [
+   "definition",
+   "Section 6, p.36: mIS defined as a non-extendable independent set that may not be maximum, plus the two-step greedy post-processing, as the paper describes."
+  ],
+  "framework-definition": [
+   "definition",
+   "Abstract, p.1 and Section 1: the framework the paper introduces (system-only layers combined with trainable ancilla-assisted dissipative modules)."
+  ],
+  "dissipative-block-stinespring-channel": [
+   "definition",
+   "Section 3.2, Eq. (8), p.4: the dissipative block is defined as a parameterized Stinespring dilation with ancillas in zero, a joint unitary and trace-out, so it is a CPTP map on the system."
+  ],
+  "dissipative-block-implementation-iswap": [
+   "setup",
+   "Section 3.2, p.4 and Appendix A.1, p.13-14: single-qubit rotations plus fully connected system-ancilla iSWAP, nm iSWAPs per round. The paper's own circuit."
+  ],
+  "dissipative-vqe-protocol": [
+   "definition",
+   "Section 3.3, Eqs. (9)-(11), p.4-5: the recursive protocol, ancilla reset each round, and the final-energy loss are defined by the paper."
+  ],
+  "dissipative-recovery-protocol": [
+   "definition",
+   "Section 3.4, Eqs. (12)-(17), p.5: same block without system-only layers, fidelity metric F_T = Tr(rho_T rho_tar) for a pure target, loss 1 - F_T."
+  ],
+  "benchmark-hamiltonian-and-reference": [
+   "setup",
+   "Section 4.1, Eq. (18), p.6: the nearest-neighbor spin Hamiltonian with XX/YY/ZZ couplings and local fields, with exact diagonalization references."
+  ],
+  "recovery-target-states": [
+   "setup",
+   "Section 4.1, Eqs. (19)-(21), p.6: W state, uniform superposition and dressed cluster state with D=3 and angles pi/4."
+  ],
+  "recovery-default-simulation-settings": [
+   "setup",
+   "Figure 5 caption, p.8: defaults n=3, m=3, lr=0.8, T=3, p=0.1 unless stated otherwise."
+  ],
+  "appendix-original-vqa-definition": [
+   "definition",
+   "Appendix B.1, Definition 1, Eqs. (25)-(26), p.15: original VQA defined as a product of parameterized gates with cost Tr[O rho]."
+  ],
+  "appendix-dissipative-vqa-definition": [
+   "definition",
+   "Appendix B.1, Definition 2, Eqs. (27)-(30), p.15: reset-assisted non-unital channel with reset probability q, mainly q=1."
+  ],
+  "appendix-gd-and-gap-definitions": [
+   "definition",
+   "Appendix B.2, Eqs. (31)-(32), p.15-16: gradient descent update, one-step decrease and optimality gap are defined."
+  ],
+  "assumption1-smoothness": [
+   "scope",
+   "Appendix B.2, Assumption 1, p.16: stated assumption of the analysis (beta-smoothness, step size at most 1/beta, beta poly(n)). It limits Theorems 1 and 2; the paper does not show it holds for the dissipative cost beyond the remark about local Hamiltonians."
+  ],
+  "assumption2-two-design": [
+   "scope",
+   "Appendix B.2, Assumption 2, p.16: stated assumption of 2-design initialization with zero mean gradient. Stated as an assumption, not shown."
+  ],
+  "assumption3-pl-dissipative": [
+   "scope",
+   "Appendix B.2, Assumption 3, Eq. (34), p.16: a Polyak-Lojasiewicz condition assumed for the dissipative cost. The paper assumes it and never verifies it; the value says 'posits'."
+  ],
+  "assumption4-trajectory-flatness": [
+   "scope",
+   "Appendix B.2, Assumption 4, Eq. (35), p.16: a trajectory-uniform flatness assumption for the original VQA, assumed and not verified."
+  ],
+  "lemma1-descent-lower-bound": [
+   "proved result",
+   "Appendix B.3, Lemma 1, p.16: statement with conditions (beta-smooth, 0<eta<=1/beta) and a complete proof via the quadratic upper bound (S37) and eta(1 - beta eta/2) >= eta/2. The conclusion inequality (S36) appears in the text layer. Checked, correct."
+  ],
+  "lemma2-descent-upper-bound": [
+   "proved result",
+   "Appendix B.3, Lemma 2, p.16-17: statement with conditions (Hessian norm <= beta on the segment, 0<eta<=1/beta) and a complete Taylor-based proof giving the 3 eta/2 bound (S39)-(S40). Checked, correct."
+  ],
+  "lemma3-pl-contraction": [
+   "proved result",
+   "Appendix B.3, Lemma 3, p.17: statement with conditions (beta-smooth, PL, 0<eta<=1/beta) and a proof from Lemma 1 and the PL inequality giving (1 - eta mu) <= e^{-eta mu}. Checked, correct."
+  ],
+  "lemma4-flat-vqa-step-lower-bound": [
+   "proved result",
+   "Appendix B.3, Lemma 4, p.17: statement with its conditions (Assumptions 1 and 4, expected gap above delta0 and then below eps) and a proof that sums Lemma 2's per-step bound over T steps. The result is conditional on Assumption 4, which the paper assumes, and the value says so."
+  ],
+  "theorem1-dissipative-polynomial-convergence": [
+   "proved result",
+   "Appendix B.3, Theorem 1, p.17-18: stated under Assumptions 1 and 3 and proved by applying Lemma 3 with eta = 1/beta and solving for T. The result holds only under the assumed PL condition, which the value states."
+  ],
+  "theorem2-conditional-exponential-separation": [
+   "proved result",
+   "Appendix B.3, Theorem 2, p.18: stated with its conditions (Theorem 1 assumptions, eta m <= poly(n), Assumption 4, E[Delta0] >= delta0) and proved by combining Theorem 1 and Lemma 4. The paper calls the advantage conditional, as the value does; the PL and flatness hypotheses are unverified assumptions."
+  ],
+  "theory-limit-no-unconditional-convergence": [
+   "stated limit",
+   "Appendix B.3, closing remark, p.18: the authors state that global convergence is not proven from the cited barren-plateau paper alone and holds only under a global PL condition and trajectory-uniform flatness."
+  ],
+  "open-problem-scaling-and-resources": [
+   "stated limit",
+   "Section 5, p.10: the authors state that scaling with system size, resource dependence on task and error model, and use in other variational algorithms are still to be understood."
+  ]
+ },
+ "theory_low": {
+  "theorem1-mps-nfl-conditions": "Theorem 1 (p.3) has only a sketch in the main text; the full proof is SI.B. The SI proof replaces the risk by a norm-concentration approximation, treats the U(k) as an approximate unitary 2-design, assumes the learned unitary has the block form with Y acting on an (n-k)-qudit subsystem 'for simplicity', and uses inequalities and approximation signs. Those assumptions are not in the theorem statement or the quotes. Also the closed-form Eq. (2) is garbled in the text layer. Not a clean proved result as quoted.",
+  "mps-nfl-risk-monotone-and-limits": "Monotonic decrease is a numerical observation (Fig. 2 and S4, n=4 and 5 only). The endpoint claims come from SI.B Eqs. (S31)-(S32), (S47)-(S48), which use approximation signs ('approximates to 1' and 'approximates to 0'), not exact bounds. A measured result plus an approximate derivation.",
+  "mps-nfl-average-depends-on-size-only": "An authors' reading of Eq. (2). The bound also depends on D and d (A and B), as the paper itself says on p.4. 'Solely' means only the training-set size among the data-dependent quantities. Interpretation, not a result.",
+  "mpo-from-states-nfl-bound": "SI.A: the orthonormal case (S9)-(S14) is derived with a lower-bound sign and rests on norm concentration and an approximate 2-design. Cases (b) and (c) are covered by 'Similar calculations also apply', with no separate derivation, and (S15)-(S16) switch to equality without a stated reason. The value's equality claims are not proved in the paper.",
+  "mps-empty-training-set-risk": "SI.B, (S31)-(S32), (S47)-(S48): the paper writes 'approximates to 1' for the empty set and 'approximates to 0' for the full set, using approximation signs (and tk=n gives dn only approximately). Approximate results, not exact proved statements.",
+  "theorem2-peps-nfl-conditions": "Theorem 2 (p.3, SI.II): the bound contains an unspecified constant c and relies on Corollary 1, which is Theorem 1 of Ref. [68] and is only cited. The SI also says the higher-order terms are dropped in the thermodynamic limit (S94), and it uses the same norm-concentration and training-subspace simplifications as Theorem 1. Not proved in full here; and the formula is garbled in the text layer.",
+  "theorem2-peps-bound-depends-on-size": "p.3: the authors' reading of Theorem 2, which itself rests on the cited Corollary 1 of [68], an unspecified constant c, and a thermodynamic-limit approximation. Interpretation of a bound that is not fully proved here.",
+  "peps-2moment-is-2d-ising-partition-function": "Introduction p.2 and proof sketch p.3: a method statement. The polyomino method and the bound on the partition function are taken from Ref. [68] (Theorem 3 and Corollary 1 in the SI are cited, 'details of proof ... in Ref. [68]').",
+  "peps-norm-concentration": "SI.II.A, Eq. (S52): the concentration bound rests on Corollary 1 (Theorem 1 of Ref. [68]) for the 2-moment bound 1 + c(0.7)^L, which is cited, not proved here; it also assumes 1-design and 2-design behavior of each local unitary. The variance expression uses an unspecified constant c.",
+  "peps-proof-decomposition-z1-z5": "SI.II.D: an intermediate step of the Theorem 2 proof (splitting Z into five terms, three bounded by the cited Corollary 1). A step in an argument that depends on a cited result, not a result in itself; equations garbled in the text layer.",
+  "peps-nfl-thermodynamic-limit-and-edge-cases": "SI.II.E, (S94)-(S96): the bound is obtained by ignoring higher-order terms in the L-to-infinity limit. The k=0 and k=L^2 cases are outside the range k in [1, L^2-1] that Theorem 2 states. Approximate, derived from a bound that rests on a cited result.",
+  "nfl-tn-vs-classical-comparison": "p.3-4: the classical formula is cited from the literature [73-75] and the comparison is the authors' interpretation of their bound.",
+  "conclusion-intrinsic-limitations": "Summary, p.4: the authors' interpretation of their bounds (which are not fully proved, see Theorems 1 and 2). A conclusion, not a settled result.",
+  "blockade-insensitive-to-exact-interaction": "Section 1.2, p.12: the authors' physical explanation (large doubly excited energy so it can be adiabatically eliminated). It is a model approximation argued in words, not defined or derived in the paper.",
+  "rabi-enhancement-sqrt-n-derivation": "Section 3.2, p.24: a one-line matrix-element argument in the strict blockade limit, not a stated and proved theorem. The paper's own N=7 data show non-blockaded dynamics, and the value states an idealized result as general. An idealized physics argument with its measured check, not a proved result.",
+  "ordered-states-blockade-picture": "Section 4, p.29: an intuitive picture stated without derivation or proof.",
+  "z2-readout-probability-estimate": "Section 4.1, p.30: a back-of-envelope estimate (0.92^6 about 60%) from an 8% measurement error that is itself a fitted or inferred value. An estimate, not a settled result.",
+  "mis-mapping-blockade-radius": "Section 6, p.36: a method statement; the encoding argument is attributed to [Ebadi2022] ('For more details, see [Ebadi2022]'), a cited result."
+ },
+ "keep_stored": {},
+ "requote": {},
+ "readers": {
+  "wu-2024-no-free-lunch-theories-tensor": "Claude (F114 cloud session; the model is not in the result's commits, the launcher's default was Sonnet)"
+ }
+}
