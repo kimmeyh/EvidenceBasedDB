@@ -832,7 +832,43 @@ and in git. Remaining items below.
   - `same_source` treats "." as a token end, so a record id ending in a
     digit matches inside a longer id that continues with a dot (no
     record id holds a dot today).
+- One from the review of 4d969d9, over-strict rather than leaky: the
+  applier's refusal guard (`refused_without_reversal`) matches a refusal
+  anywhere in a record's history and ignores a later reversal. 9 QCI
+  Dirac papers carry Sprint 9's refusal that Sprint 10 reversed ("no
+  longer applies"); a new read of any of them is refused unless
+  `reenter` names it. It fails closed.
 - Acceptance: each with a test proven red, then green.
+- Depends on: none
+
+**F128. Reading targets for the gaps F118 found (~30m to card, reads per F57) Priority 40** (NEW 2026-10-30, the F118 memo, Sprint 14 Task G)
+- Phase: Sourcing / intake, then reading
+- Value: the store cannot answer these questions from
+  `docs/spikes/F118_WHAT_THE_STORE_SAYS.md`; each source below fills
+  one, so the next memo can.
+- Platform: `D:\Data\Harold\EvidenceBasedDB\Papers\`; F57's reading
+  path.
+- Targets:
+  - Qubit counts per use case: the primary resource-estimate papers
+    (Gidney and Ekera for RSA-2048; a chemistry estimate; a Monte Carlo
+    pricing estimate), to settle the conflicting RSA-2048 figures.
+  - Penalty weights for a cardinality constraint, and a tuned
+    feature-selection comparison: Ferrari Dacrema et al., cited in
+    dacrema-comparison-cited but not read.
+  - Quantum data-loading cost against rows: the Faryad paper in full.
+  - Drift and delayed labels in card fraud (concept drift): no source
+    in the store.
+  - Gate theory and native gate sets: a standard text (Nielsen and
+    Chuang) and current vendor native-gate documentation.
+  - Tensor-network classifiers on tabular data: Stoudenmire and Schwab.
+  - Tuned classical anomaly-detection numbers (isolation forest, LOF,
+    one-class SVM) on fraud.
+  - Split candidates F117 found, where one stored assertion holds two
+    claims of different grade: arute-fidelity-not-directly-computable,
+    two-way-partitioning-dual-sdp-lower-bound, qaoa-qa-conditions.
+- Acceptance: each target is in `Papers\` or on the hand-download list
+  with its reason, and each read source's assertions are entered by
+  F57's path.
 - Depends on: none
 
 ### Released for Sprint 14 (2026-10-30)

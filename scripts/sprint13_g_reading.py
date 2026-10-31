@@ -409,6 +409,13 @@ def refused_without_reversal(conn, p: dict) -> bool:
     return any(not conn.execute("SELECT 1 FROM records WHERE id = ?", (i,)).fetchone() for i in new)
 
 
+def refusal_reason(p: dict) -> str:
+    """Why a paper with nothing entered was not entered. A sign-off drop wins over the reader's `why_not`, which may
+    say where its assertions were to be entered (review of 4d969d9: 6 notes said "entered under qc")."""
+    dropped = [DROP[a["id_suggestion"]] for a in p.get("assertions", []) if a["id_suggestion"] in DROP]
+    return "; ".join(dict.fromkeys(dropped)) if dropped else p.get("why_not") or ""
+
+
 def apply_changes(conn) -> list[str]:
     checked = verify()
     log = []
@@ -438,8 +445,7 @@ def apply_changes(conn) -> list[str]:
         entered = kept or [e for e in p.get("existing", []) if e["id"] not in NOT_IN_PAPER]
         log += write_reads(conn, rid, day, detail, read_extent(p), reader(g, rid))
         if not entered:
-            why = p.get("why_not") or "; ".join(dict.fromkeys(DROP.get(a["id_suggestion"], "")
-                                                               for a in p.get("assertions", [])))
+            why = refusal_reason(p)
             note = f"{day} ({tag(g, rid)}): read whole at first pass and NOT entered: {why}"
             stored = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (rid,)).fetchone()[0] or ""
             if note not in stored:

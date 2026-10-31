@@ -454,6 +454,21 @@ this project keeps having to replace with a step.
   themes' assertions by keyword into packets for the theme readers, in
   the non-repository work folder. Its two tests were proven red by
   injection
+- **fix**: the fresh-eyes review of 4d969d9 (Sprint 14 Tasks E and F,
+  2026-10-30). 6 of the 18 refusal notes carried the reader's
+  `why_not`, 3 saying the assertions were entered, and none naming the
+  team lead's decision. `refusal_reason` now prefers the sign-off drop;
+  a re-apply with a backup appended the corrected note to the 6 records
+  and wrote nothing else (INTAKE 58, third correction). Its test was
+  proven red by injection. The review's low finding (the refusal guard
+  ignores a later reversal, failing closed on 9 QCI Dirac papers) is
+  added to F127
+- **docs**: the F118 memo, `docs/spikes/F118_WHAT_THE_STORE_SAYS.md`
+  (Sprint 14 Task G, F118, #147, 2026-10-30; counts a snapshot as of
+  that date): what the store holds per theme, an implication per Phase 2
+  and team-lead question, 8 ranked experiments, the Phase 2 prompt
+  drafted, every cited id found in the store and 10 read against their
+  value. The gaps are carded as F128
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

@@ -2821,3 +2821,13 @@ counts that enter are added when it runs.
     records refused with their reason. A second apply wrote nothing.
   - The applier now refuses a new assertion on a paper an earlier read
     refused unless the review names the reversal (`reenter`).
+- **Third correction, 2026-10-30, later the same evening.** The
+  fresh-eyes review of 4d969d9 found that 6 of the 18 refusal notes
+  (darji-2024, du-2024, faro-2024, grazioli-2025, lawrie-2023,
+  li-gomez-2023) carried the reader's own reason, which for 3 of them
+  said the assertions were entered under a context, and never named the
+  team lead's pending decision. The applier now prefers the sign-off
+  drop reason; a re-apply (backup
+  `evidence-20261030T210228761119-...db`) appended the corrected note to
+  those 6 records and wrote nothing else. The earlier notes stay, as
+  history; the latest note on each record is the one that holds.

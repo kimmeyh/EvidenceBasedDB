@@ -281,6 +281,18 @@ def test_a_paper_refused_earlier_gets_no_new_assertion_unless_the_reversal_is_na
     assert not g.refused_without_reversal(conn, paper)
 
 
+def test_a_refusal_note_names_the_sign_off_drop_over_the_readers_why_not(monkeypatch):
+    """Review of 4d969d9: where the reader wrote a `why_not`, it won over the sign-off drop, so 6 notes on dropped
+    papers said where the assertions were entered and never named the team lead's decision. Proven to fail by
+    injection, 2026-10-30: with `why_not` preferred again, the reader's text came back."""
+    g = _script()
+    monkeypatch.setattr(g, "DROP", {"x": "waits for the team lead", "y": "waits for the team lead"})
+    paper = {"why_not": "entered under qc as the nearest label",
+             "assertions": [{"id_suggestion": "x"}, {"id_suggestion": "y"}]}
+    assert g.refusal_reason(paper) == "waits for the team lead"
+    assert g.refusal_reason({"why_not": "off topic", "assertions": []}) == "off topic"
+
+
 def test_a_high_the_applier_would_not_write_and_an_empty_value_are_refused(monkeypatch):
     """Review of de1efff: a signed HIGH on a vendor's own claim was written LOW without a word, and a requoted
     confirmed entry with no value of its own would have blanked the stored value. Proven to fail by injection,
