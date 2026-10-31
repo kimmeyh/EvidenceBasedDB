@@ -59,6 +59,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -109,6 +110,8 @@ THEORY_LOW: dict[str, str] = {}  # a theoretical result kept LOW, with its cause
 MEASURED_DESPITE: dict[str, str] = {}  # a measured result whose words name a proof or a bound, with why
 RESULT_TYPE_FIX: dict[str, str] = {}  # the coordinator's result type where it differs from the reader's
 EXTENT_FIX: dict[str, list[str]] = {}  # record id -> [extent, detail]: the coordinator's reading of a read's extent
+REENTER: dict[str, str] = {}  # record id -> why: a paper refused at an earlier read whose assertions now enter
+REFUSED = re.compile(r"read (whole )?at first pass and NOT entered")
 ID_FIX: dict[str, str] = {}  # a new assertion's id where the reader's suggestion is already another source's
 
 # F114's groups (g043 on, Sprint 14 Task E, F117) were read in cloud sessions and entered in Sprint 14, so their
@@ -126,7 +129,7 @@ _TABLES = {"quote_edits": QUOTE_EDITS, "extra_quotes": EXTRA_QUOTES, "value_repl
            "context_fix": CONTEXT_FIX, "anchor_fix": ANCHOR_FIX, "drop": DROP, "keep_stored": KEEP_STORED,
            "requote": REQUOTE, "not_in_paper": NOT_IN_PAPER, "theory_low": THEORY_LOW,
            "measured_despite": MEASURED_DESPITE, "result_type_fix": RESULT_TYPE_FIX, "extent_fix": EXTENT_FIX,
-           "id_fix": ID_FIX}
+           "id_fix": ID_FIX, "reenter": REENTER}
 RESULT_TYPES = {"measured": "measured result", "claim": "authors' claim", "cited": "cited claim",
                 "field": "field statement", "setup": "authors' claim"}
 
@@ -392,6 +395,20 @@ def write_reads(conn, rid: str, day: str, detail: str, extent: str, first: str =
     return log
 
 
+def refused_without_reversal(conn, p: dict) -> bool:
+    """A paper an earlier read refused would get a new assertion, and its review names no reversal in REENTER
+    (review of b185729: 10 refused papers entered because a later reader chose a context)."""
+    rid = p["record_id"]
+    if rid in REENTER:
+        return False
+    row = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (rid,)).fetchone()
+    if not (row and REFUSED.search(row[0] or "")):
+        return False
+    new = [ID_FIX.get(a["id_suggestion"], a["id_suggestion"]) for a in p.get("assertions", [])
+           if a["id_suggestion"] not in DROP]
+    return any(not conn.execute("SELECT 1 FROM records WHERE id = ?", (i,)).fetchone() for i in new)
+
+
 def apply_changes(conn) -> list[str]:
     checked = verify()
     log = []
@@ -400,6 +417,8 @@ def apply_changes(conn) -> list[str]:
         rid, detail, day = p["record_id"], read_detail(g, p), REVIEWED_ON[g]
         access, evidence, tier = conn.execute("SELECT access, evidence, tier FROM paper_fields WHERE record_id = ?",
                                               (rid,)).fetchone()
+        if refused_without_reversal(conn, p):
+            raise ValueError(f"{rid}: refused at an earlier read; drop its assertions or name the reversal in reenter")
         path = p["file"].replace("/", "\\")
         if path.lower() not in {s.lower() for s in recheck.local_paths(access or "")}:
             note = f"Local copy {f80._sha(Path(path))}, recorded {day} ({tag(g, rid)})"
@@ -419,7 +438,8 @@ def apply_changes(conn) -> list[str]:
         entered = kept or [e for e in p.get("existing", []) if e["id"] not in NOT_IN_PAPER]
         log += write_reads(conn, rid, day, detail, read_extent(p), reader(g, rid))
         if not entered:
-            why = p.get("why_not") or "; ".join(DROP.get(a["id_suggestion"], "") for a in p.get("assertions", []))
+            why = p.get("why_not") or "; ".join(dict.fromkeys(DROP.get(a["id_suggestion"], "")
+                                                               for a in p.get("assertions", [])))
             note = f"{day} ({tag(g, rid)}): read whole at first pass and NOT entered: {why}"
             stored = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (rid,)).fetchone()[0] or ""
             if note not in stored:

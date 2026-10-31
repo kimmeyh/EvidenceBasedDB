@@ -222,7 +222,7 @@ def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> 
 # re-finalize writes them again instead of losing them. theory_low is here for a requoted theoretical stored LOW,
 # which is no item (review of aabdd49).
 SIGNOFF_TABLES = {"value_replace", "extra_quotes", "quote_edits", "anchor_fix", "context_fix", "requote", "drop",
-                  "result_type_fix", "theory_low"}
+                  "result_type_fix", "theory_low", "reenter"}  # reenter: record id -> why (review of b185729)
 EDIT_TABLES = ("value_replace", "extra_quotes", "quote_edits", "anchor_fix", "context_fix", "result_type_fix")
 
 
@@ -270,8 +270,9 @@ def _merge_signoff(g: str, review: dict, ps: list[dict]) -> None:
         raise ValueError(f"{g}: sign-off tables the applier does not read: {unknown}")
     ids = {a["id_suggestion"] for p in ps for a in p.get("assertions", [])} | {
         x["id"] for p in ps for x in p.get("existing", [])}
+    records = {p["record_id"] for p in ps}
     for table, entries in edits.items():
-        stray = sorted(set(entries) - ids)
+        stray = sorted(set(entries) - (records if table == "reenter" else ids))
         if stray:
             raise ValueError(f"{g}: sign-off {table} names ids not in the group: {stray}")
         clash = sorted(set(entries) & set(review.get(table, {})))

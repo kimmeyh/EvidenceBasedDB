@@ -189,6 +189,20 @@ def test_the_coordinators_sign_off_is_merged_on_every_finalize(review):
         review.finalize("g050", "2026-10-30", review.STORED)
 
 
+def test_a_reentry_names_a_paper_of_the_group(review):
+    """Review of b185729: a paper refused at an earlier read enters only where the review names it in `reenter`,
+    keyed by record id. Proven to fail by injection, 2026-10-30: with the reenter table checked against assertion
+    ids, the record id was refused."""
+    _decide(review, GOOD)
+    so = review.REVIEW / "signoff"
+    so.mkdir()
+    (so / "g050.json").write_text(json.dumps({"reenter": {"p1": "the team lead's decision"}}), encoding="utf-8")
+    assert review.finalize("g050", "2026-10-30", review.STORED)["reenter"] == {"p1": "the team lead's decision"}
+    (so / "g050.json").write_text(json.dumps({"reenter": {"thm": "x"}}), encoding="utf-8")
+    with pytest.raises(ValueError, match="not in the group"):
+        review.finalize("g050", "2026-10-30", review.STORED)
+
+
 def _retype(review, aid: str, **fields) -> None:
     path = review.READS_DIR / "group_g050.json"
     group = json.loads(path.read_text(encoding="utf-8"))

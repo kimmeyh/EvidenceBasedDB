@@ -437,6 +437,18 @@ this project keeps having to replace with a step.
     a `read` paper, and QBoost is pinned at `read`;
   - the F11 packet is re-rendered (QBoost's tier), and the learning_log
     names an allowed protocol
+- **fix**: the fresh-eyes review of b185729 (Sprint 14 Tasks E and F,
+  2026-10-30; counts a snapshot as of that date). 10 papers an earlier
+  read refused as bearing on no context were entered (467 assertions)
+  because F114's reader chose a context. The store was restored from
+  the pre-apply backup and the apply run again with the 18 such papers'
+  763 assertions dropped by sign-off until the team lead decides, and
+  the 6 held groups applied less those papers: 53 groups, 7,897 new
+  assertions, a second apply writing nothing. The applier refuses a new
+  assertion on a refused paper unless the review names the reversal
+  (`reenter`, a new sign-off table); a refusal note names each reason
+  once. F89's refused-record test is strict again. Each guard proven red
+  by injection
 - **feat**: `scripts/f118_themes.py` (Sprint 14 Task G, F118, #147,
   2026-10-30). Read only: computes the store's inventory and selects 16
   themes' assertions by keyword into packets for the theme readers, in

@@ -257,6 +257,30 @@ def test_an_apply_that_rewrites_a_read_row_is_rolled_back_unless_named(synthetic
         conn.close()
 
 
+def test_a_paper_refused_earlier_gets_no_new_assertion_unless_the_reversal_is_named(monkeypatch):
+    """Review of b185729: 10 papers an earlier read refused as bearing on no context were entered because F114's
+    reader chose a context, and no review said so. Proven to fail by injection, 2026-10-30: with the refusal check
+    removed, the refused paper passed; with REENTER not consulted, the named reversal was still refused; with the
+    stored-id check removed, a re-apply of entered assertions was refused."""
+    g = _script()
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE records (id TEXT, updated_reason TEXT)")
+    conn.executemany("INSERT INTO records VALUES (?, ?)", [
+        ("old", "2026-10-23 (Sprint 12 Task G, F105): read at first pass and NOT entered: no context"),
+        ("fresh", "2026-10-20: added"), ("entered", "")])
+    paper = {"record_id": "old", "assertions": [{"id_suggestion": "x"}]}
+    monkeypatch.setattr(g, "DROP", {})
+    monkeypatch.setattr(g, "REENTER", {})
+    assert g.refused_without_reversal(conn, paper)
+    assert not g.refused_without_reversal(conn, {"record_id": "fresh", "assertions": [{"id_suggestion": "x"}]})
+    assert not g.refused_without_reversal(conn, {"record_id": "old", "assertions": [{"id_suggestion": "entered"}]})
+    monkeypatch.setattr(g, "DROP", {"x": "waits for the team lead"})
+    assert not g.refused_without_reversal(conn, paper)
+    monkeypatch.setattr(g, "DROP", {})
+    monkeypatch.setattr(g, "REENTER", {"old": "the team lead's decision"})
+    assert not g.refused_without_reversal(conn, paper)
+
+
 def test_a_high_the_applier_would_not_write_and_an_empty_value_are_refused(monkeypatch):
     """Review of de1efff: a signed HIGH on a vendor's own claim was written LOW without a word, and a requoted
     confirmed entry with no value of its own would have blanked the stored value. Proven to fail by injection,

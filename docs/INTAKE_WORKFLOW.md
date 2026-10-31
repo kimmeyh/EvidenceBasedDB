@@ -2803,3 +2803,21 @@ counts that enter are added when it runs.
     HIGH, 5,442 LOW), 117 stored assertions updated, 106 applicability
     rows, 119 records raised to tier `read`, 9 records refused with
     their reason. A second apply wrote nothing.
+- **Second correction, 2026-10-30, the same evening (counts a snapshot as
+  of that date).** The fresh-eyes review of that apply found 10 papers an
+  earlier read had refused as bearing on no context (F89, F96, F105,
+  F112) entered with 467 assertions, because F114's reader chose a
+  context; no review said so, and the 6 held groups had been held for
+  the same question. The store was restored from the pre-apply backup
+  (`evidence-20261030T194240209474-...db`; the state it replaced is kept
+  in `evidence-20261030T203545673004-...db`) and the apply run again:
+  - 18 papers are now recorded as read and NOT entered, their 763
+    assertions waiting for the team lead's decision at Manual
+    Validation: the 16 an earlier read refused, and darji-2024 and
+    du-2024, whose readers gave no context.
+  - The 6 held groups are applied, less those papers. 53 groups in all:
+    7,897 new assertions (2,315 HIGH, 5,582 LOW), 117 stored assertions
+    updated, 111 applicability rows, 129 records raised to `read`, 29
+    records refused with their reason. A second apply wrote nothing.
+  - The applier now refuses a new assertion on a paper an earlier read
+    refused unless the review names the reversal (`reenter`).

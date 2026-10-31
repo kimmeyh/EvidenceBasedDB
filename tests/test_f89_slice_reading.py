@@ -129,8 +129,7 @@ def test_refused_and_no_copy_records_stay_seen_with_the_reason(live_conn):
     for rid in list(f89.REFUSE) + list(f89.NO_COPY):
         tier, = live_conn.execute("SELECT tier FROM paper_fields WHERE record_id = ?", (rid,)).fetchone()
         reason, = live_conn.execute("SELECT updated_reason FROM records WHERE id = ?", (rid,)).fetchone()
-        full = live_conn.execute("SELECT 1 FROM paper_reads WHERE record_id = ? AND extent = 'full'", (rid,)).fetchone()
-        assert tier == "seen" or (full and tier == "read"), rid  # a later full read (F114) raises it
+        assert tier == "seen", rid
         assert "Sprint 10 Task I, F89" in reason and "NOT" in reason, rid
 
 
