@@ -437,6 +437,11 @@ this project keeps having to replace with a step.
     a `read` paper, and QBoost is pinned at `read`;
   - the F11 packet is re-rendered (QBoost's tier), and the learning_log
     names an allowed protocol
+- **feat**: `scripts/f118_themes.py` (Sprint 14 Task G, F118, #147,
+  2026-10-30). Read only: computes the store's inventory and selects 16
+  themes' assertions by keyword into packets for the theme readers, in
+  the non-repository work folder. Its two tests were proven red by
+  injection
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
