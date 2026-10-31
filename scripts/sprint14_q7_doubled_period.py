@@ -15,6 +15,7 @@ a second apply finds nothing.
 """
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 
@@ -29,7 +30,9 @@ if hasattr(sys.stdout, "reconfigure"):
 
 ROOT, DB_PATH, EXPORT_DIR = script_paths(__file__)
 TODAY = "2026-10-31"
-DOUBLED = ".. NOT upgraded"
+# Exactly two periods: an ellipsis ("x... NOT upgraded", a why that ends "x..") is the why's own text and is left
+# alone, so a second apply finds nothing (fresh-eyes review of 7b2179f).
+DOUBLED = re.compile(r"(?<!\.)\.\. NOT upgraded")
 SINGLE = ". NOT upgraded"
 NOTE = (f"{TODAY} (Sprint 14 retrospective Q7): {FORMAT_ONLY_MARK} a doubled period before \"NOT upgraded\" "
         "made single; INTAKE_WORKFLOW.md section 59")
@@ -37,14 +40,15 @@ NOTE = (f"{TODAY} (Sprint 14 retrospective Q7): {FORMAT_ONLY_MARK} a doubled per
 
 def doubled(conn) -> list[tuple[str, str]]:
     """(id, certainty_reasons) of every record whose reason holds DOUBLED."""
-    return conn.execute("SELECT id, certainty_reasons FROM records WHERE instr(certainty_reasons, ?) > 0 "
-                        "ORDER BY id", (DOUBLED,)).fetchall()
+    rows = conn.execute("SELECT id, certainty_reasons FROM records WHERE instr(certainty_reasons, '.. NOT upgraded') > 0 "
+                        "ORDER BY id").fetchall()
+    return [(r[0], r[1]) for r in rows if DOUBLED.search(r[1])]
 
 
 def apply_changes(conn) -> list[str]:
     log = []
     for rid, reasons in doubled(conn):
-        conn.execute("UPDATE records SET certainty_reasons = ? WHERE id = ?", (reasons.replace(DOUBLED, SINGLE), rid))
+        conn.execute("UPDATE records SET certainty_reasons = ? WHERE id = ?", (DOUBLED.sub(SINGLE, reasons), rid))
         append_updated_reason(conn, rid, NOTE, TODAY)
         log.append(f"fixed {rid}")
     return log

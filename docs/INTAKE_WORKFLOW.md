@@ -2988,3 +2988,17 @@ Written 2026-10-31, before the apply. Every count here is a snapshot as of
   `evidence-20261031T182657101772-...db`, first on a copy: 900 records
   fixed; a second apply fixed none; the full-read applier on the fixed
   copy changed nothing and listed no undecided field.
+- **Correction, 2026-10-31, the review of 7b2179f.** The note moved
+  `updated` to 2026-10-31 on all 900 records; on 365 of them the last real
+  change is earlier (364 on 2026-10-30, 1 on 2026-10-26). The sync guard
+  read `updated`, so a corrected sign-off dated on such a group's review
+  day would have been refused without a word, and the "changed nothing"
+  check above held for those 365 only because the guard skipped them. The
+  guard now reads the date of the last real change when the last note is
+  format-only; a record with no format note is read as before. The
+  script's pattern now matches exactly two periods, so a why that ends in
+  an ellipsis is left alone (none is stored). No store write: the 900
+  records stay as fixed. With the corrected guard, the full-read applier
+  on a fresh copy of the live store changed nothing and listed no
+  undecided field, so the 365 records hold what their reviews say. A why of only "." is now refused by `low_grade`
+  as no why at all.

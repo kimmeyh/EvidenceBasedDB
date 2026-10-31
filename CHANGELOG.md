@@ -557,6 +557,14 @@ this project keeps having to replace with a step.
   (Past Sprint Summary row, Last Completed Sprint); `CHECKLIST-Phase2-pre.md`
   reconciled for Sprint 14, and Sprints 12 and 13 back-filled: neither
   had been reconciled at its Phase 7, and no Phase 1.2 sweep caught it
+- **fix**: the review of 7b2179f (2026-10-31): the Q7 note had moved
+  `updated` on 365 full-read records, so the sync guard would have
+  refused a corrected sign-off on its review day; the guard now reads the
+  day of the last real change when the last note is format-only. The Q7
+  pattern matches exactly two periods (an ellipsis is left alone);
+  `decided_fields` names every synced column for a changed verdict;
+  `f117_review.applied` looks for new assertions under their `id_fix` id
+  and skips dropped ones. INTAKE 59 correction; no store write
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

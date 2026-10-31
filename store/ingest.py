@@ -706,9 +706,15 @@ def sync_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, note: str,
         raise ValueError(f"{rid}: no stored assertion to sync")
     *row, updated, reason = row
     last = last_change(reason)
-    if FULL_READ_MARK in (reason or "") and (today < (updated or "") or
+    # A format-only note moved `updated` to its own day; the guard reads the day of the last real change instead
+    # (fresh-eyes review of 7b2179f: 365 rows full-read on 2026-10-30 or before would have refused a corrected
+    # sign-off dated on its review day). A row with no format note keeps `updated`, as before.
+    when = updated or ""
+    if last != (reason or "").rsplit(" | ", 1)[-1] and _DATE.match(last[:10]):
+        when = last[:10]
+    if FULL_READ_MARK in (reason or "") and (today < when or
                                              (FULL_READ_MARK in last and FULL_READ_MARK not in note
-                                              and today == updated)):
+                                              and today == when)):
         # Sprint 13 Task G (F113): a re-read of the whole paper supersedes the
         # partial read an older script entered. Without this, re-running that
         # script (as its own second-apply test does, each with its fixed TODAY)

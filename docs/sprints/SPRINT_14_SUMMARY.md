@@ -78,5 +78,9 @@ Wall clock from `git log` (local time). Plan estimate for A to G: about
   test, once the sign-off named its ids). The test now takes them out.
 - Settlement text edited by pattern missed variants in 5 of 13 reasons;
   each was edited by hand, and Q1 makes that the rule.
-- A doubled period before "NOT upgraded" sat in 900 stored reasons from
-  before this sprint; fixed at the source and in the store (Q7).
+- A format bug from before this sprint put a doubled period before "NOT
+  upgraded"; most of its 900 stored instances were written in Sprint 14.
+  Fixed at the source and in the store (Q7). Its fresh-eyes review found
+  that the format note had moved 365 full-read records' `updated` date,
+  which would have made the sync guard drop a corrected sign-off; the
+  guard now reads the date of the last real change.

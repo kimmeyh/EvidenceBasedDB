@@ -65,7 +65,7 @@ as F114's first release (66 groups; 28 certainty settlements by the team
 lead; 18 papers kept out). **Spike**: what the store says, for the fraud
 challenge (F118, `docs/spikes/F118_WHAT_THE_STORE_SAYS.md`). Store 2,335
 -> 2,345 papers (1,653 -> 1,789 `read`), 10,735 -> 23,653 assertions;
-suite 1,424 -> 1,484 tests. Retrospective: team lead all "Very Good"; all
+suite 1,424 -> 1,485 tests. Retrospective: team lead all "Very Good"; all
 nine improvements option 1: Q1 to Q7 done in the sprint (among them the
 applier renamed `scripts/full_read_apply.py` and 900 doubled periods
 fixed), Q8 carded as F130, Q9 added to F128. Full detail:

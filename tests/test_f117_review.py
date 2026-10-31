@@ -294,3 +294,12 @@ def test_finalize_refuses_a_group_already_applied_unless_a_store_is_named(review
     assert written["graded_high"]["narrow"] == ["stated limit", "Section 5 states it"]
     with pytest.raises(SystemExit, match="existing store file"):
         review.main(["finalize", "g050", "2026-10-31", "--store", str(tmp_path / "missing.db")])
+    # review of 7b2179f: a new assertion is looked for under its id_fix id, and a dropped one not at all. Proven to
+    # fail by injection, 2026-10-31: with applied() reading the raw suggestions, both cases answered wrongly.
+    (review.REVIEW / "signoff").mkdir()
+    (review.REVIEW / "signoff" / "g050.json").write_text(json.dumps(
+        {"id_fix": {"thm": "thm-2"}, "drop": {"sim": "off topic"}}), encoding="utf-8")
+    monkeypatch.setattr(review, "DB_PATH", _store(tmp_path / "fixed.db", {**before, "thm-2": ("high", "")}))
+    assert review.applied("g050") == ["thm-2"]
+    monkeypatch.setattr(review, "DB_PATH", _store(tmp_path / "other.db", {**before, "sim": ("low", ""), "thm": ("low", "")}))
+    assert review.applied("g050") == []

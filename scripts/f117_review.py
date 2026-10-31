@@ -85,7 +85,12 @@ def applied(g: str) -> list[str]:
     stored one whose history holds the applier's full-read note from its paper. A paper read whole twice can show here
     with no apply of this group; `--store` then names the store to read."""
     ps = papers(g)
-    new = [a["id_suggestion"] for p in ps for a in p.get("assertions", [])]
+    # Under the id the applier enters it (the sign-off's id_fix), and never a dropped one (review of 7b2179f).
+    so = REVIEW / "signoff" / f"{g}.json"
+    edits = json.loads(so.read_text(encoding="utf-8")) if so.exists() else {}
+    id_fix, drop = edits.get("id_fix", {}), edits.get("drop", {})
+    new = [id_fix.get(a["id_suggestion"], a["id_suggestion"]) for p in ps for a in p.get("assertions", [])
+           if a["id_suggestion"] not in drop]
     old = {x["id"]: p["record_id"] for p in ps for x in p.get("existing", [])}
     conn = sqlite3.connect(f"{DB_PATH.as_uri()}?mode=ro", uri=True)
     try:

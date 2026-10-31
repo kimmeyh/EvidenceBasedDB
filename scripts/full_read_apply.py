@@ -328,9 +328,10 @@ def decided_fields(aid: str, verdict: str | None) -> set[str]:
     verdict names the reader's whole entry and its grade, but not its context: the reader's context is its nearest
     fit, and only CONTEXT_FIX decides one."""
     named = set()
-    if verdict in CHANGED:
-        named |= {"value", "provenance", "citation_context", "certainty", "certainty_reasons", "fidelity",
-                  "claim_type", "search_scope"}
+    if verdict in CHANGED:  # every synced column but the context (fresh-eyes review of 7b2179f: some were missing)
+        named |= {"value", "provenance", "evidence_tag", "certainty", "certainty_reasons", "fidelity",
+                  "reading_level", "units", "rounding", "citation_context", "derivation", "claim_type",
+                  "search_scope", "documents", "supports", "contradicts"}
     if aid in REQUOTE:
         named |= {"provenance", "citation_context"}
         if REQUOTE[aid].startswith("regraded"):

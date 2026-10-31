@@ -41,6 +41,30 @@ def test_the_last_change_skips_a_format_only_note():
     assert last_change(None) == ""
 
 
+def test_a_format_note_leaves_a_full_read_as_it_was_for_the_sync_guard(synthetic_store):
+    """Fresh-eyes review of 7b2179f: the format note moved `updated` to 2026-10-31, so a corrected sign-off dated on
+    its 2026-10-30 review day fell under the guard's date branch and was dropped without a word (365 live rows).
+    Proven to fail by injection, 2026-10-31: with the guard reading `updated` as before, the correction returned []."""
+    from dataclasses import replace
+    from store import connect
+    from store.ingest import append_updated_reason, sync_assertion
+    from tests.test_quotes_and_sync import _stored
+    conn = connect(synthetic_store)
+    try:
+        full = replace(_stored(conn), value="the value from the whole paper")
+        assert "value" in sync_assertion(conn, full, f"2026-10-30 (x): {FULL_READ_MARK}: corrected", "2026-10-30")
+        append_updated_reason(conn, "claim-one", f"2026-10-31 (Q7): {FORMAT_ONLY_MARK} a period", "2026-10-31")
+        older = replace(full, value="an older script's value")
+        assert sync_assertion(conn, older, "2026-10-30 (an older script): entered", "2026-10-30") == []
+        fixed = replace(full, value="the corrected sign-off's value")
+        assert sync_assertion(conn, fixed, f"2026-10-30 (x): {FULL_READ_MARK}: corrected again",
+                              "2026-10-30") == ["value"]
+        assert sync_assertion(conn, older, "2026-10-25 (an older script): entered", "2026-10-25") == []
+        assert conn.execute("SELECT value FROM records WHERE id = 'claim-one'").fetchone()[0] == fixed.value
+    finally:
+        conn.close()
+
+
 def test_the_store_fix_changes_the_doubled_period_and_nothing_else(synthetic_store):
     """Proven to fail by injection, 2026-10-31: with the replace written as ". NOT upgraded" to ".. NOT upgraded"
     swapped, the fixed reason kept its doubled period."""
@@ -59,13 +83,19 @@ def test_the_store_fix_changes_the_doubled_period_and_nothing_else(synthetic_sto
         assert (updated, note) == (q7.TODAY, f"first | {q7.NOTE}")
         assert FORMAT_ONLY_MARK in q7.NOTE
         assert q7.doubled(conn) == [] and q7.apply_changes(conn) == []
+        # fresh-eyes review of 7b2179f: an ellipsis is the why's own text, not a doubled period
+        conn.execute("UPDATE records SET certainty_reasons = ? WHERE id = ?",
+                     ("Started LOW: a theoretical result: and so on... NOT upgraded", rid))
+        assert q7.doubled(conn) == []
     finally:
         conn.close()
 
 
 @pytest.mark.live_store
 def test_no_stored_reason_holds_a_doubled_period(live_conn):
-    """Proven to fail, 2026-10-31: before the apply, 900 records held it."""
+    """Proven to fail, 2026-10-31: before the apply, 900 records held it. An ellipsis is a why's own text."""
+    q7 = _script()
     rows = [r[0] for r in live_conn.execute(
-        "SELECT id FROM records WHERE instr(certainty_reasons, '.. NOT upgraded') > 0")]
+        "SELECT id, certainty_reasons FROM records WHERE instr(certainty_reasons, '.. NOT upgraded') > 0")
+        if q7.DOUBLED.search(r[1])]
     assert rows == [], f"{len(rows)} records, first {rows[:5]}"
