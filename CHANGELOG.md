@@ -500,6 +500,9 @@ this project keeps having to replace with a step.
   (test proven red), and both were restored by re-apply. The F80 and F83
   store tests now leave out an id a later full read rewrote and hold
   every other id to its script (proven red by injection)
+- **process**: Sprint 14 Phase 7 (2026-10-31): retrospective prompt
+  sent; Claude's Development Team draft in
+  `docs/sprints/drafts/SPRINT_14_RETROSPECTIVE_claude_draft.md`
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
