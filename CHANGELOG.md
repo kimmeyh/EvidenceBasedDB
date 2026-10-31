@@ -482,6 +482,9 @@ this project keeps having to replace with a step.
   live-store test now runs the applier on a store copy and proves the
   refusal note comes through `refusal_reason` (proven red by
   injection); F127's QCI count is dated
+- **docs**: F129 carded (Sprint 14 Task E, 2026-10-30): re-check the
+  LOW grades that rest only on an unproved textbook fact, 11
+  candidates by keyword on that date, against the cross-group rule
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

@@ -871,6 +871,27 @@ and in git. Remaining items below.
   F57's path.
 - Depends on: none
 
+**F129. Re-check the LOW grades that rest only on an unproved textbook fact (~30m) Priority 50** (NEW 2026-10-30, F117's sign-off, Sprint 14 Task E)
+- Phase: Reading (F114's next release)
+- Value: makes F117's early groups agree with the cross-group rule the
+  later groups used, so one grade means one thing.
+- Platform: the store; `scripts/sprint13_g_reading.py` (a sign-off
+  table); the team lead decides each stored certainty change.
+- F117's cross-group rule (2026-10-30) holds that a textbook-standard
+  result is background and does not by itself make an item LOW. Groups
+  reviewed before the rule graded some such items LOW. Of the 5,691 LOW
+  assertions written on 2026-10-30 (snapshot as of that date), a
+  keyword cut finds 11 whose reason names a standard, textbook or
+  background fact stated without proof (for example
+  mps-parameter-count-and-inner-product-cost,
+  homodyne-gaussian-simulable, qrnn-linearity-of-unitary-circuits);
+  about half also rest on something else that keeps them LOW. The
+  keyword cut may miss others.
+- Acceptance: each candidate read against its passage and the rule;
+  each proposed change put to the team lead as a certainty change;
+  the keyword cut's misses sampled.
+- Depends on: none
+
 ### Released for Sprint 14 (2026-10-30)
 
 **F122. F95 release for Sprint 14: new papers in `Papers\` (~5m) Priority 20** (NEW 2026-10-30, released copy of F95)
