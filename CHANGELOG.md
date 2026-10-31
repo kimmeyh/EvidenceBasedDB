@@ -469,6 +469,19 @@ this project keeps having to replace with a step.
   and team-lead question, 8 ranked experiments, the Phase 2 prompt
   drafted, every cited id found in the store and 10 read against their
   value. The gaps are carded as F128
+- **fix**: the fresh-eyes review of ed5ab01 (Sprint 14 Tasks E, F and
+  G, 2026-10-30). The memo overstated three findings, each also in the
+  Phase 2 prompt: four LOW single studies do report quantum feature
+  selection competitive or better (now named, with untuned comparators);
+  benchmark solvers ran at fixed settings, not defaults; the
+  data-loading bound is one method's, under a stated condition, and the
+  Gram-matrix count is an unproved LOW claim. Smaller corrections: the
+  TabICL comparators, the f166 recall wording and both established
+  pairs, Monte Carlo has no stored qubit count, four paraphrases
+  narrowed, the theme merges named, the snapshot's commit relabeled. A
+  live-store test now runs the applier on a store copy and proves the
+  refusal note comes through `refusal_reason` (proven red by
+  injection); F127's QCI count is dated
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

@@ -293,6 +293,26 @@ def test_a_refusal_note_names_the_sign_off_drop_over_the_readers_why_not(monkeyp
     assert g.refusal_reason({"why_not": "off topic", "assertions": []}) == "off topic"
 
 
+@pytest.mark.live_store
+def test_the_apply_writes_its_refusal_notes_through_refusal_reason_and_nothing_else(monkeypatch, live_copy):
+    """Review of ed5ab01: the test above calls refusal_reason directly, so an inline reason at the call site would
+    stay green. On a copy of the store, a sentinel reason must reach every refused paper's note, and a re-apply must
+    write nothing else. Proven to fail by injection, 2026-10-30: with the call site reading `why_not` inline, the
+    sentinel was absent from darji-2024's note."""
+    from store import connect
+    g = _script()
+    monkeypatch.setattr(g, "refusal_reason", lambda p: "SENTINEL-REASON")
+    conn = connect(live_copy)
+    try:
+        log = g.apply_changes(conn)
+        note = conn.execute("SELECT updated_reason FROM records WHERE id = ?",
+                            ("darji-2024-robust-super-resolution-classifier-nonlinear",)).fetchone()[0]
+    finally:
+        conn.close()
+    assert note.endswith("NOT entered: SENTINEL-REASON")
+    assert [x for x in log if not x.startswith(("exists", "refuse "))] == []
+
+
 def test_a_high_the_applier_would_not_write_and_an_empty_value_are_refused(monkeypatch):
     """Review of de1efff: a signed HIGH on a vendor's own claim was written LOW without a word, and a requoted
     confirmed entry with no value of its own would have blanked the stored value. Proven to fail by injection,

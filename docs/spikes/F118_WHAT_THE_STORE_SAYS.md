@@ -1,8 +1,9 @@
 # F118: what the store says, what it means for the fraud challenge, and what to run next
 
 Sprint 14 Task G (F118, #147), written 2026-10-30. **Every count in this
-memo is a snapshot as of 2026-10-30**, taken after F114's first apply
-(commit 4d969d9). The store grows by design; rerun
+memo is a snapshot as of 2026-10-30**, taken after F114's corrected
+re-apply (commit 4d969d9; the first apply, b185729, was restored and
+re-run). The store grows by design; rerun
 `scripts/f118_themes.py` for current counts.
 
 ## Bottom line
@@ -16,11 +17,15 @@ memo is a snapshot as of 2026-10-30**, taken after F114's first apply
   concentration, dequantization of classical-data algorithms, and the
   generalization bound all bind as qubits grow. The proved advantages
   are on constructed or cryptographic problems, not on tabular data.
-- **For Exp 3 (feature selection on Dirac-3S), the themes read hold no case
-  in which a quantum or quantum-inspired solver beats a classical
-  heuristic.** The comparators in the published studies were run at
-  default settings. Phase 2's own falsifier result says the formulation,
-  not the solver, is the limit.
+- **For Exp 3 (feature selection on Dirac-3S), the themes read hold no
+  HIGH or independent case in which a quantum or quantum-inspired solver
+  beats a tuned classical comparator.** Four single studies, all LOW,
+  report quantum feature selection as competitive or better
+  (orquin-qfs-competitive, varqfs-vs-classical, qaoa-fs-comparable,
+  hellstern-dataset-dependent); their comparators were not tuned for the
+  comparison. The benchmark solvers ran at fixed settings, not tuned per
+  instance, and penalty weights were not tuned. Phase 2's own falsifier
+  result says the formulation, not the solver, is the limit.
 - **The cheapest, most decisive next steps are classical**: tuned
   classical solvers and a penalty sweep on the f153 instances, an
   equal-feature ablation, and a classical surrogate for any quantum
@@ -133,6 +138,11 @@ where it matters.
 
 ## What the store has taught us, per theme
 
+The 16 themes are written as 13 sections. Three are merged where the
+readers found them inseparable: quantum resources and resource
+estimates go under Advantage, and benchmarking goes under Fraud,
+imbalance and benchmarking.
+
 ### Advantage, and where it shows
 
 - **Settled.** Grover search is a quadratic, optimal speedup
@@ -164,8 +174,8 @@ where it matters.
   non-stabilizer resources are needed
   (howard-stabilizer-subtheory-efficiently-simulable, HIGH).
   Contextuality is necessary for magic-state-distillation speedup
-  (howard-contextuality-necessary-for-msd-speedup). Entanglement also
-  drives barren plateaus and concentration
+  (howard-contextuality-necessary-for-msd-speedup). Entanglement is
+  also one of four named sources of exponential concentration
   (qelm-exponential-concentration, HIGH).
 - **Qubit counts the store states** (all LOW unless noted): a QNN wider
   than 60 qubits for an experimental advantage (jaderberg-scale-limit,
@@ -183,9 +193,10 @@ where it matters.
   qubit count, so the shots needed grow exponentially
   (qfk-vanishing-similarity-definition, dqc1-kernel-exponential-measurements,
   both HIGH). A fidelity kernel's information gain is O(4^n log T)
-  (qkbandit-info-gain-exponential, HIGH). Kernel shots scale with the
-  number of entries over epsilon squared (shofar-precise-kernel-scaling,
-  HIGH).
+  (qkbandit-info-gain-exponential, HIGH). Estimating every kernel entry
+  to precision epsilon takes shots scaling as "msvM/eps^2" as stored
+  (shofar-precise-kernel-scaling, HIGH; the stored quote is garbled, so
+  the exact form needs the paper's Theorem 5).
 - **Measured.** A simulated 15% average-precision gain on fraud at 20
   qubits, on 500 subsampled transactions with 25 frauds
   (quantum-kernel-ap-separation, dataset-and-simulation-setup); a
@@ -203,8 +214,9 @@ where it matters.
 ### Trainability
 
 - **Settled.** Random 2-design circuits and global costs have
-  exponentially small gradients, and no optimizer rescues them
-  (mcclean-rpqc-gradient-variance-exp-small, arrasmith-scope). Local
+  exponentially small gradients (mcclean-rpqc-gradient-variance-exp-small),
+  and the authors cast doubt that the choice of optimizer, gradient-free
+  included, avoids them (arrasmith-scope). Local
   costs at logarithmic depth (cerezo-local-cost-polynomial-gradient-log-depth),
   S_n-equivariant circuits (sn-equivariant-qnn-guarantees) and symmetric
   ansatze (wang-symmetric-ansatz-proved) avoid them, all HIGH. Absence of
@@ -253,16 +265,20 @@ where it matters.
   O(Nd) physical resources (ciliberto-qram-caveats, HIGH) and has not
   been built. Papers at tens or hundreds of features compress first with
   PCA or a classical layer (pca-compression-and-angle-encoding, HIGH).
-- **Loading cost grows with the data.** Loading is at least linear in
-  the rows (zhao-runtime-dominated-by-data-loading, HIGH), and a kernel
-  Gram matrix on M points takes Theta(M^2) state preparations
-  (faryad-quantum-kernel-gram-theta-m2-preparations, LOW, no proof
-  given).
+- **Loading cost grows with the data.** For quantum oracle sketching,
+  runtime is dominated by O~(N) data loading, unavoidable only when each
+  gate has a constant number of degrees of freedom
+  (zhao-runtime-dominated-by-data-loading, HIGH; one method, under that
+  condition). A kernel Gram matrix on M points takes Theta(M^2) state
+  preparations (faryad-quantum-kernel-gram-theta-m2-preparations, LOW,
+  no proof given).
 
 ### Gates and small reusable circuits
 
 - **Settled.** A universal set can be single-qubit gates plus one
-  entangling gate (muta-property2-universality, HIGH). Gates outside a
+  entangling gate: textbook background, cited and used in a proof, not
+  proved there (muta-property2-universality, HIGH for the paper's own
+  universality property). Gates outside a
   device's native set are decomposed at transpile time, at a cost in
   depth and noise (midcircuit-multiqubit-gate-overhead, HIGH).
   Fault-tolerant cost models count T gates
@@ -344,9 +360,10 @@ where it matters.
   (f166-ulb-tuned-boosting-leads-proxy-fifth), with the proxy given its
   own top 17 features while the classical lanes used all 30 columns.
   The order among the four boosting libraries and the proxy is not
-  established at Bonferroni 0.05/6; only the proxy above the linear SVM
-  is.
-  Metric choice moves the ranking
+  established at Bonferroni 0.05/6; two adjacent pairs are: the proxy
+  above the linear SVM, and the SVM above logistic regression. At a 0.5%
+  alert budget, recall spreads less than AUPRC (0.8305 to 0.8589 against
+  0.7270 to 0.8329); the recall order is untested
   (f166-ulb-recall-at-alert-budget-spread-narrower-than-auprc).
 - **Drift.** The one temporal measurement is Phase 2's rolling-origin
   IEEE-CIS run: LightGBM led every month, and logistic regression fell
@@ -366,15 +383,17 @@ where it matters.
   Bayes is the exact label rule of the CardSim simulator
   (allen-cardsim-label-is-naive-bayes-rank-cutoff, HIGH), so it tests
   only that simulator.
-- **Anomaly detection** is the best-motivated fit for the kernel route
-  (bhowmik-kyriienko-setup), but the store holds no tuned classical
+- **Anomaly detection** is, by inference, the best fit for the kernel
+  route (one-class kernel setups exist, for example
+  bhowmik-kyriienko-setup), but the store holds no tuned classical
   isolation forest, LOF or one-class SVM number on fraud. Noise is the
   main bottleneck of variational anomaly detection
   (vqad-noise-bottleneck, HIGH).
 - **Neural networks**: small circuits replace MLP layers with fewer
   parameters in LOW studies; no tabular fraud result.
 - **Others worth trying**, from the store: tabular foundation models
-  (qu-tabicl-benchmark, LOW, vendor-reported against default XGBoost),
+  (qu-tabicl-benchmark, LOW, one study, against TabPFNv2 and CatBoost
+  on TALENT),
   cost-sensitive learning with a derived threshold
   (hoppner-instance-threshold, HIGH), stacking, graph models, and QUBO
   feature selection (orquin-qfs-competitive, LOW).
@@ -400,8 +419,8 @@ Each answer states what the store supports and how certain it is.
 
 1. **Exp 1, the confound.** The store names the confounds: untuned or
    unstable baselines, tiny or rebalanced data, unequal feature access,
-   preprocessing before the split, metric choice, and simulation in
-   place of hardware. Implication: no quantum lane should be compared
+   preprocessing before the split, and simulation in place of
+   hardware. Implication: no quantum lane should be compared
    except against tuned, stable classical lanes on the same rows, the
    same features and the same split, over many seeds with paired tests.
    Certainty: HIGH for Phase 2's own entries, LOW for the literature.
@@ -409,10 +428,13 @@ Each answer states what the store supports and how certain it is.
    rolling-origin run. Implication: keep thresholds and alert budgets
    fixed from earlier folds (Inference, from one LOW finance result that
    a tuned threshold did not transfer). Certainty: thin; a gap (below).
-3. **Exp 3, feature selection on Dirac-3S.** No quantum or
-   quantum-inspired solver beats a classical heuristic in the store, the
-   published comparators were untuned, and Phase 2's falsifier puts the
-   limit on the formulation. Implication: before more device time, test
+3. **Exp 3, feature selection on Dirac-3S.** No HIGH or independent
+   result shows a quantum or quantum-inspired solver beating a tuned
+   classical comparator. Four LOW single studies report quantum feature
+   selection competitive or better against untuned comparators. The
+   benchmark solvers ran at fixed settings, not tuned per instance, with
+   penalty weights untuned. Phase 2's falsifier puts the limit on the
+   formulation. Implication: before more device time, test
    whether a tuned classical solver or a penalty sweep finds anything
    below greedy on the same instances; if nothing does, the formulation
    is the limit and device runs cannot help. Also test the 200:1
@@ -425,13 +447,15 @@ Each answer states what the store supports and how certain it is.
 5. **Exp 5, segment transfer.** On hold in Phase 2. The store adds
    nothing.
 6. **Exp 6, training time against sample count.** The store bounds
-   error, not time. Quantum loading is at least linear in rows, and a
-   kernel Gram matrix is quadratic in rows. Implication: Phase 2's
+   error, not time. One method's loading is linear in rows under a
+   stated condition (HIGH), and one paper claims without proof that a
+   kernel Gram matrix is quadratic in rows (LOW). Implication: Phase 2's
    classical slope of about 1.4
    (f110-cvqboost-pool-build-grows-faster-than-rows) is not a quantum
    number; a kernel lane's feasible row count is set by device seconds
-   for M squared circuits times shots. Certainty: HIGH for the loading
-   bounds, nothing for a measured quantum law.
+   for M squared circuits times shots. Certainty: HIGH for the scoped
+   loading bound, LOW for the Gram count, nothing for a measured quantum
+   law.
 
 **The team lead's questions**
 
@@ -460,14 +484,15 @@ Each answer states what the store supports and how certain it is.
     and shot choices.
 11. **Using entanglement, superposition and interference.** They are
     necessary but not sufficient; non-stabilizer resources are needed
-    for advantage, and entanglement also causes barren plateaus and
-    concentration. Use cases that exploit them are search, sampling,
+    for advantage, and entanglement is also a named source of
+    exponential concentration. Use cases that exploit them are search, sampling,
     Monte Carlo and quantum-data learning, not tabular classification.
     Certainty: HIGH for the limits.
 12. **Where advantage shows, how close, how many qubits, and whether
     only search and optimization.** Proved advantages are on constructed
     or cryptographic problems; the nearest "needs only better hardware"
-    cases are Monte Carlo and chemistry at millions of physical qubits;
+    cases are Monte Carlo (proved quadratic, no qubit count stored) and
+    chemistry (tens to hundreds of millions of physical qubits, LOW);
     no exponential advantage is known for classical data. Use cases go
     beyond search and optimization. The only fraud-relevant qubit count
     is 50 to 100 for kernel separation, a LOW author statement.
@@ -605,17 +630,22 @@ place against the 14 Nov 2026 notification date. Do not run anything
 on a device without the team lead's approval.
 
 What the store found:
-- No stored result shows a quantum model beating a tuned classical
-  model on tabular, imbalanced data. Positive fraud results are
-  simulations on small or rebalanced subsets against untuned
-  comparators.
-- No stored result shows a quantum or quantum-inspired solver beating a
-  classical heuristic on cardinality-constrained selection; published
-  comparators ran at default settings; your f153 falsifier puts the
-  limit on the formulation.
-- Quantum data loading is at least linear in rows, and a kernel Gram
-  matrix needs M squared state preparations, so F110's classical slope
-  of about 1.4 says nothing about a quantum lane.
+- In the themes read, no stored result shows a quantum model beating a
+  tuned classical model on tabular, imbalanced data. Positive fraud
+  results are simulations on small or rebalanced subsets against
+  untuned comparators (LOW, published studies).
+- No HIGH or independent result shows a quantum or quantum-inspired
+  solver beating a tuned classical comparator on cardinality-constrained
+  selection. Four single studies report quantum feature selection
+  competitive or better, against untuned comparators (LOW, published
+  studies). Benchmark solvers ran at fixed settings, not tuned per
+  instance, and penalty weights were not tuned. Your f153 falsifier
+  puts the limit on the formulation.
+- For one method (quantum oracle sketching), data loading is linear in
+  rows under a stated condition; one paper claims, without proof, that
+  a kernel Gram matrix needs M squared state preparations (LOW). So
+  F110's classical slope of about 1.4 says nothing about a quantum
+  lane.
 
 Experiments, in rank order:
 1. Tuned classical solvers (greedy plus local swap, SA with a tuned

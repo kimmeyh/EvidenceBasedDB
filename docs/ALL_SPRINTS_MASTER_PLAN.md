@@ -835,7 +835,7 @@ and in git. Remaining items below.
 - One from the review of 4d969d9, over-strict rather than leaky: the
   applier's refusal guard (`refused_without_reversal`) matches a refusal
   anywhere in a record's history and ignores a later reversal. 9 QCI
-  Dirac papers carry Sprint 9's refusal that Sprint 10 reversed ("no
+  Dirac papers (as of 2026-10-30) carry Sprint 9's refusal that Sprint 10 reversed ("no
   longer applies"); a new read of any of them is refused unless
   `reenter` names it. It fails closed.
 - Acceptance: each with a test proven red, then green.
