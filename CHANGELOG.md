@@ -500,6 +500,13 @@ this project keeps having to replace with a step.
   (test proven red), and both were restored by re-apply. The F80 and F83
   store tests now leave out an id a later full read rewrote and hold
   every other id to its script (proven red by injection)
+- **fix**: the review of 0eddd23 (2026-10-31): the 13 theoretical LOW
+  settlements now name the team lead's decision (4 had said "no pending
+  escalation"); two-way-partitioning quotes its SDP clause; the context
+  test takes its ids out of `context_fix`, which had made it pass with
+  no check; the F80 and F83 tests skip an id only when its last change
+  is a full read's rewrite. INTAKE 58 corrects two counts (138 updated,
+  not 136; 100 assertions neither HIGH nor LOW). Re-applied: 13 records
 - **process**: Sprint 14 Phase 7 (2026-10-31): retrospective prompt
   sent; Claude's Development Team draft in
   `docs/sprints/drafts/SPRINT_14_RETROSPECTIVE_claude_draft.md`

@@ -2887,3 +2887,29 @@ counts that enter are added when it runs.
     lead decided their certainty changes. The tests now leave out an id
     whose stored history records a later full read, and still hold every
     other id to its script.
+- **Fifth correction, 2026-10-31, the review of 0eddd23.** Written before
+  the re-apply.
+  - Two counts above are wrong as written: 138 stored assertions were
+    updated, not 136 (136 changed value or grade; 2 changed other fields),
+    and the 23,653 assertions also include 100 graded neither HIGH nor
+    LOW (97 MODERATE, 1 very-low, 2 with no grade).
+  - The 13 theoretical results set LOW at the team lead's decision kept
+    the reviewer's cause as their certainty reason, and 4 of those said
+    "g045 (or g109) has no pending escalation", which was false. Each is
+    now settled as `["low", why]`, the cause less that sentence, ending
+    with the team lead's decision; g045, g079, g095, g097, g102, g103,
+    g106 and g109 were re-finalized against the pre-apply copy. The 10
+    other LOW settlements carry the store's fixed reason for their result
+    type, which has no place for the decision; their decision is recorded
+    in this section and in `work\f114\review\escalations\`.
+  - two-way-partitioning-dual-sdp-lower-bound's value said "the best"
+    bound is an SDP's optimal value, which no quote held. It now quotes
+    "The dual problem is an SDP" and the sentence on its optimal value.
+  - The new context test passed with no check at all once the sign-off
+    named both of its ids in `context_fix`; it now takes them out of
+    `context_fix`. The F80 and F83 tests leave out an id only when its
+    last change is a full read's rewrite, not a "NOT in the paper" note.
+  - Re-applied with backup `evidence-20261031T144159928184-...db`, first
+    on a copy: 13 records updated (the 13 certainty reasons, and the
+    two-way value and quotes) and nothing else; a second apply wrote
+    nothing.

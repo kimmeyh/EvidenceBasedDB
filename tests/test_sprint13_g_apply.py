@@ -314,15 +314,18 @@ def test_the_apply_writes_its_refusal_notes_through_refusal_reason_and_nothing_e
 
 
 @pytest.mark.live_store
-def test_a_stored_assertion_keeps_its_context_against_the_readers_label(live_copy):
+def test_a_stored_assertion_keeps_its_context_against_the_readers_label(monkeypatch, live_copy):
     """Sprint 14 suite after the 2026-10-31 apply: the reader's nearest-fit context replaced two stored contexts that
     no review decided, among them a `platform:dirac-3` (F65 classes every Dirac-3 assertion). On a copy of the store
-    set to the contexts an earlier intake chose, an apply must leave them. Proven to fail by injection, 2026-10-31:
-    with the stored-context check removed from apply_changes, ballin-2026's assertion came back `qc`."""
+    set to the contexts an earlier intake chose, an apply must leave them. The sign-off now restores both through
+    `context_fix`, which would pass this test with no check at all (review of 0eddd23), so the test takes them out of
+    it. Proven to fail by injection, 2026-10-31: with the stored-context check removed from apply_changes, ballin-2026's
+    assertion came back `qc`."""
     from store import connect
     g = _script()
     kept = {"dirac3-stratification-falls-short-ballin-2026": "platform:dirac-3",
             "abbas-effective-dimension-generalisation-bound": "qml"}
+    monkeypatch.setattr(g, "CONTEXT_FIX", {k: v for k, v in g.CONTEXT_FIX.items() if k not in kept})
     conn = connect(live_copy)
     try:
         for rid, ctx in kept.items():

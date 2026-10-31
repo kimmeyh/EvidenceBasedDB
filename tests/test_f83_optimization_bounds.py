@@ -92,15 +92,14 @@ def test_every_figure_in_a_value_is_in_its_source():
 def test_the_store_holds_exactly_what_the_script_sets(live_conn):
     """An id a later full read rewrote (F114, Sprint 14:
     two-way-partitioning-dual-sdp-lower-bound, set LOW by the team lead) is
-    the full read's, and its history must say so; every other id is held to
-    the script. Proven to fail by injection, 2026-10-31: with another id's
-    value changed in the script, this test named it."""
-    from store.ingest import FULL_READ_MARK
+    the full read's, and its last change must say so; every other id is held
+    to the script. Proven to fail by injection, 2026-10-31: with another
+    id's value changed in the script, this test named it."""
+    from tests.test_f80_slice_reading import rewritten_by_a_full_read
     f83 = _script()
     bad = []
     for a, src in f83.ASSERTIONS:
-        reason = live_conn.execute("SELECT updated_reason FROM records WHERE id = ?", (a.id,)).fetchone()
-        if reason and FULL_READ_MARK in (reason[0] or ""):
+        if rewritten_by_a_full_read(live_conn, a.id):
             continue
         row = live_conn.execute(
             "SELECT r.value, r.certainty, r.certainty_reasons, r.provenance, r.fidelity, r.evidence_tag, "
