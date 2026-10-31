@@ -62,6 +62,7 @@ import json
 import re
 import sys
 from collections import Counter
+from dataclasses import replace
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -471,6 +472,11 @@ def apply_changes(conn) -> list[str]:
             insert_verified_assertion(conn, a, verified, yielded_by=rid)
             log.append(f"assert {a.id} <- {rid} [{a.certainty}]")
             continue
+        stored = [r[0] for r in conn.execute("SELECT context_id FROM record_contexts WHERE record_id = ?", (a.id,))]
+        if a.id not in CONTEXT_FIX and stored and a.context not in stored:
+            # The reader's context is its nearest fit; a stored one was set by an earlier intake and is changed only
+            # by the sign-off (Sprint 14 suite after the 2026-10-31 apply: platform:dirac-3 was replaced by qc).
+            a = replace(a, context=stored[0])
         changed = sync_verified_assertion(conn, a, verified, a.updated_reason, a.updated)
         log.append(f"update {a.id} [{', '.join(changed)}]" if changed else f"exists {a.id}")
     return log

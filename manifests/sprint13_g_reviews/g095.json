@@ -1,0 +1,311 @@
+{
+ "group": "g095",
+ "reviewed_on": "2026-10-31",
+ "tag": "Sprint 14 Task E, F117 (F114 cloud read)",
+ "reader": "Claude Sonnet 5.5 (F114 cloud session)",
+ "coordinator_note": "",
+ "graded_high": {
+  "cvar-definition-lower-alpha-tail": [
+   "definition",
+   "Sec. 4, p.4: CVaR defined in Eq. (11) and (12); the limit alpha to 0 giving the minimum and alpha = 1 the expected value is stated in the next paragraph."
+  ],
+  "prop-5-1-local-minima-not-mapped": [
+   "proved result",
+   "Prop. 5.1, Sec. 5, p.5: stated, then shown by an explicit two-qubit example (CVaR_0.5 = sin^2(theta/2), checked) and by the overlap argument for the converse. Short but complete."
+  ],
+  "cvar-converse-global-minimum-overlap": [
+   "proved result",
+   "Sec. 5, p.5: the converse half of the proof of Prop. 5.1. A state with overlap rho on the ground state has CVaR_alpha equal to the minimum for alpha <= rho. Argued with its condition (rho > 0) in the same sentence."
+  ],
+  "vqe-variational-form-definition": [
+   "definition",
+   "Sec. 2, p.2-3 and Fig. 1: the form is defined (Y-rotations, p repetitions of CZ on all pairs then Y-rotations), with the n(1+p) count, depth O(np) and the nearest-neighbor variant on hardware."
+  ],
+  "qaoa-parameter-count-vs-vqe": [
+   "definition",
+   "Sec. 3, p.3-4: the QAOA form is defined in Eq. (6) to (9), so 2p parameters follows; the O(n^2 p) rotation and CNOT count is the worst case of the stated construction."
+  ],
+  "cvar-experiment-setup-six-problems": [
+   "setup",
+   "Sec. 6, p.6: instance sizes, alphas, depths, 340 instances, 14,280 test cases and COBYLA are all stated there (arithmetic checks: 5 x 60 + 4 x 10 = 340)."
+  ],
+  "cvar-simulation-metric-optimal-probability": [
+   "setup",
+   "Sec. 6.1, p.6: the metric (probability of sampling an optimal solution against iterations divided by qubits, exact simulated state) and the reason for it are stated as the evaluation protocol."
+  ],
+  "cvar-hardware-ring-layout-setup": [
+   "setup",
+   "Sec. 6.2, p.7 and Fig. 8: qubits 5, 6, 7, 10, 11, 12 in a ring, p = 1, alpha = 10%, 25%, 100%, initial theta = 0, all stated."
+  ],
+  "cvar-hardware-qaoa-not-used": [
+   "scope",
+   "Sec. 6.2, p.7: the paper states it uses CVaR-VQE and not CVaR-QAOA on hardware and gives its reason, which the value attributes to the authors."
+  ],
+  "portfolio-instance-parameters-appendix-b": [
+   "setup",
+   "Appendix B, p.11: n = 6, q = 0.5, B = 3, lambda = 12, with the penalty term, and the random mu and sigma are listed."
+  ],
+  "prop-7-1-proof-induction-loose-bound": [
+   "scope",
+   "Appendix D, p.12-14: the paper does give the proof by induction on p (base case |alpha_0,z| = 1/sqrt(2^n), induction step with three terms) and a lower bound on Delta_p that it calls possibly very loose. This grade covers only what the paper contains, not the correctness of every step."
+  ],
+  "design-fixes-encoding-and-quantum-subroutine": [
+   "setup",
+   "Sec. IV, p.4: the paper fixes problem encoding (random QUBO) and quantum subroutine (BENQO loss) to isolate the classical optimizer, as stated."
+  ],
+  "random-qubo-instances-negative-diagonal": [
+   "setup",
+   "Sec. IV A, p.4, Eq. (12): off-diagonal entries +U(1,10), diagonal entries -U(1,10), each instance seeded."
+  ],
+  "noise-model-gaussian-post-processing-fault-tolerant": [
+   "setup",
+   "Sec. II, p.2 and Sec. IV C, p.6, Eq. (15): Gaussian noise added to exact loss values after simulation, an idealized fault-tolerant scenario."
+  ],
+  "ansatz-chosen-barren-plateau-free": [
+   "scope",
+   "Sec. II, p.2: the paper states it considers only polynomial-DLA ansatzes with local observables. 'provably barren-plateau-free' is the authors' statement of the property of those choices, cited to prior work."
+  ],
+  "experiment-size-and-noise-range": [
+   "scope",
+   "Sec. V, p.8: n in [3, 10] and sigma in (1e-3, 1e1), as stated."
+  ],
+  "repeats-and-ngd-steps": [
+   "setup",
+   "Sec. IV D, p.7: N = 100 repeats with different instances and NGD kmax = 20 steps, as stated."
+  ],
+  "sigma-star-definition": [
+   "definition",
+   "Sec. VI, p.11: sigma* is defined as the standard deviation of the total loss error beyond which performance falls below 50% of the noise-free level. Note Sec. V (Eq. 27) defines sigma* as the point of steepest descent of the tanh fit; the two agree only when the lower asymptote is near zero."
+  ],
+  "rae-definition": [
+   "definition",
+   "Sec. VI, Eq. (34), p.11: RAE defined as stated."
+  ],
+  "approximation-index-definition": [
+   "definition",
+   "Sec. IV E, Eq. (22) and (23), p.7: x_t = 1 if QAR(|psi_max>) >= t, and solvability p_t = (1/N) sum x_t."
+  ],
+  "limit-noise-model-no-hardware-propagation": [
+   "stated limit",
+   "Sec. IV C, p.6: the paper itself says the Gaussian noise model does not explicitly capture hardware-level error propagation."
+  ],
+  "limit-barren-plateau-ansatzes-untested": [
+   "stated limit",
+   "Sec. VII D, p.15-16: the paper says it deliberately focused on two barren-plateau-free ansatzes, notes they are efficiently classically simulable, and leaves barren-plateau-prone ansatzes with smart initialization to future work."
+  ],
+  "vqa-noise-limited-data": [
+   "stated limit",
+   "Sec. V B, p.10: the paper itself states its data are limited by simulation cost, so scaling conclusions need caution."
+  ],
+  "vqa-noise-study-setup": [
+   "scope",
+   "Abstract, p.1: states what the study covers (classical optimizers on variational loss functions for random QUBO with Gaussian noise)."
+  ],
+  "controllable-definition": [
+   "definition",
+   "Definition 2 (Sec. II.A, p.3) and Definition 5 (p.4): surjectivity on M, and controllable when controllable on the dynamical Lie group."
+  ],
+  "barlow-2026-dla-definition": [
+   "definition",
+   "Definition 3, Sec. II.A, p.4, Eq. (16): the span of the Lie closure of the generators."
+  ],
+  "pauli-basis-dimension": [
+   "proved result",
+   "Proposition 2, Sec. II.A, p.3: the basis is stated and the count (4^n strings minus the identity, which is not traceless) is given directly after it. A standard fact with a short complete argument."
+  ],
+  "controllable-min-parameters": [
+   "proved result",
+   "Sec. II.A, p.4, after Definition 5: stated with its reason (Im U = dlg by definition, and Proposition 3, equal dimensions). Proposition 3 is a standard Lie-theory fact stated without proof and the dimension step for a surjective map is not spelled out, so the argument is brief."
+  ],
+  "simulation-noiseless": [
+   "scope",
+   "Sec. III.A, p.7: 'simulated without shots nor noise', cross entropy loss, Adam optimiser."
+  ],
+  "hyperparameter-search-design": [
+   "setup",
+   "Sec. III.B, p.7: layers 7 to 25, 100 random trials per set, 100 epochs, top 5 models retrained 250 epochs on a new 1,000-sample set with an 80/20 split."
+  ],
+  "search-restriction-unverified": [
+   "stated limit",
+   "Sec. IV.C, p.10: the paper itself calls the restricted-search technique a conjecture and says further experiments are needed to verify it."
+  ],
+  "subspace-controllable-setup": [
+   "setup",
+   "Sec. III, p.5: 5,000 samples of digits 0, 2 and 6 from MNIST-1D, 10-fold cross validation throughout (decided on the stored value, as the reader left the value empty)."
+  ],
+  "subspace-controllable-single-task": [
+   "stated limit",
+   "Sec. I, p.2 (repeated in Sec. V): the paper itself says its results are limited to a single classical task."
+  ],
+  "study-aim": [
+   "scope",
+   "Abstract and Introduction, p.1-2: the paper states it implements two QML models, compares them to classical ones, and analyzes results in an exploratory way."
+  ],
+  "datasets-sizes": [
+   "setup",
+   "Sec. 1.1, p.2 and Table 1: Bodmas 134,435 files, 57,293 malicious (77,142 benign); PEMachineLearning 201,549 files, 114,737 malicious (86,812 benign). Sums check."
+  ],
+  "preprocessing-oif": [
+   "setup",
+   "Sec. 1.2, p.3: Ember 2,381 features, 10 chosen by forward selection, plus the import maliciousness score, called OIF."
+  ],
+  "preprocessing-images": [
+   "setup",
+   "Sec. 1.2, p.3: Grayscale method, 64 x 64 images, called Images; the PCA reduction is used from Sec. 2 on (p.6, Table 5)."
+  ],
+  "qsvm-feature-map-setup": [
+   "setup",
+   "Sec. 2, p.3-5: ZZFeatureMap with d = 2, one circuit per kernel entry, and Pauli, ZZphi and Z feature maps tested (Tables 4 to 6)."
+  ],
+  "qsvm-ibm-limit": [
+   "stated limit",
+   "Sec. 2, p.7: the paper itself says the hardware test used very small train and test sets because of computation time and queue access, so differences are two or three labels."
+  ],
+  "qsvm-compute-limit": [
+   "stated limit",
+   "Sec. 2, p.9: the paper itself says quantum runs need much more computation time on the Qiskit simulator, and it ran smaller datasets or fewer qubits."
+  ],
+  "qnn-architecture": [
+   "setup",
+   "Sec. 3.1, p.9-10: the algorithm of [8] adapted to two classes; N data qubits plus two ancillas; RY layer then CNOTs; Y, Z, Y rotations on each ancilla; Z expectation; cross entropy with the parameter shift rule."
+  ],
+  "qnn-first-series-setup": [
+   "setup",
+   "Sec. 3.2, p.10-11: 1000 train and 200 test samples, learning rate 0.1, one epoch, 1 to 3 layers, 4 and 7 data qubits, no varied batch sizes."
+  ],
+  "qnn-deep-setups": [
+   "setup",
+   "Sec. 3.2, p.11: 4 qubits/5 layers/10 epochs/lr 0.05; 10 layers; 7 qubits/5 layers/5 epochs/lr 0.1; each with a classical equivalent (Tables 14 to 15, 39 to 40, 48 to 49)."
+  ],
+  "overparametrization-def-sec3": [
+   "definition",
+   "Sec. 3.2, p.14: the paper states the term as a reminder in its own words. It is a loose restatement of the concept of [14] and differs from the Fisher-information formulation in Sec. 5; the two are not reconciled."
+  ],
+  "learning-rate-limit": [
+   "stated limit",
+   "Sec. 3.2, p.15 and Appendix, p.25: the paper itself says only three learning rates were tested, so no global behavior can be extracted."
+  ],
+  "spsb-setup": [
+   "setup",
+   "Sec. 4.1, p.16: SPSB estimates gradients in random directions, three circuit passes per input regardless of depth, batch size 32."
+  ],
+  "reuploading-def": [
+   "definition",
+   "Sec. 4.2, p.18: the paper describes the data reuploading layers (encoding parameters combined with trainable ones in each layer); the method is from [21]."
+  ],
+  "future-work-shots-limit": [
+   "stated limit",
+   "Sec. 5, p.21: the paper says it does not discuss the shots used for gradient estimates."
+  ],
+  "malware-exploratory-scope": [
+   "scope",
+   "Introduction p.2 says the work is exploratory. Sec. 3.2, p.12 says the classical NN used batch size 1 in the first series, 'not realistic', and p.13 says batch size 16 was used later. The new value is accurate and more exact than the stored one. Scope and setup statements."
+  ],
+  "barthe-def-expectation-value-sampler": [
+   "definition",
+   "Definition 1, Sec. II A, p.2."
+  ],
+  "barthe-randomness-source-classical": [
+   "definition",
+   "Sec. II A, p.2: part of the model's own definition (Fig. 1 and the text after Definition 1): randomness is the classical input, support is continuous (Definition 6)."
+  ],
+  "barthe-def-universal-generative-model": [
+   "definition",
+   "Definition 2, Sec. II B, p.2, with the equivalent pointwise CDF form, Eq. (2)."
+  ],
+  "barthe-universality-support-scope": [
+   "scope",
+   "Sec. II B note, p.2: the paper's own choice of support [-1,1]^M and its stated reasons."
+  ],
+  "barthe-design-summary-product-dense": [
+   "definition",
+   "Sec. VI, p.8 with Sec. III A and III B: the resources of the two designs are fixed by their construction (M qubits with Z observables; n = log(M+1) qubits with observables 2M|m><m| - I, norm 2M - 1). The value does not claim universality."
+  ],
+  "barthe-dense-construction-appendix-e": [
+   "definition",
+   "Appendix E, p.12: the state, the observables O_m = 2M|m><m| - I, the norm 2M - 1 = Theta(2^n) and <psi|O_m|psi> = Y_m are defined and the identity checks by direct calculation (with Z_m = (Y_m+1)/(2M)). Covers the construction only, not universality."
+  ],
+  "barthe-appendix-e-abuse-of-notation": [
+   "stated limit",
+   "Appendix E, p.11: the paper itself says it uses slight abuse of notation in the proof, specifically in the approximations."
+  ],
+  "barthe-theorem6-proof-spectrum-condition": [
+   "proved result",
+   "Appendix F, p.12: condition 1 is shown directly. Lemma 7 gives a state with expectations within epsilon of each vertex, and Tr(O rho) >= lambda_min gives the two eigenvalue bounds. (Typo: c_m = 0 for -1.)"
+  ],
+  "barthe-purification-pure-states": [
+   "proved result",
+   "Sec. IV B, p.5: a complete short reduction. A mixed state on n qubits is a pure state on 2n qubits, and a factor 2 does not change an Omega bound. Condition 1 does not depend on the state."
+  ],
+  "barthe-shadow-tomography-limit": [
+   "stated limit",
+   "Appendix G, p.13: the paper itself says the result cannot be trivially applied to shadow tomography, with its reason."
+  ],
+  "barthe-def-primary-mapping": [
+   "definition",
+   "Definition 4, Sec. V A, p.6 with Eq. (7) to (9)."
+  ],
+  "barthe-theorem7-linear-transformation": [
+   "proved result",
+   "Theorem 7, Sec. V A, p.6: the proof is the preceding observation that any O equals A P with real A (Pauli expansion) and linearity of expectation."
+  ],
+  "barthe-lemma3-uncorrelated-variables": [
+   "proved result",
+   "Lemma 3, Sec. V A, p.6-7: follows from Theorem 7 by the rank argument given in the text before the lemma (covariance rank limit). The bound 4^n - 1 (identity string is constant) is stated in 'in any case' without explanation."
+  ],
+  "barthe-def-polynomial-chaos-expansion": [
+   "definition",
+   "Definition 5, Sec. V B, p.7."
+  ],
+  "barthe-regression-generative-transfer-future-work": [
+   "stated limit",
+   "Sec. V B, p.7: the paper says it expects transfer and leaves it for future work."
+  ],
+  "barthe-no-easy-advantage-path": [
+   "stated limit",
+   "Sec. VI, p.8: the paper itself says it did not address whether it is a good idea, that advantage is not as easily proven, and that hardness does not connect straightforwardly."
+  ],
+  "barthe-advantage-left-open": [
+   "stated limit",
+   "Sec. VI, p.8: stronger advantage arguments are left for future work."
+  ]
+ },
+ "theory_low": {
+  "cvar-global-optima-coincide-diagonal-reachable": "Sec. 5, p.5: one sentence, 'the above discussion implies'. No separate proof, and it is an informal consequence (needs the ground-space degeneracy case handled). An authors' consequence, not a stated and proved result.",
+  "cvar-flat-example-constant-objective": "Sec. 5, p.5: only alpha = 0.5 is calculated. The claim for every 0 < alpha < 1 and the 'optimized by decreasing theta' statement rest on Fig. 3, a plotted result, not on a calculation in the text.",
+  "prop-7-1-qaoa-amplitude-bound": "Sec. 7, p.9-10 and Appendix D: the text layer does carry the bound (|alpha_p,z| <= (2^(n+1)(2 - Delta_{p-1} - delta) + 1)^p / sqrt(2^n)) and the proof is given in Appendix D. But the value and quotes drop the bound itself, so the stored record would not carry the result. Re-entered with the formula it could be HIGH (proved result).",
+  "prop-7-1-flat-state-special-case": "Sec. 7, p.10: a discussion of special cases after Prop. 7.1, 'when p = 1 and most diagonal values are equal'. The exact condition (delta >= 1 - 2^(-n(1/2+eps))) is dropped from the value and no separate proof is given. An intuition, not a stated and proved result.",
+  "qaoa-fixed-depth-flat-risk-limitation": "Sec. 7, p.10: 'there is the risk that' is the authors' interpretation of Prop. 7.1 about fixed-depth QAOA in general. It is not a stated limit of their own method.",
+  "required-shots-grow-exponentially": "Sec. VI B, p.12-13: derived from extrapolated fits of sigma*(n) (the paper says none of the three fits is conclusive) combined with a finite-sampling error fit eps_FS (Eq. 37) from n up to 10. A conditional extrapolation of measured results, not a proved result.",
+  "brute-force-shot-limit-below-nine": "Sec. VI B, Eq. (40), p.13: arithmetic from the cited cost criterion of Scriva et al. [18] (n_shots * n_calls < 2^n) and an assumed cost model (20 NGD steps, 1 + 2n calls). 2^n / (20(1+2n)) is below 1 for n <= 8, so the arithmetic checks, but the 'impossible' claim rests on that cited criterion and brute force as the only classical baseline.",
+  "exponential-boundary-quantum-advantage-unattainable": "Sec. VI B, Fig. 11, p.13: the authors say it 'strongly suggests'. An interpretation of an extrapolated curve under an assumed exponential decay of sigma*.",
+  "power-law-log-boundary-small-window": "Sec. VI B, Fig. 11, p.13: read off extrapolated curves (n >= 20 and n >= 25); the authors say the advantages are only theoretical. A result from extrapolated fits.",
+  "runtime-lower-bound-exceeds-one-hour": "Sec. VI B, Eq. (41), p.14: uses the cited runtime bound of [18], extrapolated shot counts and assumed D = O(1) and t_gate = 100 ns. An estimate, not a result the paper proves.",
+  "vqe-shot-extrapolation-lower-resources": "Sec. VII B, Fig. 13, p.14: a power-law fit to simulated data for n up to 13, extrapolated to n >= 243. A measured and extrapolated result.",
+  "hea-mostly-uncontrollable-nisq": "Sec. II.B, p.4: 'most HEA circuits in the NISQ era are uncontrollable' is a general claim with no derivation. The figure 228 is arithmetic (4095 / 18 = 227.5, rounded up) of a necessary parameter count only.",
+  "barthe-appendix-a-triangular-map": "Appendix A, p.9-10: the paper gives 'intuition' and says the map is 'the essence of triangular mapping in [BKM05]'. Lemma 1 is the cited result and the boundedness and piecewise continuity get a one-line reason. A cited result and a sketch.",
+  "barthe-theorem1-pointwise-density-sufficient": "Sec. II C, p.3: the substance is the cited sufficient condition from [KPB21]. The paper adds only the inclusion of monotone functions in all functions. A result proved elsewhere and cited.",
+  "barthe-theorem2-product-pointwise-density": "Sec. III A, p.3 and Appendices B and C: rests on the cited one-qubit universality Theorem 9 of [PSLNGS+21] and the cited Baire class 1 result. The multivariate step is one sentence ('stacking M universal circuits'). Theorem 11's proof is thin (see that item).",
+  "barthe-theorem3-product-encoding-universal": "Sec. III A, p.3-4: deduced in prose from Theorems 1 and 2 ('This yields...'). Theorem 1 asks density in ALL functions, while Theorem 2 gives density only in bounded piecewise continuous ones, and the step to the Wasserstein epsilon is not written out. No proof is given beyond the chain.",
+  "barthe-first-central-result-constant-norm": "Sec. III A, p.4: the summary sentence of Theorem 3, so it carries the same gaps (prose-level chain through Theorems 1 and 2, cited universality).",
+  "barthe-infinite-support-extension": "Appendix D, p.11: a short note. It defines a truncating sequence and says it converges in distribution. It does not say how the observable norm must scale, and the claim about finite moments is not shown.",
+  "barthe-theorem4-dense-encoding-universal": "Sec. III B and Appendix E, p.11-12: a construction sketch. It uses a cited state-preparation architecture [PB11] and a cited one-qubit approximation, the approximations are marked 'slight abuse of notation', and the approximate-equality notation is never defined. The Wasserstein epsilon is not derived.",
+  "barthe-lemma4-pure-state-circuit": "Appendix E, p.11: holds by the cited architecture [PB11] and a mapping g that is only asserted to exist. A short argument that relies on cited work.",
+  "barthe-lemma5-lemma6-approximate-rz": "Appendix E, p.12: Lemma 5 is taken from the proof in [PSLNGS+21] (cited) and the approximation symbol is not defined. Lemma 6 follows in one line with no error analysis.",
+  "barthe-theorem5-dimension-bound": "Sec. IV A, p.4-5: argued informally. A single-qubit example, then 'Extending this reasoning to several qubits, we find...'. No proof is given that M > 4^n - 1 rules out approximation for all epsilon.",
+  "barthe-theorem6-holevo-necessary-conditions": "cross-group consistency, Rule A (coordinator, 2026-10-30): Theorem 6, Sec. IV B, p.5; proof App. F, pp.12-13: condition 2 rests on 'Holevo's bound (found as Theorem 5.1 in [ANTSV02])', Eq. (F3), the Ambainis-Nayak-Ta-Shma-Vazirani random-access-code bound nL >= (1 - H(q))M, cited and not proved. The proof also says it combines approaches from Theorem 2.6 in [Aar07] and B.1 in [JGM+23]. Chernoff is background; the [ANTSV02] bound is a specific cited result.",
+  "barthe-theorem6-final-inequality-and-special-cases": "cross-group consistency, Rule A (coordinator, 2026-10-30): App. F, p.13, Eqs. (F3)-(F7): the final inequality combines Chernoff (background) with Eq. (F3), Theorem 5.1 of [ANTSV02], cited and not proved. The comparison with [JGM+23] follows from Lambda <= ||O||^2, but the inequality itself rests on the cited bound.",
+  "barthe-corollary1-product-optimal": "cross-group consistency, Rule A (coordinator, 2026-10-30): Corollary 1, Sec. IV C, p.5: optimality is measured against n in Omega(M/||O||^2) from Theorem 6, condition 2, which rests on Theorem 5.1 of [ANTSV02], cited and not proved (App. F, p.13, Eq. (F3)). Transitive on barthe-theorem6-holevo-necessary-conditions.",
+  "barthe-corollary2-dense-gap": "cross-group consistency, Rule A (coordinator, 2026-10-30): Corollary 2, Sec. IV C, p.5: the gap uses n >= log4(M+1) from Theorem 5, which the paper argues informally ('Extending this reasoning to several qubits, we find', p.4-5; barthe-theorem5-dimension-bound is graded low), and the Omega bound from Theorem 6, which rests on Theorem 5.1 of [ANTSV02] (App. F, p.13). Both inputs are unproved here.",
+  "barthe-lemma2-measurement-count": "Sec. IV D and Appendix G, p.13: proved only under an assumed independent Gaussian shot-noise model. Also epsilon^2 in Theta(||O||/t) is stated without derivation, while a measurement of an observable with norm ||O|| has variance of order ||O||^2/t, so the exponent on ||O|| in Eq. (6) looks wrong.",
+  "barthe-appendix-g-gaussian-shot-noise-model": "Appendix G, p.13: the value joins the stated simplifying assumption with the authors' claim that epsilon^2 is in Theta(||O||/t), which is not derived (the variance of a norm-||O|| observable is of order ||O||^2/t) and relies on a cited lemma [AGS05].",
+  "barthe-tradeoff-qubits-measurements": "Sec. IV C and IV D, p.5-6: the trade-off rests on Lemma 2 (simplified noise model) and is called a 'hint' and 'highlights' in the text. Authors' interpretation.",
+  "barthe-theorem8-finite-chaos-expansion": "Sec. V B, p.7: no proof. It extends the cited finite-Fourier-series fact of [SSM21] in one sentence.",
+  "barthe-theorem10-expectation-universality": "cross-group consistency, Rule A (coordinator, 2026-10-30): Theorem 10, App. B, p.10: proved from 'Theorem 4 from [PSLNGS+21]', restated as Theorem 9 and cited, not proved. The universality rests on that cited result; the review's own why already notes the team lead may prefer low.",
+  "barthe-theorem11-pointwise-density": "Appendix C, p.10-11: one sentence, 'building on Theorem 10'. The pointwise-limit step rests on the cited Baire class 1 results [Lac84, Leb04] and no argument is written out.",
+  "barthe-necessary-conditions-tradeoff": "The reader's value is more exact than the stored one: it names the Gaussian shot-noise assumption and the gap. Stored value overstates ('show a trade-off'). The measurement side rests on Lemma 2 under a simplified noise model, and Theorem 5 is argued informally; the authors' trade-off is an interpretation.",
+  "barthe-universality-proved": "The new value is the more exact one (names the two designs and the epsilon-Wasserstein form). But Theorems 3 and 4 are prose-level chains or sketches that rest on cited results (Theorem 9, Baire class 1, [PB11]); Theorem 1 asks density in all functions and Theorem 2 gives it only for piecewise continuous ones. The paper does claim and construct these, so as a statement of what the paper claims it is right, but the proofs do not settle it."
+ },
+ "keep_stored": {},
+ "requote": {}
+}

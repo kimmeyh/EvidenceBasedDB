@@ -485,6 +485,21 @@ this project keeps having to replace with a step.
 - **docs**: F129 carded (Sprint 14 Task E, 2026-10-30): re-check the
   LOW grades that rest only on an unproved textbook fact, 11
   candidates by keyword on that date, against the cross-group rule
+- **feat**: F114's last 19 groups applied (Sprint 14 Tasks E and F,
+  2026-10-31), after the team lead's Manual Validation answers: Q1, the
+  28 certainty changes settled as recommended (4 LOW to HIGH, 23 to LOW,
+  cgz-nonuniform-zero-one-corollary7 kept HIGH with its square root
+  restored); Q2, the 18 refused papers stay out, their drop reasons
+  ending with the decision. 5,000 new assertions (1,796 HIGH, 3,204
+  LOW), 136 stored ones updated; INTAKE 58 holds the counts and the 5
+  sign-off fixes the dry run forced
+- **fix**: the full suite after that apply (2026-10-31) failed 3 tests.
+  The apply had replaced 2 stored contexts with the reader's label
+  (ballin-2026's Dirac-3 assertion lost `platform:dirac-3`); the applier
+  now keeps a stored context unless the sign-off names a `context_fix`
+  (test proven red), and both were restored by re-apply. The F80 and F83
+  store tests now leave out an id a later full read rewrote and hold
+  every other id to its script (proven red by injection)
 
 ### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 

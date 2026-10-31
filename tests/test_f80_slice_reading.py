@@ -134,10 +134,19 @@ def test_the_store_holds_exactly_what_the_script_sets(live_conn):
     """Review of 9f71f19: a changed quote or context was never synced, and
     the quote test read the manifest, so the two could diverge.
     Proven to fail by injection, 2026-10-15: with one VALUE_EDITS
-    replacement changed and not applied, this test named the assertion."""
+    replacement changed and not applied, this test named the assertion.
+    An id a later full read rewrote (F114, Sprint 14: 12 ids, their
+    certainty changes the team lead's) is the full read's, and its history
+    must say so; every other id is held to the script. Proven to fail by
+    injection, 2026-10-31: with the value of an id the full reads did not
+    touch changed in the script, this test named it."""
+    from store.ingest import FULL_READ_MARK
     f80 = _script()
     bad = []
     for _, a, _ in f80.assertions():
+        reason = live_conn.execute("SELECT updated_reason FROM records WHERE id = ?", (a.id,)).fetchone()
+        if reason and FULL_READ_MARK in (reason[0] or ""):
+            continue
         row = live_conn.execute(
             "SELECT r.value, r.certainty, r.certainty_reasons, r.provenance, f.citation_context, f.claim_type "
             "FROM records r JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (a.id,)).fetchone()

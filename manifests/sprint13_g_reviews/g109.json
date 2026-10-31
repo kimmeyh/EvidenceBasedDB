@@ -1,0 +1,184 @@
+{
+ "group": "g109",
+ "reviewed_on": "2026-10-31",
+ "tag": "Sprint 14 Task F, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint14_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "ceroni-model-setup": [
+   "setup",
+   "Abstract, p.1 states the method as quoted: a classical network maps coordinates to circuit parameters, trained with a fidelity loss. Both sentences are the paper's own method statement."
+  ],
+  "ceroni-training-data-assumption": [
+   "setup",
+   "Section I p.2 and Section II A p.4 (Eq. 5 and text): the paper states it assumes access to ground-state quantum data at a set of coordinates and a polynomially large number of data. Own stated assumption."
+  ],
+  "ceroni-nondegenerate-assumption": [
+   "scope",
+   "Section II A, p.3: 'For the sake of simplicity, H(R) is taken to be non-degenerate over R in the region considered.' The paper's own stated assumption."
+  ],
+  "ceroni-coherent-gradient-needs-state-prep": [
+   "stated limit",
+   "Section III B, p.9: the paper says the method must apply the state-preparation unitaries repeatedly, which excludes experimentally obtained states, and that the [53] speedup needs a qubit register for the gradient, a prohibitive qubit count. Both are stated limits of its own method."
+  ],
+  "ceroni-lemma1-fermionic-grover-equivalence": [
+   "proved result",
+   "Section IV A, p.10 to p.11: Lemma 1 is stated and proved in the paper (Jordan-Wigner, FFFT, Eqs. 43 to 49). The value gives the full statement including Hf(s)."
+  ],
+  "ceroni-def1-quantum-fisher-information": [
+   "definition",
+   "Section IV B, p.14: Definition 1 defines the QFI matrix of a pure parameterized state (Eq. 81). The value says only that it is defined and used to bound its entries, which Eqs. 87 and 89 do."
+  ],
+  "ceroni-theorem6-applicability-limits": [
+   "stated limit",
+   "Section IV B, p.17 to p.18: 'the above result does not necessarily apply, precisely, to the generative model', and the assumptions are listed, with strong convexity named as the strongest. The paper's own limit on its own theorem."
+  ],
+  "ceroni-numerics-setup": [
+   "setup",
+   "Section V, p.18 to p.19: PySCF with STO-3G, RHF except H4, JAX feed-forward network with the largest at 3 hidden layers of width 20, PennyLane simulation, exact inner products for the cost, Adam via Optax. All in the paper's own setup text."
+  ],
+  "ceroni-numerics-scope-12-qubits": [
+   "scope",
+   "Section V D, p.19: 'Due to computational restrictions, all examples are limited to fewer than 12 qubits and the molecules included H2, H3+, H4, BeH2 and H2O.' Verbatim scope statement."
+  ],
+  "ceroni-open-problems-dynamics-and-training-distribution": [
+   "stated limit",
+   "Section VI, p.23 to p.24: the paper names time dynamics and the choice of training-example distribution as open, and says its lower bounds give no prescription for positions. Own stated open problems."
+  ],
+  "qgen-scalability-open": [
+   "stated limit",
+   "Section VI, p.23: the authors name scalability and barren plateaus as open and say vanishing gradients are a potential issue. Own stated caveat. The stored anchor says p.14; the passage is on p.23 of the PDF."
+  ],
+  "chakraborty-hybrid-noise-model-setup": [
+   "setup",
+   "Section II A p.7 states the additive Z = Z1 + Z2 assumption with Poisson shot noise and Gaussian white noise. Abstract p.1 says it is modeled as an infinite Gaussian mixture weighted by Poissonian parameters. Section I p.4 says the model comes from the authors' prior work [9], [10]."
+  ],
+  "chakraborty-responsibility-definition": [
+   "definition",
+   "Section III A, p.11: gamma(z) is the posterior of the latent cluster given the point (Eq. 7) and is named the responsibility that class k takes to explain the point. A term the paper defines."
+  ],
+  "chakraborty-lemma1-mean-update": [
+   "proved result",
+   "Lemma 1, Section III B, p.13, with the proof in Appendix A (p.25 to p.26, Eqs. 19 to 23). Section III B p.12 to p.13 says responsibilities are held fixed and there is no closed form, so it is an update rule. The value says so. Standard GMM derivation."
+  ],
+  "chakraborty-lemma2-covariance-update": [
+   "proved result",
+   "Lemma 2, Section III B, p.14, proved in Appendix B (p.26 to p.28, Eqs. 24 to 33). The mixing-weight result (w_k = (1/N) sum of responsibilities) is derived in the body by a Lagrange multiplier, Eqs. 10 to 13, p.13 to p.14. Both claims are proved in the paper."
+  ],
+  "chakraborty-simulation-setup-synthetic": [
+   "setup",
+   "Section V B, p.22 and the Fig. 4 caption p.16: Anaconda Jupyter Notebook with Python, data generated from the component GMMs, initial weights, means and variances as listed. I found no sample size or random seed anywhere in the text, so the value's negative statement holds."
+  ],
+  "chakraborty-bivariate-scope": [
+   "scope",
+   "Section I, p.4: 'The current study assumes a bi-variate hybrid quantum noise dataset' and future work will explore deep-learning-based and hard clustering. Verbatim scope statement."
+  ],
+  "chalkiadakis-simulation-setup": [
+   "setup",
+   "Section 3, p.2: qiskit simulation assuming noise-free qubits in general, code from [8] upgraded with more optimizers, early stopping, gradient ascent and conjugate layers (footnote 1 lists the optimizers). Own setup statement."
+  ],
+  "chalkiadakis-cost-and-training-definition": [
+   "definition",
+   "Section 3, p.3 to p.4: the cost is the fidelity averaged over training pairs (Eq. 3), trained by gradient ascent (Eq. 4). Defined by the paper."
+  ],
+  "chalkiadakis-param-count-exponential-limit": [
+   "stated limit",
+   "Section 3, p.4: the paper gives the parameter count (Eq. 7) and says it scales exponentially in the layer width, so simulating such networks classically is impractical beyond a handful of qubits. A limit the paper states about its own simulations."
+  ],
+  "chalkiadakis-conjugate-layer-definition": [
+   "definition",
+   "Section 3.1, p.5: a conjugate layer replaces a layer's transformation with the Hermitian conjugate of another layer's unitary (Eqs. 8 and 9), and the parameters are shared. Defined by the paper."
+  ],
+  "chalkiadakis-bitflip-training-setup": [
+   "setup",
+   "Section 4, p.6: 120 input/target pairs, bit-flip probability 0.2, lr 0.25 in initial sessions, 400-state validation set (20 x 20 Bloch grid). All as stated."
+  ],
+  "chalkiadakis-amp-damping-training-setup": [
+   "setup",
+   "Section 5, p.10 and footnote 4: gamma=0.1, 50 pairs early, 704 later, and a footnote of no more than 70 pairs. The paper is internally inconsistent here (704 against 70), and the value reports both without resolving it. High only as 'the paper says this'; the coordinator should note that the two figures conflict."
+  ],
+  "chalkiadakis-codeword-discovery-method": [
+   "setup",
+   "Section 6, p.12 to p.14: the [1,3,1,3,1] architecture with the channel after layer one, p=0.75 chosen for four equally likely outcomes, 100 training pairs, 400 validation states, 'proof of concept'. The value is scoped to this first attempt, which plateaued; the conjugate [1,3,1] model is not claimed."
+  ],
+  "chalkiadakis-swap-test-fidelity-estimate": [
+   "setup",
+   "Appendix A, p.19 to p.20: P0 = 1/2 + 1/2 F (Eqs. 26 and 27), estimated by S repeated runs, S=1000 as a starting point, raised near a plateau. The paper's own cost-estimation method."
+  ],
+  "qnn-bitflip-more-than-two-errors": [
+   "stated limit",
+   "Section 4, 'Limitations of this Approach', p.8: the paper says the QAE may fail if more than two bit flips occur and calls its models sub-optimal. Own stated limit."
+  ],
+  "cd-ansatz-definition-scaling": [
+   "definition",
+   "Results, 'CD-inspired ansatz', p.2 to p.3: U_cd = exp(-i theta A), one free parameter per gate, R = N2loc + N parameters per layer, O(N^2) scaling. 'Hardware implementable' is the authors' own description and is reported as their statement."
+  ],
+  "cd-ansatz-pool-truncation": [
+   "setup",
+   "Results, 'Performance analysis', p.3: nested commutator of order l=2, truncated to two-body terms, {Y, YZ} selected, 5-local Ising targets. The paper's own ansatz choice."
+  ],
+  "cd-protein-model-setup": [
+   "setup",
+   "Methods B, p.9: 3D tetrahedral lattice of [6], turn encoding, MJ interactions, 5-local Ising Hamiltonian whose ground state gives the turn sequence, fewer qubits at the cost of locality. As stated."
+  ],
+  "cd-simulation-setup": [
+   "setup",
+   "Results, p.3 to p.4: 20 runs with random initial parameters at p=1, Adam and Adagrad, parameter-shift gradients, 500 iterations at most with tolerance 1e-6, success probability as the metric."
+  ],
+  "cd-gradient-evaluation-cost-limit": [
+   "stated limit",
+   "Results, p.4 to p.5: parameter-shift needs 2 evaluations per parameter, so 2(N2loc+N) against 2N for HEA, 'a challenge' at larger sizes. For N=17 the ansatz 'finds it hard to converge' in 100 iterations. The authors add that this may be due to the optimizer or too few iterations, which the value omits but does not contradict."
+  ],
+  "cd-stated-challenges": [
+   "stated limit",
+   "Results p.5 and Discussions p.8: heuristic choice of CD terms, near-zero success probability when the ansatz fails, and further circuit optimization still needed on hardware. Own stated limits."
+  ],
+  "cd-quantinuum-setup": [
+   "setup",
+   "Results p.6 and Appendix C p.11: N2loc 52 and 80, at most 5 parallel operations, ZZ counts reduced to 35 and 70, 1000 shots. All as quoted."
+  ],
+  "cd-discussion-excited-state-risk": [
+   "stated limit",
+   "Discussions, p.8: sensitivity to initial parameters and CD-term choice, global optimizers as a possible remedy, and the protein structure changing if an excited state is reached. The authors' own challenges list. The remedy is framed as 'would be interesting', so the value's 'could help' is a fair reading."
+  ],
+  "cd-ansatz-optimization-offline": [
+   "setup",
+   "p.6: 'we ran the optimization part on a local simulator with Adam optimizer and 500 iteration steps and implemented the circuit obtained with the optimal parameters on the real hardware.' Own protocol statement."
+  ],
+  "chang-simulation-setup": [
+   "setup",
+   "Appendix A, p.7 to p.8: TensorFlow and PennyLane with the Lightning-QML backend, VQE evaluations on CPU only. Section II p.2 lists the package versions. Lightning is a classical simulator, so the 'classical simulation' reading is sound."
+  ],
+  "chang-training-dataset": [
+   "setup",
+   "Appendix A, p.8: molecules H2, H3+, H4, OH- from the PennyLane Molecules Dataset in STO-3G, Adam training, early stopping at relative loss change under 1e-4. Note H4 is in the training set."
+  ],
+  "chang-lstm-fc-architecture-definition": [
+   "definition",
+   "Section II D, p.3 to p.4 (Eqs. 11 and 12) and Appendix C, p.8: molecule-specific FC layer after the LSTM; one shared LSTM layer of latent dimension 40, two FC layers, UCCSD only. Defined by the paper."
+  ],
+  "chang-loss-function-definition": [
+   "definition",
+   "Section II C, p.3 (Eq. 9) and Appendix A, p.8 (Eq. 13): L = (1/T) sum_t (0.1 t) E_t(theta). Later steps weigh more in proportion to t. Defined by the paper."
+  ],
+  "chang-stated-limits-future-work": [
+   "stated limit",
+   "Section V, p.6: extending to larger and more strongly correlated molecules 'remains a significant challenge'. Appendix C, p.8: UCCSD only. The clause 'strong performance on small- to medium-sized systems' is the authors' framing and is reported as theirs."
+  ]
+ },
+ "theory_low": {
+  "ceroni-theorem1-hadamard-gradient-cost": "Section III A, p.6 to p.7: the theorem is stated and given a proof, but the proof assumes for simplicity that each generator term is unitary. The quotes do not carry the displayed bound (Eq. 12, lost in the text layer) and the value restates it only in words. The conditions and the bound are not in the quotes.",
+  "ceroni-theorem2-coherent-gradient-cost": "Section III B, p.8 to p.9: the proof again assumes each term is unitary 'for simplicity' and rests on the cited Amplitude Estimation theorem (Theorem 3, ref. [52]). The quotes drop the displayed bound (Eq. 25). The value paraphrases a formula the quotes do not carry.",
+  "ceroni-theorem6-qfi-data-lower-bound": "Section IV B, p.15 to p.17: Theorem 6 is proved in the paper, via the quantum Cramer-Rao bound (cited Theorem 5, ref. [66]). The quotes keep only the opening, one assumption and the closing clause. They drop the displayed bound, strong convexity and the local-minimum condition. The authors also state on p.17 that it does not necessarily apply to their model. Conditions are not carried by the quotes.",
+  "ceroni-corollary1-unbiased-scaling": "Section IV B, p.17: Corollary 1 follows in one line from Theorem 6 (unbiased case), so it inherits the Theorem 6 limits. The quotes drop the formula. The Omega(1/epsilon) scaling and the Heisenberg-limit remark are the authors' interpretation in prose.",
+  "ceroni-theorem6-flat-landscape-implication": "Section IV B, p.17: this is the authors' reading of the bound (divergence as the Jacobian norm goes to zero). It depends on the Theorem 6 bound, whose symbols are lost, and on its idealized assumptions. An interpretation, not a settled result.",
+  "ceroni-conclusion-gradient-scaling": "Section VI, p.23: a conclusion-level restatement of Theorems 1 and 2. Its formula symbols are lost in the text layer and the value does not carry the bound. The settled form lives in the theorems, which are rated separately.",
+  "qgen-grover-lower-bound": "cross-group consistency, Rule A (coordinator, 2026-10-30): Theorem 4, Sec. IV A, pp.11-13: the proof maps to the Grover Hamiltonians (Lemma 1, proved), then takes the adiabatic error bound from [59] (Eq. 55-56), the Dyson-series simulation cost from [54, 55] (Eq. 59) and ends in 'a contradiction of the bounds in [63]', the cited unstructured-search lower bound. All three are cited results used as steps. Stored HIGH; g109 has no pending escalation for it.",
+  "chalkiadakis-dqnn-plateau-cited-limit": "Section 7, p.16 to p.17: the plateau observation is the authors' own and is a stated limit. The value also bundles the alignment with [17] (a cited result) and the claim that conjugate layers help and speed up training (the authors' interpretation of one task). The whole value is therefore not settled by the paper. Splitting it would let the plateau part be high."
+ },
+ "keep_stored": {},
+ "requote": {
+  "qgen-scalability-open": "rebuilt from the local reader's quotes so its anchor names the PDF page the quotes are on (stored Conclusion, p.14, computed Section VI Conclusion, p.23)",
+  "cd-ansatz-success-falls-with-size": "rebuilt from the local reader's quotes so its anchor names the PDF page the quotes are on (stored page 4, computed p.3 to p.4)"
+ }
+}

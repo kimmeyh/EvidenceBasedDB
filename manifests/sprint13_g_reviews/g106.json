@@ -1,0 +1,316 @@
+{
+ "group": "g106",
+ "reviewed_on": "2026-10-31",
+ "tag": "Sprint 14 Task F, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint14_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "qvit-dataset-and-split": [
+   "setup",
+   "Sec 3.1 p.6 states 933,206 three-channel 125x125 images, half quark and half gluon, from simulated PYTHIA6 QCD dijet data on the CMS Open Data Portal; Sec 3.2 p.9 states the 714,510/79,390/139,306 split. The paper's own dataset and split."
+  ],
+  "qvit-vqc-design": [
+   "setup",
+   "Sec 3.2 p.8, Fig 5: VQCs replace the four MHA projections and the MLP fully connected layers; GELU stays classical; angle embedding, one-parameter rotation per wire, CNOT ring, measure each qubit. The paper's own architecture."
+  ],
+  "qvit-model-size-and-training-setup": [
+   "setup",
+   "Sec 3.2 pp.8-9 states patch size 10, hidden size 8, four blocks, four heads, MLP size 4, four 4-qubit circuits per QMHA and per QML, batch 256, 25 epochs, AdamW, clipping at norm 1."
+  ],
+  "qvit-parameter-count-reason": [
+   "setup",
+   "Sec 3.2 p.9 states the 5178 against 4170 parameters and the n against n^2+n reason, and that similar parameter counts were chosen after ref [59]. The paper's own setup."
+  ],
+  "qvit-baseline-tuned-selection-protocol": [
+   "setup",
+   "Sec 3.2 p.9: random hyperparameter search on the classical baseline applied to the QViT; best validation-AUC epoch re-evaluated on the hold-out test set. The paper's own protocol."
+  ],
+  "qvit-limits-expressiveness-no-hardware": [
+   "stated limit",
+   "Sec 4 p.11: the authors say the VQCs might lack expressiveness to match the classical model. Sec 5 p.11: real-hardware execution and noise robustness not yet done. Both are the authors' own statements about their work."
+  ],
+  "qvit-setup-simulated-params": [
+   "setup",
+   "Sec 3.2 p.9: VQCs run by numerical simulation with TensorCircuit on a classical computer; 5178 vs 4170 parameters."
+  ],
+  "no-cloning-theorem-1-1": [
+   "proved result",
+   "Theorem 1.1, Sec 1.2 p.12: stated with conditions (same-dimension Hilbert spaces, unitary on joint space, arbitrary state and reference state) and proved by inner-product argument Eqs 1.26-1.29."
+  ],
+  "hhl-setup-assumptions": [
+   "definition",
+   "Sec 1.6 p.18 defines the problem Ax=b with A hermitian non-singular, ||b||=1, eigenvalues in (0,1) with exact d-bit form, and says this is not general but reachable by remapping. The notes' own stated setup."
+  ],
+  "single-qubit-gate-decomposition-exercise-1-2": [
+   "proved result",
+   "Exercise 1.2 p.9 states the result with its conditions (two fixed non-parallel normalised vectors); Appendix A.2 gives the solution and ends 'which ends the proof'."
+  ],
+  "annealing-repetitions-for-99-percent": [
+   "proved result",
+   "Sec 2.4 p.27: Eq 2.28 P_succ = 1-(1-p)^m = 0.99 and Eq 2.29 give m directly from independent-run probability. Elementary and fully shown."
+  ],
+  "qaoa-trotter-2p-parameters": [
+   "definition",
+   "Sec 2.5 pp.27-28 defines QAOA through the Trotter step decomposition (Eqs 2.31-2.35) with parameters gamma_k, beta_k, i.e. 2p parameters, optimised classically."
+  ],
+  "qaoa-circuit-implementation": [
+   "definition",
+   "Sec 2.5 p.29 Eqs 2.42-2.47 give the explicit rotations for the mixer and for the single-qubit and two-qubit cost terms (RZZ via two CNOTs)."
+  ],
+  "miscalibrated-gate-error-quadratic": [
+   "proved result",
+   "Sec 3.1 p.32 Eqs 3.8-3.10: within the stated miscalibration model <Z> = cos(d(pi+eps)) is derived, the quadratic small-eps,d error follows, and d*eps = (2n+1)pi gives sign inversion. Conditions (small eps) carried in the value."
+  ],
+  "environmental-noise-model-polarisation": [
+   "proved result",
+   "Sec 3.3.1 pp.37-38 Eqs 3.26-3.35: the model (extra gate E with probability pE, E=G=X) is defined and the state, <m>=1-pE and polarisation 2pE-1 are derived."
+  ],
+  "repetition-code-bit-flip-failure-probability": [
+   "proved result",
+   "Sec 4.1.1 pp.34-35: the table gives Pfail=3eps^2-2eps^3, below eps for eps<1/2. Sec 4.1.3 pp.35-37 gives the same probability table for the three-qubit bit-flip code under independent noise."
+  ],
+  "threshold-theorem-4-1": [
+   "proved result",
+   "Theorem 4.1 Sec 4.1.6 p.50 stated with its condition (p below pth) and proved in the notes (ratio (p/pth)^(2^k) shrinks with k), using the concatenation recursion derived earlier. Informal wording, but the proof is in the paper."
+  ],
+  "threshold-theorem-overhead": [
+   "proved result",
+   "Sec 4.1.6 pp.50-51 Eqs 4.51-4.54 derive the polylogarithmic circuit size N*R^k from the failure bound. A derivation in the paper."
+  ],
+  "qec-recovery-equivalence": [
+   "proved result",
+   "Sec 4.2.1 pp.48-51: statement given for CPTP maps E and R; 1) implies 2) proved (Eqs 4.78-4.87) and 2) implies 1) proved (Eqs 4.88-4.92)."
+  ],
+  "correctable-errors-times-stabiliser": [
+   "proved result",
+   "Sec 4.2.5 p.63 Eqs 4.117-4.118 show R(VS)|psi> = |psi>; the non-correctable normaliser case is argued because it acts non-trivially on the code space."
+  ],
+  "dd-model-pure-dephasing": [
+   "proved result",
+   "Sec 5.1 pp.77-82: the pure dephasing model, assumptions (separable initial state, thermal bath) and the derivation of the coherence decay factor are given in full."
+  ],
+  "dd-dense-pulses-cancel-decoherence": [
+   "proved result",
+   "Sec 5.1 pp.83-86: derivation Eqs 5.45-5.60 under the stated approximations (H_SB neglected during pulses, instantaneous strong pulses) gives vanishing decoherence factor in the dense-pulse limit."
+  ],
+  "scope-open-systems-theory-not-explicit": [
+   "scope",
+   "Preface and Suggested Bibliography: 'not explicitly discussed in these notes'; 'Version 1.0 - June 2024'; some references unpublished. The notes' own scope statements."
+  ],
+  "scope-not-comprehensive-review": [
+   "scope",
+   "Preface p.i: 'the intent of these notes is not to serve as a comprehensive review article.' The author's own scope statement."
+  ],
+  "qubo-fixed-start-reduces-variables": [
+   "setup",
+   "Sec II.C p.2: the paper adopts Lucas's QUBO TSP formulation and fixes the start node, cutting binary variables from N^2 to (N-1)^2. Its own formulation."
+  ],
+  "constraint-subspace-only-one-class": [
+   "stated limit",
+   "Sec I p.1-2: the authors say the method confines evolution to a subspace with one city per position, removing one class of violations, and that the subspace may still contain infeasible solutions. Their own scope and caveat."
+  ],
+  "warm-start-method-gw-relaxed-one-hot": [
+   "definition",
+   "Sec IV and Algorithm 1 pp.4-5: the method is defined as MaxCut mapping, Goemans-Williamson solve, relaxation with eps=0.25 (ref 18), per-block superposition over one-hot states weighted by sqrt of relaxed probabilities (Eq 18)."
+  ],
+  "baselines-compared": [
+   "setup",
+   "Sec V.A p.6: warm-started QAOA with a custom mixer after TSP-to-MaxCut, standard QAOA with an XY mixer on a uniform one-hot superposition, and, for completeness, standard X-mixer QAOA."
+  ],
+  "compute-gpu-three-days-per-benchmark": [
+   "setup",
+   "Sec V.A p.6: RTX 3080 Ti GPU, 12 GB, about 3 days per full benchmark per variant."
+  ],
+  "evaluation-metrics-and-sample-count": [
+   "definition",
+   "Sec V.A p.6 defines Percentage of True Solutions and Sampling Rank and says approximation ratios were not used; Table I note p.8 says frequencies use 1000 samples per experiment."
+  ],
+  "setup-10-instances-depth-up-to-3": [
+   "setup",
+   "Sec V.A p.6: 10 random complete-graph instances, 5 parameter initializations each, depth up to 3 layers."
+  ],
+  "setup-5-city-noise-free-statevector": [
+   "setup",
+   "Sec V.A pp.5-6: 5-city instances needing 16 qubits, noise-free, Qiskit AerSimulator statevector, COBYLA."
+  ],
+  "pqfm-definition-classical-in-out": [
+   "definition",
+   "Sec II p.2, Eqs 1-4: PQFM defined as the composite of an embedding map and a measurement-based projection map, each feature an observable expectation; the text says input and output are classical and the QPU does only the intermediate step. (Quote's phi symbols are text-layer differences; the passage matches.)"
+  ],
+  "cd-ising-glass-implementation-setup": [
+   "setup",
+   "Sec II.A pp.4-5: Nsteps=1 (single Trotter step), one-local <Zi> and two-local <ZiZj> features, normalised features as local fields, couplings by mutual information. Their own implementation."
+  ],
+  "heisenberg-map-data-in-interaction-terms": [
+   "definition",
+   "Sec II.B p.6: data go into interaction terms, not local fields; no pairwise mutual-information encoding; each block has n-1 nearest-neighbour edges so encodes n-1 features."
+  ],
+  "xyz-family-definition-and-capacity": [
+   "definition",
+   "Sec II.C pp.7-8: the XYZProjectiveQFM is defined by active axes A, graph E and channels P; capacity up to n|A| per layer, n|A|L overall (Eq 33), 24 for n=4, |A|=3, L=2; shared-feature mode gives nL."
+  ],
+  "xyz-family-scope-limit-parameterization": [
+   "scope",
+   "Sec II.C p.7: 'a Hamiltonian with local X and Y fields but only an XX interaction channel is not part of the current XYZProjectiveQFM parameterization', because two-body channels are tied to the local-encoding axes."
+  ],
+  "xyz-circuit-one-trotter-step": [
+   "setup",
+   "Sec II.C p.8: circuits use a first-order Trotter approximation with one step; more steps possible."
+  ],
+  "datasets-four-biomedical": [
+   "setup",
+   "Sec III.A pp.8-9: CRY1 171 molecules, 1203 descriptors cut to 156 by mutual information; I-SPY1 161 samples 370 features; Wisconsin 569 samples 30 features; Cleveland 303 samples 13 features."
+  ],
+  "hardware-runs-shots-no-mitigation": [
+   "setup",
+   "Sec III.B p.9: ibm_marrakesh, ibm_fez, ibm_kingston on Molecular Toxicity; 4096 shots; no QEC or mitigation; only ibm_kingston for I-SPY1, chosen as best on the Molecular Toxicity benchmark."
+  ],
+  "simulation-statevector-same-assignment": [
+   "setup",
+   "Sec III.B p.9: Breast Cancer Pathology and Cardiac features from Qiskit AerSimulator statevector with the same hardware-aware feature assignment as the device runs."
+  ],
+  "learning-pipeline-nested-cv-gradient-boosting": [
+   "setup",
+   "Sec III.C pp.9-10: outer repeated stratified 5-fold x10 = 50 evaluations; inner stratified 80/20 holdout via PredefinedSplit and GridSearchCV on AUC; Gradient Boosting seed 42; same protocol for all feature types."
+  ],
+  "hybrid-selection-top30-shap-13-pca": [
+   "setup",
+   "Sec III.D p.10: top 30 SHAP-ranked features for Breast Cancer Pathology and 13 PCA components for Cardiac, chosen from preliminary experiments; SHAP selected without leakage inside the nested protocol."
+  ],
+  "statistical-criteria-consistent-promising": [
+   "definition",
+   "Sec III.E p.11: paired deltas over 50 outer folds, Student-t 95% CI, one-sided Wilcoxon; Consistent, Promising, Suggestive and Positive trend labels defined as stated."
+  ],
+  "open-problems-noise-and-surrogates": [
+   "stated limit",
+   "Sec V p.15: the authors name understanding hardware noise (detrimental, drift, noise-assisted) as open, and say classical surrogates of the feature extraction are a diagnostic since efficient classical prediction may weaken advantage claims. Their own open limits."
+  ],
+  "no-quantum-advantage-established": [
+   "stated limit",
+   "Sec V p.15: 'Taken together, these results do not yet establish quantum advantage.' The authors' own caveat."
+  ],
+  "setup-ibm-up-to-156-qubits-statevector": [
+   "setup",
+   "Introduction p.2: 'The experiments include executions on real IBM quantum processors with up to 156 qubits, as well as statevector simulations for complementary benchmarks.'"
+  ],
+  "framework-assumptions-loss-and-encoding": [
+   "definition",
+   "Sec II.A pp.2-3: the framework is defined as a parameterized CPTP map with no further assumption on the parameter dependence, fixed data encoding, loss as the expectation of a Hermitian observable with sup spectral norm Closs < infinity, and gen = R - R_S (Eq 4). The paper's own definitions."
+  ],
+  "theorem-4-variable-structure": [
+   "proved result",
+   "Theorem 4, Sec II.B pp.3-4. Proved as Corollary C.3 (Appendix C.2.4, p.31): union bound over G_T structures on top of Theorem C.6. The log(G_T)/N term, and that it is O(T/N) when G_T is exponential in T, follow from the proof."
+  ],
+  "theorem-5-mother-theorem": [
+   "proved result",
+   "Theorem 5, Sec IV.A p.8, is proved as Theorem C.4 (Appendix C.7): covering nets per Theorem C.8, chaining as in C.7, union bounds. The appendix derives Theorems 1 to 4 as special cases (fixed Mt=M, ct bounded by 1024, constant confidence and Closs). Terse but complete proof."
+  ],
+  "theorem-c4-properties-of-bound": [
+   "proved result",
+   "Appendix C after Theorem C.4: the listed properties (1/sqrt(N), at worst slightly superlinear in T, log in uses, structures and 1/delta) are read directly off the proved bound (C15)."
+  ],
+  "theorem-c1-c2-metric-entropy-bounds": [
+   "proved result",
+   "Appendix C.1: Theorems C.1 (log|N| <= 32 T log(12T/eps)) and C.2 (512 T log(6T/eps)) are stated for eps in (0,1] with arbitrary non-trainable global gates and are proved from Lemmas C.1 and C.2 via a telescoping covering argument."
+  ],
+  "lemma-c1-c2-covering-numbers-two-qubit": [
+   "proved result",
+   "Appendix C.1 pp.19-20: Lemma C.1 (unitaries, any unitarily invariant norm, (6||1||/eps)^32) proved by covering a norm ball in 16 complex dimensions; Lemma C.2 (CPTP maps, diamond distance, (6/eps)^512) proved the same way."
+  ],
+  "proof-strategy-covering-independent-of-n": [
+   "proved result",
+   "Sec IV.A: the net cardinality independent of n is exactly what Theorems C.1-C.3 prove (log|N| depends on T, M, eps only). The remark that the Euclidean-space bound is exponential in n is the authors' own comparison."
+  ],
+  "theorem-c6-fixed-structure-statement": [
+   "proved result",
+   "Appendix C.2.2: Theorem C.6 is stated with its conditions (fixed architecture, T 2-qubit CPTP maps, i.i.d. data, probability at least 1-delta, reproducible quantum labels) and proved by a two-step chaining argument."
+  ],
+  "theorem-c5-preliminary-log-n-factor": [
+   "proved result",
+   "Appendix C.2.1 p.23: Theorem C.5 is proved with Hoeffding's lemma, a union bound over a T/N-covering net and Theorem C.2; the text says it is worse than Theorem C.6 by a log N factor."
+  ],
+  "corollary-c1-c2-gate-sharing-and-copies": [
+   "proved result",
+   "Appendix C.2.3: Corollaries C.1 and C.2 are stated and proved by the Theorem C.6 argument with Theorem C.3 covering. The value keeps the caveat that Closs may scale with M. 'Preferable' is the authors' reading of the proved bound."
+  ],
+  "corollary-c3-variable-structure-optimization-over-structures": [
+   "proved result",
+   "Appendix C.2.4 p.31: Corollary C.3 is proved by Theorem C.6 plus union bounds; linear in T and log in G_T follow from the bound. The remark about exponentially many structures is a direct reading of the bound."
+  ],
+  "theorem-c7-c8-optimization-dependent": [
+   "proved result",
+   "Appendix C.2.5: Theorems C.8 (metric entropy) and C.7 (prediction error) are stated and proved; Remark C.7 states the reference maps must be fixed independently of the data. The 'preferable' remarks are readings of the proved bound."
+  ],
+  "corollary-c4-estimated-training-error": [
+   "proved result",
+   "Appendix C.2.6 p.26: Corollary C.4 proved by splitting the error, Theorem C.6 plus Hoeffding on the subsampled estimate, then a union bound. The sigma_est ~ N/(T log T) remark reads off the bound."
+  ],
+  "qcnn-polylog-training-size-theorem": [
+   "proved result",
+   "Appendix D: the QCNN is defined as a QMLM with log n independently parameterized 2-qubit maps each used at most n times, and Corollary C.2 gives Eq D5 with sqrt(log(n)^2/N), so N in O(poly(log n)); the intro states O(log^2 n). Derived in the paper from a proved corollary."
+  ],
+  "qcnn-small-training-error-still-needed": [
+   "stated limit",
+   "Appendix A.2 p.16: the authors say the guarantee applies when the network does well on a training set and that achieving small training error (barren plateaus) is still a challenge. A caveat on what their bound delivers."
+  ],
+  "qcnn-training-states-away-from-transitions": [
+   "setup",
+   "Appendix B.1 p.14: training states are chosen away from the phase transition lines so small bond dimension suffices and the simulation stays cheap. Their own setup."
+  ],
+  "compiling-numerics-setup-qft-vans": [
+   "setup",
+   "Sec II.C.2 pp.5-6 and Appendix B.2: n-qubit QFT compiled with VAns; three training-input distributions; loss is the squared trace distance (Eq 11)."
+  ],
+  "open-questions-and-pessimism-of-bounds": [
+   "stated limit",
+   "Sec III.C p.8: the authors say the bounds are trivial for exponentially many gates, hold for arbitrary distributions and may be pessimistic, and that outperforming the general bound is open. The authors' own statements of their bounds' limits."
+  ],
+  "caro-gate-sharing-and-optimization-refinement": [
+   "proved result",
+   "Theorem 3 (Sec II.B p.3, Eq 7) has the min over K of sqrt(K log(MT)/N) plus a sum of M*Delta_k over the remaining gates, with the stated conditions. The stored value dropped the Delta term. Proved as Theorems C.7/C.8 (Appendix C.2.5) and C.4. The reader's value is better."
+  ],
+  "caro-no-quantum-advantage-and-exponential-gate-limit": [
+   "stated limit",
+   "Sec III.C p.8: 'Our results do not prove a quantum advantage' and the bounds scale exponentially in n for exponentially many gates so no non-trivial claim. Both are the authors' own stated limits."
+  ]
+ },
+ "theory_low": {
+  "qpe-single-run-error-half": "Sec 1.5.1 p.15. The error 1/2 follows from the outcome table, but the O(1/eps^2) number of runs is asserted without derivation.",
+  "kitaev-phase-estimation-query-count": "Sec 1.5.2 p.16. The O(1/eps^2)=O(2^{2d}) query count is asserted, not derived, and Kitaev's method is described, not proved.",
+  "n-qubit-qpe-inverse-qft": "Sec 1.5.3 pp.16-17. A description of the algorithm; 'important classical post-processing' and its reduction are asserted, not shown.",
+  "hhl-result-post-selection": "Sec 1.6 pp.20-21. The derivation (Eqs 1.81-1.88) holds only under the idealised assumptions of the section (exact d-bit eigenvalues, ideal QPE), which the value and quotes omit. A walk-through of the algorithm, not a stated and proved theorem.",
+  "hadamard-test-purpose": "Sec 1.1.1 p.11. The real-part circuit is derived (Eqs 1.18-1.21), but the imaginary-part circuit result (Eq 1.24) is left as Exercise 1.4 and not proved in the text. The value covers both, so the paper does not settle it fully.",
+  "teleportation-needs-two-qubit-measurement": "Sec 1.4 pp.13-14. The protocol is derived for the standard case, but the contrast with no-cloning ('a fundamentally different procedure') is an informal remark, not a proved result.",
+  "ising-mapping-subset-sum-number-partitioning": "Secs 2.1-2.2 pp.23-24. 'Many problems can be mapped' is a general assertion; the two examples are constructions, not a proved result.",
+  "adiabatic-theorem-statement-and-condition": "Sec 2.3 pp.24-26. The 'proof' neglects a term under the adiabatic approximation (Eq 2.20 to 2.21), and Remark 2.1 says full generality needs the condition in Eq 2.24. The 'slowly enough' condition is qualitative. Not a rigorous proof.",
+  "vqe-general-pauli-strings-local-minima": "Sec 2.6 pp.29-30. Characterisations ('heuristic', QAOA as a specific VQE, local-minima pitfalls) are the author's description of a cited method, not a defined or proved result.",
+  "sampling-mean-mean-and-variance": "Sec 3.2 p.34. 'The statement then is that S ... has mean p and variance p(1-p)/N' is asserted without proof (a standard fact).",
+  "shor-code-generic-single-qubit-errors": "Secs 4.1.4-4.1.5 pp.37-40. The claim that concatenating the codes protects against generic single-qubit errors rests on an informal Pauli-expansion argument with the syndrome extraction only described. Not a stated and proved theorem.",
+  "correlated-noise-layers-vs-more-qubits": "Sec 4.1.7 pp.53-54. The (3p)^k result is a leading-order estimate worked from diagrams ('+ ...'); the single-layer comparison is argued for N=3,5 only. Informal.",
+  "stabiliser-generators-count": "Sec 4.2.3 p.55. The count n-k generators giving 2^{n-k} subspaces of dimension 2^k is a short counting remark ('each generator divides the space in two') with independence of generators assumed, not proved.",
+  "surface-code-layout-minimal-array": "Sec 4.3 pp.63-66. The layout is described, but 'L must be odd for logical operations' and the minimal L=3 are asserted without derivation.",
+  "surface-code-measurement-vs-data-errors": "Sec 4.3.1 pp.67-68. An illustrative worked table for a small code with hedged wording ('most probably'); not a general result.",
+  "surface-code-error-paths-closed-loops": "Sec 4.3.1 pp.68-69. A graphical argument for one example path; the torus statement is asserted. Informal.",
+  "steane-code-single-qubit-and-transversal": "Sec 4.4.1 pp.71-73. The code is described, but 'any single-qubit error is recovered' and the transversal confinement are asserted, not derived.",
+  "effective-t-gate-steane": "Sec 4.4.1 p.76. The T-gate gadget is derived (Eqs 4.160-4.165) but fault tolerance of the measurement is explicitly 'can be proven, but will not be tackled here'; the fault-tolerance claim is unproved.",
+  "qem-definition-bias-variance-tradeoff": "Sec 5.2 pp.86-87. Characterisation of QEM mixing definition with unproved claims (variance rises, loses usefulness at large size).",
+  "zne-assumptions-and-impossibility": "Sec 5.2.1 p.89. 'ZNE is impossible without regularity assumption' is asserted, about a cited method class, not a stated limit of the notes' own work.",
+  "zne-linear-unbiased-richardson-variance": "Sec 5.2.1 pp.89-90. Unbiasedness and the variance expression are stated without derivation; the Richardson variance growth is asserted.",
+  "pec-quasi-probability-unbiased-variance-cost": "Sec 5.2.2 pp.91-92. The quasi-probability is derived for the bit-flip example (Eq 5.102), but 'unbiased' and the gamma^2 variance factor are stated without derivation.",
+  "pec-needs-noise-knowledge-exponential-parameters": "Sec 5.2.2 p.94. The 4^N-1 parameter count is a computed remark, but it is a limit of the cited PEC method, not a limit the notes state about their own work.",
+  "pqfm-linear-vs-quadratic-kernel-cost": "Sec II p.3. A counting remark (all sample pairs vs one feature vector per sample), not a theorem or proof; the authors' claim about scaling for a fixed measurement protocol. The O(N^2) exponent is flat in the text layer but the passage is clear.",
+  "theorem-1-conditions-remark-1": "cross-group consistency, Rule A (coordinator, 2026-10-30): Theorem 1 and Remark 1, Sec. II.B p.3: the value states the bound for kappa-local trainable gates. Appendix C proves it (Theorem C.6) only for 2-qubit gates; Remark C.1 says the proofs 'straightforwardly extend' to kappa qubits and gives the changed constants, but the extension is not carried out. The proof holds under an assumption (2-local) the value does not carry. The same group graded theorem-c3-reuse-logarithmic-and-kappa-local low for this same asserted extension.",
+  "theorem-2-gate-sharing": "Sec II.B p.3, Theorem 2. The sqrt(T log(MT)/N) bound is proved (Corollary C.1, Closs fixed). But the value also says parallel copies do not significantly worsen generalization. Corollary C.2 (Appendix C.2.3) holds only with the same parameters in every copy, and its bound grows with Closs, which the appendix says can scale badly with M. That condition is dropped here.",
+  "theorem-c3-reuse-logarithmic-and-kappa-local": "Appendix C.1, Theorem C.3 is proved. But the value also says the bounds extend to kappa-local gates and to qudits. Remark C.1 only says it 'straightforwardly extends' and the qudit sentence says it 'can naturally be extended', with the dimension dependence unproved. Those extensions are asserted, not proved.",
+  "remarks-random-optimizer-and-data-reuploading": "Appendix C, Remarks C.4 and C.9. The extensions to a randomized optimizer and to data re-uploading are asserted in a short remark ('the proof extends', 'the same reasoning applies'), not proved.",
+  "compiling-implication-polynomial-data-at-cost-of-exactness": "Appendix E p.40. Bound E4 follows from Corollary C.3 under the stated exponential-structures assumption, but 'T, and hence N, scale polynomially for efficiently implementable unitaries' is an expectation ('we expect'), and the QFT O(n^2) gate count is cited, not shown.",
+  "caro-generalization-error-sqrt-t-over-n": "cross-group consistency, Rule A (coordinator, 2026-10-30): Theorem 1 with Remark 1, Sec. II.B p.3: 'local gates' in the paper's Theorem 1 means kappa-local; the proof (Theorem C.6, App. C.2.2) covers 2-qubit gates only, and the kappa-local case rests on Remark C.1's asserted extension, not proved. Gray: for 2-qubit gates the bound is proved, and the value does not say kappa."
+ },
+ "keep_stored": {},
+ "requote": {
+  "caro-generalization-error-sqrt-t-over-n": "regraded LOW at the team lead's decision: cross-group consistency, Rule A (coordinator, 2026-10-30): Theorem 1 with Remark 1, Sec. II.B p.3: 'local gates' in the paper's Theorem 1 means kappa-local; the proof (Theorem C.6, App. C.2.2) covers 2-qubit gates only, and the kappa-local case rests on Remark C.1's asserted extension, not proved. Gray: for 2-qubit gates the bound is proved, and the value does not say kappa."
+ },
+ "value_replace": {
+  "caro-generalization-error-sqrt-t-over-n": "For a quantum machine learning model with T trainable local gates trained on N points, the generalization error is bounded, with high probability, at worst on the order of sqrt(T log T / N); hence polynomially many trainable gates need only polynomially many training points."
+ }
+}

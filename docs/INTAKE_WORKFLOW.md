@@ -2831,3 +2831,59 @@ counts that enter are added when it runs.
   `evidence-20261030T210228761119-...db`) appended the corrected note to
   those 6 records and wrote nothing else. The earlier notes stay, as
   history; the latest note on each record is the one that holds.
+- **The team lead's decisions, 2026-10-31 (Sprint 14 Manual Validation;
+  counts a snapshot as of that date).** Written before the apply; the
+  counts that enter are added when it runs.
+  - Q1 option 1: the 28 certainty changes in the 19 waiting groups are
+    settled as recommended (`work\f114\review\escalations\gNNN.json`):
+    4 stored LOWs raised to HIGH (qnpg-bias, qml-advantage-general-functions
+    and qnn-decoder-standard-qec-bound as proved results, babbush-five-stages
+    as the paper's own definition), 1 MODERATE and 22 HIGHs set LOW with
+    the reviewer's cause, and cgz-nonuniform-zero-one-corollary7 kept HIGH
+    with the square root its value had dropped restored (p.13, Eq 26; the
+    stored value had the same slip). The 7 stored HIGHs set LOW whose
+    reader gave no value keep their stored value (`value_replace`). The 19
+    groups are finalized with `reviewed_on` 2026-10-31.
+  - Q2 option 1: the 18 papers stay out. Their 763 drop reasons in the
+    14 review files now end with the decision, so the apply appends one
+    more note to each of the 18 records; the earlier notes stay, as
+    history.
+  - The dry run refused 5 of the settled items until their sign-off was
+    fixed: 3 stored HIGHs set LOW whose reader gave no quotes take their
+    stored quotes (`extra_quotes`); two-way-partitioning-dual-sdp-lower-bound's
+    stored value stated "1 or -1", which none of its quotes hold, so its
+    value now says only what its quotes say, with one added quote; and
+    cgz-nonuniform-zero-one-corollary7's value states the square root in
+    words, in the quote's own symbols.
+  - Applied with backup `evidence-20261031T110555183383-...db`, first on a
+    copy of the store: 5,000 new assertions (1,796 HIGH, 3,204 LOW), 136
+    stored assertions updated (22 HIGH to LOW, 4 LOW to HIGH, 1 MODERATE
+    to LOW, the rest keeping their grade), 1 record raised to `read`, and
+    18 refusal notes appended. A second apply wrote nothing. The store now
+    holds 23,653 assertions (8,167 HIGH, 15,386 LOW).
+- **Fourth correction, 2026-10-31.** The full suite after that apply
+  failed 3 live-store tests:
+  - A real defect: the apply replaced the stored context of 2 assertions
+    with the reader's nearest-fit label, which no review decided (context
+    is not an item the F117 reviewer grades):
+    dirac3-stratification-falls-short-ballin-2026 lost
+    `platform:dirac-3` (to `qc`), and
+    Abbas's effective-dimension bound (g079) moved from `qml` to
+    `ml`. The applier now keeps a stored assertion's context unless the
+    sign-off names it in `context_fix`. Both go back through a
+    `context_fix` in the g079 and g094 sign-offs, because the stored
+    contexts are now the wrong ones. The 2026-10-30 apply moved no stored
+    context (its backups compared).
+  - Finalize reads the stored grades from the store, so after an apply it
+    no longer sees the certainty changes it settled. g079 and g094 were
+    re-finalized against a copy of the pre-apply backup
+    (`EBDB_STORE_DIR`), with the same counts as before.
+  - Re-applied with backup `evidence-20261031T123122796779-...db`, first
+    on a copy: the 2 contexts restored and nothing else; a second apply
+    wrote nothing.
+  - Two tests assumed the Sprint 9 and Sprint 10 scripts still own their
+    assertions (F80: 12 ids; F83: two-way-partitioning-dual-sdp-lower-bound).
+    F114's full reads rewrote them under reviewed verdicts, and the team
+    lead decided their certainty changes. The tests now leave out an id
+    whose stored history records a later full read, and still hold every
+    other id to its script.
