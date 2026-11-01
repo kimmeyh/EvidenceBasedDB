@@ -1,0 +1,223 @@
+{
+ "group": "g113",
+ "reviewed_on": "2026-10-30",
+ "tag": "Sprint 14 Task F, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint14_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "data-setup-576-firms": [
+   "setup",
+   "Section 3, p.9: the paper states its dataset and sources in these words, in context."
+  ],
+  "data-recovery-definition-30-days": [
+   "definition",
+   "Section 3, pp.9-10: the paper defines recovery amount as the bond price 30 days after default and says it follows the literature."
+  ],
+  "data-recovery-rate-distribution": [
+   "setup",
+   "Section 3.1, p.10: text and Table 2 give mean 48%, median 42%, STD 0.33, max 1.0996, and the bimodal histogram. Description of its own sample."
+  ],
+  "data-default-year-imbalance": [
+   "setup",
+   "Section 3.1, p.11: 597 defaults 1999-2015 and 1,128 observations 2016-2023, stated for its own sample."
+  ],
+  "data-feature-categories": [
+   "setup",
+   "Section 3.2, pp.12-14: counts 29, 17, 78 (77 PD plus 1 volatility), 98 (55+43), 34 sum to 256, each stated in the text."
+  ],
+  "data-preprocessing-zscore-no-pca": [
+   "setup",
+   "Section 3.2, pp.14-15: z-score from training set only, 0/1 mapping, no missing data, no PCA; all stated in one paragraph."
+  ],
+  "architecture-four-step-pipeline": [
+   "setup",
+   "Section 4, p.15: the four numbered steps are the paper's own architecture description."
+  ],
+  "architecture-256-features-8-qubits": [
+   "setup",
+   "Section 4.2, p.17: 256 features in eight qubits; the angle-encoding line is the paper's 4-feature illustration of one qubit per feature. Own encoding setup."
+  ],
+  "architecture-classical-master-layer": [
+   "setup",
+   "Section 4.1, pp.15-16: input and hidden layer of equal size with LeakyReLU, and its stated role as a feature transformation layer."
+  ],
+  "architecture-pqc-strongly-entangling-parameter-count": [
+   "setup",
+   "Section 4.3, pp.17-18: rotation R(alpha,beta,gamma) per qubit, CNOTs of range one, O(3n) parameters and O(3 log2 N) scaling, stated as its own circuit design."
+  ],
+  "theory-unitarity-limit-classical-inputs": [
+   "stated limit",
+   "Section 4.4, p.19: the authors state in their own words that the constraints of Eqs. (2) and (4) act on the internal quantum state only, not on classical vectors."
+  ],
+  "baselines-angle-encoding-auxiliary-layer": [
+   "setup",
+   "Section 4.5, p.19: the angle-encoding baseline has an auxiliary classical layer and O(3Nn) parameters, stated by the paper for its own baseline."
+  ],
+  "setup-four-fold-cv-100-epochs": [
+   "setup",
+   "Section 5.2, pp.23-24: four folds of 75%/25%, same splits for all models, 100 epochs (100 trees), and LOOCV as a robustness check, all stated."
+  ],
+  "setup-no-chronological-split": [
+   "stated limit",
+   "Section 5, footnote 3, p.20: the authors state a strict chronological split leaves too few defaults, so they use four-fold CV. A stated constraint on their own validation design."
+  ],
+  "setup-simulator-software-hardware": [
+   "setup",
+   "Section 5.1, p.21: PennyLane 0.38.0, default.qubit on i9-13900H CPU, RTX 4050 GPU for classical models, Python 3.12.3, PyTorch 2.4.1, no more than 14 qubits."
+  ],
+  "setup-hyperparameters-table5": [
+   "setup",
+   "Section 5.1 and Table 5, pp.21-22: Adam, lr 0.001 (FNN, QML), XGBoost lr 0.1 with Newton-Raphson, depth six by grid search, and the statement that backpropagation is not feasible on real hardware."
+  ],
+  "setup-parameter-matched-baselines": [
+   "setup",
+   "Section 5.2, p.22 and Table 7, p.24: the paper states it matched FNN and angle-encoding capacity to the amplitude model; Table 7 lists 67,857, 67,873 and 65,825."
+  ],
+  "method-diebold-mariano-assumptions": [
+   "stated limit",
+   "Section 5.2, pp.23-24: the paper states the independence assumption and the comparison against the standard-normal critical value (printed as 0.05). Own method and assumption."
+  ],
+  "appendix-b2-amplitude-state-prep-depth-limit": [
+   "stated limit",
+   "Appendix B.2, pp.49-50: the authors state the depth scaling, several hundred operations for 256 dimensions, and that full amplitude encoding remains challenging on NISQ hardware."
+  ],
+  "supp-definition-uniformly-controlled-rotation": [
+   "definition",
+   "Supplement Section 1, p.51: Definitions 1 and 2 are stated by the paper (after Mottonen et al.) for its amplitude-encoding construction."
+  ],
+  "limit-padding-and-qubit-growth": [
+   "stated limit",
+   "Section 6.1, p.33: the third limitation, in the authors' words: padding to a power of two, and logarithmic qubit growth (1,024 features need at least 10 qubits)."
+  ],
+  "limit-no-noise-modelling-main-results": [
+   "stated limit",
+   "Section 6.1, p.33: the second limitation: no explicit noise modelling or mitigation in the main implementation."
+  ],
+  "limit-classical-master-layer-bottleneck": [
+   "stated limit",
+   "Section 6.1, p.33: the authors state the classical master layer may reduce speedup benefits and the model inherits interpretability and cost challenges."
+  ],
+  "limit-economic-significance-7-8-percent": [
+   "stated limit",
+   "Section 6.1, pp.33-34: the authors state the 7-8% RMSE gain has context-dependent value, quantum cost is higher, and the study is a proof of concept. The 7-8% figure is quoted inside the limit (0.246 to 0.228 is 7.3%)."
+  ],
+  "limit-data-and-code-availability": [
+   "stated limit",
+   "Declarations, p.35: code on reasonable request and data under a nondisclosure agreement, stated by the authors."
+  ],
+  "future-work-listed": [
+   "stated limit",
+   "Section 6.2, pp.34-35: the authors list these directions and state that temporal generalization cannot be assessed directly with the current data."
+  ],
+  "recovery-rate-simulator-proof-of-concept": [
+   "stated limit",
+   "Section 6.1 p.32-34 and Appendix B.1 p.47: all QML models are simulator-based and the study is a proof of concept, stated by the authors. The Appendix B hardware run (angle encoding, 100 samples, 32 features, 13 epochs, Rigetti Ankaa-3) is described as preliminary due to resource limits. The new value is accurate and more complete than the stored one."
+  ],
+  "method-pqkd-overview": [
+   "setup",
+   "Abstract p.2 and Section 1 p.3: the paper's own description of PQKD (16-mode circuit, dictionary convolutions, alternating gradient-based and gradient-free updates). Method description."
+  ],
+  "def-kd-loss-temperature-lambda": [
+   "definition",
+   "Section 2.1 Eqs. (1)-(2) p.4 and Section 4.4.1 p.17: the objective is defined with lambda in [0,1] and tau^2 scaling; tau = 3 and lambda = 0.5 stated as defaults."
+  ],
+  "theory-kl-equals-soft-target-cross-entropy": [
+   "proved result",
+   "Section 2.1 Eq. (3) p.4 and Supplementary S1.1 Eqs. (S3)-(S4) p.27: the identity KL = CE - H is derived from the definition of KL, and H is independent of student parameters. A short derivation is in the paper."
+  ],
+  "def-dictionary-convolution-photonic-mixing": [
+   "definition",
+   "Section 2.1 Eqs. (7)-(8) p.6 and Section 4.3.3 Eqs. (18)-(19) p.16: the paper defines the dictionary kernel and vec(M) = A z(theta), with A fixed Gaussian entries of variance 1/d and not trained."
+  ],
+  "def-parameter-count-compression-factor": [
+   "definition",
+   "Section 2.1 Eq. (9) p.6 and Supplementary S3.1 pp.37-38: the paper defines its parameter accounting and the approximate compression factor, ignoring the shared theta term."
+  ],
+  "setup-fixed-projection-excluded-from-counts": [
+   "stated limit",
+   "Section 4.6 p.18 and Supplementary p.38: A is excluded from trainable counts, with the caveat that it can add to memory footprint. The paper's own convention and caveat."
+  ],
+  "setup-photonic-feature-two-marginal-histograms": [
+   "setup",
+   "Section 4.3.2 p.16 (steps 1-4): the 16-bit occupancy vector is split into two 8-bit halves, two 256-bin histograms are concatenated into z in R^512. The paper's own feature construction."
+  ],
+  "setup-teacher-cnn-architecture": [
+   "setup",
+   "Section 4.2 p.15: three conv blocks and GAP classifier as listed; I checked the parameter formula 9c1c2+9c2c3+26c1+c2+11c3+10 and it gives 94,474, 154,826 and 224,394."
+  ],
+  "setup-partial-compression-45-theta": [
+   "setup",
+   "Section 2.2 p.8 (confirmed on the page image): first two conv layers compressed, about 2.25e5 to 1.50e5 parameters, 45 theta, about 1.5x. The paper's own main-experiment setup."
+  ],
+  "setup-training-schedule-hyperparameters": [
+   "setup",
+   "Section 4.4.2 p.17 and Section 4.7 p.19: 100 epochs each, batch 64, Adam 1e-3, dropout 0.25, tau 3, lambda 0.5, N=16, d=512, 10 theta updates per epoch, fixed unstated S."
+  ],
+  "method-spsa-validation-proxy": [
+   "setup",
+   "Section 4.4.3 p.17 and Supplementary S6.3-S6.4 p.50: SPSA with Rademacher perturbation, two evaluations per step, objective is negative validation accuracy or validation distillation loss, 10 steps per epoch."
+  ],
+  "def-bilevel-alternating-approximation": [
+   "definition",
+   "Section 2.1 Eq. (10) p.7 and Supplementary S6.3 p.50: the bilevel formulation is stated and the loop is said to approximate it by alternating updates."
+  ],
+  "theory-kernel-lipschitz-in-feature": [
+   "proved result",
+   "Section 2.1 Eq. (13) p.7 and Supplementary Eqs. (S49)-(S51) p.41: derived from linearity of M in z and submultiplicativity of operator norms, with the chain of inequalities shown (a small notation slip, S for B, in the last step)."
+  ],
+  "theory-least-squares-mixing-subspace": [
+   "setup",
+   "cross-group consistency, Rule A (coordinator, 2026-10-30): Supplementary Note S3.1, Eqs. (S37)-(S42), pp.38-39: m = Az follows from the paper's own generator definition (S38), so the range statement (S39) is setup; with full column rank, which the value carries, the unique least-squares solution and orthogonal projection are standard linear algebra. The only cause of the low grade was that this background fact is stated without derivation, which Rule A says does not make an item low. The reviewer's suggestion was high, proved result; setup is the closer basis."
+  ],
+  "limit-idealised-best-case-subspace": [
+   "stated limit",
+   "Supplementary S3.1 p.39-40: the authors say Eq. (S42) is an idealised best case and that the photonic map and finite shots further constrain the attainable set."
+  ],
+  "setup-fig3-sweep-grid": [
+   "setup",
+   "Section 2.3 Fig. 3 caption p.10: three teacher widths, three compression scopes, dim(theta) in {15,30,45}, R in {4,8,12}, validation accuracy drop against compression factor."
+  ],
+  "setup-photonic-theta-tiling": [
+   "setup",
+   "Supplementary S5.1 Eqs. (S57)-(S63) pp.44-46: L_tile = N-1 = 15 for N=16, tiles concatenated for longer vectors, and Eq. (S63) zero-pads or truncates."
+  ],
+  "setup-datasets-and-splits": [
+   "setup",
+   "Section 4.1 pp.14-15: 45,000/5,000 fixed-seed splits for MNIST, Fashion-MNIST, CIFAR-10, batch 64, no augmentation, and the synthetic 28x28 dataset in the same ratios."
+  ],
+  "scope-trainable-parameter-compression-only": [
+   "scope",
+   "Supplementary S1.2 p.28: the authors state they focus on trainable-parameter compression and note this can leave inference FLOPs largely unchanged."
+  ],
+  "limit-photonic-backend-simulated": [
+   "scope",
+   "Section 4.3.1 p.16 and Fig. 1 caption p.5: the authors state the primary backend and that a simulator with the same interface is used when hardware is unavailable; the caption describes an SNSPD measurement. Section 4.7 p.19 says photonic sampling ran on the ORCA simulator."
+  ],
+  "limit-code-and-data-availability": [
+   "stated limit",
+   "Methods, p.19: code not public but available to qualified researchers on request; synthetic generator and split indices can be released with the code."
+  ],
+  "pqkd-simulator-backend": [
+   "setup",
+   "Section 4.7 pp.18-19: photonic sampling was executed via the ORCA simulator backend in CUDA-Q, and the same experiment can be run on the ptseries backend when available. The paper's own setup."
+  ]
+ },
+ "theory_low": {
+  "theory-unitarity-1-lipschitz": "Section 4.4, p.18: a one-line statement of norm preservation by unitaries, with no proof in the paper. The 'learned feature map' claim is the authors' interpretation.",
+  "theory-unitarity-gradient-norm": "Section 4.4, pp.18-19: norm identity for U-dagger stated without proof; the no-gradient-explosion and stability consequence is the authors' claim, not tested.",
+  "theory-spectral-norm-complexity-dominated-by-classical-head": "Section 4.4, p.18: an argument by analogy to Li et al. and Bartlett et al. bounds. No bound is derived for this model.",
+  "supp-moettoenen-gate-count": "Supplement Section 1, p.53 (checked on the page image): Eq. (11) sum of 2^k = 2^n - 1, Eq. (12) 2^n - 2, total 2^(n+1) - 3, exponents confirmed. But the per-level counts are asserted for the cited Mottonen protocol, not derived here (the CNOT per-level count is not justified), so it is not a proved result in this paper. The drawback statement is the authors' view.",
+  "theory-finite-shot-feature-noise-bound": "Section 2.1 Eq. (12), Section 2.4 Eq. (14), Supplementary S3.3 Eqs. (S45)-(S48) pp.40-41: rests on an assumed Lipschitz property of the feature map, and the sqrt(K/S) rate comes from 'standard multinomial concentration bounds' that are cited, not proved. The main text says 'with high probability' while the supplement bounds an expectation.",
+  "theory-ema-variance-reduction": "Supplementary S6.6 Eqs. (S81)-(S83) p.52: derived under an approximation of independent increments (stated as 'standard approximation'); the ratio 0.0526 is correct arithmetic for beta 0.9, but the measured 0.0406 is one trace, so the claim is an approximation plus a measurement."
+ },
+ "keep_stored": {},
+ "requote": {},
+ "unread": {
+  "chen-2026-quantum-adaptive-self-attention-quantum": "left for F114's next release: Sprint 14 Task F read 50 papers (Q1 = 2), and this group's other records were among them",
+  "chen-2026-safe-quantum-machine-learning-variational": "left for F114's next release: Sprint 14 Task F read 50 papers (Q1 = 2), and this group's other records were among them",
+  "chen-2026-stochastic-quantum-spiking-neural-networks": "left for F114's next release: Sprint 14 Task F read 50 papers (Q1 = 2), and this group's other records were among them"
+ },
+ "value_replace": {
+  "limit-baselines-isolating-photonic-factor-deferred": "The authors state that rigorous comparisons against classical conditioning and hypernetwork baselines under matched parameter budgets are left to future studies; the supplement says it includes baseline models that isolate each factor, among them random-feature conditioning."
+ }
+}

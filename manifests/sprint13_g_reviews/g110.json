@@ -1,0 +1,284 @@
+{
+ "group": "g110",
+ "reviewed_on": "2026-10-31",
+ "tag": "Sprint 14 Task F, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint14_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "chaudhary-architecture-features": [
+   "setup",
+   "Abstract p.1 and Section III (pp.3-6) describe the paper's own design: noise reuploading generator, auxiliary qubits in D, direct G-D connection. The 'enhance expressivity' is design intent, shown in Fig. 3 and Appendix A."
+  ],
+  "chaudhary-simulation-only": [
+   "setup",
+   "Section V Methods, p.8: states the software used for the simulations (pennylane, jax, TensorLy-Quantum, numpy). Own setup."
+  ],
+  "chaudhary-training-hyperparameters": [
+   "setup",
+   "Section V Methods, p.8: n_critic = 5, lrG = lrD = 0.01, ADAM beta1 0.9 beta2 0.999, all stated for the whole work."
+  ],
+  "chaudhary-bars-stripes-dataset": [
+   "setup",
+   "Section III A 1, p.3: 2x2 B&S, Ndata = 6, other configurations are noise, pdata = 1/6 uniform. Own dataset."
+  ],
+  "chaudhary-ising-hamiltonian-setup": [
+   "setup",
+   "Section III A 2, p.3, Eqs 4-5: constant nearest-neighbor ZZ, zero field, open boundary; dataset drawn uniformly from low energy states."
+  ],
+  "chaudhary-discriminator-pattern-caveat": [
+   "stated limit",
+   "Section IV, p.7: the authors state that D may learn patterns unrelated to energy, and that drawing from an energy band only somewhat ameliorates this. A caveat on their own Ising result."
+  ],
+  "chaudhary-future-tests": [
+   "stated limit",
+   "Section IV, pp.7-8: 'To more rigorously test this capability, larger system sizes and more complicated Ising Hamiltonians should be used, and the required circuit depth and hyperparameters should be studied. We leave these tests for future work.' Value matches the full sentence."
+  ],
+  "chaudhary-qubo-complexity-caveat": [
+   "stated limit",
+   "Section VI, p.8: the tested Hamiltonian is simpler than most industrial QUBO problems; conditioning on connectivity is named as an extension. A limit the authors state about their own test."
+  ],
+  "chaudhary-proof-of-concept-scope": [
+   "scope",
+   "Section IV, pp.7-8: the Ising test 'serves as a proof-of-concept' and further tests are 'left for future work'. Stated by the paper about its own test."
+  ],
+  "chaudhary-scaling-limits": [
+   "stated limit",
+   "Section VI, p.8: barren plateaus for the hardware efficient ansatz, and unclear depth scaling (worst case O(4^N)). Stated by the authors as limits on scalability of their own ansatz."
+  ],
+  "hwaware-qsvm-dataset-setup": [
+   "setup",
+   "Section II A, pp.2-3: UCI Breast Cancer Wisconsin, 569 x 30, 80/20 stratified, z-score, ten highest-variance features, 200 training points subsampled for NAS. Own setup."
+  ],
+  "hwaware-qsvm-search-config": [
+   "setup",
+   "Section II D, p.2: genome 4-12 gates, population 8, 4 generations, elitism 2, tournament k = 3, single-point crossover, pmut 0.25, insert/delete 0.1, fitness on 200-sample subsample. Own configuration."
+  ],
+  "hwaware-qsvm-kernel-simulated-qiskit": [
+   "setup",
+   "Section II C, p.2: FidelityQuantumKernel then a classical SVM with precomputed kernel on the Gram matrix. Own pipeline. (The value does not claim simulation, and the passage does not say simulated.)"
+  ],
+  "hwaware-qsvm-limit-subsampling": [
+   "stated limit",
+   "Section IV E, Subsampling, p.7: only 200 training samples during search, may bias discovered architectures. Stated by the paper."
+  ],
+  "hwaware-qsvm-limit-scalability": [
+   "stated limit",
+   "Section IV E, Scalability, p.7: 6-10 qubits, far from the regime where quantum advantage might emerge; quadratic kernel matrix growth and coherence named as scaling needs."
+  ],
+  "hwaware-qsvm-limit-compute-cost": [
+   "stated limit",
+   "Section IV E, Computational Cost, p.7: NAS cost limits search depth and population size; larger searches may be better but prohibitive."
+  ],
+  "hwaware-qsvm-future-work": [
+   "scope",
+   "Section V, pp.7-8: the five future directions are listed in full (multi-objective NAS, differentiable search, transfer learning, hybrid ensembles, theory). Names what the paper does not cover. The two quotes carry only two of the five; the passage carries all five."
+  ],
+  "hwaware-qsvm-limitations": [
+   "stated limit",
+   "Section IV E, p.7: dataset specificity, 8 genomes x 4 generations is a modest exploration, circuits far from the quantum advantage regime. All stated in the paper's Limitations section."
+  ],
+  "moe-fraud-architecture-components": [
+   "setup",
+   "Section 2.1, p.4: lists autoencoder, angle encoding, VQC, classical head, temperature scaling (Platt) on top of GQC of Belis et al. Own architecture."
+  ],
+  "moe-fraud-autoencoder-nonfraud-only": [
+   "setup",
+   "Autoencoders subsection, p.6: 'we only train the autoencoder with non-fraudulent cases instead of all possible cases'. A stated design choice. The stated aim is a rationale, not a result."
+  ],
+  "moe-fraud-hyperparameters": [
+   "setup",
+   "Section 3.3, p.14: 256/128/64 autoencoder, 8-neuron head, 6 qubits, 6 layers, lambda 0.5, batch 32, PennyLane. Matches the quote."
+  ],
+  "moe-fraud-preprocessing": [
+   "setup",
+   "Section 3.2, p.13: Time removed, MinMax scaler, majority class downsampled to 50/50 in training, no other preprocessing."
+  ],
+  "moe-fraud-validation-protocol": [
+   "setup",
+   "Section 3.3, p.13: 5-fold x 3 repeats, 50/25/25 split of each test part into validation, analysis, holdout, with the stated roles. (Section 2.2 says the router trains on the validation set; Section 3.3 and the value say analysis. The value follows 3.3.)"
+  ],
+  "moe-fraud-router-design": [
+   "definition",
+   "Section 2.2, Router training, p.12: Eqs 14-16 define the target z_i, the XGBoost router, the threshold gamma and the hard mixture. The paper defines its own object."
+  ],
+  "moe-fraud-thresholds-youden": [
+   "setup",
+   "Section 2.2, p.12: each expert's threshold chosen by argmax of Youden's J = TPR - FPR on validation data."
+  ],
+  "moe-fraud-benchmark-train-size": [
+   "stated limit",
+   "Section 2.1 Motivation, p.5: inference time grows O(N) and O(K*N), and 'it needs to be observed that only 180 training samples were used in this benchmark'. A caveat the authors state about their own latency benchmark."
+  ],
+  "moe-fraud-dataset-setup": [
+   "setup",
+   "Section 3.1, p.13: European credit card dataset, highly imbalanced, roughly 0.172% fraud. Own dataset description."
+  ],
+  "chehimi-paper-nature": [
+   "scope",
+   "Section I, p.2 (contributions): the paper analyzes opportunities, lists challenges over classical and quantum networks and proposes solutions and directions. The text has no experiments or simulations, which fits 'conceptual framework'."
+  ],
+  "chehimi-fl-definition": [
+   "definition",
+   "Section I, p.1: the paper's own description of how FL works (local parameters to a server, aggregation, global parameters back). Describes the object the paper builds on."
+  ],
+  "cgz-scope-abstract": [
+   "scope",
+   "Abstract p.1: the paper's own claim of scope (arbitrary loss and prior), and the Bayes-to-minimax remark, also shown in Section 1 p.2 item 2."
+  ],
+  "cgz-risk-definitions": [
+   "definition",
+   "Section 1, p.2, Eqs 1-2: minimax and Bayes risk defined."
+  ],
+  "cgz-f-divergence-definition": [
+   "definition",
+   "Section 2, p.7, Eq 9: class C and the f-divergence defined."
+  ],
+  "cgz-phi-definition": [
+   "definition",
+   "Section 3, pp.8-9, Eq 13: phi_f(a,b) defined as the f-divergence of the two-point measures."
+  ],
+  "cgz-lemma1-monotone": [
+   "proved result",
+   "Lemma 1, p.9, with conditions as quoted; proved in Appendix A.1, p.34, from convexity of f (one-sided derivatives)."
+  ],
+  "cgz-lemma3-statement": [
+   "proved result",
+   "Lemma 3, p.11, zero-one loss, any f in C, any Q and any rule d; proved on p.11 by the data processing inequality applied to the map (theta,x) to L(theta,d(x))."
+  ],
+  "cgz-theorem9-statement": [
+   "proved result",
+   "Theorem 9, p.15, any Theta, A, L, w, f in C; proved on pp.15-16 by reduction to the zero-one loss L_t and Theorem 2, using Lemma 1."
+  ],
+  "cgz-uf-definition": [
+   "definition",
+   "Section 4, p.15, Eq 31: u_f defined, with the convention u_f(x) = 1 when phi_f(1/2,b) <= x for all b."
+  ],
+  "cgz-small-ball-no-guideline": [
+   "stated limit",
+   "Section 1.1, p.5: 'We do not have a general guideline for bounding the small ball probability'; the recipe for f-informativity is in Section 5. A limit stated by the authors."
+  ],
+  "cgz-scope-conclusion": [
+   "scope",
+   "Section 8, p.33: the bounds need only upper bounds on sup w(Bt) and on I_f; this matches Theorem 9 and Corollary 12 as stated and proved. States conditions of use."
+  ],
+  "cgz-lemma15-concavity": [
+   "proved result",
+   "Lemma 15, p.21, r < 1, probability measure mu; proved in Appendix B.1, p.40, by a second derivative test and Cauchy-Schwarz."
+  ],
+  "cgz-corollary16-chi-squared": [
+   "proved result",
+   "Corollary 16, p.22, alpha > 1, Eqs 51-52; proved on p.22 from Theorem 14 with a uniform nu, using the max-term bound, then an epsilon^2-cover. Value matches the statement."
+  ],
+  "cgz-corollary17": [
+   "proved result",
+   "Corollary 17, p.24: conditions Theta = A in R^d, positive Lebesgue density, A > 0, V > 0, p > 0 are in the statement and quotes; the complete proof is in Appendix B.3, pp.41-42 (hypercube partition, Eq 39). The value describes the ingredients and omits Eq 54, so it is true but vague; add the bound if stored."
+  ],
+  "cgz-gmm-setup": [
+   "setup",
+   "Section 6.1, pp.25-26: k components much less than d, uniform weights (footnote 1), spherical Gaussians, true parameter perturbed by N(0, rho^2) noise. The paper's own problem setup."
+  ],
+  "cgz-lemma19-statement": [
+   "proved result",
+   "Lemma 19, p.26, with the conditions in the value; proof in Appendix D, p.49 (Gaussian inner product tail, triangle inequality, chi-square tail, union bound). Caution for the coordinator: the proof is terse and has slips (it takes D = c*sqrt(log(nk/delta)) and beta = c*log(nk/delta)/d, which needs beta > 1, and writes 3/(6+sqrt(beta d)) where the algebra gives 3/(3+2 sqrt(beta d))). The stated result is weaker than what the proof shows and plausibly true. Your call whether to downgrade."
+  ],
+  "cgz-smoothed-reduction-setup": [
+   "setup",
+   "Section 6.2, pp.27-28: prior N(D e_j, I) for the columns of theta* (so w is N(D e_j, (1+rho^2) I)), and giving memberships to the estimator can only lower the Bayes risk, which is the paper's own reduction (Eq 57). The second point is an elementary fact stated with its reason."
+  ],
+  "cgz-lemma21-gaussian-mean": [
+   "proved result",
+   "Lemma 21, p.28, rho <= 1 and nj >= 1; proof on pp.28-29 (truncated prior with Gamma = sqrt(2d), Remark 11, Corollary 12 with the chi-squared bound as in Example 1). The proof is condensed and reuses the steps of Example 1."
+  ],
+  "cgz-sparse-prior-definition": [
+   "definition",
+   "Section 7.1, p.30: the prior over k-sparse vectors (uniform support K, N(0, tau^2) on K, zero elsewhere)."
+  ],
+  "cgz-theorem23-sparse-regression": [
+   "proved result",
+   "Theorem 23, p.31: conditions sparse eigenvalue (58) and d > k^3 as in the value; proved in Appendix E, pp.49-54 (Claims 1-3 with proofs E.1-E.3, Corollary 12, Remark 11). In the paper the prediction bound carries kappa_l^2 (lower eigenvalue constant); the value's 'kappa2' lost its subscript. The exponential term in T(tau) is exp of minus (4 kappa_u^2 n/sigma^2)(tau^2 minus tau*^2)_+ , where the value only says 'an exponential term'."
+  ],
+  "cgz-appendixE-claim1": [
+   "proved result",
+   "coordinator sign-off: Claim 1 (Appendix E, PDF p.50) is proved in Section E.1 (PDF p.52) by reduction to the known-index-set problem; the value now matches the page image (kappa-lower in both parts of the prediction bound)."
+  ],
+  "cgz-appendixE-claim3": [
+   "proved result",
+   "Appendix E, p.50 (checked against the page image): for r <= (1/8) sqrt(k) tau, sup over a of w-bar(B(a,r)) <= c^k/(d/k^2)^(k/4) times (r/(sqrt(k) tau))^k, for the restricted marginal prior w-bar; proved in E.3, pp.53-54 (support counting, isotropic normal ball bound from Lemma 21). Value matches the image."
+  ],
+  "cgz-bayes-risk-le-r0": [
+   "proved result",
+   "Section 3, p.9: an unlabeled observation, but proved in the text: R0 is the infimum over the constant decision rules, which are a subset of all rules, so R0 >= R_Bayes; hence R_Bayes = 0 when R0 = 0 and R0 > 0 is assumed. Borderline basis (not a numbered result), complete formal argument."
+  ],
+  "cgz-f-informativity": [
+   "definition",
+   "Section 2, p.8, Eq 11: f-informativity defined as the infimum over Q; equals mutual information for f = x log x."
+  ],
+  "cgz-generalized-fano": [
+   "proved result",
+   "Corollary 5, p.13, any prior and zero-one loss, no assumptions on Theta, A, w (Section 1.1, p.3); proved on p.13 from (19) with r = R0/(1+R0). The value's denominator log(sup w(B(a))) equals log(1-R0) by Eq 15."
+  ],
+  "cgz-limitations-spikes": [
+   "stated limit",
+   "Section 8, p.33 and Remark 11, p.17: bounds not always tight because of generality, Theorem 9 not tight for spiked priors, ad hoc fixes such as Remark 11, tight bounds an open problem. Stated by the authors about their own results."
+  ],
+  "cgz-nonuniform-zero-one-corollary7": [
+   "proved result",
+   "kept HIGH at the team lead's decision: Corollary 7, eqs (26)-(28), pp.13-14, proved in Appendix A.3; the value restores the square root the reader's and the stored value dropped (p.13, Eq 26); team lead, 2026-10-31, Sprint 14 Manual Validation Q1 option 1 (all 28 as recommended)"
+  ],
+  "cgz-r0-definition": [
+   "definition",
+   "Section 3, p.9, Eqs 14-16: R0 defined as the no-data Bayes risk; for zero-one loss R0 = 1 - sup w(B(a)) (Eq 15)."
+  ],
+  "cgz-recovers-classical-fano": [
+   "proved result",
+   "Section 1.1 p.3 and Section 3.1 p.13: the classical Fano (3) and continuum Fano (4) are instances of (5), which is implied by Corollary 5 because log(1+R0) <= log 2; the substitution w(B(a)) = 1/N and R0 = 1 - 1/N is shown in the text (pp.3, 11). Attribution of (4) to Duchi and Wainwright is a citation."
+  ],
+  "cgz-remark6-stronger": [
+   "proved result",
+   "Remark 6, p.13: log(1+R0) <= log 2 gives the strengthening; for the two-point example R0 = 1/2, (5) gives -I/log 2 (trivial) and (25) gives 1 - (I + log(3/2))/log 2 > 0 iff I < log 2 - log(3/2). Checked."
+  ],
+  "cgz-theorem2-implicit": [
+   "proved result",
+   "Theorem 2, p.9, zero-one loss, any f in C, no Bayes rule assumed; proved on pp.11-12 from Lemma 3, Lemma 1 and continuity. The implicit bound g^-1 (Eq 18) follows on p.10 from monotonicity (Lemma 1)."
+  ]
+ },
+ "theory_low": {
+  "chaudhary-projective-measurement-split": "Section III B, p.4: the authors' informal argument (a Z measurement on qubit 1 splits the 2^N states into two equal halves). Not a stated theorem with a proof; the 128/128 split is the N = 8 illustration.",
+  "chaudhary-toy-expected-losses": "Section III C, p.5: the expected Wasserstein loss values (-0.5 and 0) are the authors' expectation, stated without derivation, for a toy model whose own run got stuck in a local minimum. Not a proved result.",
+  "chaudhary-classical-discriminator-not-scalable": "Section II, Eq. 2, p.2: the authors' argument that the log-likelihood trick needs pG(x) and its derivatives (exponentially many measurements). A reasoned claim, not a proved theorem; no proof or lower bound is given.",
+  "cgz-lemma3-minimax-remark": "Remark 4, p.12: a remark about a possible use of Lemma 3 for minimax bounds, with no formal statement or proof there; its application is shown later only for Birge-Gushchin (Section 3.3, a cited result).",
+  "cgz-g-inverse-bound": "Eqs 18-19, p.10: an unlabeled consequence of Theorem 2 and Lemma 1, argued in the text; it duplicates the stored Theorem 2 item. The value also adds the authors' remark that KL has no simple g^-1.",
+  "cgz-replace-by-upper-bound": "p.16, Eq 36: a one-clause remark (u_f non-decreasing) plus the authors' motivation 'often difficult to calculate'. Not a labeled result with its own proof.",
+  "cgz-remark10-constant": "Remark 10, p.16: asserted 'from the proof of Theorem 9, it can be observed'; no proof of the sharper bound is given.",
+  "cgz-corollary12-kl": "Corollary 12, p.18: the KL bound is proved in full, but the value claims all four divergences without their forms, and the Hellinger part holds only if Ifup < 1 - 1/sqrt(2), a condition missing from the value and quotes. The proof of (ii) to (iv) is only the u_f formulas ('similar'). A value limited to KL (Eq 39) would be HIGH.",
+  "cgz-remark11-partition": "Remark 11, p.17: the authors' remark. The partition inequality (38) is shown, but 'tight lower bound can be salvaged' is argued only for one example and is a claim about tightness.",
+  "cgz-mutual-info-covering-bound": "Section 5, p.20, Eqs 47-48: built on Haussler and Opper (1997) Eq 45-46 (cited, not proved here); (48) is a short consequence, and the uniform-prior case is credited to Yang and Barron. The epsilon symbols are lost in the text layer.",
+  "cgz-theorem14": "Theorem 14, p.21, is stated and proved on p.21 (Lemma 15 plus Jensen), but the value's Eq 50 drops the outer power: the paper's right side is the integral over theta of (integral of (D+1)^(1/(1-alpha)) d nu)^(1-alpha), minus 1. As written the value misstates the theorem. (Also the proof text says 'alpha in [0,1]' where alpha not in [0,1] is meant.) With the exponent restored the item would be HIGH, proved result.",
+  "cgz-example1-gaussian-ball": "Example 1, pp.22-23: a worked illustration, with 'standard volumetric argument' and the choice of c not carried out. The value also drops the condition Gamma >= sigma*sqrt(d). Not a stated-and-proved result.",
+  "cgz-example1-kl-weaker": "Example 1, pp.23-24: the authors' argument that the KL route gives only Omega(d^2 sigma^4/Gamma^2) for this example, stated as 'on the order of' without full derivation; a comparison and the authors' interpretation of why.",
+  "cgz-example2-recovers-rate": "Example 2, p.24: an application of Corollary 17 whose final match with (53) rests on the volume asymptotic Vol(B)^(1/d) ~ d^(-1/2) and on Example 1; an illustration, not a stated-and-proved result.",
+  "cgz-proposition20-upper-bound": "Proposition 20, p.27: the argument on pp.26-27 is informal ('with high probability', 'putting pieces together') and rests on the Hsu and Kakade (2013) guarantee for the spectral estimator, which is cited and not proved here. The expectation bound is not derived from the high-probability steps.",
+  "cgz-proposition22-lower-bound": "Proposition 22, p.29: the lower bound c d k^2/n for rho <= 1 follows from Lemma 21 and the binomial median argument. But the value also asserts that with Proposition 20 the minimax risk is 'precisely' of order dk^2/n; that tightness depends on Proposition 20, which is argued informally and rests on a cited guarantee. Split the value: the lower bound alone would be HIGH.",
+  "cgz-theorem23-proof-claims": "Section 7.2 p.31 and Appendix E pp.49-50: a description of the proof strategy. Claim 2 (proved in E.2) holds for the restricted marginal prior (the bar over w is lost in the text layer), a condition the value drops. A proof outline, not a result of its own.",
+  "cgz-braun-pokutta-recovered": "Section 3.1 p.13 and Appendix A.2 pp.34-35: Inequality (68) is a cited result of Braun and Pokutta (2014), re-derived here from Lemma 3; the derivation is valid but needs wmin + wmax < 1, a condition missing from the value. A re-derivation of a cited result.",
+  "cgz-le-cam-assouad-recovered": "Section 3.2 p.14 and Appendix A.4 pp.37-38: the classical Le Cam and Assouad inequalities (cited results) are re-derived from Corollary 7; the value gives no statement or conditions (Assouad needs Theta = A = {0,1}^d with Hamming loss). A re-derivation of cited results.",
+  "cgz-hellinger-not-useful": "Appendix A.5, pp.38-40: a qualitative comparison; the text says 'we claim' and argues for large N with approximations ('effectively', 'when N is large'). The authors' interpretation, not a proved result.",
+  "cgz-theorem14-tightness-example": "Appendix B.2, p.41: 'straightforward to show' marginal and divergence computations, and a comparison of sqrt(2n+1)-1 with a lower bound of order sqrt(n) only up to constants, using a cited inequality (Tsybakov Lemma 2.7). An illustration of tightness, not a stated-and-proved result.",
+  "cgz-glm-example": "Appendix C.1, pp.42-44: the bound (89) is derived in the text, but the value also claims it equals the minimax risk 'up to a constant' for large tau, resting on the 'well-known' minimax risk (not proved here), and states the Poisson case by truncation. A worked example with cited comparisons.",
+  "cgz-spiked-covariance-example": "Appendix C.2, pp.45-46, Eq 92: the proof uses the chi-squared bound (93) from Guntuboyina (2011a, Theorem 4.6.1), a cited result; the exponent printed in the value is also garbled by the text layer. A worked example resting on a cited result.",
+  "cgz-gaussian-general-loss": "Appendix C.3.1, pp.47-48, Eq 97: derived in the text, but the value adds the authors' remark that it may be suboptimal and can be tightened by partitioning, and the symbol between the two sides is lost in the text layer. A worked example with the authors' interpretation.",
+  "cgz-gaussian-general-norm": "Appendix C.3.2, p.48, Eq 101: the proof is 'largely similar' to (97) and uses Urysohn's inequality (cited); the comparison symbol is lost in the text layer. A sketch."
+ },
+ "keep_stored": {},
+ "requote": {},
+ "value_replace": {
+  "cgz-theorem14": "The paper states, as Theorem 14, for α outside [0, 1] and fα in C, upper bounds on the fα-divergence of P from a mixture, eq (49), and on the fα-informativity, eq (50): Ifα(w, P) is at most the integral over θ of [the integral over ξ of (Dfα(Pθ||Qξ) + 1) to the power 1/(1−α) ν(dξ)] raised to the power 1−α, w(dθ), minus 1; it proves them using the lemma stated after it (proved in Appendix B.1) and Jensen's inequality.",
+  "cgz-appendixE-claim1": "The paper states, as Claim 1 in Appendix E, that for any positive tau the Bayes risk is lower bounded, for the estimation error, by k tau squared divided by one plus kappa-u squared tau squared n over sigma squared, and, for the prediction error, by kappa-lower squared k tau squared divided by one plus kappa-lower squared tau squared n over sigma squared; the proof, in Section E.1, bounds the problem below by the simpler one in which the index set K is known.",
+  "cgz-nonuniform-zero-one-corollary7": "The paper states, as Corollary 7, bounds for zero-one loss and any prior in terms of R0: with the chi-squared informativity, R ≥ R0 − the square root of R0(1 − R0)Iχ2(w, P) (eq (26); the square root is on the page image and in the paper's proof, and is lost in the text layer); with the total variation informativity, R ≥ R0 − IT V (w, P); and a Hellinger bound provided h2 ≤ 2R0. The paper says the choice of f-divergence affects the tightness of the lower bound."
+ },
+ "extra_quotes": {
+  "cgz-appendixE-claim1": [
+   "The Bayes risk of the original problem is lower bounded by that of the following simplified problem: estimating θ when the index set K is known"
+  ]
+ }
+}

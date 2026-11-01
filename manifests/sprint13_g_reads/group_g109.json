@@ -1,0 +1,2230 @@
+{
+ "papers": [
+  {
+   "record_id": "ceroni-2023-generating-approximate-ground-states-molecules",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Ceroni-et-al._2022_Generating-Approximate-Ground-States-of-Molecules-Using-Quantum-Machine__2210.05489.pdf",
+   "title_in_file": "Generating Approximate Ground States of Molecules Using Quantum Machine Learning",
+   "version_note": "arXiv:2210.05489v3, dated January 3, 2023. The record id carries 2023 and the file name 2022 (the first arXiv version). The text matches the record.",
+   "pages": 29,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A generative quantum machine learning model (a classical neural network feeding a variational circuit) that prepares approximate molecular ground states across a potential energy surface from few quantum training states, with gradient-cost theorems, two lower-bound arguments (Grover, quantum Cramer-Rao) and simulations on H2, H3+, H4, BeH2 and H2O.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qgen-groundstate-fidelity-small-data",
+     "verdict": "narrowed",
+     "note": "The 99% figure is the conclusion's summary, qualified by 'in most of the cases considered'. The numerics hold exceptions and conditions: H4 with restricted Hartree-Fock orbitals fails; training data close to equilibrium fails in the dissociation limit; all runs are exact classical simulations limited to fewer than 12 qubits in the STO-3G basis.",
+     "value": "The authors report that, with a small number of training examples, a simple quantum neural network generated approximate ground states with fidelity greater than 99% in most of the cases considered. They simulated molecules of fewer than 12 qubits in the STO-3G basis, and report that for H4 with restricted Hartree-Fock orbitals the model still fails to replicate the correct behaviour of the target state.",
+     "anchor": "Section VI Conclusion, p.23; Section V D, p.19; Fig. 6 caption, p.21; Section V, p.18",
+     "quotes": [
+      "We observe that even given a small number of training examples, we can construct a simple quantum neural network that is capable of generating the approximate groundstate of the molecules with fidelity greater than 99% in most of the cases considered.",
+      "Due to computational restrictions, all examples are limited to fewer than 12 qubits",
+      "The model, even when given data close to dissociation, still fails to replicate the correct behaviour of the target state when RHF orbitals are used.",
+      "minimal STO-3G basis set"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from simulations of five small molecules.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The stored anchor says p.14 and Sec. IV A; in the PDF the conclusion is on page 23. The 99% figure is stated in the conclusion text only; the fidelity curves are in Figs. 5 to 12 and the plots show lower fidelity in some regions (for example far from the training points)."
+    },
+    {
+     "id": "qgen-grover-lower-bound",
+     "verdict": "narrowed",
+     "note": "Theorem 4 holds under three stated assumptions, is built on single-particle fermionic (one-body) Hamiltonians mapped to the adiabatic Grover Hamiltonian, and restricts sampling to one side of the avoided crossing. The paper calls it a worst-case construction.",
+     "value": "The paper proves Theorem 4: under its three stated assumptions (a gapped adiabatic path, a spectral-gap condition, and a hypothetical unitary channel acting on samples from one side of the crossing), generating the ground state from a number of samples that is little-o of the inverse square root of the minimum gap would violate the Grover query lower bound on the search problem. The authors describe this lower bound as a worst-case scenario compared to a general avoided crossing.",
+     "anchor": "Section IV A, Theorem 4, p.11 (abstract p.1; discussion p.10)",
+     "quotes": [
+      "There exists a gapped adiabatic path (meaning an ordered set of sequence of Hamiltonians that have a non-zero eigenvalue gap between the ground and first excited instantaneous eigenstates)",
+      "Theorem 4. Let |φ ∈ C2n be the kth eigenstate",
+      "There exists s∗ ∈ [0, 1] such that the spectral gap is in Ω(1) for all s ≤ s∗ as n increases.",
+      "then that would violate the Ω( 2n) query lower bound on the search problem.",
+      "this lower bound can be interpreted as a worst-case scenario compared to a general avoided crossing along a nuclear coordinate for some molecular Hamiltonian."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem 4 and its proof by contradiction, Section IV A, p.11 to p.13; conditions are quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof is by contradiction against assumption 3, so the theorem is conditional on the hypothetical channel in assumption 3. The stored anchor says 'Sec. IV A and abstract'; the abstract is page 1."
+    },
+    {
+     "id": "qgen-scalability-open",
+     "verdict": "confirmed",
+     "note": "The Conclusion is on PDF page 23 (the stored anchor said p.14, which does not match the PDF page count).",
+     "value": "The authors state that the scalability of the method and the existence of barren plateaus remain open questions, with potential issues from vanishing gradients.",
+     "anchor": "Section VI Conclusion, p.23",
+     "quotes": [
+      "First, there is the question of scalability of the method and question about the existence of barren plateaus in the optimization landscape.",
+      "there are potential issues due to vanishing gradients arising during training."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open question, Conclusion, p.23.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "ceroni-model-setup",
+     "value": "The authors state that their approach uses a classical neural network to convert the nuclear coordinates of a molecule into the parameters of a variational quantum circuit, and that the model is trained with a fidelity loss function.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "Our approach uses a classical neural network to convert the nuclear coordinates of a molecule into quantum parameters of a variational quantum circuit.",
+      "The model is trained using a fidelity loss function to optimize the neural network parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup, abstract p.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ceroni-training-data-assumption",
+     "value": "The authors state that training requires access to quantum data, namely ground states of the Hamiltonian at a collection of nuclear coordinates, loaded into a quantum computer, and that they assume a polynomially large amount of data.",
+     "anchor": "Section I, p.2; Section II A, p.4",
+     "quotes": [
+      "To train our model, we assume access to quantum data: ground states of H(R) for a collection of coordinates",
+      "We assume a polynomially large number of data, which should be contrasted with the exponentially large number of possible grid points"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the data it assumes, p.2 and p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The method needs ground-state quantum data as input, which is itself costly to produce; the paper says as much in Section IV."
+    },
+    {
+     "id_suggestion": "ceroni-nondegenerate-assumption",
+     "value": "The authors state that, for simplicity, the Hamiltonian is taken to be non-degenerate over the region of nuclear coordinates considered.",
+     "anchor": "Section II A, p.3",
+     "quotes": [
+      "For the sake of simplicity, H(R) is taken to be non-degenerate over R in the region considered."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own stated scope, Section II A, p.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ceroni-hf-init-barren-plateau-hypothesis",
+     "value": "The authors hypothesize that initializing in the Hartree-Fock state and using an adaptively prepared circuit will, in many cases, keep the optimization in a region without the barren plateau problem, and state that this is supported in their numerics.",
+     "anchor": "Section II A, p.5",
+     "quotes": [
+      "It is therefore reasonable to hypothesize that initialization in the Hartree-Fock state and an adaptively-prepared circuit will, in many cases, constrain the model's optimization to a region that does not suffer from the barren plateau problem.",
+      "This conclusion is supported in the numerics (Sec. V), where we observe good performance when using the infidelity cost function"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A hypothesis supported only by small simulations.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper tests no large circuits, so this does not show the model avoids barren plateaus at scale; the paper's own Conclusion lists barren plateaus as open."
+    },
+    {
+     "id_suggestion": "ceroni-adaptive-circuits-barren-cited",
+     "value": "The authors cite Ref. [51] as providing empirical evidence that in many cases adaptive circuits do not suffer from the issue of barren plateaus.",
+     "anchor": "Section II A, p.5",
+     "quotes": [
+      "Ref. [51] provides empirical evidence that in many cases, adaptive circuits do not suffer from the issue of barren plateaus."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ceroni-theorem1-hadamard-gradient-cost",
+     "value": "The paper states Theorem 1 (Hadamard Test Gradient Sample Complexity): the number of queries to the state preparation unitary and the controlled generator operation needed to compute a partial derivative of the infidelity cost function, to within a given error and failure probability, scales as given in the theorem's displayed bound, which is quadratic in the inverse error, linear in the number of unique data states N, logarithmic in the inverse failure probability, and depends on the largest summed neural-network derivative magnitude. The proof assumes for simplicity that each generator term is unitary.",
+     "anchor": "Section III A, Theorem 1 and proof, p.6 to p.7",
+     "quotes": [
+      "Theorem 1 (Hadamard Test Gradient Sample Complexity).",
+      "using a Hadamard test-based approach from Fig. 2 to gradient estimation.",
+      "For simplicity, assume that each of the Hˆa are unitary, so we can simply compute expectation values without"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The displayed bound's symbols were lost in the text layer, so the statement could not be quoted in full.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The bound is on sample counts for the gradient estimate (Hoeffding bound over a mixture of Hadamard-test outcomes). It does not bound the number of training steps; the paper says that count is harder and case dependent (p.5)."
+    },
+    {
+     "id_suggestion": "ceroni-theorem2-coherent-gradient-cost",
+     "value": "The paper states Theorem 2 (Coherent Gradient Sample Complexity): using a linear-combination-of-unitaries circuit with amplitude estimation, the number of queries needed to compute a partial derivative of the infidelity cost function scales as given in the theorem's displayed bound, which improves the dependence on the error from inverse square to inverse first power, and applies when using a coherent approach to gradient estimation.",
+     "anchor": "Section III B, Theorem 2, p.8; proof p.8 to p.9",
+     "quotes": [
+      "which reduces the scaling in circuit executions from O(1/ 2) to O(1/ ).",
+      "Theorem 2 (Coherent Gradient Sample Complexity).",
+      "when using a coherent approach to gradient estimation. N is the number of unique data states"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The displayed bound's symbols were lost in the text layer, so the statement could not be quoted in full.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof sets the constant in the amplitude estimation theorem with a fixed choice and boosts the success probability with a median over repeats."
+    },
+    {
+     "id_suggestion": "ceroni-coherent-gradient-needs-state-prep",
+     "value": "The authors state that the coherent gradient method must apply the data-state preparation unitaries repeatedly, which eliminates it for data states obtained from experiments without a state-preparation unitary, and that using the quadratic improvement in N from other work would need the gradient stored in a qubit register, a prohibitive number of qubits for realistic examples.",
+     "anchor": "Section III B, p.9",
+     "quotes": [
+      "This eliminates the possibility of using this",
+      "method of gradient calculation in the case that the data states",
+      "This leads to a prohibitive number of qubits for realistic examples"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of the limit of the coherent method, Section III B, p.9.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ceroni-theorem3-amplitude-estimation-cited",
+     "value": "The paper cites, as Theorem 3 (Amplitude Estimation) from Ref. [52], a result that gives an estimate of a probability from a number of evaluations of a unitary and a reflection, which the paper's coherent gradient estimate uses.",
+     "anchor": "Section III B, Theorem 3, p.8 to p.9",
+     "quotes": [
+      "Theorem 3 (Amplitude Estimation).",
+      "we utilize the following theorem [52]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ceroni-lemma1-fermionic-grover-equivalence",
+     "value": "The paper states Lemma 1: the single-particle occupied 2-dimensional subspace of the one-body fermionic Hamiltonians H0f and Hmf, which are adiabatically connected as Hf(s) = (1 - s)H0f + sHmf, is equivalent to a unary encoding of the Grover Hamiltonians H0 and Hm.",
+     "anchor": "Section IV A, Lemma 1, p.10",
+     "quotes": [
+      "Lemma 1. The single-particle occupied 2-dimensional subspace of the one-body fermionic Hamiltonians",
+      "are equivalent to a unary encoding of the Grover Hamiltonian H0 and Hm respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The statement was only partly quotable because of lost symbols.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The value restates the lemma in words; the lemma's formula for the interpolation is in the PDF but its symbols were lost in the text layer, so the number in the value is not independently quoted."
+    },
+    {
+     "id_suggestion": "ceroni-avoided-crossing-hard-instances",
+     "value": "The authors state that they show below that hard instances exist and are common in systems with phase transitions or conical intersections, and conclude from the Section IV A result that avoided crossings in the spectrum can produce intractable barriers in predicting the ground state in different configurations.",
+     "anchor": "Section IV A, p.10; p.13",
+     "quotes": [
+      "We show below that hard instances exist and further are common in systems with phase transitions or conical intersections [57].",
+      "avoided crossings in the spectrum can produce intractable barriers in our ability to predict the groundstate in different configurations."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The generality of 'common' is asserted, not proved; Theorem 4 covers a constructed one-body family.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Theorem 4 is built on a worst-case one-body Grover construction, so 'common' in real molecules is an author claim."
+    },
+    {
+     "id_suggestion": "ceroni-def1-quantum-fisher-information",
+     "value": "The paper defines (Definition 1) the quantum Fisher information matrix of a parameterized pure state, with entries given by a displayed formula, and uses it to bound the entries of the matrix for the generative model's states.",
+     "anchor": "Section IV B, Definition 1, p.14",
+     "quotes": [
+      "Definition 1 (Quantum Fisher Information Matrix).",
+      "The following definition of the QFI is specific for pure states"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition the paper's results depend on, Section IV B, p.13 to p.14.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The number 81 in the value is an equation label, not a quoted figure; the displayed formula's symbols were lost in the text layer."
+    },
+    {
+     "id_suggestion": "ceroni-theorem5-qcrb-cited",
+     "value": "The paper cites the quantum Cramer-Rao bound as Theorem 5: for a parameterized quantum state and a differentiable estimator, the covariance matrix of the estimator satisfies a matrix inequality involving the Jacobian of the estimator's expectation and the inverse quantum Fisher information, with the biased case following from Ref. [66].",
+     "anchor": "Section IV B, Theorem 5, p.14",
+     "quotes": [
+      "Theorem 5 (Quantum Cramer-Rao Bound).",
+      "the more general case of the variance of a biased estimator satisfying the given matrix inequality follows directly from Equation 149 of Ref. [66]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ceroni-theorem6-qfi-data-lower-bound",
+     "value": "The paper states Theorem 6: for an estimator of the optimal parameters, built from a measurement on the tensor-product data state and supported in a convex set around its expectation on which the infidelity cost is strongly convex and has a local minimum, such that the cost is below a threshold with a given probability over that set, the total number of data states M is bounded below by an expression that depends on the number of training geometries, a mixed second-derivative matrix of the two-parameter cost, the neural network's Jacobian, the Hessian and the generators' covariances.",
+     "anchor": "Section IV B, Theorem 6 and proof, p.15 to p.17",
+     "quotes": [
+      "Theorem 6. Let U be a circuit ansatz",
+      "Moreover, assume that C(γˆ) < with probability at least 1 − δ over the convex set.",
+      "the total number of states in the tensor product defining"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The displayed bound's symbols were lost in the text layer, so the statement could not be quoted in full.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The number 94 is the paper's equation label. The proof combines a Taylor expansion with the quantum Cramer-Rao bound."
+    },
+    {
+     "id_suggestion": "ceroni-corollary1-unbiased-scaling",
+     "value": "The paper states Corollary 1: in the case that the estimator is unbiased, the lower bound of Theorem 6 reduces to a simpler displayed bound, and the authors say the number of pieces of evidence needed to learn the parameters over a region where the fidelity loss is at most a given threshold scales as inverse of that threshold, in line with Heisenberg-limited metrology.",
+     "anchor": "Section IV B, Corollary 1, p.17",
+     "quotes": [
+      "Corollary 1. In the case that γˆ is an unbiased estimator of γ ̃, the lower bound of Theorem 6 reduces to",
+      "This conforms to expectations from Heisenberg-limited metrology [66]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The statement's formula symbols were lost in the text layer; the scaling remark is given in prose.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The numbers 6 and 113 in the value are theorem and equation labels."
+    },
+    {
+     "id_suggestion": "ceroni-theorem6-flat-landscape-implication",
+     "value": "The authors state that as the average norm of the Jacobian of the neural network tends to zero the lower bound diverges, so that when the optimization landscape is flat a very large number of quantum states will need to be provided, and that when the Hessian's smallest singular value approaches zero the bound vanishes and further analysis is needed.",
+     "anchor": "Section IV B, p.17",
+     "quotes": [
+      "we see that as the average norm of the Jacobian matrix of the neural network tends to zero, the lower bound diverges.",
+      "it shows that in cases where the optimization landscape is flat, a very large number of quantum states will need to be provided in order to train the generative model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An interpretation of a bound whose full statement could not be quoted.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ceroni-theorem6-applicability-limits",
+     "value": "The authors state that Theorem 6 does not necessarily apply precisely to the generative model of the paper, because it assumes the estimator yields an exact local minimum in expectation, acts as a differentiable function of the parameters, and that parameters exist that prepare the provided data, and that the strongest assumption is that the fidelity function is strongly convex, which will in general not be true.",
+     "anchor": "Section IV B, p.17 to p.18",
+     "quotes": [
+      "It is crucial to note that the above result does not necessarily apply, precisely, to the generative model being considered in this paper.",
+      "but Theorem 6 also makes certain assumptions about the neural network, circuit ansatz, and optimization procedure",
+      "In general this will not be true, but if we expand in a small enough region about the optima then the actual objective function can always be locally approximated by a strongly convex one"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit on its Theorem 6, p.17 to p.18.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ceroni-numerics-setup",
+     "value": "The authors report that the simulations use PySCF and the minimal STO-3G basis for Hartree-Fock, restricted Hartree-Fock except for H4, a feed-forward network of up to 3 hidden layers of width 20 implemented in JAX, a PennyLane circuit simulation, exact inner products for the cost, and an Adam optimizer.",
+     "anchor": "Section V and V C, p.18 to p.19",
+     "quotes": [
+      "we utilize the library PySCF [67] and the minimal STO-3G basis set to perform all Hartree-Fock calculations.",
+      "with the largest consisting of 3 hidden layers of width 20.",
+      "is calculated by taking exact inner products between the states generated during the data collection phase"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own simulation setup, p.18 to p.19.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "All results come from noiseless classical simulation with exact state vectors; no hardware or shot noise is included."
+    },
+    {
+     "id_suggestion": "ceroni-numerics-scope-12-qubits",
+     "value": "The authors state that, due to computational restrictions, all numerical examples are limited to fewer than 12 qubits and cover H2, H3+, H4, BeH2 and H2O.",
+     "anchor": "Section V D, p.19",
+     "quotes": [
+      "Due to computational restrictions, all examples are limited to fewer than 12 qubits and the molecules included H2, H3+, H4 , BeH2 and H2O."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the scope of its numerics, p.19.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Scalability to larger molecules is not tested."
+    },
+    {
+     "id_suggestion": "ceroni-adaptive-ansatz-sparse-geometries",
+     "value": "The authors state that they build the circuit ansatz with an adaptive gate-selection procedure over single and double excitations, and report empirically that the set of reference geometries can be chosen very sparsely while still capturing all gates with non-negligible gradient, from which they say the procedure is likely not intractable as the dimension of the coordinate space increases.",
+     "anchor": "Section V B, p.18 to p.19",
+     "quotes": [
+      "we perform an adaptive gate selection procedure [50], in which we choose operations from pools of single and double excitation gates",
+      "Empirically, we find that the set of {R0, ..., Rk} can be chosen very sparsely",
+      "Thus, the above procedure is likely not intractable as the dimension of the coordinate space increases."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim of scaling based on small examples.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ceroni-h2-three-points",
+     "value": "The authors report for H2 that with training data near the equilibrium geometry the model cannot accurately reproduce the energy in the dissociation limit, and that few data points, only three in this example, are sufficient to obtain a high fidelity model across the entire potential energy curve when the training data is spread out enough.",
+     "anchor": "Section V D 1, Fig. 5, p.19 to p.20",
+     "quotes": [
+      "the model is not able to accurately reproduce the energy in the dissociation limit, where the exact ground and first",
+      "We also note that few data points, only three in this example, are sufficient to obtain a high fidelity model across the entire potential energy curve when the training data is spread out enough"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated molecule.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ceroni-training-spread-better",
+     "value": "The authors report that the model trained on data lying farther from equilibrium performs better, and that this was observed across many of the other numerical examples, because training data spread over larger areas of the potential energy surface captures features of the wavefunction not accessible near equilibrium.",
+     "anchor": "Section V D 1, p.19",
+     "quotes": [
+      "we observe that the model trained on data lying farther from equilibrium demonstrates better performance: an observed phenomenon across many of the other numerical examples below"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation across a few small simulations.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "This ties the accuracy to where the training geometries lie, a limit on the headline small-data fidelity result."
+    },
+    {
+     "id_suggestion": "ceroni-h4-rhf-fails-uhf-works",
+     "value": "The authors report that for rectangular H4 the model trained with restricted Hartree-Fock orbitals shows unphysical energy deviations that do not level out in the dissociation limit and fails to replicate the correct behaviour even with data near dissociation, and that with unrestricted Hartree-Fock orbitals the model produces a more reasonable potential energy surface of quality similar to H2, using 4 training points for the restricted run and 5 for each unrestricted run.",
+     "anchor": "Section V D 1, Figs. 6 and 7, p.21 to p.22",
+     "quotes": [
+      "The model, even when given data close to dissociation, still fails to replicate the correct behaviour of the target state when RHF orbitals are used.",
+      "By using UHF orbitals, we find that the model produces a more reasonable PES, and the generated ground states are of similar quality to H2.",
+      "A total of 4 data points were used to train the model",
+      "A total of 5 data points were used to train the model"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated molecule.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The quality of the reference state limits the method: with a poor Hartree-Fock starting guess the model fails even with enough data."
+    },
+    {
+     "id_suggestion": "ceroni-hartree-fock-artifact-fluctuations",
+     "value": "The authors hypothesize that small fluctuations in fidelity between displacements of 0.5 and 1 Bohr for H4 are an artifact of Hartree-Fock self-consistent discontinuities, and that a similar dip for water near 1.8 Bohr may be a Hartree-Fock artifact that further numerical investigation is needed to verify.",
+     "anchor": "Section V D 1, Fig. 8, p.21 and p.23; Section V D 3, p.23",
+     "quotes": [
+      "between δH = 0.5 Bohr and 1 Bohr. We hypothesize that this is an artifact of Hartree-Fock",
+      "energy and fidelity near δH = 1.8 Bohr.",
+      "this small dip may be an artifact of Hartree-Fock but further numerical investigations will be required to verify this fact."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author hypothesis, stated as unverified.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ceroni-h3plus-results",
+     "value": "The authors report that for planar triangular H3+, a two-dimensional model in bond angle and bond length, the model learns the true ground state with high fidelity across a wide range of geometries with limited data, and performs better with more data, comparing 6 and 10 training ground states.",
+     "anchor": "Section V D 2, Figs. 9 and 10, p.22 to p.25",
+     "quotes": [
+      "our model is able to learn the true ground state with high fidelity across a wide range of geometries for the 2-dimensional PES of H+3 with limited data.",
+      "(6 and 10 ground states in the training set respectively)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated molecule.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The Fig. 9 colour scale for the 6-point case spans roughly 0.78 to 1.0, so the fidelity is not uniformly above 99% there."
+    },
+    {
+     "id_suggestion": "ceroni-beh2-h2o-results",
+     "value": "The authors report that the BeH2 and H2O simulations show good performance as long as a sufficiently large set of data is used, with 4 and 6 training points for BeH2 and 4 for H2O.",
+     "anchor": "Section V D 3, Figs. 11 and 12, p.22 to p.27",
+     "quotes": [
+      "once again show good performance, as long as we use a sufficiently large set of data.",
+      "A total of 4 (top row), and 6 (bottom row) data points were used to train the model",
+      "for one set of training data with 4 data points"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from two simulated molecules.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ceroni-conclusion-gradient-scaling",
+     "value": "The authors state in the conclusion that, given an incoherent oracle that provides copies of the training data, the number of training samples needed to estimate the gradient within an error with a given probability scales as a function of N, the inverse square of the error and a logarithm, and that with coherent access the scaling with the error can be quadratically improved.",
+     "anchor": "Section VI Conclusion, p.23",
+     "quotes": [
+      "Given an incoherent oracle that provides copies of the training data, we show that the number of training samples needed to estimate the gradient",
+      "in the case where coherent access to the training vectors is provided the scaling with can be quadratically improved."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A summary whose formula symbols were lost in the text layer; the full statements are Theorems 1 and 2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ceroni-conclusion-cost-vs-qpe",
+     "value": "The authors state that once trained, the parameterized circuits have far less cost than applying phase estimation to project onto the state in question, and that using classical and quantum neural networks in tandem is a promising way to prepare molecular ground states over a potential energy surface.",
+     "anchor": "Section VI Conclusion, p.23",
+     "quotes": [
+      "Further, once trained, the parameterized circuits generated have far less cost than applying phase estimation to project onto the state in question.",
+      "provides a promising way to prepare the ground state of molecules over an entire potential energy surface"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper does not run a cost comparison with phase estimation.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The training cost, including the cost of producing the quantum training data, is not included in this comparison."
+    },
+    {
+     "id_suggestion": "ceroni-open-problems-dynamics-and-training-distribution",
+     "value": "The authors state two further open questions: whether the methods can be generalized to generating time dynamics, and the choice of distribution of training examples, since their lower bounds give no prescription for choosing positions.",
+     "anchor": "Section VI Conclusion, p.23 to p.24",
+     "quotes": [
+      "A final question that remains open by this work is the choice of distribution of training examples.",
+      "it does not provide a prescription for choosing their positions."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open problems, Conclusion, p.23 to p.24.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ceroni-qpe-feMoco-cost-cited",
+     "value": "The authors state that for the FeMoCo molecule the best estimate of quantum phase estimation runtime for the ground state energy is just under 4 days on a fault-tolerant quantum computer with millions of physical qubits, citing Ref. [21].",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "the best estimate of QPE runtime for determining its ground state energy is just under 4 days [21] on a fault-tolerant quantum computer with millions of physical qubits."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "chakraborty-2025-unsupervised-machine-learning-optimize-hybrid",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Chakraborty-et-al._2024_A-Machine-Learning-Approach-for-Optimizing-Hybrid-Quantum-Noise__2404.08993.pdf",
+   "title_in_file": "An Unsupervised Machine Learning to Optimize Hybrid Quantum Noise Clusters for Gaussian Quantum Channel",
+   "version_note": "arXiv:2404.08993v2, 23 Jan 2025. The file name carries 2024 and an older title (A Machine Learning Approach for Optimizing Hybrid Quantum Noise, the v1 title); the text is v2, which matches the record id's 2025 and 'unsupervised' title.",
+   "pages": 30,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A classical machine learning paper: a Gaussian mixture model fitted by expectation-maximization to simulated two-dimensional hybrid (Poisson shot plus Gaussian) quantum noise data, then used to change the parameters in a quantum channel capacity formula.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "chakraborty-bivariate-scope",
+     "verdict": "confirmed",
+     "note": "Both quotes are in the introduction on PDF page 4.",
+     "value": "The authors state that the current study assumes a bi-variate hybrid quantum noise dataset, and that deep learning based clustering and hard clustering are left to future work.",
+     "anchor": "Section I, p.4",
+     "quotes": [
+      "The current study assumes a bi-variate hybrid quantum noise dataset, aligning with the system's specifications.",
+      "Future work will explore Deep Learning (DL)-based clustering methods and hard clustering approaches"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its scope, Section I, p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "chakraborty-cluster-reduction-tolerance",
+     "verdict": "narrowed",
+     "note": "The 15% tolerance and 85% accuracy are a condition on the sum of the retained Poisson mixing weights (the retained weights must add to at least 0.85), not an accuracy of cluster assignment. The paper gives one worked case for its chosen Poisson parameter of 2.",
+     "value": "The authors report that their method reduces the number of Gaussian clusters with up to 15% error tolerance in Poisson weightage, ensuring accuracy 85%. They set an accuracy level of at least 85% for the retained mixing weights, and for the Poisson parameter 2 they report that five clusters have weights summing to 0.947.",
+     "anchor": "Section I, p.4; Section V A, p.20",
+     "quotes": [
+      "This method achieves up to 15% error tolerance in Poisson weightage, ensuring accuracy 85%",
+      "satisfied with an error tolerance of 15%, we set an accuracy level of at least 85%",
+      "For instance, with λ = 2, the weights 0.271, 0.271, 0.135, 0.180, 0.009 sum to 0.947, allowing K = 5 clusters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A design choice and one worked example from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "In the quoted weight list the last weight is printed 0.009; elsewhere (p.20) the paper gives it as 0.09, and 0.09 is what makes the sum 0.947. The reduction is a truncation of a Poisson series; the 85% is a mass criterion, not a measured clustering accuracy."
+    },
+    {
+     "id": "chakraborty-gmm-em-capacity-gain",
+     "verdict": "narrowed",
+     "note": "The 11.8% figure appears in the introduction's contributions list only; the results section reports no number for it. The comparison (Section V C, Fig. 9) is one case on simulated data at one Poisson parameter: 15 mixing components with noise variance 1 against 5 components with variance 0.687.",
+     "value": "The authors report that reducing the Gaussian clusters and applying the EM algorithm improves quantum channel capacity 11.8% without compromising essential hybrid noise components, validated through simulations. The comparison in the results is between 15 mixing components with an initial noise variance of 1 and 5 components with an updated noise variance of 0.687, both at the Poisson parameter 2.",
+     "anchor": "Section I, p.4; abstract p.2; Section V C, p.24 to p.25, Fig. 9",
+     "quotes": [
+      "improves quantum channel capacity 11.8% without compromising essential hybrid noise components",
+      "The approach is validated through simulations",
+      "(I) λ = 2, initial guess of σZ22 = 1, and cluster size 15; and (II) λ = 2, the updated σZ22 = 0.687, and optimized the cluster size 5."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation on synthetic data.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The capacity values are from a closed-form capacity formula (Eq. 18) evaluated with the updated variance, so the gain follows from a smaller noise variance in a formula. The paper does not show how 11.8% is computed from Fig. 9, whose axis runs from about 0.25 to 0.65. The printed line 'abstract p.4' in the stored anchor should read p.4 for the introduction and p.2 for the abstract."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "chakraborty-hybrid-noise-model-setup",
+     "value": "The authors state that the hybrid quantum noise is assumed additive, as the sum of Poisson-distributed quantum shot noise and Gaussian-distributed white classical noise, and that it is modeled as an infinite mixture of Gaussian distributions weighted by Poissonian parameters; the model is taken from the authors' prior work.",
+     "anchor": "Abstract, p.1; Section II A, p.7",
+     "quotes": [
+      "This noise is assumed to be additive, where Z = Z1 + Z2, with Z1 being Poisson-distributed quantum shot noise and Z2 representing Gaussian-distributed white classical noise [9], [10].",
+      "is modeled as an infinite mixture of Gaussian distributions weighted by Poissonian parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own model setup, p.1 and p.7.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "This is a classical noise model for a quantum channel; no quantum circuit or quantum hardware is used in the paper."
+    },
+    {
+     "id_suggestion": "chakraborty-responsibility-definition",
+     "value": "The paper defines the responsibility of a cluster for a data point as the posterior probability that the data point belongs to that cluster, which it calls the responsibility that the class takes to explain the data point.",
+     "anchor": "Section III A, p.11",
+     "quotes": [
+      "We will call γ(z) the responsibility that class k takes to explain the data point z."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition the paper's updates depend on, p.11.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chakraborty-convex-claim",
+     "value": "The authors state that the problem of maximizing the log-likelihood with respect to the mixture parameters is convex, and state in the same section that the stationary-point equation has no closed-form solution.",
+     "anchor": "Section III B, p.12",
+     "quotes": [
+      "The problem is convex.",
+      "However, this equation does not have a closed-form solution."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement without a proof in the paper.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The log-likelihood of a Gaussian mixture is in general not concave in its parameters, and the paper itself later says EM finds local optima (p.14 and p.15), so the convexity statement conflicts with the paper's own convergence discussion."
+    },
+    {
+     "id_suggestion": "chakraborty-lemma1-mean-update",
+     "value": "The paper states Lemma 1: setting the derivative of the log-likelihood with respect to the cluster mean to zero gives the mean as the responsibility-weighted average of the data points divided by the sum of the responsibilities, with the proof in Appendix A. The responsibilities themselves depend on the means, so the result is an update rule and not a closed-form solution.",
+     "anchor": "Section III B, Lemma 1; Appendix A",
+     "quotes": [
+      "Lemma 1. The maximizing log-likelihood in (8) w.r.t. µk(z) by setting derivative of the",
+      "Proof: Please refer to Appendix A.",
+      "The stationary points depend on"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 1 with its proof in Appendix A; a standard derivation. The conditions (responsibilities held fixed) are stated in Section III B, p.12.",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": "This is the textbook Gaussian mixture mean update."
+    },
+    {
+     "id_suggestion": "chakraborty-lemma2-covariance-update",
+     "value": "The paper states Lemma 2: setting the derivative of the log-likelihood with respect to the cluster covariance to zero gives the covariance as the responsibility-weighted sum of outer products of the deviations from the mean, divided by the sum of responsibilities, with the proof in Appendix B. It also derives, with a Lagrange multiplier under the constraint that the weights sum to one, that each mixing weight equals the average responsibility.",
+     "anchor": "Section III B, Lemma 2, p.14; Appendix B, p.26 to p.28; weights p.13 to p.14",
+     "quotes": [
+      "Lemma 2. The maximization of the log-likelihood in (8) w.r.t.",
+      "Proof: Please refer to Appendix B.",
+      "constrained optimization problem using the Lagrange multiplier method."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 2 with its proof in Appendix B; a standard derivation.",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": "In the paper the mixing weights are first set to Poisson probabilities, and the M-step then updates them freely; the final fitted weights (p.23) are not Poisson values, which sits uneasily with the claim that the Poisson parameter is preserved."
+    },
+    {
+     "id_suggestion": "chakraborty-em-convergence-limits",
+     "value": "The authors state that the EM algorithm finds local optima in the optimization landscape, that under general conditions it converges to a local maximum or in some cases a saddle point of the log-likelihood, and that in rare cases divergence can occur if assumptions are violated severely; they cite other work for monotonic non-decrease of the log-likelihood.",
+     "anchor": "Section III C and D, p.14 to p.15",
+     "quotes": [
+      "Under general conditions, the EM algorithm converges to a local maximum (or saddle point in some cases) of the log-likelihood function.",
+      "leading to convergence to local optima or, in rare cases, divergence if assumptions are violated severely [27].",
+      "the EM algorithm ensures that the log-likelihood function of the observed data does not decrease with each iteration [42]."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "General EM convergence statements the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chakraborty-simulation-setup-synthetic",
+     "value": "The authors state that the simulation was run in an Anaconda Jupyter Notebook with Python, that the ground-truth bivariate noise data was generated from the component Gaussian mixture, and that the initial parameters were Poisson-distributed weights, means shifted by the component index, and unit variances. The paper states no sample size or random seed.",
+     "anchor": "Section V B, p.22; Fig. 4 caption, p.16",
+     "quotes": [
+      "The simulation, conducted in an Anaconda Jupyter Notebook with Python, employed the EM algorithm",
+      "In our studies, the ground truth of the hybrid quantum noise data has been generated from the component GMMs",
+      "Weights: Poisson-distributed as w0 = 0.135, w1 = 0.271, w2 = 0.271, w3 = 0.18, w4 = 0.09."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own experimental setup, p.16 and p.22.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "All data is simulated from the same mixture family that is then fitted. No measured quantum channel or satellite data is used, and no sample size or seed is stated in the text."
+    },
+    {
+     "id_suggestion": "chakraborty-lambda-clusters-relation",
+     "value": "The authors state that a higher Poisson parameter gives a flatter Poisson distribution and more mixture components, and give a second example in which seven clusters have weights summing to 0.889 while the five highest weights fall below 0.85.",
+     "anchor": "Section V A, p.20",
+     "quotes": [
+      "Higher values of λ produce a flatter Poisson distribution and lower mixing coefficients (wi),",
+      "sum to 0.889, resulting in K = 7 clusters.",
+      "λ = 5 yields a sum < 0.85, failing the initial condition."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Worked numerical examples from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The listed weights for the Poisson parameter 5 do not all match the Poisson probabilities (0.084 appears where 0.104 and 0.065 neighbours suggest otherwise); the sums quoted are the paper's."
+    },
+    {
+     "id_suggestion": "chakraborty-k5-selection-metrics",
+     "value": "The authors report that they began with 10 initial clusters and that silhouette analysis, the elbow method, the gap statistic, and BIC and AIC all selected 5 as the optimal number of clusters, with BIC and AIC minimized at 5 for the GMM.",
+     "anchor": "Section V B, p.21 to p.22; Fig. 8, p.23",
+     "quotes": [
+      "This study began with 10 initial clusters generated to represent the complexity of hybrid quantum noise data.",
+      "the highest score corresponded to k = 5, indicating optimal separation and cohesion for this",
+      "both BIC and AIC values were minimized at k = 5 shown in Fig. 8 (b)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated data set.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The data is generated from a five-component mixture, so recovering 5 is a check on the method with a known answer, not a finding about real noise."
+    },
+    {
+     "id_suggestion": "chakraborty-final-fitted-parameters",
+     "value": "The authors report that after 20 iterations the fitted weights were 0.1871, 0.3321, 0.2916, 0.1487 and 0.0403, and they state that these results validate the algorithm's ability to optimize Gaussian components while preserving the Poissonian parameter near 2.",
+     "anchor": "Section V B, p.22 to p.23, Figs. 5 to 7",
+     "quotes": [
+      "The final parameter values after 20 iterations are:",
+      "w0′ = 0.1871, w1′ = 0.3321, w2′ = 0.2916, w3′ = 0.1487, w4′ = 0.0403,",
+      "These results validate the algorithm's ability to optimize Gaussian components while preserving the Poissonian parameter λ ≈ 2"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation run.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The fitted weights differ from the initial Poisson weights (0.135, 0.271, 0.271, 0.18, 0.09), so the fitted mixture is not exactly Poisson-weighted."
+    },
+    {
+     "id_suggestion": "chakraborty-variance-update-lambda-unchanged",
+     "value": "The authors report that the EM algorithm updated the noise covariance so that the determinant became 0.829, which they equate with the standard deviation and so a variance of 0.687 in place of the initial value, that the algorithm lowers the Gaussian noise variance by optimal clustering, and that it does not affect the Poissonian parameter.",
+     "anchor": "Section V B and C, p.24",
+     "quotes": [
+      "updated value of Σ′0 =⇒ |Σ0′ | = 0.829 ←→ σZ2 = 0.829 =⇒ σZ22 = 0.687.",
+      "This implies that the EM algorithm will lower the Gaussian noise variance by optimal clustering.",
+      "does not affect the Poissonian parameter λ, which is the number of photon counts in the system."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation run.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "For a two-by-two covariance sigma squared times identity the determinant is sigma to the fourth power, so a determinant of 0.829 would give a variance near 0.91, not 0.687. The paper equates the determinant with sigma. The 0.687 value therefore does not follow from the printed determinant by the stated rule."
+    },
+    {
+     "id_suggestion": "chakraborty-capacity-formula-cited",
+     "value": "The paper gives the quantum channel capacity for hybrid noise and a Gaussian transmitted signal, taken from its authors' earlier work, as a mixture-weighted expression in the noise and received-signal covariances, with a scalar form obtained by setting the dimension to one.",
+     "anchor": "Section IV, Eqs. 16 to 18, p.18 to p.19",
+     "quotes": [
+      "Taking into account hybrid quantum noise and the Gaussian transmitted signal model as discussed above [9], [10], the capacity of the quantum channel can be expressed as follows:",
+      "by putting M = 1, and replacing Σi(y) by σi(y)"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to its authors' earlier work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The capacity results of Section V C are evaluations of this formula, not measurements."
+    },
+    {
+     "id_suggestion": "chakraborty-capacity-result-fig9",
+     "value": "The authors report that, in the capacity-against-SNR plots, ML-optimized parameters give a better capacity estimation result than the initial estimated parameters, comparing a case with 15 components and one with fewer components.",
+     "anchor": "Section V C, Fig. 9, p.24 to p.25",
+     "quotes": [
+      "ML-optimized parameters gives a better capacity estimation result than the initial estimated parameters.",
+      "The capacity of the quantum channel with respect to Signal-to-Noise Ratio (SNR) for the number of components 15"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one comparison of two curves.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text gives no numeric capacity values; the figures are the evidence."
+    },
+    {
+     "id_suggestion": "chakraborty-kmeans-comparison-not-shown",
+     "value": "The authors state that an initial comparison with the K-Means algorithm was performed, but that the study primarily focused on the GMM-based EM algorithm.",
+     "anchor": "Section III E, p.16; Section I, p.4",
+     "quotes": [
+      "An initial comparison with the K-Means algorithm was performed in this article; however, the study primarily focused on the GMM-based EM algorithm for clustering visualization."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement without results shown in the paper.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "No K-Means results appear in the paper's figures or text."
+    },
+    {
+     "id_suggestion": "chakraborty-realtime-satellite-claims",
+     "value": "The authors claim that ML-enhanced quantum noise clustering significantly improves channel performance in satellite-based quantum communication systems, particularly quantum key distribution, and that GMM and the EM algorithm are a practical and efficient solution for modeling quantum noise in real-time applications; they give the EM algorithm's quadratic time complexity as the reason it suits real-time use.",
+     "anchor": "Abstract, p.2; Section III E, p.17; Section VI, p.25",
+     "quotes": [
+      "demonstrating that ML-enhanced quantum noise clustering significantly improves the channel's performance in satellite-based quantum communication systems",
+      "Its computational efficiency and quadratic time complexity make it suitable for real-time applications in quantum communication systems"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper's simulations include no satellite link, QKD key-rate or timing measurement.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The simulated data are a synthetic bivariate sample and the only metric is a capacity formula; no QKD rate or run time is reported."
+    },
+    {
+     "id_suggestion": "chakraborty-prior-poisson-gaussian-cited",
+     "value": "The authors state that their earlier work expressed the hybrid quantum noise model as a Gaussian mixture model with Poisson weightage, and that it was investigated as an intermediate result that a good approximation of the noise probability density function depends on the interrelation of the Poisson parameter and the number of Gaussian components.",
+     "anchor": "Section I, p.4",
+     "quotes": [
+      "Our previous works [9], [10] expressed the hybrid quantum noise model as GMM, an infinite mixture of Gaussians with weightage from Poissonian distribution.",
+      "the good approximation of the p.d.f. of the quantum noise depends on the interrelation of the Poisson parameter and the number of Gaussian components [10]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to earlier work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "chalkiadakis-2023-exploring-quantum-neural-networks-discovery",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Chalkiadakis-et-al._2023_Exploring-Quantum-Neural-Networks-for-the-Discovery-and__2304.06681.pdf",
+   "title_in_file": "Exploring Quantum Neural Networks for the Discovery and Implementation of Quantum Error-Correcting Codes",
+   "version_note": "arXiv:2304.06681v1, 13 April 2023. The text matches the record.",
+   "pages": 20,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A simulation study (noise-free qiskit) of dissipative quantum neural networks used as quantum autoencoders to correct bit-flip and amplitude-damping errors, and to learn a bit-flip encoding, with a 'conjugate layer' modification that reduces parameters.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qnn-bitflip-more-than-two-errors",
+     "verdict": "confirmed",
+     "note": "The statement is on PDF page 8. The paper's Equation 15 is printed as the 'probability of successful correction' of an optimal code but equals the probability of two or three flips; see the new assertion on that equation.",
+     "value": "The authors state that if more than two bit flip errors occur, the autoencoder may fail to identify and correct the error, and that their models are sub-optimal algorithms.",
+     "anchor": "Section 4, Limitations of this Approach, p.8",
+     "quotes": [
+      "if more than two bit flip errors occur, the QAE may fail to accurately identify and correct the error",
+      "Although the QAE models developed in this work are sub-optimal algorithms"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 4 (Limitations of this Approach), p.8.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "A three-qubit bit-flip code corrects one flip, so it fails at two flips, not only above two; the paper's wording is looser than the code's actual limit."
+    },
+    {
+     "id": "qnn-bitflip-qae-correction",
+     "verdict": "narrowed",
+     "note": "The claim is from simulation only (qiskit, noise-free qubits), for single-qubit bit flips at one error probability, with an average fidelity near 0.98 on the validation set, not perfect correction.",
+     "value": "The authors report that they implement the Bit-Flip quantum error-correcting code with a Quantum Autoencoder in a noise-free qiskit simulation, with single-qubit bit-flip errors at probability 0.2, and that the cost function on both the train and the validation set reaches a value near 1, at around 0.98.",
+     "anchor": "Section 2, p.2; Section 3, p.2; Section 4, p.6 to p.7",
+     "quotes": [
+      "we successfully implement the Bit-Flip quantum error-correcting code using a Quantum Autoencoder, demonstrating its ability to correct bit-flip errors in arbitrary logical qubit states.",
+      "assuming that the qubits are noisy-free in general.",
+      "The input states of the set are corrupted by (single qubit) bit-flip errors, with probability p = 0.2.",
+      "with the Cost function on both the train and the validation set eventually reaching a value near 1, at around 0.98."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "No hardware run and no noise beyond the injected bit flips."
+    },
+    {
+     "id": "qnn-modified-outperforms-default",
+     "verdict": "narrowed",
+     "note": "The paper shows a head-to-head comparison of a default (vanilla) and a conjugate-layer network only for the codeword-discovery task (Section 6). For the bit-flip and amplitude-damping autoencoders it describes a vanilla and a conjugate network (Fig. 2) but reports no vanilla result; and the amplitude-damping model reached an average cost of 0.8, which the authors call not optimal.",
+     "value": "The authors state that their results indicate that modified dissipative quantum neural networks outperform default implementations across all tasks considered in the paper. In the body the comparison with a vanilla network is reported for the codeword-discovery task, where the vanilla network plateaus near a cost of 0.9 and the conjugate-layer network passes that value, and the amplitude-damping autoencoder reached an average cost of 0.8.",
+     "anchor": "Section 2, p.2; Section 5, p.11; Section 6, p.14 to p.15",
+     "quotes": [
+      "Our results indicate that modified DQNNs outperform default implementations across all tasks considered in this work.",
+      "While the model initially seems to be learning, with the cost function eventually reaching a value of around 0.9, it plateaus without further improvement.",
+      "This QAE, with the average cost being 0.8, cannot efficiently error-correct Amplitude Damping"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim supported by a comparison for one of the three tasks.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The abstract repeats the claim as 'consistently outperformed the standard implementations across all tasks'. The text does not show a default-network baseline for the first two tasks."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "chalkiadakis-simulation-setup",
+     "value": "The authors state that the quantum circuits were simulated with the python package qiskit, assuming noise-free qubits in general, using code from Ref. [8] upgraded with more optimizers, early stopping, gradient ascent and conjugate layers.",
+     "anchor": "Section 3, p.2",
+     "quotes": [
+      "We simulated the quantum circuits that run those networks using python's package qiskit, assuming that the qubits are noisy-free in general.",
+      "The code to do so was provided by the authors in [8] and has been upgraded for the purposes of this paper"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup, Section 3, p.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "All results are from simulation of an ideal device; none is from hardware."
+    },
+    {
+     "id_suggestion": "chalkiadakis-dqnn-universality-cited",
+     "value": "The authors state that Ref. [11] demonstrated that the dissipative quantum neural network structure is capable of simulating a universal quantum computer, which they say effectively means that any quantum algorithm can be built with this method given enough resources.",
+     "anchor": "Section 3, p.3",
+     "quotes": [
+      "The authors of [11] have demonstrated that this structure is capable of simulating a universal",
+      "which effectively means that any quantum algorithm can be built with"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chalkiadakis-cost-and-training-definition",
+     "value": "The paper defines the network's cost as the fidelity between the output state and the target state averaged over the training pairs, and trains the network by gradient ascent on this cost.",
+     "anchor": "Section 3, p.3 to p.4",
+     "quotes": [
+      "One natural choice is the Fidelity",
+      "averaged over all the training pairs",
+      "we have to maximize the cost function by applying a gradient ascent (instead of decent) algorithm"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition the paper's results depend on, Section 3, p.3 to p.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The number 1 and 0 in the value come from the paper's sentence on the cost range, which sits across the page break (p.3 to p.4)."
+    },
+    {
+     "id_suggestion": "chalkiadakis-param-count-exponential-limit",
+     "value": "The authors state that the number of trainable coefficients scales exponentially fast with the number of qubits in a layer, so that it becomes unpractical to simulate such networks with classical computers that have more than a handful of qubits.",
+     "anchor": "Section 3, p.4",
+     "quotes": [
+      "As one can observe, this number scales exponentially fast with the number of qubits in a layer.",
+      "it becomes unpractical to simulate QNNs with classical computers, which have more than a handful of qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section 3, p.4.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "This limits the layer widths and the scale of every experiment in the paper."
+    },
+    {
+     "id_suggestion": "chalkiadakis-conjugate-layer-definition",
+     "value": "The paper defines a conjugate layer as a layer whose transformation is replaced by the Hermitian conjugate of the unitary transformation of a different layer, so the two layers share parameters and the number of trainable parameters is truncated.",
+     "anchor": "Section 3.1, p.5",
+     "quotes": [
+      "a conjugate layer can be implemented by replacing the transformation of a layer, l, with the Hermitian conjugate of the unitary transformation of a different layer of choice",
+      "we essentially truncate the number of trainable parameters of the QNN"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition the paper's results depend on, Section 3.1, p.5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chalkiadakis-bitflip-training-setup",
+     "value": "The authors state that the bit-flip autoencoder was trained on 120 input and target pairs of encoded states with single-qubit bit-flip errors at probability 0.2, using a first learning rate of 0.25 in the initial sessions, and validated on 400 states covering the Bloch sphere.",
+     "anchor": "Section 4, p.6",
+     "quotes": [
+      "we created a training set of 120 input/target pairs",
+      "The input states of the set are corrupted by (single qubit) bit-flip errors, with probability p = 0.2.",
+      "relatively large learning rate (lr = 0.25)",
+      "The validation set, thus, contained in total 400(= 20 × 20) different states"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own experimental setup, Section 4, p.6.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chalkiadakis-bitflip-conditional-fidelities",
+     "value": "The authors report conditional mean fidelities for the bit-flip autoencoder of 0.96 for a flip on qubit 1, 0.96 for qubit 2, 0.95 for qubit 3 and 0.97 with no error, and say this confirms that it learned to denoise single bit-flip events on logical qubits with high fidelity.",
+     "anchor": "Section 4, p.7",
+     "quotes": [
+      "F ̄(ρout, |ψ |bit-flip to qubit 1) = 0.96",
+      "F ̄(ρout, |ψ |bit-flip to qubit 2) = 0.96",
+      "F ̄(ρout, |ψ |bit-flip to qubit 3) = 0.95",
+      "F ̄(ρout, |ψ |no error) = 0.97",
+      "This confirms that the QAE has successfully learned to denoise single bit-flip events on (logical) qubits, with high fidelity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated model.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Each conditional fidelity is below the roughly 0.98 overall figure; the paper does not state shot counts or error bars."
+    },
+    {
+     "id_suggestion": "chalkiadakis-bias-check-bloch-sphere",
+     "value": "The authors report that colormaps of fidelity over the Bloch sphere, at error probabilities of 1 and 0, show no areas where the bit-flip model underperforms, so that it has developed no bias towards a region of the sphere.",
+     "anchor": "Section 4, p.8, Fig. 4",
+     "quotes": [
+      "In the first validation set, the probability of error was set to be p = 1, while in the second one p = 0.",
+      "Figure (5) suggests that there are no areas on the Bloch sphere where our model underperforms."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated model, read from colormaps.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text cites figure 5 while the colormaps are in figure 4; the check is on a visual uniformity, with no numeric bound."
+    },
+    {
+     "id_suggestion": "chalkiadakis-eq15-success-probability",
+     "value": "The authors state that, in an optimal quantum error-correcting algorithm, the probability of successful correction is given by the expression printed as 3(1 − p)p2 + p3 and that, although their QAE models are sub-optimal, their probability of successful correction closely follows the same dependence as optimal algorithms. The paper reports no measurement of the model's success probability as a function of the error probability.",
+     "anchor": "Section 4, Eq. 15, p.8",
+     "quotes": [
+      "In an optimal quantum errorcorrecting algorithm, the probability of successful correction is given by: 3(1 − p)p2 + p3",
+      "As a result, their probability of successful correction closely follows the same dependence as optimal quantum error-correcting algorithms."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A claim in the paper's limitations text with no supporting measurement.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The expression 3(1-p)p^2 + p^3 (the exponents print flat as p2 and p3) is the probability of two or three flips in three qubits, which is the failure probability of a three-qubit majority code, not its success probability."
+    },
+    {
+     "id_suggestion": "chalkiadakis-amp-damping-code-cited",
+     "value": "The authors state that an approximate four-qubit error-correcting code proposed in Ref. [10] corrects single-qubit damping events, and that it is valid only when the damping probability is kept small.",
+     "anchor": "Section 5, p.9 to p.10",
+     "quotes": [
+      "One such error-correcting code, proposed in [10], employs four real qubits to correct single qubit",
+      "for our approximate error-correcting code to be valid, the probability γ of the"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chalkiadakis-amp-damping-training-setup",
+     "value": "The authors state that for amplitude damping the damping probability was kept at 0.1, early training used 50 input and target pairs and later stages used 704 pairs, and a footnote says that, due to computational power constraints, training sets of no more than 70 state pairs were used.",
+     "anchor": "Section 5, p.10, footnote 4",
+     "quotes": [
+      "maintained the probability γ at 0.1.",
+      "utilized training sets containing 50 input/target state pairs",
+      "we increased the total number of state pairs to 704",
+      "Due to computational power constraints, we had to limit ourselves to training sets comprised of no more than 70 state pairs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own experimental setup, Section 5, p.10.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text gives both 704 pairs and a footnote cap of 70 pairs; the paper does not reconcile the two numbers (704 may be a typographical error for 70 or the footnote may refer to an earlier stage)."
+    },
+    {
+     "id_suggestion": "chalkiadakis-amp-damping-result-not-optimal",
+     "value": "The authors report that the [4,1,4] autoencoder for amplitude damping reached an average cost of 0.8, below the 0.95 they expected for every corruption as in the bit-flip case, that no hyperparameter combination improved it, that they attribute this to a local maximum, and that their limited resources did not allow them to explore other architectures or larger training sets.",
+     "anchor": "Section 5, pp.10-12, Fig. 6",
+     "quotes": [
+      "This QAE, with the average cost being 0.8, cannot efficiently error-correct Amplitude Damping as we would expect the average cost to be no less than 0.95",
+      "This phenomenon indicates that this QAE has reached a local maximum that prevents it from reaching the global",
+      "our limited resources would not allow us to explore these options.",
+      "resulting in a [4,1,4] Autoencoder."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical negative result from one simulated model.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "This is the paper's own report that its amplitude-damping model did not reach the target performance, which narrows the abstract's phrasing of restoring states impacted by amplitude damping."
+    },
+    {
+     "id_suggestion": "chalkiadakis-codeword-discovery-method",
+     "value": "The authors propose to integrate the noisy channel into the network so that the network learns to encode, with a [1, 3, 1, 3, 1] architecture for the bit-flip channel with the channel placed after the first layer, a corruption probability of 0.75 chosen so that four outcomes occur with equal probability, 100 training pairs, and a validation set of 400 states. The authors present it as a proof of concept.",
+     "anchor": "Section 6, p.12 to p.14",
+     "quotes": [
+      "As a proof of concept, we will begin by integrating the bit-flip channel inside the QNN",
+      "The training set contained 100 input-target training pairs",
+      "The integrated bit-flip channel corrupts with a probability of p = 0.75 (single-qubit errors)",
+      "The validation set consisted of 400 states designed to cover the Bloch Sphere uniformly.",
+      "The architecture of this QNN will be [1, 3, 1, 3, 1]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own experimental setup, Section 6, p.12 to p.13.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The method is stated as a proposal; the claim that it will discover new codes rests on this one bit-flip case, where the answer is already known."
+    },
+    {
+     "id_suggestion": "chalkiadakis-vanilla-plateau-result",
+     "value": "The authors report that the default [1, 3, 1, 3, 1] network reached a cost of around 0.9 and plateaued, that this was characteristic of all models tested regardless of hyperparameters, that its mean fidelity was 0.6 for the case where the bit-flip channel does not corrupt the state, and that this model reaches a barren plateau; they hypothesize that the cost function has four local maxima.",
+     "anchor": "Section 6, pp.12-15, Figs. 8 and 9",
+     "quotes": [
+      "This behavior is characteristic of all such models we tested, regardless of the chosen hyperparameters.",
+      "The QNN fails in cases where the bit flip channel doesn't corrupt the states, with its Mean Fidelity being 0.6.",
+      "A possible explanation that can justify the above observations could be that the Cost function has 4 different local maximums, one for each case.",
+      "The architecture of this QNN will be [1, 3, 1, 3, 1]",
+      "with the cost function eventually reaching a value of around 0.9, it plateaus without further improvement."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from simulated models; the explanation is a hypothesis.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The figure caption calls the plateau a barren plateau; the paper does not measure gradient variance, so the name is the authors' label."
+    },
+    {
+     "id_suggestion": "chalkiadakis-conjugate-fix-result",
+     "value": "The authors report that a [1, 3, 1] network with a conjugate layer reduces the number of parameters from 608 to 256, makes the model faster to train and passes the 0.9 cost threshold, and that it retains high fidelity in all four cases of the bit-flip channel.",
+     "anchor": "Section 6, p.15, Fig. 10",
+     "quotes": [
+      "we have reduced the number of parameters in the network from 608 to 256",
+      "helped it surpass the 0.9 threshold value of the cost function that plagued previous models",
+      "This time the QNN retains high fidelity for all cases.",
+      "This model features a simpler [1, 3, 1] QNN structure"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated model.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text gives no numeric final cost or fidelity for this model; Fig. 10 holds the learning curve and colormaps."
+    },
+    {
+     "id_suggestion": "chalkiadakis-discovered-encoding",
+     "value": "The authors report that the first layer of the conjugate-layer network maps the two basis states to states with leading terms printed as |0 → (0.92 + i0.36) |001 + ... and |1 → (−0.81 + i0.57) |011 + ..., with the other coefficients very small and not shown, and state that the network has discovered a new encoding for the bit-flip channel that is still fundamentally based on the same principles as known codes.",
+     "anchor": "Section 6, p.16, Eq. 20",
+     "quotes": [
+      "|0 → (0.92 + i0.36) |001 + ... , |1 → (−0.81 + i0.57) |011 + ...",
+      "where the coefficients following the ellipsis are very small and therefore not presented here.",
+      "the QNN has discovered a new encryption for the bit-flip channel, but it is still fundamentally based on the same principles we are familiar with for these codes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result and an interpretation from one simulated model.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The paper uses the word encryption for encoding. The two leading terms printed, |001> and |011>, differ in a single bit, and the elided coefficients are not shown, so the printed terms alone do not show the code's distance; the paper gives no test of the discovered code beyond the fidelity colormaps."
+    },
+    {
+     "id_suggestion": "chalkiadakis-dqnn-plateau-cited-limit",
+     "value": "The authors state that dissipative quantum neural networks can sometimes exhibit plateaus during training that prevent them from reaching the global maximum of the cost function, that this aligns with findings in Ref. [17] which characterize such networks as untrainable due to barren plateaus, and that conjugate layers offer some assistance in training and accelerate it.",
+     "anchor": "Section 7 Conclusions, p.16 to p.17",
+     "quotes": [
+      "we observed that Dissipative Quantum Neural Networks can sometimes exhibit plateaus while training",
+      "aligns with the findings in [17], where the authors characterize such QNNs as untrainable due to the barren plateaus they tend to fall into during training.",
+      "we discovered that conjugate layers can offer some assistance in training these models while also accelerating the training process."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit on its networks, Section 7, p.16 to p.17.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The untrainability finding is the paper's citation of Ref. [17], not its own result."
+    },
+    {
+     "id_suggestion": "chalkiadakis-swap-test-fidelity-estimate",
+     "value": "The paper describes estimating the cost by a swap test, in which the probability of measuring the auxiliary qubit in 0 is one half plus one half of the fidelity, estimated by running the circuit S times, with S equal to 1000 as a good starting point and increased once the network is at a plateau point.",
+     "anchor": "Appendix A, p.19 to p.20",
+     "quotes": [
+      "What's left now is to estimate the probability P0, which can be done by running the same circuit multiple times",
+      "A good starting point is to choose S = 1000",
+      "we may increase S for more accuracy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own cost-estimation setup, Appendix A, p.20.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The 'one half' and the formula P0 = 1/2 + F/2 are from Eq. 27 whose symbols were partly lost in the text layer."
+    }
+   ]
+  },
+  {
+   "record_id": "chandarana-2022-digitized-counterdiabatic-quantum-algorithm-protein",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Chandarana-et-al._2022_Digitized-Counterdiabatic-Quantum-Algorithm-for-Protein-Folding__2212.13511.pdf",
+   "title_in_file": "Digitized-Counterdiabatic Quantum Algorithm for Protein Folding",
+   "version_note": "arXiv:2212.13511v1, 27 December 2022. The text matches the record.",
+   "pages": 14,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A variational quantum algorithm for protein folding on a tetrahedral lattice, with a counterdiabatic-inspired ansatz, tested in simulation and on Quantinuum, IBM and Google (emulator) backends for up to 17 qubits.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "cd-ansatz-hw-success",
+     "verdict": "widened",
+     "note": "The stored value is right. Fuller: both runs were 1000 shots on the Quantinuum H1-1 with parameters optimized on a local simulator; the 17-qubit run did not return the ground state (its most probable output was the fourth excited state), and the authors report that the 13-qubit run gave the ground state.",
+     "value": "The authors report that on the Quantinuum H1-1 trapped-ion device, with 1000 shots, the 13-qubit protein run gave around 85% probability of the ground state, and the 17-qubit run gave around 79% probability for an output state that is the 4th excited state of the Hamiltonian, not the ground state.",
+     "anchor": "Experimental implementations, Quantinuum trapped-ions, pp.5-6 (Fig. 6)",
+     "quotes": [
+      "Both experiments were performed with 1000 shots.",
+      "For N = 13 qubits, we achieve around 85% probability of getting the ground state shown in Fig. 6(a)",
+      "Fig. 6(b) shows the N = 17 qubits case with around 79% probability of the output state achieved during the experiment which is the 4th excited state of the Hamiltonian.",
+      "on the Quantinuum H1-1 [50] device."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one hardware run of each size.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The paper's own words 'high success probability' for the N = 17 run (p.6) do not fit a run whose dominant output was an excited state."
+    },
+    {
+     "id": "cd-ansatz-optimization-offline",
+     "verdict": "confirmed",
+     "note": "The same offline procedure is used for the IBM and Google runs (p.7: 'obtained the optimal parameters as before').",
+     "value": "The authors state that the optimization was run on a local simulator and that the circuit with the optimal parameters was then implemented on the real hardware.",
+     "anchor": "Experimental implementations, Quantinuum trapped-ions, p.6",
+     "quotes": [
+      "we ran the optimization part on a local simulator with Adam optimizer and 500 iteration steps and implemented the circuit obtained with the optimal parameters on the real hardware."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own experimental setup, p.6.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The hardware only evaluates a fixed circuit; no on-device training loop is run, so the hardware results do not test the variational optimization."
+    },
+    {
+     "id": "cd-ansatz-success-falls-with-size",
+     "verdict": "confirmed",
+     "note": "The statement is on PDF page 3 (the stored anchor said page 4). The authors attribute it to the growth of the solution space and state that scaling may require good initialization techniques.",
+     "value": "The authors report that, in their simulations, the number of successful instances decreases with increasing system size.",
+     "anchor": "Results, Performance analysis, p.3 to p.4 (Fig. 2)",
+     "quotes": [
+      "The ansatz performs extremely well for all the cases we investigate but with increasing system size, the number of successful instances decreases."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from simulations of a few proteins.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "cd-ansatz-definition-scaling",
+     "value": "The authors state that the CD-inspired ansatz is built from exponentials of terms from a counterdiabatic operator pool, with one free parameter per gate, so that the number of parameters per layer is the number of two-body terms plus the number of qubits, and the parameter scaling is quadratic in the number of qubits; they also state it is problem-inspired and hardware implementable.",
+     "anchor": "Results, CD-inspired ansatz, p.2 to p.3",
+     "quotes": [
+      "this ansatz is also hardware implementable and has a parameterization that scales as O(N2), where N is the number of qubits.",
+      "Hence, the number of parameters per layer is R = N2loc + N so the parameter scaling is O(N2)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition of the paper's ansatz and its parameter count, p.2 to p.3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The exponent prints flat as O(N2) in the text layer, meaning order N squared."
+    },
+    {
+     "id_suggestion": "cd-ansatz-pool-truncation",
+     "value": "The authors state that, with the nested commutator expansion of order two, they truncate the terms to up to two-body terms and select from the resulting pool only Y and YZ, and that the Hamiltonian they target is a 5-local Ising Hamiltonian.",
+     "anchor": "Results, Performance analysis, p.3",
+     "quotes": [
+      "In each case, we generate a 5-local Ising Hamiltonian (See Methods B) intending to reach the ground-state",
+      "We truncate these terms to up to two-body terms",
+      "Out of these, we select {Y, YZ}"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own ansatz choice, p.3.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cd-protein-model-setup",
+     "value": "The authors state that they use the 3D tetrahedral lattice model of Ref. [6] with turn encoding and Miyazawa-Jernigan interactions, giving a 5-local Ising Hamiltonian whose ground state shows the optimal turn sequence, a model that uses fewer qubits at the cost of higher locality.",
+     "anchor": "Methods B, p.9",
+     "quotes": [
+      "In this work, we consider the 3D tetrahedral lattice model introduced in Ref. [6] with the turn encoding and MJ interactions.",
+      "Hence, H is a 5-local Ising Hamiltonian whose ground state shows the optimal turn sequence for the folded protein.",
+      "but this comes at the cost of increasing the locality of the Hamiltonian."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own problem encoding, Methods B, p.9.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cd-simulation-setup",
+     "value": "The authors state that for each protein they run the algorithm 20 times with random initial parameters at one layer, using the Adam and Adagrad optimizers with gradients from the parameter-shift rule, at most 500 iterations with a stopping tolerance of 10−6, and use the probability of the ground state as the success metric.",
+     "anchor": "Results, Performance analysis, p.3 to p.4",
+     "quotes": [
+      "For each protein, we run the algorithm 20 times with random initial parameters for the p = 1 layer.",
+      "iterations to 500 with the tolerance of 10−6, in the sense that the iterations will stop once this tolerance is reached.",
+      "we use success probability as a metric, showing the probability of getting the ground state at the end of the algorithm."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own simulation setup, p.3 to p.4.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "All proteins in the simulation study are at one layer; deeper circuits are not tested."
+    },
+    {
+     "id_suggestion": "cd-success-drop-explanation",
+     "value": "The authors attribute the falling number of successful instances to the solution space growing drastically with system size, state that unsuccessful instances show almost zero success probability because the spectrum is densely packed with many degenerate excited states, and state that scaling may need good initialization techniques to reach the exact ground state.",
+     "anchor": "Results, Performance analysis, p.3 to p.4",
+     "quotes": [
+      "This is due to the fact that the solution space increases drastically with system size making it difficult to find a global solution.",
+      "The observed trend of decreasing successful instances with increased system size shows that scaling to a higher systems size might require good initialization techniques to get to the exact ground state."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation without a test in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The scaling statement is a limit the paper states for its own method; whether the trend continues past the sizes tested is not shown."
+    },
+    {
+     "id_suggestion": "cd-vs-qaoa-comparison",
+     "value": "The authors report that, for the 13-qubit protein AVDINNNA with 20 randomly initialized instances at one layer, the performance of the CD-inspired ansatz is much better than QAOA, and they attribute this to the difference in optimizable parameters, noting that QAOA at one layer already contains five-body terms.",
+     "anchor": "Results, Performance analysis, p.4, Fig. 3",
+     "quotes": [
+      "Indeed, the performance of the CD-inspired ansatz is much better than QAOA.",
+      "Only two parameters result in low expressibility, and to counter this challenge, a high p ansatz is required.",
+      "Taking into consideration that QAOA ansatz at p = 1 already contains five-body terms",
+      "we studied the convergence of 20 instances with p = 1 layer, each having random initialization, with N = 13 qubits protein AVDINNNA"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one protein, simulation only.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The comparison is against QAOA at one layer on one protein; the paper does not run QAOA at higher layers, so the headline 'outperform state-of-the-art' rests on this and the HEA case."
+    },
+    {
+     "id_suggestion": "cd-vs-hea-comparison",
+     "value": "The authors report that, for the 17-qubit protein CYIQNCPLG at one layer, the minimum energy of the best CD-inspired instance is much closer to the exact ground-state energy than that of the hardware-efficient ansatz, that the hardware-efficient ansatz converges more smoothly, and that the best CD-inspired energy differs from the exact ground state by about 0.54.",
+     "anchor": "Results, Performance analysis, p.4 to p.5, Fig. 4",
+     "quotes": [
+      "We observe that the minimum with the best CD-inspired ansatz instance is much closer to the exact ground-state energy as compared to HEA.",
+      "Regarding the convergence with iteration steps, the HEA has a relatively smoother convergence as compared to the CD-inspired ansatz.",
+      "Ecd − EGS ≈ 0.54.",
+      "We study a nine amino-acid protein CYIQNCPLG that translates to a N = 17 qubits system"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one protein, simulation only.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The comparison is of the best instance for each ansatz, not of averages, for the inset result; the figure shows both averages and best instances."
+    },
+    {
+     "id_suggestion": "cd-gradient-evaluation-cost-limit",
+     "value": "The authors state that the parameter-shift method needs two circuit evaluations per parameter, so the CD-inspired ansatz takes 2(N2loc + N) evaluations while the hardware-efficient ansatz takes 2N, that this is a challenge at larger sizes, and that for 17 qubits the ansatz finds it hard to converge to a steady value in 100 iterations.",
+     "anchor": "Results, Performance analysis, p.4 to p.5",
+     "quotes": [
+      "the CDinspired ansatz will take 2(N2loc + N) while HEA will take 2N circuit evaluations. This is a challenge since, at larger system sizes, these would increase drastically.",
+      "for a system size as high as N = 17 qubits, the ansatz finds it hard to converge to some steady value at 100 iterations"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, p.4 to p.5.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cd-noisy-simulation-guadalupe",
+     "value": "The authors report that a noise-model simulation for the 9-qubit protein with the ibmq guadalupe model, over 5 instances with the Adagrad optimizer, shows that the ansatz works considerably well, but the final convergence energy is lifted considerably above the ground state energy and the algorithm is not exactly converging; the model leaves out cross-talk and leakage errors and no error mitigation was used.",
+     "anchor": "Results, Performance analysis, p.5, Fig. 5",
+     "quotes": [
+      "Numerical simulations were performed for 100 iterations with Adagrad optimizer for 5 instances.",
+      "the cross-talk errors and leakage errors are not included [41]",
+      "the final convergence energy is lifted considerably as compared to the ground state energy and the algorithm is not exactly converg-",
+      "these noisy simulations were run without any error mitigation techniques.",
+      "of a N = 9 qubit system APRLRFY with p = 1 and perform the algorithm against the noise model five times"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from a small noisy simulation of one protein.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The parameters were taken from the ideal simulation, not re-optimized under noise, so this tests robustness of a fixed circuit."
+    },
+    {
+     "id_suggestion": "cd-landscape-local-minima-claim",
+     "value": "The authors state that, from the noisy simulation, the landscape with the CD-inspired ansatz is smooth enough to take the state near the ground state but has many local minima near the exact ground state, making it hard to reach the exact ground state as size grows, so global optimizers may be required at higher sizes.",
+     "anchor": "Results, Performance analysis, p.5",
+     "quotes": [
+      "there exist lots of local minima near the exact ground state.",
+      "Hence, at higher system sizes, there might be a requirement for global optimizations to efficiently reach the ground state with a high success probability."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation of five noisy runs, not a landscape measurement.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cd-stated-challenges",
+     "value": "The authors state that the choice of CD terms from the nested commutator pool in this work is heuristic and needs a principled method, that when the ansatz does not perform well the ground-state success probability is close to zero so finding the exact ground state may be difficult at higher sizes, and that additional circuit optimization is still required for real hardware.",
+     "anchor": "Results, Performance analysis, p.5; Discussions, p.8",
+     "quotes": [
+      "First, the choice of suitable CD terms from the pool of NC commutation operators in this work is heuristic",
+      "when the ansatz does not perform well, the ground state success probability is close to zero.",
+      "there will still be a requirement for additional circuit optimization strategies to improve the results while performing experiments on real hardware"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limits, p.5.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cd-quantinuum-setup",
+     "value": "The authors state that for the Quantinuum runs the Hamiltonians had 52 two-body interactions at 13 qubits and 80 at 17 qubits, parallel operations were limited to 5 at a time, near-zero-angle gates were removed so that the final count of ZZ gates was 35 at 13 qubits and 70 at 17 qubits, and the circuits were run with 1000 shots.",
+     "anchor": "Experimental implementations, Quantinuum, p.6; Appendix C, p.11",
+     "quotes": [
+      "For N = 13 system, the Hamiltonian we considered had N2loc = 52 two-body interactions and for system with N = 17 qubits, N2loc = 80 two-body interactions were present.",
+      "we apply the gates such that they do not exceed 5 operations at a time.",
+      "The final ZZ(θ) gate count at the time of implementation was reduced to 35 for N = 13 qubits case and to 70 for N = 17 qubits case.",
+      "Both experiments were performed with 1000 shots."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own experimental setup, p.6 and p.11.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "Several gates were removed after optimization, so the circuits run are pruned versions of the ansatz."
+    },
+    {
+     "id_suggestion": "cd-quantinuum-17q-excited-state",
+     "value": "The authors report that in the 17-qubit run the optimal and the obtained turn sequences differ, so the output corresponds to a protein configuration with one different connection and several different turns from the exact ground state, that the two configurations differ in energy by a factor of 0.54, and that the algorithm is likely to jump to the excited state; they nevertheless describe the result as a high success probability.",
+     "anchor": "Experimental implementations, Quantinuum, p.6",
+     "quotes": [
+      "So, for the fourth excited state, there is one connection and several turns that differ from the exact ground state.",
+      "In terms of the energy difference, both these configurations differ by a factor of 0.54.",
+      "Implementation of our hybrid quantum algorithm results in high success probability.",
+      "shows the N = 17 qubits case"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one hardware run.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "A 79% probability of the fourth excited state means the ground state was not found at 17 qubits; the paper's summary of this run as high success is a different reading."
+    },
+    {
+     "id_suggestion": "cd-ibm-guadalupe-hardware",
+     "value": "The authors report that on the 16-qubit ibmq guadalupe device, with 8192 shots, a 9-qubit protein run gave a ground state probability of around 20%, that circuit optimization and error mitigation raised the success probability from around 8% to 20%, that 30 SWAP gates were needed, and that scaling to higher qubit counts on IBM devices is a major challenge.",
+     "anchor": "Experimental implementations, IBM, p.6 to p.7, p.12, Fig. 7(a)",
+     "quotes": [
+      "We can achieve a ground state probability of around 20%.",
+      "After the circuit optimization and error mitigation, the success probability is enhanced from around 8% to 20%.",
+      "applying 30 SWAP gates for the case involving N = 9 qubits.",
+      "Scaling to higher qubits for IBM devices is a major challenge due to the increased requirement of SWAP gates and finite coherence times of the qubits.",
+      "on 16-qubit ibmq guadalupe [51] device with p = 1 layer of the ansatz.",
+      "We show the resultant probability distribution in Fig. 7(a) with 8192 shots."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one hardware run.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "This is far below the roughly 85% reported on trapped ions; the paper's abstract speaks of high success probabilities."
+    },
+    {
+     "id_suggestion": "cd-google-qvm-emulator",
+     "value": "The authors report that on Google's quantum virtual machine rainbow, a noisy emulator and not real hardware, a 9-qubit protein run with 10000 shots gave around 48% success probability, using 11 SWAP gates, that real hardware is expected to show a lower success probability, and that the Hamiltonian for this protein has a doubly degenerate ground state.",
+     "anchor": "Experimental implementations, Google QVM, p.7; Appendix C, p.11",
+     "quotes": [
+      "Around 48% success probability was achieved with the optimized circuit.",
+      "Also, as this is a noisy emulator, the real hardware is expected to show a lower success probability.",
+      "implements the circuit by using 11 SWAP gates",
+      "the Hamiltonian we considered for APRLRFY protein has a doubly degenerate ground state.",
+      "(N = 9) with p = 1 layers of the ansatz on quantum virtual machine rainbow.",
+      "the probability distribution of the ground state with 10000 shots is shown in Fig. 7(b)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one emulator run.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "With a doubly degenerate ground state, the paper does not say whether the 20% (IBM) and 48% (QVM) figures count one or both ground configurations."
+    },
+    {
+     "id_suggestion": "cd-abstract-outperform-claims",
+     "value": "The authors claim in the abstract that they outperform state-of-the-art quantum algorithms using problem-inspired and hardware-efficient variational circuits, and that they obtain high success probabilities with low-depth circuits, on proteins of up to 9 amino acids using up to 17 qubits on hardware.",
+     "anchor": "Abstract, p.1; Discussions, p.8",
+     "quotes": [
+      "We outperform state-of-the-art quantum algorithms using problem-inspired and hardware-efficient variational quantum circuits.",
+      "obtaining high success probabilities with low-depth circuits as required in the NISQ era.",
+      "We apply our method to proteins with up to 9 amino acids, using up to 17 qubits on quantum hardware."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the supporting comparisons are limited to one-layer QAOA and a hardware-efficient ansatz on one protein each.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The reported hardware ground-state probabilities are about 85% (13 qubits, trapped ions), about 20% (9 qubits, IBM), about 48% (9 qubits, an emulator) and none for 17 qubits (79% for the fourth excited state). No numeric comparison with the earlier protein-folding algorithm of Ref. [6] is reported."
+    },
+    {
+     "id_suggestion": "cd-discussion-excited-state-risk",
+     "value": "The authors state that the sensitivity toward the initial parameters and the choice of CD terms remain challenges, that global optimizers could help because the algorithms find it difficult to reach the exact ground state at high system sizes, and that this matters because the protein structure changes significantly if the state ends in an excited state.",
+     "anchor": "Discussions, p.8",
+     "quotes": [
+      "the sensitivity toward the initial parameters and the choice of the appropriate CD terms from the adiabatic gauge pool",
+      "as these algorithms find it difficult to reach the exact ground state at high system sizes.",
+      "This is crucial as the protein structure changes significantly if we end up in an excited state."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limits, Discussions, p.8.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cd-hardware-specs-cited",
+     "value": "The authors state, citing Ref. [50], that the Quantinuum H1-1 is an all-to-all connected trapped-ion system with 20 qubits, and give typical gate infidelities of 4 × 10−5 for one-qubit gates and 3 × 10−3 for two-qubit gates.",
+     "anchor": "Appendix C, p.10 to p.11",
+     "quotes": [
+      "The Quantinuum H1-1 [50] is an allto-all connected trapped-ion system with 20 qubits.",
+      "Typical one-qubit gate infidelity is 4 × 10−5, while the two-qubit gate infidelity is 3 × 10−3"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A hardware description the paper attributes to other sources.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cd-qaoa-dcqaoa-cited",
+     "value": "The authors state that the digitized counterdiabatic QAOA (DC-QAOA) reports that adding counterdiabatic terms to the usual QAOA ansatz gives significant improvements in its performance, at the price of increased circuit depth per layer.",
+     "anchor": "Methods A, p.8 to p.9",
+     "quotes": [
+      "the newly proposed digitized-counterdiabatic QAOA (DC-QAOA) reports that the addition of CD terms to the usual QAOA ansatz gives significant improvements in the performance of QAOA.",
+      "However, we have to pay the price in terms of increased circuit depth per layer."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "chang-2025-accelerating-parameter-initialization-quantum-chemical",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Change-et-al._2025_Accelerating-Parameter-Initialization-in-Quantum-Chemical-Simulations-via__2505.10842.pdf",
+   "title_in_file": "Accelerating Parameter Initialization in Quantum Chemical Simulations via LSTM-FC-VQE",
+   "version_note": "arXiv:2505.10842v1, 16 May 2025. The file name spells the first author 'Change'; the paper's author is Chang. The text matches the record. Tables I and II are read from the text layer, which prints their cells out of order; the row-to-cell mapping is read from the order of the numbers and the surrounding prose. Figures 3 and 4 are plots whose captions and surrounding text were read.",
+   "pages": 8,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A meta-learning study in which an LSTM, with a molecule-specific fully connected output layer, predicts parameters for the VQE (UCCSD) ansatz, evaluated by simulation on H4 and H2O after training on a small set of molecules.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "chang-accuracy-limit",
+     "verdict": "narrowed",
+     "note": "The 50 mHa bound is the H2O result (reference FCI energy -75.0116 Ha), obtained with OH- included in the training set. Table II's best H2O errors are about 38 to 47 mHa, many times the 1.6 mHa chemical accuracy the paper itself uses for H4.",
+     "value": "The authors state that for H2O the final predicted energy achieves an error within 50 mHa of the FCI reference value, and that while the model dramatically accelerates convergence, achieving further improvements in absolute accuracy for complex molecules may require enhancements to the underlying VQE framework itself. They define chemical accuracy as 1.6 mHa.",
+     "anchor": "Section III, p.5 (Fig. 4 and Table II discussion)",
+     "quotes": [
+      "Furthermore, the final predicted energy achieves an error within 50 mHa of the FCI reference value.",
+      "achieving further improvements in absolute accuracy for complex molecules may require enhancements to the underlying VQE framework itself",
+      "where chemical accuracy is defined as 1.6 mHa"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result and an author statement from simulation on one molecule.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The H2O error is about 30 times the chemical-accuracy threshold quoted in the same section, so the H2O result is a convergence-speed result at a poor absolute accuracy."
+    },
+    {
+     "id": "chang-h2o-78-iterations",
+     "verdict": "narrowed",
+     "note": "The comparison is between two different papers' setups (a hardware-efficient or UCCSD ansatz with COBYLA, against an LSTM-FC model with Adam). The paper's own Table II lists 77 iterations for the matching entry, not 78; and the energy compared is a baseline of about -74.97 Ha, not the FCI energy.",
+     "value": "The authors report that on H2O their fully connected LSTM VQE model reaches a comparable VQE-quality baseline in just 78 iterations, whereas a prior VQE study using a hardware-efficient ansatz, the UCCSD ansatz and the COBYLA optimizer required over 2500 iterations to reach this energy level, for which the standard VQE typically converges to approximately -74.97 Ha.",
+     "anchor": "Section III, p.5; Table II, p.5",
+     "quotes": [
+      "For more complex systems such as H2O, the standard VQE typically converges to an energy of approximately −74.97 Ha, as reported in [38].",
+      "required over 2500 iterations to reach this energy level.",
+      "our fully connected LSTMVQE model achieves a comparable VQE-quality baseline in just 78 iterations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation compared with another group's reported figure.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The 2500-iteration figure is the paper's citation of Ref. [38], run with a different optimizer and ansatz, so the 78 against 2500 comparison is not like for like. Table II prints 77 iterations for the size-40 Adam entry, one fewer than the text."
+    },
+    {
+     "id": "chang-h4-baseline-iterations",
+     "verdict": "widened",
+     "note": "The iteration counts are the run lengths to convergence at a plateau, not iterations to reach a target error: the baselines end near 28.5 mHa, about 18 times the 1.6 mHa chemical accuracy. The 28.53 mHa error in the paper's text belongs to the random-start run; the LSTM-initialization run with SGD at a constant learning rate also ends at 28.53 mHa per Table I.",
+     "value": "The authors report that on H4, random initialization followed by stochastic gradient descent demands 290 iterations to reach an error of 28.53 mHa, and that even with LSTM initialization alone, 357 iterations are needed, which they say suggests the base LSTM architecture still struggles to generalize effectively without architectural enhancements. They compare four initialization strategies for the H4 molecule.",
+     "anchor": "Section III, p.4, Table I",
+     "quotes": [
+      "random initialization followed by stochastic gradient descent (SGD) demands 290 iterations to reach an error of 28.53 mHa.",
+      "Even with LSTM initialization alone, 357 iterations are needed, suggesting that the base LSTM architecture still struggles to generalize effectively without architectural enhancements.",
+      "for the H4 molecule under four different parameter initialization strategies"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one molecule in simulation.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The baseline runs stop at about 28.5 mHa error, so comparing iteration counts across rows that end at 28.5 mHa and rows that end near 0.05 mHa mixes stopping points with accuracy."
+    },
+    {
+     "id": "chang-lstm-fc-h4-iterations",
+     "verdict": "narrowed",
+     "note": "The 86-iteration, 0.05 mHa result is the Adam, constant-learning-rate row. In the same Table I the same model with Adam and a decaying learning rate ends at 17.41 mHa after 256 iterations, and with SGD it ends at 0.16 and 0.14 mHa. H4 is also one of the molecules in the training data (Appendix), so H4 is not a held-out molecule.",
+     "value": "The authors report that their fully connected LSTM model, trained with a constant learning rate and the Adam optimizer, achieves a significantly lower error of 0.048 mHa within only 86 iterations on the H4 molecule. In the same table, the entries for the model with a decaying learning rate print 222 iterations with error 0.14 and 256 iterations with error 17.41. The authors list the molecules in the dataset as H2, H3+, H4 and OH-.",
+     "anchor": "Section III, p.4, Table I; Appendix A, p.8",
+     "quotes": [
+      "our fully connected LSTM model, trained with a constant learning rate and the Adam optimizer, achieves a significantly lower error of 0.048 mHa within only 86 iterations",
+      "222 0.14 256 17.41",
+      "Dataset: Molecules included H2, H3+, H4, and OH−."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one molecule in simulation.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table I mixes 'Constant' and 'Decay' rows; read in order, 17.41 mHa is the Adam decaying-learning-rate row, so the best result depends on the learning-rate schedule. If H4 data were in training, the H4 test measures fit to a trained molecule."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "chang-abstract-claims",
+     "value": "The authors claim in the abstract that their meta-learning framework, which trains an LSTM on optimized parameters from small molecules, predicts high-quality initializations for larger systems and reduces the number of VQE iterations, and that the experimental results show faster convergence and lower energy errors than traditional initialization.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "By training the LSTM on optimized parameters from small molecules, the model learns to predict high-quality initializations for larger systems, reducing the number of required VQE iterations.",
+      "Experimental results show that our approach achieves faster convergence and lower energy errors than traditional initialization"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the evidence is two molecules in simulation.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The experiments report H4 (in the training set) and H2O; no test on a molecule absent from training and larger than the training molecules is described."
+    },
+    {
+     "id_suggestion": "chang-simulation-setup",
+     "value": "The authors state that the study used TensorFlow, PennyLane and the Lightning-QML backend for circuit execution, and that the VQE evaluations were performed exclusively on CPU, so the quantum part is classical simulation.",
+     "anchor": "Section II, p.2; Appendix A, p.7",
+     "quotes": [
+      "The VQE evaluations were performed exclusively on CPU, reflecting a separation between model training and quantum simulation execution.",
+      "Framework: TensorFlow and PennyLane were used, with circuits executed on the Lightning-QML backend."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup, p.7.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No quantum hardware and no noise model are described; the results are noise-free simulations. Shot counts and random seeds are not stated."
+    },
+    {
+     "id_suggestion": "chang-training-dataset",
+     "value": "The authors state that the molecules in the dataset included H2, H3+, H4 and OH-, with geometries and Hamiltonians taken from the PennyLane Molecules Dataset in the STO-3G basis, and that the LSTM was trained with the Adam optimizer, with early stopping when the relative change in loss fell below a threshold.",
+     "anchor": "Appendix A, p.8",
+     "quotes": [
+      "Dataset: Molecules included H2, H3+, H4, and OH−. Molecular geometries and Hamiltonians were accessed directly from the PennyLane Molecules Dataset using the STO-3G basis [45].",
+      "Early stopping: Training was terminated if relative change in loss fell below 10−4."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own training data, p.8.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "H4 is both a training molecule and the molecule on which the headline Table I results are reported. The paper does not say whether the H4 test geometries differ from the training geometries."
+    },
+    {
+     "id_suggestion": "chang-lstm-fc-architecture-definition",
+     "value": "The paper defines the LSTM-FC-VQE architecture as an LSTM whose output is passed through a molecule-specific fully connected layer that maps a fixed-dimension latent vector to the parameter dimension of the ansatz for that molecule, and in the appendix as one shared LSTM layer with latent dimension 40 followed by two fully connected layers for single and double excitation parameters, using the UCCSD ansatz only.",
+     "anchor": "Section II D, p.3 to p.4; Appendix C, p.8",
+     "quotes": [
+      "we propose the LSTM-FC-VQE architecture, which appends a molecule-specific fully connected (FC) layer after the LSTM output.",
+      "One shared LSTM layer (latent dimension 40) followed by two separate fully connected layers for single and double excitation parameters.",
+      "Ansatz: UCCSD only."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition of the paper's model, pp.3 to 4 and p.8.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chang-pad-truncate-definition",
+     "value": "The authors state that to handle molecules with different parameter counts the vanilla LSTM-VQE pads the input to a maximum dimension and truncates the output, so that the LSTM keeps a fixed internal weight dimension while accepting variable input lengths, and that this padding approach leads to dispersed learning representations, higher cost, longer training and potential loss of critical parameter patterns.",
+     "anchor": "Section II C and D, p.3",
+     "quotes": [
+      "Through this pad-then-truncate procedure, the LSTM can maintain a fixed weight dimension of M internally, while still accommodating variable input lengths N from different training samples.",
+      "This leads to dispersed learning representations, increased computational cost, longer training times, and a potential loss of critical parameter patterns"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A definition combined with an author claim about its drawbacks, not tested by timing in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "No training-time or cost measurement for the vanilla model is reported in the text."
+    },
+    {
+     "id_suggestion": "chang-loss-function-definition",
+     "value": "The paper defines the loss as a weighted average over recurrent time steps, with each step providing an energy result, weighting later steps more heavily by a factor proportional to the step index.",
+     "anchor": "Section II C, p.3; Appendix A, p.8",
+     "quotes": [
+      "The loss function is defined as a weighted average, with each layer of the RNN providing an energy result.",
+      "Loss function: Weighted sum of energy over time steps:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition the paper's training depends on, p.3 and p.8.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The weight 0.1 times t is in Eq. 9 and Eq. 13 and is not repeated in the quotes."
+    },
+    {
+     "id_suggestion": "chang-table1-h4-results",
+     "value": "The authors present Table I for the H4 molecule under four initialization strategies (Random, All Zero, LSTM, and LSTM with a fully connected layer), with SGD and Adam under constant and decaying learning rates; the printed entries for the fully connected model include 333 iterations with error 0.16, 86 with 0.05, 222 with 0.14 and 256 with 17.41 (mHa), and the printed Adam entries for the other strategies include errors from 13.86 to 28.54.",
+     "anchor": "Section III, p.4, Table I",
+     "quotes": [
+      "for the H4 molecule under four different parameter initialization strategies",
+      "333 0.16 86 0.05",
+      "222 0.14 256 17.41",
+      "96 ≥ 501 28.54 15.92 28.48 18.11 94 ≥ 501 28.50 13.86"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one molecule in simulation, read from a table whose cells the text layer prints out of order.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Row-wise reading: the fully connected model reaches 0.14 to 0.16 mHa with SGD and 0.05 mHa with constant-rate Adam, but 17.41 mHa with decaying-rate Adam; all rows for the other strategies end between about 13.9 and 28.5 mHa or fail to converge within 501 iterations (printed as at least 501)."
+    },
+    {
+     "id_suggestion": "chang-romero-comparison-cited",
+     "value": "The authors state that Ref. [37] (Romero et al.) used the UCC ansatz to compute molecular energies, achieving chemical accuracy of 4 to 6 kcal/mol for the linear H4 molecule but requiring over 400 optimization iterations, and that their own model reaches 0.048 mHa within 86 iterations.",
+     "anchor": "Section III, p.4",
+     "quotes": [
+      "achieving chemical accuracy of 4–6 kcal/mol (approximately 6.37–9.56 mHa, using the conversion 1 kcal/mol ≈ 1.593 mHa) for the linear H4 molecule.",
+      "However, their method required over 400 optimization iterations to converge.",
+      "achieves a significantly lower error of 0.048 mHa within only 86 iterations",
+      "Romero et al. [37] employed the Unitary Coupled Cluster (UCC) ansatz within the VQE framework to compute molecular energies"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work, compared with its own.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "Chemical accuracy is usually 1 kcal/mol (about 1.6 mHa); the paper here describes 4 to 6 kcal/mol as chemical accuracy and later (p.5) uses 1.6 mHa. The two comparisons use different optimizers and settings."
+    },
+    {
+     "id_suggestion": "chang-h4-potential-curve",
+     "value": "The authors report that the potential energy curve predicted by the LSTM-FC-VQE model for H4 closely tracks the FCI reference over the range of bond lengths shown, with a mean error printed on the plot of 0.29 mHa.",
+     "anchor": "Section III, p.4 to p.5, Fig. 3",
+     "quotes": [
+      "As illustrated in Figure 3, the energy curve predicted by the LSTM-FC-VQE model (green dashed line) closely tracks the reference FCI results",
+      "Mean Error: 0.29 mHa"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one molecule in simulation.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The paper does not say whether the geometries on this curve were in the training set."
+    },
+    {
+     "id_suggestion": "chang-h2o-results-detail",
+     "value": "The authors report that for H2O the FCI reference energy is -75.0116 Ha, that including OH- in the training set reduces the optimization iterations needed to converge, that the best error is 41.98 mHa with Adam and 44.93 mHa with SGD at parameter size 20, that SGD at size 40 degrades to 676.46 mHa, and that Adam keeps a relatively low error of 38.75 mHa at size 40.",
+     "anchor": "Section III, p.5, Fig. 4 and Table II",
+     "quotes": [
+      "The reference energy used in our study is the Full Configuration Interaction (FCI) result, given by EFCI = −75.0116 Ha.",
+      "the best performance is observed when the parameter size is 20, achieving error rates of 41.98 mHa with Adam and 44.93 mHa with SGD.",
+      "the error rate escalates to 676.46 mHa",
+      "achieving a relatively low error of 38.75 mHa even at the larger parameter size.",
+      "increasing the parameter size to 40 leads to a substantial degradation in performance with SGD"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one molecule in simulation.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table II prints 37.75 mHa (not 38.75) for Adam at size 40, so the text and table differ by 1 mHa. All H2O errors are tens of mHa."
+    },
+    {
+     "id_suggestion": "chang-h4-capacity-trend-caveat",
+     "value": "The authors report that for H4 the error decreases from 21.73 mHa at parameter size 10 to 0.05 mHa at size 40 with Adam, and say this indicates that higher-capacity models are more expressive and particularly effective for simpler systems like H4; they add that the superior accuracy on H4 may also stem from the fact that VQE itself performs well on this molecule.",
+     "anchor": "Section III, p.5, Table II",
+     "quotes": [
+      "The error decreases from 21.73 mHa at parameter size 10 to within chemical accuracy (0.05 mHa, where chemical accuracy is defined as 1.6 mHa) at size 40 when using the Adam optimizer.",
+      "Notably, the superior accuracy observed on H4 may also stem from the fact that VQE itself performs well on this molecule."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical trend from one molecule in simulation, with the authors' own caveat.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The trend is not monotone in Table II for the SGD column (for example 4.64 mHa at size 20 and 7.92 mHa at size 25 for H4)."
+    },
+    {
+     "id_suggestion": "chang-generalization-claims-conclusion",
+     "value": "The authors claim in the conclusion that they examined the generalization capacity of the approach and show that it can extrapolate to previously unseen molecular configurations with minimal training data, that the framework is scalable, data-efficient and optimizer-friendly, and that the model generalizes well across different systems; they also state that a larger parameter size risks overfitting in more complex molecules.",
+     "anchor": "Section IV, p.6",
+     "quotes": [
+      "We also examine the generalization capacity of our approach and show that it can extrapolate to previously unseen molecular configurations with minimal training data.",
+      "the LSTM-FC-VQE framework offers a scalable, data-efficient, and optimizer-friendly meta-learning strategy",
+      "introduces a risk of overfitting in more complex molecules."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author claims; no held-out-molecule experiment is described in the results.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The results section reports H4 (a training molecule) and H2O; no scalability study over molecule size and no test on a molecule absent from training is described."
+    },
+    {
+     "id_suggestion": "chang-stated-limits-future-work",
+     "value": "The authors state that, while the approach shows strong performance on small- to medium-sized molecular systems, extending it to larger and more strongly correlated molecules remains a significant challenge, and that the reported LSTM-FC-VQE results use the UCCSD ansatz only.",
+     "anchor": "Section V, p.6; Appendix C, p.8",
+     "quotes": [
+      "extending its applicability to larger and more strongly correlated molecules remains a significant challenge.",
+      "Ansatz: UCCSD only."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit, Section V, p.6.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chang-original-lstm-limit",
+     "value": "The authors state that their analysis reveals that the original LSTM-VQE framework is limited in its general applicability to diverse molecular systems, primarily because the rigid structure of wavefunction parameters is constrained by molecule-specific qubit counts and ansatz architectures.",
+     "anchor": "Section IV, p.6",
+     "quotes": [
+      "Our analysis reveals that the original LSTM-VQE framework is limited in its general applicability to diverse molecular systems"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement supported by the LSTM rows of Table I.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

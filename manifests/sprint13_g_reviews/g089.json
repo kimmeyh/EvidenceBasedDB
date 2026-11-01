@@ -1,0 +1,298 @@
+{
+ "group": "g089",
+ "reviewed_on": "2026-10-30",
+ "tag": "Sprint 14 Task E, F117 (F114 cloud read)",
+ "reader": "Claude Sonnet 5.5 (F114 cloud session)",
+ "coordinator_note": "",
+ "graded_high": {
+  "backbone-two-pooling-no-final-pool": [
+   "setup",
+   "Sec. IV C and V A: the paper states two pooling layers, only the first pooling's discarded qubits recycled, and no pooling after the final conv pair."
+  ],
+  "conv-template-15-params": [
+   "setup",
+   "Sec. IV A: SU(4) has 15 real parameters; the U3 x U3 template with CNOT layers in Eq. (3) has 15 parameters and each conv layer applies copies of it."
+  ],
+  "pooling-gate-definition": [
+   "definition",
+   "Sec. IV B Eq. (4) and Sec. IV D Eq. (6) define Upool = CRZ(phi1) CRX(phi2); control kept, target measured and removed."
+  ],
+  "encoder-selection-and-qubit-count": [
+   "setup",
+   "Sec. III A and III B: amplitude embedding for N > 8 else angle embedding; n = 8 qubits, up to 256 features; all results use n = 8."
+  ],
+  "angle-embedding-affine-map": [
+   "setup",
+   "Sec. III B: after min-max normalisation, theta = pi x, phi = pi(2x - 1) are stated explicitly."
+  ],
+  "measurement-vectors-and-rescale": [
+   "setup",
+   "Sec. IV C and V A 1, Eq. (7): two four-component probability vectors, retained and removed qubits, each mapped by p -> 4p - 2."
+  ],
+  "kappa-fixed-at-four": [
+   "setup",
+   "Sec. V A 1, end: kappa = 4 is fixed in all experiments, with the authors' stated justifications (gradient analysis, variance, deployment range). The value reports the stated choice and rationale, not a proof."
+  ],
+  "retained-head-definition": [
+   "setup",
+   "Sec. V B 1 Eq. (8): one FC layer of width m plus tanh; m^2 weights + m biases = 20 at m = 4."
+  ],
+  "discarded-head-definition": [
+   "setup",
+   "Sec. V B 2 gives the three-stage dense head (projection, expansion by k, contraction) with mk + m neurons; Sec. IV C calls it a lightweight two-layer head. The value reports both descriptions accurately."
+  ],
+  "hadamard-fusion-and-logits": [
+   "setup",
+   "Sec. V B 3 Eq. (9): fusion by Hadamard product with no added parameters. The value itself records the paper's two differing statements on the logit step (Sec. V B 3 versus Sec. IV C); the paper is inconsistent there."
+  ],
+  "first-discarded-qubits-only-design": [
+   "setup",
+   "Sec. V A: only qubits discarded after the first pooling are recycled; stated as a fixed design choice."
+  ],
+  "training-loss-and-gradients": [
+   "setup",
+   "Sec. IV C and V B 3 Eq. (11): categorical cross-entropy over a mini-batch; parameter-shift on the quantum side, autodiff on the classical side."
+  ],
+  "evaluation-setup-datasets-metrics": [
+   "setup",
+   "Sec. VI: MNIST, Fashion-MNIST, OrganAMNIST; recycled variant versus a baseline omitting discarded-qubit measurements; top-1 accuracy, F1, precision, recall."
+  ],
+  "class-splits-four-class": [
+   "scope",
+   "Tables II to IV and Sec. VI A: the splits MNIST 0123 and 3456, Fashion-MNIST 0123 and 1289 appear in Table IV; OrganAMNIST 0,3,7,8 in Table II/III."
+  ],
+  "baseline-definition-single-fc": [
+   "setup",
+   "Sec. VI A, p.10: baseline measures both pooling qubits, forwards nothing from the discarded wire, uses one FC layer; other hyper-parameters are kept identical."
+  ],
+  "table-i-trainable-parameters": [
+   "setup",
+   "Table I, p.5: 2x15+2, 2x15+2, 2x15 for the three blocks and O(d c) for the classical stage."
+  ],
+  "anwar-classical-data-scope": [
+   "stated limit",
+   "Sec. I: authors state benchmarks are classical image data and that intrinsically quantum problems remain future work."
+  ],
+  "pixel-decoding-arccos": [
+   "definition",
+   "Sec. II b, Eq. (2): x_j = (2/pi) arccos(a0,j) = (2/pi) arcsin(a1,j) is stated as the reconstruction rule."
+  ],
+  "zorder-indexing-adopted": [
+   "definition",
+   "Sec. II a, Fig. 1: the paper uses the Morton (Z-order) hierarchical indexing and describes how index bits map to quadrants; Sec. III B confirms it is used."
+  ],
+  "cnn-encoder-architecture": [
+   "setup",
+   "Sec. III: three Conv-Swish-MaxPool blocks (32, 64, 128), 4x4x128 map, 2048 vector, three-layer MLP of 256 units, about 749,000 weights."
+  ],
+  "bounded-variant-sigmoid": [
+   "setup",
+   "Sec. III: small variance-scaling init of the final projection; bounded variant uses a sigmoid to [0, 2 pi)."
+  ],
+  "parameter-types-distinguished": [
+   "definition",
+   "Sec. III: the paper distinguishes encoder weights (fixed after training) from circuit parameters theta (encoder output, per image)."
+  ],
+  "infidelity-loss-definition": [
+   "definition",
+   "Sec. III C, Eq. (3): F = |<psi_target|psi(theta)>|^2 and loss L = 1 - F."
+  ],
+  "center-sequential-ansatz-size": [
+   "definition",
+   "Sec. III A a: Nparams = 4(n-1)D + n; n = 11, D = 6 gives 251, which checks arithmetically."
+  ],
+  "frqi-native-ansatz-description": [
+   "definition",
+   "Sec. III A b, Fig. 3: Hadamard start, entangling N2/N3 gates plus controlled Ry; Nparams = (9n-21)D = 468 at n = 11, D = 6, which checks."
+  ],
+  "datasets-preprocessing": [
+   "setup",
+   "Sec. III B: MNIST and Fashion-MNIST, 28x28 resized to 32x32 by bilinear interpolation, n = 11 qubits; MNIST 70,000 images, 60,000 train and 10,000 test."
+  ],
+  "fashion-mnist-same-format": [
+   "setup",
+   "Sec. III B: Fashion-MNIST has the same format and split; both datasets get the identical preprocessing listed."
+  ],
+  "metrics-psnr-ssim-definition": [
+   "definition",
+   "Sec. III C, Eqs. (4) and (5): PSNR with MAX = 1 for [0,1] intensities; SSIM with k1 = 0.01, k2 = 0.03."
+  ],
+  "experimental-protocol": [
+   "setup",
+   "Sec. III D: one factor varied at a time; 2048 random test images; PennyLane with JAX; Adam at 1e-3 on an A100; three seeds with mean and standard deviation."
+  ],
+  "evaluation-grid": [
+   "scope",
+   "Sec. IV: both ansatz families at D in {2,4,6,8} on both datasets; Table I after 100 epochs on 2048 held-out samples."
+  ],
+  "runtime-comparison-setup": [
+   "setup",
+   "Sec. IV b: wall-clock cost of state preparation versus per-image classical optimization on the same hardware (CPU inference)."
+  ],
+  "limit-high-frequency-smoothing": [
+   "stated limit",
+   "Sec. IV c Limitations: the paper states PQCs struggle with high-frequency components and give smoothed reconstructions."
+  ],
+  "limit-grayscale-future-color": [
+   "stated limit",
+   "Sec. V: the paper states the framework is limited to grayscale and color is future work."
+  ],
+  "approach-differs-fixed-circuit": [
+   "scope",
+   "Sec. I, p.2: the authors state that their approach fixes the circuit and trains a network to predict angles from raw images; it describes their own method."
+  ],
+  "nn-state-prep-limits": [
+   "stated limit",
+   "Sec. IV c Limitations: 32x32 grayscale only, scaling open, ideal state-vector simulation, noise and shots not evaluated."
+  ],
+  "qaemcmc-definition": [
+   "definition",
+   "Methods, QA-enhanced MCMC, Eq. (9): proposal sampled with probability |<sigma|psi>|^2 from the final annealed state, then M-H accept or reject; named QAEMCMC."
+  ],
+  "qa-schedule-and-hamiltonian": [
+   "setup",
+   "Methods Eq. (7): linear schedule A = s, B = 1 - s, initial state the transverse-field ground state. The last quoted sentence is a qualitative remark inside the method description, not a result."
+  ],
+  "local-uniform-update-definitions": [
+   "definition",
+   "Methods, Eqs. (3) to (5): local update flips one random spin; uniform update samples uniformly; the authors note the large-Hamming-distance, low-acceptance tradeoff."
+  ],
+  "sk-model-and-simulation-setup": [
+   "setup",
+   "Results, Eq. (10): SK model, Gaussian couplings and fields, 100 random instances, QuTiP simulation."
+  ],
+  "annealing-time-tuning": [
+   "setup",
+   "Results, p.4: tau tuned by Optuna to maximize the absolute spectral gap for T < 10, fixed at 0.01 for T >= 10."
+  ],
+  "dynamics-benchmark-setup-and-scope": [
+   "scope",
+   "Results, Figs. 4 and 5: N = 10, T = 1, one challenging instance from Fig. 2, multi-modal with five low-energy states above 0.1, averages of 100 MCMC runs."
+  ],
+  "averaged-energy-and-tv-definitions": [
+   "definition",
+   "Results, p.5-6 and Eq. (11): averaged energy over MCS compared to the exact equilibrium energy; TV distance = half the L1 distance between exact and empirical distributions."
+  ],
+  "arai-small-size-limit": [
+   "stated limit",
+   "Discussion and Conclusion, p.8: the authors state the simulation was limited to small size and large-size effectiveness is open."
+  ],
+  "arceci-benchmark-problems": [
+   "setup",
+   "Sec. 2.1, p.6: LiH with one-layer UCCSD, MaxCut on 3-regular 8-vertex graphs with 4-layer QAOA, N = 8, s = 20 shots, Qiskit and Qiskit-Nature."
+  ],
+  "arceci-sampling-strategies": [
+   "setup",
+   "Sec. 2.1, p.6-7: the three sampling strategies with ranges [0, 0.05 pi] and radius 0.15 pi; the hyperball mimicking local optimization is the authors' stated rationale."
+  ],
+  "arceci-evaluation-protocol": [
+   "setup",
+   "Sec. 2.1, p.7: one hundred training sets per strategy and size, MaxCut sets from different graphs, likelihood-maximizing training, median scores."
+  ],
+  "arceci-frequency-thresholds": [
+   "setup",
+   "Sec. 2.1, p.6: nf = 2 for LiH and nf = 4 (nf = 1) for odd (even) MaxCut coordinates, with periods p = 2 pi and p = pi as stated. The 'well described' claim rests on Appendix D evidence, but the value reports the authors' stated settings."
+  ],
+  "arceci-trig-kernel-nstrig-definition": [
+   "definition",
+   "Sec. 1.3, Eq. (17): nsTRIG defined with zero off-diagonal prior covariance and zero variance above nf; 2 nf + 1 hyperparameters."
+  ],
+  "arceci-trig-kernel-strig-definition": [
+   "definition",
+   "Sec. 1.3, Eq. (18): sTRIG defined by gamma_n = delta_n; nf + 1 hyperparameters."
+  ],
+  "arceci-trig-polynomial-assumption": [
+   "setup",
+   "Sec. 1.3, Eq. (14): the paper states the trigonometric polynomial assumption its kernel is built on; value reports it as an assumption."
+  ],
+  "arceci-product-kernel": [
+   "definition",
+   "Sec. 1.4, Eq. (19): product kernel with amplitude A over one-dimensional line kernels; the validity of products is cited, but the construction is the paper's own definition."
+  ],
+  "arceci-noise-model-assumption": [
+   "setup",
+   "Sec. 1.1, Eqs. (3) to (5): variances added on the diagonal, additive independent Gaussian noise, zero prior mean; stated as assumptions."
+  ],
+  "arceci-min-location-metric": [
+   "definition",
+   "Sec. 2.2, Eq. (20): Delta_min,S is the norm distance between exact and GPM minimum; search starts near the global minimum."
+  ],
+  "arceci-min-value-metrics": [
+   "definition",
+   "Sec. 2.3, Eqs. (21) and (22): L_min and delta_min are defined as stated."
+  ],
+  "arceci-test-likelihood-metric": [
+   "definition",
+   "Sec. 2.4: L_test,S is the mean likelihood of random test points from the same subspace S."
+  ],
+  "arceci-rotogp-definition": [
+   "definition",
+   "Sec. 3, p.11: RotoGP combines RotoSolve with a GPM and updates one parameter per iteration."
+  ],
+  "arceci-rotogp-setup": [
+   "setup",
+   "Sec. 3 and Fig. 6 caption: hyperparameters optimized per iteration on at most 300 nearest samples; s = 100 shots; 100 runs averaged; random start for LiH."
+  ],
+  "arceci-rotogp-simulated": [
+   "scope",
+   "Sec. 4: the authors state the optimization evaluation is an actual (simulated) setting, i.e. simulation only."
+  ],
+  "arceci-lih-problem-setup": [
+   "setup",
+   "Appendix B: d = 1.3 A, STO-6G, two electrons in 3 orbitals, 6 qubits, 8 parameters, 38 non-commuting Pauli strings."
+  ],
+  "arceci-modified-approximation-ratio": [
+   "definition",
+   "Appendix C, Eq. (33): r = F(theta)/F(theta_best), r <= 1."
+  ],
+  "arceci-shot-noise-limit-open": [
+   "stated limit",
+   "Sec. 4: the authors state shot noise may be non-Gaussian (generalized Bernoulli), as seen in their MaxCut case, and incorporating this is future work."
+  ],
+  "arceci-open-problem-broader-classes": [
+   "stated limit",
+   "Sec. 4: the authors state that identifying broader classes of algorithms and VQA problems suited to particular kernels is left to future research; this marks the scope as two problems."
+  ],
+  "atom-pretrain-shift-metrics": [
+   "definition",
+   "Fig. 3 caption, p.6: KL, JS, EMD, TV and Hellinger distances over feature dimensions for Train-Val and Train-Test."
+  ],
+  "atom-pretrain-tdc-benchmark": [
+   "scope",
+   "Sec. 3, Datasets: benchmark is the TDC ADMET group, 9 regression and 13 classification tasks."
+  ],
+  "atom-pretrain-qm-dataset-protocol": [
+   "setup",
+   "Sec. 3, Datasets: single MMFF94s conformer per molecule, GFN2-xtb optimization, DFT B3LYP/def2svp, atomic properties listed."
+  ],
+  "atom-pretrain-molecule-level-dataset": [
+   "setup",
+   "Sec. 3, Datasets: PCQM4Mv2 has one HOMO-LUMO gap per molecule, curated under PubChemQC."
+  ],
+  "atom-pretrain-training-variants": [
+   "setup",
+   "Sec. 3, Experiments setup: scratch, HOMO-LUMO pretrain, four single-property atom-level models, and a fifth multi-task model used for the main atom-level results."
+  ],
+  "atom-pretrain-feature-analysis-method": [
+   "definition",
+   "Sec. 2, Quantitative Assessment: run on train, validation and test, features after the first Graphormer layer, aggregated per compound, normality by Shapiro-Wilk and Kolmogorov-Smirnov."
+  ],
+  "atom-pretrain-task-specific-virtual-nodes": [
+   "definition",
+   "Sec. 2: same encoder and head, distinct virtual node per task; the paper calls it a novel extension and the value attributes that to the authors."
+  ],
+  "atom-pretrain-graphormer-modifications": [
+   "definition",
+   "Sec. 2, Custom implementation: modified centrality encoder with implicit hydrogens, no edge encoder, no formal-charge or radical encoding, spatial encoder with a maximum distance."
+  ],
+  "atom-pretrain-setup": [
+   "setup",
+   "Sec. 3 and 4: pretraining uses a public 136k-molecule dataset; Table I reports atom-level results over 5 seeds."
+  ]
+ },
+ "theory_low": {
+  "arceci-extended-kernel-derivation": "Appendix A is a derivation under an assumed exponential decay with a neglected factor that is only said to be absorbable by existing hyperparameters. It is an approximation, not a stated and proved theorem, and the paper does not test these kernels."
+ },
+ "keep_stored": {},
+ "requote": {}
+}

@@ -1,0 +1,3469 @@
+{
+ "papers": [
+  {
+   "record_id": "bensberg-2025-hierarchical-quantum-embedding-machine-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Bensberg-et-al._2025_Hierarchical-quantum-embedding-by-machine-learning-for-large-molecular__2503.03928.pdf",
+   "title_in_file": "Hierarchical quantum embedding by machine learning for large molecular assemblies",
+   "version_note": "arXiv:2503.03928v1, 5 March 2025. The text layer holds the paper once; 28 pages including references. Figures 3 to 7 and Tables 1 and 2 reach the text layer only partly (table numbers are named in anchors).",
+   "pages": 28,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A QM/QM/MM scheme that embeds DLPNO-CCSD(T0) quantum cores in a DFT QM region, uses the resulting energies to transfer-learn a machine-learning potential, and applies it to the binding free energy of ligand 19G to MCL1.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "bensberg-derivatives-unavailable",
+     "verdict": "confirmed",
+     "note": "Also stated in Section 4.3 for the authors' own QM/QM/MM implementation.",
+     "value": "The authors state that analytical energy derivatives for highly accurate electronic structure methods within embedding frameworks are currently unavailable.",
+     "anchor": "Section 5, Conclusions, p.21; Section 4.3, p.16",
+     "quotes": [
+      "within embedding frameworks, which are, however, currently unavailable",
+      "analytical expressions for energy derivatives of highly accurate electronic structure methods",
+      "Atomic forces, i.e., negative energy gradients, are not available in our current implementation of the QM/QM/MM energies."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit itself in Section 5, p.21, and for its own implementation in Section 4.3, p.16.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id": "bensberg-energy-derivatives-key",
+     "verdict": "narrowed",
+     "note": "The paper reaches this conclusion from a test in which a machine-learning potential trained on MM data was transfer learned to QM/MM data, not to QM/QM/MM data, because forces are unavailable for QM/QM/MM. The forces test used one setup.",
+     "value": "The authors report that, in a test where a potential trained on MM data was transfer learned to QM/MM data, training with only energies increased the errors for the forces, and they conclude that energy derivatives are key for the efficient training of machine-learning potentials.",
+     "anchor": "Section 4.3, p.16; Section 5, Conclusions, p.21",
+     "quotes": [
+      "we constructed an embedding approach where the QM region is described by an MM force field",
+      "Training with only energies increased the errors for the forces",
+      "This demonstrates that energy derivatives are key for the efficient training of MLPs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one test setup.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The test used an MM force field in place of the QM region, so it shows the effect of forces on transfer learning only in that surrogate setting."
+    },
+    {
+     "id": "bensberg-transfer-learning-binding-energy",
+     "verdict": "narrowed",
+     "note": "The paper adds a caveat in Section 4.4: the ligand protonation state is unclear and the agreement may have benefited from error cancellation. The mean of 36 estimates and the earlier estimate are also given.",
+     "value": "The authors report a mean binding free energy of -37.2 kJ/mol with an uncertainty of 1.0 kJ/mol from 36 estimates with the transfer-learned potential, which closely matches the experimental estimate of -37.3 kJ/mol; they note the agreement may have benefited from error cancellation because the protonation state of the ligand is unclear.",
+     "anchor": "Section 4.4, p.18; Section 5, Conclusions, p.20",
+     "quotes": [
+      "We calculated the mean of the resulting 36 binding free energies",
+      "compared to the experimental estimate (−37.3 kJ mol−1 ± 0.1 kJ mol−1 17)",
+      "= −37.2 kJ mol−1 ± 1.0 kJ mol−1, which closely matches the experimental estimate.",
+      "this close agreement with the experimental estimate may have benefited from error cancellation",
+      "improving on our previous QM/MM-based approach.15"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result for one protein-ligand complex, with an author caveat.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "bensberg-quantum-core-concept",
+     "value": "The authors introduce quantum cores within the quantum region, small enough for accurate electronic structure models, so that accuracy is restored where the quantum region is too large for anything but approximate methods.",
+     "anchor": "Abstract, pp.1-2",
+     "quotes": [
+      "we here introduce the concept of quantum cores within the quantum region",
+      "that are amenable to accurate electronic structure models due to their limited size."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The abstract defines the concept the paper builds on.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-energy-decomposition-eq1",
+     "value": "The authors write the total QM/QM/MM energy as the sum of the MM energy, the energy of the capped QM region, and the electrostatic and non-electrostatic interaction energies of the QM and MM regions.",
+     "anchor": "Section 2.3, Eq. (1), p.6",
+     "quotes": [
+      "We write the total energy of our system EQM/QM/MM as the sum of the energy of"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition in Section 2.3.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-qm-energy-partition-eq2",
+     "value": "The authors write the QM region energy as a sum of the energies of the quantum cores, the Kohn-Sham energy of the environment orbitals, and the interaction between the orbital sets.",
+     "anchor": "Section 2.3, Eq. (2), p.6",
+     "quotes": [
+      "We write the total energy for our embedding approach as a sum of all energies for",
+      "these quantum cores EIQC, the Kohn–Sham energy of the environment orbitals Eenv, and the interaction Eint between orbital sets"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition in Section 2.3.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-no-embedded-scf",
+     "value": "The authors avoid the embedded self-consistent field procedure common in projection-based embedding and use the initial Kohn-Sham orbitals directly for the quantum cores, which they say simplifies the approach technically and allows DFT orbitals in the correlated wave function region.",
+     "anchor": "Section 2.3, p.8",
+     "quotes": [
+      "we avoid the embedded self-consistent field procedure common in projectionbased embedding to obtain the Hartree–Fock orbitals for the quantum cores but rely directly on the initial Kohn–Sham orbitals",
+      "also allows us to use DFT orbitals for the correlated wave function region"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "A statement of the method's own setup in Section 2.3.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-interaction-term-ks-densities",
+     "value": "The authors state that, in practice, only the densities of the Kohn-Sham DFT orbitals selected for the fragments are used to evaluate the interaction term, since densities or density matrices of the correlated wave function may not always be available.",
+     "anchor": "Section 2.3, p.8",
+     "quotes": [
+      "only the densities of the Kohn–Sham DFT orbitals selected for the fragments are used to evaluate the interaction term Eint since densities or density matrices for the"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "A statement of the method's own setup in Section 2.3.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-mulliken-assignment-shift",
+     "value": "The authors assign occupied orbitals to the environment if their Mulliken population exceeds 0.4 on the environment atoms, otherwise to the quantum core with the largest population, and set the projection shift to 1.0 au.",
+     "anchor": "Section 3.1, pp.10-11",
+     "quotes": [
+      "population exceeded 0.4 on the environment atoms.",
+      "they were assigned to the quantum core on which they had the largest population",
+      "The shift ϵshift was chosen to be 1.0 au."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Computational details in Section 3.1.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-electronic-structure-methods",
+     "value": "The authors use PBE with the D3 dispersion correction with Becke-Johnson damping and the def2-TZVP basis set for the DFT calculation, and DLPNO-CCSD(T0) with NormalPNO thresholds for the quantum cores, with all QM calculations carried out in the Serenity program.",
+     "anchor": "Section 3.1, pp.10-11",
+     "quotes": [
+      "applied the Perdew, Burke, and Ernzerhof exchange–correlation functional PBE,45 the D3 dispersion correction46 with Becke–Johnson damping (BJ),47 and the def2-TZVP basis set",
+      "using “NormalPNO” thresholds.",
+      "All QM calculations were carried out with the Serenity program."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Computational details in Section 3.1.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-quantum-cores-chosen",
+     "value": "The authors manually selected two quantum cores, both in the ligand: a benzothiophene moiety and a mesityl chloride moiety excluding the methyl groups; QM/QM/MM energies were calculated for all structures within 150 kJ/mol of the median QM/MM energy.",
+     "anchor": "Sections 2.2 and 3.1, pp.4-5 and 11",
+     "quotes": [
+      "we manually selected two quantum cores from the QM region",
+      "consisted of the benzothiophene moiety of the ligand",
+      "consisted of the ligand’s mesityl chloride moiety (excluding the methyl groups)",
+      "within 150 kJ mol−1 of the median of the respective QM/MM energy distribution"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope in Sections 2.2 and 3.1.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-single-system-scope",
+     "value": "The authors validate the approach on one protein-ligand complex, the inhibitor 19G binding to myeloid cell leukemia 1.",
+     "anchor": "Section 5, Conclusions, p.20",
+     "quotes": [
+      "We validated our approach using the well-studied protein-ligand complex of the inhibitor 19G binding to myeloid cell leukemia 1."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the system it tested in Section 5.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "Results are for one system; no other complex is tested."
+    },
+    {
+     "id_suggestion": "bensberg-core-selection-automation",
+     "value": "The authors state that quantum core selection could be automated, for example by energy decomposition analysis with efficient DFT models or by automatic orbital analysis, but they selected the cores manually in this work.",
+     "anchor": "Section 2.2, pp.5-6",
+     "quotes": [
+      "the quantum core selection can be automated by identifying parts of the electronic structure in the QM region",
+      "we manually selected two quantum cores from the QM region"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim about possible methods; not tested in the paper.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-transfer-learning-rationale",
+     "value": "The authors state that calculating energies and gradients with multi-level embedding approaches takes high computational effort, that in some cases a gradient implementation may be unavailable, and that training QM/QM/MM energies from scratch can therefore be challenging, so they start from a pre-trained potential.",
+     "anchor": "Section 2.4, p.8",
+     "quotes": [
+      "calculating energies and gradients with multi-level embedding approaches requires high computational effort",
+      "In some cases, an implementation for the gradients may be unavailable.",
+      "training the QM/QM/MM energies EQM/QM/MM from scratch can be challenging"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author rationale for the method design, not tested by itself.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-delta-correction-smoother",
+     "value": "The authors state that the correction between QM/QM/MM and QM/MM energies is typically smoother than the full QM/QM/MM potential energy surface, so fewer data points are required for sufficient sampling.",
+     "anchor": "Section 2.4, p.9",
+     "quotes": [
+      "This correction is typically smoother than the full QM/QM/MM potential energy surface. Hence, fewer data points are required for sufficient sampling."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim without a direct test in the paper.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-delta-learning-two-mlps",
+     "value": "The authors state that learning the correction with a separate potential (delta-learning) requires evaluating two potentials at inference, and that training such a second potential from scratch would again be difficult, so they apply transfer learning instead.",
+     "anchor": "Section 2.4, p.9",
+     "quotes": [
+      "However, the inference requires then the evaluation of two MLPs.",
+      "Therefore, we apply transfer learning,38–42 where an MLP is first trained on QM/MM energies and gradients."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author rationale for the method design.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-transfer-learning-training-setup",
+     "value": "The authors keep a fraction of the weight parameters fixed during transfer learning to limit loss of the QM/MM potential shape, do not vary the input standardization weights or the first hidden layer, reload the CoRe optimizer state from the last QM/MM training step, and train for 300 steps using all training energies.",
+     "anchor": "Sections 2.5 and 3.2, pp.10-12",
+     "quotes": [
+      "a fraction of the MLP weight parameters are not modified",
+      "state of the CoRe optimizer43,44 at the last training step of the QM/MM MLP is reloaded and continued",
+      "In each of the 300 training steps, all training energies were exploited.",
+      "those of the first hidden layer of the neural networks were not varied in transfer learning"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Method setup stated in Sections 2.5 and 3.2.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-mlp-architecture-ensemble",
+     "value": "The authors use an ensemble of ten high-dimensional neural network potentials with element-embracing atom-centered symmetry functions as input and an uncertainty scaling factor of 2, with the QM/QM/MM data split randomly into 90% training and 10% test data for each ensemble member.",
+     "anchor": "Section 3.2, p.11",
+     "quotes": [
+      "an ensemble size of 10 and an uncertainty scaling factor of c = 2.43",
+      "split randomly into 90% training and 10% test data for each ensemble member individually"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Method setup stated in Section 3.2.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-energy-difference-definition",
+     "value": "The authors state that the QM/MM and QM/QM/MM approaches differ in two aspects: the def2-TZVP basis set instead of def2-SVP, and two quantum cores described with DLPNO-CCSD(T0).",
+     "anchor": "Section 4.1, p.13",
+     "quotes": [
+      "(i) We employed the def2-TZVP basis set in the QM/QM/MM calculations, but only the smaller def2-SVP basis set in the initial QM/MM calculation.",
+      "(ii) The QM/QM/MM approach described two quantum cores with DLPNO-CCSD(T0)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A definition of the compared settings in Section 4.1.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-energy-difference-distributions",
+     "value": "The authors report standard deviations of the total QM/QM/MM minus QM/MM energy difference of 10.4 kJ/mol for the protein-ligand complex and 13.3 kJ/mol for the solvated ligand; of the embedding contribution, 9.9 and 11.8 kJ/mol; and of the basis set contribution, 5.0 and 5.8 kJ/mol.",
+     "anchor": "Section 4.1, Figure 3, p.14",
+     "quotes": [
+      "standard deviations of 10.4 kJ mol−1 and 13.3 kJ mol−1 for the protein-ligand complex and the solvated ligand, respectively",
+      "The standard deviations for ∆EEmb are 9.9 kJ mol−1 and 11.8 kJ mol−1 for the respective end states",
+      "results only in a variance of 5.0 kJ mol−1 and 5.8 kJ mol−1"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The paper writes 'variance' for the basis set values but gives them in kJ/mol, so they read as standard deviations."
+    },
+    {
+     "id_suggestion": "bensberg-mean-shift-embedding-basis",
+     "value": "The authors report that the means of the total energy difference for the protein-ligand complex and the solvated ligand differ by -4.6 kJ/mol, of which -4.0 kJ/mol is caused by the improved basis set and the remaining -0.6 kJ/mol by the QM/QM embedding.",
+     "anchor": "Section 4.1, p.14",
+     "quotes": [
+      "differ by −4.6 kJ mol−1, suggesting that the QM/QM embedding stabilizes the bound state slightly",
+      "The majority of this mean shift (−4.0 kJ mol−1) is caused by the improved basis set",
+      "the remaining −0.6 kJ mol−1 can be traced back to the QM/QM embedding"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-training-set-size",
+     "value": "The authors train separate potentials on 8417 reference conformers for the protein-ligand complex and 5285 for the solvated ligand, each with 44 QM atoms.",
+     "anchor": "Section 4.2, p.14",
+     "quotes": [
+      "Transfer learning is based on 8417 reference conformers for the protein-ligand complex and 5285 for the solvated ligand",
+      "each reference conformer contains NQ = 44 QM atoms"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Setup stated in Section 4.2.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-mlp-accuracy-no-overfitting",
+     "value": "The authors report that the energy RMSEs of the transfer-learned potentials are one order of magnitude smaller than the energy ranges and significantly smaller than the standard deviations, that training and test errors are similar, and that ensembling reduces RMSE especially for the solvated ligand.",
+     "anchor": "Section 4.2, Table 1, p.14-15 (Table 1 ensemble RMSEs per QM atom: 0.150 for MCL1-19G, 0.205 for 19G, in kJ/mol)",
+     "quotes": [
+      "are one order of magnitude smaller than the corresponding energy ranges and significantly smaller than the standard deviations",
+      "Training and test data show similar errors indicating the absence of overfitting.",
+      "Ensembling of ten HDNNPs in an MLP reduces the RMSE values compared to the individual predictions, especially for the solvated ligand."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study. The table values come from Table 1 and are not in the quotes.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-rmse-lower-than-base",
+     "value": "The authors report that the QM/QM/MM potential RMSEs are 5% and 14% lower than those of the base QM/MM potentials for the protein-ligand complex and the solvated ligand, and they attribute the gain to the narrower energy distribution of the training data from restricting to structures within 150 kJ/mol of the median energy.",
+     "anchor": "Section 4.2, pp.14-15",
+     "quotes": [
+      "The QM/QM/MM MLP RMSEs are 5% and 14% lower than those of the base QM/MM MLPs",
+      "the increased accuracy can be attributed to the narrower energy distribution of the training data",
+      "within 150 kJ mol−1 of the median energy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result with the authors' attribution, from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The comparison is between potentials trained on differently distributed data, so it does not show a gain from the method itself."
+    },
+    {
+     "id_suggestion": "bensberg-forces-test-setup",
+     "value": "To test the effect of forces, the authors trained a base model on MM/MM energies from snapshots of the MM trajectory (read as ten to the power four in the text layer, printed as 104) and transfer learned it to the QM/MM surface, with a direct-training reference, because gradients are available in both cases.",
+     "anchor": "Section 4.3, p.16",
+     "quotes": [
+      "we can train a base model using 104 snapshots from the MM trajectory on MM/MM energies and apply transfer learning to the QM/MM potential energy surface",
+      "direct learning of the QM/MM data also allows us to obtain a reference for the resulting accuracy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Setup stated in Section 4.3.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-energy-only-force-rmse-double",
+     "value": "The authors report that transfer learning only on energies yields similar energy RMSEs to learning on energies and forces, but the force RMSE for QM atoms is about twice as high; for MM atoms the difference is not as large and the absolute force errors are one order of magnitude smaller.",
+     "anchor": "Section 4.3, Table 2, p.16-17",
+     "quotes": [
+      "Transfer learning only on energies yields similar RMSEs for the energies EQM/MM",
+      "is about twice as high for training only on energies compared to training on energies and forces",
+      "the absolute values of these force errors are, in general, one order of magnitude smaller than those of"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one test. Table 2 gives the force RMSEs (for MCL1-19G, 22.1 against 11.3 kJ/mol per angstrom for QM atoms).",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-transfer-vs-direct-learning",
+     "value": "The authors report that, compared with direct learning on the same conformers, transfer learning raises the energy RMSE by around 26%, the QM-atom force RMSE by about 26% when forces are used, and the MM-atom force RMSE by about 16%, and they judge the RMSEs decent for the alchemical free energy simulations.",
+     "anchor": "Section 4.3, Table 2, p.17",
+     "quotes": [
+      "the energy RMSE increases by around 26% (Table 2)",
+      "yields an increase of the RMSE of about 26% compared to direct learning",
+      "The increase is about 16% for",
+      "Still, the RMSEs are decent for the following Alchemical Free Energy (AFE) simulations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-training-fraction-data-need",
+     "value": "The authors report that reducing the training fraction of the reference conformers from 0.9 to 0.3 increases the test RMSEs only little, that decreasing the number of training conformers to about a thousand (printed as 103) raises the energy and QM-atom force RMSEs by about 12%, and that a further decrease to 0.5 thousand (printed as 0.5 · 103) raises them by about 25%.",
+     "anchor": "Section 4.3, Figure 6, pp.17-18",
+     "quotes": [
+      "reducing the training fraction of the 104 reference conformers from 0.9 to 0.3 increases the resulting test RMSEs of energies and forces only little",
+      "Decreasing the number of training conformers to 103 leads to increases in the EQM/MM and",
+      "RMSEs of about 12% compared to utilizing 9 · 103 conformers",
+      "If the number is further decreased to 0.5 · 103, the RMSEs will increase by about 25%."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one test setup (MM to QM/MM surrogate).",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-energy-only-forces-reasonable-dynamics",
+     "value": "The authors state that the alchemical free energy simulations confirm that forces of QM atoms predicted by a potential obtained by transfer learning only on energies lead to reasonable dynamics.",
+     "anchor": "Section 4.3, p.18",
+     "quotes": [
+      "These simulations can finally confirm that the forces of the QM atoms, which are predicted by an MLP obtained in transfer learning only on energies, lead to reasonable dynamics."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no direct force-quality measure for the simulations.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "This sits beside the conclusion that energy derivatives are key: energy-only training was judged usable for the dynamics run."
+    },
+    {
+     "id_suggestion": "bensberg-neq-switching-protocol",
+     "value": "The authors run non-equilibrium switching from MM to the ML(II)/MM surface with 150 structures randomly selected from the MM end states, a 10 ps forward switch and a 10 ps backward switch after resampling, repeated six times for each end state, which gives 36 binding free energy estimates.",
+     "anchor": "Section 3.3, p.12",
+     "quotes": [
+      "150 structures were randomly selected from the MM end states",
+      "the force field was switched slowly from MM to ML(II)/MM over 10 ps",
+      "propagated the structures for another 10 ps",
+      "the standard deviation of the 36 binding free energy estimations (6 × 6 for each end state)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Protocol stated in Section 3.3. The last quote is split across a line break in the text layer; the quoted part is contiguous in line 359.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-work-distribution-two-peaks",
+     "value": "The authors report two distinct peaks in the work distribution for both end states, related in earlier work to the carboxylic acid forming hydrogen bonds to sulfur or to the solvent; hydrogen bonds to sulfur on the MM surface are fully replaced by hydrogen bonds to solvent after switching to the potential.",
+     "anchor": "Section 4.4, Figure 7, p.18",
+     "quotes": [
+      "For both end states, we observe two distinct peaks in the work distribution.",
+      "These hydrogen bonds are fully replaced by hydrogen bonds to solvent molecules after switching to the MLP."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-previous-qmmm-binding-energy",
+     "value": "The authors cite their earlier QM/MM-based estimate of the binding free energy of -35.3 kJ/mol with an uncertainty of 1.8 kJ/mol, which underestimates the binding by 1.9 kJ/mol compared to the experimental estimate of -37.3 kJ/mol with an uncertainty of 0.1 kJ/mol.",
+     "anchor": "Section 4.4, p.18",
+     "quotes": [
+      "= −35.3 kJ mol−1 ± 1.8 kJ mol−1,15 underestimating the binding by 1.9 kJ mol−1 compared to the experimental estimate",
+      "(−37.3 kJ mol−1 ± 0.1 kJ mol−1"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to earlier work (Ref. 15) and to an experimental source (Ref. 17).",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-protonation-error-cancellation-caveat",
+     "value": "The authors state that the protonation state of the ligand is unclear, since its carboxylic acid group is likely deprotonated in solution, that they used the neutral ligand to avoid charge compensation in the initial MM calculation, and that the close agreement with experiment may have benefited from error cancellation.",
+     "anchor": "Section 4.4, p.18",
+     "quotes": [
+      "the protonation state of the ligand is unclear since its carboxylic acid group is likely deprotonated in solution",
+      "this close agreement with the experimental estimate may have benefited from error cancellation",
+      "We chose the neutral ligand to avoid charge compensation during the initial MM AFE calculation."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit itself in Section 4.4, p.18.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The binding free energy match is not clean evidence of improved accuracy from the embedding."
+    },
+    {
+     "id_suggestion": "bensberg-small-but-significant-effect",
+     "value": "The authors state that the QM/QM/MM embedding provided a locally corrected description of the electronic structure, which had a small but significant effect on the relative energy distributions.",
+     "anchor": "Section 5, Conclusions, p.20",
+     "quotes": [
+      "The QM/QM/MM embedding provided a locally corrected description of the electronic structure, which had a small but significant effect on the relative energy distributions."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion; no significance test is reported.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "Section 4.1 attributes most of the mean shift to the basis set, not to the embedding."
+    },
+    {
+     "id_suggestion": "bensberg-small-core-accuracy-limit",
+     "value": "The authors state that very small embedded regions in Huzinaga-based embedding can decrease the accuracy of relative energies compared to a full DFT description because error cancellation intrinsic to DFT is lost, and that this can be addressed by more accurate functionals or larger quantum cores.",
+     "anchor": "Section 5, Conclusions, p.21",
+     "quotes": [
+      "Very small embedded regions in Huzinaga-based embedding can decrease the accuracy of relative energies compared to a full DFT description since error cancellation intrinsic to DFT is lost.",
+      "by increasing the size of the quantum cores"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement the paper supports with a citation (Ref. 26), not with its own test.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bensberg-quantum-computing-energy-source",
+     "value": "The authors state that, depending on the electronic structure, multi-configurational approaches are applicable and quantum computation can step in as a source of high-accuracy quantum energies, as they will demonstrate in a forthcoming paper.",
+     "anchor": "Section 5, Conclusions, p.20",
+     "quotes": [
+      "also multi-configurational approaches are applicable and even quantum computation can step in as a source of high-accuracy quantum energies, as we will demonstrate in a forthcoming paper.68"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim about future work; not shown in this paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "No quantum computation is run in this paper."
+    },
+    {
+     "id_suggestion": "bensberg-future-active-learning",
+     "value": "The authors state that in future work they will investigate active learning strategies for transfer learning to lower the computational cost, identifying structures where the QM/QM/MM and QM/MM surfaces differ significantly.",
+     "anchor": "Section 5, Conclusions, p.21",
+     "quotes": [
+      "we will investigate active learning strategies for transfer learning to lower the computational cost of our approach"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own open problem in Section 5, p.21.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "bentellis-2023-benchmarking-variational-quantum-eigensolver-different",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Bentellis-et-al._2023_Benchmarking-the-Variational-Quantum-Eigensolver-using-different__2305.07092.pdf",
+   "title_in_file": "Benchmarking the Variational Quantum Eigensolver using different quantum hardware",
+   "version_note": "arXiv:2305.07092v1 [quant-ph], 11 May 2023; the text layer holds one copy of the paper (6 pages plus an empty trailing page). Figure axes and plot content are not in the text layer; figure and table values are taken from captions, the table text and the surrounding prose.",
+   "pages": 6,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "An empirical comparison of the Variational Quantum Eigensolver on the H2 molecule run on one IBM superconducting processor (ibmq manila) and one AQT trapped-ion processor (aqt marmot), with a fixed ansatz, optimizer and shot count.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "bentellis-iterations",
+     "verdict": "narrowed",
+     "note": "The iteration counts hold for the stated setup only: nine parameter seeds, 15 iterations per run, 200 shots, the NFT optimizer and no error mitigation. The paper also reports two outlier runs, and the uncertainty bands exclude them.",
+     "value": "The authors report that, with nine different parameter seeds, 15 iterations per run, 200 shots and no error mitigation, ibmq manila takes an average of 7 iterations to find the ground state, whereas aqt marmot requires approximately 4 iterations.",
+     "anchor": "Section III.C (Experiments), Fig. 6, text-layer page 4",
+     "quotes": [
+      "We see that the processor ibmq manila takes an average of 7 iterations to ",
+      "the aqt marmot requires approximately 4 iterations (Figure 6).",
+      "This comparison is based upon nine different parameter seeds",
+      "Number of shots: 200",
+      "Number of iterations: 15",
+      "No error mitigation"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on two processors.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The paper does not define how convergence to the ground state is judged, so the iteration counts rest on a reading of Fig. 6 that the text does not specify."
+    },
+    {
+     "id": "bentellis-no-generalization",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that their results apply only to the two specific processor types and the specific quantum algorithm considered, and cannot directly be generalized to other quantum processors.",
+     "anchor": "Section V (Conclusion), text-layer page 5",
+     "quotes": [
+      "Results reported in this paper exclusivly apply to these two ",
+      "processor types and the ",
+      "quantum algorithm considered, and cannot directly be generalized to other quantum processors."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the scope of its results, Section V.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "bentellis-table2-hardware",
+     "verdict": "narrowed",
+     "note": "The run times cover 15 iterations of one run and count only the time to evaluate the quantum circuit; the classical parts are excluded. Table II gives an uncertainty for each figure, which the stored value omits.",
+     "value": "The authors report, for 15 iterations of a run and counting only the time to evaluate the quantum circuit, final energies of −0.975 Ha on ibmq manila and −1.059 Ha on aqt marmot, with quantum run times of 334 and 13297 seconds respectively.",
+     "anchor": "Table II, text-layer page 4; text on run time, Section III.C",
+     "quotes": [
+      "Final energy (Ha) −0.975 ± 0.032 −1.059 ± 0.028",
+      "Time taken (quantum) (seconds) 334 ± 40 13297 ± 625",
+      "Over 15 iterations, one run on aqt marmot takes on average 3 hours and 40 minutes",
+      "We only consider here the time required to evaluate the quantum circuit, and exclude the classical computation parts."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on two processors.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The table does not say whether the figures are means over the nine runs; the text says the run time is an average."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "bentellis-hardware-selection",
+     "value": "The authors state that they chose the two processors because they were easily available to them, and that the IBM Q processor could not be the most recent one because of long queue waiting times.",
+     "anchor": "Section II (Hardware), text-layer page 2",
+     "quotes": [
+      "The main decisive factor in selecting these two were that they were easily available to us.",
+      "prohibitively long waiting times in the queue made extended tests by us impossible"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of how its hardware was selected, Section II.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The processors are a convenience sample, not a chosen best-in-class pair, which limits what the comparison says about the two hardware technologies."
+    },
+    {
+     "value": "The authors state that the study concentrates on the H2 molecule and that the work does not include an analysis of the scaling capabilities of the quantum hardware.",
+     "anchor": "Section I (Introduction), text-layer page 2; Section IV, text-layer page 5",
+     "quotes": [
+      "we concentrate on simulating the H2 molecule as a basic use case",
+      "Our work does not include an analysis of the scaling capabilities of the quantum hardware.",
+      "did not delve into evaluating the scalability of the hardware"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of a limit, Sections I and IV.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "bentellis-scope-h2-no-scaling"
+    },
+    {
+     "value": "The authors state that aqt marmot is based on trapped 40Ca+ ions (the text layer prints the superscript flat), supports a register of up to 16 qubits with all-to-all connectivity, and that they use the basis gate set rx, rz and rxx in Qiskit.",
+     "anchor": "Section II.A (AQT trapped ion quantum computer), text-layer page 2",
+     "quotes": [
+      "is based on trapped 40Ca+ ions",
+      "The aqt marmot system supports a register size of up to 16 qubits featuring all-to-all connectivity.",
+      "we choose [rx, rz, rxx] as the basis gate set in Qiskit"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its experimental setup, Section II.A.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "bentellis-aqt-marmot-spec"
+    },
+    {
+     "value": "The authors report that aqt marmot has an average single-qubit (rx) gate error of approximately 3 times 10 to the power minus 4 and an average two-qubit (rxx) gate error of around 1 times 10 to the power minus 2, with gate times of 15 µs for single-qubit gates and 200 µs for two-qubit gates, T1 of 1.14 ± 0.06 seconds, T2 of 0.452 ± 0.068 seconds and a coherence to gate time ratio printed as 103 by the text layer, probably ten cubed.",
+     "anchor": "Section II.A, text-layer page 2; source cited as [13]",
+     "quotes": [
+      "The error rates of single-qubit gates (rx error) are approximately 3 · 10−4 on average",
+      "the error rate of the two-qubit gate (rxx error) is around 1 · 10−2",
+      "The typical gate times are 15 µs for single-qubit gates and 200 µs for two-qubit gates.",
+      "T1 and T2 times are respectively 1.14 ± 0.06 seconds and 0.452 ± 0.068 seconds",
+      "making the coherence/gate time ratio 103 [13]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Calibration figures supplied by the vendor and cited to a vendor web page [13]; the paper did not measure them.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The vendor-supplied figures are used by the authors to explain the run-time gap; they are not checked in the paper.",
+     "id_suggestion": "bentellis-aqt-marmot-calibration"
+    },
+    {
+     "value": "The authors state that all runs were made on ibmq manila, a Falcon r.11L processor, with minimal time between runs so that the calibration is similar for each run, and that the average T1 and T2 across the chip are 169 µs and 76 µs.",
+     "anchor": "Section II.B (IBM superconducting computer), text-layer page 2",
+     "quotes": [
+      "All runs are performed on the ibmq manila hardware, with minimal time intervals between them, so that the calibration of the hardware is similar for each run.",
+      "is a Falcon processor Falcon r.11L version",
+      "Average T1 and T2 across the whole chip are 169 µs and 76 µs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its experimental setup, Section II.B.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "bentellis-ibmq-manila-setup"
+    },
+    {
+     "value": "The authors state that other available IBM Q processors feature improved coherence properties but show similar readout (with the exception of ibm sherbrooke), single-gate and double-gate errors.",
+     "anchor": "Section II.B, text-layer page 2",
+     "quotes": [
+      "Other available IBM Q processors feature improved coherence properties, but show similar readout",
+      "(with the exception of ibm sherbrooke), single and double-gate errors"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "bentellis-other-ibm-processors"
+    },
+    {
+     "value": "The authors state that they used the RYCNOT ansatz, a circuit of only four parameterized RY gates and an entangling layer of CNOT gates arranged in a circular manner, because the unitary coupled-cluster (UCCSD) ansatz is unsuitable for benchmarking.",
+     "anchor": "Section III.B (Ansatz and Optimizer), Fig. 1, text-layer page 3",
+     "quotes": [
+      "For the purposes of this work, we therefore employed the RYCNOT ansatz.",
+      "the circuit is composed of only four RY gates, which are parameterized, and an entangling layer that consists of CNOT gates arranged in a circular manner."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its ansatz, Section III.B.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "bentellis-ansatz-rycnot"
+    },
+    {
+     "value": "The authors report that the UCCSD circuit for H2 is already relatively deep, with a circuit depth of 92 for ibmq manila, and state that for more complicated molecules like LiH it becomes impossible to run on real hardware without simplifying the problem.",
+     "anchor": "Section III.B, text-layer page 3",
+     "quotes": [
+      "For the H2 molecule the circuit is already relatively deep (circuit depth of 92 for ibmq manila)",
+      "if moving to more complicated molecules like LiH, it becomes impossible to run on real hardware without simplifying the problem."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical figure from one transpilation, with the LiH statement an author's claim.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The depth of 92 is for one transpilation setting that the paper does not describe for UCCSD; the paper states optimization level 3 only for the RYCNOT circuits.",
+     "id_suggestion": "bentellis-uccsd-depth"
+    },
+    {
+     "value": "The authors report that, after transpilation with Qiskit optimization level 3, the circuits have similar depth (16 for ibmq manila and 14 for aqt marmot) but differ in the number of 2-qubit gates (8 for ibmq manila and 4 for aqt marmot).",
+     "anchor": "Section III.B, Figs. 3 to 5, text-layer page 3",
+     "quotes": [
+      "optimization level 3 is used. Optimization level 3 spends the most computational effort",
+      "We see circuits of similar depth (16 for ibmq manila and 14 for aqt marmot)",
+      "the number of non-local gates or 2-qubit gates (8 for ibmq manila and 4 for aqt marmot)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one transpilation of one circuit.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Gate counts depend on the Qiskit version and the transpiler seed, which the paper does not state.",
+     "id_suggestion": "bentellis-transpiled-gate-counts"
+    },
+    {
+     "value": "The authors state that the difference in two-qubit gate count is explained by two swapping operations added for the IBM Q hardware, because SWAP gates are transformed into consecutive CNOT gates and superconducting chips can only directly entangle qubits with a direct connection on the chip.",
+     "anchor": "Section III.B, text-layer page 3",
+     "quotes": [
+      "This discrepancy can be explained by the addition of two swapping operations for the IBM Q hardware",
+      "these chips show a limited"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's explanation of one transpilation result.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "Eight gates against four is consistent with two SWAPs at two CNOTs each, but the paper does not show the transpiled circuit gate by gate in the text.",
+     "id_suggestion": "bentellis-swap-explanation"
+    },
+    {
+     "value": "The authors report that a comparison of the NFT, Nelder-Mead and SPSA optimizers on the qasm simulator suggests NFT outperforms the other two, and that Figure 9 suggests NFT achieves convergence in an average of four iterations on this problem.",
+     "anchor": "Section III.B, text-layer page 4; Appendix A, Fig. 9",
+     "quotes": [
+      "Indeed, Figure 9 suggests that NFT achieves convergence in an average of four iterations on this problem.",
+      "In the following, we brie"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulator comparison read from a figure.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The figure values are not in the text layer, so the four-iteration average rests on the authors' reading of Fig. 9.",
+     "id_suggestion": "bentellis-optimizer-nft-simulator"
+    },
+    {
+     "value": "The authors state that gradient-based methods like Adam perform poorly on such tasks, attributing this to reference [20].",
+     "anchor": "Section III.B, text-layer page 4",
+     "quotes": [
+      "gradient-based methods like Adam perform poorly on such tasks [20]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "bentellis-adam-poor-cited"
+    },
+    {
+     "value": "The authors describe the NFT algorithm as optimizing parameters one at a time by using the sine curve behavior of the loss function for each parameter, and state that it requires two to three evaluations per iteration, based on a hyperparameter.",
+     "anchor": "Appendix A (Optimizers), text-layer page 6; method cited as [17]",
+     "quotes": [
+      "The NFT algorithm optimizes parameters one at a time by utilizing the sine curve behavior of the loss function for each parameter.",
+      "It requires two to three evaluations per iteration, based on a hyperparameter."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A description of a method the paper attributes to other work [17].",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "bentellis-nft-description"
+    },
+    {
+     "value": "The authors state that they simulate H2 with a 4-qubit Hamiltonian in the minimal STO-3g basis set at an interatomic distance of 0.735 Angstrom, with the exact ground state energy EFCI = −1.136189454088 Ha calculated classically.",
+     "anchor": "Section III.C, text-layer page 4",
+     "quotes": [
+      "For the simulations of the H2 molecule we use the 4-qubit Hamiltonian:",
+      "The Hamiltonian is represented using the minimal STO-3g basis set [21].",
+      "using prefactors ci at a distance between atoms of 0.735",
+      "The exact ground state energy of the problem, calculated classically, is EFCI = −1.136189454088 Ha."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its problem setup, Section III.C.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "bentellis-hamiltonian-setup"
+    },
+    {
+     "value": "The authors list the Hamiltonian prefactors, generated with Qiskit's PySCF extension, as c1 = −0.81054, c2 = 0.16614, c3 = 0.16892, c4 = 0.17218, c5 = −0.22573, c6 = 0.12091, c7 = 0.166145 and c8 = 0.04523.",
+     "anchor": "Appendix B (Hamiltonian Prefactors), text-layer page 6",
+     "quotes": [
+      "c1 = −0.81054",
+      "c2 = 0.16614",
+      "c3 = 0.16892",
+      "c4 = 0.17218 c5 = −0.22573 c6 = 0.12091 c7 = 0.166145 c8 = 0.04523"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its problem setup, Appendix B.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "bentellis-hamiltonian-prefactors"
+    },
+    {
+     "value": "The authors report that a shot-based simulator (qasm simulator) with the hardware-efficient ansatz reaches an energy error |EVQE−EFCI| of 0.00365 Ha, and they conclude that the ansatz is capable of finding the solution.",
+     "anchor": "Section III.C, text-layer page 4",
+     "quotes": [
+      "a shot-based simulator (qasm simulator) can achieve relatively accurate energies (|EVQE−EFCI|= 0.00365 Ha)",
+      "the ansatz is capable of "
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulator run.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "A value of 0.00365 Ha is below the chemical accuracy line drawn in the figures only if that line is 0.0016 Ha or larger; the text does not give the line's value.",
+     "id_suggestion": "bentellis-simulator-accuracy"
+    },
+    {
+     "value": "The authors state that all runs use the RY-CNOT circuit, the NFT optimizer, Qiskit, 200 shots, no error mitigation and 15 iterations.",
+     "anchor": "Section III.C, text-layer page 4",
+     "quotes": [
+      "Circuit: RY-CNOT (c.f. Figure 1)",
+      "Optimizer: NFT",
+      "Number of shots: 200",
+      "No error mitigation",
+      "Number of iterations: 15"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its experimental settings, Section III.C.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "bentellis-experimental-settings"
+    },
+    {
+     "value": "The authors state that AQT's hardware currently does not support the native use of error mitigation techniques, so the results for aqt marmot are provided without error mitigation.",
+     "anchor": "Section III.C, text-layer page 4",
+     "quotes": [
+      "hardware currently does not support the native use of error mitigation techniques.",
+      "Therefore, results for aqt marmot are provided without error mitigation."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of a limit of its setup, Section III.C.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "bentellis-no-native-error-mitigation-aqt"
+    },
+    {
+     "value": "The authors report that the choice of parameter seed can impact the optimization process, as seen with two outliers among the nine runs, and that the uncertainty bands, which exclude the outliers, represent one standard deviation from the mean of the seven runs.",
+     "anchor": "Section III.C, Fig. 6, text-layer page 4",
+     "quotes": [
+      "In both cases, the choice of the seed can impact the optimization process, as seen with the two outliers (dotted lines in Figure 6).",
+      "These bands in Figure 6, which exclude the outliers, represent one standard deviation from the mean of the seven runs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The iteration averages of 7 and 4 may or may not include the two outlier runs; the paper does not say.",
+     "id_suggestion": "bentellis-seeds-outliers-bands"
+    },
+    {
+     "value": "The authors report a mean energy difference of 0.094 (or 9.34%) between the two processors when considering all runs, and state that the precise reason for this discrepancy in accuracy is not fully understood, as factors such as gate fidelity and connectivity may not fully account for it.",
+     "anchor": "Section III.C, Fig. 6, text-layer page 4",
+     "quotes": [
+      "Moreover, a mean energy difference of 0.094 between the two processors (or 9.34%) is observed when considering all runs",
+      "The precise reason for this discrepancy in accuracy is not fully understood, as factors such as gate ",
+      "and connectivity may not fully account for the observed difference in result precision."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, with the cause left open by the authors.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The text gives no unit for 0.094; Ha is the unit of the surrounding figures. The percentage and the Ha figure agree only if they are taken against a reference near 1.0 Ha.",
+     "id_suggestion": "bentellis-energy-gap-and-unexplained"
+    },
+    {
+     "value": "The authors report minimum energies of −1.006 Ha on ibmq manila and −1.100 Ha on aqt marmot, and absolute errors |EVQE − EFCI| of 0.130 Ha on ibmq manila and 0.036 Ha on aqt marmot.",
+     "anchor": "Table II, text-layer page 5",
+     "quotes": [
+      "Minimum energy (Ha) −1.006 ± 0.019 −1.100 ± 0.010",
+      "|EVQE − EFCI| (Ha) 0.130 ± 0.019",
+      "0.036 ± 0.010"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on two processors.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "In the text layer the second column of the error row sits on its own line; reading it as the aqt marmot value matches the column order of the other rows.",
+     "id_suggestion": "bentellis-table2-accuracy"
+    },
+    {
+     "value": "The authors state that Figure 7 and Table II show the energy difference between the last steps of the optimization and the theoretical ground state energy, generated from the last four iterations of the respective hardware runs, and that the unmitigated results are relatively close to the exact ground state.",
+     "anchor": "Section III.C, Fig. 7, text-layer page 4",
+     "quotes": [
+      "Figure 7 and table II show the energy difference between the last steps of the optimization",
+      "This plot is generated from the last four iterations of respective hardware runs.",
+      "This plot also shows that the unmitigated results are relatively close to the exact ground state."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, read from a figure.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Table II reports an ibmq manila error of 0.130 Ha, well above chemical accuracy; 'relatively close' is the authors' wording and has no stated threshold.",
+     "id_suggestion": "bentellis-unmitigated-close-to-exact"
+    },
+    {
+     "value": "The authors report that, over 15 iterations, one run on aqt marmot takes on average 3 hours and 40 minutes while ibmq manila takes up to 5 minutes, and state that it is unclear how this run time scales with increasing problem size.",
+     "anchor": "Section III.C, Table II, text-layer page 4",
+     "quotes": [
+      "Over 15 iterations, one run on aqt marmot takes on average 3 hours and 40 minutes, while ibmq manila takes up to 5 minutes to get the results (Table II).",
+      "It is however unclear how this runtime scales with increasing problem size."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on two processors.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Table II gives 13297 seconds for aqt marmot, which is about 3 hours 41 minutes and agrees with the text.",
+     "id_suggestion": "bentellis-run-time-text"
+    },
+    {
+     "value": "The authors state that the zoomed part of the interatomic-distance plot (Fig. 8) corresponds to the global minimum located at 0.735 Angstrom, and that measurement error mitigation on ibmq manila reveals an improvement in accuracy.",
+     "anchor": "Section III.C, Fig. 8, text-layer page 5",
+     "quotes": [
+      "The internuclear distance plot shown in Figure 8 determines the molecular geometry",
+      "The zoomed part of the plot corresponds to the global minimum located at 0.735",
+      "We also compare here the use of measurement error mitigation for the ibmq manila hardware (green marker), which reveals an improvement in accuracy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, read from a figure.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The text gives no figure for the size of the improvement; Fig. 8 values are not in the text layer.",
+     "id_suggestion": "bentellis-geometry-minimum-and-em"
+    },
+    {
+     "value": "The authors state that their results demonstrate that all-to-all connectivity as present in ion trap hardware can significantly decrease the number of non-local gates required, and hypothesize that the optimized energy difference may be due to the impact of SWAP gates (which require 2-qubit gates) on the VQE performance.",
+     "anchor": "Section IV (Discussion), text-layer page 5",
+     "quotes": [
+      "Our results demonstrate that all-to-all connectivity as present in ion trap hardware can",
+      "decrease the number of non-local gates required.",
+      "We hypothesize that the optimized energy difference may be due to the impact of SWAP gates (which require 2-qubits gates) on the VQE"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The gate-count reduction is shown for one circuit (8 against 4 two-qubit gates is not quoted here); the link to the energy difference is an author's hypothesis.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The paper separately says the cause of the accuracy gap is not fully understood, so the SWAP explanation is untested.",
+     "id_suggestion": "bentellis-alltoall-reduces-nonlocal"
+    },
+    {
+     "value": "The authors state that, based on calibration data, ibmq manila gate times are approximately 103 times (the text layer prints the exponent flat, probably ten cubed) faster than aqt marmot, which results in a difference in quantum run time, and that aqt marmot, with its extended coherence time, can still execute meaningful operations despite slower gate times.",
+     "anchor": "Section IV, text-layer page 5",
+     "quotes": [
+      "Based on calibration data, it is known that ibmq manila gate times are approximately 103 times faster than aqt marmot",
+      "The aqt marmot backend, with its extended coherence time, can still execute meaningful operations despite having slower gate times."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statement based on vendor calibration data.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The ratio of 200 µs to about 300 to 500 ns two-qubit gate times is near 400 to 700, not 1000, so 'approximately 10 cubed' is a rough order of magnitude.",
+     "id_suggestion": "bentellis-gate-time-ratio-coherence"
+    },
+    {
+     "value": "The authors state that the ansatz used is problem-agnostic, so they can anticipate comparable performance for other minimization problems involving a sum of expectation values (such as Ising models).",
+     "anchor": "Section IV, text-layer page 5",
+     "quotes": [
+      "The ansatz used is problemagnostic, so we can anticipate comparable performance for other minimization problems involving a sum of expectation values (such as Ising models)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "This sits in tension with Section V, which says the results cannot directly be generalized to other processors or algorithms; the Section IV claim is about other problems on the same ansatz, and no such problem was run.",
+     "id_suggestion": "bentellis-problem-agnostic-claim"
+    },
+    {
+     "value": "The authors state that increasing the size of the molecule would directly increase the number of qubits required for the simulation, itself linearly increasing the number of SWAP operations required in superconducting hardware.",
+     "anchor": "Section IV, text-layer page 5",
+     "quotes": [
+      "increasing the size of the molecule would directly increase the number of qubits required for the simulation, itself linearly increasing the number of SWAP operations"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim without evidence in the paper; the paper states it did not evaluate scalability.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "bentellis-scaling-swap-growth"
+    },
+    {
+     "value": "The authors state that they have demonstrated that the VQE serves as a suitable benchmark for evaluating application-centered hardware performance.",
+     "anchor": "Section V (Conclusion), text-layer page 5",
+     "quotes": [
+      "We have demonstrated that the VQE serves as a suitable benchmark for evaluating application-centered hardware performance."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's conclusion from one experiment on two processors.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The study gives no analysis of why VQE on H2 would rank hardware in a way that carries to other workloads, and Section V itself denies generalization.",
+     "id_suggestion": "bentellis-conclusion-vqe-benchmark"
+    },
+    {
+     "value": "The authors state that the results of this work cannot be used as a recommendation to use one or the other quantum hardware technology, as the results depend on the precise quantum algorithm used and on the precise classical optimizer.",
+     "anchor": "Section VI (Acknowledgements), text-layer page 6",
+     "quotes": [
+      "The results of this work can also not be used as recommendation to use the one or the other quantum hardware technology",
+      "and depend on the precise quantum algorithm used, as well as depend on the precise classical optimizer."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of a limit of its results, Section VI.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The quote also says the results are processor specific and calibration specific; the words in between are cut at a ligature in the text layer.",
+     "id_suggestion": "bentellis-not-a-hardware-recommendation"
+    },
+    {
+     "value": "The authors state that a practical quantum advantage, an advantage of quantum computation over classical computation in an industrially relevant problem, has not yet been demonstrated.",
+     "anchor": "Section I (Introduction), text-layer page 1",
+     "quotes": [
+      "A practical quantum advantage, i.e., an advantage of quantum computation over classical computation in an industrially relevant problem has however not yet been demonstrated."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statement about the field as of 2023, without evidence in the paper.",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": "Time-sensitive: the statement dates from May 2023 and is not checked here against later work.",
+     "id_suggestion": "bentellis-practical-advantage-not-shown"
+    }
+   ]
+  },
+  {
+   "record_id": "berberich-2024-robustness-quantum-algorithms-against-coherent",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Berberish-Fink-Holm_2023_Robustness-of-quantum-algorithms-against-coherent-control-errors__2303.00618.pdf",
+   "title_in_file": "Robustness of quantum algorithms against coherent control errors",
+   "version_note": "arXiv:2303.00618v3, dated December 4, 2024; the file name says 2023.",
+   "pages": 16,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper that bounds the worst-case fidelity loss of quantum circuits under coherent control errors using Lipschitz bounds based on Hamiltonian norms, with a 3-qubit QFT gate-set simulation, an ibm nairobi experiment and a variational-circuit regularization example.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "bound-not-tight",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that the Lipschitz bound (17) is in general not tight, since the coupling between sequentially applied gates is not taken into account.",
+     "anchor": "Section II B, p.5",
+     "quotes": [
+      "It is important to note that the Lipschitz bound (17) itself is, in general, not tight, e.g., since the coupling between sequentially applied gates is not taken into account."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit of their bound in Section II B.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "fidelity-bounds-hamiltonian-norms",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors derive worst-case fidelity bounds which show that resilience against coherent control errors is mainly influenced by the norms of the Hamiltonians generating the individual gates.",
+     "anchor": "Abstract, p.1; Theorem II.2, Section II B, p.4",
+     "quotes": [
+      "We derive worst-case fidelity bounds which show that the resilience against coherent control errors is mainly influenced by the norms of the Hamiltonians generating the individual gates.",
+      "Thus, smaller norms ∥Hi∥2 imply better robustness against such errors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem II.2 is proved in Appendix A; the bound is an upper bound on fidelity loss.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The result is about an upper bound on the loss; the paper says the bound is in general not tight, so a smaller bound does not by itself guarantee a smaller true loss."
+    },
+    {
+     "id": "qft-guideline-vs-depth",
+     "verdict": "confirmed",
+     "note": "Supported by the paper only as a comparison of five transpiled circuits in simulation. The text gives the gate-count example (gate set C against gate set E) and says a similar observation holds for depth; the gate-set comparison does not claim any gate set is generally better.",
+     "value": "The authors report that, using the 3-qubit Quantum Fourier Transform as an example, the guideline of reducing Hamiltonian norms targets robustness more effectively than existing guidelines based on circuit depth or gate count.",
+     "anchor": "Abstract, p.1; Section V, p.7",
+     "quotes": [
+      "Using the 3-qubit Quantum Fourier Transform as an example application, we demonstrate that this guideline targets robustness more effectively than existing ones based on circuit depth or gate count.",
+      "A similar observation can be made when comparing the circuit depths."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one simulation study of five transpiled circuits.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Five circuits from one transpiler (BQSKit); the depth comparison is stated without numbers in the text (the figure holds them)."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "coherent-control-error-definition",
+     "value": "The authors define a coherent control error as a perturbation of an ideal gate in which the generating Hamiltonian is multiplied by one plus an unknown real noise term, which may be stochastic or time-varying.",
+     "anchor": "Section I, eq. (1), p.1",
+     "quotes": [
+      "Mathematically, a coherent control error can be described as a perturbation",
+      "of an ideal quantum gate e−iH , where H = H† is the Hamiltonian generating the gate. Further, ε ∈ R is an unknown, possibly stochastic and/or time-varying noise term."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of its error model, Section I.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "noise-assumptions-minimal",
+     "value": "The authors state that the only assumption on the noise is a bound on its infinity norm; the errors need not be identical and the bound need not be small.",
+     "anchor": "Section II, p.3",
+     "quotes": [
+      "Throughout the paper, we assume that the size of the noise is bounded by some scalar ε¯ > 0, i.e., |εi| ≤ ε¯ for i = 1, . . . , N or, equivalently, ∥ε∥∞ ≤ ε¯. Beyond the existence of such a bound, we make no further assumptions.",
+      "In particular, we do not assume that the errors are identical",
+      "or that the bound ε¯ is sufficiently small"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own assumptions in Section II.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "generality-of-results",
+     "value": "The authors state that the results allow independent noise terms on the gates, arbitrary unitaries defining the gates, and no assumption on the nature of the noise, such as being small or drawn from a specific distribution.",
+     "anchor": "Section I, Contribution, p.2",
+     "quotes": [
+      "The presented results are applicable under rather general conditions: We allow for independent noise terms affecting the gates, for arbitrary unitaries defining the gates,",
+      "we do not require any assumptions on the nature of the noise, e.g., being sufficiently small or drawn from a specific probability distribution."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of its own scope, Section I.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "berberich-2024-lipschitz-bound-definition",
+     "value": "The paper defines a Lipschitz bound of the noisy state as a positive scalar L such that the 2-norm difference between two noisy states is at most L times the infinity-norm difference of the two noise vectors.",
+     "anchor": "Definition II.1, Section II A, p.3; footnote 33",
+     "quotes": [
+      "Definition II.1. A scalar L > 0 is a Lipschitz bound of |ψ⟩ if",
+      "∥|ψ(ε)⟩ − |ψ(ε′)⟩∥2 ≤ L∥ε − ε′∥∞",
+      "We use an ∞-norm for the noise rather than a 2-norm in order to obtain tighter bounds in our main technical results."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition II.1 and footnote 33.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem-II-1-fidelity-from-lipschitz",
+     "value": "The paper proves that, if L is a Lipschitz bound of the noisy state, then for any noise vector with infinity norm at most the noise bound and any initial state, the fidelity is at least one minus L squared times the noise bound squared, divided by two.",
+     "anchor": "Theorem II.1, Section II A, p.4",
+     "quotes": [
+      "Theorem II.1. Suppose L is a Lipschitz bound of |ψ⟩. Then, for any ε ∈ RN satisfying ∥ε∥∞ ≤ ε¯ for some ε¯ ≥ 0 and any initial state |ψ0⟩, it holds that",
+      "2 − 2| ⟨ψ(ε)|ψˆ⟩ | ≤ L2∥ε∥2∞ ≤ L2ε¯2,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Section II A; the displayed bound is printed split across lines, so the proof line carries it.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The text layer splits the displayed bound; the proof line (15) gives the inequality it rearranges."
+    },
+    {
+     "id_suggestion": "theorem-II-2-norm-lipschitz-bound",
+     "value": "The paper proves that the sum over all gates of the induced 2-norm of the generating Hamiltonian is a Lipschitz bound of the noisy state, and that the worst-case fidelity is then bounded below as in Theorem II.1.",
+     "anchor": "Theorem II.2, Section II B, p.4; proof in Appendix A, p.11",
+     "quotes": [
+      "Theorem II.2. For any ε, ε′ ∈ RN and any initial state |ψ0⟩, we have",
+      "∥|ψ(ε)⟩ − |ψ(ε′)⟩∥2 ≤ ∥Hi∥2|εi − ε′i|. (17)",
+      "In particular, iN=1∥Hi∥2 is a Lipschitz bound of |ψ⟩ and, for any ε ∈ RN with ∥ε∥∞ ≤ ε¯ and any initial state |ψ0⟩, it holds that",
+      "which implies (17) and the Lipschitz bound iN=1∥Hi∥2. Further, Theorem II.1 implies (18), which thus concludes the proof."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem II.2 is stated with its conditions and proved in Appendix A.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The printed bound (18) is split across lines; its form (one minus half the squared sum times the noise bound squared) is read from Theorem II.1 and eq. (19)."
+    },
+    {
+     "id_suggestion": "proof-technique-theorem-II-2",
+     "value": "The authors prove Theorem II.2 by bounding the derivative of each noisy gate by the norm of its Hamiltonian and then using the triangle inequality, unitarity of the gates and submultiplicativity of matrix norms, inductively over the gates.",
+     "anchor": "Appendix A, pp.11-12",
+     "quotes": [
+      "In particular, the derivative of Ui is uniformly bounded, i.e.,",
+      "where we use that |ψ0⟩ has unit norm and the Ui’s are unitary, as well as the triangle inequality and submultiplicativity of matrix norms. Proceeding inductively, this implies"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The proof of Theorem II.2 in Appendix A.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "single-z-rotation-sensitivity",
+     "value": "The authors state that for a single Z rotation the sensitivity of the fidelity bound to the noise decreases for smaller rotation angles and vanishes at angle zero.",
+     "anchor": "Section II B, eq. (19), p.4",
+     "quotes": [
+      "multiplicative influence of the noise, the sensitivity of the",
+      "fidelity w.r.t. the noise decreases for smaller values of θ,",
+      "and it vanishes for θ = 0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Consequence of Theorem II.2 for one gate, eq. (19).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Eq. (19) itself is split across lines in the text layer and is not quoted."
+    },
+    {
+     "id_suggestion": "intro-example-simulation",
+     "value": "The authors report that, for two rotation sequences that give the same ideal state and have the same gate count and circuit depth, the minimum fidelity over 500 noise realizations was 0.985 for the first sequence and 0.965 for the second, with each noise term sampled uniformly from a range of minus 0.2 to 0.2.",
+     "anchor": "Section I, Figure 1, pp.1-2",
+     "quotes": [
+      "same gate sets (y- and z-rotations) and both have the same gate count and circuit depth.",
+      "are randomly sampled from a uniform distribution over [−0.2, 0.2] × [−0.2, 0.2].",
+      "and by determining the minimum fidelity over all 500 noise realizations.",
+      "The resulting value for Unoisy is 0.985, whereas Un′ oisy yields a minimum fidelity of 0.965."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one simulation.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The minimum is over sampled noise values, so it is a sampled worst case, not the true worst case."
+    },
+    {
+     "id_suggestion": "intro-example-twice-loss",
+     "value": "The authors state that the loss of fidelity of the second noisy circuit under the worst-case noise realization is more than twice as large as that of the first.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "This shows that the loss of fidelity of Un′ oisy due to the worst-case realization of the coherent control error is more than twice as large as that of Unoisy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one simulation.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lipschitz-example-comparison",
+     "value": "The authors state that the Lipschitz bound of the first sequence is smaller than that of the second, which they say explains why the first is more robust, and that the difference comes from the different magnitude of the z-rotations.",
+     "anchor": "Section II B, p.4",
+     "quotes": [
+      "which explains why the latter is more robust w.r.t. co-",
+      "different magnitude of the z-rotations, which is why the",
+      "higher sensitivity of U ′ only manifests itself as an over-"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Explanation applies the bound to one example; the bound values are split across lines in the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The values (3π/8 and 5π/8) are printed split across lines and are not quoted."
+    },
+    {
+     "id_suggestion": "design-guideline-smaller-norms",
+     "value": "The authors propose a design and transpilation guideline: when a designer or transpiler can choose between Hamiltonians, choose the circuit with smaller Hamiltonian norms, since smaller norms imply better robustness.",
+     "anchor": "Section IV, p.6",
+     "quotes": [
+      "Thus, smaller norms ∥Hi∥2 imply better robustness against such errors.",
+      "Theorem II.2 can be used to derive a novel, quantita-"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' guideline, derived from an upper bound.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The guideline rests on an upper bound that the paper itself calls not tight, so a smaller bound does not guarantee a smaller true loss."
+    },
+    {
+     "id_suggestion": "pairwise-theorem-II-3",
+     "value": "The paper proves pair-wise Lipschitz bounds that group consecutive gates in pairs and use the norm of the stacked pair of Hamiltonians, with an extra single-gate term when the number of gates is odd.",
+     "anchor": "Theorem II.3, Section II C, p.5; proof in Appendix D, p.12",
+     "quotes": [
+      "Theorem II.3. The following are Lipschitz bounds of |ψ⟩:",
+      "• If the number of unitaries N is even:",
+      "• If the number of unitaries N is odd:",
+      "Using that |ψ0⟩ is a unit vector and the matrices Ui(εi) are unitary, the norm of (D2) is upper bounded by ∥ H1 H2 ∥2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem II.3 is stated with its conditions; Appendix D proves the even case.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The bounds (23a) and (23b) are printed split across lines in the text layer."
+    },
+    {
+     "id_suggestion": "theorem-II-3-odd-case-not-proved",
+     "value": "The authors state that Appendix D proves only the even case of Theorem II.3 and that the odd case can be proven with trivial modifications.",
+     "anchor": "Appendix D, p.12",
+     "quotes": [
+      "Proof. We only prove (23a) and note that (23b) can be proven with trivial modifications."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's statement of what its proof covers.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pairwise-fidelity-bound-even-n",
+     "value": "The authors state that combining Theorem II.3 with Theorem II.1 for an even number of gates gives a worst-case fidelity bound, and that the coupling between two sequentially applied Hamiltonians influences robustness against coherent control errors.",
+     "anchor": "Section II C, eq. (24), p.5",
+     "quotes": [
+      "Further, combining Theorem II.3 with Theorem II.1 (for the case of even N ), we obtain the worst-case fidelity bound",
+      "This shows that the coupling between any two sequentially applied Hamiltonians influences the robustness against coherent control errors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Direct combination of two proved results.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pairwise-vs-sum-strictness",
+     "value": "The authors state that the pair-wise norm is bounded above by the sum of the individual norms and that this inequality is strict in almost all cases.",
+     "anchor": "Section II C, eq. (25), p.5",
+     "quotes": [
+      "For any two matrices H1, H2, it holds that",
+      "Inequality (25) is strict in almost all cases."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The inequality chain (25) is shown in the text.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pairwise-independence-principle",
+     "value": "The authors state that the fidelity loss is reduced if the singular vectors for the maximum singular values of consecutive Hamiltonians are linearly independent, and that this holds even when the noise terms entering the unitaries are independent.",
+     "anchor": "Section II C, p.5",
+     "quotes": [
+      "In particular, the fidelity loss is reduced if the singular vectors corresponding to the maximum singular values of Hi+1 and Hi are linearly independent.",
+      "It is important to emphasize that this is the case even if the noise terms εi entering the different unitaries are independent."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' reading of their pair-wise bound.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "This is a statement about the pair-wise upper bound, not about the true fidelity loss."
+    },
+    {
+     "id_suggestion": "pairwise-future-work",
+     "value": "The authors state that they mainly use the norm-based bounds of Theorem II.2 and that drawing analogous conclusions from the pair-wise bounds is left to future research.",
+     "anchor": "Section II C, pp.5-6",
+     "quotes": [
+      "remainder of the paper, we mainly focus on the normbased bounds in Theorem II.2, but drawing analogous conclusions using the pair-wise bounds in Theorem II.3 is an interesting issue for future research."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Scope statement, Section II C.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "global-phase-dependence-of-bounds",
+     "value": "The authors state that the effect of coherent control errors does not depend on the global-phase choice of the Hamiltonian, but the bounds do depend on it, and the tightest bound comes from the offset that minimizes the Hamiltonian norm.",
+     "anchor": "Remark II.1, Section II B, pp.4-5",
+     "quotes": [
+      "As expected, the effect of coherent control errors on the circuit is independent of the particular choice of Hφ since",
+      "depend on the specific choice of φ.",
+      "In particular, the tightest Lipschitz bound of |ψ⟩ (and, hence, the tightest worst-case fidelity bound) is achieved when replacing Hi by Hi + φi∗, where φi∗ minimizes"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Remark II.1 argues it with eqs. (20) to (22).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "earlier-sqrt-n-lipschitz-bound",
+     "value": "The authors state that an earlier Lipschitz bound, of the form square root of N times the largest Hamiltonian norm, was obtained in reference 35 for convergence analysis of variational quantum algorithms, and that they use their own bound because it involves all circuit elements.",
+     "anchor": "Remark II.2, Section II B, p.5",
+     "quotes": [
+      "was obtained in [35] for the purpose of",
+      "convergence analysis of VQAs. In the present paper, we work with the bound derived in Theorem II.2 since it explicitly involves all elements of the quantum circuit"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tightness-single-gate",
+     "value": "The authors state that for a single gate, under a stated condition on the product of Hamiltonian norm and noise bound, the exact worst-case fidelity is the absolute cosine of that product, so the Theorem II.2 bound is its second-order Taylor approximation and is not too conservative when that product is small.",
+     "anchor": "Appendix C, p.12",
+     "quotes": [
+      "is equal to | cos(∥H∥2ε¯)|. This means that there exist",
+      "is the second-order Taylor approximation of the exact",
+      "conservative as long as the product ∥H∥2ε¯ is small."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper says 'It is not hard to show' and gives no proof; the condition on the product is split across lines and could not be quoted.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The condition appears in the text layer only as a fragment before a separate line."
+    },
+    {
+     "id_suggestion": "tightness-bound-18-vs-C2",
+     "value": "The authors state they prove that, for small noise levels, the main fidelity bound is tighter than an alternative bound built from sine terms via the triangle inequality.",
+     "anchor": "Appendix C, pp.12-13",
+     "quotes": [
+      "proven that (for small noise levels) the bound (18) is",
+      "tighter than (C2), i.e., it guarantees a larger worst-case"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Shown by comparing the two bounds in Appendix C.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tightness-no-multi-gate-exact",
+     "value": "The authors state that finding an explicit expression for the true worst-case fidelity of a circuit with more than one gate is more involved.",
+     "anchor": "Appendix C, p.12",
+     "quotes": [
+      "On the other hand, for multiple gates, i.e., N > 1,",
+      "finding an explicit expression for the worst-case fidelity",
+      "is more involved."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's statement of what it does not give.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "diamond-distance-from-lipschitz",
+     "value": "The paper states that any Lipschitz bound for the coherent-error map yields an upper bound on the diamond distance of the error from the identity, so the Section II results give computable diamond-distance bounds for coherent control errors.",
+     "anchor": "Section III, eq. (28), p.6",
+     "quotes": [
+      "yields an upper bound on the diamond distance in (27),",
+      "Thus, the results from Section II provide explicitly computable and insightful bounds on the diamond distance for coherent control errors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Shown by the chain of inequalities (28), for a single error map.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The last factor in (28) is printed with its square-root sign lost, so the constant is not stated here. The derivation is for one error map, not a whole circuit or a code."
+    },
+    {
+     "id_suggestion": "threshold-requirement-cited",
+     "value": "The paper states, citing Aharonov and Ben-Or, that fault-tolerant quantum computation requires the diamond distance of an error from the identity to be at most some sufficiently small positive number.",
+     "anchor": "Section III, p.6",
+     "quotes": [
+      "In order to guarantee fault-tolerant quantum computation, it is required that ∥E − I∥⋄ ≤ η for some sufficiently small η > 0 [38]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "threshold-theorem-use-claim",
+     "value": "The authors state that their bounds are explicitly computable even for large circuits and can be used to guarantee fault-tolerance via threshold theorems.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "These bounds are explicitly computable even for large circuits, and they can be used to guarantee fault-tolerance via threshold theorems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "Section III derives a diamond-distance upper bound for one error map; it does not derive a threshold or analyze a code."
+    },
+    {
+     "id_suggestion": "contrast-with-diamond-distance-literature",
+     "value": "The authors state that their framework provides bounds tailored to coherent control errors that are explicitly computable, depend directly on the circuit elements, and need no assumption on error statistics or size, including for independent errors.",
+     "anchor": "Section III, p.6",
+     "quotes": [
+      "In contrast to these works, our framework provides tailored bounds for coherent control errors, which can be explicitly computed, depend directly on the circuit elements, and hold under rather general assumptions"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim about their own framework.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scalability-proposition-B1",
+     "value": "The paper proves that if a gate acts non-trivially only on a subset of the qubits, the norm of its Hamiltonian equals the norm of the Hamiltonian of its non-trivial component.",
+     "anchor": "Proposition B.1, Appendix B, pp.11-12",
+     "quotes": [
+      "Proposition B.1. Suppose Uˆi only acts on a subset of all qubits, i.e.,",
+      "for some j1, j2. Then, ∥Hi∥2 = ∥H¯i∥2.",
+      "This implies ∥Hi∥2 = ∥I⊗j1 ⊗ H¯i ⊗ I⊗j2 ∥2 = ∥H¯i∥2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proposition B.1 and its proof, Appendix B.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scalability-linear-in-gate-count",
+     "value": "The authors state that for circuits of single-qubit and two-qubit gates the Hamiltonian norms come from two-by-two or four-by-four matrices, and that the cost of computing the Theorem II.2 bound grows only linearly with the gate count.",
+     "anchor": "Appendix B, p.12",
+     "quotes": [
+      "In the common scenario that the quantum algorithm only consists of single-qubit and 2-qubit gates, Proposition B.1 implies that ∥Hi∥2 can be easily determined by computing the norm of a 2 × 2 or 4 × 4 matrix.",
+      "In particular, the complexity of computing the bounds in Theorem II.2 for the full circuit grows only linearly with the gate count"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Argued in a paragraph, with no run timing.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "No timing or large-circuit computation is reported."
+    },
+    {
+     "id_suggestion": "qft-gate-sets-and-simulation-setup",
+     "value": "The authors transpile the 3-qubit QFT into five gate sets with BQSKit at maximum optimization level, and simulate each with independent noise terms drawn uniformly from the interval minus 0.05 to plus 0.05, Haar-random initial states, and 40, 000 runs per circuit.",
+     "anchor": "Section V, p.7",
+     "quotes": [
+      "The transpilation is carried out using the Berkeley Quantum Synthesis Toolkit (BQSKit) [59], for which we use the maximum optimization level.",
+      "from [−0.05, +0.05]. Furthermore, to estimate the worstcase fidelities, we draw the initial states |ψ0⟩ uniformly at random from the Haar measure.",
+      "Figure 3 displays the worst-case fidelity, average fidelity, and standard deviation based on 40, 000 runs of each algorithm with varying noise realizations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its experimental setup, Section V.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The worst-case fidelity in Figure 3 is a sampled minimum over runs, not the true worst case."
+    },
+    {
+     "id_suggestion": "qft-lipschitz-bounds-by-gate-set",
+     "value": "The authors report Lipschitz bounds for the transpiled QFT circuits of 117.95 for gate set A, 106.79 for gate set B, 45.26 for gate set C, 36.95 for gate set D and 29.42 for gate set E, so that gate set E gives the smallest bound.",
+     "anchor": "Appendix E, Figures 8 to 12, pp.13-14; Section V, p.7",
+     "quotes": [
+      "of LQAF T = 117.95.",
+      "of LBQF T = 106.79.",
+      "has a Lipschitz bound of LCQF T = 45.26.",
+      "has a Lipschitz bound of LDQF T = 36.95.",
+      "has a Lipschitz bound of LQEF T = 29.42.",
+      "Note that gate set E leads to the smallest Lipschitz bound, followed by gate set D, etc."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Computed values for one transpilation of one circuit.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qft-bound-correlates-with-fidelity",
+     "value": "The authors report a strong correlation between a small Lipschitz bound and a large resulting fidelity, average and worst, in the simulation; gate set E gave the largest worst-case fidelity and gate set A, with the largest bound, the least robust.",
+     "anchor": "Section V, Figure 3, p.7",
+     "quotes": [
+      "Note that there is a strong correlation between a small Lipschitz bound and a resulting large fidelity (average and worst), which confirms the above analysis.",
+      "In particular, gate set E leads to the largest worst-case fidelity, whereas gate set A, which has the largest Lipschitz bound, is the least robust."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Five data points from one transpiler; the fidelity values are in Figure 3, not in the text."
+    },
+    {
+     "id_suggestion": "qft-gate-count-counterexample",
+     "value": "The authors report that the loss of worst-case fidelity for gate set C is more than two times as large as for gate set E, even though the gate-set-E circuit has almost 30% more gates, and state that this contradicts the philosophy that fewer gates imply better robustness.",
+     "anchor": "Section V, p.7",
+     "quotes": [
+      "For example, the loss of the worst-case fidelity for gate set C is more than two times as large as that for gate set E, even though the implementation based on gate set E has almost 30% more gates.",
+      "This contradicts the common philosophy that less gates imply better robustness"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The figure labels give 17 gates for C and 22 for E; one pair of circuits supports the claim, so it shows gate count is not sufficient, not that it is uninformative in general."
+    },
+    {
+     "id_suggestion": "qft-bound-conservative",
+     "value": "The authors state that for the five transpiled circuits the worst-case fidelity bound is conservative and even negative for four out of five circuits, though the Lipschitz bounds still serve to compare robustness.",
+     "anchor": "Section V, p.7",
+     "quotes": [
+      "Finally, for the above circuits, the worst-case fidelity bound (18) is conservative and even negative for four out of five circuits."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's statement of a limit of its bound.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qft-no-general-gate-set-claim",
+     "value": "The authors state that they do not claim gate set E is generally preferable, that a better circuit on gate set D may exist, and that their main contribution is the possibility of a theoretical analysis for a given set of circuits.",
+     "anchor": "Section V, p.7",
+     "quotes": [
+      "In particular, we do not claim that gate set E is generally preferable over the others.",
+      "Our main contribution is the mere possibility to make a theoretical analysis as above for a given set of quantum circuits."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's statement of the scope of its comparison.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hardware-setup-ibm-nairobi",
+     "value": "The authors run two single-qubit circuits on the ibm nairobi quantum computer for 16 equidistant noise levels with 80 noise samples each, apply coherent control errors only to the Rz gates, and estimate fidelity by single-qubit state tomography, in total 153, 600, 000 circuits.",
+     "anchor": "Section VI and Appendix F, pp.8-9, 13",
+     "quotes": [
+      "For the implementation on ibm nairobi, we run the circuits UA(εA) |0⟩ and UB(εB) |0⟩ for 16 equidistant noise levels ε¯ ∈ [0, 1]. For each noise level, we draw 80 random samples of εA and εB, respectively, from [−ε¯, ε¯].",
+      "we consider the case that the Rz-gates are affected by coherent control errors εA and εB, respectively",
+      "since the elementary gate set which can be implemented on ibm nairobi does not contain Rxrotations.",
+      "Thus, we run 2 · 16 · 80 · 3 · 20, 000 = 153, 600, 000 quantum circuits on ibm nairobi in total."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its hardware setup.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The noise is injected by the authors in software-chosen rotation angles; the hardware's own errors are not separated out. Noise levels reach 1, far above the 0.05 used in simulations."
+    },
+    {
+     "id_suggestion": "hardware-result-ua-vs-ub",
+     "value": "The authors report that, for non-trivial noise levels, circuit UA performs significantly better than circuit UB on ibm nairobi, as predicted by Theorem II.2, with the observed worst-case fidelity very close to the theoretical bound.",
+     "anchor": "Section VI, Figure 5, p.9",
+     "quotes": [
+      "First, we observe that, for non-trivial noise levels, circuit UA indeed performs significantly better than circuit UB, as predicted by Theorem II.2.",
+      "the observed worst-case fidelity is, in fact, very close to the theoretical bound (18)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one hardware experiment on two circuits.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "Two circuits on one device; the fidelity values are in Figure 5, not in the text."
+    },
+    {
+     "id_suggestion": "hardware-bound-violated-for-ua",
+     "value": "The authors state that for UA the empirical worst-case fidelity is smaller than the theoretical lower bound, and attribute this to the inexact fidelity estimation and possibly further errors such as decoherence.",
+     "anchor": "Section VI, p.9",
+     "quotes": [
+      "For UA, the empirical value is smaller than the theoretical lower bound, which can be explained by the inexact fidelity estimation procedure and possibly further errors caused, e.g., by decoherence effects."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result and an author explanation.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The bound holds only for the noise model; hardware errors outside it can break it. The attribution is not tested in the paper."
+    },
+    {
+     "id_suggestion": "hardware-not-explained-by-gate-count",
+     "value": "The authors state that the improved robustness of UA over UB can only be explained by the different Lipschitz bounds and not by the number of gates, 3 against 4, since both circuits have almost identical fidelity without coherent control errors.",
+     "anchor": "Section VI, p.9",
+     "quotes": [
+      "To conclude, is important to note that the improved robustness of UA over UB can only be explained by the different Lipschitz bounds and not, e.g., by the number of gates (3 vs. 4) since both circuits have almost identical fidelity in the absence of coherent control errors, i.e., for ε¯ = 0."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "Equal noiseless fidelity rules out only a baseline difference; it does not rule out other explanations, such as the different Rz angle sizes acting through hardware effects."
+    },
+    {
+     "id_suggestion": "hardware-fidelity-definition-f5",
+     "value": "The authors compute the fidelity between the analytic pure state and the tomographic density matrix as the absolute value of the expectation of the density matrix in that state.",
+     "anchor": "Appendix F, eq. (F5), p.13",
+     "quotes": [
+      "F(|ψ⟩ , ρ) = | ⟨ψ|ρ|ψ⟩ |."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Appendix F.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "As printed, (F5) has no square root. For a pure noisy state this expression is the squared overlap, while the bound (18) is for the unsquared overlap; the text layer may have lost a root sign."
+    },
+    {
+     "id_suggestion": "section-iv-reverses-section-i",
+     "value": "The authors state in Section IV that the Lipschitz bound of the noisy version of the first sequence is larger than that of the second, and that the loss of fidelity of the first is more than twice as large as that of the second.",
+     "anchor": "Section IV, pp.6-7",
+     "quotes": [
+      "the derived Lipschitz bound of the noisy version U (ε) of",
+      "Uˆ against coherent control errors is larger than that of",
+      "Yet, the loss of fidelity of U (ε) is more than twice as large as that of U ′(ε)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement in the paper that conflicts with Sections I and II B.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "Section I reports 0.985 for U and 0.965 for the primed circuit, and Section II B gives 3π/8 for U against 5π/8 for the primed circuit, so the primed circuit has the larger bound and the larger loss. Section IV appears to swap the two."
+    },
+    {
+     "id_suggestion": "vqa-lipschitz-bound-parametrized",
+     "value": "The authors state that, for parametrized gates with unknown multiplicative errors, the sum of the absolute parameter values times the Hamiltonian norms is a Lipschitz bound, so smaller absolute parameter values imply a better robustness bound.",
+     "anchor": "Section VII, p.9",
+     "quotes": [
+      "Theorem II.2 now implies that, for a fixed parameter",
+      "U (θ, ε) |ψ0⟩. In particular, smaller values of |θi| imply",
+      "better robustness of the VQA against coherent control"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Direct application of Theorem II.2, Section VII.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The bound itself is printed split across lines."
+    },
+    {
+     "id_suggestion": "vqa-regularized-objective",
+     "value": "The authors propose minimizing the cost plus a penalty on the squared norm of the parameter vector, with a positive weight lambda that trades off optimality against robustness to coherent control errors.",
+     "anchor": "Section VII, eq. (33), p.9",
+     "quotes": [
+      "Here, λ > 0 is a parameter which can be used to trade off optimality and robustness against coherent control errors."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author proposal.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqa-regression-experiment-setup",
+     "value": "The authors train a single-qubit model on a regression of the sine function with 20 training points, five regularization weights, eight models per weight, 50 ADAM iterations and noise up to 0.05 on the trainable Ry and Rz gates.",
+     "anchor": "Section VII, p.10",
+     "quotes": [
+      "Our model is based on [70] and consists of a single qubit.",
+      "We create a simple training set X with chosing n = 20 points equidistantly from [0, 2π], and a target set Y = {sin(x) : x ∈ X }.",
+      "noise terms sampled uniformly from [−ε¯, ε¯] with ε¯ = 0.05.",
+      "The final model is chosen after 50 iterations of the ADAM optimizer as the one with the smallest cost C(θ)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its experimental setup, Section VII.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqa-regularization-lowers-lipschitz-bound",
+     "value": "The authors report that a larger regularization parameter gave a lower Lipschitz bound of the trained circuits (Figure 6), and state they conclude that parameter regularization can improve the robustness of the circuits.",
+     "anchor": "Section VII, Figure 6, p.10",
+     "quotes": [
+      "shown in Figure 6. We observe that a larger regulariza-",
+      "tion parameter λ indeed leads to a lower Lipschitz bound.",
+      "such a setting can be successfully improved via parameter"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one small study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text reports only the Lipschitz bound of the trained circuits; no fidelity under noise, and no cost or error against the weight, appears in the text. Robustness is inferred from the bound, and the bound's values are in Figure 6."
+    },
+    {
+     "id_suggestion": "vqa-regularization-novelty-and-transfer",
+     "value": "The authors state that, to the best of their knowledge, the link between regularization and coherent control errors is new, and that regularization encourages a solution less dependent on the specific hardware.",
+     "anchor": "Section VII, pp.9-10",
+     "quotes": [
+      "However, the above-described link between regularization and coherent control errors is, to the best of our knowledge, new.",
+      "Adding a regularization in the VQA improves robustness and, therefore, it encourages an optimal solution which is less dependent on the specific hardware on which the VQA is trained."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author claims.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Hardware transfer is not tested in the paper."
+    },
+    {
+     "id_suggestion": "vqa-convergence-lipschitz-gradient",
+     "value": "The authors state that the same Lipschitz bounds hold for the parameter map in the absence of errors and yield Lipschitz bounds for the cost gradient, which can possibly allow more freedom and less conservatism in convergence analysis.",
+     "anchor": "Section VII, p.10",
+     "quotes": [
+      "quantum circuit in the absence of coherent control errors, i.e., for the map θ → Uˆ (θ) |ψ0⟩. These bounds then yield Lipschitz bounds for the gradient ∇C analogous to [35].",
+      "they can possibly allow for more de-"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; no convergence analysis is carried out.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-norms-more-precise-than-gate-count",
+     "value": "The authors conclude that the Hamiltonian norms quantify the robustness against coherent control errors more precisely than existing measures such as gate count, based on the 3-qubit QFT gate-set study.",
+     "anchor": "Section VIII, p.11",
+     "quotes": [
+      "We showed that these norms quantify the robustness against coherent control errors more precisely than existing measures such as the gate count by studying robustness of different elementary gate set implementations of the 3-qubit QFT."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The evidence is five transpiled circuits of one algorithm."
+    },
+    {
+     "id_suggestion": "berberich-2024-conclusion-future-work",
+     "value": "The authors state as next steps the study of further classes of algorithms and gate sets, transpilation procedures that reduce Hamiltonian norms, and extension of the analysis to stochastic information about the errors.",
+     "anchor": "Section VIII, p.11",
+     "quotes": [
+      "It will be an interesting next step to study robustness of further classes of quantum algorithms and gate sets against coherent control errors",
+      "Finally, extending our theoretical analysis to include stochastic information about the errors may provide additional insights over the worst-case bounds considered in this paper."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's stated open problems, Section VIII.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "berberich-2025-training-robust-generalizable-quantum-models",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Berberich-et-al._2023_Training-robust-and-generalizable-quantum-models__2311.11871.pdf",
+   "title_in_file": "Training robust and generalizable quantum models",
+   "version_note": "arXiv:2311.11871v4, dated 22 Dec 2025; the stored record id says 2025 and the file name says 2023.",
+   "pages": 12,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper deriving parameter-dependent Lipschitz bounds and a generalization bound for data re-uploading quantum models with trainable encoding, with a regularization strategy and circle-classification simulations.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "circle-classification-sweet-spot",
+     "verdict": "confirmed",
+     "note": "Confirmed. The paper also says regularization does not always improve performance; the trend is read from Figure 3 on one problem.",
+     "value": "",
+     "anchor": "",
+     "quotes": "",
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "fixed-encoding-lipschitz-not-tunable",
+     "verdict": "confirmed",
+     "note": "Confirmed; the paper argues it in Section V and shows it with Figure 6 (Appendix C 2).",
+     "value": "",
+     "anchor": "",
+     "quotes": "",
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Argued in Section V from the Lipschitz bound (5), which does not depend on the circuit parameters of the fixed-encoding model.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "generalization-bound-involves-encoding",
+     "verdict": "confirmed",
+     "note": "Confirmed. The bound is Theorem B.1, valid with a stated probability under conditions on the loss and on Z; see the separate assertion.",
+     "value": "",
+     "anchor": "",
+     "quotes": "",
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Theorem IV.1 informal, Theorem B.1 in Appendix B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "lipschitz-bound-trainable-encoding",
+     "verdict": "confirmed",
+     "note": "Confirmed; the bound is proved in Appendix A 2.",
+     "value": "",
+     "anchor": "",
+     "quotes": "",
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proof in Appendix A 2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "berberich-2025-lipschitz-bound-definition",
+     "value": "The authors define a Lipschitz bound of a model f as any L > 0 satisfying the stated inequality for all x1, x2 in the domain D, a subset of d-dimensional real space.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "A Lipschitz bound of a model f is any L > 0 satisfying",
+      "for all x1, x2 ∈ D ⊆ Rd, where d is the data dimension."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition stated in the introduction.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "model-class-trainable-encoding",
+     "value": "The authors consider quantum models that apply parametrized unitaries with trainable encoding parameters wj and theta j and fixed Hermitian generators Hj, followed by a measurement of an observable M, with the data re-loaded in every unitary (data re-uploading).",
+     "anchor": "Section II, pp.2-3",
+     "quotes": [
+      "with input data x ∈ Rd, trainable parameters Θj = {wj, θj}, wj ∈ Rd, θj ∈ R and fixed Hermitian generators Hj.",
+      "i.e., the data are loaded repeatedly into the circuit, a strategy that is commonly referred to as data re-uploading [26]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section II defines the model class that all results concern.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lipschitz-bound-eq5-independent-of-theta",
+     "value": "The authors state a Lipschitz bound of the quantum model that equals twice the norm of the observable M times the sum over the unitaries of the norm of wj times the norm of Hj, and state that it depends only on wj and not on theta j.",
+     "anchor": "Section II, Eq. (5), p.3; proof Appendix A 2",
+     "quotes": [
+      "For the quantum model fΘ, we can state the following Lipschitz bound",
+      "Note that LΘ depends only on wj but it is independent of θj."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated in Section II; proved in Appendix A 2 from the Jacobian of the map UΘ(x)|0> and the Lipschitz bound of the expectation map.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The formula itself is garbled in the text layer, so the value says it in words."
+    },
+    {
+     "id_suggestion": "lipschitz-bound-pnorm-generality",
+     "value": "The authors state that all results hold for arbitrary p-norms as long as the same p is used for both vector and induced matrix norms.",
+     "anchor": "Section II, p.3",
+     "quotes": [
+      "We note that all results in this paper hold for arbitrary",
+      "p-norms as long as the same p is used for both vector and"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope statement.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "worst-case-robustness-from-lipschitz",
+     "value": "The authors state that a Lipschitz bound L of the model bounds the deviation of the output at a perturbed input by L times the norm of the perturbation, so smaller Lipschitz bounds imply better worst-case robustness against data perturbations.",
+     "anchor": "Section III, Eq. (7), p.3",
+     "quotes": [
+      "According to (1), a Lipschitz bound L of fΘ quantifies exactly this difference, implying that the maximum possible deviation of",
+      "This shows that smaller Lipschitz bounds imply better"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows directly from the definition of a Lipschitz bound, Eq. (1) and (7).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "regularized-training-objective",
+     "value": "The authors propose a regularized training problem that adds to the empirical loss a penalty equal to a hyperparameter lambda times the sum of squared norms of wj weighted by the squared norm of Hj, with no penalty on theta j.",
+     "anchor": "Section III, Eq. (9), p.3",
+     "quotes": [
+      "Regularizing the parameters wj encourages small norms of the data encoding and, thereby, small values of the Lipschitz bound LΘ.",
+      "Note that the regularization does not involve the θj’s since they do not influence the Lipschitz bound (5)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its proposed method.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "regularization-as-penalty-relaxation",
+     "value": "The authors state that the regularization can be interpreted as a penalty-based relaxation of the constrained problem of training a quantum model with Lipschitz bound below a specific value.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "Indeed, the above regularization can be interpreted as a penalty-based relaxation of the corresponding constrained training problem, i.e., of training a quantum model with Lipschitz bound below a specific value."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An interpretation stated without a formal proof.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "circle-experiment-setup",
+     "value": "The authors report that the circle classification problem uses the domain [-1, +1] times [-1, +1] with a circle of radius 2/pi, labels +1 inside and -1 outside; the trainable-encoding circuit uses general SU(2) operators, 3 qubits, nearest neighbour CNOT entangling gates, 3 layers and the observable Z tensor Z tensor Z.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "within a domain",
+      "of X = [−1, +1] × [−1, +1], a circle with radius 2/π is drawn, and all data points inside the circle are labeled with y = +1, whereas points outside are labeled with y = −1",
+      "3 qubits, followed by nearest neighbour entangling gates based on CNOTs. Such a layer is then repeated 3 times. As observable, we use M = Z ⊗ Z ⊗ Z."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own experiment.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "robustness-simulation-protocol",
+     "value": "The authors report that the robustness simulations draw n = 200 training and 1000 test points uniformly at random, perturb each test point by uniform noise in [-eps, +eps] in each dimension, and take the worst case over 200 noise samples per point; they state this approximates adversarial robustness against norm-bounded attacks.",
+     "anchor": "Figure 2 caption and Section III, pp.4",
+     "quotes": [
+      "As training and test set, we draw n = 200 and 1000 points xi ∈ X ,",
+      "The test accuracy in the plot is the worst case over 200",
+      "This procedure amounts to finding adversarial noise samples and, therefore, the resulting worst-case test accuracy (approximately) quantifies the adversarial robustness against attacks which are normbounded by ε¯."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own protocol.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Sampling noise is not a true adversarial search, so the worst case is a lower bound on attack strength."
+    },
+    {
+     "id_suggestion": "robustness-results-lambda",
+     "value": "The authors report that at zero noise the model with lambda = 0.5 (Lipschitz bound 3.67) has lower test accuracy than the unregularized model, that for increasing noise it outperforms the model with lambda = 0, and that the fixed-encoding model performs worst at high noise.",
+     "anchor": "Figure 2 and Section III, p.4",
+     "quotes": [
+      "For zero noise level ε¯ = 0, the model with the largest regularization parameter λ = 0.5 (and, hence, the smallest Lipschitz bound LΘ = 3.67) has a smaller test accuracy than the nonregularized model with λ = 0.",
+      "the enhanced robustness outweighs the loss of training performance and, therefore, the model with λ = 0.5 outperforms the model with λ = 0.",
+      "The fixed-encoding model achieves comparable performance to the trainable-encoding model with λ = 0.5 for small noise and the worst performance among all models for high noise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One simulation study on one synthetic problem.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lambda-0.2-higher-accuracy",
+     "value": "The authors report that the model with lambda = 0.2 almost always outperforms the model with lambda = 0 and yields a higher test accuracy for small noise levels, which they attribute to improved generalization.",
+     "anchor": "Section III, p.4",
+     "quotes": [
+      "Finally, the model with λ = 0.2 almost always outperforms the model with λ = 0 and, in particular, it yields a higher test accuracy for small noise levels."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One simulation study; the explanation is the authors' reading.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem-iv1-informal",
+     "value": "The paper states, in informal Theorem IV.1, that the generalization error of the quantum model is bounded by a constant C1 times the norm of M times the sum of the norms of wj and Hj, plus a term C2 over the square root of n, for some constants C1, C2 > 0.",
+     "anchor": "Theorem IV.1 (informal), Section IV, p.4",
+     "quotes": [
+      "Theorem IV.1. (informal version) Consider a super-",
+      "for some C1, C2 > 0.",
+      "The detailed version and proof of Theorem IV.1 are provided in Appendix B."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The formula is garbled in the text layer and its conditions are in Theorem B.1, so the informal statement is graded by its detailed version.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theorem-b1-statement",
+     "value": "The paper proves in Theorem B.1 that, if the loss is nonnegative with a Lipschitz bound and Z is compact so that the supremum of the loss is finite, then for any gamma, delta > 0, with probability at least 1 - delta, the generalization error is bounded by a gamma term involving the Lipschitz bound of the model plus a term involving the covering number of Z and n.",
+     "anchor": "Theorem B.1, Appendix B, p.8",
+     "quotes": [
+      "the loss ℓ is nonnegative and admits a Lipschitz bound Lℓ > 0 and",
+      "Z is compact such that the value M := supy,y′∈Y ℓ(y, y′) is finite.",
+      "with probability at least 1 − δ the generalization error of fΘ is bounded as"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Statement with its conditions quoted; proof by combining the Lipschitz bound (5) with Lemma B.1, itself built on Xu and Mannor's robustness result.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The bound uses data drawn independently and identically distributed, which Appendix B states as its setup."
+    },
+    {
+     "id_suggestion": "lemma-b1-statement",
+     "value": "The paper proves in Lemma B.1 a generalization bound for any model f with a Lipschitz bound Lf, using Xu and Mannor's (K, epsilon)-robustness and covering numbers, under the stated conditions on the loss and on Z.",
+     "anchor": "Lemma B.1, Appendix B, p.8",
+     "quotes": [
+      "Lf > 0 is a Lipschitz bound of f ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The proof relies on cited results [7, Theorem 1 and Theorem 6], and the key quotes are fragments across lines.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "generalization-bound-converges",
+     "value": "The authors state that, using the covering number bound and choosing gamma depending on n, the bound converges to zero for n tending to infinity.",
+     "anchor": "Appendix B, Eq. (B9), p.9",
+     "quotes": [
+      "which indeed converges to zero for n → ∞.",
+      "it can be shown",
+      "that the generalization bound (B7) converges to zero"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix B from the covering number bound (B8).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "generalization-tradeoff-expressivity",
+     "value": "The authors state a trade-off: a too small Lipschitz bound may limit expressivity and lead to a high empirical risk, in which case the generalization bound is meaningless.",
+     "anchor": "Section IV, p.4",
+     "quotes": [
+      "A too small Lipschitz bound LΘ may limit the expressivity of fΘ and, therefore, lead to a high empirical risk Rn(fΘ), in which case the generalization bound (10) is meaningless."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this as a limit of their bound.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "generalization-nonuniform-vs-gilfuster",
+     "value": "The authors state that their bound is not uniform and explicitly involves the Lipschitz bound, and therefore does not share the limitations of uniform QML generalization bounds.",
+     "anchor": "Section IV, p.5",
+     "quotes": [
+      "bound (10) is not uniform and explicitly involves the Lipschitz bound (5), i.e., the parameters of the data encoding."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim relative to cited work [49].",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "direct-lambda-effect-open",
+     "value": "The authors state that studying the direct impact of lambda on generalization performance is an open next step that they expect to be nontrivial due to the non-convexity of the loss function.",
+     "anchor": "Section IV, p.5",
+     "quotes": [
+      "Extending our results by studying the direct impact of λ on the generalization performance is an interesting next step, which we expect to be nontrivial due to the non-convexity of the loss function in (9), compare [53]."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors name this as an open problem.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lambda-hyperparameter-crossval",
+     "value": "The authors state that the hyperparameter lambda can in practice be tuned, for example by cross-validation.",
+     "anchor": "Section IV, p.5",
+     "quotes": [
+      "In practice, the hyperparameter λ can be tuned, e.g., via cross-validation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A practical suggestion, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "generalization-sweet-spot-both",
+     "value": "The authors state that regularization does not always improve performance, but that there is a sweet spot for lambda at which both superior generalization and robustness over the unregularized setup are obtained.",
+     "anchor": "Section IV, p.5",
+     "quotes": [
+      "Regularization does not always improve performance, but there is a sweet spot for λ at which both superior generalization and robustness over the unregularized setup"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One simulation study on one synthetic problem.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "trainable-includes-fixed-encoding",
+     "value": "The authors state that the trainable-encoding circuit generalizes the fixed-encoding alternating circuit, since each unitary reduces to a data-encoding or a parameter gate for suitable choices of wj, theta j and Hj.",
+     "anchor": "Section V, p.5",
+     "quotes": [
+      "It is not hard to show that the parametrized quantum",
+      "circuit UΘ(x) in (3) generalizes the one in (11). Indeed, Uj,Θj (x) in (2) reduces to either"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated as easy to show; no proof is given.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fixed-encoding-reg-phi-no-effect",
+     "value": "The authors state that regularizing the circuit parameters phi in a fixed-encoding model does not affect the Lipschitz bound and therefore cannot be used to improve robustness.",
+     "anchor": "Section V, p.6",
+     "quotes": [
+      "does not affect the Lipschitz bound and, therefore, cannot be used to improve the robustness."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows from the Lipschitz bound (5) not depending on phi, and shown by Figure 6.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fixed-encoding-reg-phi-limited-effect",
+     "value": "The authors report that regularizing the phi parameters of a fixed-encoding model has a limited effect on test accuracy, likely dependent on the ground-truth distribution and the circuit ansatz, and that the Lipschitz bound is constant across lambda.",
+     "anchor": "Section V, p.6; Appendix C 2, p.10, Figure 6",
+     "quotes": [
+      "We find that the influence of regularizing the ϕj’s on the test accuracy is limited and likely dependent on the specific ground-truth distribution generating the data and the chosen circuit ansatz.",
+      "First, note that the Lipschitz bound is indeed constant for all choices of λ due to the fixed encoding."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One simulation study on one problem.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "trainable-vs-fixed-test-accuracy",
+     "value": "The authors report that, comparing the two figures, the trainable encoding yields a significantly higher test accuracy than the fixed encoding, and that the influence of the regularization parameter is much less pronounced for the fixed encoding.",
+     "anchor": "Appendix C 2, p.10",
+     "quotes": [
+      "we see that the trainable encoding yields a significantly higher test accuracy in comparison to the fixed encoding.",
+      "the influence of the regularization parameter on the test accuracy is much less pronounced for the fixed encoding than for the trainable encoding"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One simulation study on one problem.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fourier-frequency-view",
+     "value": "The authors state that fixed-encoding models choose the Fourier frequencies before training and optimize only the coefficients, whereas trainable-encoding models optimize frequencies and coefficients together, which they say is key for influencing robustness and generalization.",
+     "anchor": "Section V, p.6",
+     "quotes": [
+      "fixedencoding quantum models choose the frequencies of the Fourier basis functions before the training and only optimize over their coefficients.",
+      "is key for influencing robustness and generalization properties."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Argued from the Lipschitz bound and cited work [27, 56], without a separate experiment.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fixed-encoding-insensitive-cited",
+     "value": "The authors state that their insights confirm an observation by cited work [57, 58] that fixed-encoding quantum models are neither sensitive to data perturbations nor to overfitting.",
+     "anchor": "Section V, p.6",
+     "quotes": [
+      "These insights confirm the observation by [57, 58] that fixed-encoding quantum models are neither sensitive to data perturbations nor to overfitting."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cited observation, which the paper says its results confirm.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "numerics-setup-optimizer",
+     "value": "The authors report that the simulations used PennyLane with the noiseless simulator lightning.qubit, the ADAM optimizer with learning rate 0.1, 200 epochs, and 12 models trained from different initial parameters for each lambda, taking the parameters with minimal cost over all runs and epochs.",
+     "anchor": "Appendix C 1, p.9",
+     "quotes": [
+      "we run 200 epochs throughout and train 12 models based on different initial parameters",
+      "using a learning rate of η = 0.1",
+      "we take the set of parameters for the model with minimal cost over all runs and epochs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own simulations.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "numerics-gamma-zero-and-layers",
+     "value": "The authors report setting the third Euler angle to zero in the numerics and using three layers, which they observed to be a good trade-off between expressivity and generalization, with fewer layers insufficient and more layers overfitting.",
+     "anchor": "Appendix C 1, pp.9-10",
+     "quotes": [
+      "In our numerical case study we set γj = 0 for all j since this 1) still allows to reach arbitrary points on the Bloch sphere",
+      "fewer layers were not sufficient to accurately solve the classification task, whereas more layers led to higher degrees of overfitting."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An observation from the authors' own runs.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "decision-boundary-smoother",
+     "value": "The authors report that the decision boundary from regularized training is significantly smoother than the unregularized one and that the fixed-encoding model does not accurately capture the ground truth.",
+     "anchor": "Appendix C 1, p.10, Figure 5",
+     "quotes": [
+      "boundary resulting from the regularized training is significantly smoother than the unregularized one",
+      "the fixed-encoding model does not accurately capture the ground truth due to its limited expressivity and high Lipschitz bound."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Read from plotted decision boundaries of the best-cost runs.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "no-computational-overhead",
+     "value": "The authors state that adding the regularization does not introduce significant computational overhead because the cost only involves a weighted sum of squared norms of wj.",
+     "anchor": "Appendix C 1, p.9",
+     "quotes": [
+      "Adding the regularization does not introduce significant computational overhead as the evaluation of the cost only involves a weighted sum of the terms ∥wj∥2."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement, not measured.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "scope-illustration-only",
+     "value": "The authors state that the numerical results with specific rotation and entangling gates are mainly for illustration, and that the theory applies to all quantum models written as the paper's model class.",
+     "anchor": "Section VI, p.6",
+     "quotes": [
+      "It is important to emphasize that these numerical results with specific choices of rotation and entangling gates are mainly used for illustration"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors' own statement of scope.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "future-work-nonlinear-encodings",
+     "value": "The authors state that they only consider affine encodings and that extending the results to nonlinear encodings, for example classical neural networks, is a future direction; they also expect transfer to quantum kernel methods and linear quantum models.",
+     "anchor": "Section VI, p.6",
+     "quotes": [
+      "while we only consider quantum models with affine encodings wj⊤x+θj, it would be interesting to extend our results to more general, nonlinear encodings."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors name the limit and the open direction.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "norm-choice-future",
+     "value": "The authors state that they use 2-norms in the regularized problem and that exploring other choices, such as a non-squared norm that may enforce sparsity, is a future direction.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "As norms in the regularized training problem (9), we employ 2-norms, but we note that exploring different choices is an interesting future direction."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors name the limit.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "observable-not-optimized",
+     "value": "The authors state that they do not optimize over the observable M in this paper and so give no dependence of the regularization on M.",
+     "anchor": "Section III, p.3",
+     "quotes": [
+      "Moreover, we do not introduce an explicit dependence of the regularization on M since we do not optimize over the observable in this paper."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors' own statement of scope.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hardware-vs-data-robustness",
+     "value": "The authors state that robustness against hardware errors is entirely different from and independent of robustness against data perturbations, which is the subject of the paper.",
+     "anchor": "Section I, p.1",
+     "quotes": [
+      "However, robustness against hardware errors is entirely different from and independent of the robustness of a quantum model against data perturbations, which is the subject of this paper."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors' own scope statement.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "bergholm-2022-pennylane-automatic-differentiation-hybrid-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2018\\Bergholm-et-al._2018_PennyLane-Automatic-differentiation-of-hybrid-quantum-classical__1811.04968.pdf",
+   "title_in_file": "PennyLane: Automatic differentiation of hybrid quantum-classical computations",
+   "version_note": "arXiv 1811.04968 version 4 (29 Jul 2022), which describes PennyLane as of version 0.24; the file name carries the 2018 year but the text is the 2022 revision.",
+   "pages": 18,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A software whitepaper by Xanadu and contributors describing the PennyLane framework for differentiable programming of hybrid quantum-classical computations.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "pennylane-core-feature-autodiff-hybrid",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "Abstract, p. 1",
+     "quotes": [
+      "PennyLane’s core feature is the ability to compute gradients of variational quantum circuits in a way that is compatible with",
+      "classical techniques such as backpropagation. PennyLane thus extends the automatic differentiation algorithms common in"
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor describing its own product; no experiment backs it in the paper.",
+     "result_type": "vendor",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "pennylane-gradient-method-fallback-order",
+     "verdict": "widened",
+     "note": "The stored value gives only the third and fourth steps. The paper lists four steps in order of preference: a device-provided gradient (for example adjoint), then backpropagation when the device gives exact expectation values, then parameter-shift rules on hardware or on simulators with shots not None, then finite differences. It calls this a heuristic default for the best method, not a guarantee.",
+     "value": "The paper states that by default PennyLane uses heuristics to pick the most accurate and efficient gradient method that the circuit and device support, in this order: a gradient method the device provides itself; backpropagation when the device computes expectation values exactly (shots=None) and supports backpropagation; a parameter-shift gradient transform on hardware devices or on simulators where shots!=None; and finally numerical methods such as finite differences when the circuit does not permit analytic hardware gradients.",
+     "anchor": "Derivatives of quantum nodes, list of gradient method selection, p. 5",
+     "quotes": [
+      "By default, PennyLane uses various heuristics to determine the ‘best’ gradient method — that is, the most accurate and efﬁcient gradient method of those supported by the circuit and the device",
+      "1. If the device provides its own gradient method, this is the default choice.",
+      "(shots=None) and supports backpropagation, this is",
+      "3. Most quantum nodes permit analytic derivatives on hardware via parameter-shift rules [47, 48]. If executing on hardware devices, or with simulators where",
+      "4. Finally, if the circuit does not permit analytic hardware gradients, numerical methods such as the method of ﬁnite differences is applied."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor describing the default behaviour of its own product.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": "The stored id says fallback order; the order also has two earlier steps (device gradient, backpropagation) that come before parameter-shift."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "pennylane-expectation-estimator-unbiased-variance",
+     "value": "The authors state that the expectation value of an observable is estimated by averaging the measurement results over R runs of the circuit, that this estimator is unbiased, and that its variance depends on the variance of the operator and on the number of measurements (shots) R.",
+     "anchor": "Estimating the expectation values, Eq. (2), p. 3",
+     "quotes": [
+      "This estimator, denoted fi∗, is unbiased,",
+      "which depends on the variance of the operator Bˆi, as well as the number of measurements (‘shots’) R."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the estimator and its properties as part of its own setup of quantum nodes (Eq. 2).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pennylane-shots-none-exact-simulator-default",
+     "value": "The authors state that simulator devices can compute the exact expectation value numerically, and that in PennyLane this is the default behavior, represented by setting shots=None.",
+     "anchor": "Estimating the expectation values, p. 3",
+     "quotes": [
+      "Simulator devices can also choose to compute the exact expectation value numerically (in PennyLane this is the default behavior, represented by set-",
+      "ting shots=None)."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor describing the default of its own product.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pennylane-backprop-simulator-drawbacks",
+     "value": "The authors state that backpropagation through a quantum node on a simulator does not scale to increasing numbers of qubits because the quantum state must be cached at every step of the simulation, and that it does not support quantum hardware.",
+     "anchor": "Backpropagating through the graph, p. 4",
+     "quotes": [
+      "Firstly, it does not scale with simulations requiring increasing number of qubits, due to the signiﬁcant memory requirements of backpropagation (namely, that the quantum state must be cached at every step in the simulation).",
+      "Secondly, it does not support quantum hardware."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limits of backpropagation in the text where it motivates its method.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pennylane-key-insight-vjp-via-device",
+     "value": "The authors state that backpropagation does not need to resolve the quantum information inside a quantum node, because it is sufficient to compute the vector Jacobian product of the quantum node with respect to its classical inputs and variables, and that the key insight is to use the same quantum device that implements a node to also compute its gradients or Jacobians.",
+     "anchor": "Backpropagating through the graph, p. 4",
+     "quotes": [
+      "it is sufﬁcient for us to (separately) compute the vector Jacobian product of quantum nodes with respect to their (classical) inputs and variables.",
+      "The key insight is to use the same quantum device (hardware or simulator) that implements a quantum node to also compute (simulator efﬁcient or hardware compatible) gradients or Jacobians of that quantum node."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor describing the design of its own product.",
+     "result_type": "vendor",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pennylane-parameter-shift-gate-scope",
+     "value": "The authors state that the parameter-shift recipe works for single-parameter qubit gates whose Hermitian generator has an equidistant frequency spectrum (which they say includes all common qubit parametrized gates), and for continuous-variable circuits with Gaussian operations.",
+     "anchor": "Analytic derivatives, p. 5",
+     "quotes": [
+      "This recipe works for single-parameter qubit gates of the form eiGx , where the Hermitian generator G has an equidistant frequency spectrum (which includes e.g., all common qubit parametrized gates)",
+      "as well as continuous-variable circuits with Gaussian operations8."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor stating the scope of its own implementation; the proofs are in the cited companion papers.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pennylane-parameter-shift-exact-derivative",
+     "value": "The authors state that the parameter-shift formula gives the exact derivatives with finite, not infinitesimal, shifts, so that analytic derivative evaluations are constrained by device noise and statistical imprecision in the averaging of measurements but are not subject to numerical issues.",
+     "anchor": "Analytic derivatives, Eq. (3), p. 6",
+     "quotes": [
+      "First, the values ci and si are not inﬁnitesimal, but ﬁnite; second, Eq. (3) gives the exact derivatives.",
+      "Thus, while analytic derivative evaluations are constrained by device noise and statistical imprecision in the averaging of measurements, they are not subject to numerical issues."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper gives no proof here; the result is attributed to the companion papers.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pennylane-default-shift-values-equidistant",
+     "value": "The authors state that the shift values and coefficients in the parameter-shift rule are not fixed, and that PennyLane by default chooses shift values that are equidistant with respect to the period of the gate, in order to minimize variance.",
+     "anchor": "Analytic derivatives, p. 6",
+     "quotes": [
+      "Note that ci and si are typically not ﬁxed; there is a degree of freedom that allows the shift values to be chosen as needed",
+      "PennyLane by default chooses shift values that are equidistant with respect to the gates period, in order to minimize variance."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor describing a default of its own product; no variance comparison is shown.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pennylane-shift-extensions-not-implemented",
+     "value": "The authors state that shift rules for gates with non-equidistant generator frequencies, stochastic parameter-shift rules for multi-parameter gates, and a Hadamard test-based approach that requires an auxiliary qubit are not currently implemented in PennyLane.",
+     "anchor": "Footnote 8, p. 5",
+     "quotes": [
+      "equidistant generator frequencies [48], stochastic parameter-shift rules for multi-parameter gates [50], and a Hadamard test-based approach that requires an auxiliary qubit [47].",
+      "These extensions are not currently implemented in PennyLane."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit of its own implementation, as of the version it describes.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The text layer cuts the start of the sentence (non-equidistant) across a page break; the limit is stated for extensions listed in footnote 8."
+    },
+    {
+     "id_suggestion": "pennylane-derivatives-are-estimates",
+     "value": "The authors state that the derivatives they discuss are estimates that result from estimates of expectation values, and that numerically computed derivatives are approximations of the true derivatives even if the quantum nodes gave exact expectations.",
+     "anchor": "Footnote 7, p. 5",
+     "quotes": [
+      "When we speak of derivatives here, we actually refer to estimates of derivatives that result from estimates of expectation values.",
+      "Numerically computed derivatives in turn are approximations of the true derivatives, even if the quantum nodes were giving exact expectations"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states what its use of the word derivative covers.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pennylane-finite-difference-noise-tradeoff",
+     "value": "The authors state that the finite-differences methods need only black-box evaluations of the model, and that there is a tradeoff in the choice of the difference for noisy hardware.",
+     "anchor": "Numerical derivatives, p. 6",
+     "quotes": [
+      "Numerical derivative methods require only ‘black-box’ evaluations of the model.",
+      "Of course, there is a tradeoff in choice of the difference ∆µ for noisy hardware."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit of the numerical method; it gives no analysis of the tradeoff.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pennylane-device-backprop-time-saving",
+     "value": "The authors state that a simulator written with a classical automatic differentiation library can use backpropagation, which compared to the analytic method on simulators may lead to significant time savings because the information is stored and reused from the forward evaluation, adding constant overhead.",
+     "anchor": "Backpropagation and device derivatives, p. 6",
+     "quotes": [
+      "Compared to the analytic method on simulators, this may lead to signiﬁcant time savings, as the information required to compute the derivative is stored and reused from the forward circuit evaluation — simply adding constant overhead."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor describing its own product; no timing is reported.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pennylane-higher-order-derivatives",
+     "value": "The authors state that PennyLane natively supports arbitrary-order derivatives of quantum nodes, and that for gradient transforms that produce multiple circuits, such as parameter-shift rules and finite differences, the linear combinations are iterated by successively applying the chain and product rules.",
+     "anchor": "Higher-order derivatives, p. 6",
+     "quotes": [
+      "PennyLane also natively supports arbitrary-order derivatives of quantum nodes."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor describing a feature of its own product.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pennylane-sampling-not-differentiable",
+     "value": "The authors state that PennyLane supports returning variances, probabilities and samples from a quantum node, and that returning samples is not differentiable.",
+     "anchor": "Optimization, p. 7",
+     "quotes": [
+      "though the latter is not differentiable."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit of its own feature.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pennylane-differentiable-quantum-transform-definition",
+     "value": "The paper defines a differentiable quantum transform: for a quantum function with input parameters, a transform with its own inputs is differentiable if it maps the function to a set of functions that are each also differentiable quantum functions with respect to the same inputs, and the derivative of the transform is defined for all of its inputs.",
+     "anchor": "Definition 1, Transforms, p. 10",
+     "quotes": [
+      "Deﬁnition 1 Let f (θi) be a quantum function with input parameters {θi}.",
+      "where each gk is also a differentiable quantum function with"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper states the definition itself.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pennylane-default-qubit-memory-range",
+     "value": "The authors state that default.qubit supports end-to-end backpropagation and, because of the memory overhead of backpropagation, works best for 0-20 qubits, while lightning.qubit with the adjoint method is aimed at quantum nodes with 20 or more qubits.",
+     "anchor": "Built-in simulator devices, p. 12",
+     "quotes": [
+      "Due to the memory overhead of backpropagation, this device works best for 0-20 qubits.",
+      "enabling extremely efﬁcient optimization for quantum nodes with 20 or more qubits."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor describing its own simulators; no benchmark is shown.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pennylane-lightning-adjoint-speedup-claim",
+     "value": "The authors state that lightning.qubit using adjoint differentiation significantly reduces the time-to-solution over other simulators and gradient methods; no benchmark is reported in the paper.",
+     "anchor": "lightning.qubit and lightning.gpu, p. 12",
+     "quotes": [
+      "ing adjoint differentiation signiﬁcantly reduces the time-tosolution over other simulators and gradient methods."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor describing its own product with no measurement in the paper.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pennylane-plugin-list-version-024",
+     "value": "The authors state that, as of version 0.24, PennyLane has plugins available for the Xanadu Cloud and Strawberry Fields, Amazon Braket, Rigetti, IBM Quantum and Qiskit, Google Cirq, ProjectQ, Microsoft QDK, Qulacs, AQT, Honeywell, and IonQ.",
+     "anchor": "Writing a plugin device, p. 12",
+     "quotes": [
+      "As of version 0.24, PennyLane has plugins available for the Xanadu Cloud and Strawberry Fields [25, 27, 63], Amazon Braket [28], Rigetti [64, 65], IBM Quantum and Qiskit [51, 52]"
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor listing the plugins of its own product at a stated version.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": "The quote holds the first four plugins; the rest of the list (Cirq, ProjectQ, QDK, Qulacs, AQT, Honeywell, IonQ) follows on the same line of the paper."
+    },
+    {
+     "id_suggestion": "pennylane-no-unified-tool-before-launch",
+     "value": "The authors state that prior to the launch of PennyLane in 2018 some frameworks were designed with variational circuits in mind but this was not the norm, and that there was no unified tool for the hybrid optimization of quantum circuits across quantum platforms.",
+     "anchor": "Introduction, p. 2",
+     "quotes": [
+      "Prior to PennyLane’s launch in 2018, while some frameworks were designed with variational circuits in mind [25, 30, 31], this was not the norm",
+      "there was at this stage no uniﬁed tool for the hybrid optimization of quantum circuits across quantum platforms"
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A vendor's claim about its own priority; no survey is given.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pennylane-ansatz-quality-open",
+     "value": "The authors state that it is not always clear what makes a good ansatz, that the strength of an architecture varies with the use case, and that investigations of the expressive power of different approaches are ongoing.",
+     "anchor": "Circuit architectures, p. 4",
+     "quotes": [
+      "it is not always clear what makes a good ansatz.",
+      "Investigations of the expressive power of different approaches are also ongoing [43]."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states an open problem in its own scope.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pennylane-hybrid-research-numerical-not-rigorous",
+     "value": "The authors state that much research on hybrid variational algorithms necessarily focuses on numerical experiments rather than rigorous mathematical analysis, because the algorithms are mostly heuristic.",
+     "anchor": "Introduction, p. 2",
+     "quotes": [
+      "a lot of research for these mostly heuristic algorithms necessarily focuses on numerical experiments rather than rigorous mathematical analysis."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's characterisation of a field, not supported by evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pennylane-conclusion-no-experiments",
+     "value": "The authors conclude that PennyLane extends automatic differentiation to quantum and hybrid classical-quantum information processing through a new quantum node abstraction that interfaces with existing DAG-based automatic differentiation methods; the paper reports no benchmark or accuracy experiment for this.",
+     "anchor": "Conclusion, p. 16",
+     "quotes": [
+      "We have introduced PennyLane, a Python package that extends automatic differentiation to quantum and hybrid classical-quantum information processing."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor's conclusion about its own product.",
+     "result_type": "vendor",
+     "context": "qml",
+     "reader_inference": "The worked examples are code listings with a few printed outputs; they are demonstrations, not measured benchmarks."
+    }
+   ]
+  }
+ ]
+}

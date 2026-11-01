@@ -1,0 +1,363 @@
+{
+ "group": "g081",
+ "reviewed_on": "2026-10-30",
+ "tag": "Sprint 14 Task E, F117 (F114 cloud read)",
+ "reader": "Claude Sonnet 5.5 (F114 cloud session)",
+ "coordinator_note": "",
+ "graded_high": {
+  "pulsed-single-qubit-params": [
+   "setup",
+   "Section III-A, p.5-6, Eq. 7: four parameters per single-qubit pulse, duration and shape fixed; states no expressivity gain."
+  ],
+  "pulsed-two-qubit-params": [
+   "setup",
+   "Section III-B, p.6-7: single CR-inspired pulse with amplitude, phase and detuning as the three learnable parameters."
+  ],
+  "pulsed-pulse-shape": [
+   "setup",
+   "Section IV-A, p.7: sinusoidal constant-amplitude control field; rotation angle linear in Omega T."
+  ],
+  "pulsed-warm-start": [
+   "setup",
+   "Section II-B, p.3-4 and Fig. 3: first-qubit parameters copied, second random, two-qubit parameters zero; the cost depends only on the first qubit, so initial cost equals the single-qubit final cost."
+  ],
+  "pulsed-loss-targets": [
+   "definition",
+   "Section IV-A, p.7, Eqs. 8-10: fidelity loss from [13], general single-qubit target states with learnable theta and phi."
+  ],
+  "pulsed-datasets-splits": [
+   "setup",
+   "Section IV-A, p.7: MNIST 0 vs 8 with PCA to 3 dims, Iris versicolor vs virginica, Corners, Helix; 300/100 and 70/30 splits as stated."
+  ],
+  "pulsed-simulation-method": [
+   "setup",
+   "Section IV-A p.8: custom pennylane extension; note 58 (references, p.16): Trotter-Suzuki, each pulse divided into dozens of gates."
+  ],
+  "pulsed-noise-model": [
+   "setup",
+   "Appendix B.3, p.12-13: channels after each pulse or single-qubit gate, SPAM flips, ECR error for two-qubit depolarizing, X and sqrt-X errors averaged for single-qubit."
+  ],
+  "pulsed-device-params": [
+   "setup",
+   "Table I caption, p.7: Brisbane qubit 1 and 2 statistics taken from the public device datasheet [54]."
+  ],
+  "pulsed-noise-sweep-setup": [
+   "setup",
+   "Section IV-C, p.9: 20 layers, Table I noise fixed, depolarizing p from 0 to 0.3."
+  ],
+  "pulsed-scaling-open": [
+   "stated limit",
+   "Section V, p.11: authors state simulation cost limits the work to two qubits and larger registers need new simulation infrastructure."
+  ],
+  "pulsed-encoding-confound": [
+   "stated limit",
+   "Section V, p.11: second stated limitation, the encoding stage stays gate-based; pulse-level encoding would add confounders needing a dedicated study."
+  ],
+  "pulsed-noise-range": [
+   "stated limit",
+   "Section IV-C, p.10: authors state the explored depolarizing probabilities exceed typical single-gate error rates and call the sweep a stress test."
+  ],
+  "pulsed-sim-setup": [
+   "setup",
+   "Section I p.2 and IV-A p.8: Brisbane-derived noise, four tasks, two-qubit only, five seeds; all are the paper's own setup statements."
+  ],
+  "pulsed-stated-limits": [
+   "stated limit",
+   "Section V, p.11: 'We acknowledge two main limitations', two-qubit simulations only and gate-based encoding."
+  ],
+  "cql-definition": [
+   "definition",
+   "Abstract, p.1, and Introduction p.2: CQL defined as parameters promoted to quantum degrees of freedom evolved under a loss Hamiltonian."
+  ],
+  "cql-scope-learning": [
+   "scope",
+   "Introduction, p.2: authors state CQL is designed specifically for learning problems with a model-on-data objective."
+  ],
+  "cql-discretization": [
+   "setup",
+   "CQL protocol, p.2: m-bit discretization, 2^m grid in [0,2pi), basis state on m ancillas."
+  ],
+  "cql-hamiltonian-form": [
+   "definition",
+   "CQL protocol, Eq. 1, p.2: Hamiltonian with kinetic Laplacian term and diagonal loss term with damping functions, built on QHD [28]."
+  ],
+  "cql-initial-state": [
+   "setup",
+   "CQL protocol, p.2: uniform superposition without prior information, Gaussian wavepacket with an informed guess."
+  ],
+  "cql-clock-register": [
+   "setup",
+   "CQL protocol, p.2 and Supplement I, p.10: clock register turns time dependence into a position operator, giving Eq. 2, at the cost of a larger space."
+  ],
+  "cql-block-encoding-assumed": [
+   "scope",
+   "CQL protocol, p.2: complexity moves to simulating Eq. 2 and block-encoding access is assumed throughout."
+  ],
+  "cql-classifier-model": [
+   "definition",
+   "CQL protocol, Eqs. 3-4, p.3: reduced data re-uploading model with Ry trainable rotation and loss 1 - |alpha_y|^2."
+  ],
+  "cql-coherent-evaluation": [
+   "setup",
+   "CQL protocol, Eq. 5, p.3: unitary U_x,theta evaluates the model over all grid values, entangling outputs with parameters."
+  ],
+  "cql-batch-per-ancilla": [
+   "setup",
+   "CQL protocol, p.3 and Supplement I.C.1, p.13: one output qubit per data point for a coherent batch."
+  ],
+  "cql-operator-discretization-scope": [
+   "stated limit",
+   "CQL protocol, p.3: authors state non-unique discretization and that optimal discretization and norm control are beyond the scope."
+  ],
+  "cql-batched-protocol": [
+   "setup",
+   "Batched CQL, p.3-4: dataset partitioned into batches processed sequentially, each final state starting the next evolution."
+  ],
+  "cql-global-batch-impractical": [
+   "stated limit",
+   "Batched CQL, p.3: authors state a whole-dataset batch needs one ancilla per data point and is not realistic."
+  ],
+  "cql-algorithm-batched": [
+   "setup",
+   "Supplement II, Algorithm 1, p.16: per batch build loss Hamiltonian, evolve for tau, pass the state on with no classical measurement."
+  ],
+  "cql-joint-batch-loss": [
+   "stated limit",
+   "Supplement I.C.1, p.13: joint loss I minus the product of correct-classification probabilities is derived for two samples, and the authors state it is a product-type objective, not the empirical mean loss."
+  ],
+  "cql-classif-setup-appendix": [
+   "setup",
+   "Supplement III, p.17: five qubits per parameter, grid over (-pi, pi), 2pi/2^5 about 0.20 rad, inside-or-outside interval task with noise, 100 train and 500 test samples."
+  ],
+  "cql-classif-schedule-baseline": [
+   "setup",
+   "Supplement III, p.17: total time 10^-2 chosen heuristically, uniform initial state, SGD baseline with learning rate 0.1."
+  ],
+  "cql-mzi-setup": [
+   "setup",
+   "Numerical demonstrations (b), p.5: balanced MZI with unknown phase phi and controllable theta; loss sin^2((theta-phi)/2) minimal at theta = phi."
+  ],
+  "cql-mzi-simulated": [
+   "setup",
+   "Numerical demonstrations (b), p.5 and Supplement IV.B, p.18: coherent simulation, target state set in the simulator."
+  ],
+  "cql-mzi-numerics-params": [
+   "setup",
+   "Supplement IV.B, p.18: n=5 (32 points), T=5.0 with 1000 slices (dt 5e-3), damping 1/t and t."
+  ],
+  "cql-mzi-loss-appendix": [
+   "definition",
+   "Supplement IV.B, p.18: loss landscape defined as 1 - |<psi_target|psi(theta)>|^2 in the simulator."
+  ],
+  "cql-open-directions": [
+   "stated limit",
+   "Conclusion, p.6: authors list complexity analyses, better Hamiltonian constructions and discretizations, and error mitigation as open."
+  ],
+  "cql-code-availability": [
+   "setup",
+   "Code and data availability, p.6: repository nacedob/Coherent-Quantum-Learning named by the authors."
+  ],
+  "cql-complexity-open": [
+   "stated limit",
+   "Numerical demonstrations (a), p.4-5: full complexity analysis beyond scope; asymptotic advantage over hybrid optimization stated as an open question."
+  ],
+  "cql-demo-setup": [
+   "setup",
+   "Numerical demonstrations (a), p.4-5: single-qubit re-uploading circuit, two layers, two parameters, five qubits each, one epoch in the single-sample regime."
+  ],
+  "hybrid-model-three-elements": [
+   "setup",
+   "Abstract, p.1: the authors' own model description with three elements."
+  ],
+  "architecture-pqrnn-cb-ansatz": [
+   "setup",
+   "Sections 2.1-2.2, p.3-4: pQRNN with CB ansatz chosen, following [14]."
+  ],
+  "encoding-rotation-arccos": [
+   "setup",
+   "Section 2.1, p.3: x-axis rotation with arccos of the normalized input, replicated over Register D qubits."
+  ],
+  "prediction-definition-first-qubit-probability": [
+   "definition",
+   "Section 2.1, p.4: probability of the first Register D qubit collapsing to |1> after a Z measurement is the prediction."
+  ],
+  "qubo-definition-binary-variables": [
+   "definition",
+   "Section 3, p.5, Eq. 3: QUBO form with binary variables, linear and quadratic coefficients."
+  ],
+  "task-stock-trend-prediction": [
+   "scope",
+   "Section 4.1, p.5: the problem is the increase or decrease of the next closing price."
+  ],
+  "training-record-format": [
+   "setup",
+   "Section 4.1, p.5, Table 1: records hold x(t), x(t-1) and a 1/0 closing indicator."
+  ],
+  "classical-training-spsa": [
+   "setup",
+   "Section 4.3, p.6: classical training by gradient descent with the SPSA optimizer."
+  ],
+  "objective-functions-classical-and-adiabatic": [
+   "definition",
+   "Section 4.3 Eq. 4, p.6 (log(p+e^-10) averaged over N) and Section 4.4, p.7 (MSE for adiabatic training); the text layer drops the sign and summation."
+  ],
+  "accuracy-metric-hit-counts": [
+   "definition",
+   "Section 4.3, p.6: average regression accuracy (hit counts) evaluates the model."
+  ],
+  "state-vector-encoding-example": [
+   "setup",
+   "Section 4.4, Eqs. 5-6, p.7: worked example of the paper's own encoding; vector entries match the quotes and cos/sin of the encoded angle."
+  ],
+  "ansatz-operator-diagonal-16x16": [
+   "definition",
+   "Section 4.4, p.7: ansatz operator given as a 16x16 diagonal matrix."
+  ],
+  "phase-factor-omitted-real-values-only": [
+   "setup",
+   "Section 4.5, p.8: phase factor i omitted because state vectors are real and QUBO needs real values."
+  ],
+  "discretization-loses-precision": [
+   "stated limit",
+   "Section 4.5, p.8: authors state angle discretization loses precision."
+  ],
+  "discretization-four-parts-angle-values": [
+   "setup",
+   "Section 5, p.9, Table 3: discretization in 4 parts with the listed angle values."
+  ],
+  "results-from-typical-execution": [
+   "scope",
+   "Section 5, p.8-9: authors state the reported results are from a typical execution."
+  ],
+  "compute-setup-local-pc": [
+   "setup",
+   "Section 5, p.9: local PC, python framework, 32,602 MB memory."
+  ],
+  "dataset-yahoo-finance-split": [
+   "setup",
+   "Section 5, p.9: Yahoo Finance data, 80/20 train/test split."
+  ],
+  "execution-count-definition": [
+   "definition",
+   "Section 6, p.10: EC defined per method."
+  ],
+  "annealing-simulator-no-step-access": [
+   "stated limit",
+   "Section 6, p.10: simulator gives no access to internal evolution steps."
+  ],
+  "barren-plateau-comparison-future-work": [
+   "stated limit",
+   "Section 7, p.11: Barren Plateau comparison left to future research."
+  ],
+  "future-work-overcome-expressiveness-loss": [
+   "stated limit",
+   "Section 7, p.11: alternatives to overcome the expressiveness loss recommended as future work."
+  ],
+  "future-work-more-diverse-datasets-scalability": [
+   "stated limit",
+   "Section 7, p.11: more diverse datasets needed to verify scalability and robustness."
+  ],
+  "adiabatic-training-expressiveness-limit": [
+   "stated limit",
+   "Section 7, p.11: authors state QUBO binary nature reduces expressiveness through angle discretization; consistent with Section 4.5."
+  ],
+  "adiabatic-training-scope-simulated-only": [
+   "scope",
+   "Section 5, p.9: Qiskit and D-Wave Ocean simulation; real noisy hardware left to further research."
+  ],
+  "five-benchmark-attribute-definitions": [
+   "definition",
+   "Section 2.1, p.4-5: the five attributes are defined in the paper's own list."
+  ],
+  "attributes-not-strict-definitions": [
+   "scope",
+   "Section 2.1, p.4: attributes not strict definitions, allow flexibility."
+  ],
+  "performance-metric-definition": [
+   "definition",
+   "Definition 2, Section 2.3, p.7."
+  ],
+  "five-metric-properties": [
+   "definition",
+   "Section 2.3, p.8: practical, repeatable, reliable, linear, consistent as listed; polynomial-time gloss stated for practical."
+  ],
+  "scope-quantum-processors-only": [
+   "scope",
+   "Section 2, p.3: 'we will restrict ourselves to the evaluation of the performance of quantum processors'; focus on measurement of actual systems."
+  ],
+  "quantum-benchmark-definition": [
+   "definition",
+   "Definition 3, Section 3.3, p.15."
+  ],
+  "quantum-verification-and-testing-definitions": [
+   "definition",
+   "Definitions 5, 6, 7, Section 3.3, p.16."
+  ],
+  "quantum-benchmark-framework-and-suite-definitions": [
+   "definition",
+   "Definitions 8 and 9, Section 3.3, p.16."
+  ],
+  "quantum-performance-metric-definition": [
+   "definition",
+   "Definition 4, Section 3.3, p.15."
+  ],
+  "table1-binary-assessment-method": [
+   "scope",
+   "Section 3.4.2, p.18-19: only satisfied or not is recorded; causes of failure named."
+  ],
+  "table1-valid-for-nisq-only": [
+   "scope",
+   "Section 3.4.3, p.26: evaluations hold for the NISQ era, not post-NISQ."
+  ],
+  "speqc-mock-report-illustrative-only": [
+   "scope",
+   "Section 4.3, p.35: Fig. 5 is an example of a possible report."
+  ],
+  "benchmark-attributes-hard-together": [
+   "stated limit",
+   "Conclusion, p.35: authors state meeting all attributes at once can be challenging."
+  ],
+  "benchmark-guidelines-aim": [
+   "scope",
+   "Abstract, p.1: authors propose general guidelines aimed at a roadmap to standardization; Section 4 gives them."
+  ],
+  "convergence-criteria-definition": [
+   "definition",
+   "Section VI.A, p.9: two stated criteria (mean return in [mu-sigma, mu], at most 1% failures in last 1000), both before 5000 episodes."
+  ],
+  "statistics-10-runs": [
+   "scope",
+   "Section VI.A, p.9: plots average 20 episodes over 10 runs, shading is one standard deviation."
+  ],
+  "fair-comparison-parameter-matched": [
+   "setup",
+   "Section VI.A, p.9: each configuration compared to a classical SAC of equal learnable-parameter count, same hyperparameters, optimizer and activations where possible."
+  ],
+  "environment-two-link-250-steps": [
+   "setup",
+   "Section IV.A, p.5-6: Box2D two-link arm adapted from Gym Acrobot-v1, 250 steps, reward -d or +5."
+  ],
+  "vqc-architecture-hybrid-actor": [
+   "setup",
+   "Section V.B, p.9: angle encoding, data re-uploading, Pauli-Z measurement, VQC replaces the input layer."
+  ],
+  "noise-not-studied-limit": [
+   "stated limit",
+   "Section VI.A, p.9: noise not explored because of simulation nature and long training time."
+  ],
+  "future-work-hardware-needed": [
+   "stated limit",
+   "Section VII, p.12: physical quantum computer evaluation future work; real-device behavior with noise unknown."
+  ],
+  "acuto-setup-digital-simulation": [
+   "scope",
+   "Abstract p.1 and Section VI.A p.9: digital simulation with TensorFlow Quantum on Cirq; noise not explored. The widened value matches the passages."
+  ]
+ },
+ "theory_low": {
+  "cql-loss-block-encoding": "p.3 and Supplement I.C, p.12: the (1, m+5, 0) parameters follow from Theorem 2 of Rattew and Rebentrost [46] and the product rule from [47]; both are cited, not proved here. Not a result proved in this paper.",
+  "cql-periodic-grid-momentum": "Supplement I.B, p.11-12: an illustration of a block encoding 'without mitigating the scaling'; the t ~ delta-x scaling, called exponential in qubits, is asserted, not derived or proved."
+ },
+ "keep_stored": {},
+ "requote": {}
+}

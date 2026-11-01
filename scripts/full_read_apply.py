@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 """Sprint 13 Task G (F113): the full re-read entered, one ledger, no budget.
+Named `sprint13_g_reading.py` until Sprint 14 (retrospective Q5): it enters
+F114's groups too, so the name now says what it does. History before the
+rename (CHANGELOG, INTAKE_WORKFLOW.md) keeps the old name.
 
 Team lead, 2026-10-25, at Manual Validation: "fully read all the papers that
 are not marked 'read' and update all conclusions ... It is far more
@@ -46,21 +49,29 @@ a theoretical result kept LOW needs its cause in THEORY_LOW, and the run
 refuses one without; a setup statement not graded HIGH is the authors'
 claim.
 
-    python scripts/sprint13_g_reading.py                     # dry run of every reviewed group
-    python scripts/sprint13_g_reading.py --groups g001,g002  # dry run of named groups
-    python scripts/sprint13_g_reading.py --apply             # verified backup first
-    python scripts/sprint13_g_reading.py --apply --update-reads  # also rewrite read rows, when intended
+    python scripts/full_read_apply.py                     # dry run of every reviewed group
+    python scripts/full_read_apply.py --groups g001,g002  # dry run of named groups
+    python scripts/full_read_apply.py --apply             # verified backup first
+    python scripts/full_read_apply.py --apply --update-reads  # also rewrite read rows, when intended
 
 An apply that would rewrite a read row this script wrote earlier is rolled
 back unless --update-reads names the rewrite as intended (Sprint 13
 retrospective I1).
+
+The dry run reports every refusal at once, not the first (Sprint 14
+retrospective Q4). Every apply, the trial on a copy first, lists each field
+it changed on a stored assertion that no review item names, as "undecided"
+lines and a count (Sprint 14 retrospective Q2: the reader's context label
+replaced two stored contexts, and only the live suite found it).
 """
 from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import sys
 from collections import Counter
+from dataclasses import replace
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -109,14 +120,26 @@ THEORY_LOW: dict[str, str] = {}  # a theoretical result kept LOW, with its cause
 MEASURED_DESPITE: dict[str, str] = {}  # a measured result whose words name a proof or a bound, with why
 RESULT_TYPE_FIX: dict[str, str] = {}  # the coordinator's result type where it differs from the reader's
 EXTENT_FIX: dict[str, list[str]] = {}  # record id -> [extent, detail]: the coordinator's reading of a read's extent
+REENTER: dict[str, str] = {}  # record id -> why: a paper refused at an earlier read whose assertions now enter
+REFUSED = re.compile(r"read (whole )?at first pass and NOT entered")
 ID_FIX: dict[str, str] = {}  # a new assertion's id where the reader's suggestion is already another source's
+
+# F114's groups (g043 on, Sprint 14 Task E, F117) were read in cloud sessions and entered in Sprint 14, so their
+# review names its own tag and reader; a group without them is one of Task G's. "readers" overrides the reader for
+# one record (a result whose commits do not record the model), and "tags" its tag (a paper Task F read locally in a
+# group otherwise read in the cloud; review of 1cb63bb). "unread" leaves a record out of its group with why.
+GROUP_TAG: dict[str, str] = {}
+GROUP_READER: dict[str, str] = {}
+RECORD_READER: dict[str, str] = {}
+RECORD_TAG: dict[str, str] = {}
+UNREAD: dict[str, dict[str, str]] = {}
 
 REVIEWS_DIR = ROOT / "manifests" / "sprint13_g_reviews"
 _TABLES = {"quote_edits": QUOTE_EDITS, "extra_quotes": EXTRA_QUOTES, "value_replace": VALUE_REPLACE,
            "context_fix": CONTEXT_FIX, "anchor_fix": ANCHOR_FIX, "drop": DROP, "keep_stored": KEEP_STORED,
            "requote": REQUOTE, "not_in_paper": NOT_IN_PAPER, "theory_low": THEORY_LOW,
            "measured_despite": MEASURED_DESPITE, "result_type_fix": RESULT_TYPE_FIX, "extent_fix": EXTENT_FIX,
-           "id_fix": ID_FIX}
+           "id_fix": ID_FIX, "reenter": REENTER}
 RESULT_TYPES = {"measured": "measured result", "claim": "authors' claim", "cited": "cited claim",
                 "field": "field statement", "setup": "authors' claim"}
 
@@ -130,6 +153,14 @@ def _load_reviews() -> dict[str, tuple[str, str]]:
         if path.stem != g:
             raise ValueError(f"{path.name} holds group {g}")
         REVIEWED_ON[g] = review["reviewed_on"]
+        if "tag" in review:
+            GROUP_TAG[g] = review["tag"]
+        if "reader" in review:
+            GROUP_READER[g] = review["reader"]
+        RECORD_READER.update(review.get("readers", {}))
+        RECORD_TAG.update(review.get("tags", {}))
+        if review.get("unread"):
+            UNREAD[g] = review["unread"]
         for key, table in _TABLES.items():
             for aid, v in review.get(key, {}).items():
                 if aid in table:
@@ -158,6 +189,20 @@ HIGH = high_grades(_load_reviews())
 ONLY: list[str] = []
 
 
+def tag(g: str, rid: str = "") -> str:
+    return RECORD_TAG.get(rid) or GROUP_TAG.get(g, TAG)
+
+
+def first_pass(g: str, rid: str) -> str:
+    """Who read the paper whole: a cloud session (Task E's F114 results), else a subagent (Task G's, and Task F's
+    local readers)."""
+    return "cloud session" if "cloud read" in tag(g, rid) else "subagent"
+
+
+def reader(g: str, rid: str) -> str:
+    return RECORD_READER.get(rid) or GROUP_READER.get(g, SUBAGENT_READER)
+
+
 def ledger() -> dict:
     return json.loads(LEDGER.read_text(encoding="utf-8"))
 
@@ -176,7 +221,7 @@ def load_groups() -> list[tuple[str, dict]]:
     out, L = [], ledger()
     for g in groups():
         papers = json.loads((READS_DIR / f"group_{g}.json").read_text(encoding="utf-8"))["papers"]
-        want = {r["record_id"] for r in L["groups"][g]["records"]}
+        want = {r["record_id"] for r in L["groups"][g]["records"]} - set(UNREAD.get(g, {}))
         got = [p["record_id"] for p in papers]
         if set(got) != want or len(got) != len(want):
             raise ValueError(f"group {g}: reader file records {sorted(set(got) ^ want)} differ from the ledger")
@@ -199,6 +244,8 @@ def quotes_of(aid: str, a: dict) -> list[str]:
 
 def certainty(aid: str, a: dict) -> tuple[str, str]:
     if a["claim_type"] == "vendor-self-claim":
+        if aid in HIGH:  # a signed HIGH would be written LOW without a word (review of de1efff)
+            raise ValueError(f"{aid}: graded HIGH, but a vendor's own claim is LOW; correct the review")
         if aid in VENDOR_DESCRIPTIONS:
             return "moderate", f"{f80.VENDOR_START}. Not upgraded: a description of the product, not a result"
         return low_grade("vendor claim")
@@ -230,8 +277,11 @@ def record(g: str, rid: str, aid: str, a: dict, why: str, sid: str | None = None
     sid = sid or aid
     cert, reasons = certainty(aid, a)
     anchor = anchor_safe(ANCHOR_FIX.get(sid) or a["anchor"])
+    value = " ".join((VALUE_REPLACE.get(sid) or a.get("value") or "").split())
+    if not value:  # a confirmed entry may carry no value; a requote would blank the stored one (review of de1efff)
+        raise ValueError(f"{sid}: no value to write; give it a value_replace or leave it out of REQUOTE")
     return AssertionRecord(
-        id=sid, value=" ".join((VALUE_REPLACE.get(sid) or a["value"]).split()),
+        id=sid, value=value,
         provenance=f"{rid}, {anchor}",
         citation_context="; ".join(f'"{q}" ({anchor})' for q in quotes_of(sid, a)),
         evidence_tag="N/A", context=CONTEXT_FIX.get(sid) or a["context"], certainty=cert,
@@ -239,13 +289,25 @@ def record(g: str, rid: str, aid: str, a: dict, why: str, sid: str | None = None
         claim_type=a["claim_type"],
         search_scope=("the paper's own text, as read" if a["claim_type"] == "absence" else None),
         updated=REVIEWED_ON.get(g, ""), updated_reason=(
-            f"{REVIEWED_ON.get(g, '')} ({TAG}): {FULL_READ_MARK}: {why} from {rid}; the paper read whole by a "
-            "first-pass subagent, every quoted passage read in context by the coordinator"))
+            f"{REVIEWED_ON.get(g, '')} ({tag(g, rid)}): {FULL_READ_MARK}: {why} from {rid}; the paper read whole by a "
+            f"first-pass {first_pass(g, rid)}, every quoted passage read in context "
+            "by the coordinator"))
 
 
-def assertions() -> list[tuple[str, AssertionRecord, str, dict]]:
-    """(group, record, paper id, paper) for every new claim entered and every stored one changed."""
+def assertions(problems: list[str] | None = None) -> list[tuple[str, AssertionRecord, str, dict]]:
+    """(group, record, paper id, paper) for every new claim entered and every stored one changed. With `problems`,
+    a record that is refused is named there and left out, so every refusal is found in one run (Sprint 14
+    retrospective Q4); without it, the first refusal raises."""
     out = []
+
+    def add(g, rid, p, *args):
+        try:
+            out.append((g, record(g, rid, *args), rid, p))
+        except ValueError as e:
+            if problems is None:
+                raise
+            problems.append(str(e))
+
     for g, p in load_groups():
         rid = p["record_id"]
         for e in p.get("existing", []):
@@ -253,12 +315,38 @@ def assertions() -> list[tuple[str, AssertionRecord, str, dict]]:
             if aid in KEEP_STORED or aid in NOT_IN_PAPER:
                 continue
             if e["verdict"] in CHANGED or (e["verdict"] == "confirmed" and aid in REQUOTE):
-                out.append((g, record(g, rid, aid, e, f"{e['verdict']} at a full read"), rid, p))
+                add(g, rid, p, aid, e, f"{e['verdict']} at a full read")
         for a in p.get("assertions", []):
             aid = a["id_suggestion"]
             if aid not in DROP:
-                out.append((g, record(g, rid, aid, a, "extracted at a full read", ID_FIX.get(aid, aid)), rid, p))
+                add(g, rid, p, aid, a, "extracted at a full read", ID_FIX.get(aid, aid))
     return out
+
+
+def decided_fields(aid: str, verdict: str | None) -> set[str]:
+    """The fields of a stored assertion that a review item names (Sprint 14 retrospective Q2). An accepted changed
+    verdict names the reader's whole entry and its grade, but not its context: the reader's context is its nearest
+    fit, and only CONTEXT_FIX decides one."""
+    named = set()
+    if verdict in CHANGED:  # every synced column but the context (fresh-eyes review of 7b2179f: some were missing)
+        named |= {"value", "provenance", "evidence_tag", "certainty", "certainty_reasons", "fidelity",
+                  "reading_level", "units", "rounding", "citation_context", "derivation", "claim_type",
+                  "search_scope", "documents", "supports", "contradicts"}
+    if aid in REQUOTE:
+        named |= {"provenance", "citation_context"}
+        if REQUOTE[aid].startswith("regraded"):
+            named |= {"certainty", "certainty_reasons"}
+    if aid in VALUE_REPLACE:
+        named.add("value")
+    if aid in QUOTE_EDITS or aid in EXTRA_QUOTES:
+        named.add("citation_context")
+    if aid in ANCHOR_FIX:
+        named |= {"provenance", "citation_context"}
+    if aid in HIGH or aid in THEORY_LOW or aid in RESULT_TYPE_FIX:
+        named |= {"certainty", "certainty_reasons"}
+    if aid in CONTEXT_FIX:
+        named.add("context")
+    return named
 
 
 def grades_not_written(conn) -> list[str]:
@@ -285,18 +373,27 @@ def grades_not_written(conn) -> list[str]:
 
 def verify() -> list[tuple[AssertionRecord, str, dict, object]]:
     """Every quote verbatim in its source, every coordinator edit resting on named passages, and every figure in
-    a value in its own quotes, BEFORE anything is written."""
+    a value in its own quotes, BEFORE anything is written. Every refusal is collected and raised together (Sprint 14
+    retrospective Q4: a dry run named one, and each fix found the next)."""
     texts: dict[str, str] = {}
     out = []
-    for _, a, rid, p in assertions():
-        quotes = QUOTE.findall(a.citation_context)
-        text = texts.setdefault(p["file"], plain(source_text(p["file"])))
-        verified = require_verbatim(a.id, a.citation_context, text, value=a.value)
-        if a.id in VALUE_REPLACE:
-            require_edit_basis(a.id, a.value, quotes, text)
-        if a.id in QUOTE_EDITS:
-            require_edit_basis(a.id, None, [n for _, n in QUOTE_EDITS[a.id] if n] or quotes, text)
+    problems: list[str] = []
+    for _, a, rid, p in assertions(problems):
+        try:
+            quotes = QUOTE.findall(a.citation_context)
+            text = texts.setdefault(p["file"], plain(source_text(p["file"])))
+            verified = require_verbatim(a.id, a.citation_context, text, value=a.value)
+            if a.id in VALUE_REPLACE:
+                require_edit_basis(a.id, a.value, quotes, text)
+            if a.id in QUOTE_EDITS:
+                require_edit_basis(a.id, None, [n for _, n in QUOTE_EDITS[a.id] if n] or quotes, text)
+            validate_assertion(a)
+        except ValueError as e:
+            problems.append(str(e))
+            continue
         out.append((a, rid, p, verified))
+    if problems:
+        raise ValueError(f"{len(problems)} refused:\n" + "\n".join(problems))
     return out
 
 
@@ -310,7 +407,10 @@ def read_detail(g: str, p: dict) -> str:
             detail += f" ({why.rstrip('.')})"
     else:
         detail = f"first pass, the whole paper except: {why}"
-    detail += f" (Sonnet 5.5 reader, {TAG}, group {g})"
+    if g in GROUP_TAG:
+        detail += f" ({reader(g, p['record_id'])}, {tag(g, p['record_id'])}, group {g})"
+    else:
+        detail += f" (Sonnet 5.5 reader, {TAG}, group {g})"
     if p.get("version_note"):
         detail += f"; version: {p['version_note']}"
     return detail
@@ -324,29 +424,52 @@ def read_extent(p: dict) -> str:
     return "full" if extent == "full" else "partial"
 
 
-def is_mine(reader: str, detail: str) -> bool:
+def is_mine(name: str, detail: str) -> bool:
     """A paper_reads row this script wrote. Task F (F112) read 57 of these papers on 2026-10-25, a review day of
     Task G's, under the same reader names, and the first apply took Task F's rows for its own and rewrote their
     detail (full suite, 2026-10-27); a row is matched by its wording, never by reader, day and extent alone."""
-    return TAG in detail if reader == SUBAGENT_READER else detail.startswith(COORDINATOR_DETAIL[:40])
+    if name == "Claude":
+        return detail.startswith(COORDINATOR_DETAIL[:40])
+    return any(t in detail for t in {TAG, *GROUP_TAG.values(), *RECORD_TAG.values()})
 
 
-def write_reads(conn, rid: str, day: str, detail: str, extent: str) -> list[str]:
-    """The subagent's read and the coordinator's, added or brought to this script's extent and wording; a row
+def write_reads(conn, rid: str, day: str, detail: str, extent: str, first: str = SUBAGENT_READER) -> list[str]:
+    """The first-pass read and the coordinator's, added or brought to this script's extent and wording; a row
     another script wrote under the same reader and day is left as it is."""
     log = []
     have = {(r[0], r[1]): (r[2], r[3]) for r in conn.execute(
         "SELECT reader, read_on, extent, detail FROM paper_reads WHERE record_id = ?", (rid,)) if is_mine(r[0], r[3])}
-    for reader, ext, det in ((SUBAGENT_READER, extent, detail), ("Claude", "partial", COORDINATOR_DETAIL)):
-        old = have.get((reader, day))
+    for name, ext, det in ((first, extent, detail), ("Claude", "partial", COORDINATOR_DETAIL)):
+        old = have.get((name, day))
         if old is None:
-            add_read(conn, rid, reader, day, ext, det)
-            log.append(f"read   {rid} [{reader}, {ext}]")
+            add_read(conn, rid, name, day, ext, det)
+            log.append(f"read   {rid} [{name}, {ext}]")
         elif old != (ext, det):
             conn.execute("UPDATE paper_reads SET extent = ?, detail = ? WHERE record_id = ? AND reader = ? "
-                         "AND read_on = ? AND extent = ? AND detail = ?", (ext, det, rid, reader, day, *old))
-            log.append(f"update read {rid} [{reader}, {old[0]} to {ext}]")
+                         "AND read_on = ? AND extent = ? AND detail = ?", (ext, det, rid, name, day, *old))
+            log.append(f"update read {rid} [{name}, {old[0]} to {ext}]")
     return log
+
+
+def refused_without_reversal(conn, p: dict) -> bool:
+    """A paper an earlier read refused would get a new assertion, and its review names no reversal in REENTER
+    (review of b185729: 10 refused papers entered because a later reader chose a context)."""
+    rid = p["record_id"]
+    if rid in REENTER:
+        return False
+    row = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (rid,)).fetchone()
+    if not (row and REFUSED.search(row[0] or "")):
+        return False
+    new = [ID_FIX.get(a["id_suggestion"], a["id_suggestion"]) for a in p.get("assertions", [])
+           if a["id_suggestion"] not in DROP]
+    return any(not conn.execute("SELECT 1 FROM records WHERE id = ?", (i,)).fetchone() for i in new)
+
+
+def refusal_reason(p: dict) -> str:
+    """Why a paper with nothing entered was not entered. A sign-off drop wins over the reader's `why_not`, which may
+    say where its assertions were to be entered (review of 4d969d9: 6 notes said "entered under qc")."""
+    dropped = [DROP[a["id_suggestion"]] for a in p.get("assertions", []) if a["id_suggestion"] in DROP]
+    return "; ".join(dict.fromkeys(dropped)) if dropped else p.get("why_not") or ""
 
 
 def apply_changes(conn) -> list[str]:
@@ -357,27 +480,29 @@ def apply_changes(conn) -> list[str]:
         rid, detail, day = p["record_id"], read_detail(g, p), REVIEWED_ON[g]
         access, evidence, tier = conn.execute("SELECT access, evidence, tier FROM paper_fields WHERE record_id = ?",
                                               (rid,)).fetchone()
+        if refused_without_reversal(conn, p):
+            raise ValueError(f"{rid}: refused at an earlier read; drop its assertions or name the reversal in reenter")
         path = p["file"].replace("/", "\\")
         if path.lower() not in {s.lower() for s in recheck.local_paths(access or "")}:
-            note = f"Local copy {f80._sha(Path(path))}, recorded {day} ({TAG})"
+            note = f"Local copy {f80._sha(Path(path))}, recorded {day} ({tag(g, rid)})"
             conn.execute("UPDATE paper_fields SET access = ?, evidence = ? WHERE record_id = ?",
                          (f"{access} | {path}" if access else path,
                           f"{evidence.rstrip().rstrip('.')}; {note}" if evidence and evidence.strip() else note, rid))
-            append_updated_reason(conn, rid, f"{day} ({TAG}): local copy added to access", day)
+            append_updated_reason(conn, rid, f"{day} ({tag(g, rid)}): local copy added to access", day)
             log.append(f"access {rid}")
         for aid, why in NOT_IN_PAPER.items():
             if any(e["id"] == aid for e in p.get("existing", [])):
-                note = f"{day} ({TAG}): {FULL_READ_MARK}: NOT in the paper at a full read: {why}"
+                note = f"{day} ({tag(g, rid)}): {FULL_READ_MARK}: NOT in the paper at a full read: {why}"
                 stored = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (aid,)).fetchone()[0] or ""
                 if note not in stored:
                     append_updated_reason(conn, aid, note, day)
                     log.append(f"not in paper {aid}")
         kept = [a for a in p.get("assertions", []) if a["id_suggestion"] not in DROP]
         entered = kept or [e for e in p.get("existing", []) if e["id"] not in NOT_IN_PAPER]
-        log += write_reads(conn, rid, day, detail, read_extent(p))
+        log += write_reads(conn, rid, day, detail, read_extent(p), reader(g, rid))
         if not entered:
-            why = p.get("why_not") or "; ".join(DROP.get(a["id_suggestion"], "") for a in p.get("assertions", []))
-            note = f"{day} ({TAG}): read whole at first pass and NOT entered: {why}"
+            why = refusal_reason(p)
+            note = f"{day} ({tag(g, rid)}): read whole at first pass and NOT entered: {why}"
             stored = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (rid,)).fetchone()[0] or ""
             if note not in stored:
                 append_updated_reason(conn, rid, note, day)
@@ -393,17 +518,26 @@ def apply_changes(conn) -> list[str]:
         if tier != "read":
             set_tier(conn, rid, "read", checked_against_source=(
                 f"{day}, Claude, read every quoted passage in context and checked every quote and figure against "
-                "the source; the paper read whole at first pass by a subagent"))
+                f"the source; the paper read whole at first pass by a {first_pass(g, rid)}"))
             log.append(f"tier   {rid} -> read")
-    for a, rid, _, verified in checked:
+    for a, rid, p, verified in checked:
         if a.context not in contexts:
             raise ValueError(f"{a.id}: context {a.context!r} is not a context")
         if not conn.execute("SELECT 1 FROM records WHERE id = ?", (a.id,)).fetchone():
             insert_verified_assertion(conn, a, verified, yielded_by=rid)
             log.append(f"assert {a.id} <- {rid} [{a.certainty}]")
             continue
+        stored = [r[0] for r in conn.execute("SELECT context_id FROM record_contexts WHERE record_id = ?", (a.id,))]
+        if a.id not in CONTEXT_FIX and stored and a.context not in stored:
+            # The reader's context is its nearest fit; a stored one was set by an earlier intake and is changed only
+            # by the sign-off (Sprint 14 suite after the 2026-10-31 apply: platform:dirac-3 was replaced by qc).
+            a = replace(a, context=stored[0])
         changed = sync_verified_assertion(conn, a, verified, a.updated_reason, a.updated)
         log.append(f"update {a.id} [{', '.join(changed)}]" if changed else f"exists {a.id}")
+        verdict = next((e["verdict"] for e in p.get("existing", []) if e["id"] == a.id), None)
+        undecided = [c for c in changed if c not in decided_fields(a.id, verdict)]
+        if undecided:
+            log.append(f"undecided {a.id} [{', '.join(undecided)}]")
     return log
 
 
@@ -432,7 +566,8 @@ def main(argv: list[str] | None = None) -> int:
             print("--groups is for a dry run; an apply enters every reviewed group")
             return 1
         ONLY[:] = args[args.index("--groups") + 1].split(",")
-    kept = assertions()
+    refused: list[str] = []
+    kept = assertions(refused)
     ids = [a.id for _, a, _, _ in kept]
     dupes = [i for i, n in Counter(ids).items() if n > 1]
     owner = {a.id: rid for _, a, rid, _ in kept}
@@ -441,20 +576,24 @@ def main(argv: list[str] | None = None) -> int:
             "SELECT 1 FROM records r JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ? AND "
             "r.provenance NOT LIKE ?", (i, f"%{owner[i]}%")).fetchone()]
         unwritten = grades_not_written(conn)
-    if dupes or clash or unwritten:
+    if "--apply" not in args:
+        try:  # the quote checks too, so a dry run names every refusal at once (Q4); verify names assertions' own
+            verify()
+            refused = []
+        except ValueError as e:
+            refused = [str(e)]
+    if dupes or clash or unwritten or refused:
         print(f"duplicate assertion ids: {dupes}; ids already held by another source: {clash}")
-        print("\n".join(unwritten))
+        print("\n".join(unwritten + refused))
         return 1
     if "--apply" not in args:
-        checked = verify()
-        for a, _, _, _ in checked:
-            validate_assertion(a)
         papers = load_groups()
         print(Counter(a.certainty for _, a, _, _ in kept), Counter(a.context for _, a, _, _ in kept))
         print(f"{len(kept)} assertions entered or changed from {len(papers)} records. Every quote verbatim, every "
               "edit on named passages, every figure in its quotes. DRY RUN: nothing written. Re-run with --apply.")
         return 0
-    backup_before_write(DB_PATH, f"{TAG} full reads entered")
+    backup_before_write(DB_PATH, f"{' and '.join(sorted({TAG, *GROUP_TAG.values(), *RECORD_TAG.values()}))} "
+                                 "full reads entered")
     conn = connect(DB_PATH)
     conn.execute("PRAGMA busy_timeout = 120000")
     try:
@@ -465,6 +604,9 @@ def main(argv: list[str] | None = None) -> int:
     finally:
         conn.close()
     print("\n".join(log))
+    undecided = [x for x in log if x.startswith("undecided ")]
+    print(f"{len(undecided)} stored assertions with a field changed that no review item names"
+          f"{'; read each before the live apply' if undecided else ''}")
     print("APPLIED")
     return 0
 

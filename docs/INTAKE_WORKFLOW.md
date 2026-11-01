@@ -2431,3 +2431,576 @@ assertions... than some budget". Written before any read is applied
     chan-2024) carry the reader's version note, which says the
     bibliography was "skimmed" or "skipped", so they leave a later slice
     only through their reader files (fresh-eyes review of 2bab87b).
+
+## 54. Applied 2026-10-30: Brighindi's PHI-OMEGA paper, posts, images and code (Sprint 14 Task A, F119)
+
+Every count is a snapshot as of 2026-10-30. Written before the apply.
+
+- **Four source records, all under `ml`** (team lead, 2026-10-28: "the
+  paper is ML-related as it is rlated to predictions/solvers"):
+  - the paper, read in full: its text through the quote check's
+    extractor, and its 3 pages viewed as images for the symbols the text
+    layer keeps and Figure 1;
+  - the LinkedIn posts and comment thread, read in full from the team
+    lead's paste in `References\`, with the three images read by eye;
+  - the author's repositories `phi-infinity-runtime` (4ee4ea3) and
+    `m-omnia-validation` (d3e45f3), at `read` with a `partial` read row:
+    only the files that bear on the paper's claims (Sprint 13 Manual
+    Validation Q11 = 1).
+- **The images are described, never quoted.** The quote check reads
+  text, and an image has none (F116 does not exist yet). Each image is
+  named with its SHA-256 in the posts record's evidence, with what it
+  shows; the post's assertion says its image restates the post.
+- **The Zenodo archive bears on none of the paper's claims.** Of its 610
+  file entries (the reference said 608), none holds PHI-OMEGA, M-OMNIA,
+  "dS = 0", arc-length, the seed 20260925, symplectic or Hamiltonian. It
+  is named in the absence claim's search scope and not entered.
+- **11 assertions, graded through `store.grading`.**
+  - HIGH, each on its basis: the paper's definitions of its own axioms
+    and gate (not that they hold); its stress test's setup; that it gives
+    no proof for its closure claim (an absence claim, scoped to the whole
+    paper, both repositories, the archive and a GitHub search); and the
+    author's own repositories' stated limits.
+  - LOW: the paper's central claim (failure "mathematically impossible"),
+    its claim of full reproducibility, and both posts, each as the
+    author's claim with no theorem, proof or data behind it; the
+    Figure 1 result and the repository's counts as measured results from
+    one seed, whose files are not published.
+- **One `contradicts` link** (ADR-0004 A8 (b)): the repository's
+  statement that the test is not reproducible from it and that no
+  absolute immunity follows from one seed cannot hold beside the paper's
+  claim that its logs ensure full reproducibility and prove immunity.
+  Nothing else is linked: a claim made without proof does not contradict
+  the absence of the proof.
+- **The comment thread** is one reader's challenge (which systems does
+  the closure preserve exactly, and is there a theorem); it is quoted in
+  the post's assertion and named in the absence claim, not entered as a
+  claim of its own.
+- `scripts/sprint14_f119_reading.py`; a second apply writes nothing.
+
+**Corrected 2026-10-30, after the fresh-eyes review of 1b987dd** (written
+before the second apply). Four statements above were wrong or short:
+
+- **The runtime read missed a file that bears on the claims.**
+  `docs/M_OMNIA_STATO_RICERCA_2026-09-27.md`, which the README links,
+  calls the closure "Ipotesi di formalizzazione" (a formalization
+  hypothesis) and the 25 September result "Risultato nel simulatore
+  definito; non dimostrazione fisica generale" (a result in the defined
+  simulator, not a general physical proof). It is now read in full and
+  yields a 12th assertion, HIGH as the repository's stated limit. The
+  runtime's read row said "the rest bears on none of the paper's
+  claims"; it now names the note and says the rest was not read. The
+  absence claim's search scope names the note, and says the
+  repositories' own Zenodo deposits were not searched.
+- **"Nothing else is linked" was wrong.** The repository's "no absolute
+  immunity is inferred from one seed" and the paper's abstract,
+  "demonstrating absolute structural immunity", cannot both hold for the
+  same test, so the stress-test limit is also linked `contradicts` to
+  the central claim, and so is the new status-note assertion. The first
+  link (to the reproducibility claim) stands on its immunity half: "not
+  reproducible from this checkout" and "the logs ensure full
+  reproducibility" can both hold, since the logs exist with the author.
+  The absence claim is still not linked: a claim made without proof does
+  not contradict the absence of the proof.
+- **Two values held text no quote checked.** The Figure 1 assertion's
+  "different metrics" (the repository's "sono metriche diverse") and the
+  absence claim's thread quote are now quoted and checked against their
+  own files. The stress-test limit adds "I rifiuti non equivalgono a una
+  soluzione del compito" (the rejections are not a solution of the task).
+- **Two descriptions above are corrected here.** Only the 25 September
+  post's assertion says its image restates the post; the 23 September
+  assertion does not name its image. The comment thread is a reader's
+  challenge and the author's reply, which claims again, with no proof,
+  that energy drift is "mathematically impossible".
+- **Known and not changed:** the stored reason on a HIGH from a
+  repository reads "the paper's own stated limit", because the template
+  in `store/grading.py` says "paper" for every source; its "why" names
+  the repository. The stress-test summary speaks of "l'autore" in the
+  third person, so "the author's own repository" means the repository,
+  not that Brighindi wrote every line.
+
+**Corrected again 2026-10-30, after the fresh-eyes review of 6d5bcec**
+(written before the third apply):
+
+- **The status-note assertion's `contradicts` link is withdrawn.** It
+  failed ADR-0004 A8 (b): "Risultato nel simulatore definito; non
+  dimostrazione fisica generale" (a result in the defined simulator,
+  not a general physical proof) can hold beside a claim of absolute
+  immunity inside that simulator, and a closure the paper states as an
+  axiom is already a hypothesis. The assertion keeps the limit in its
+  value. One `contradicts` link to the central claim remains, from the
+  stress-test limit, on "no absolute immunity is inferred from one
+  seed" against "demonstrating absolute structural immunity". The
+  value now says the note's row covers the 25 September manuscript on
+  runtime invariance, the paper itself, not only its comparison.
+- **The m-omnia read row now records its search.** It said "the rest
+  bears on none of the paper's claims" with no search behind it. All 30
+  tracked files at d3e45f3 were searched for PHI-OMEGA, the sum of dS,
+  dS = 0, M_gate, the seed 20260925 and immunity, with no hits; the row
+  says so. Each corrected read row's first text is kept in its record's
+  updated_reason.
+- **The read correction now has a test** that puts the first row back
+  on a copy of the store and checks the apply corrects it.
+
+## 55. The F95 release for Sprint 14: new papers in `Papers\` (Sprint 14 Task B, F122)
+
+Every count is a snapshot as of 2026-10-30. Nothing is written to the
+store: every unnamed file is already a store record.
+
+- **Before** (2026-10-29, Sprint 14 Phase 1.2): 374 PDFs in `Papers\`
+  and its subfolders; 166 named by no record's `access` (file-name match).
+- **After** (2026-10-30, after Task A): 374 PDFs; 165 named by no
+  record's `access`. Task A named the one new file, the PHI-OMEGA paper.
+  No file was saved between the two counts.
+- **The 165 are linked by the ledger, not by `access` now.** Each is
+  Sprint 13 Task G's download of 2026-10-25 for a record already in the
+  store: all 165 are in `manifests/sprint13_g_ledger.json`, in groups
+  g295 to g329 (34 groups), each record at tier `seen`. Its `access`
+  names the arXiv id or DOI. The g-reading apply adds the file to
+  `access`, with its SHA-256, when its group is read (F114), the same
+  as for every earlier group. This is the narrower reading of F95's
+  step (2): the file is matched to its record and is not entered twice,
+  but `access` is not written ahead of the read, so the hash and the
+  read land together.
+- **The hand-download list holds 53 records; none has a local copy.**
+  No target path exists under `D:\Data\Harold\EvidenceBasedDB\`. A text
+  match on `aimeur-2013` was a false hit: the line was aimeur-2007's
+  reason, which names its 2013 journal version.
+- Nothing to enter, nothing to read in this release beyond F119.
+
+## 56. Applied 2026-10-30: Phase 2's Sprint 29 results, and one corrected F108 value (Sprint 14 Task D, F120)
+
+Every count is a snapshot as of 2026-10-30. Written before the apply.
+
+- **What is read, and at which commit.** Phase 2 commit 6242b8a, the
+  head of PR #63 (merged 2026-10-30), current when the task started.
+  The plan named the GitHub API, because local refs then stopped at
+  22d16c3 and no `git fetch` is run in a sibling repository. By the
+  task's start the team lead's own clone held 6242b8a, so the script
+  reads with `git show`, as every earlier inbound script does; the API
+  returns the same bytes (checked by SHA-256 on all 17 files). Read only
+  (F79). Changed since F108's read at 9cbe5ba: `F108_CEILING_VALIDATION.md`
+  and `F162_IN_POCKET.md` (F164's figure corrections), eight new F166
+  documents under `docs/phase2/algorithms/`, `PHASE2_POC_PLAN_DRAFT.md`
+  (new), `PREREGISTRATION_DRAFT.md`, and six new result files.
+- **Two source records, each a set of documents.** A quote is checked
+  against the set's joined text and names its document in its anchor
+  (the F119 pattern for a source that spans files).
+  - `hsbc-qfraud-phase2-f166-sprint29-ulb-algorithms`: the ULB
+    comparison and the seven algorithm documents, all read in full.
+  - `hsbc-qfraud-phase2-sprint29-results`: Phase 2's Sprint 29 Manual
+    Validation record (V2, V4, V5, V7 and Decision D1) with the three
+    preregistered entries those results ran under (F156, F158 and the
+    F160 amendment). F156, F158, F159 and F160 have no page of their own
+    under `docs/phase2/`. The validation record was corrected twice on
+    Phase 2's review, so a live test checks its headline figures against
+    the run files themselves.
+- **Nine SIM assertions, HIGH**, the consumer project's own measurement,
+  each carrying Phase 2's limits and attributing its inferences:
+  - F166 (4): the seven tuned algorithms' ranking with the two reliable
+    adjacent pairs; the proxy's train-test gap, the largest; the narrow
+    spread of recall at the 0.5% alert budget; the classical tuning
+    choices (no balanced class weights, HGB at l2 1.0 on every seed, the
+    RBF SVM kept out).
+  - F156: the Henze-Penrose bound fails on F108's simulator; F114 stays
+    blocked.
+  - F158 (2): the per-type cascade is below one model on the simulator;
+    106 of 950 (seed, fraud) pairs on ULB are missed by every stored
+    model family.
+  - F160: Experiment 3's room check passes on IEEE-CIS.
+  - F159: the parallel pool build equals the serial one and is faster.
+  **Contexts by section 43's rule**: `ml` for the classical tuning
+  choices, F156 and F158's simulator result; `hsbc-2026` for the rest,
+  which are about the project's own CVQBoost lanes and Experiment 3.
+- **F167, the PoC plan draft, states no result.** Read in full; nothing
+  entered. Its figures point to result files entered here or earlier.
+- **No relation linked (ADR-0004 A8 (b)).** Each reason names what it
+  bears on: F166 against `f151-cvqboost-proxy-below-stable-hgb-on-ulb`
+  (a different, tuned proxy below HGB by 0.0198, not reliably; both can
+  hold); F156 against the F108 and F114 misses (another estimator, not
+  the same claim); F160 against `f153-learner-selection-formulation-fails-
+  its-falsifier` (ULB against IEEE-CIS; both hold); F159 against
+  `f110-cvqboost-pool-build-grows-faster-than-rows`; F158 and F166's
+  recall note against `f154-no-stored-model-better-on-a-ulb-subset`.
+- **One stored value corrected**:
+  `f108-hgb-plugin-overstates-bayes-error-5-to-12-percent` said "ratios
+  1.053 to 1.118"; Phase 2 recomputed three of the five ratios from the
+  rows (F164, 2026-10-26), and the top is now 1.119. The value, its
+  quote and its reason change; its id, context and certainty do not. The
+  Sprint 11 script stays the record of the read at eef3349, and its store
+  test takes this value from the Sprint 14 script.
+- **Confirmed by name, unchanged**: the other three F108 values and both
+  F162 values; every quote of theirs is verbatim at 6242b8a. The noise
+  arm's corrected range (1.076-1.097) and F162's wall time (now
+  unverified) were never stored.
+- **The F108 and F162 paper records are repointed at 6242b8a**, with the
+  earlier read and its blob SHA-256 kept in the evidence, and each gets a
+  second read row (the Sprint 13 pattern).
+- `scripts/sprint14_f120_phase2.py`; `tests/test_sprint14_f120.py`.
+- **A second apply, the same day: the fresh-eyes review of 1f904ba.**
+  Written before the apply.
+  - **The two new records failed the local-file check.** Their evidence
+    named each document's hash with no "SHA-256" before it, so the check
+    (`store/recheck.py`) compared the access path's document with a run
+    file's hash and reported "local copy changed". The evidence now
+    writes "SHA-256" before each hash, the access path's document first;
+    the apply rewrites the two records' evidence. A live test runs the
+    check on all four paper records this script writes.
+  - **The corrected F108 value contradicted itself.** F164 corrected the
+    Results ratios but left the BLUF's "0.5-1.8 points past the 10%
+    margin". The value now attributes that range to Phase 2's summary.
+    The reasons give the range from the corrected ratios, computed here
+    from `f108_ceiling.json` and marked as not stated by Phase 2: 0.57,
+    1.91 and 1.56 points (about 0.6-1.9).
+  - **Wording against the sources.** F166's ranking now says the proxy
+    uses its own top-k features (k 17) and the classical lanes all 30
+    columns. F158's cascade value carries "so the gain may be small" and
+    that its models (HGB, l2 1.0) see more than F108's three features.
+    F159's value says the dead-worker wait is inferred, not shown, and
+    its reasons give the one seed and cell the run file holds. F160's
+    value states the room as Phase 2 does (a data term of 4 x fraud
+    rate), drops a "so" the source does not have, and says F25's card
+    records the reopened design. F166's gap value attributes F159's
+    equality to Phase 2. F156's reasons name the fifth and sixth methods
+    correctly.
+  - **Not changed here.** The f151, f153 and f154 source records still
+    point at Phase 2 commit 10086da, although Phase 2 changed their
+    documents by 9cbe5ba; they failed the local-file check before this
+    sprint. Carded as F124, not repointed here, because each
+    needs its document re-read whole. Phase 2's own BLUF is Phase 2's to
+    correct, by a prompt the team lead pastes there.
+
+## 57. Applied 2026-10-30: Roadmap-to-QML's release for Sprint 14 (Sprint 14 Task C, F123, F98)
+
+Every count is a snapshot as of 2026-10-30. Written before the apply.
+
+- **The list, at one commit.** Roadmap-to-QML read at commit
+  `ea6f42a7c0` (pushed 2026-10-27; the head on 2026-10-30), 9 commits
+  after F104's `a239747648` (section 46). Its 13 files are saved under
+  `References\Roadmap-to-QML_ea6f42a7c0\`, outside git; the manifest
+  records each file's SHA-256.
+- **1,450 arXiv ids listed; 32 linked for the first time since
+  a239747648; 4 new to the store.** 28 of the 32 are papers the store
+  already holds: the list replaced a publisher link with the arXiv link
+  (Montanaro 2016, Huang et al. 2021 and 26 more) or named a withdrawn
+  paper's replacement (2405.13351, 2210.14450). The 4 new ones
+  (2609.19983, 2610.32762, 2610.34430, 2610.35126) enter through the door
+  at `seen` under `qml`, each naming the file that lists it.
+- **Routes only for the newly linked.** Each of the 28 held papers gets a
+  `found_via` route naming the list at `ea6f42a7c0` and its file. The
+  papers the list linked at `a239747648` already carry F104's route; a
+  route at each new commit would restate the same match about 1,400
+  times, so none is added.
+- **Free copies: 4 of 4**, fetched by the paced fetcher (18 s apart),
+  each named with its SHA-256 in `evidence`. 2610.32762 (Ortiz Cordero et
+  al.) carries no arXiv stamp on page 1; its first page was checked by
+  hand and its title and authors match the arXiv metadata.
+- **Seven marks, compared with the store; no record changed.** The list
+  now marks six papers WITHDRAWN by their authors (2308.08167,
+  2304.05672, 2409.10932, 2403.17444, 2410.03853, 2503.23408) and one
+  RETRACTED (Valdez and Melin 2022, DOI 10.1007/s00500-022-07037-4,
+  marked "RETRACTED 10 March 2026"). Each is already held at `seen` with
+  a disposition that says withdrawn or retracted (F33), so the store and
+  the list agree. A record would be corrected only from the arXiv or
+  publisher page, never from the list's mark. The manifest's `marks`
+  lists each with its record.
+- **20 other links carried, 7 with a DOI** (25 at F104). The 5 that left
+  the carried list are the publisher links the list replaced with arXiv
+  links the store holds. The malformed `2108.0131` (section 46) is still
+  listed and still held as `2108.01311`.
+- **Reading.** The 4 are read in full by local first-pass readers under
+  `manifests/sprint14_f114_reads/READER_PROMPT.md` (Task G's prompt with
+  its paths moved to F114's work folder; no budget), as ledger group g330
+  beside Task F's, and applied with F's groups.
+- `scripts/sprint14_f123_roadmap.py` loads F104's script and points it at
+  this commit; dry run by default, which writes
+  `manifests/sprint14_f123_roadmap.json`; `--apply` takes a verified
+  backup; a second apply enters nothing and adds no route.
+  `tests/test_sprint14_f123.py`.
+
+## 58. F114's first release: groups g043 to g113 and g330, reviewed by F117 (Sprint 14 Tasks E and F)
+
+Every count is a snapshot as of 2026-10-30. Written before the apply; the
+counts that enter are added when it runs.
+
+- **What is read.** 72 ledger groups, 351 records, every paper read in
+  full under Task G's rules (section 53; no budget):
+  - Task E: groups g043 to g102 and the cloud records of g103 to g113,
+    read in cloud sessions in Sprint 13 and Sprint 14
+    (`scripts/f114_cloud.py`; its results restored to
+    `work\f114\results\`).
+  - Task F: 54 records read by local first-pass readers under
+    `manifests/sprint14_f114_reads/READER_PROMPT.md`: 50 papers of g079
+    and g103 to g113 (Q1 = 2), and g330, Task C's 4 papers (section 57).
+    Boyd and Vandenberghe's textbook (g103) was read by two readers in
+    turn: the first stopped with its context full at PDF page 520, the
+    second read the rest and checked every seed after it.
+  - The readers proposed 13,660 new assertions and judged 633 stored ones
+    (394 confirmed, 185 narrowed, 48 widened, 6 corrected).
+- **Page anchors are computed for local reads.** A local reader's page
+  is replaced by the PDF page its quotes are on, counted with pdftotext's
+  form feeds (`fix_pages` in `scripts/f117_build_groups.py`); a "printed"
+  page is left alone, and every change is listed when the group file is
+  built. The readers' text layers had lost their page breaks, so anchors
+  had run up to 15 pages off. Five fresh-eyes reviews of the fixer found
+  defects, each fixed and proven red; F126 holds what is left (none of it
+  in these groups).
+- **How each group is reviewed (F117).** One Sonnet 5.5 reviewer per
+  group decides every item from its passage read in context
+  (`manifests/f117_reviews/REVIEW_PROMPT.md`); the coordinator (Opus 5.5)
+  reads the decisions and signs the group off; `scripts/f117_review.py
+  finalize` writes `manifests/sprint13_g_reviews/gNNN.json`. Boyd's 1,033
+  items were reviewed in ten parts and merged by id (none lost or twice).
+- **Every certainty change on a stored assertion is the team lead's.**
+  Finalize stops on one and writes it to
+  `work\f114\review\escalations\gNNN.pending.json`. 16 groups wait on
+  them; they enter after the team lead's decisions at Manual Validation.
+  56 groups are finalized: 2,910 graded HIGH and 630 theoretical results
+  kept LOW. Any other result is LOW by default.
+- **The sign-off's edits.** Value replacements, extra quotes and
+  re-quotes are added to a group's review file (the applier's existing
+  tables). Each replacement is checked as the applier checks it: its
+  passages verbatim in the source and every number in its quotes. The
+  text-layer slips (2^16 printed as 216, 10^4 as 104 and 10^5 as 105, a
+  lost negation in Boyd) were read from the page image.
+- **One grading rule across groups.** A proof that rests on a cited or
+  unproved result is LOW, and its why names that result; standard
+  background mathematics does not make a result LOW; a value shown only
+  in part is LOW. Two consistency passes (Boyd's nine parts; the other
+  groups' cited results and news or vendor pages) propose the corrections
+  the coordinator applies, and stored assertions among them go to the
+  team lead.
+- **Left out.** 8 records are marked unread in their group's review, with
+  why: among them g113's 3 chen-2026 papers, beyond Task F's 50 (F125).
+  muta-hardware-scope-photonic-gkp keeps its stored page (F126).
+- **How a read is recorded.** As in section 53: a `full` row naming the
+  reader, with the group's tag; a local read in a group otherwise read in
+  the cloud names its own tag and reader (`tags` and `readers` in the
+  review file).
+- **The apply.** `scripts/sprint13_g_reading.py` enters each finalized
+  group. It is tried first on a copy of the store, then run with a
+  verified backup; a second apply writes nothing.
+- **Correction and the first apply, 2026-10-30 (counts a snapshot as of
+  that date).** The counts above were written before the review fixes
+  and the consistency passes, and are left as written:
+  - The coordinator set 10 reviewer HIGHs on vendors' own claims to LOW
+    (store.grading writes a vendor's own claim LOW), applied Boyd's
+    consistency ruling (56 decisions; the exercise marker wins, the scalar
+    second-derivative test is background), and applied 82 of the
+    cross-group pass's 86 proposals. The line drawn: a textbook-standard
+    result is background; a specific paper's lemma or derivation taken by
+    citation makes an item LOW. 4 proposals were rejected on it.
+  - 19 groups now wait on 28 certainty changes for the team lead (7 of
+    them from the cross-group pass). g043's qnpg-sample-complexity no
+    longer escalates: its proof rests on two cited lemmas, so the review
+    keeps it LOW, as stored.
+  - 6 groups are held: g052, g053, g054, g055, g060 and g061. Each holds
+    a paper its reader marked as bearing on no context but entered
+    assertions for anyway (184 in all); which context they take, if any,
+    is the team lead's decision.
+  - 47 groups were applied, with backup
+    `evidence-20261030T194240209474-...db`: 7,715 new assertions (2,273
+    HIGH, 5,442 LOW), 117 stored assertions updated, 106 applicability
+    rows, 119 records raised to tier `read`, 9 records refused with
+    their reason. A second apply wrote nothing.
+- **Second correction, 2026-10-30, the same evening (counts a snapshot as
+  of that date).** The fresh-eyes review of that apply found 10 papers an
+  earlier read had refused as bearing on no context (F89, F96, F105,
+  F112) entered with 467 assertions, because F114's reader chose a
+  context; no review said so, and the 6 held groups had been held for
+  the same question. The store was restored from the pre-apply backup
+  (`evidence-20261030T194240209474-...db`; the state it replaced is kept
+  in `evidence-20261030T203545673004-...db`) and the apply run again:
+  - 18 papers are now recorded as read and NOT entered, their 763
+    assertions waiting for the team lead's decision at Manual
+    Validation: the 16 an earlier read refused, and darji-2024 and
+    du-2024, whose readers gave no context.
+  - The 6 held groups are applied, less those papers. 53 groups in all:
+    7,897 new assertions (2,315 HIGH, 5,582 LOW), 117 stored assertions
+    updated, 111 applicability rows, 129 records raised to `read`, 29
+    records refused with their reason. A second apply wrote nothing.
+  - The applier now refuses a new assertion on a paper an earlier read
+    refused unless the review names the reversal (`reenter`).
+- **Third correction, 2026-10-30, later the same evening.** The
+  fresh-eyes review of 4d969d9 found that 6 of the 18 refusal notes
+  (darji-2024, du-2024, faro-2024, grazioli-2025, lawrie-2023,
+  li-gomez-2023) carried the reader's own reason, which for 3 of them
+  said the assertions were entered under a context, and never named the
+  team lead's pending decision. The applier now prefers the sign-off
+  drop reason; a re-apply (backup
+  `evidence-20261030T210228761119-...db`) appended the corrected note to
+  those 6 records and wrote nothing else. The earlier notes stay, as
+  history; the latest note on each record is the one that holds.
+- **The team lead's decisions, 2026-10-31 (Sprint 14 Manual Validation;
+  counts a snapshot as of that date).** Written before the apply; the
+  counts that enter are added when it runs.
+  - Q1 option 1: the 28 certainty changes in the 19 waiting groups are
+    settled as recommended (`work\f114\review\escalations\gNNN.json`):
+    4 stored LOWs raised to HIGH (qnpg-bias, qml-advantage-general-functions
+    and qnn-decoder-standard-qec-bound as proved results, babbush-five-stages
+    as the paper's own definition), 1 MODERATE and 22 HIGHs set LOW with
+    the reviewer's cause, and cgz-nonuniform-zero-one-corollary7 kept HIGH
+    with the square root its value had dropped restored (p.13, Eq 26; the
+    stored value had the same slip). The 7 stored HIGHs set LOW whose
+    reader gave no value keep their stored value (`value_replace`). The 19
+    groups are finalized with `reviewed_on` 2026-10-31.
+  - Q2 option 1: the 18 papers stay out. Their 763 drop reasons in the
+    14 review files now end with the decision, so the apply appends one
+    more note to each of the 18 records; the earlier notes stay, as
+    history.
+  - The dry run refused 5 of the settled items until their sign-off was
+    fixed: 3 stored HIGHs set LOW whose reader gave no quotes take their
+    stored quotes (`extra_quotes`); two-way-partitioning-dual-sdp-lower-bound's
+    stored value stated "1 or -1", which none of its quotes hold, so its
+    value now says only what its quotes say, with one added quote; and
+    cgz-nonuniform-zero-one-corollary7's value states the square root in
+    words, in the quote's own symbols.
+  - Applied with backup `evidence-20261031T110555183383-...db`, first on a
+    copy of the store: 5,000 new assertions (1,796 HIGH, 3,204 LOW), 136
+    stored assertions updated (22 HIGH to LOW, 4 LOW to HIGH, 1 MODERATE
+    to LOW, the rest keeping their grade), 1 record raised to `read`, and
+    18 refusal notes appended. A second apply wrote nothing. The store now
+    holds 23,653 assertions (8,167 HIGH, 15,386 LOW).
+- **Fourth correction, 2026-10-31.** The full suite after that apply
+  failed 3 live-store tests:
+  - A real defect: the apply replaced the stored context of 2 assertions
+    with the reader's nearest-fit label, which no review decided (context
+    is not an item the F117 reviewer grades):
+    dirac3-stratification-falls-short-ballin-2026 lost
+    `platform:dirac-3` (to `qc`), and
+    Abbas's effective-dimension bound (g079) moved from `qml` to
+    `ml`. The applier now keeps a stored assertion's context unless the
+    sign-off names it in `context_fix`. Both go back through a
+    `context_fix` in the g079 and g094 sign-offs, because the stored
+    contexts are now the wrong ones. The 2026-10-30 apply moved no stored
+    context (its backups compared).
+  - Finalize reads the stored grades from the store, so after an apply it
+    no longer sees the certainty changes it settled. g079 and g094 were
+    re-finalized against a copy of the pre-apply backup
+    (`EBDB_STORE_DIR`), with the same counts as before.
+  - Re-applied with backup `evidence-20261031T123122796779-...db`, first
+    on a copy: the 2 contexts restored and nothing else; a second apply
+    wrote nothing.
+  - Two tests assumed the Sprint 9 and Sprint 10 scripts still own their
+    assertions (F80: 12 ids; F83: two-way-partitioning-dual-sdp-lower-bound).
+    F114's full reads rewrote them under reviewed verdicts, and the team
+    lead decided their certainty changes. The tests now leave out an id
+    whose stored history records a later full read, and still hold every
+    other id to its script.
+- **Fifth correction, 2026-10-31, the review of 0eddd23.** Written before
+  the re-apply.
+  - Two counts above are wrong as written: 138 stored assertions were
+    updated, not 136 (136 changed value or grade; 2 changed other fields),
+    and the 23,653 assertions also include 100 graded neither HIGH nor
+    LOW (97 MODERATE, 1 very-low, 2 with no grade).
+  - The 13 theoretical results set LOW at the team lead's decision kept
+    the reviewer's cause as their certainty reason, and 4 of those said
+    "g045 (or g109) has no pending escalation", which was false. Each is
+    now settled as `["low", why]`, the cause less that sentence, ending
+    with the team lead's decision; g045, g079, g095, g097, g102, g103,
+    g106 and g109 were re-finalized against the pre-apply copy. The 10
+    other LOW settlements carry the store's fixed reason for their result
+    type, which has no place for the decision; their decision is recorded
+    in this section and in `work\f114\review\escalations\`.
+  - two-way-partitioning-dual-sdp-lower-bound's value said "the best"
+    bound is an SDP's optimal value, which no quote held. It now quotes
+    "The dual problem is an SDP" and the sentence on its optimal value.
+  - The new context test passed with no check at all once the sign-off
+    named both of its ids in `context_fix`; it now takes them out of
+    `context_fix`. The F80 and F83 tests leave out an id only when its
+    last change is a full read's rewrite, not a "NOT in the paper" note.
+  - Re-applied with backup `evidence-20261031T144159928184-...db`, first
+    on a copy: 13 records updated (the 13 certainty reasons, and the
+    two-way value and quotes) and nothing else; a second apply wrote
+    nothing.
+- **Sixth correction, 2026-10-31, the review of bb82d0a.** Written before
+  the re-apply. The fifth correction's edit of the 13 reasons was made by
+  pattern and missed variants: qgen-grover-lower-bound kept a dangling
+  "for it.", generalization-bound-involves-encoding kept the false
+  "Stored HIGH; not in the g097 pending escalations.", and
+  fidelity-bounds-hamiltonian-norms, qaoa-qa-conditions and
+  qaoa-qa-equivalence-proof kept a sentence asking for the team lead's
+  review that the decision now answers. Each is edited by hand. The
+  two-way value's "can be solved efficiently" now has its quote ("This
+  problem can be solved efficiently, ..."). g097, g102, g103 and g109
+  were re-finalized against the pre-apply copy. Re-applied with backup
+  `evidence-20261031T161240715569-...db`, first on a copy: 6 records
+  updated and nothing else; a second apply wrote nothing.
+- **Seventh correction, 2026-10-31, the review of 25d3985.** Written
+  before the re-apply. barthe-necessary-conditions-tradeoff's reason
+  compared the reader's value with a stored value the apply had already
+  replaced; that comparison is removed. barthe-universality-proved's
+  value began "The paper proves" while its reason says the proofs do not
+  settle it; both barthe values now state the paper's claim as a claim
+  ("The authors state that they prove", "The paper states, as its second
+  central result"), which their quotes hold. caro-generalization-error-
+  sqrt-t-over-n's reason loses a reviewer's "Gray:" label. g095 and g106
+  re-finalized against the pre-apply copy. The review chain on these
+  settlements stops here; what is left is cosmetic: a doubled period
+  before "NOT upgraded" in about 900 reasons store-wide (it predates this
+  sprint), and update notes that name the full read but not a quote
+  extension. Re-applied with backup
+  `evidence-20261031T173833940424-...db`, first on a copy: 3 records
+  updated (the two barthe values and reasons, the caro reason) and
+  nothing else; a second apply wrote nothing.
+- **Rule, 2026-10-31 (Sprint 14 retrospective Q1 = 1): settlement and
+  review text is edited by hand, never by pattern.** A settlement reason,
+  a sign-off value or a review note is read and rewritten one record at a
+  time with the Edit tool. A regular expression or a search-and-replace
+  over several of them is not used, even when they look alike. The fifth
+  correction edited 13 reasons by pattern and missed variants in 5 of
+  them; the sixth correction found them only on review. A store-wide fix
+  of a fixed template's format (not its words) is a script, as section
+  59 is, and it names the exact string it replaces.
+
+## 59. A doubled period before "NOT upgraded" (Sprint 14 retrospective Q7)
+
+Written 2026-10-31, before the apply. Every count here is a snapshot as of
+2026-10-31.
+
+- **What is wrong.** `store.grading.low_grade` joins a LOW's reason as
+  `Started LOW: <basis>: <why>. NOT upgraded`. A why that already ends in
+  a period gives `.. NOT upgraded`. 900 stored `certainty_reasons` hold
+  it, every one of them starting "Started LOW:". It predates Sprint 14;
+  the full reads of Sprint 13 and 14 added most of them. No repository
+  file holds the doubled text: each is computed by `low_grade`.
+- **The fix at the source.** `low_grade` drops one trailing period from
+  the why, so the template's own period is the only one.
+- **The fix in the store.** `scripts/sprint14_q7_doubled_period.py`
+  replaces the exact string `.. NOT upgraded` with `. NOT upgraded` in
+  `certainty_reasons`, and nothing else. Dry run by default; `--apply`
+  takes a verified backup first. Each changed record gets the note
+  "2026-10-31 (Sprint 14 retrospective Q7): format only: ...", naming
+  this section.
+- **Why the note says "format only".** A full read owns a record whose
+  last change names it (`FULL_READ_MARK`). The format note must not take
+  that ownership away: the sync's same-day guard and the reading tests
+  ask for the last change, and both now skip a note that carries
+  `FORMAT_ONLY_MARK` (`store.ingest.last_change`). Without that, an older
+  reading script dated 2026-10-31 could re-sync over a full read, and the
+  F80 and F83 tests would hold 13 full-read records to their old scripts.
+- **Checks.** A live-store test finds no `.. NOT upgraded` left. Trial on
+  a copy first, then live; a second apply changes nothing, and an apply
+  of the full-read applier (renamed `scripts/full_read_apply.py`, Q5) on
+  the fixed copy changes nothing either: it now computes the single period
+  the store holds.
+- **Applied 2026-10-31** with backup
+  `evidence-20261031T182657101772-...db`, first on a copy: 900 records
+  fixed; a second apply fixed none; the full-read applier on the fixed
+  copy changed nothing and listed no undecided field.
+- **Correction, 2026-10-31, the review of 7b2179f.** The note moved
+  `updated` to 2026-10-31 on all 900 records; on 365 of them the last real
+  change is earlier (364 on 2026-10-30, 1 on 2026-10-26). The sync guard
+  read `updated`, so a corrected sign-off dated on such a group's review
+  day would have been refused without a word, and the "changed nothing"
+  check above held for those 365 only because the guard skipped them. The
+  guard now reads the date of the last real change when the last note is
+  format-only; a record with no format note is read as before. The
+  script's pattern now matches exactly two periods, so a why that ends in
+  an ellipsis is left alone (none is stored). No store write: the 900
+  records stay as fixed. With the corrected guard, the full-read applier
+  on a fresh copy of the live store changed nothing and listed no
+  undecided field, so the 365 records hold what their reviews say. For a
+  basis that needs a why, a why of only "." is now refused by
+  `low_grade` as no why at all; for any other basis it is dropped. A why
+  that ends in two periods still gives two (none is stored).

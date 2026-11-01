@@ -1,0 +1,400 @@
+{
+ "group": "g101",
+ "reviewed_on": "2026-10-30",
+ "tag": "Sprint 14 Task E, F117 (F114 cloud read)",
+ "reader": "Claude Sonnet 5.5 (F114 cloud session)",
+ "coordinator_note": "",
+ "graded_high": {
+  "def-k-local-hamiltonian": [
+   "definition",
+   "Section 1.1, p.2: H is k-local if alpha_P = 0 for all Pauli strings of weight greater than k; the identity coefficient is set to zero."
+  ],
+  "def-hamiltonian-locality-testing-problem": [
+   "definition",
+   "Definition 1.1, Section 1.1, p.3: decide with success at least 2/3 whether H is k-local or epsilon-far; any output is valid in between."
+  ],
+  "norms-worst-case-average-case": [
+   "definition",
+   "Section 1.1 p.3 and Remark 2.6 p.14: the paper chooses the operator norm (worst case) and the normalized Frobenius norm (average case). Appendix A gives its justification."
+  ],
+  "access-models-incoherent-coherent": [
+   "setup",
+   "Section 1.1 p.3 and Section 2.4, pp.15-16: incoherent (single copies, no interleaved control, adaptive allowed) and coherent (interleaved channels, ancilla allowed) strategies are defined formally."
+  ],
+  "scope-negative-both-positive-incoherent": [
+   "scope",
+   "Section 1.1, p.3: negative results cover incoherent and coherent testers; positive results use simple incoherent algorithms."
+  ],
+  "thm-3-1-incoherent-locality-testing-lower-bound": [
+   "proved result",
+   "Theorem 3.1, Section 3.1, p.17: stated with n, k, p, N conditions and the promise; proved on pp.17-25 (Lemmas 3.2, 3.3, 3.5, Pinsker and KL bounds, Weingarten calculus). I read the proof through the final KL bound and the step to Omega(d/(eta log N))."
+  ],
+  "thm-3-6-coherent-locality-testing-lower-bound": [
+   "proved result",
+   "Theorem 3.6, Section 3.2, p.26: stated with conditions and the promise; proved on pp.26-30 with a trace-norm bound summed over queries, ending with N sqrt(d)... >= 1/(6 sqrt 2). I read the end of the proof."
+  ],
+  "lemma-3-2-concentration-far-from-fixed-k": [
+   "proved result",
+   "Lemma 3.2, pp.16-17: stated with d >= 4 and a fixed traceless K with operator norm at most 1; proved by Lipschitz concentration on the Haar measure. The exponent prints as 'd - 1728' (exp(-d/1728)). The step that restricts to norm of K at most 3 eta/2 is sound."
+  ],
+  "lemma-3-3-random-hamiltonian-far-from-all-k-local": [
+   "proved result",
+   "Lemma 3.3 and Remark 3.4, pp.17-18: conditions n >= 2 and k <= O(n/log n); proved by an epsilon-net and a union bound with Lemma 3.2 (probability at least 1 - exp(-Omega(d))). 'High probability' is made explicit in the proof."
+  ],
+  "lemma-3-5-generalized-le-cam": [
+   "proved result",
+   "Lemma 3.5 p.20 and Lemma C.1 pp.67-68: the statement is legible in the text and gives expected TV at least 1/18 for alpha at most 1/(10N); the proof in Appendix C is complete (TV >= 2/9 minus an exponentially small term, then a mixture bound). The quotes lack the 1/18 only because of a line break in the quotes, not in the paper."
+  ],
+  "coherent-testing-bound-quadratically-weaker": [
+   "stated limit",
+   "Section 1.4 p.7 and Theorems 3.1 and 3.6: the coherent bound 2^{n/2} is weaker than the incoherent 2^n, using the same problem. The note on phase estimation literature is a cited aside."
+  ],
+  "remark-3-7-noise-model-artificial": [
+   "stated limit",
+   "Remark 3.7, p.31: the authors state the noise model of the hard problem is somewhat artificial and leave physically relevant examples to future work."
+  ],
+  "alg-1-randomized-stabilizer-tester-description": [
+   "setup",
+   "Section 1.4 pp.8-9 and Algorithm 1 p.33: random MUB index and state, evolve for t = epsilon/6, measure in the same basis, N = 2 log 3/(t^2 eps^2) rounds, return H1 at the first detected violation, else H0. Matches the value."
+  ],
+  "def-4-1-equivalence-under-property": [
+   "definition",
+   "Definition 4.1, p.33: equivalence under S by a Pauli in S or I up to a phase; a non-equivalent pair is a detected violation."
+  ],
+  "pauli-overlap-zero-or-one-in-mub": [
+   "proved result",
+   "Proof of Theorem 4.2, Eq. 16, p.36: the overlap is derived with Lemma 2.4 (a character sum over the stabilizer group) and gives 1 or 0 (indicator that r_l r_j q lies in G_i). Used correctly in the null-hypothesis bound."
+  ],
+  "thm-4-2-property-testing-frobenius": [
+   "proved result",
+   "Theorem 4.2, p.33: stated with the size condition (printed as (2n+1) eps^4/144, i.e. (d+1) eps^4/144), the promise and resource bounds; proved on pp.35-38 with explicit error bounds (alternate: at most (1 - t^2 eps^2/2)^N <= 1/3; null: N t^4 < 1/3) and a resource count. I read the full proof."
+  ],
+  "cor-4-3-locality-testing": [
+   "proved result",
+   "Corollary 4.3, p.34: Theorem 4.2 with S the Pauli strings of weight at most k, |S| <= (3n)^{k+1}; the processing time n^2 (3n)^{k+1}/eps^4 is within O((3n)^{k+3}/eps^4). Immediate from the proved theorem."
+  ],
+  "alg-1-efficiency-quantum-classical": [
+   "proved result",
+   "Proof of Theorem 4.2, 'Complexity', pp.37-38: N, total time and classical time are counted explicitly; states and measurements are Clifford circuits of O(n^2/log n) gates, using [AG04] and [Haa16] as tools. Part of the theorem's last sentence ('efficiently implementable')."
+  ],
+  "remark-4-5-and-thm-b-3-ancilla-extension": [
+   "proved result",
+   "Remark 4.5 p.34 and Theorem B.3, Appendix B.2, pp.61-63: derived in Appendix B.2 (n_aux = ceil(log2(144 |S u {I}|/(2^n eps^4))) ancillas; the null and alternate bounds are redone and the condition on S is met), ending 'Thus, we have shown the following theorem'. The statement is legible in the text; a few lines of B.2 are garbled but the argument is complete."
+  ],
+  "remark-4-7-iid-independence-crucial": [
+   "stated limit",
+   "Remark 4.7, p.34: the paper states independence of the N evolutions is crucial for its proof. The de Finetti overhead remark is a side comment, not the settled part."
+  ],
+  "thm-5-1-learning-lower-bound-formal": [
+   "proved result",
+   "Theorem 5.1, Section 5, pp.37-38: n >= 11, the promise, coherent N = Omega(2^{2n}/n) and non-adaptive ancilla-free incoherent time Omega(2^{2n}/eps); proved on pp.38-44 (Haar family H_U = eps U O U-dagger, second moments, Lipschitz concentration, Fano, Holevo bound 2N log d). I read the construction and the coherent bound."
+  ],
+  "exponential-separation-testing-vs-learning": [
+   "proved result",
+   "Abstract p.1 and Section 1.2 p.5: the separation is the comparison of the proved upper bound O(eps^-4) queries (Theorem 4.2 and Corollary 4.3) against the proved lower bound Omega(2^{2n}/n) (Theorem 5.1), under the same promise and the same normalized Frobenius norm. The paper says 'juxtaposing' the two. The comparison is immediate; a reviewer may prefer to treat it as interpretation."
+  ],
+  "future-work-and-open-problems": [
+   "stated limit",
+   "Section 1.5, pp.10-11: the authors state that Heisenberg-limited coherent testing, extension of the lower bounds to ancilla-assisted incoherent algorithms and quantitative improvements are open. These mark what the paper does not cover."
+  ],
+  "hamiltonian-learning-exponentially-hard-average-case": [
+   "proved result",
+   "Abstract p.1: the claim is proved in Theorem 5.1 (n >= 11, promise Tr H = 0 and operator norm at most 1, coherent N = Omega(2^{2n}/n)). A promise restricts the class, so the bound also holds for general Hamiltonians. The abstract omits n >= 11 and the promise; the formal conditions are in Theorem 5.1, pp.37-44."
+  ],
+  "hamiltonian-locality-testing-operator-norm-hard": [
+   "proved result",
+   "Section 1, p.2: the hardness is Theorems 3.1 and 3.6 (adaptive ancilla-free incoherent, and coherent ancilla-assisted, under the promise) and the efficient tester is Theorem 4.2 and Corollary 4.3 (with the size condition on S). The stored sentence is the qualitative summary; the formal conditions are in those theorems, pp.17-38."
+  ],
+  "hamiltonian-testing-no-inverse-evolution": [
+   "setup",
+   "Section 1, footnote 1, p.2: the paper states it does not assume access to inverse time evolution, and argues this is a non-trivial resource."
+  ],
+  "storage-capacity-definition": [
+   "definition",
+   "Introduction, p.1: alpha = p/N defined as the number of stored patterns over network size. (The replica calculation later uses alpha = p/C for the diluted network; the introduction definition is as stated.)"
+  ],
+  "generalised-gardner-setup": [
+   "setup",
+   "Introduction, p.2, and The method, pp.2-3: the paper requires stationary solutions without a learning rule, defines the typical volume V (Eq. 3) as a generalized partition function, and maps the capacity to a classical statistical mechanics model. This is the paper's own construction as it states it."
+  ],
+  "capacity-vanishing-volume": [
+   "definition",
+   "The method, p.3: the paper defines alpha_c by the point where the typical volume vanishes (no typical parametrization satisfies stationarity for all p patterns)."
+  ],
+  "model-open-quantum-spin-memory": [
+   "setup",
+   "Abstract and Introduction, pp.1-2; Open Quantum Hopfield Model, p.3: Markovian master equation with Glauber-type dissipation (Eq. 4-5) plus a transverse-field coherent term; model introduced in refs 24 and 25. Stated as the setup."
+  ],
+  "coherent-drive-competes": [
+   "setup",
+   "Open Quantum Hopfield Model, p.3: the coherent term H = Omega sum sigma_x is stated as designed to compete with the dissipative retrieval dynamics. Model design as stated."
+  ],
+  "mean-field-approximations": [
+   "scope",
+   "Dynamics of macroscopic overlap operators, p.3, and Supplement I, pp.9-10: the four approximations (mean field, high z-overlap, homogeneous misalignment, homogeneous local energy) are listed as (i) to (iv) and are the stated basis of Eq. 6."
+  ],
+  "extremely-diluted-assumption": [
+   "scope",
+   "Main text p.4 and Supplement II.B, pp.12-13: the pattern average is hard for non-Gaussian patterns, so the paper assumes an extremely diluted network with C < log N (logarithmic dilution). Stated as an assumption of the method."
+  ],
+  "solution-count-factorization": [
+   "scope",
+   "Supplement II.A-B, pp.11-12: the paper states it replaces the step function by the number of solutions, following assumption [33], and that N_mu factorizes over sites under the homogeneity assumption. Both are stated assumptions."
+  ],
+  "future-work-quantum-patterns": [
+   "stated limit",
+   "Conclusions p.5 and model section p.3: the paper says storing quantum-mechanical patterns is still to be done, and its model stores classical binary patterns xi = +-1. A limit of its own scope."
+  ],
+  "qhopfield-gardner-method": [
+   "scope",
+   "Abstract p.1: the paper states it proposes a method for evaluating the maximal storage capacity of quantum neural network models by generalizing Gardner's approach with spin-glass theory. What the paper proposes and does (scope), not a claim about outcomes."
+  ],
+  "bonan-quantum-classifier-definition": [
+   "definition",
+   "Definition 1, Section 2, p.3: the paper defines a Quantum Classifier as a map from the set of mixed states on H to a class set C."
+  ],
+  "bonan-classification-policy-definition": [
+   "definition",
+   "Definition 3, Section 2.2, p.3: partial function from a probability distribution over outcomes to a class; the author states the distribution is the input by choice, for convenience."
+  ],
+  "bonan-distance-definition-one-minus-fidelity": [
+   "definition",
+   "Eq. 5 and Definition 4, Section 2.4, pp.4-5: distance is one minus fidelity, fidelity as the squared trace of the sqrt(rho) sigma sqrt(rho) form. Symbols are partly lost in the text layer but the definition is clear in context."
+  ],
+  "bonan-epsilon-robust-definition": [
+   "definition",
+   "Definition 5, Section 2.4, p.5: epsilon-robust over the training set; the author says a validation set or any correctly classified set could be used instead."
+  ],
+  "bonan-bloch-vector-purity-proof1": [
+   "proved result",
+   "Proof 1, Section 3.1, pp.5-6: Eq. 10 computes tr(rho^2) as (1+(2^n-1)||r||^2)/2^n for the rescaled vector, then reads off the strict and equality cases. Uses the standard fact tr(rho^2)=1 iff pure, stated as quantum mechanics background."
+  ],
+  "bonan-neighbourhood-cylinder-proof2": [
+   "proved result",
+   "Proof 2, Section 3.2, pp.6-7: for a pure central state the fidelity reduces to tr(rho sigma), giving a chain of equivalences down to r.s >= threshold (Eq. 12), hence N(rho)=N#(rho). The quotes drop the pure-state condition and the threshold, but the passage states and derives both. 'Cylinder' is the author's picture only."
+  ],
+  "bonan-experiment-setup": [
+   "setup",
+   "Section 4.1, p.11: the author states he filtered MNIST to binary labels because of simulation limits and simulates 8 qubits with amplitude encoding (256 pixels, 16x16). The stored quotes are character lists but the text matches."
+  ],
+  "bonan-lsp-definition": [
+   "definition",
+   "Definition 6, Section 3.3, pp.7-8: two bullets. Bullet 1 is the convex-combination condition (the stored value). Bullet 2 is the Bloch-vector scaling condition 'for any lambda >= ||r||, rho' ... is classified (if rho' can be classified)'. The new value covers both; the stored value is incomplete. Bullet 2 symbols are partly lost in the text layer but the sense matches."
+  ],
+  "abstract-scope-simulation": [
+   "scope",
+   "Abstract p.1: a quantum training algorithm is proposed and the classical simulations cover product outputs with fidelity as cost. Repeated in the Discussion."
+  ],
+  "definition-system-has-memory": [
+   "definition",
+   "Introduction p.1: 'We say the system has memory if the output at time t depends on the inputs at times tau <= t.'"
+  ],
+  "definition-quantum-memory": [
+   "definition",
+   "Introduction p.2: memory is quantum if the time dependence is facilitated by a subsystem able to store entangled states."
+  ],
+  "design-target-inputs-outputs-every-step": [
+   "scope",
+   "Introduction p.2: the paper states it focuses on qudits with in- and outputs at every step, unlike the graph quantum RNN of [71], whose characterization is cited."
+  ],
+  "qnn-architecture-definition": [
+   "definition",
+   "Results, network architecture, p.2: the dissipative QNN of [79] built from perceptrons in L+2 layers, with the unitary and channel definitions (Eq. 1-2). The architecture is adopted from [79] and defined here for use."
+  ],
+  "qrnn-memory-feedback-definition": [
+   "definition",
+   "Results p.2 and Fig. 1 caption: part of the total output is fed back as the memory input of the next step."
+  ],
+  "training-needs-multiple-copies": [
+   "setup",
+   "Results, training process, p.3: the quantum algorithm needs multiple copies of every input and output state. A requirement of the paper's own setup."
+  ],
+  "focus-product-states-entangled-future": [
+   "stated limit",
+   "Results p.3: the paper treats product inputs and outputs only and leaves entangled inputs to a future publication."
+  ],
+  "local-cost-pure-definition": [
+   "definition",
+   "Results p.3-4, Eq. 4: the local cost is the average over runs and steps of the fidelity with the reduced output, ignoring the last memory state. The sentence that fidelity is the essentially unique measure for pure states is the stated rationale; the definition is what the passage settles."
+  ],
+  "global-cost-pure-definition": [
+   "definition",
+   "Results p.4, Eq. 5: fidelity of the global product output with the target, last memory traced out."
+  ],
+  "mixed-output-cost-hilbert-schmidt": [
+   "definition",
+   "Results p.4: for non-pure outputs the paper uses the squared Hilbert-Schmidt distance. The ease claim is the authors' rationale citing [85, 86]; the choice of cost is what the passage settles."
+  ],
+  "lemma1-global-cost-at-most-local-cost": [
+   "proved result",
+   "Lemma 1, Appendix A, p.6: stated for pure product outputs and all unitaries; the proof applies the data-processing inequality (A2) with the partial trace. I checked the steps and they hold."
+  ],
+  "numerical-results-use-local-pure-algorithm": [
+   "scope",
+   "Results p.4 and Appendix F.1, p.27: the paper states results mainly come from the local pure-output algorithm (Appendix B), with the other algorithms in Appendices C, D and E."
+  ],
+  "simulation-size-limit": [
+   "stated limit",
+   "Results, simulation of learning tasks, p.4: classical simulation restricts the paper to small widths and total spaces up to 4 qubits."
+  ],
+  "evaluation-protocol-training-vs-testing-cost": [
+   "setup",
+   "Appendix F, p.27: same fidelity cost for training and testing with pure outputs; fidelity and Hilbert-Schmidt both used for mixed. The caveat about small training sets is the authors' remark attached to the protocol."
+  ],
+  "delay-channel-definition": [
+   "definition",
+   "Results p.4: the delay channel is defined by output x equals input x-1; training and test sets as stated; Haar-random inputs."
+  ],
+  "generalisation-protocol-fig5": [
+   "setup",
+   "Fig. 5 caption p.30 and Fig. 2(a) caption p.4: 1000 rounds, learning rate 0.06, N = 1 to 10 training pairs, 30 test pairs, averaged over 50 rounds. I read both captions and they agree."
+  ],
+  "time-evolution-task-definition": [
+   "definition",
+   "Results p.4: training on [T1,T2], predicting (T2,T3] by feeding predictions back, compared by fidelity; Appendix F.1.b gives detail."
+  ],
+  "filter-task-definition": [
+   "definition",
+   "Results p.5, Eq. 6: low-frequency drift subtracted at speed v, high-frequency noise removed by exponential smoothing with a convex combination of previous outputs."
+  ],
+  "proposition-f1-no-perfect-quantum-multiplication": [
+   "proved result",
+   "Proposition F.1, Appendix F.1.c, pp.31-32: stated with the open set I and a not in {0,1,-1}, proved from linearity of channels (F6-F13), and the three channels for the excluded a values are given (F14). One equation line has a sign misprint (or text-layer loss) at theta = 3pi/2, but the product by (1 + e^{i a pi/2}) used next is right, so the proof stands."
+  ],
+  "lemma2-cost-of-epsilon-close-states": [
+   "proved result",
+   "Lemma 2, Appendix F.1.c.a, p.33: stated with its conditions and proved in (F19) with channel contractivity (a cited standard fact). I checked the decomposition and bounds; the factor 2 epsilon follows."
+  ],
+  "quantum-training-algorithm-description": [
+   "setup",
+   "Appendix G, pp.41-42: the quantum algorithm is the feed-forward one of [118] with finite-difference gradients and the SWAP trick, and for the local cost the memory is carried between runs. The paper's description of its own proposed algorithm."
+  ],
+  "discussion-open-questions": [
+   "stated limit",
+   "Discussion p.5: the authors list as open the questions on entangled data, benefit of quantum memory, classical substitutes, matrix-product states, catalyst discovery and noise robustness. They are not addressed in the paper."
+  ],
+  "bondarenko-scope-product": [
+   "scope",
+   "Discussion p.5 and Results p.3: product inputs and outputs only, with benchmarking tasks and classical simulation."
+  ],
+  "bondarenko-universal-def": [
+   "definition",
+   "Introduction pp.1-2: 'We say that a QRNN architecture is universal if it can implement any causal quantum automaton.'"
+  ],
+  "qals-abstract-scope-npp-tsp": [
+   "scope",
+   "Abstract p.1 and Section 5 p.15: the paper tests QALS on NPP and TSP."
+  ],
+  "qals-definition-guided-metaheuristic": [
+   "definition",
+   "Section 3, p.5: QALS defined as a guided meta-heuristic for problems not directly representable on the annealer, with the tabu matrix and Algorithm 1. The method comes from [6] and [7]; the paper states the definition for this work."
+  ],
+  "qals-impl-differs-from-original": [
+   "scope",
+   "Section 4, p.7: the paper states both implementations needed testing and optimizations relative to the original mainly mathematical formulation (Algorithm 2 against Algorithm 1)."
+  ],
+  "qals-correctness-test-exhaustive-search": [
+   "setup",
+   "Section 4, p.7: machine time was short, so the annealer call was replaced by exhaustive search on the same energy equation; the paper says this does not simulate the probabilistic annealer."
+  ],
+  "qals-cpp-fork-pipe-design": [
+   "setup",
+   "Section 4.1, pp.10-12: Leap IDE lacks Python.h, so the C++ program forks a Python child; topology, problem triplets and solution move over anonymous pipes (Algorithms 4 and 5)."
+  ],
+  "qals-mersenne-twister-choice": [
+   "setup",
+   "Section 4.1, p.13: the paper chose the Mersenne Twister, period 2^19937 - 1 (printed flat), after rejecting rand() and annealer-generated randomness."
+  ],
+  "qals-mersenne-twister-limit": [
+   "stated limit",
+   "Section 4.1, p.13: the authors state the generator does not guarantee quality and cannot produce all permutations, and call it the best compromise they found."
+  ],
+  "qals-hybrid-default-config": [
+   "setup",
+   "Section 2.4 p.5, Section 4.2 p.15 and Section 5.2 p.21: default Hybrid configuration; Hybrid has no reads parameter; Hybrid fails if run in parallel. All stated by the paper."
+  ],
+  "qals-npp-run-count-limit": [
+   "stated limit",
+   "Section 5, p.15: annealer-based NPP results come from a single or rarely double run because machine time was too short; TSP was run several times."
+  ],
+  "qals-npp-classical-ckk": [
+   "setup",
+   "Section 5.1, p.17: the classical comparator is Complete Karmarkar-Karp using the implementation of Pedroso and Kubo [23]. The worst-case exponential time is the paper's description of the algorithm."
+  ],
+  "qals-npp-setup-hardware": [
+   "setup",
+   "Section 5.1, pp.17-18: Leap cloud, one run at a time, default annealing parameters on Advantage 1.1, Hybrid manages its own, C++ for results and Python for checks."
+  ],
+  "qals-npp-qals-parameters": [
+   "setup",
+   "Table 1 p.18 and the parameter legend p.15: 0.1, 0.01, 0.2, 10, 1.5, 10, 100, 70 in the order p_delta, eta, q, N, lambda_0, k, Nmax, dmin (the table header order matches)."
+  ],
+  "qals-npp-instance-generation": [
+   "setup",
+   "Section 5.1, p.18: instances are integer vectors in [1, Range], for example 500 integers in [1,100]; Sets Difference is the difference of the two subset sums."
+  ],
+  "qals-npp-more-measurements-limit": [
+   "stated limit",
+   "Section 5.1, p.18: time was too short for higher k. The note on noise and larger samples is the authors' rationale, not the settled part."
+  ],
+  "qals-tsp-edge-weights-range": [
+   "setup",
+   "Section 5.2, p.21: edge weights are real numbers in [0, 10] in all TSP experiments."
+  ],
+  "qals-tsp-setup-parameters": [
+   "setup",
+   "Table 3 and Section 5.2, p.21: 0.1, 0.2, 0.2, 5, 1.5, 5, 100, 70; k = 5 for Embedding Composite; default annealing on Advantage 1.1; mainly Python with C++ checks; Brute Force in C++."
+  ],
+  "qals-tsp-refinement-procedure": [
+   "definition",
+   "Section 5.2 Solution refinement, pp.22-23: step-by-step procedure keeps unique positions, picks random available nodes, shuffles duplicates, fills the rest randomly; the paper states it leaves valid solutions and unique positions unchanged."
+  ],
+  "qals-tsp-more-measurements-limit": [
+   "stated limit",
+   "Section 5.2, p.24: the authors say performance could probably improve with far higher k, but time was too short."
+  ],
+  "qals-conclusion-hybrid-not-a-competitor": [
+   "stated limit",
+   "Section 6, p.24: the authors state the Hybrid comparison is a necessary baseline but, being a race of algorithms, cannot support scientific conclusions."
+  ],
+  "qals-implementation-setup": [
+   "setup",
+   "Section 6, p.24: two implementations (C++ and Python) on D-Wave, with Hybrid as baseline. Matches the passage."
+  ]
+ },
+ "theory_low": {
+  "lower-bound-operator-norm-incoherent-abstract": "Abstract p.1: a summary that drops the conditions. Theorem 3.1 holds for adaptive ancilla-free incoherent testers, with the promise Tr H = 0 and operator norm at most 1, and k at most O(n/log n). The coherent bounds are Theorem 3.6. The abstract text alone omits these conditions.",
+  "thm-3-1-proof-method-pinsker-weingarten": "Section 1.4 pp.6-7 outlines the proof loosely (a 'TV distance upper bound' of order log N / d times E[min(1, eps t_k)]). The proof in Section 3.1 bounds the KL divergence instead (TV squared by Pinsker). A method description that differs in detail from the proof, and not a result.",
+  "thm-1-3-efficient-frobenius-tester-informal": "Theorem 1.3 p.4 is marked informal (k <= O~(n) and no explicit size condition). The formal statement is Corollary 4.3, entered separately.",
+  "prop-2-3-mub-stabilizer-2-design": "Proposition 2.3, p.13: the 2-design property is obtained from the cited result [KR05, Theorem 1]; the paper only checks the overlap identity |<phi_ij|phi_kl>|^2 = 1/d for i != k. The proof depends on a cited result, and the identity is garbled in the text layer.",
+  "remark-4-4-testing-many-properties": "Remark 4.4, p.34: a remark that a counting statistic gives error delta with log(1/delta) cost; the formal statement is Theorem B.1, whose proof is a sketch.",
+  "thm-b-1-testing-many-properties": "Theorem B.1, Appendix B.1, p.60: the paper itself labels the proof 'Proof Sketch' (Chernoff-Hoeffding step shown for the null case, the alternate case called 'similar', resource bounds 'follow'). Statement and conditions are clear, but a sketch is not a proof.",
+  "remark-b-2-sparsity-and-low-intersection-testing": "Remark B.2, p.61: two applications argued briefly (counting M = O(4^n k) properties); the logarithmic dependence rests on Theorem B.1, itself only sketched.",
+  "thm-b-5-tolerant-testing": "Theorem B.5, Appendix B.3, pp.63-64: the paper labels the proof 'Proof Sketch'; resource bounds with the exponents 2.5 and 0.5 are only partly legible.",
+  "remark-4-8-other-norms-and-rescaling": "Remark 4.8 p.34 and Section 1.2 p.5: one-line consequences by norm monotonicity (correct) and rescaling by B, where the paper only says 'polynomial dependencies on B' with no bound. A remark, not a stated and proved theorem.",
+  "measure-first-ask-later-feature": "Section 1.2, pp.4-5: a prose property of the algorithm; the formal version is Theorem B.1, whose proof is a sketch.",
+  "learning-lower-bound-proof-method-fano-holevo": "Section 1.4 pp.9-10 and Section 5 pp.38-42: a description of the proof method (family size exp(d^2/38400), Fano, Holevo). I checked it against the proof and it matches, but it describes how the proof goes; the result is entered as Theorem 5.1.",
+  "appendix-a-short-time-distance-equivalence": "Appendix A.1 p.57 and A.2 p.58: asymptotic derivations as t -> 0 with unquantified O(t^2) terms and the condition Tr H = Tr H-tilde, which the quotes drop. The value is qualitative ('understood via', 'connected'); no theorem is stated.",
+  "omega-zero-recovers-classical": "Supplement I, Eq. S22, p.10: follows from the approximate mean-field equations of motion (My decays when Omega = 0). A consequence of equations that rest on the approximations (i) to (iv), not a stated theorem.",
+  "x-overlap-decays": "Supplement I, Eq. S13 and S11-S12, p.9: the x equation is decoupled; the paper says C_i is positive semi-definite and the x expectation values vanish at long times. Positive semi-definite alone does not give decay, and the argument is brief, so it is a sketched derivation, not a proved result.",
+  "classical-stability-large-overlap": "Supplement II.A, p.11: the threshold 0.4478 is stated for condition S28 without a derivation in the paper. A stated numeric value, not a proved result.",
+  "classical-gardner-limit": "Results p.4 and Supplement III, p.19: the zero-temperature classical limit reproduces Gardner's result (S77, alpha_c -> 2 as m -> 1). A consistency check of a numerical or approximate calculation against a cited classical result, not a theorem proved here.",
+  "large-temperature-beta-squared": "Results p.5 and Supplement III, p.19 (Eq. S78 to S83): a first-order expansion in beta inside the replica-symmetric, mean-field theory. A physics-level asymptotic derivation under approximations, not a stated and proved theorem.",
+  "critical-drive-from-expansion": "Supplement III, p.19 (Eq. S79-S80): the critical drive follows from a first-order expansion in beta under the same approximate theory. Not a stated and proved theorem.",
+  "weak-drive-quadratic": "Results p.5 and Supplement III, pp.19-21 (Eq. S92-S93): a perturbative argument inside the approximate theory; the paper says it is confirmed numerically. Not a stated and proved theorem.",
+  "bonan-circuit-policy-is-linear-sound": "Proof 3, Section 3.3, pp.7-9: the circuit part is called 'quite self-evident' with a short Eq. 14 computation, and the measurement part is called 'obvious'. The policy is for two classes only. The value is the author's report that he proved it, not a full proof in the paper.",
+  "bonan-first-qubit-policy-bloch-component": "Eq. 16, Section 3.3, p.9: the equivalence is derived from the partial trace, but the inequalities are garbled in the text layer and the author calls the final step 'obvious'. The threshold form cannot be checked from the text.",
+  "bonan-robust-bound-monotone-proof4": "Proof 4, Section 3.4, pp.9-11: the statement is garbled in the text layer (conditions and the definition of the vector set are lost) and the monotonicity step in Eq. 18 is a sketch with a geometric figure. The conditions cannot be confirmed.",
+  "bonan-robust-bound-from-measured-probabilities": "Section 3.4 p.11 and Algorithm 1 p.12: describes the author's own algorithm. The bound formula rests on Proof 4 (not settled) and is lost in the text layer. An algorithm description, not a proved result.",
+  "universality-argument-conclusion": "Results p.3 (lines after Eq. 3): a three-step argument resting on cited results [76], [84] and [79]; the QNN size needed is not given. Not a theorem proved in the paper.",
+  "layerwise-update-width-scaling": "Results p.4: the claim that the simulation matrices scale with width and not depth follows from the layer-by-layer update the paper describes, with no separate proof or resource count.",
+  "corollary-f2-no-perfect-quantum-adders": "Corollary F.2, p.32: a two-sentence reduction to the cited No Broadcasting theorem [112]; the family of states is loosely specified ('different values of continuous parameters corresponding to different states'). A reduction to a cited result, not a full proof.",
+  "lemma3-feedforward-cannot-correct-drifts": "Lemma 3, pp.33-34: a proof is given, but the upper-bound expression is garbled in the text layer (denominators and the epsilon terms are not recoverable, and the lemma and proof forms differ in print). The statement as entered cannot be confirmed from the text.",
+  "lemma4-feedforward-drift-probabilistic-bound": "Lemma 4, p.35: a proof is given, but the bound (F31) is garbled in the text layer (radical, exponent and where c sits are lost), so the statement as entered cannot be confirmed.",
+  "drift-cancel-circuit-memory-qubits": "Appendix F.1.c.a, p.37-38 and Fig. 8: a construction stated in a sentence and a circuit figure; exactness is asserted and shown by numerical performance in Fig. 9, with no proof.",
+  "global-cost-learning-rate-scaling": "Appendix D, p.24: a training heuristic (learning rate eta over C) with a justification that minimizing ln C has the same minimizers as C. The paper gives no measured comparison; the same minimizers do not mean the same gradient-descent path.",
+  "qals-npp-worked-example": "Section 5.1 Example, p.17: a worked arithmetic illustration (c = 104, c^2 = 10816; x = (1,1,1,1,0,0,1,0) gives two subsets of sum 52; y = -2704 so diff^2 = 0). I checked the arithmetic and it holds. It fits none of the five bases (not a setup, definition or proved theorem), so low."
+ },
+ "keep_stored": {},
+ "requote": {}
+}

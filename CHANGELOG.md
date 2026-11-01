@@ -13,7 +13,568 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-10-24 onward (Sprint 13, in progress)
+### 2026-10-29 onward (Sprint 14, in progress)
+
+- **chore**: Sprint 14 opened (2026-10-29). The team lead merged PR #131
+  into develop (bb4cb80) and PR #139 to main (952c9e3); `sprint-13`
+  tagged on 952c9e3; branch `feature/20261029_Sprint_14` cut from the
+  Sprint 13 branch (6.6 carry-forward). PR #139 is titled "Sprint 12:
+  Develop to Main"; it was Sprint 13's release. Phase 1.1
+  reconciliation: every commit since 2026-10-28 has its entry
+- **docs**: Backlog refinement 2026-10-29 (Sprint 14 Phase 1.2 to 1.4):
+  Sprint 13's shipped cards pruned by hand (F107, F108, F109 to F112,
+  and F113, whose definitions of a full read and acceptance move into
+  F114); F120 carded from Phase 2's Sprint 29 work at 22d16c3 (F156,
+  F158, F160 and F166 results); snapshots refreshed on F95 (166 unnamed
+  PDFs: 165 are Task G's downloads of store records, 1 is F119's paper),
+  F98 (Roadmap-to-QML at ea6f42a7c0: 4 new arXiv ids, 7 withdrawn or
+  retracted marks), F57 (unchanged: 654 with no read row) and F51 (hold
+  unchanged). Phase 1.3: 0 re-checks due; no ADR or schema change in
+  Sprint 13. Slate presented
+- **docs**: PR #139 retitled "Sprint 13: Develop to Main" (team lead,
+  2026-10-30, Q2 = 1). F121 carded (team lead, 2026-10-30): a spike over
+  the store as it stands, for what has been learned, what it means for
+  the competition approach, and which experiments to run, before Sprint
+  14's scope is selected; F118 stays as the full synthesis after F117.
+  Then merged the same day (team lead: "Update card F118 and sit this in
+  sprint 14 after F117 completes"): F121 retired, its three outputs
+  (what was learned, what it means for the approach, which experiments)
+  and its approach moved into F118, which is placed in Sprint 14 after
+  F117. The team lead's own questions (pasted 2026-10-30 under "Not
+  asked yet": gates and micro algorithms, data in and out, non-hybrid
+  uses, hybrid practice, where advantage shows and at how many qubits,
+  how each classical model family fits a hybrid, GenAI) added to F118
+  verbatim, with a keyword coverage snapshot; estimate 240m to 360m
+- **docs**: Sprint 14 scope selected (team lead, 2026-10-30): F119, F95,
+  F98, F120, F117, F118 (after F117) and F114 at 50 papers; released
+  copies F122 (F95) and F123 (F98); F39 not selected. Plan drafted
+  (`docs/sprints/SPRINT_14_PLAN.md`). Pre-flight finding: the 302 cloud
+  results' local copies and `launches.json` are gone from the Temp
+  folder (cause unknown); the 302 `cloud/f114/<record>` branches remain,
+  and Task E rebuilds from them first. Phase 2's Sprint 29 merged (PR
+  #63 at 6242b8a), so F120 reads it through the GitHub API. Draft PR
+  #140
+- **docs**: Sprint 14 plan approved as amended (team lead, 2026-10-30):
+  Q1 = 2 with the Boyd book completed (F114's 50: abbas-2020-power, Boyd,
+  then the next 48 in ledger order; the other abbas-2020 paper is one of
+  the cloud results, so the plan corrects the option's "two"); Q2 = 1
+  (a result not read in full is re-read this sprint); Q3 = 1 (the cloud
+  work folder moves to `work\f114\` outside Temp). Issues #141 to #147
+- **feat**: F119 (Sprint 14 Task A, #141, 2026-10-30): Brighindi's
+  PHI-OMEGA paper read in full and entered with its posts, comment
+  thread, three images (read by eye, described, not quoted) and the two
+  author repositories that bear on its claims
+  (`scripts/sprint14_f119_reading.py`, INTAKE section 54). 4 source
+  records and 11 assertions under `ml`: the paper's definitions, its
+  test's setup, the absence of any proof, and the repositories' own
+  stated limits graded HIGH on those bases; its central claim, its
+  reproducibility claim and both posts LOW as the author's claims; the
+  Figure 1 result and the repository's counts LOW as one-seed measured
+  results. One `contradicts` link: the author's repository says the test
+  is not reproducible from it and proves no immunity. The Zenodo archive
+  holds 610 file entries (not 608) and bears on none of the claims. A
+  second apply writes nothing; tests proven red by injection
+- **docs**: F122 (Sprint 14 Task B, #142, 2026-10-30): the F95 release.
+  374 PDFs in `Papers\`; 166 unnamed before, 165 after (Task A named the
+  PHI-OMEGA paper). The 165 are Task G downloads of store records in
+  ledger groups g295 to g329, linked by the ledger; `access` names each
+  file when F114 reads its group (the narrower reading of step (2),
+  disclosed in INTAKE section 55). The hand-download list holds 53
+  records, none with a local copy. No store write (ebff67c)
+- **fix**: F119 corrected after its fresh-eyes review (Sprint 14 Task A,
+  #141, 2026-10-30; INTAKE section 54, dated correction). The runtime
+  read had missed `docs/M_OMNIA_STATO_RICERCA_2026-09-27.md`, which calls
+  the closure a formalization hypothesis and the stress test a simulator
+  result, not a general proof: read in full, a 12th assertion (HIGH,
+  stated limit) entered, the read row and the absence claim's search
+  scope corrected. Two `contradicts` links added to the paper's central
+  claim (its "demonstrating absolute structural immunity" cannot hold
+  beside the repository's limits); two values' repository and thread
+  text now quoted and checked; the stress limit adds that rejections are
+  not a solution of the task. A second apply writes nothing; tests
+  proven red by injection (6d5bcec)
+- **fix**: F119 corrected again after the review of 6d5bcec (Sprint 14
+  Task A, #141, 2026-10-30; INTAKE section 54, second dated
+  correction). The status-note assertion's `contradicts` link withdrawn:
+  a simulator-only result can hold beside a claim of immunity inside
+  that simulator (ADR-0004 A8 (b)); one link to the central claim
+  remains, from the stress-test limit. The m-omnia read row now records
+  its search (30 tracked files, no hits); each corrected row keeps its
+  first text in updated_reason. A new test puts the first rows and the
+  link back on a store copy and checks the apply corrects them; proven
+  red by injection
+- **feat**: F117's first step (Sprint 14 Task E, #145, 2026-10-30): the
+  F114 cloud results rebuilt from their 302 branches, since Temp lost
+  the only local copy and `launches.json`. `scripts/f114_cloud.py`
+  gains `rebuild`: each branch's base is its merge-base with the Sprint
+  13 branch (5 launch commits), the stray-file check runs from it, and
+  the session and attempt come from the run log where it names them
+  (297 of 302). Its work folder moves out of Temp to
+  `D:\Data\Harold\EvidenceBasedDB\work\f114\` (Q3 = 1), with the 329
+  briefs and the run log, each copied and checked by SHA-256 before the
+  Temp copy was removed. Result: 302 results saved, 0 refused, 0 stale;
+  the two papers never to be launched again (udaru-2025, abbas-2020) are
+  marked. Test proven red by injection three ways (92d7634)
+- **feat**: F117's applier (Sprint 14 Task E, #145, 2026-10-30):
+  `scripts/sprint13_g_reading.py` takes, from a group's review file, its
+  own tag and reader (F114's groups were read in cloud sessions and are
+  entered in Sprint 14, so Task G's "Sprint 13 Task G ... subagent"
+  wording would misstate their provenance), a reader per record (15
+  results whose commits do not record the model), and `unread` records
+  left out of their group with why (udaru-2025 in g076). Task G's 42
+  groups dry-run unchanged (5,489 assertions from 210 records). The
+  rebuilt 302 results all pass `sprint13_g_check.py` against their PDFs
+  again (0 problems). Tests proven red by injection (de1efff)
+- **fix**: F117 review fixes and the group build (Sprint 14 Task E,
+  #145, 2026-10-30). Review of 92d7634: `rebuild` refuses a result
+  branch already merged into the launch branch (its merge-base would be
+  its own tip, so the stray-file check would see nothing; none is
+  merged today); `scripts/sprint13_g_ledger.py` writes briefs to
+  `work\f114\briefs`, where they now live. Correction to the 92d7634
+  entry: the run log gave a session for 295 of the 302 branches, not
+  297 (297 counts the 2 unread entries). New
+  `scripts/f117_build_groups.py` assembles the per-paper results into
+  group reader files in ledger order, renaming `id` to `id_suggestion`
+  in 22 results; only whole groups are built (59 groups, 294 records:
+  g079 and g103 wait for Task F). Tests proven red by injection (d2fcc8d)
+- **feat**: F117's 59 group reader files written (Sprint 14 Task E,
+  #145, 2026-10-30): `manifests/sprint13_g_reads/group_g043.json` to
+  `group_g102.json` less g079, 290 records. Two build changes first.
+  (1) 36 new-assertion ids that another paper also suggested (each
+  session saw one paper, so `conclusion-summary` and the like repeat)
+  or that the store holds for another source take their paper's author
+  and year as a prefix, listed by the build. (2) Four results whose file
+  gave nothing to read (mancilla-2026 and qci-2026 PDFs with no text
+  layer; two qci-research web pages saved without their article) are
+  left out unread, on the team lead's udaru precedent. The applier's dry
+  run over the 59 groups finds no duplicate or clashing id. The Haiku
+  tier flagged 69 of 302 results; every flag is a limit of the file
+  (equations, tables, figures or supplements lost by the text layer, or
+  no text), none a reader omission. Tests proven red by injection
+  (cecf20d)
+- **feat**: F117's Sonnet tier set up (Sprint 14 Task E, #145,
+  2026-10-30): `manifests/f117_reviews/REVIEW_PROMPT.md` (the five HIGH
+  bases, one decision per item, read in the paper's text, no budget)
+  and `scripts/f117_review.py`, which lists each group's items (a new
+  HIGH suggestion, a new theoretical result, a changed stored
+  assertion, a confirmed stored HIGH) and turns the reviewer's
+  decisions into the applier's review file. It refuses a missing
+  decision, a HIGH outside the five bases or a decision with no why,
+  and holds back any certainty change on a stored assertion for the
+  team lead. Pilot on g043 (204 items) running. Tests proven red by
+  injection (46d088d)
+- **fix**: F117 items carry the stored text (Sprint 14 Task E, #145,
+  2026-10-30). The g043 pilot found two stored-HIGH items blank: a
+  reader who confirms a stored assertion may leave its value and quotes
+  empty. Each changed or stored-HIGH item now carries `stored_value` and
+  `stored_quotes` from the store, and the prompt says to decide on them.
+  The pilot read the blank one from the store itself, so its decisions
+  stand. Pilot: 204 decisions in about 8 minutes; g043 holds two
+  LOW-to-HIGH changes for the team lead. Test proven red by injection
+  (7f18e9f)
+- **feat**: F120, Phase 2's Sprint 29 results entered (Sprint 14 Task D,
+  #144, 2026-10-30), read at Phase 2 commit 6242b8a with `git show`
+  (the team lead's clone now holds it; the plan said the GitHub API,
+  which gives the same bytes). Two source records: the F166 document set
+  (the ULB comparison and seven algorithm documents) and Sprint 29's
+  validation record with its three preregistered entries. Nine SIM
+  assertions: F166's tuned ranking, the proxy's train-test gap, recall
+  at the alert budget and the classical tuning choices; F156's failed
+  Henze-Penrose bound; F158's cascade below one model and the ULB frauds
+  every stored model misses; F160's room check passing on IEEE-CIS;
+  F159's parallel build. One stored value corrected: the F108 plug-in
+  ratios now top out at 1.119 (Phase 2's F164 recomputation). The F108
+  and F162 records repointed at 6242b8a. No relation linked (ADR-0004
+  A8 (b)); each reason names what it bears on. A live test checks the
+  headline figures against the run files. INTAKE section 56. A second
+  apply writes nothing. Tests proven red by injection. Closes #144
+  (1f904ba)
+- **process**: F117's review prompt names the reading rule outright
+  (Sprint 14 Task E, #145, 2026-10-30). Five of the first reviewers
+  (g044 to g047, g049) decided some items, mostly setup items, from the
+  quote or a grep snippet. Each was sent back and re-read them in
+  context; g044 changed one decision and g045 thirteen (LOW to HIGH,
+  once the full statements were read). The prompt now says setup items
+  are read in context too and that a reviewer names any item it did not
+  read; each launch repeats it and gives the reviewer its own scratch
+  folder, after two reviewers overwrote each other's scratch files
+- **feat**: F123, Roadmap-to-QML's release for Sprint 14 (Sprint 14 Task
+  C, #143, 2026-10-30), read at ea6f42a7c0, 9 commits after F104's
+  a239747648. 1,450 arXiv ids listed; 32 linked for the first time, 28 of
+  them already held (the list replaced publisher links with arXiv links).
+  The 4 new papers entered at `seen` with their free copies; the 28 held
+  ones get a route naming the list at this commit, and no other route is
+  restated. The list's 7 withdrawn or retracted marks all agree with the
+  store (F33); no record changed. 20 non-arXiv links carried (25 at
+  F104). `scripts/sprint14_f123_roadmap.py` reuses F104's script.
+  INTAKE section 57. A second apply enters nothing and adds no route.
+  Tests proven red by injection. The 4 reads run beside Task F's
+  (577380e)
+- **fix**: F120's fresh-eyes review of 1f904ba (Sprint 14 Task D, #144,
+  2026-10-30). High: the two new Phase 2 source records failed the
+  local-file check, because their evidence named the documents' hashes
+  without "SHA-256" and the check read a run file's hash first; the
+  evidence is rewritten, and a live test runs the check on all four
+  paper records (red on the pre-fix backup). Medium: the corrected F108
+  value carried Phase 2's BLUF range (0.5-1.8 points), which F164 left
+  as it was; the value now attributes it, and the reasons give the range
+  from the corrected ratios (0.57, 1.91, 1.56), computed here. Medium:
+  F166's ranking now says the proxy uses its own top 17 features and the
+  classical lanes all 30 columns. Low: five values reworded against the
+  sources (F158's named risk and its models' features, F159's inferred
+  wait and one seed, F160's data term, its "so" and F25's card, F166's
+  attributed equality, F156's fifth and sixth methods). Tests now check
+  the corrected value exactly, F166's figures against its run file, the
+  named records exist, and the unchanged F108 and F162 quotes at
+  6242b8a. F124 carded for the stale f151, f153 and f154 pointers.
+  INTAKE section 56 addendum. A second apply writes nothing (454c7a4)
+- **feat**: F114's local reads set up (Sprint 14 Task F, #146,
+  2026-10-30). A new reader prompt,
+  `manifests/sprint14_f114_reads/READER_PROMPT.md`: Task G's text with
+  every path under `work\f114\local\` (the `s13g` folders are empty since
+  Q3 moved the work). `scripts/sprint14_f114_local.py` writes the briefs
+  for F's 50 papers in 12 groups (g079's abbas-2020, g103's Boyd and
+  bucher, g104 to g112, g113's first 2), adds ledger group g330 for Task
+  C's 4 papers, and seeds Boyd's resume in `partial\`, never `done\`,
+  from page 1, since its cloud read sampled the book. The group builder
+  takes a local read over a cloud result, does not count Boyd's cloud
+  result as a read, waits for each local reader's group file, and leaves
+  g113's other 3 records for F114's next release. `finalize` names the
+  local reader and Task F's tag. Tests proven red by injection (1cb63bb)
+- **fix**: the fresh-eyes review of 1cb63bb (Sprint 14 Task F, #146,
+  2026-10-30). Two of the new guards had tests that could not fail:
+  the test patched WAIT, and its brief held no unread record. WAIT is now
+  `waiting()`, read from the briefs and the readers' group files, and
+  the test exercises both. The builder takes a local read from the
+  reader's checked group file, not its `done\` file. In a group that
+  mixes cloud and local reads, `finalize` writes a per-record `tags`.
+  The applier reads that field, so abbas, bucher and Boyd will not carry
+  "F114 cloud read". The applier also says "first-pass subagent" for a
+  local read, where it said "cloud session" for every Sprint 14 group.
+  `f114_cloud.records()` stops at g329: g330 has no cloud brief, so
+  `launch` and `run` crashed on it. F125 is carded for g113's 3 unread
+  records, which have no way back in, and for the stale status script.
+  Each fix was proven red by injection. g079's group file was built
+  before the fix, and it matches the reader's checked file (f599950)
+- **fix**: F114's local reads anchor the PDF page (Sprint 14 Task F,
+  #146, 2026-10-30). g104's reviewer found page anchors 1 to 3 pages
+  off. A check against the PDFs' pages found the same in every local
+  group: g105, g106 and g107 ran up to 15 pages off, and Carlesso's
+  lecture notes cited the printed page numbers. The readers' text layers
+  had lost their page breaks. The cloud groups g095, g100 and g101 were
+  mostly right (0 to 6 misses a paper, nearly all one page). The group
+  builder now computes a local read's page from the PDF. An anchor
+  naming one page or range takes the pages its quotes are on. An anchor
+  with a quote off its pages, whose page cannot be computed, loses its
+  pages and keeps its sections. An anchor with no quote found is left as
+  it is. Each change is listed. The rebuild changed 288 anchors in g079
+  and g104 to g107: 211 set and 77 dropped (snapshot as of 2026-10-30).
+  The reader prompt now says a page is the PDF's page, counted with
+  pdftotext's form feeds, and the readers still at work were told.
+  g079's and g104's group files and g104's provisional review were
+  deleted and rebuilt. None was committed, decisions are keyed by id, and
+  the item counts did not change. Proven red by injection (11d443a)
+- **fix**: the fresh-eyes review of f599950 and 11d443a (Sprint 14 Task
+  F, #146, 2026-10-30). 11d443a's page fix wrote wrong anchors in 4
+  ways:
+  - A page list ("p.6, 14", "pp.6 and 8") kept its stale tail.
+  - One range stretched across several sections ("pp.1-7").
+  - A drop left stray punctuation and the rest of a page list.
+  - An unfound quote forced a drop.
+  A page clause is now the whole list, and it is read with an em dash,
+  "page 9" and "PDF p.N". A "printed p.N" clause is left alone. Pages
+  that are not one run are listed. A quote that is not found counts
+  only in that the pages it may be on are kept. Cleanup is checked
+  case by case.
+  The rebuild of g079 and g104 to g107 changed 287 anchors: 42 lost
+  their pages and none was left for the coordinator (snapshot as of
+  2026-10-30). No changed anchor shows stray punctuation or a leftover
+  page tail.
+  Those group files and the reviews of g104 to g107 were deleted and
+  rebuilt again (uncommitted). The item ids did not change, and each
+  re-finalize gave its earlier counts.
+  The applier test also could not fail with RECORD_TAG left out of
+  `is_mine`: its GROUP_TAG held the local tag too. Each fix was proven
+  red by injection
+- **fix**: the fresh-eyes review of 8f2b408 (Sprint 14 Task F, #146,
+  2026-10-30). The page fix still wrote wrong anchors in 5 ways:
+  - "Printed p.145" and "printed: p.145" were taken as PDF pages.
+  - A list took in the number after it: "p.12, 4.3" became "p.7.3",
+    and "p.3, 2024 edition" lost its year.
+  - A range with "to" ("pp. 12 to 15") left " to 15" behind.
+  - A drop left "(, Figure 2)", "[]" or a dangling "on".
+  - A compressed range ("pp.112-15") named no page.
+  A list now goes on only to a bare number that ends its clause. The
+  rebuild of the 13 local groups (g079, g103 to g113, g330) changed 9
+  anchors, all damaged before by "to" ranges, such as "pp.6, 9 to 6 and
+  9" and "Section 5, to, Fig. 6" (snapshot as of 2026-10-30). No id
+  changed, so the reviews stand. Each fix was proven red by injection
+- **fix**: the fresh-eyes review of aa8c75f (Sprint 14 Task F, #146,
+  2026-10-30). Two regressions and one new defect:
+  - A page list ending its sentence lost its tail: "pp.6, 8." became
+    "p.8, 8.".
+  - A "to" took a count after it: "p.4 to 6 qubits" became "p.12
+    qubits".
+  - The preposition cleanup removed any "on", "at", "in" or "see"
+    before a comma: "(noise turned on)" lost its last word.
+  A list item may now end with a period; a "to" range must end its
+  clause or be followed by "of"; a preposition goes only with the page
+  clause it led into. The rebuild of the 13 local groups changed no
+  anchor (snapshot as of 2026-10-30). Each fix was proven red by
+  injection
+- **fix**: the fresh-eyes review of ee397c6 (Sprint 14 Task F, #146,
+  2026-10-30). Allowing "of" after a list item let a count join the
+  list ("p.12, 4 of 10 qubits" lost its 4): "of" now ends only a "to"
+  range. A preposition after "(" or first in the anchor, in any case,
+  now goes with its page clause ("(see p.4)" left "(see)"). "p.4.2" is a
+  section, not page 4. The rebuild of the 13 local groups changed no
+  anchor (snapshot as of 2026-10-30). Each fix was proven red by
+  injection
+- **fix**: the fresh-eyes review of ccaedc2 (Sprint 14 Task F, #146,
+  2026-10-30). Its guard for "p.4.2" held only for a one-digit page:
+  the regex backtracked, so "p.12.3" matched "p.1" and became "p.72.3".
+  The first number now may not be followed by a digit either. A
+  two-digit case was added and proven red. The rebuild of the 13 local
+  groups changed no anchor (snapshot as of 2026-10-30). Left as it is,
+  cosmetic and older: a dropped "p.4 to 6 of 10" leaves "of 10"
+- **docs**: F126 carded (Sprint 14 Task F, 2026-10-30): the page-anchor
+  leftovers. The fresh-eyes review of 59233c1 found no new defect and
+  one older low-severity gap (a dash range's end has no ".digit"
+  guard). Sprint 14 stopped the review chain there, after five rounds,
+  rather than start a sixth for a one-token change. The card also holds
+  "of 10" after a dropped "to" range, "p.12a", and
+  muta-hardware-scope-photonic-gkp's stored page, which the apply cannot
+  correct (its reader entry has no quotes to rebuild it from)
+- **docs**: INTAKE 58 written before the apply (Sprint 14 Tasks E and F,
+  #145 and #146, 2026-10-30): F114's first release, 72 groups and 351
+  records, reviewed by F117; 56 groups finalized and 16 waiting on the
+  team lead's escalations (snapshot as of 2026-10-30). The sprint status
+  note records the changed commitments (the review chain stopped at
+  five rounds; one stored page left for F126)
+- **fix**: the fresh-eyes reviews of de1efff, 46d088d and 7f18e9f
+  (Sprint 14 Task E, #145, 2026-10-30). The review script and the
+  applier disagreed on what is written, so certainty could change
+  without the team lead:
+  - A stored MODERATE (98 in the store) could go to LOW with no
+    escalation (g097's pennylane-gradient-method-fallback-order): every
+    stored certainty now counts. A stored NULL is not escalated; it has
+    no grade to override.
+  - A signed HIGH on a vendor's own claim was written LOW without a word
+    (10 new assertions in g049, g052, g054, g056, g067 and g068).
+    Finalize and the applier now both refuse it; the store's rule (a
+    vendor's own claim is LOW) stands.
+  - A settled escalation was taken as written; it is now "low" or
+    ["high", basis, why], so the team lead can keep a stored HIGH.
+  - A requote of an entry with no value would have blanked the stored
+    value; the applier refuses an empty value.
+  - Decisions or settlements for no item are refused; finalize needs
+    `models.json`.
+  - Finalize merges the coordinator's sign-off edits from
+    `review\signoff\<g>.json`, so a re-finalize keeps them.
+  Each guard was proven red by injection
+- **fix**: the fresh-eyes review of d2fcc8d and cecf20d (Sprint 14 Task
+  E, #145, 2026-10-30). A group built late could take an id a group
+  file already on disk held, since prefixes were given in group order
+  over a rebuild in memory (74 author-year prefixes span groups in the
+  ledger). Now only groups with no file are assembled, every id in a
+  written file counts as taken, a prefixed id is looked up in the store
+  too, the same-source test matches the record id as a whole token, and
+  only the renames written are printed. Each guard was proven red by
+  injection. g113 was rebuilt from its repaired reader file (24
+  assertions' quotes re-taken from the canonical text, as the reader's
+  own check had failed on them; one value restated in words): no id
+  changed. F127 carded for two latent defects the review also found
+- **docs**: F127 carded: `f114_cloud.fetch`'s merged-branch path and the
+  applier's substring match on a stored provenance
+- **fix**: the fresh-eyes review of aabdd49 (Sprint 14 Task E, #145,
+  2026-10-30). Finalize now refuses:
+  - a LOW the team lead settles against the reviewer's HIGH without its
+    own cause (the reviewer's case for HIGH had become the LOW's cause);
+    the settlement form `["low", why]` carries it;
+  - a settled HIGH on a vendor's own claim (the applier refused it only
+    after the signed review was written);
+  - a sign-off requote that rewrites a stored certainty nobody decided
+    (a stored MODERATE would have gone LOW unasked);
+  - a sign-off drop of a stored id, a requote of an entry the applier
+    does not rebuild, and an edit on an id it does not write, which the
+    applier ignored without a word;
+  - a rewritten entry with no value (91 confirmed stored-HIGH entries in
+    the F114 reads have none).
+  `theory_low` joins the sign-off tables, for a requoted theoretical
+  stored LOW. Each guard was proven red by injection. A dry finalize of
+  all 72 groups: 56 pass, 16 wait for the team lead, none refused
+  (snapshot as of 2026-10-30). Keeping a stored MODERATE on a vendor's
+  claim stays a "keep" decision, since store.grading writes a vendor's
+  own claim LOW
+- **fix**: the fresh-eyes review of 7914e80 (Sprint 14 Task E, #145,
+  2026-10-30). No test held an id a written file holds bare and the new
+  batch holds once, or drove `main`, so two of 7914e80's guards were
+  unproven; both now have a test proven red. A group rebuilt after its
+  file is deleted is prefixed against a different batch, so its ids
+  could change under its review decisions: the builder now writes
+  nothing when a rebuilt group lacks an id its decisions name (proven
+  red). An existing file is reported as not rebuilt. Three low findings
+  added to F127
+- **data**: F114's first apply (Sprint 14 Tasks E and F, #145 and #146,
+  2026-10-30; counts a snapshot as of that date). 47 groups entered with
+  a verified backup: 7,715 new assertions (2,273 HIGH, 5,442 LOW) and
+  117 stored assertions updated; a second apply wrote nothing. Before it,
+  the coordinator applied Boyd's consistency ruling and 82 of the
+  cross-group pass's 86 proposals, and set 10 reviewer HIGHs on vendors'
+  own claims to LOW. 19 groups wait on 28 certainty changes for the team
+  lead; 6 groups are held for a context decision on 6 off-topic papers.
+  The group files (g079, g103 to g113, g330) and the 47 signed reviews
+  are committed; INTAKE 58 has its dated correction; the
+  `learning_log` has the tiers' outcomes. The live-store suite then
+  failed 9 tests, each acted on:
+  - one stored quote held "&nbsp;" from a pricing page
+    (braket-simulator-instance-price-tables-not-in-text): cut before it
+    by a sign-off `quote_edits` and re-applied with a backup;
+  - Sprint 11's and F89's store checks now skip an assertion re-read in
+    full (as Sprint 12's did), and F89's refused records may be `read`
+    once a full read is recorded (kaur-2022 was read by F114);
+  - no paper is left at `screened`, so the applicability injection takes
+    a `read` paper, and QBoost is pinned at `read`;
+  - the F11 packet is re-rendered (QBoost's tier), and the learning_log
+    names an allowed protocol
+- **fix**: the fresh-eyes review of b185729 (Sprint 14 Tasks E and F,
+  2026-10-30; counts a snapshot as of that date). 10 papers an earlier
+  read refused as bearing on no context were entered (467 assertions)
+  because F114's reader chose a context. The store was restored from
+  the pre-apply backup and the apply run again with the 18 such papers'
+  763 assertions dropped by sign-off until the team lead decides, and
+  the 6 held groups applied less those papers: 53 groups, 7,897 new
+  assertions, a second apply writing nothing. The applier refuses a new
+  assertion on a refused paper unless the review names the reversal
+  (`reenter`, a new sign-off table); a refusal note names each reason
+  once. F89's refused-record test is strict again. Each guard proven red
+  by injection
+- **feat**: `scripts/f118_themes.py` (Sprint 14 Task G, F118, #147,
+  2026-10-30). Read only: computes the store's inventory and selects 16
+  themes' assertions by keyword into packets for the theme readers, in
+  the non-repository work folder. Its two tests were proven red by
+  injection
+- **fix**: the fresh-eyes review of 4d969d9 (Sprint 14 Tasks E and F,
+  2026-10-30). 6 of the 18 refusal notes carried the reader's
+  `why_not`, 3 saying the assertions were entered, and none naming the
+  team lead's decision. `refusal_reason` now prefers the sign-off drop;
+  a re-apply with a backup appended the corrected note to the 6 records
+  and wrote nothing else (INTAKE 58, third correction). Its test was
+  proven red by injection. The review's low finding (the refusal guard
+  ignores a later reversal, failing closed on 9 QCI Dirac papers) is
+  added to F127
+- **docs**: the F118 memo, `docs/spikes/F118_WHAT_THE_STORE_SAYS.md`
+  (Sprint 14 Task G, F118, #147, 2026-10-30; counts a snapshot as of
+  that date): what the store holds per theme, an implication per Phase 2
+  and team-lead question, 8 ranked experiments, the Phase 2 prompt
+  drafted, every cited id found in the store and 10 read against their
+  value. The gaps are carded as F128
+- **fix**: the fresh-eyes review of ed5ab01 (Sprint 14 Tasks E, F and
+  G, 2026-10-30). The memo overstated three findings, each also in the
+  Phase 2 prompt: four LOW single studies do report quantum feature
+  selection competitive or better (now named, with untuned comparators);
+  benchmark solvers ran at fixed settings, not defaults; the
+  data-loading bound is one method's, under a stated condition, and the
+  Gram-matrix count is an unproved LOW claim. Smaller corrections: the
+  TabICL comparators, the f166 recall wording and both established
+  pairs, Monte Carlo has no stored qubit count, four paraphrases
+  narrowed, the theme merges named, the snapshot's commit relabeled. A
+  live-store test now runs the applier on a store copy and proves the
+  refusal note comes through `refusal_reason` (proven red by
+  injection); F127's QCI count is dated
+- **docs**: F129 carded (Sprint 14 Task E, 2026-10-30): re-check the
+  LOW grades that rest only on an unproved textbook fact, 11
+  candidates by keyword on that date, against the cross-group rule
+- **feat**: F114's last 19 groups applied (Sprint 14 Tasks E and F,
+  2026-10-31), after the team lead's Manual Validation answers: Q1, the
+  28 certainty changes settled as recommended (4 LOW to HIGH, 23 to LOW,
+  cgz-nonuniform-zero-one-corollary7 kept HIGH with its square root
+  restored); Q2, the 18 refused papers stay out, their drop reasons
+  ending with the decision. 5,000 new assertions (1,796 HIGH, 3,204
+  LOW), 136 stored ones updated; INTAKE 58 holds the counts and the 5
+  sign-off fixes the dry run forced
+- **fix**: the full suite after that apply (2026-10-31) failed 3 tests.
+  The apply had replaced 2 stored contexts with the reader's label
+  (ballin-2026's Dirac-3 assertion lost `platform:dirac-3`); the applier
+  now keeps a stored context unless the sign-off names a `context_fix`
+  (test proven red), and both were restored by re-apply. The F80 and F83
+  store tests now leave out an id a later full read rewrote and hold
+  every other id to its script (proven red by injection)
+- **fix**: the review of 0eddd23 (2026-10-31): the 13 theoretical LOW
+  settlements now name the team lead's decision (4 had said "no pending
+  escalation"); two-way-partitioning quotes its SDP clause; the context
+  test takes its ids out of `context_fix`, which had made it pass with
+  no check; the F80 and F83 tests skip an id only when its last change
+  is a full read's rewrite. INTAKE 58 corrects two counts (138 updated,
+  not 136; 100 assertions neither HIGH nor LOW). Re-applied: 13 records
+- **fix**: the review of bb82d0a (2026-10-31): 5 of the 13 settlement
+  reasons kept a stale or false sentence the pattern edit missed (one
+  still said "not in the g097 pending escalations"); each edited by hand.
+  The two-way value's "can be solved efficiently" now quoted. INTAKE 58,
+  sixth correction. Re-applied: 6 records
+- **process**: Sprint 14 retrospective recorded (2026-10-31):
+  `docs/sprints/SPRINT_14_RETROSPECTIVE.md`, the team lead's feedback
+  verbatim ("Very Good" in every rated category; none for 13, 14 and
+  16), with 6 improvement proposals pending the team lead's decision
+- **process**: Sprint 14 Phase 7 (2026-10-31): retrospective prompt
+  sent; Claude's Development Team draft in
+  `docs/sprints/drafts/SPRINT_14_RETROSPECTIVE_claude_draft.md`
+- **fix**: the review of 25d3985 (2026-10-31): the barthe reason no
+  longer compares against a stored value the apply had replaced; both
+  barthe values state the paper's claim as a claim; the caro reason
+  loses a reviewer's "Gray:" label. g095 and g106 re-finalized against
+  the pre-apply copy. INTAKE 58, seventh correction. Re-applied: 3
+  records, backup 173833940424; a second apply wrote nothing
+- **docs**: F118 memo updated in place (2026-10-31, team lead: "just
+  update in place"): counts as of 2026-10-31 (23,653 assertions);
+  F176's answer; production scale and a 10,000-logical-qubit machine;
+  experiments that would raise the certainty of stored LOW claims; the
+  Phase 2 prompt split at 14 Nov
+- **process**: Sprint 14 retrospective decisions (2026-10-31, team lead
+  "q1. 1 ... q9. 1"): all nine recorded; Q1 to Q7 done now, Q8 carded
+  as F130 for Sprint 15, Q9's three gaps added to F128. Q1: INTAKE 58
+  rule, settlement and review text edited by hand, never by pattern
+- **feat**: Q2: every apply lists each field it changed on a stored
+  assertion that no review item names ("undecided" lines and a count;
+  `decided_fields`). Q4: the dry run names every refusal at once
+  (`assertions` and `verify` collect them). Q5:
+  `scripts/sprint13_g_reading.py` renamed `scripts/full_read_apply.py`,
+  its test file `tests/test_full_read_apply.py`; history keeps the old
+  name. Q6: the two live-store apply tests share one store copy and one
+  apply. Each new test proven red by injection
+- **feat**: Q3: `scripts/f117_review.py finalize` refuses a group
+  already applied on the live store, and `--store <path>` names a
+  pre-apply copy to read instead (proven red by injection; it refuses
+  g095 on the live store)
+- **fix**: Q7: `store.grading.low_grade` drops a why's own trailing
+  period, so a reason never reads ".. NOT upgraded";
+  `scripts/sprint14_q7_doubled_period.py` fixes the 900 stored reasons
+  with a format-only note (`FORMAT_ONLY_MARK`), which
+  `store.ingest.last_change` skips so a full read keeps its ownership
+  of a record. INTAKE section 59
+- **docs**: Sprint 14 Phase 7.7 (2026-10-31):
+  `docs/sprints/SPRINT_14_SUMMARY.md` with Actuals; master plan rolled
+  (Past Sprint Summary row, Last Completed Sprint); `CHECKLIST-Phase2-pre.md`
+  reconciled for Sprint 14, and Sprints 12 and 13 back-filled: neither
+  had been reconciled at its Phase 7, and no Phase 1.2 sweep caught it
+- **fix**: the review of 7b2179f (2026-10-31): the Q7 note had moved
+  `updated` on 365 full-read records, so the sync guard would have
+  refused a corrected sign-off on its review day; the guard now reads the
+  day of the last real change when the last note is format-only. The Q7
+  pattern matches exactly two periods (an ellipsis is left alone);
+  `decided_fields` names every synced column for a changed verdict;
+  `f117_review.applied` looks for new assertions under their `id_fix` id
+  and skips dropped ones. INTAKE 59 correction; no store write
+- **test**: the review of 80fcbb9 (2026-10-31, no defect found): the
+  guard test also reads the date branch while the format note is last;
+  INTAKE 59 says which bases refuse a why of only "."
+- **docs**: Copilot review of PR #140 (2026-10-31): the retrospective's
+  Development Team answer that named the applier's Sprint 13 file now
+  carries a dated note of the Q5 rename
+- **chore**: Sprint 14 Phase 7.7 complete (2026-10-31): PR #140 ready,
+  CI green, the Copilot thread resolved; the merge is the team lead's
+
+### 2026-10-24 to 2026-10-28 (Sprint 13, PR #131, merged to develop 2026-10-29 and to main via PR #139 the same day; tagged sprint-13)
 
 - **chore**: Sprint 13 opened (2026-10-24). The team lead merged PR #122
   into develop (0c554bb) and PR #130 to main (a3ad99a); `sprint-12`

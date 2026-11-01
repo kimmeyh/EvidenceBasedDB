@@ -36,6 +36,8 @@ _, DB_PATH, _ = script_paths(__file__)
 SLICE = ROOT / "manifests" / "sprint13_g_slice.json"
 LEDGER = ROOT / "manifests" / "sprint13_g_ledger.json"
 WORK = Path(r"C:\Users\kimme\AppData\Local\Temp\claude\D--Data-Harold-github-EvidenceBasedDB\s13g")
+# The briefs moved out of Temp with F114's work folder (Sprint 14 Task E, 2026-10-30), where f114_cloud reads them.
+BRIEFS = Path(r"D:\Data\Harold\EvidenceBasedDB\work\f114\briefs")
 GROUP_SIZE = 5
 
 
@@ -83,16 +85,16 @@ def main(argv: list[str] | None = None) -> int:
     LEDGER.write_text(json.dumps({"rule": "one record, one group, one reader; at most 5 readers at once (team lead "
                                           "2026-10-21); every paper read in full, no budget (team lead 2026-10-25)",
                                   "groups": groups}, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
-    (WORK / "briefs").mkdir(parents=True, exist_ok=True)
+    BRIEFS.mkdir(parents=True, exist_ok=True)
     (WORK / "reads").mkdir(parents=True, exist_ok=True)
     for name in new_names:  # an existing group's brief is never rewritten
         g = groups[name]
         brief = {"group": name, "records": [{**r, "stored_assertions": stored[r["record_id"]]} for r in g["records"]]}
-        (WORK / "briefs" / f"{name}.json").write_text(json.dumps(brief, indent=1, ensure_ascii=False) + "\n",
+        (BRIEFS / f"{name}.json").write_text(json.dumps(brief, indent=1, ensure_ascii=False) + "\n",
                                                       encoding="utf-8")
     first = sum(1 for r in rows if rank(r)[0] == 0)
     print(f"{len(rows)} records added in {len(new_names)} new groups of up to {GROUP_SIZE} ({first} with a theoretical "
-          f"LOW first); {len(groups)} groups in all; briefs in {WORK / 'briefs'}")
+          f"LOW first); {len(groups)} groups in all; briefs in {BRIEFS}")
     return 0
 
 

@@ -1,0 +1,162 @@
+{
+ "group": "g107",
+ "reviewed_on": "2026-10-30",
+ "tag": "Sprint 14 Task F, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint14_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "vqu-loss-function-definition": [
+   "definition",
+   "Sec. II, Eqs. (1)-(2), p.2: L = 1 - |<in|V|out>|^2 is defined, bounded in [0,1]; min L = 0 gives V ~ U-dagger over the input state. The paper's own definition."
+  ],
+  "vqu-barren-plateau-caveat": [
+   "stated limit",
+   "Appendix B, p.8: the authors say their Haar-random circuits would likely suffer barren plateaus [47] and that initialization strategies [48] are compatible. A caveat on their own numerics."
+  ],
+  "vqu-open-question-which-ansatz": [
+   "stated limit",
+   "Sec. II, p.4: 'it remains an open question exactly which ansatz are amenable to VQU'. An open problem the authors state about their own protocol; Appendix C gives one example."
+  ],
+  "vqu-ansatz-validation-definition": [
+   "definition",
+   "Appendix C, p.9: 'we formalize the notion of ansatz validation' and define it as testing whether trial ansatz A_V can represent system ansatz A_U. The paper's own definition."
+  ],
+  "vqu-optical-protocol-definition": [
+   "definition",
+   "Sec. III, p.4: defines the optical VQU protocol for n photons in m = n^2 modes: layer 1 minimizes loss (3) to maximize P11, n layers until |1,1,..,1> is recovered. The paper's own protocol definition."
+  ],
+  "vqu-experiment-scope-proof-of-concept": [
+   "scope",
+   "Sec. IV, p.5: 'We implement a proof-of-concept demonstration'; four-mode Haar-random sampling circuit; two photons pass through it. The paper's own scope statement."
+  ],
+  "vqu-photonic-processor-device-setup": [
+   "setup",
+   "Sec. IV, p.5 (176 phase shifters, 26 modes, 88 MZIs) and Fig. 2 caption (46 thermo-optic shifters actively controlled). The paper's own device description."
+  ],
+  "vqu-photon-source-detection-optimizer-setup": [
+   "setup",
+   "Sec. IV, p.5: SPDC pairs at 1582 nm from PPKTP, four WSi SNSPDs at ~65% efficiency, BOBYQA, ~100 two-fold coincidences per iteration. The paper's own setup."
+  ],
+  "vqu-average-photon-number-preserved": [
+   "proved result",
+   "Appendix E, p.11: short derivation in the paper itself. For one photon per input mode, n_i = sum_k |u_ik|^2 <1|a_k^dag a_k|1> = sum_k |u_ik|^2 = 1 by unitarity; cross terms vanish. The condition (one photon per mode) is in the value."
+  ],
+  "qrp-abstract-device-scope": [
+   "scope",
+   "Abstract, p.1: 'we report a quantum reservoir processing device capable of performing both quantum and classical machine learning tasks', realized with a programmable silicon chip excited with single photons. The paper's own scope."
+  ],
+  "qrp-tomography-setup-postselection": [
+   "setup",
+   "Results, pp.3-4: photons in modes 3 and 5, postselection on exactly two photons, ancillary modes 5 and 6 discarded, fixed random 4x4 UR, 15-element PNR feature vector. The paper's own setup."
+  ],
+  "qrp-readout-and-training-labels": [
+   "setup",
+   "Results p.4 and Online Methods p.8: ridge regression in scikit-learn with L2 parameter 1e-3, Hermitian fix (Eq. 3), eigenvalues projected onto the simplex (Eq. 4), labels from analytic density matrices. The paper's own setup."
+  ],
+  "qrp-fidelity-measure-definition": [
+   "definition",
+   "Online Methods p.8, Eq. (5): quantum fidelity F = (Tr sqrt(sqrt(rho_t) rho_phys sqrt(rho_t)))^2 is the figure of merit, bounded by 0 and 1. The paper's own definition."
+  ],
+  "qrp-eq2-features-from-calculated-probabilities": [
+   "setup",
+   "Results p.6 and Online Methods p.9: coincidence probabilities for the Eq. (2) state are computed analytically with the general-interferometer transformation (SI Sec. 2) and passed to a linear regression layer. The paper's own method for this task."
+  ],
+  "qrp-hardware-aware-training-setup": [
+   "setup",
+   "Results p.7: spiral classification, dual-rail encoding of (x,y) in two photons, training data from QPU simulation, reservoir unitary perturbed by a per-sample random unitary with zero-mean normal elements. The paper's own setup. The testing device is Ascella, which the value does not say."
+  ],
+  "qrp-limits-fock-linear-in-device-labels": [
+   "stated limit",
+   "Results p.6 and Discussion p.7: the implementation is limited to Fock initial states and linear optics, and ideally the training set would be labelled by independent tomography. Limits the authors state on their own work."
+  ],
+  "limit-exponential-scaling-bottleneck": [
+   "stated limit",
+   "Discussion, pp.7-8: 'A possible bottleneck in the scalability' is exponential growth of the parameter and feature spaces, with a possible overwhelming load on the classical network. The widened value adds the authors' hedge (specific features only). Grade rests on the stated bottleneck; the 'mild scaling' and 'many practical applications' sentences are the authors' own claims, not separately settled."
+  ],
+  "setup-100-states-70-training": [
+   "setup",
+   "Results, p.4 (the stored anchor is right; the reader's p.3 is not): 100 states experimentally implemented, 70 random for training, the rest for testing. The paper's own protocol."
+  ],
+  "vqe-benzene-active-space-basis-mapping": [
+   "setup",
+   "Sec. 2.1.1 and Methods p.19: four electrons in e1g and e2u pi orbitals, 38 inner electrons in the effective potential, PySCF STO-3G, Jordan-Wigner. The paper's own setup."
+  ],
+  "vqe-job-size-limit-and-job-splitting": [
+   "setup",
+   "Sec. 2.4.1, p.11: L ~ 36000 from their tests, L = 33000 chosen, nj = 1 for up to 3 operators, nj = 2 for 4 to 7. The paper's own setup and protocol."
+  ],
+  "vqe-hardware-experiment-setup-mitigation": [
+   "setup",
+   "Sec. 2.5, pp.14-15 and Methods p.19: IBM-Torino, ZNE and TREX, 30 runs of 9000 shots per iteration, ansatz from exact calculations with only the energy evaluated on hardware, resilience level 2. The paper's own setup."
+  ],
+  "vqe-noise-model-setup-coherence-scaling": [
+   "setup",
+   "Sec. 2.6, pp.16-17 and Fig. 7: Qiskit Aer thermal relaxation, T1(0)=100 us, T2(0)=150 us scaled by alpha >= 1, six replicates of 9000 shots per point. The paper's own simulation setup."
+  ],
+  "vqe-scope-approximate-wavefunctions-from-exact-run": [
+   "scope",
+   "Methods p.19: a full VQE on hardware is called too hard, so the work evaluates energies of approximate wave functions taken from an ideal Qubit-ADAPT simulation. The paper's own scope."
+  ],
+  "vqe-benzene-experiment-setup": [
+   "setup",
+   "Sec. 2.5, p.14: 'the quantum machine is used exclusively for single-point energy evaluations'. The '8 qubits' sentence is in Methods p.19 only, not Sec. 2.5. The paper's own setup."
+  ],
+  "casas-definition-1-ame-formal": [
+   "definition",
+   "Sec. II, Definition 1, p.2: AME state defined by maximally mixed reduced states on all bipartitions with |A| = floor(n/2), notation AME(n,d). The paper's own definition."
+  ],
+  "casas-scope-no-experiment-run": [
+   "scope",
+   "Intro p.2 and Sec. V p.12: the paper gives circuits and computed fidelity thresholds, with no experiment run. 'Experimental fidelity benchmarks' means computed thresholds (Theorem 1, noise models), not measurements. Experiments are left to future work."
+  ],
+  "casas-noise-model-negativity-measure": [
+   "setup",
+   "Sec. IV.C, pp.10-11: depolarizing noise with parameter gamma in [0,1] and negativity (sum of |negative eigenvalues| of the partial transpose) are chosen as the model and measure. The 'suitable for most architectures' sentence is rationale, not graded."
+  ],
+  "casas-ame-definition": [
+   "definition",
+   "Sec. I, p.1: 'AME states are characterized by maximal entanglement across all possible bipartitions...'; the formal Definition 1 is in Sec. II, p.2. The paper's own definition."
+  ],
+  "casas-circuits-presented": [
+   "scope",
+   "Abstract, p.1: 'we present explicit quantum circuits to generate exemplary non-stabilizer AME states of four subsystems with four, six, and eight levels each'. The paper's own scope; Sec. III delivers them."
+  ],
+  "qru-dataset-setup": [
+   "setup",
+   "Sec. 3.1 and Table 1, pp.5-6: OGCID/D2 data, one file each of e, pi, mu (E10-100, theta 0), three named features, 26 334 training and 2 926 test events. The paper's own setup."
+  ],
+  "qru-baseline-config-scalar-thresholding": [
+   "setup",
+   "Sec. 3.2, pp.6-7: Huber loss, Adam, learning rate 5e-5, RX-RY-RX, three parameters per feature, L = 10, full batch, scalar targets {-1,0,+1} with thresholds at +/-0.33, and the authors' own caveat on comparability. The paper's own setup. Table 4 and the text later name 5e-4 as best; that is a measured result, not this baseline."
+  ],
+  "qru-future-work-list": [
+   "stated limit",
+   "Sec. 5, p.39: 'Future work should extend the evaluation to multi-logit readouts, less curated inputs, ...'. States what the paper's own evaluation leaves out, next to the 'Key limitations' sentence."
+  ],
+  "limits-engineered-features-thresholding-baselines": [
+   "stated limit",
+   "Sec. 5, p.39 (the stored p.20 is wrong): 'Key limitations include...', the hardware run is 'not intended as a noise-robust performance benchmark', and the Fourier analysis concerns representational capacity only. Limits the authors state on their own work."
+  ]
+ },
+ "theory_low": {
+  "vqu-single-photon-probability-scales-1-over-n": "Appendix D 1 is an informal counting argument that treats all placements as equally likely. As printed, a/b works out to about 1/n, so 1 - a/b tends to 1, not n/(n^2+n-1); the stated algebra does not follow from (D2)-(D3). Not a proved result.",
+  "vqu-optical-parameter-count": "A parameter-counting argument from the Reck decomposition (Appendix D 2), stated as 'at most' and 'careful analysis reveals'. No theorem or full proof; the n^5 to n^3 reduction is a sketch.",
+  "vqu-bucket-detector-protocol": "Appendix E is a construction argument (squeeze photons into n modes, then recover the input), not a formal theorem. The 'if and only if' and the O(n^2)/O(n^4) counts are asserted without full proof, and the protocol is not tested in the experiment.",
+  "qrp-tomography-parameter-counts-reservoir-size": "Results p.5: the 13 and 45 counts are the paper's own count and the feature-count condition is standard linear algebra, but the 'four- and nine-mode minimum' comes from 'known results [10]' and the SI. Not proved in this paper.",
+  "casas-multiunitary-condition-for-ame": "Sec. III, p.4: the reduced matrices of Eq. (8) are stated with 'it can be shown', with no derivation, and the '2-unitary' term is cited from [7, 21]. The paper states the condition but does not prove it.",
+  "casas-general-circuit-clifford-except-diagonal": "Sec. III.B, pp.5-6: existence of the needed biunimodular vectors for d >= 3 is cited from Ref. [24]. The non-stabilizer consequence is asserted, not proved. The Clifford remark describes their circuit.",
+  "casas-diagonal-gate-decomposition-d-controlled-phases": "Sec. III.B, p.6: a proposed decomposition and a claim that general diagonal gates are costly. A construction not tested on hardware; the cost remark is the authors' claim.",
+  "casas-ame44-eight-qubit-circuit": "Sec. III.C.1, pp.6-8: an explicit vector (Eq. 23) and a circuit are given, but multi-unitarity is only 'verified by direct computation' with no proof or shown check. The authors' computational claim, not a proved result.",
+  "casas-ame46-construction-mixed-qubit-qutrit": "Sec. III.C.2 and App. C: a numerical construction (iterative algorithm of Ref. [24]) with no hardware test, and the depth reduction is left as future work.",
+  "casas-ame48-twelve-qubit-circuit": "Sec. III.C.3 and App. D: a numerically found vector and a Qiskit decomposition. Multi-unitarity is stated, not proved; no hardware test.",
+  "casas-lu-inequivalence-claim": "Appendix A and Sec. III.C.3: a computed result. Table I values are lost in the text layer, and the d = 6 case is not discussed in the Appendix A text. The d = 4 graph versus minimal support case needs a higher moment that is not shown.",
+  "casas-lu-invariant-second-moment-criterion": "Appendix A, p.14: invariance of the spectrum of I(U) is 'easy to verify' and 'it can be shown', with no proof in the paper; the invariants come from Ref. [30]. Note the text layer prints the first 'not equal' as '='.",
+  "casas-theorem-1-genuine-entanglement-threshold": "Theorem 1, p.9 (checked on the PDF): F_exp >= (d-1)/d, giving 5/6 for d = 6. The proof in App. E is an outline based on Theorem 1 of Ref. [40], and its last line (E5) prints F_exp >= d/(d-1), which exceeds 1 and contradicts (30). The value omits the formula. Not a complete proof in this paper.",
+  "casas-appendix-e-proof-outline": "App. E, pp.16-18: an outline based on Theorem 1 of Ref. [40] ('we provide an estimation'). It uses a rank-bound (E3, E4) taken from the reference, and the closing line (E5) is misprinted as d/(d-1). Not a full proof.",
+  "casas-ame46-negativity-vs-noise-28-percent": "Sec. IV.C, pp.10-11, Fig. 7: a computed comparison for one state and one noise model; the authors also note GHZ and CUE states are more robust near the maximally mixed state.",
+  "casas-gate-noise-assumptions-4-percent": "Sec. IV.C, p.11: an estimate that rests on three stated assumptions (F6 and P gates much less noisy, Bell preparation noise-free, additive noise). Not a measurement or a proof.",
+  "casas-teleport-noise": "Sec. IV.D, pp.11-12 and Fig. 8: about 35% in the text and 12/35 ~ 34% for AME(4,6) in the caption, beating 2/3. The value matches. A computed result built on a cited fidelity formula [43]; only the AME(4,6) figure is given."
+ },
+ "keep_stored": {},
+ "requote": {}
+}

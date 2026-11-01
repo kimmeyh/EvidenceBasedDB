@@ -21,7 +21,12 @@ Usage:
   python scripts/f114_cloud.py launch <record_id> [--model sonnet]   one paper (the pilot)
   python scripts/f114_cloud.py fetch                                 save finished papers, print the tally
   python scripts/f114_cloud.py run [--max 5] [--poll 300]            launch and fetch until done, or STOP exists
-Local state (never in git): WORK/launches.json, WORK/results/<record>.json, WORK/logs/, WORK/STOP.
+  python scripts/f114_cloud.py rebuild                               launches.json and results/ again, from the branches
+Local state (never in git): WORK/launches.json, WORK/results/<record>.json, WORK/briefs/, WORK/logs/, WORK/STOP.
+
+WORK moved out of Temp on 2026-10-30 (Sprint 14 plan, Q3 = 1): Temp was cleared after Sprint 13, and with it
+launches.json and the only local copy of the 302 results. The branches still held every result, so `rebuild`
+restores both from them.
 """
 from __future__ import annotations
 
@@ -39,10 +44,22 @@ sys.path.insert(0, str(ROOT))
 from store.quotes import _pdftotext, source_text  # noqa: E402
 
 LEDGER = ROOT / "manifests" / "sprint13_g_ledger.json"
-S13G = Path(r"C:\Users\kimme\AppData\Local\Temp\claude\D--Data-Harold-github-EvidenceBasedDB\s13g")
-WORK = S13G / "f114"
+WORK = Path(r"D:\Data\Harold\EvidenceBasedDB\work\f114")
+BRIEFS = WORK / "briefs"
 LAUNCHES = WORK / "launches.json"
+# Every launch started at a commit of this branch, so a result branch's merge-base with it is its launch base.
+LAUNCH_BRANCH = "feature/20261024_Sprint_13"
+# Never launched again: the team lead's mark, and a paper whose three sessions pushed nothing (F114's card).
+UNREAD = {
+    "udaru-2025-qml-credit-risk": "team lead, 2026-10-27: \"mark udaru-2025-qml-credit-risk as unread\" (page "
+                                  "images only)",
+    "abbas-2020-power-quantum-neural-networks": "three sessions pushed nothing (2026-10-27); read locally by "
+                                                "Sprint 14 Task F",
+}
 FIRST_GROUP = "g043"
+# Ledger groups after this one are not Task G's and have no cloud brief: g330 holds Sprint 14 Task C's 4 papers,
+# read locally by Task F (review of 1cb63bb: records() raised on its missing brief).
+LAST_GROUP = "g329"
 UPLOAD_WAIT = 240
 STALE_HOURS = 3  # no push for this long: the session is taken as dead, and the paper is launched again
 MAX_ATTEMPTS = 3
@@ -66,8 +83,8 @@ def records() -> list[tuple[str, dict]]:
     """Every record of groups g043 on, in ledger order, with its brief entry (stored assertions included)."""
     groups = json.loads(LEDGER.read_text(encoding="utf-8"))["groups"]
     out = []
-    for g in sorted(x for x in groups if x >= FIRST_GROUP):
-        brief = json.loads((S13G / "briefs" / f"{g}.json").read_text(encoding="utf-8"))
+    for g in sorted(x for x in groups if FIRST_GROUP <= x <= LAST_GROUP):
+        brief = json.loads((BRIEFS / f"{g}.json").read_text(encoding="utf-8"))
         out += [(g, r) for r in brief["records"]]
     return out
 
@@ -134,11 +151,12 @@ def launch(rid: str, model: str = "sonnet") -> str:
     return f"launched {sid} (attempt {attempts}), sent {len(payload)} characters"
 
 
-def fetch() -> dict:
+def fetch(remote: bool = True) -> dict:
     """Save each finished paper outside the repository; refuse a branch any of whose commits touches more than
     its folder. `stale` lists the papers whose session has pushed nothing for STALE_HOURS (since its launch, or
     its branch's last commit)."""
-    git("fetch", "--quiet", "origin", "+refs/heads/cloud/f114/*:refs/remotes/origin/cloud/f114/*")
+    if remote:
+        git("fetch", "--quiet", "origin", "+refs/heads/cloud/f114/*:refs/remotes/origin/cloud/f114/*")
     (WORK / "results").mkdir(parents=True, exist_ok=True)
     tally = {"launched": 0, "done": 0, "refused": [], "stale": []}
     now = datetime.now().astimezone()
@@ -147,7 +165,8 @@ def fetch() -> dict:
         if rid in done():
             continue
         ref = f"origin/cloud/f114/{rid}"
-        last = datetime.fromisoformat(info["launched"]).astimezone()
+        # A rebuilt entry has no launch time: it is never called stale until its branch gives one.
+        last = datetime.fromisoformat(info["launched"]).astimezone() if info.get("launched") else None
         if git("branch", "-r", "--list", ref).strip():
             folder = f"manifests/f114_cloud/results/{rid}/"
             # Every commit, not only the final tree: a file committed and then deleted was still pushed.
@@ -163,10 +182,52 @@ def fetch() -> dict:
                 (WORK / "results" / f"{rid}.json").write_text(entry, encoding="utf-8")
                 continue
             except subprocess.CalledProcessError:
-                last = max(last, datetime.fromisoformat(git("log", "-1", "--format=%cI", ref).strip()))
-        if (now - last).total_seconds() > STALE_HOURS * 3600:
+                pushed = datetime.fromisoformat(git("log", "-1", "--format=%cI", ref).strip())
+                last = max(last, pushed) if last else pushed
+        if last and (now - last).total_seconds() > STALE_HOURS * 3600:
             tally["stale"].append(rid)
     tally["done"] = len(done())
+    return tally
+
+
+def logged_launches() -> dict[str, dict]:
+    """Session and attempt per paper, from the run log's "launch <rid>: launched <session> (attempt n)" lines.
+    The first lines of the log name no session, so a paper may be missing here."""
+    log = WORK / "logs" / "run.txt"
+    out = {}
+    for m in re.finditer(r"^  launch (\S+): launched ((?:session|cse)_\w+) \(attempt (\d+)\)",
+                         log.read_text(encoding="utf-8") if log.is_file() else "", re.M):
+        out[m[1]] = {"session": m[2], "attempts": int(m[3])}
+    return out
+
+
+def rebuild(remote: bool = True) -> dict:
+    """launches.json and results/ again from the result branches, after the local copy was lost. Each branch's
+    base is its merge-base with LAUNCH_BRANCH; `fetch` then runs the same stray-file check from it and saves
+    each result. An entry launches.json already holds keeps its fields (only the unread mark is set). A branch
+    already merged into LAUNCH_BRANCH is refused: its merge-base is its own tip, so base..ref would be empty and
+    the stray-file check would see nothing (review of 92d7634)."""
+    if remote:
+        git("fetch", "--quiet", "origin", "+refs/heads/cloud/f114/*:refs/remotes/origin/cloud/f114/*")
+    groups = {r["record_id"]: g for g, v in json.loads(LEDGER.read_text(encoding="utf-8"))["groups"].items()
+              for r in v["records"]}
+    logged = logged_launches()
+    d = launches()
+    merged = []
+    for ref in git("for-each-ref", "--format=%(refname:short)", "refs/remotes/origin/cloud/f114/").split():
+        rid = ref.rsplit("/", 1)[1]
+        base = git("merge-base", ref, LAUNCH_BRANCH).strip()
+        if base == git("rev-parse", ref).strip():
+            merged.append(f"{rid}: already in {LAUNCH_BRANCH}, so its commits cannot be checked")
+            continue
+        d.setdefault(rid, {"group": groups[rid], "base": base, **logged.get(rid, {}), "launched": None,
+                           "rebuilt": datetime.now().date().isoformat()})
+    for rid, why in UNREAD.items():
+        d.setdefault(rid, {"group": groups[rid], **logged.get(rid, {}), "launched": None,
+                           "rebuilt": datetime.now().date().isoformat()})["unread"] = why
+    save_launches(d)
+    tally = fetch(remote)
+    tally["refused"] += merged
     return tally
 
 
@@ -202,6 +263,8 @@ def main(argv: list[str]) -> None:
         print(launch(argv[1], opt.get("--model", "sonnet")))
     elif argv[0] == "fetch":
         print(json.dumps(fetch(), indent=1))
+    elif argv[0] == "rebuild":
+        print(json.dumps(rebuild(), indent=1))
     elif argv[0] == "run":
         run_all(int(opt.get("--max", 5)), int(opt.get("--poll", 300)), opt.get("--model", "sonnet"))
     else:

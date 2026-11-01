@@ -87,3 +87,21 @@ def test_the_checker_reads_the_given_text_instead_of_the_pdf(tmp_path):
     assert ok.stdout.strip().endswith("0 problems"), ok.stdout
     bad = _check(tmp_path, "the bound holds for no n at all")
     assert not bad.stdout.strip().endswith("0 problems"), bad.stdout
+
+
+def test_the_launcher_takes_task_gs_groups_only(tmp_path, monkeypatch):
+    """Sprint 14 Task F (review of 1cb63bb): ledger group g330 holds Task C's 4 papers, read locally, and has no
+    cloud brief, so records() raised on it and `launch` and `run` crashed. Proven to fail by injection, 2026-10-30:
+    with LAST_GROUP removed from records(), it raised FileNotFoundError on g330's brief."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("f114_cloud", ROOT / "scripts" / "f114_cloud.py")
+    c = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(c)
+    ledger = tmp_path / "ledger.json"
+    ledger.write_text(json.dumps({"groups": {g: {} for g in ("g042", "g043", "g329", "g330")}}), encoding="utf-8")
+    (tmp_path / "briefs").mkdir()
+    for g in ("g043", "g329"):
+        (tmp_path / "briefs" / f"{g}.json").write_text(json.dumps({"records": [{"record_id": g}]}), encoding="utf-8")
+    monkeypatch.setattr(c, "LEDGER", ledger)
+    monkeypatch.setattr(c, "BRIEFS", tmp_path / "briefs")
+    assert [g for g, _ in c.records()] == ["g043", "g329"]

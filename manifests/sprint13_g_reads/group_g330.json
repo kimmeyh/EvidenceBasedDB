@@ -1,0 +1,2848 @@
+{
+ "papers": [
+  {
+   "record_id": "sein-2026-quantum-graph-convolutional-networks-implementation",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2026-09_Sein_Quantum-Graph-Convolutional-Networks-Implementation-and-Trainability-Analysis_2609.19983.pdf",
+   "title_in_file": "Quantum Graph Convolutional Networks: Implementation and Trainability Analysis",
+   "version_note": "",
+   "pages": 69,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A simulation and theory paper that implements two quantum graph convolutional networks (QSGC and QLGC), tests them on five node-classification benchmarks, and analyzes gradient variance, complexity and classical dequantization.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "sein-setup-noiseless-simulation",
+     "value": "The authors state that the quantum models are implemented in Pennylane and run in a noiseless simulator, and that the QLGC experiments simulate the effective polynomial graph filter rather than a fully compiled gate-level QSVT/LCU circuit.",
+     "anchor": "Sec. 5.1, p.11",
+     "quotes": [
+      "Quantum models are implemented using Pennylane [43] and run in a noiseless simulator",
+      "rather than a fully compiled, gate-level QSVT/LCU circuit."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experimental setup in Sec. 5.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No result in the paper comes from quantum hardware or from a noisy simulation."
+    },
+    {
+     "id_suggestion": "sein-loss-is-surrogate",
+     "value": "The authors state that the overlap-based quantum cost (the negative real part of the overlap between the output state and the one-hot target state) is a surrogate for the classical row-wise softmax cross-entropy, and that the quantum model does not implement the classical cross-entropy loss directly.",
+     "anchor": "Sec. 4.0.3, Eq. 11, p.7",
+     "quotes": [
+      "LQGCN = −Re ⟨ψout|ψY ⟩ .",
+      "The quantum model does not implement the classical cross-entropy loss"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Sec. 4.0.3 defines the cost function and states what it is not.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-unitary-replaces-weight-matrix",
+     "value": "The authors state that the classical weight matrix W can be any real matrix of the given shape while the quantum weight U(theta) is a unitary, so the parameterized circuit is not a direct implementation of the classical linear map; it replaces W by a unitary variational feature transformation followed by class readout.",
+     "anchor": "Sec. 4.1, p.9",
+     "quotes": [
+      "one subtle difference between the classical and quantum models:",
+      "It replaces W by a unitary variational",
+      "feature transformation followed by class readout described below."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Sec. 4.1 states how the quantum model differs from the classical one.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-readout-needs-classes-le-features",
+     "value": "The authors state that reading out the class labels from computational basis states of the feature register requires the number of classes not to exceed the number of node features.",
+     "anchor": "Sec. 4.1, Eq. 20, p.9",
+     "quotes": [
+      "iterates along computational basis states of Reg(k), which requires that FK ≤ C."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Sec. 4.1 states a condition on the model's readout.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-activations-omitted-nonlinear-future",
+     "value": "The authors state that intermediate activation functions are omitted from the simplified model onward in order to have models that classical computers can simulate or NISQ devices can run, and that an explicit quantum implementation of nonlinear activation functions is left for future work.",
+     "anchor": "Sec. 4.0.2 p.7 and Sec. 4.1 p.8",
+     "quotes": [
+      "In our case, an explicit quantum implementation of nonlinear activation functions is left for future work.",
+      "activation functions are omitted from this point forward throughout this work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its models in Sec. 4.0.2 and Sec. 4.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-qsvt-polynomial-restrictions",
+     "value": "The authors state that the QSVT algorithm imposes restrictions on the polynomials it can generate: the polynomial must have a defined parity, and a norm bound must hold so that the polynomial of the Laplacian is a valid sub-unitary to block-encode. They propose optimizing the Quantum Signal Processing phases instead of the polynomial coefficients to keep the second condition satisfied.",
+     "anchor": "Sec. 4.2, Eqs. 23-25, p.10",
+     "quotes": [
+      "The QSVT algorithm nevertheless imposes restrictions on the polynomials it can generate.",
+      "must be satisfied to ensure that PK(L) is a valid sub-unitary to block-encode.",
+      "we propose optimizing the Quantum Signal Processing phases"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Sec. 4.2 states the conditions on its own QLGC construction.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The experiments simulate the effective polynomial filter, so the QSP-phase construction itself is not run in the paper."
+    },
+    {
+     "id_suggestion": "sein-hyperparameter-grid-and-training",
+     "value": "The authors report a grid search over the propagation order p in {1, 2, 3, 4, 8, 16} and the number of ansatz layers in {1, 2, 4, 8, 12, 16}, with learning rate 0.01, the Adam optimizer, a Strongly Entangling Layers ansatz with 3 optimizable parameters per qubit per layer, and 5 random seeds for each hyperparameter combination.",
+     "anchor": "Sec. 5.1-5.2, p.12-13",
+     "quotes": [
+      "The selection of the p-hop propagation order (p ∈ {1, 2, 3, 4, 8, 16})",
+      "The selection of the quantum ansatz depth (ℓ ∈ {1, 2, 4, 8, 12, 16}) determines the expressivity",
+      "We fix the learning rate to η = 0.01 for stable convergence.",
+      "adding 3 optimizable parameters per qubit and per ansatz layer.",
+      "across 5 distinct random seeds for each hyperparameter combination to ensure that results"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experimental setup in Sec. 5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-results-karate",
+     "value": "On Karate Club, averaged over random initializations, the authors report accuracies of 0.912 for QSGC (p 3, 8 layers), 0.882 for CLGC (p 4), 0.882 for QLGC (p 2, 16 layers) and 0.853 for CSGC (p 4); the quantum QSGC model has the highest accuracy.",
+     "anchor": "Table 3, Sec. 5.3, p.13",
+     "quotes": [
+      "Karate QSGC 3 8 0.912 0.909 0.938",
+      "CLGC 4 — 0.882 0.879 0.872",
+      "QLGC 2 16 0.882 0.867 0.873",
+      "CSGC 4 — 0.853 0.859 0.849"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, in simulation, on a 34-node graph with 4 labeled training nodes.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The Karate Club split is 4 training, 10 validation and 20 test nodes (Table 1), so the test set is small."
+    },
+    {
+     "id_suggestion": "sein-results-texas",
+     "value": "On Texas, averaged over random initializations, the authors report accuracies of 1.000 for CLGC (p 1), 0.942 for QLGC (p 2, 16 layers), 0.879 for QSGC (p 2, 16 layers) and 0.812 for CSGC (p 2); the G Mean is 0.003 for both QSGC and CSGC.",
+     "anchor": "Table 3, Sec. 5.3, p.13",
+     "quotes": [
+      "Texas CLGC 1 — 1.000 1.000 1.000",
+      "QLGC 2 16 0.942 0.869 0.622",
+      "QSGC 2 16 0.879 0.665 0.003",
+      "CSGC 2 — 0.812 0.579 0.003"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, in simulation, on a 183-node graph.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-results-wisconsin-cornell",
+     "value": "On Wisconsin the authors report an accuracy of 0.994 for CLGC (p 3), the highest of the four models. On Cornell they report 1.000 for CLGC (p 1), 0.977 for CSGC (p 1), 0.897 for QLGC (p 1, 16 layers) and 0.866 for QSGC (p 4, 16 layers).",
+     "anchor": "Table 3, Sec. 5.3, p.13 (the Wisconsin rows other than CLGC are mislabeled in the text layer; the page image shows QLGC 0.985, QSGC 0.953, CSGC 0.718)",
+     "quotes": [
+      "CLGC 3 — 0.994 0.996 0.994",
+      "Cornell CLGC 1 — 1.000 1.000 1.000",
+      "CSGC 1 — 0.977 0.968 0.962",
+      "QLGC 1 16 0.897 0.876 0.850",
+      "QSGC 4 16 0.866 0.832 0.769"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, in simulation.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-results-cora",
+     "value": "On Cora, averaged over random initializations, the authors report accuracies of 0.788 for CSGC (p 8), 0.678 for QSGC (p 8, 16 layers), 0.658 for CLGC (p 8) and 0.376 for QLGC (p 1, 16 layers); the classical CSGC model is the best.",
+     "anchor": "Table 3, Sec. 5.3, p.13",
+     "quotes": [
+      "Cora CSGC 8 — 0.788 0.779 0.795",
+      "QSGC 8 16 0.678 0.675 0.710",
+      "CLGC 8 — 0.658 0.645 0.668",
+      "QLGC 1 16 0.376 0.370 0.392"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, in simulation, on a 2,708-node graph.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Cora is the largest graph tested, and the quantum models lose most there."
+    },
+    {
+     "id_suggestion": "sein-claim-quantum-approximates-classical",
+     "value": "The authors state that the quantum models are able to learn, and that the quantum model can approximate the performance of the classical ones and even surpass it in some cases, using substantially fewer trainable parameters in the variational component.",
+     "anchor": "Sec. 5.3, p.13",
+     "quotes": [
+      "The second conclusion is that the quantum model can approximate the performance of the classical ones,",
+      "even surpass it in some cases."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation of one simulation study.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "In Table 3 a quantum model has the top accuracy only on Karate Club; on the other four datasets a classical model is best. The parameter saving applies only to the variational component."
+    },
+    {
+     "id_suggestion": "sein-gmean-collapse-caution",
+     "value": "The authors report that some high-accuracy results come with a G Mean close to zero, for example QSGC and CSGC on Texas (G Mean 0.003), and they state this indicates a collapse in recall for at least one minority class despite a competitive overall accuracy.",
+     "anchor": "Sec. 5.3, p.14",
+     "quotes": [
+      "e.g. QSGC and CSGC on Texas (G Mean 0.003, Table 3). This indicates a collapse in recall for",
+      "at least one minority class despite a competitive overall accuracy."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-hyperparameter-trends",
+     "value": "The authors state that the performance of the quantum models improves with the number of ansatz layers, and that increasing the propagation power p does not always improve the model: it starts with an initial increase, then suffers a downgrade after an early maximum, depending on the dataset.",
+     "anchor": "Sec. 5.3, Figs. 7-8, p.14",
+     "quotes": [
+      "of the quantum models is improved with the number of layers in the ansatz.",
+      "its value does not always result in an improvement of the model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical trend from one simulation study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The authors attribute the p trend to oversmoothing and overfitting as a belief, not a test."
+    },
+    {
+     "id_suggestion": "sein-barren-plateau-definition",
+     "value": "The paper describes a barren plateau as a landscape whose geometry becomes exponentially flatter with the system size, that is, a gradient variance bounded by order one over b to the power n for some real b greater than 1, where n is the number of qubits.",
+     "anchor": "Sec. 6, Eq. 26, p.16-17",
+     "quotes": [
+      "a landscape whose geometry becomes exponentially flatter with the system size.",
+      "b > 1 is some real number,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Sec. 6 defines the term its trainability results use.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-empirical-gradient-variance",
+     "value": "The authors report that for subgraphs of Karate and Wisconsin sampled at several qubit counts, with 1000 random initializations per qubit count and layer count, the variance of the cost gradient decreases more gently than exponentially, and for Wisconsin it seems to converge to a constant. They state that analytical results are required to confirm that the models do not suffer from barren plateaus.",
+     "anchor": "Sec. 5.3, Fig. 9, p.16",
+     "quotes": [
+      "1000 random initializations",
+      "the results show that the proposed models reveal a more gentle descent.",
+      "the Wisconsin dataset, it even seems that the variance converges into a constant value.",
+      "analytical results are required to confirm this claim."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study over a limited qubit range.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-trainability-assumptions",
+     "value": "The paper states the assumptions of its single-layer QSGC trainability analysis: the calculation is for a fully supervised task; the graph is approximated as k-regular; the whole Hilbert space of the data register is used to embed the input and target states; and the variance is averaged over the possible input and target states, with one-hot targets and multihot inputs.",
+     "anchor": "Sec. 6.1 and 6.1.1, p.17-18",
+     "quotes": [
+      "The trainability calculation below is done for a fully-supervised classification task",
+      "Firstly, the graph is approximated to be k-regular.",
+      "The second assumption is that the whole Hilbert space of the data register is used to embed",
+      "The final approximation is an averaging over the possible input and target states"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Sec. 6.1.1 states the assumptions its bounds rest on.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-upper-bound-expected-variance",
+     "value": "The paper finds that, under its assumptions, the expected gradient variance of a single-layer QSGC is bounded above by order theta of one over C (C the number of features), and that the bound is attained with the Instantaneous Quantum Polynomial ansatz, up to a factor stated in the text.",
+     "anchor": "Sec. 6.1.2, Eq. 33, p.18 (derivation in Appendix B)",
+     "quotes": [
+      "an upper bound of the expected variance is found:",
+      "Ei,t[Var(∂µLQSGC )]upper = Θ(C−1).",
+      "Furthermore, this bound is attained with the Instantaneous Quantum Polynomial (IQP) Ansatz,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived in Appendix B.7.1 under the k-regular, full-register and independent-input assumptions, with asymptotic steps that treat edge-pair expectations as constant order; tightness over all ansaetze is left open.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-lower-bound-expected-variance",
+     "value": "The paper finds that, for the efficient ansatze (those for which a sign condition holds; an inefficient ansatz is corrected by adding a unitary gate), the expected gradient variance of a single-layer QSGC is bounded below by order theta of one over N times C, where N is the number of nodes and C the number of features.",
+     "anchor": "Sec. 6.1.2, Eq. 36, p.18 (Lemma E.4)",
+     "quotes": [
+      "only the correct (“efficient”) ansätze when computing our lower bound.",
+      "Ei,t[Var(∂µLQSGC )]lower = Θ(N −1C−1)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived in Appendix B.7.2 for ansaetze with the sign condition of Lemma E.4, and attained only if the squared overlap is zero; rests on the same assumptions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-expected-variance-arbitrary-ansatz",
+     "value": "The paper finds that for an arbitrary ansatz, where the relevant overlap scales inversely with the Hilbert space size, the expected gradient variance of a single-layer QSGC is of order theta of one over C squared plus one over N times C.",
+     "anchor": "Sec. 6.1.2, Eq. 37, p.19 (Appendix B.8)",
+     "quotes": [
+      "Ei,t[Var(∂µLQSGC )]expected = Θ(C−2 + N −1C−1).",
+      "will suffer from the curse of dimensionality"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived in Appendix B.8 using Lemma E.5, which gives only the mean overlap of random states.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-trainability-interpretation-feature-scaling",
+     "value": "The authors state that the lower bound suggests a barren plateau because the variance decays exponentially with the number of qubits, while the upper bound and the expected behavior avoid it through a term independent of N; they state that restricting the task so that the number of features grows slowly with N, for example polylogarithmically, may preserve trainability.",
+     "anchor": "Sec. 6.1.3, p.19",
+     "quotes": [
+      "the lower bound suggests the presence of the barren plateau as the variance decays exponentially",
+      "makes the number of features scale slowly with N , as e.g.",
+      "trainability may be preserved."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation of bounds derived under stated assumptions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The lower and upper bounds disagree about a barren plateau, so the result does not settle trainability in the general case."
+    },
+    {
+     "id_suggestion": "sein-semi-supervised-factor",
+     "value": "The authors state that for semi-supervised tasks all expected variances gain an extra factor M/N, with M the number of labeled nodes out of N nodes, and that the model is still efficiently trained if the labeled fraction is of constant order, for example a constant 10 percent of the nodes.",
+     "anchor": "Sec. 6.1.3, p.19",
+     "quotes": [
+      "all expected variances gain an extra factor M/N , where M = |YL|",
+      "The model is still efficiently trained if the fraction M/N = Θ(1)",
+      "example, a constant 10% of the nodes are labeled."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived in Appendix B.5 (Eq. 104) by letting unlabeled targets collapse to zero, a mathematical device the paper says is not physically realizable.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-all-qgcn-reduce-to-qsgc",
+     "value": "The authors state that any polynomial of the normalized adjacency matrix can be seen as the adjacency matrix of a new weighted k-regular graph, so all QGCN models reduce to a single-layer QSGC and the trainability results hold for any QGCN.",
+     "anchor": "Sec. 6.2, p.19 (Appendices A.2 and C.1)",
+     "quotes": [
+      "Thus, all QGCN models reduce to a single-layer QSGC, making the",
+      "results above valid for any QGCN."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived in Appendices A.2, C.1-C.3 under the k-regularity and averaging assumptions, with QLGC coefficients restricted to a convex combination.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-input-problem-cancels-advantage",
+     "value": "The authors state that compiling the circuit to upload classical data needs at least storing and reading each classical input, so the compilation complexities alone match the classical GCN complexities and cancel any desirable advantage, unless an oracle or QRAM compiles the circuits efficiently.",
+     "anchor": "Sec. 7, p.20",
+     "quotes": [
+      "compilation complexities alone end up matching the classical GCN complexities, hence canceling",
+      "The only way to bypass this problem is to assume that the circuits"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Sec. 7 states a limit of the complexity claims.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-shot-noise-factor",
+     "value": "The authors state that the shot noise adds a query complexity inversely proportional to the cost gradient variance, which for the expected behavior of an arbitrary ansatz is a factor of order C squared when C is much smaller than N, and that backpropagation by the parameter-shift rule adds a query complexity of order D for QSGC and D plus p for QLGC.",
+     "anchor": "Sec. 7, p.20",
+     "quotes": [
+      "the shot-noise contributes a factor of",
+      "O(1/(C−2 + N −1C−1)) ≈ O(C2) for C ≪ N ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derived scaling (Appendix D.1, Eq. 189) resting on the arbitrary-ansatz expected variance.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-regimes-of-advantage-qsgc",
+     "value": "The authors state three regimes for the QSGC models, depending on the number of ancillary qubits: with polylogarithmic ancillas an exponential space reduction and a polylogarithmic speed-up over the classical counterpart; with a sublinear number of ancillas a polynomial advantage in both space and time; with ancillas of order N over polylog N an exponential speed-up with a polylogarithmic space reduction.",
+     "anchor": "Sec. 7.1, p.21",
+     "quotes": [
+      "the QSGC gains an exponential space reduction and a polylogarithmic speed-up w.r.t. its",
+      "leads to polynomial advantage in both space and time complexities.",
+      "having an exponential speed-up with a polylogarithmic space reduction."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A complexity comparison derived in Appendix D.2 that assumes efficient data loading and a fixed feature count C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-qlgc-loses-regime-three",
+     "value": "The authors state that for the QLGC models the extra QSVT runtime makes the runtime at least sublinear in N, so the exponential speed-up case (3) is lost while regimes (1) and (2) are maintained.",
+     "anchor": "Sec. 7.1, Eq. 44, p.21",
+     "quotes": [
+      "the exponential speed-up case (3) given above is lost.",
+      "regimes (1) and (2) are maintained."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived in Appendices D.4 under the same assumptions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-dequantization-conditions",
+     "value": "The authors derive that a dequantized algorithm based on Tang's sampling method has space complexity of order r to the power 11 plus C squared and time complexity of order log squared N times r to the power 16.5 plus C times r to the power 6.5, so it gains a speed-up over the quantum model for r of order N to the power 0.11 and an additional space suppression for r of order N to the power 0.09. They state the QGCN models may be dequantized if the stable rank of the normalized adjacency matrix is of order N to the power 0.11.",
+     "anchor": "Sec. 7.2, Eqs. 46-48, p.21 (Appendix D.5)",
+     "quotes": [
+      "SQDGeqCN = O(r11 + C2),",
+      "TQDGeqCN = O(log2(N ) · r16.5 + Cr6.5).",
+      "up over the quantum one for r = O(N 0.11), and achieves an additional space suppression for",
+      "r = O(N 0.09).",
+      "the QGCN models considered may be dequantized if the normalized"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Derived in Appendix D.5 from an informal sampling sketch and Tang-algorithm exponents.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The exponents come from the sampling method as the paper states them; a faster dequantization would change the thresholds."
+    },
+    {
+     "id_suggestion": "sein-dequantization-sparse-or-dense-advantage",
+     "value": "The authors state that, because the sparsity of the adjacency matrix is lower-bounded by the fraction N over r (Lemma E.7), a high rank implies a sparse graph, so the quantum model may still have an advantage for sufficiently sparse graphs or for dense, unstructured graphs.",
+     "anchor": "Sec. 7.2, p.21",
+     "quotes": [
+      "a high rank implies",
+      "Hence, the quantum model may still have an advantage for either sparse enough"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Rests on Lemma E.7, proved for unweighted graphs.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-conclusion-no-end-to-end-advantage",
+     "value": "The authors state that the potential advantage concerns primarily the number of trainable parameters and the asymptotic scaling of the algorithm, and that it does not by itself constitute a demonstrated end-to-end quantum advantage, which would additionally require efficient state preparation, block encoding and readout; they add that the parameter-count reduction concerns the trainable variational component.",
+     "anchor": "Sec. 1, p.2 and Sec. 8, p.22",
+     "quotes": [
+      "the parameter-count reduction demonstrated throughout this",
+      "work concerns the trainable variational component;",
+      "it does not by itself constitute a demonstrated end-to-end quantum advantage, which"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in its introduction and conclusion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-conclusion-trainable-if-features-compact",
+     "value": "The authors conclude that the model can be made trainable independently of the graph size or structure, valid only if the feature representation is reasonably compact because the variance is expected to scale inversely with the number of features per node; they also state the empirical gradient analysis suggests no severe barren plateau in the explored regimes.",
+     "anchor": "Sec. 8, p.22",
+     "quotes": [
+      "the model can be made trainable independently of the graph size or structure.",
+      "This is valid only if the feature representation is reasonably compact, as the variance is expected",
+      "exhibit a severe barren plateau behavior in the explored regimes"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conclusion resting on bounds derived under the stated assumptions and on simulations.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-conclusion-dequantizable-and-future-work",
+     "value": "The authors state that, because the model assumes an efficient oracle to avoid the input problem, the situation is not as favorable in reality, and that the low-rank simulability analysis indicates the model can be dequantized for structured graphs; they list as future work noise-aware designs for near-term devices and the study of real quantum implementations.",
+     "anchor": "Sec. 8, p.22-23",
+     "quotes": [
+      "However, as the model assumes an efficient oracle to avoid the",
+      "indicates that the model can be dequantized for structured graphs.",
+      "the study of real quantum implementations"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these limits and open items in Sec. 8.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-datasets-and-features",
+     "value": "The authors list five datasets with their node, feature, class and train/validation/test counts, including Karate Club (34 nodes, 34 features, 4 classes, 4 / 10 / 20) and Cora (2,708 nodes, 1,433 features, 7 classes, 140 / 500 / 1,000); for Karate Club, which has no node features, the nodes are one-hot-encoded so the data matrix is the identity.",
+     "anchor": "Table 1 and Sec. 5.1, p.11",
+     "quotes": [
+      "Karate Club 34 34 4 4 / 10 / 20 [46]",
+      "Cora 2,708 1,433 7 140 / 500 / 1,000 [47]",
+      "nodes are one-hot-encoded and the data matrix X = IN ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own datasets and splits in Table 1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "With one-hot features the Karate Club feature count equals the node count, outside the regime (features growing slowly with N) in which Sec. 6 says trainability is preserved. The paper does not say whether the (p, layers) choice in Table 3 used validation or test accuracy."
+    },
+    {
+     "id_suggestion": "sein-parameter-counts-table2",
+     "value": "The authors list the trainable parameter count of the quantum models as three times the number of layers times the ceiling of the base-two logarithm of the feature count C (plus p for QLGC), against C times the number of classes (plus p for CLGC) for the classical models.",
+     "anchor": "Table 2, Sec. 5.1, p.12",
+     "quotes": [
+      "3ℓ⌈log2 C⌉ CFK",
+      "3ℓ⌈log2 C⌉ + p CFK + p"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Table 2 defines the parameter counts of the models the paper compares.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-lemma-a1-eigenvector",
+     "value": "The paper proves (Lemma A.1) that for a graph with normalized adjacency matrix with self-loops and degree matrix D, the vector formed by the square root of D applied to the all-ones vector is an eigenvector of the normalized adjacency matrix with eigenvalue one.",
+     "anchor": "Lemma A.1, Appendix A.2.1, p.31",
+     "quotes": [
+      "Lemma A.1. For a graph whose normalized adjacency matrix with self-loops is Aˆ and the degree",
+      "is an eigenvector of Aˆ, with eigenvalue 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The lemma is stated and proved in Appendix A.2.1 (Eqs. 55-56).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-lemma-a2-degree-proportional",
+     "value": "The paper proves (Lemma A.2) that if the normalized adjacency matrices with self-loops of two graphs commute, then their degree matrices are proportional.",
+     "anchor": "Lemma A.2, Appendix A.2.1, p.31",
+     "quotes": [
+      "Lemma A.2. If the normalized adjacency matrices with self-loops of two graphs commute, then",
+      "their degree matrices are proportional."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The lemma is stated and proved in Appendix A.2.1 (Eq. 57), using Lemma A.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-proposition-a3-product-adjacency",
+     "value": "The paper states (Proposition A.3) that for two weighted graphs on the same number of nodes, a graph exists whose normalized adjacency matrix with self-loops equals the product of their two normalized adjacency matrices only if the two matrices commute; the proof then constructs a family of such graphs for commuting matrices.",
+     "anchor": "Proposition A.3, Appendix A.2.1, p.31-32",
+     "quotes": [
+      "Proposition A.3. Let GA and GB be two graphs with weighted edges and the same number",
+      "Bˆ. Then there exists a graph GC whose normalized adjacency matrix with self-loops matches",
+      "Cˆ = AˆBˆ only if the two matrices Aˆ and Bˆ commute."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The proposition is stated and proved in Appendix A.2.1 (Eqs. 58-61).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The statement says 'only if', but the proof builds the graph for commuting matrices and Appendix C.2 uses the 'if' direction (commuting matrices give a valid graph). The necessity direction is what the proof's first condition shows; the sufficiency use is by the construction."
+    },
+    {
+     "id_suggestion": "sein-corollary-a31-k-regular-product",
+     "value": "The paper states (Corollary A.3.1) that, following Proposition A.3, if the two graphs are weighted k-regular, then the product graph can be chosen to be k-regular (by setting the free constant c to one).",
+     "anchor": "Corollary A.3.1, Appendix A.2.1, p.32",
+     "quotes": [
+      "Corollary A.3.1. Following Proposition A.3, if graphs GA and GB are weighted k-regular, then",
+      "GC can be chosen to be k-regular.",
+      "Therefore, to make the new graph k-regular we set c = 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The corollary is stated and proved in Appendix A.2.1 (Eq. 62).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-proposition-a4-convex-sum",
+     "value": "The paper states (Proposition A.4) that for two graphs with commuting normalized adjacency matrices with self-loops, a graph exists whose normalized adjacency matrix with self-loops is a convex sum of the two, with non-negative coefficients summing to one; Corollary A.4.1 extends this by induction to a convex sum of n such matrices, and Corollary A.4.2 states the k-regular case.",
+     "anchor": "Proposition A.4 and Corollaries A.4.1-A.4.2, Appendix A.3, p.32-33",
+     "quotes": [
+      "Proposition A.4. For two graphs GA and GB with commuting normalized adjacency matrices",
+      "self-loops is a convex sum Cˆ = αAˆ + βBˆ for some non-negative numbers α and β such that",
+      "the convex sum Cˆ = p αpAˆp is a valid adjacency matrix with self loops"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The proposition and corollaries are stated and proved in Appendix A.3 (Eqs. 63-66).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-gradient-mean-zero",
+     "value": "The paper shows that, with the ansatz parameters ranging from minus pi to pi, the expected value of the cost gradient of the QSGC is zero, because the two boundary terms cancel when the generator squares to the identity; this extends to the whole cost gradient.",
+     "anchor": "Appendix B.3, Eq. 82, p.36 (restated for weighted graphs in Eq. 158, p.50)",
+     "quotes": [
+      "Here, all weights θη range from −π to π.",
+      "cancel out. By a similar cal-",
+      "culation, this extends to the whole cost gradient, so Eθ[LQSGC] = 0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The derivation is given in Appendix B.3 with its conditions (generators squaring to the identity, parameters over a full period).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-exact-gradient-variance-formula",
+     "value": "The paper derives an exact expression for the variance of a single-layer QSGC cost gradient: a sum over all D-bit strings, weighted by minus one to the power of the Hamming weight, of the real part of a squared amplitude Z plus the squared modulus of Z, with prefactor inverse to two to the power D plus one times N squared, where Z sums the adjacency weights times matrix elements of the ansatz branch product between target and input states.",
+     "anchor": "Section 6.1, Eq. 29-30, p.17 (derivation in Appendix B.3, Eqs. 76-99, p.35-38)",
+     "quotes": [
+      "As derived in the Appendix, the explicit form of the cost function variance is",
+      "where α⃗ sums over all D-bit strings and the argument",
+      "is chosen, where Vη2 = 1 and D is the number of weights θη."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The formula is derived in Appendix B.3 for an ansatz of rotations exp(-i theta V) times fixed gates with V squaring to the identity, and parameters uniform over a period.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-asymptotic-graph-size-independence",
+     "value": "The paper derives that, for fixed feature-register size, the expected gradient variance of the single-layer QSGC is of constant order in the node count N and the average degree k, because the normalization of the adjacency matrix cancels the sum over node pairs; it states the bound is strict unless certain expected values vanish, and that this is only the average over inputs and targets, with the spread left for future work.",
+     "anchor": "Appendix B.5.1, p.41",
+     "quotes": [
+      "Therefore, to leading order, the normalization of the adjacency matrix exactly cancels the sum-",
+      "connectivity, E[Var(∂µLQSGC )] = Θgr(1).",
+      "We remind the reader that this is only an evaluation of the average variance over all possible",
+      "tricky as it assumes a symmetric spread which may not be true. We leave this task for future work."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation resting on the k-regular, full-Hilbert-space and independent-input assumptions and on an asymptotic claim that edge-pair expectations are constant order.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-independence-assumption-inputs-targets",
+     "value": "The paper treats the input and target states as independent random variables across nodes when averaging the gradient variance, and states that in practice they will have hidden correlations, since otherwise the model would not learn any useful information.",
+     "anchor": "Appendix B.5, footnote 15, p.39",
+     "quotes": [
+      "In practice, the input and target will have hidden correlations; otherwise, the model will not learn any useful",
+      "the input and target states are considered independent random variables"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its averaging in a footnote.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The trainability bounds average over independent random inputs and targets, so they describe a distribution the real data do not follow."
+    },
+    {
+     "id_suggestion": "sein-lemma-e1-e2-e3-hamming-sums",
+     "value": "The paper proves closed forms and asymptotics for sums over nonzero bit strings of the feature-register length (Lemma E.1, requiring length at least three), the asymptotic relations among them used in the variance bounds (Lemma E.2), and that the same sums restricted to Hamming weight at most C, with C greater than half the register dimension, are of the same order as the unrestricted sums (Lemma E.3).",
+     "anchor": "Lemmas E.1-E.3, Appendix E.1, p.63-66",
+     "quotes": [
+      "where w(⃗γ) denotes the Hamming weight of a nonzero bit string ⃗γ of length Nk ≥ 3 and b and",
+      "Lemma E.2. The following relations hold:",
+      "Thus the three asymptotes are derived.",
+      "Nk/2 < C < Nk are of the same order as the previous ones."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The lemmas are stated with their conditions and proved in Appendix E.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-upper-bound-tightness-and-iqp",
+     "value": "The paper derives the upper bound on the expected gradient variance from the termwise bounds on the overlap quantities, and states that finding whether the bound is tight is work in progress; for the IQP ansatz the overlap bounds are reached and the expected variance is exactly half the maximum possible, decaying as the inverse of the register dimension.",
+     "anchor": "Appendix B.7.1 Eq. 138 p.46 and B.9 p.48",
+     "quotes": [
+      "Finding whether this bound is tight is a work in progress, as one needs to find the right ansatz",
+      "that maximizes the expected variance.",
+      "In fact, this expected variance is exactly half the maximum possible.",
+      "decays as Nk−1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The bound and the IQP calculation are derived in Appendices B.7.1 and B.9 under the stated assumptions.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The main text says the bound is attained with the IQP ansatz up to a factor of one half; the appendix calls the same IQP value exactly half the maximum, so the two are consistent, and both say tightness over all ansaetze is open."
+    },
+    {
+     "id_suggestion": "sein-lower-bound-attainment-constraint",
+     "value": "The paper derives the lower bound on the expected gradient variance by using Lemma E.4 to make the alternating sum non-negative and taking the squared overlap term to zero, and states that this bound can only be attained if that squared overlap is zero, which is a significant constraint on the ansatz.",
+     "anchor": "Appendix B.7.2, Eqs. 139-141, p.46-47",
+     "quotes": [
+      "We emphasize on the fact that this bound can only be attained if the term",
+      "which is a significant constraint to the ansatz."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the condition under which its lower bound is attained.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-lemma-e4-sign-flip",
+     "value": "The paper proves (Lemma E.4) that replacing a fixed gate by its product with the associated generator flips the sign of the alternating sum over bit strings, so a negative sum can be made positive by multiplying an odd number of gates by their generators; the main text states without proof that this does not diminish expressivity, and that the sign can be checked numerically.",
+     "anchor": "Lemma E.4, Appendix E.2, p.66-67; Sec. 6.1.2, p.18",
+     "quotes": [
+      "Lemma E.4. For {Sα⃗v }α⃗ given in Eq. 109 and for some ansatz U (θ) defined in Eq. 74, the map",
+      "Wλ → VλWλ flips the sign of",
+      "Because the addition of Vλ is a unitary process, this map does not",
+      "It is straightforward to check the sign of this sum (numerically, using"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The sign flip is stated and proved in Appendix E.2 (Eqs. 279-282); the expressivity remark is a claim.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The lemma proves only the sign flip. That the modified ansatz stays as expressive as the original is asserted in the main text, not proved."
+    },
+    {
+     "id_suggestion": "sein-curse-of-dimensionality-lemma-e5",
+     "value": "The paper proves (Lemma E.5) that the overlap, in modulus squared, of two random n-qubit states averages to one over two to the power n, and uses this to state that the squared overlap of the ansatz branch matrix elements strongly peaks around the inverse of the register dimension, so most ansaetze give an additional term of inverse square order in the register dimension.",
+     "anchor": "Lemma E.5, Appendix E.3, p.67; Appendix B.8, Eq. 143, p.47",
+     "quotes": [
+      "Lemma E.5. For two random n-qubit states |ψ⟩ and |ϕ⟩, their overlap (modulus squared) av-",
+      "strongly peaks around Nk−1.",
+      "E[Var(∂µLQSGC )] ∼Θ(N −1Nk−1) + Θ(Nk−2)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Lemma E.5 proves only the average of the squared overlap for Haar-like random states; the peaking claim for the ansatz overlaps is an extension.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The lemma gives a mean over random states, not a concentration result, and the ansatz overlap is not a Haar-random state. The main text writes the condition on the overlap modulus as order inverse C, whereas the appendix uses the modulus squared of order inverse register dimension; the two differ by a square."
+    },
+    {
+     "id_suggestion": "sein-padding-and-random-permutation",
+     "value": "The paper states that when the feature count C is smaller than the register dimension, zero padding projects the ansatz matrices so they are no longer unitary and the bounds cannot be inferred; it states that randomly permuting the padded components (for C above half the register dimension) recovers the previous results up to a constant overhead, and that encoding the inverse permutation in the circuit keeps standard amplitude encoding.",
+     "anchor": "Appendix B.10, p.49-50 (Lemma E.3)",
+     "quotes": [
+      "As this new matrix is not unitary, we cannot infer the",
+      "of the previous results up to an overhead O(1).",
+      "Therefore, applying this random permutation recovers the expected"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument that relies on Lemma E.3 and on averaging over all permutations.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-lemma-e6-weighted-regular-bounds",
+     "value": "The paper proves (Lemma E.6) bounds for weighted k-regular graphs: the pair-count R-parallel lies between the square of N minus one and N times N minus one; R-wedge and R-vee lie between zero and N minus one; R-bar lies between one and N; and uses them to state the trainability orders hold for weighted graphs.",
+     "anchor": "Lemma E.6, Appendix E.4, p.67-68; Appendix C.1, p.51",
+     "quotes": [
+      "the bounds for weighted k-regular graphs are the following:",
+      "(N − 1)2 ≤Rˆ|| ≤ N (N − 1)",
+      "1 ≤Rˆ| ≤ N.",
+      "hold for the case of weighted graphs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The lemma is stated and proved in Appendix E.4 (Eqs. 290-293).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-p-th-order-qsgc-reduces",
+     "value": "The paper states that, because the adjacency matrix commutes with itself, each power of the normalized adjacency matrix is again a valid normalized adjacency matrix of a k-regular graph (Proposition A.3 and Corollary A.3.1), so the single-layer upper bound, lower bound and expected dependence hold for a QSGC of any propagation order p.",
+     "anchor": "Appendix C.2, p.52",
+     "quotes": [
+      "Thus, our results should hold by reassigning Aˆ2 ≡ Bˆ for some new graph GB.",
+      "we confirm that our results hold for any QSGC model with an arbitrary propagation"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The reduction rests on the k-regularity and averaging assumptions of Appendix B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-qlgc-trainability-convex-coefficients",
+     "value": "The paper analyzes QLGC trainability after replacing the Laplacian polynomial by a polynomial of the normalized adjacency matrix whose coefficients lie in zero to one and sum to one, and concludes that QSGCs and QLGCs are equally trainable, with the same gradient variance for a given system size and ansatz; the coefficient gradient reduces to the QSGC cost of one order.",
+     "anchor": "Appendix C.3, Eqs. 173-181, p.52-54",
+     "quotes": [
+      "we choose the range of coefficients23 aq ∈ [0, 1], with at least one",
+      "being non-zero and their sum must be one, q aq = 1.",
+      "all QSGCs and QLGCs are equally trainable, leading to the exact same gradient cost variance"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation resting on the Appendix B assumptions and on a restriction of the LGC coefficients.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The LGC of Eq. 21 allows real coefficients, while the trainability analysis constrains them to a convex combination, so the analyzed QLGC is narrower than the one in the experiments."
+    },
+    {
+     "id_suggestion": "sein-complexity-input-problem-appendix",
+     "value": "The paper states that the input problem adds a term of order the number of edges times C plus N times C to the space complexity and the same as a lower bound to the time complexity, comparable to the classical SGC, so the problem is not scalable as it stands and an efficient oracle or QRAM must be assumed.",
+     "anchor": "Appendix D.1, Eqs. 190-191, p.55",
+     "quotes": [
+      "We see that the input problem compromises any significant quantum advantage in this case as",
+      "problem as it stands is not scalable. Hence, we must assume an efficient oracle or QRAM to bypass the"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its complexity comparison in Appendix D.1.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-exponential-advantage-space-or-time-not-both",
+     "value": "The paper states that exponential advantage can be achieved for either space or time complexity but not both, and classifies the QSGC choices of ancilla counts into a balanced polynomial advantage (a sublinear number of ancillas, speed-up also sublinear in N), an exponential space reduction with polylogarithmic speed-up, and an exponential speed-up with polylogarithmic space reduction.",
+     "anchor": "Appendix D.2, D.2.1-D.2.3, p.55-57",
+     "quotes": [
+      "be achieved for either space or time complexities, but not both,",
+      "in both cases (and thus for any intermediate sparsity), the advantage is",
+      "In terms of the system size N , the speed-up is also sublinear."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A complexity comparison that assumes efficient data loading and fixed feature count C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-polylog-features-barren-plateau-avoided",
+     "value": "The paper states that for a feature count growing polylogarithmically with the node count, the expected gradient variance for most ansaetze is of inverse polylogarithmic order squared, so the barren plateau is still avoided for most ansaetze, and the advantage regimes are preserved with updated conditions on the dominant logarithmic powers.",
+     "anchor": "Appendix D.3-D.3.1, Eq. 205, p.57-58",
+     "quotes": [
+      "In terms of trainability, the barren plateau is still avoided for most ansätze, as",
+      "Θ(N −1 log−c(N ) + log−2c(N )) = Θ(log−2c(N ))."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derived scaling resting on the arbitrary-ansatz expected behavior.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-qlgc-depth-minimum-no-exponential-speedup",
+     "value": "The paper derives that the QSVT term makes the QLGC depth have a minimum over the number of block-encoding ancillas, which for sparse graphs is of order N times a polylogarithm to the power one half and for dense graphs larger, and states that the exponential speed-up is therefore unachievable for QLGC, with at best a polynomial one; the remaining advantages are exponential space suppression and a mixed polynomial space-time advantage.",
+     "anchor": "Appendix D.4, Eqs. 220-224, p.58-59",
+     "quotes": [
+      "which means the exponential speed-up is now unachievable, with",
+      "at best a polynomial one."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derived complexity statement resting on the QRAM assumption.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-dequantization-overhead-and-approximation",
+     "value": "The paper states that the dequantization uses Tang's l2-norm sampling with a sample count that is a power of the rank, treats the precision as fixed, and notes that in reality the large powers can give an immense overhead; it calls its sampling description a simplified sketch and states that applying the polynomial of the adjacency matrix is a heavy approximation, justified by the low variance of the chosen distribution.",
+     "anchor": "Appendix D.5, p.59-62 (footnote 25, p.59)",
+     "quotes": [
+      "We mention that in reality, this can give an immense overhead due to its large powers.",
+      "We note that this is a simplified sketch of the sampling process",
+      "nonlinear operation, which is then approximated by passing it through a (linear) estimator.",
+      "Because of the low variance of the chosen distribution, this is a reasonable approximation."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these caveats of its dequantization in Appendix D.5.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The dequantization thresholds below depend on this sketch; no error analysis for the polynomial case is given."
+    },
+    {
+     "id_suggestion": "sein-dequantization-rank-thresholds",
+     "value": "The paper derives that the dequantized model beats the quantum models in both space and time only for rank up to N to the power one over eleven (about 0.09), and for time alone up to N to the power two over seventeen and a half (about 0.11); it states the QSGC architecture is classically simulable for any rank of order N to the power 0.11 and loses the advantage entirely for polylogarithmic rank, where the classical algorithm gains an exponential advantage over the standard CSGC.",
+     "anchor": "Appendix D.5, Eqs. 246-250, p.62",
+     "quotes": [
+      "βmax = 1/11 ≈ 0.09.",
+      "βm′ ax = 2/17.5 ≈ 0.11.",
+      "O(N 0.11) and loses the advantage entirely for r = O(polylog(N ))."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derived threshold that depends on the informal sampling sketch and on the exponents of Tang's algorithm.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sein-lemma-e7-rank-sparsity",
+     "value": "The paper proves (Lemma E.7) that the rank r of the normalized adjacency matrix with self-loops of a graph with sparsity s is at least N over s, so a sparse graph has high rank; the proof uses the Cauchy-Schwarz inequality on the eigenvalues, the trace, and a count of the nonzero entries.",
+     "anchor": "Lemma E.7, Appendix E.5, p.68-69",
+     "quotes": [
+      "Lemma E.7. For a graph, the normalized adjacency matrix with self-loops Aˆ is defined as given",
+      "N 2 ≤ r · N · s ⇒ r ≥ N/s.",
+      "So a sparse graph has high rank r."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The lemma is stated and proved in Appendix E.5 (Eqs. 295-298).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The proof bounds the sum of squared entries by N times s, which counts ones in an unweighted matrix, so the argument as written fits unweighted graphs."
+    }
+   ]
+  },
+  {
+   "record_id": "cordero-2026-quantum-machine-learning-medical-imaging",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2026-10_Cordero_Quantum-Machine-Learning-in-Medical-Imaging-A-Primer-for_2610.32762.pdf",
+   "title_in_file": "Quantum Machine Learning in Medical Imaging: A Primer for Radiologists",
+   "version_note": "",
+   "pages": 15,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A narrative review that introduces radiologists to quantum computing and summarizes reported quantum and quantum-inspired machine learning results in medical imaging, almost all of them cited from other studies.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "cordero-scope-narrative-primer",
+     "value": "The authors state that the article is a narrative primer rather than a systematic review, and that they searched PubMed, arXiv and web-based academic search engines through August 2026, prioritizing peer-reviewed original studies and reviews applying quantum or quantum-inspired methods to medical images.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "This article is a narrative primer rather than a systematic review.",
+      "searched PubMed, arXiv, and web-based academic search engines through August 2026"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope and method in the Introduction.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No inclusion or exclusion criteria or quality appraisal are given, so the review does not support counts or comparisons across studies."
+    },
+    {
+     "id_suggestion": "cordero-field-state-hybrid-small-datasets",
+     "value": "The authors state that nearly all published systems are hybrid quantum-classical pipelines evaluated on small, downsampled benchmark datasets or simulators, and that clinical deployment is not yet feasible.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "Nearly all published systems are hybrid quantum-classical pipelines evaluated on small,",
+      "downsampled benchmark datasets or simulators, and clinical deployment is not yet feasible."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author characterization of the literature from a non-systematic search.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordero-advantage-problem-specific",
+     "value": "The authors state that measurement collapses the register to a single outcome, so practical advantage requires interference, efficient circuit design and problem structure suited to quantum algorithms, not merely the ability to represent all basis states; they cite Shor's algorithm (polynomial-time factoring) and Grover's algorithm (quadratic speed-up of unstructured search) as showing that quantum advantage is problem-specific rather than universal.",
+     "anchor": "Introduction p.2; Classical Versus Quantum Computing p.2",
+     "quotes": [
+      "Measurement, however, collapses the register to a single outcome, so practical advantage",
+      "requires interference, efficient circuit design, and problem structure suited to quantum algorithms, not",
+      "quantum advantage is problem-specific rather than universal."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A background statement attributed to cited sources.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordero-nisq-hardware-state",
+     "value": "The authors state that current devices operate in the NISQ era with tens to a few hundred qubits and no full error correction; that superconducting processors are the dominant platform; that trapped-ion processors offer longer coherence times but certain parallel operations demonstrated at small scales are not expected to generalize to larger qubit counts; and that photonic platforms remain difficult to control and are underrepresented in medical imaging research.",
+     "anchor": "Current Hardware Platforms, p.4",
+     "quotes": [
+      "Current devices operate in the noisy intermediate-scale quantum (NISQ) era, with tens to a few hundred",
+      "qubits and no full error correction (23).",
+      "are not expected to generalize to larger qubit counts (7)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A hardware status summary attributed to cited sources and dated to 2026.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordero-noise-accuracy-loss-ibm",
+     "value": "The authors report, citing a MedMNIST benchmark on IBM hardware, that device noise alone reduced accuracy by up to 15.70 percentage points relative to a noise-free simulation of the same model; they state the benchmark used IBM's 127-qubit Cleveland system.",
+     "anchor": "Current Hardware Platforms, p.4-5",
+     "quotes": [
+      "benchmarking used IBM's 127-qubit Cleveland system (11,24).",
+      "reduced accuracy by up to 15.70 percentage points relative to a noise-free simulation of the same model"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the review attributes to another study.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordero-qml-architectures-and-qcnn-parameters",
+     "value": "The authors state that variational quantum circuits are the most widely used architecture in current research, and that QCNNs can process an N-qubit input with only O(log N) trainable parameters (citing references 9, 22 and 28); most published systems are hybrid because NISQ hardware cannot yet support end-to-end quantum pipelines for clinical imaging.",
+     "anchor": "Quantum Machine Learning, p.6",
+     "quotes": [
+      "VQCs, the most widely used architecture in",
+      "N-qubit input with only O(log N) trainable parameters (9,22,28).",
+      "Because NISQ hardware cannot yet support end-to-end quantum pipelines for clinical imaging, most"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A description of architectures attributed to cited sources.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordero-image-encodings-frqi-neqr",
+     "value": "The authors state that FRQI stores pixel intensity in probability amplitudes and position in qubits, so accurate recovery is probabilistic and needs many repeated measurements, while NEQR stores grayscale values in orthogonal basis states of an entangled qubit sequence, permitting direct readout, with lower preparation complexity and higher compression ratios than FRQI in the original report and at the cost of additional qubits.",
+     "anchor": "Quantum Image Representation, p.6-7 and Figure 5 caption, p.9",
+     "quotes": [
+      "because amplitudes carry intensity, accurate recovery is probabilistic and requires many repeated",
+      "in orthogonal basis states of an entangled qubit sequence, permitting direct readout; the original report",
+      "described lower preparation complexity and higher compression ratios than FRQI (32,34)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A description of encodings attributed to the original reports.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordero-quantum-image-security",
+     "value": "The authors state, citing a review (reference 20), that quantum walks and quantum chaotic maps produce unpredictable key sequences that resist histogram and differential attacks, that the no-cloning theorem makes intercepted keys difficult to replicate, and that quantum walk-based steganography achieved high peak signal-to-noise ratios in experimental validation.",
+     "anchor": "Quantum Image Security, p.8",
+     "quotes": [
+      "resist histogram and differential attacks, and the quantum no-cloning",
+      "theorem makes intercepted keys difficult to replicate (20).",
+      "with quantum walk-based embedding achieving high peak signal-to-noise ratios"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A claim attributed to a cited review, without numbers in this paper.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordero-classification-evidence-caveat",
+     "value": "The authors state that image classification is the most developed QML application, that reported performance is early proof-of-concept evidence because most studies use benchmark datasets, reduced-resolution inputs, simulator-based experiments or limited validation splits, and that classification is a promising research direction rather than a replacement for deployed radiology AI systems.",
+     "anchor": "Image Classification, p.9-10",
+     "quotes": [
+      "Image classification is the most developed QML application.",
+      "most studies use benchmark datasets, reduced-resolution inputs",
+      "classification is a promising research direction rather than a"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author assessment of the cited literature.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordero-cited-qcnn-brain-mri-4qubit",
+     "value": "The authors report, citing another study, that a compact four-qubit QCNN classified 3,264 brain MRI images with 89% accuracy for binary tumor detection but 62% for multiclass tumor subtyping, which they say suggests current QCNNs are more reliable for simpler binary tasks.",
+     "anchor": "Image Classification, p.10; Table 4, p.9",
+     "quotes": [
+      "A compact four-qubit QCNN classified 3,264 brain MRI images,",
+      "achieving 89% accuracy for binary tumor detection but 62% for multiclass tumor subtyping, suggesting"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the review attributes to another study.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordero-cited-hybrid-qcnn-brain-tumor",
+     "value": "The authors report, citing another study, that a hybrid QCNN combining quantum feature-encoding circuits with depthwise-separable convolutions reached 91.47% validation accuracy for brain tumor MRI classification; and, citing another study, that an Inception-v3 transfer learning model feeding a six-layer quantum variational classifier reached per-class accuracy up to 99% on a public dataset and 90.91% for high-grade versus low-grade glioma on BraTS 2020.",
+     "anchor": "Image Classification, p.10",
+     "quotes": [
+      "reached 91.47% validation accuracy for",
+      "An Inception-v3 transfer learning model feeding a six-layer quantum",
+      "per-class accuracy up to 99% on a public dataset, and distinguished high-grade from low-grade glioma",
+      "with 90.91% accuracy on BraTS 2020 (37)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the review attributes to other studies.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordero-cited-chest-radiograph-results",
+     "value": "The authors report, citing other studies, that a quantum network on small PneumoniaMNIST patches reached 83.33% validation accuracy versus 73.33% for a comparable classical CNN; that replacing one dense layer of a CNN with a VQC improved AUC from 0.727 to 0.836 across 30 training runs on pediatric radiographs; and that a hybrid quantum-classical CNN reported 98.6% binary and 88.2% four-class accuracy on COVID-19 chest radiographs.",
+     "anchor": "Image Classification, p.10",
+     "quotes": [
+      "PneumoniaMNIST patches achieved 83.33% validation accuracy versus 73.33% for a comparable",
+      "replacing one dense layer of a CNN with a VQC improved AUC (0.836 vs 0.727)",
+      "across 30 training runs on pediatric radiographs (38).",
+      "quantum-classical CNN reported 98.6% binary and 88.2% four-class accuracy (39)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the review attributes to other studies.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordero-cited-quantum-transfer-learning",
+     "value": "The authors report, citing other studies, that quantum transfer learning (a pretrained classical feature extractor coupled to a small quantum circuit) reached AUC up to 0.93 for cardiomegaly detection, improved stenosis detection accuracy on x-ray coronary angiography by approximately 9%, and reached 97.2% accuracy for binary dementia classification on brain MRI.",
+     "anchor": "Image Classification, p.10",
+     "quotes": [
+      "achieved AUC",
+      "up to 0.93 for cardiomegaly detection (40), improved stenosis detection accuracy on x-ray coronary",
+      "angiography by approximately 9% (41), and reached 97.2% accuracy for binary dementia classification"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the review attributes to other studies.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordero-cited-skin-breast-lesions",
+     "value": "The authors report, citing other studies, that a hybrid quantum CNN with a quantum attention mechanism and NEQR encoding reported 91% accuracy for dermoscopic benign-versus-malignant classification, and that quantum transfer learning reached 84% accuracy on full-field digital mammograms, matching classical transfer learning and exceeding a network trained from scratch.",
+     "anchor": "Image Classification, p.10",
+     "quotes": [
+      "quantum attention mechanism and NEQR encoding reported 91% accuracy for",
+      "quantum transfer learning reached 84% accuracy on full-field digital",
+      "mammograms, matching classical transfer learning and exceeding a network trained from scratch (45)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the review attributes to other studies.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordero-cited-breastmnist-qcnn",
+     "value": "The authors report in the modality table, citing another study, that a hybrid QCNN on BreastMNIST reached 86.54% test accuracy versus 84.17% for a classical CNN.",
+     "anchor": "Table 4 (Ultrasound row), p.9",
+     "quotes": [
+      "86.54% test accuracy versus 84.17% for a"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the review attributes to another study.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The review gives no data on how the classical baseline was tuned or on variance, and the gap is small."
+    },
+    {
+     "id_suggestion": "cordero-segmentation-dice-caution",
+     "value": "The authors state that current quantum segmentation studies most often use quantum methods as optimization or feature-processing components rather than fully quantum systems, and that one reviewed study reported a Dice similarity coefficient of 98% on BraTS 2020 although the nonstandard evaluation context warrants cautious interpretation.",
+     "anchor": "Image Segmentation, p.10; Table 4, p.9",
+     "quotes": [
+      "rather than as fully quantum systems.",
+      "reported a Dice similarity coefficient of 98% on the BraTS 2020",
+      "although the nonstandard evaluation context warrants cautious interpretation (20)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the review attributes to another study and itself qualifies.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordero-quantum-inspired-segmentation",
+     "value": "The authors state, citing a review and another study, that quantum-inspired methods (classical algorithms borrowing quantum mathematics) have improved MRI tumor segmentation, and that a qutrit-inspired, fully self-supervised shallow network approached supervised U-Net performance without labeled training data.",
+     "anchor": "Image Segmentation, p.10",
+     "quotes": [
+      "inspired, fully self-supervised shallow network approached supervised U-Net performance without",
+      "borrow quantum mathematics but run on classical computers"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the review attributes to other studies; the methods run on classical computers.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordero-radiomics-quantum-annealing",
+     "value": "The authors report, citing another study, that quantum annealing on a D-Wave system selected radiomic features for differentiating large brain metastases from high-grade gliomas, and that the resulting explainable quantum neural network matched classical classifiers using compact, interpretable feature sets.",
+     "anchor": "Radiomics and Feature Extraction, p.11",
+     "quotes": [
+      "quantum annealing on a D-Wave system",
+      "the resulting explainable quantum neural network matched classical classifiers while using compact,"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the review attributes to another study.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordero-reconstruction-proofs-of-concept",
+     "value": "The authors state that classical deep learning pipelines remain the reference standard for reconstruction and quantum demonstrations are constrained proofs of concept; that hybrid adiabatic quantum computing was tested for PET/SPECT reconstruction on small simulated images with qubit number and connectivity as the limiting factors; and that in single-pixel imaging quantum neural networks completed reconstruction but with lower quality than classical networks in that experimental setting.",
+     "anchor": "Image Reconstruction, p.11",
+     "quotes": [
+      "classical deep learning pipelines remain the reference standard, and quantum",
+      "with qubit number and connectivity as the limiting factors (49).",
+      "lower quality than classical networks in that experimental setting (50)."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Statements the review attributes to other studies.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordero-limitations-hardware-encoding",
+     "value": "The authors state that medical imaging applications remain limited by NISQ-era hardware: noise, decoherence and high error rates reduce circuit fidelity; mitigation strategies are only partially effective; gradients of randomly initialized parameterized circuits can vanish exponentially with qubit number (barren plateaus), constraining trainable depth; small qubit counts force downsampling, feature compression or hybrid designs; and amplitude encoding is qubit-efficient but circuit-intensive and error-prone, whereas angle encoding is simpler but requires more qubits.",
+     "anchor": "Limitations, p.11",
+     "quotes": [
+      "Deep circuits lose coherence on",
+      "gradients of randomly initialized",
+      "parameterized circuits can vanish exponentially with qubit number (so-called barren plateaus),",
+      "amplitude encoding is qubit-",
+      "efficient but circuit-intensive and error-prone, whereas angle encoding is simpler but requires more"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these limits of the field in its Limitations section.",
+     "result_type": "field",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordero-conclusion-clinical-value-unproven",
+     "value": "The authors conclude that quantum computing in radiology is at an early, predominantly experimental stage, that the early signal is promising for hybrid models in selected classification tasks, and that clinical value is unproven until studies move beyond simulators, small datasets and weak or inconsistent baselines.",
+     "anchor": "Conclusion, p.12",
+     "quotes": [
+      "Quantum computing in radiology remains in its early stages and is predominantly experimental.",
+      "clinical value is unproven until studies move beyond simulators, small datasets, and weak or inconsistent"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion from a non-systematic review.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "wang-2026-emergent-recursive-kernels-quantum-reservoir",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2026-10_Wang_Emergent-Recursive-Kernels-in-Quantum-Reservoir-Computing_2610.34430.pdf",
+   "title_in_file": "Emergent Recursive Kernels in Quantum Reservoir Computing",
+   "version_note": "",
+   "pages": 26,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory letter (pages 1-6) with a long Supplemental Material (pages 7-26) that derives an exact recursive classical kernel for Haar-random quantum reservoirs in the large-dimension limit, bounds its finite-dimension error, and tests it numerically against Ising and SYK reservoirs on NARMA10.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "wang-setup-model-fixed-writer-haar-router",
+     "value": "The paper studies the repeated-input quantum reservoir protocol, in which a fresh input qubit is coupled to a retained system by a fixed unitary and then discarded. It takes the unitary as a fixed writer followed by an independently sampled Haar-random router acting only on the reservoir, with the writer fixed before the router is drawn, histories starting from the maximally mixed state, and history lengths fixed as the dimension grows.",
+     "anchor": "Model and exact kernel, p.1-2; Supplement Sec. S2, p.10",
+     "quotes": [
+      "we consider the construction U = (IA ⊗ V )W",
+      "Throughout, WD is fixed before drawing VD ∼ Haar[U (D)].",
+      "History lengths are fixed as D grows; all error estimates below allow constants that depend on those lengths."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the model and the conditions of its theory in the Letter and in Sec. S2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "wang-main-result-recursive-kernel",
+     "value": "The paper states its main result: in the large-dimension limit at fixed history length, the kernel of a reservoir with a fixed writer and an independent Haar router is given by a scalar recurrence, with kernel at step t equal to the source kernel b plus the propagation kernel a times the previous kernel, starting from zero, so that its explicit form is a sum over source times of b times the product of later a factors.",
+     "anchor": "Recursive kernel in the Haar limit, Eqs. (10)-(11); Eq. (S2.9)",
+     "quotes": [
+      "κt = bt + atκt−1, κ0 = 0,",
+      "admits an exact recursive kernel in the large-dimension limit",
+      "Memories injected at different times have zero leading overlap; equal-age memories start with overlap bD and acquire"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The recurrence is derived in Sec. S2.A-S2.B, with its error proved in Theorem S2.3, under the conditions in the setup assertion.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The result is for a Haar-random router, not for Hamiltonian dynamics such as the Ising and SYK reservoirs used in the comparison."
+    },
+    {
+     "id_suggestion": "wang-theorem-s23-finite-history-error",
+     "value": "The paper proves (Theorem S2.3), for a writer and both input histories fixed before a single Haar router is drawn and used at every step, starting from zero memory, that the local remainders are of order D to the power minus two in mean and second moment, that the bias of the full kernel relative to the recursive kernel is of order D to the power minus two, its variance of order D to the power minus two, and its root-mean-square error of order D to the power minus one, with constants allowed to depend on the history length and no estimate asserted for times growing with D.",
+     "anchor": "Theorem S2.3, Eqs. (S2.27)-(S2.28), Appendix S2.C, p.14",
+     "quotes": [
+      "Theorem S2.3 (Finite-history kernel error) Fix the writer and both input histories before drawing a single",
+      "|EV kD,L − κD,L| = OL(D−2),",
+      "EV |kD,L − κD,L|2 1/2 = OL(D−1),",
+      "No uniform estimate for times growing with D is asserted."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The theorem is stated with its conditions and proved in Sec. S2.C, p.15.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "wang-letter-self-averaging",
+     "value": "The Letter states that for fixed history length L, Haar integration and concentration give a root-mean-square difference between the exact kernel and the recursive kernel of order D to the power minus one, so individual reservoir kernels concentrate around the recursive kernel as D increases; it states that the estimates retain the local coefficients at the actual dimension and that their constants may depend on L.",
+     "anchor": "Recursive kernel in the Haar limit, Eq. (12), p.3",
+     "quotes": [
+      "(EV |kL − κL|2)1/2 = O(D−1).",
+      "The estimates retain the local coefficients at the actual dimension D; their constants may depend on L [26]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The claim is proved as Theorem S2.3 in the Supplemental Material.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "wang-lemmas-s21-s22-haar-counting",
+     "value": "The paper proves two lemmas used for the error bound: Lemma S2.1 (counting relations for Haar contractions, with the number of swaps at least the number of unitary occurrences, and a Haar-weighted contribution of order D to the power of minus twice the number of joins) and Lemma S2.2 (if the boundary factors of each trace are traceless except at most one, every nonzero contraction has at least one join, so the mean and the second moment of such a word are of order D to the power minus two at fixed length and bounded norms).",
+     "anchor": "Lemmas S2.1-S2.2, Eqs. (S2.10)-(S2.23), Sec. S2.C, p.12-14",
+     "quotes": [
+      "Each Haar contraction obeys",
+      "Ns ≥ NV , Nf = Ni + Ns − 2Nj, 2Nf − N1 ≤ 2NV .",
+      "Every nonzero Haar contraction then has",
+      "|EV F | = O(D−2), EV |F |2 = O(D−2),"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Both lemmas are stated with conditions and proved in Sec. S2.C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "wang-asymptotic-freeness-orthogonality",
+     "value": "The paper states that the Haar-random evolution scrambles previously injected memories so that, via asymptotic freeness, the current injection is orthogonal to the propagated memory and the overlap of two propagated memories reduces to a scalar factor a(u, v) times the preceding kernel, with remainders of order D to the power minus one in root-mean-square error over Haar realizations.",
+     "anchor": "Recursive kernel in the Haar limit, Eqs. (6)-(8), p.2; Sec. S2.B, p.10-11",
+     "quotes": [
+      "Mathematically, Eq. (6) follows from",
+      "a(u, v)kt−1 + O(D−1),",
+      "Asymptotic freeness means",
+      "that these trace relations become exact in the large-dimension limit at fixed product length."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The reduction is derived in Sec. S2.B and its error bounded in Sec. S2.C.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "wang-kernel-psd-and-cost",
+     "value": "The paper states that because the local kernels a and b are positive-semidefinite, the recurrence defines a valid temporal kernel for every history length; that, once its local coefficients are known, the kernel can be evaluated in order L scalar operations per pair independently of the reservoir dimension, with no quantum-state preparation, propagation or measurement; and that obtaining the feature kernel of a finite reservoir by dense simulation costs order L times D cubed.",
+     "anchor": "Recursive kernel in the Haar limit, p.3",
+     "quotes": [
+      "Since a and b are themselves positive-semidefinite kernels, the recurrence defines a valid temporal kernel for",
+      "dense simulation costs O(LD3).",
+      "independently of the reservoir dimension. It therefore provides a learning model"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Positive semidefiniteness is shown in Sec. S2.B and the operation counts follow from the recurrence and from Table S2.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The dimension independence holds for the kernel after the writer's local coefficients are known; obtaining them for an arbitrary writer is a separate cost the Letter does not count."
+    },
+    {
+     "id_suggestion": "wang-otoc-connection-exact",
+     "value": "The paper states that the source-kernel coefficient is a Pauli average of infinite-temperature out-of-time-ordered correlators for equal inputs, with a mixed-input generalization for unequal inputs, and that this identity is exact at finite D and does not rely on Haar randomness; for an arbitrary joint unitary the coefficients of the exact temporal kernel can be expressed as sums of multi-time operator correlations including higher-order OTOCs.",
+     "anchor": "Connection to OTOCs, Eq. (13), p.3; Sec. S3, p.17-18",
+     "quotes": [
+      "nite D and does not rely on Haar randomness.",
+      "This establishes a direct analytical connection between OTOCs and the kernel underlying QRC learning",
+      "For U = I, the four terms are 1, −1, −1, 1, so Bzz = 0"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The identity is derived in Sec. S3.A-S3.B for an arbitrary fixed joint unitary.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "wang-memory-injection-bound",
+     "value": "The paper proves that for local kernels generated by a unitary writer the injection and propagation strengths satisfy a joint bound: the diagonal source value plus twice the diagonal propagation value is at most two, with the propagation kernel between zero and one and the source kernel at most one in modulus, so the diagonal kernel is at most two and the kernel is at most two in modulus for arbitrary histories; the paper states these are necessary constraints, not a characterization of all coefficient choices realizable by a unitary writer.",
+     "anchor": "Memory-injection tradeoff, p.3; Sec. S1.C, Eqs. (S1.13)-(S1.15), p.9",
+     "quotes": [
+      "b(u, u) + 2a(u, u) ≤ 2.",
+      "bD(u, u) + 2aD(u, u) ≤ 2 , 0 ≤ aD(u, v) ≤ 1, |bD(u, v)| ≤ 1.",
+      "These are necessary physical constraints, not a characterization of all coefficient choices realizable by a unitary writer."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The bound is derived in Sec. S1.C from unitarity of the writer.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "wang-local-kernels-seven-coefficients",
+     "value": "The paper states that the local source and propagation kernels generated by a unitary writer on a single-qubit input take a form with seven real coefficients jointly constrained by the writer, derived without additional input coordinates or a symmetry assumption on the writer.",
+     "anchor": "Interpretable kernel controls, Eq. (15), p.4; Sec. S1, p.8-9",
+     "quotes": [
+      "a0, specify seven coefficients jointly constrained by the",
+      "these formulas give all seven real coefficients without additional input coordinates or a symmetry assumption on WD."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The coefficient forms are derived in Sec. S1.A-S1.B.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "wang-factorization-freedom-counterexample",
+     "value": "The paper states that rewriting a local evolution as a fixed writer and a router makes the writer depend exactly on the router, and that the theory instead fixes the writer before independently sampling the router; reproducing a prescribed local evolution then needs a uniquely matched router, a zero-measure event under independent Haar sampling. It gives a correlated-sampling example (a swap of the input with one retained qubit) in which the kernel error is one half at every dimension and does not decrease.",
+     "anchor": "Factorization freedom, p.3; Sec. S2.D, Eqs. (S2.35)-(S2.36), p.16",
+     "quotes": [
+      "The error 1/2 does not decrease with dimension.",
+      "a zero-measure event under independent Haar sampling.",
+      "It does not extend the theorem to arbitrary deterministic writers with identity router or to writers selected after the Haar draw."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the independence condition and gives an explicit failing case in Sec. S2.D.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The kernel result does not apply to a fixed local reservoir block or to dynamics chosen after the router is drawn."
+    },
+    {
+     "id_suggestion": "wang-readouts-in-haar-feature-space",
+     "value": "The paper proves that for any fixed writer and router, with histories starting from the maximally mixed state, every linear readout of the finite-dimensional reservoir is a combination of the Haar recursive features, so the finite reservoir's function space is contained in the Haar kernel's; the paper states this inclusion does not guarantee comparable learning performance on every task, because a target needing larger readout weights with the Haar kernel is more weakly represented and can require more data.",
+     "anchor": "Finite-dimensional effects and learning costs, p.3; Sec. S4.A, Eq. (S4.4), p.19",
+     "quotes": [
+      "Every linear readout is therefore a combination of Haar features: HkD,L ⊆ HκD,L .",
+      "This inclusion does not, however, guarantee comparable",
+      "more weakly represented by its features and can require"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The inclusion is proved in Sec. S4.A with its condition on the initial state.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The abstract's statement that the Haar kernel's simplicity does not come at the expense of expressive power rests on this inclusion plus the sample-budget analysis; the paper itself adds the caveat on learning performance."
+    },
+    {
+     "id_suggestion": "wang-sample-budget-ratio-bound",
+     "value": "The paper derives that, for any target readable by the finite-dimensional reservoir, the ratio of the sufficient sample budget with the Haar kernel to that with the finite reservoir is bounded by the largest eigenvalue of a matrix built from the two kernel matrices on a common complete probe set, under a common generalization bound; it states these thresholds concern the specified constrained learner with its weight budget supplied, not the minimum samples needed in practice.",
+     "anchor": "Finite-dimensional effects, Eq. (14), p.3; Sec. S4.B-S4.C, Eqs. (S4.8)-(S4.10), p.19-21",
+     "quotes": [
+      "nH ≤ λmax Kk1/2Kκ+Kk1/2 .",
+      "These thresholds concern the specified constrained learner with its weight budget supplied, not the minimum samples",
+      "needed in practice."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The bound is derived in Sec. S4.B-S4.C from a standard complexity argument with stated assumptions (bounded amplitude, bounded noise variance).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "wang-measured-sample-budget-ratio",
+     "value": "The authors report, for random local writers of three sizes embedded in larger reservoirs, that the device-averaged maximal sample-budget ratio falls from approximately 170 to 220 at dimension 8 to about 3 at dimension 128, and that the measured ratios of mean training sizes needed to reach the same test MSE are well below the theoretical budget ratios; they state the strongest potential gains from finite-dimensional effects are concentrated in small reservoirs.",
+     "anchor": "Finite-dimensional effects and learning costs, Fig. 2(a), p.4; Sec. S5.B, p.23-24",
+     "quotes": [
+      "with its average over devices falling from approximately",
+      "170–220 at D = 8 to about 3 at D = 128 [Fig. 2(a)].",
+      "Actually, the measured ratios of mean training sizes",
+      "needed to reach the same test MSE are well below the",
+      "The average ΓD is a mean of devicewise certificates, not a bound on the ratio of ensemble-mean sample counts."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical result from one ensemble of random writers and routers with 12 writers and 4 routers each.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "wang-cost-crossover-simulation-vs-kernel",
+     "value": "The authors report that direct simulation of the reservoir is cheaper than the Haar kernel at small D, whereas the cost ordering reverses as the reservoir grows and the two models' data requirements become closer, so the Haar kernel reaches the same accuracy with comparable data requirements at lower computational cost for larger reservoirs; the paper states the crossover is specific to the tested ensemble and algorithms and that the costs are estimates for the specified algorithms, not measured runtimes.",
+     "anchor": "Finite-dimensional effects, Fig. 2(b), p.4; Sec. S5, p.21-24",
+     "quotes": [
+      "Direct simulation is cheaper",
+      "at small D, whereas the cost ordering reverses as the",
+      "This crossover is specific to the tested ensemble and algorithms.",
+      "They are estimates for the specified algorithms, not measured runtimes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A modeled operation count for one ensemble, not a measured runtime.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The cost model charges classical state simulation of the reservoir, so the comparison is between two classical algorithms, not a quantum device."
+    },
+    {
+     "id_suggestion": "wang-swap-readout-cost",
+     "value": "The paper states that standard independent SWAP readout of the finite-reservoir kernel needs order L times D squared reservoir updates for repeated state preparation at fixed additive kernel accuracy and confidence, even without counting the cost of constructing and implementing the quantum circuits.",
+     "anchor": "Recursive kernel in the Haar limit, p.3; Sec. S5.A, p.23",
+     "quotes": [
+      "standard independent SWAP readout requires O(LD2) reservoir updates for repeated state preparation at fixed additive kernel accuracy and confidence",
+      "This count is specific to independent SWAP estimation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A cost estimate resting on a SWAP-test concentration bound.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "wang-numerical-check-haar-limit",
+     "value": "The authors report a numerical test of the Haar limit using 128 common length-16 histories with inputs uniform on zero to one, starting from the maximally mixed state, at dimensions 4, 8, 16, 32 and 64, with 48 independent Haar routers per dimension; the root-mean-square source-memory overlaps, propagation residuals and full-kernel differences follow D to the power minus one scaling, with 95% bootstrap intervals.",
+     "anchor": "Fig. 1(c,d), p.2; Sec. S2.E, p.16",
+     "quotes": [
+      "We use 128 common length-16 histories with iid inputs ut ∼ U[0, 1], each starting from ID/D, at D = 4, 8, 16, 32, 64.",
+      "At each dimension, 48 independent Haar routers are drawn",
+      "Dotted lines indicate D−1 scaling.",
+      "bars give 95% bootstrap intervals across routers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical result from one writer family and a small range of dimensions.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "wang-classical-kernel-family-controls",
+     "value": "The paper defines a two-parameter classical kernel family with a retention parameter R between zero and one and an interaction parameter eta between zero and one, with source weight proportional to one minus R, and states that it needs no unitary realization; contributions injected earlier by a number of steps carry a factor R to that power, and eta allocates weight between constant and input-dependent propagation, while the diagonal retention a(u, u) equals R for every input.",
+     "anchor": "Interpretable kernel controls, Eq. (16), p.5; Sec. S6.A, Eq. (S6.1), p.24",
+     "quotes": [
+      "where 0 < R < 1 and 0 ≤ η ≤ 1.",
+      "For every input, a(u, u) = R: varying η therefore preserves diagonal retention",
+      "This proves uniform convergence of the infinite-history kernel, without requiring a unitary realization."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The family is defined and its validity shown in Sec. S6.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The tuned kernel is a classical construction; in the NARMA10 comparison it is not a quantum reservoir."
+    },
+    {
+     "id_suggestion": "wang-memory-interaction-controls-results",
+     "value": "The authors report that at eta equal to one quarter, larger R improves the most distant targets at the expense of recent ones, and at R equal to 0.9 low-order products favor smaller eta whereas fifth- and sixth-order products improve at larger eta; the paper states the grids and task bank were chosen exploratorily and the eight paired datasets reuse exploration seeds, so these are mechanism diagnostics, not an independent confirmation set.",
+     "anchor": "Interpretable kernel controls, Fig. 3, p.5; Sec. S6.B-S6.C, p.24-25",
+     "quotes": [
+      "at η = 1/4, larger R improves the most distant targets",
+      "at the expense of recent ones [Fig. 3(a)].",
+      "and sixth-order products improve at larger η [Fig. 3(b)].",
+      "these are mechanism diagnostics, not an independent confirmation set.",
+      "To probe this effect, we fix R = 0.9 and"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical result on a task bank the paper itself calls exploratory.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "wang-narma10-comparison-results",
+     "value": "The authors report that on NARMA10 with 1024 training examples the recursive kernel maintains a lower mean test NMSE than the Ising and complex SYK reservoirs as the reservoir grows from four to nine total qubits, and at nine qubits it achieves lower mean error at all three training budgets with a relative advantage that grows with more data; the numerical NMSE values appear only in Fig. 4.",
+     "anchor": "Comparison with Hamiltonian reservoirs, Fig. 4(a,b), p.5",
+     "quotes": [
+      "With 1024 training examples, increasing the reser-",
+      "voir size from four to nine total qubits steadily im-",
+      "NMSE throughout this range [Fig. 4(a)].",
+      "achieves lower mean error at all three training budgets,",
+      "and its relative error advantage grows as more data be-"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one benchmark, eight paired repetitions and a fixed candidate set.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The classical recursive kernel is compared against simulated Hamiltonian reservoirs with full-state noise-free readout; no quantum hardware or shot noise is involved."
+    },
+    {
+     "id_suggestion": "wang-narma10-protocol-and-limits",
+     "value": "The paper states that each family has two controls and 64 fixed candidates frozen before the fits, with controls and ridge chosen by validation alone at each size and budget, using eight paired repetitions and eight length-16384 input streams; readout is the full retained-state Hilbert-Schmidt kernel, ideal and without shot noise or time multiplexing; and it calls the comparison exploratory, conditional on the fixed candidate sets and noise-free readout.",
+     "anchor": "Sec. S7, p.25-26",
+     "quotes": [
+      "Each family has two controls and 64 fixed candidates, frozen before their respective bounded-input fits.",
+      "Eight length-16384 streams share the zero-based, half-open splits in Table S4.",
+      "This gives ideal linear readout of all retained-state observables, without shot noise or time multiplexing.",
+      "This is an exploratory comparison conditional on the fixed candidate sets and ideal, noise-free readout."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the protocol and its limits in Sec. S7.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "wang-intro-exponential-space-no-advantage",
+     "value": "The authors state that even an infinite-dimensional feature space can admit an efficiently computable kernel, so the exponential growth of a quantum feature space does not by itself establish a quantum advantage in learning; and in the discussion that establishing quantum advantage in QRC requires a careful assessment of the learning task and its efficient classical alternatives.",
+     "anchor": "Introduction, p.1; Discussion, p.5",
+     "quotes": [
+      "An important lesson of kernel methods is that even an infinite-dimensional feature space can admit an efficiently",
+      "Thus, the exponential growth of a quantum",
+      "demonstrate that the complexity of quantum dynamics"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A framing statement; the first part is attributed to cited work.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "wang-claim-extension-beyond-haar",
+     "value": "The authors state that they have also identified tractable recursive descriptions in locally driven models of many-body localization and in the long-time limit of large-dimensional Gaussian-unitary-ensemble Hamiltonians, and that large-N methods developed for the SYK model could be adapted to derive temporal kernels for interacting Hamiltonian reservoirs; neither result is derived in this paper.",
+     "anchor": "Discussion, p.5",
+     "quotes": [
+      "in locally driven models of many-body localization and",
+      "in the long-time limit of large-dimensional Gaussian-"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An assertion without evidence in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "wang-limit-no-echo-state-guarantee",
+     "value": "The paper states that a prescribed warm-up starting from the maximally mixed state with the same device can be included in the fixed-length histories and its contribution is retained, and that increasing D alone does not erase it or establish an echo-state property for arbitrary initial states; for continuing streams the transfer identity needs the boundary state or a forgetting bound.",
+     "anchor": "Sec. S2.C, p.16; Sec. S4.A, p.19",
+     "quotes": [
+      "Its contribution is retained; increasing D alone does not erase it or establish an echo-state property for arbitrary initial states.",
+      "A continuing stream instead requires its boundary state or a forgetting bound."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its results in Sec. S2.C and S4.A.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The NARMA10 streams run continuously, so the fixed-length-history theory is applied to them outside the stated reset-history setting."
+    }
+   ]
+  },
+  {
+   "record_id": "hellstern-2026-comparing-classical-quantum-qubo-solvers",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2026-10_Hellstern_Comparing-classical-and-quantum-QUBO-solvers-optimality-trajectory-diagnostics_2610.35126.pdf",
+   "title_in_file": "Comparing classical and quantum QUBO solvers: optimality, trajectory diagnostics, and limits of solver selection",
+   "version_note": "",
+   "pages": 43,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A benchmarking study that compares Gurobi branch-and-cut, simulated annealing, parallel tempering, a DMRG tensor-network anneal and simulated linear-ramp QAOA on 180 QUBO instances (14 to 48 variables) plus Wishart-planted instances up to 128 variables, with trajectory diagnostics.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "hellstern-setup-benchmark-and-references",
+     "value": "The authors state that the main benchmark (Campaign A) comprises 180 instances indexed by family, requested size and seed, which does not imply 180 distinct matrices because the grid and ferromagnetic-chain families have no random parameters; and that the reference energy equals the true optimum for 179 of the 180 instances (by enumeration, planted or analytic construction, or an exact-solver check), the only exception being one SK instance whose reference is the best-known value.",
+     "anchor": "Sec. 2.2.1-2.3, p.5-7",
+     "quotes": [
+      "The main benchmark comprises 180 benchmark instances",
+      "it does not imply 180 distinct problem matrices.",
+      "Thus Eref = E∗ is established for 179 of the 180 main benchmark instances: 90",
+      "Equality remains unverified only for the SK"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own benchmark and reference construction in Sec. 2.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-setup-solver-configs",
+     "value": "The authors state the main solver settings: Gurobi branch-and-cut with a 600 s time limit; simulated annealing with four restarts of 2000 sweeps; parallel tempering with 16 replicas under a wall-clock budget; a two-site DMRG tensor-network anneal with bond dimension capped at 32; and LR-QAOA simulated exactly by statevector for up to 16 variables and approximately by matrix-product states for 17 to 32 variables, subject to a limit of 3000 logical two-qubit cost gates.",
+     "anchor": "Sec. 2.4, Table 2, p.7-9",
+     "quotes": [
+      "with a 600 s time limit.",
+      "restarts of 2000 sweeps",
+      "16 replicas with exchange attempts after every sweep.",
+      "We use two-site DMRG [6, 17], with bond dimension capped at χ = 32.",
+      "Campaign A uses exact statevector simulation for n ≤ 16 and",
+      "subject to a limit of 3000 logical two-qubit cost"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own solver configurations in Sec. 2.4.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-limit-lrqaoa-simulated-only",
+     "value": "The authors state that all LR-QAOA results in the paper are obtained by classical simulation of the circuits and none are quantum-hardware executions, that simulation times measure classical computational cost and not quantum hardware runtime, that agreement between the statevector and MPS simulators at small size does not establish convergence of the larger MPS simulations, and that the MPS results must be interpreted as approximate simulations of LR-QAOA.",
+     "anchor": "Sec. 2.4, p.8-9",
+     "quotes": [
+      "obtained by classical simulation of such circuits, none are",
+      "LR-QAOA simulation times measure classical computational cost, not",
+      "but does not establish convergence of the larger MPS simulations.",
+      "The MPS results must therefore be interpreted as approximate simulations of LR-QAOA."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these limits of its quantum-solver results in Sec. 2.4.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-limit-exact-baseline-not-limit",
+     "value": "The authors state that their general-purpose branch-and-cut baseline does not establish the limits of exact optimisation, since specialised branch-and-cut or methods exploiting low treewidth may perform better; and that wall-clock comparisons reflect both algorithmic performance and implementation choices, including threading and compiled numerical routines.",
+     "anchor": "Sec. 2.4, p.7 and p.9",
+     "quotes": [
+      "This general-purpose baseline does not establish the lim-",
+      "its of exact optimisation: specialised branch-and-cut [24] or methods exploiting low",
+      "Wall-clock comparisons reflect both algorithmic performance and implementation choices"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these limits of its comparison in Sec. 2.4.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-definition-hit-criterion",
+     "value": "The paper defines a solver hit as the returned energy lying within a mixed absolute/relative tolerance of 1e-9 of the reference energy, distinguishes this from certification (the exact solver's optimal status within the time cap), and states a hit implies reaching the optimum only when the reference is known to be optimal.",
+     "anchor": "Sec. 2.3 p.7 and Sec. 2.5.4, Eq. (5), p.14",
+     "quotes": [
+      "hit = I[ |E − Eref | < ϵ max(1, |Eref |) ] , ϵ = 10−9,",
+      "it implies reach-",
+      "ing the optimum only when the reference is known to be optimal."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Eq. (5) defines the outcome metric the results use.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-result-gurobi-campaign-a",
+     "value": "The authors report that on the 180 main benchmark instances the exact branch-and-cut solver (Gurobi) matches the reference energy on all 180 and certifies optimality on 176, including 86 instances beyond exhaustive enumeration, in a median of under a second with a worst proven case of about 4 minutes; only the four densest frustrated instances at n = 48 reach the 600 s cap while matching the reference.",
+     "anchor": "Sec. 3.1, Table 5, Fig. 2, p.17-18",
+     "quotes": [
+      "cut solver matches Eref on all 180 benchmark instances and certifies optimality on 176,",
+      "of under a second (worst proven case ∼ 4 minutes). Only the four densest frustrated",
+      "instances at n = 48 reach the 600 s cap while matching the reference energy.",
+      "including 86 instances at n > 26 that lie beyond exhaustive enumeration, in a median"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one benchmark and one machine.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-result-sa-tn-campaign-a",
+     "value": "The authors report that simulated annealing matches the reference energies on every non-Wishart instance, quickly but with no certificate, and misses six of the nine out-of-sample Wishart instances; the DMRG tensor-network anneal reaches the reference on all but two non-Wishart instances (one sparse ER instance at n = 48 and one 3-regular instance at n = 40), is typically much slower than SA on the dense families (median 940 times), and misses seven of the nine out-of-sample Wishart instances.",
+     "anchor": "Sec. 3.1, Table 5, p.18",
+     "quotes": [
+      "Simulated annealing also matches the reference energies",
+      "on every non-Wishart instance, quickly but with no certificate, and misses six of the",
+      "families (median 940×), and misses seven of the nine out-of-sample Wishart instances.",
+      "reaches the reference on all but two non-Wishart instances (one sparse ER instance at n = 48 and",
+      "one 3-regular instance at n = 40),"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from single runs per instance in Campaign A.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": "The paper qualifies the single-run SA Wishart outcome with repeated runs in Campaign B."
+    },
+    {
+     "id_suggestion": "hellstern-result-lrqaoa-no-improvement",
+     "value": "The authors report that the 105 LR-QAOA simulation runs in Campaign A reached 86 of 96 non-Wishart references and 5 of 9 Wishart references, and never improved on the better of SA and TN; they state the tested LR-QAOA runs offer no solution-quality improvement over the classical comparators.",
+     "anchor": "Sec. 3.1, Table 5, p.18; Abstract p.1",
+     "quotes": [
+      "86/96 non-Wishart hits; 5/9 Wishart",
+      "The LR-QAOA runs never improve on the better of SA and TN (Sec. 5).",
+      "The tested linear-",
+      "105 LR-QAOA simulation runs"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from simulated circuits at fixed depth and sampling budgets.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The runs are classical simulations at 32 variables or fewer, so the result does not bear on hardware performance or larger sizes."
+    },
+    {
+     "id_suggestion": "hellstern-result-sa-repeats-pt",
+     "value": "The authors report that with ten seeds on each of the 180 instances (1800 scored runs), simulated annealing reached the optimum in all 900 calibration runs and in at least 98% of runs on non-Wishart out-of-sample instances; on the six ungauged Wishart instances at n = 40 and 48, 32 of 60 additional SA runs reached the planted optimum (53.3%) against one of six Campaign A runs (16.7%); and parallel tempering at a fixed 0.75 s budget had an aggregate hit rate of 0.982 against 0.981 for the SA repetitions.",
+     "anchor": "Sec. 3.2, p.19",
+     "quotes": [
+      "SA reaches the optimum in all 900 benchmark runs on the calibration instances",
+      "and in at least 98% of runs on non-Wishart out-of-sample instances.",
+      "SA runs reach the planted optimum (53.3%), compared with one of six Campaign A",
+      "Its reported aggregate hit rate is 0.982, compared with 0.981 for the SA",
+      "using ten seeds on each of the 180 benchmark instances (1800 scored",
+      "For the six ungauged Campaign A Wishart instances at n = 40, 48, 32 of 60 additional",
+      "runs (16.7%).",
+      "The additional PT baseline uses ten runs per benchmark instance at a fixed 0.75 s"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from fixed instances and one machine.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-result-gauge-placement-paired",
+     "value": "The authors report that in the paired control on nine Wishart instances at n = 32, 40 and 48, solving each as generated and after random spin reversals, branch-and-cut proves optimality in both frames at n = 32 and 40 (median gauged/plain ratios of 2.2 for runtime and 1.2 for node count), while at n = 48 it finds the optimum on all three ungauged instances but on only one of their gauged counterparts, which they say suggests the all-zero placement helped branch-and-cut.",
+     "anchor": "Sec. 3.3, p.19",
+     "quotes": [
+      "we re-solve the nine Wishart instances at n = 32, 40, 48 both",
+      "The medians of the six per-instance gauged/plain ratios are 2.2 for full solver-",
+      "on all three ungauged instances, but on only one of their gauged counterparts.",
+      "This reduction suggests that the all-zero placement (ungauged) helped branch-and-cut find",
+      "wrapper runtime and 1.2 for node count."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from nine paired instances.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-result-enlarged-gauged-set",
+     "value": "The authors report on ten gauged Wishart instances per size that at n = 40 branch-and-cut reaches all ten optima and proves seven (Wilson 95% interval 0.40 to 0.89) while SA reaches the optimum on 0.63 of runs; at n = 48 branch-and-cut reaches four of ten (0.17 to 0.69) and proves none while SA reaches 0.25; and parallel tempering reaches every optimum in every tested 60 s run, while TN reaches one optimum in its six-instance gauged subset. They state the run-level intervals pool runs on fixed instances and understate the uncertainty for new instances from the same ensemble.",
+     "anchor": "Sec. 3.3, Table 6, p.20; Abstract p.1",
+     "quotes": [
+      "On the enlarged gauged set, branch-and-cut reaches all ten optima at n = 40 and",
+      "proves seven (Wilson 95% interval: 0.40–0.89), while SA reaches the optimum on 0.63",
+      "of runs (0.53–0.72). At n = 48, branch-and-cut reaches four of ten (0.17–0.69) and",
+      "proves none, while SA reaches 0.25 (0.18–0.34).",
+      "PT reaches every optimum in every tested 60 s run on the enlarged gauged set",
+      "so they understate the uncertainty for new instances from the same ensemble."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from ten instances per size, with PT run three times per instance at 60 s.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": "PT at 60 s received a larger wall-clock budget than the SA runs at the main budget, so the search comparison is not at equal budgets."
+    },
+    {
+     "id_suggestion": "hellstern-result-pt-2000-sweeps",
+     "value": "The authors report that a separate three-run comparison with parallel tempering at 2000 sweeps (median 1.7 s and 2.0 s per run) reached the optimum in 29 of 30 runs at n = 40 and 22 of 30 runs at n = 48 on the enlarged gauged set.",
+     "anchor": "Sec. 3.3, p.20",
+     "quotes": [
+      "reaches the optimum in 29 of 30 runs at n = 40 and 22 of 30 at n = 48.",
+      "A separate three-run comparison uses 2000 sweeps (median 1.7 s and 2.0 s per"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from ten instances per size.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-limit-diagnostic-proxy-and-threshold",
+     "value": "The authors state that the diagnostic Schmidt-component measure is a ranking proxy for the representation demand of the solver's trajectory, not a measurement of it (the two agree in rank at Spearman rho 0.69 and 0.73), that being below the bond-dimension cap does not by itself establish convergence, and that the 8-bit magic threshold used in the quantum indicator has no independent motivation because it was set on the Campaign A data themselves.",
+     "anchor": "Sec. 2.5.2, p.12-13",
+     "quotes": [
+      "the two agree in rank at Spearman ρ = 0.69 and 0.73.",
+      "diagnostic χm99ax is therefore a ranking proxy for the representation demand of the",
+      "That threshold has no independent motivation: it was set on",
+      "the Campaign A data themselves (App. C.3).",
+      "It is used in rank correlations and in the 8-bit threshold of Eq. (C1), not as a converged"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these limits of its diagnostics in Sec. 2.5.2.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-scope-optimum-no-entanglement",
+     "value": "The authors state that every optimal QUBO bitstring is a computational-basis state with zero entanglement and zero magic, so the resources of the optimal bitstring alone do not distinguish instance difficulty; entanglement alone does not decide classical simulability (stabilizer states can be maximally entangled yet are simulable in polynomial time by the Gottesman-Knill theorem), and neither a small nor a large measured magic value alone establishes the cost of all classical simulation methods.",
+     "anchor": "Sec. 1 p.2, Sec. 2.1 p.4, Sec. 2.5.2 p.13",
+     "quotes": [
+      "Every QUBO optimum can be represented by a computational-basis state with neither",
+      "Entanglement alone does not decide classical simulability.",
+      "Neither a small measured magic value nor a large one, on its own, establishes the cost of all classical simulation methods."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its diagnostics in Sec. 1 and Sec. 2.5.2.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-result-treewidth-ranks-bond-dimension",
+     "value": "The authors report that the bond-dimension demand along the tensor-network trajectory correlates with the treewidth bound at Spearman rho 0.78 on the calibration set and 0.73 out of sample, and with the cheaper RCM bandwidth at 0.72 and 0.67; they state this is a reliable ranking, not a precise cost estimate (the regression explains 55% of the variance), that the runtime model with measured bond dimension predicts wall-clock to a median factor of 1.8 out of sample and with treewidth alone a median factor of 7.6.",
+     "anchor": "Sec. 4.1, Fig. 3, p.21; App. D p.38",
+     "quotes": [
+      "treewidth bound at ρ = 0.78 on the calibration set and 0.73 out of sample, and with",
+      "the cheaper RCM bandwidth at ρ = 0.72 and 0.67 (Fig. 3).",
+      "the regression explains 55% of the variance in",
+      "runtime model predicts wall-clock to a median factor of 1.8 out of sample.",
+      "treewidth alone, the genuinely a-priori median factor is 7.6 (Sec. 4.3)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical correlation from 78 distinct matrices per split.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-result-tn-slower-than-sa",
+     "value": "The authors report that the predictability of tensor-network cost does not imply TN is fast: among the 44 instances whose trajectory needs only two Schmidt components or fewer, the TN anneal is a median 17 times slower than SA, and at n = 48 the median gap is 1600 times.",
+     "anchor": "Sec. 4.1, p.21",
+     "quotes": [
+      "Among the 44 instances whose",
+      "trajectory needs only χ99 ≤ 2, its anneal is a median 17× slower than SA. At n = 48",
+      "the median gap is 1600×."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical timing result on one machine with Python-based implementations.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": "The paper notes elsewhere that wall-clock comparisons reflect implementation as well as algorithm."
+    },
+    {
+     "id_suggestion": "hellstern-result-entanglement-magic-moderate-correlation",
+     "value": "The authors report that the entanglement barrier and the magic barrier of the computed diagnostic trajectories are only moderately correlated (Spearman rho 0.29 in calibration and 0.45 out of sample over distinct matrices), and state they are complementary rather than interchangeable diagnostics.",
+     "anchor": "Sec. 4.1, Fig. 4, p.22",
+     "quotes": [
+      "(ρ = 0.29 in calibration and 0.45 out of sample over distinct matrices,",
+      "They provide complementary descriptions of these states, rather than"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical correlation on small DMRG-computed states with a truncated magic estimate.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-result-excited-state-trapping-and-reset",
+     "value": "The authors report that warm-started DMRG sweeps can follow an excited spectral branch through an avoided crossing: on 3-regular Max-Cut trapped runs end in excited computational-basis states at a median normalised Hamming distance of 0.40 from the nearest optimum while successful runs end at an optimum; a cold-start reset reaches the optimum on 8 of 8 evaluated instances against 5 of 8 for the baseline and 6 of 8 for four-fold multi-seeding.",
+     "anchor": "Sec. 4.2, Fig. 5, p.22-23",
+     "quotes": [
+      "computational-basis states at a median normalised distance",
+      "dmHin/n = 0.40 from the",
+      "over the eight evaluated instances (3-regular Max-Cut and ferromagnetic",
+      "the reset reaches the optimum on 8 of 8, against 5 of 8",
+      "for the baseline and 6 of 8 for four-fold multi-seeding, and the cost-optimised variant"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical mechanism study on eight selected instances.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": "The 8 of 8 result is on instances selected for being resistant to earlier fixes, at n = 18 and 22 only."
+    },
+    {
+     "id_suggestion": "hellstern-result-capacity-failures-rare",
+     "value": "The authors report that with trapping controlled, capacity failures are rare: among the 81 mitigation-clean out-of-sample instances one fails at bond cap 4 and none at the largest cap tested; the failures are not nested in bond cap, consistent with residual trapping; and the diagnostic Schmidt-component measure does not meet the pre-registered AUC target of 0.9 as a capacity-failure predictor (AUC 0.88 in sample and 0.74 out of sample). They state failures remain in the full 90-instance out-of-sample set, so the 81-instance results do not establish that capacity limits or optimisation failures have been eliminated in general.",
+     "anchor": "Sec. 4.2 p.23; Sec. 7 p.27; App. C.1 p.35",
+     "quotes": [
+      "among the 81 mitigation-clean out-of-sample instances, one fails at χ = 4 and none at",
+      "does not meet the pre-registered AUC target of 0.9",
+      "AUC 0.88 in sample and 0.74 out of sample): capacity",
+      "However, failures remain in the full 90-instance out-of-sample set, so the results",
+      "on the 81 mitigation-clean instances do not establish that representation-capacity"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one out-of-sample set where capacity failures are too rare for reliable discrimination.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-limit-no-solver-selection-rule",
+     "value": "The authors report that the cost-based ranking matches the single-run ex-post best-heuristic label on 85 of 90 out-of-sample instances but an always-predict-SA baseline scores identically, the balanced accuracy is 0.50 and the ranking never selects TN; the five apparent misses are single-run Wishart labels that repeated SA and PT runs show are not stable solver properties; the model predicts runtime, not the probability of reaching the target, and success-probability weighting does not repair this.",
+     "anchor": "Sec. 4.3, p.23-24; App. D, p.39",
+     "quotes": [
+      "matches the single-run ex-post heuristic label on 85 of 90 out-of-sample instances,",
+      "but an always-predict-SA baseline scores identically and the balanced accuracy is",
+      "0.50. The ranking never selects TN.",
+      "The model predicts runtime, not the probability of reaching the target.",
+      "ranking favours SA regardless of instance."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one benchmark and fitted nominal budgets.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-result-cost-model-errors",
+     "value": "The authors report symmetric fold errors of the fitted cost models: simulated annealing median 1.10 in sample and 1.22 out of sample, brute force median 1.28 on the calibration set only, and for the tensor-network anneal an out-of-sample median of 7.59 using treewidth alone and 1.78 using measured bond dimension, with 90th percentiles of 189 and 36.",
+     "anchor": "App. D, Eqs. (D3)-(D5), Fig. D2, p.38-39",
+     "quotes": [
+      "median errors of 1.10 in sample and 1.22 out of sample, largely reflecting its fixed",
+      "BF has a median error of 1.28 on the calibration set only.",
+      "the out-of-sample median error is 7.59 using treewidth alone and 1.78",
+      "The corresponding 90th percentiles are 189 and 36."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical fit on 90 calibration instances evaluated on 90 out-of-sample instances.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-result-lrqaoa-coverage-and-negative-scope",
+     "value": "The authors report that the 105 LR-QAOA simulation runs comprise 30 exact statevector runs at n up to 16 and 75 MPS-proxy runs at n from 18 to 32, with underperformance on exact cover (3 of 9 hits), MIS (9 of 12), Wishart (5 of 9) and one dense-ER instance (11 of 12); an adaptive-depth check on all 27 benchmark instances at n = 32 gave 3 of 12 hits on newly covered instances and 13 of 15 on previously covered ones. They state this is a negative result for the fixed-schedule protocol tested, not for all QAOA variants, since angle optimisation, warm starts and recursive methods are outside scope.",
+     "anchor": "Sec. 5.1, p.24",
+     "quotes": [
+      "These comprise 30 exact statevector runs at n ≤",
+      "16 and 75 MPS-proxy runs at 18 ≤ n ≤ 32.",
+      "It underperforms on exact cover (3/9 hits),",
+      "MIS (9/12), Wishart (5/9) and one dense-ER instance (11/12), while matching the",
+      "instances at actual n = 32, yielding 3/12 hits on newly covered instances and 13/15 on",
+      "This is a negative result for the fixed-schedule protocol tested, not for all QAOA variants, since angle optimisation,",
+      "LR-QAOA produces no solution-quality win in the 105 simulation runs: it never beats",
+      "The adaptive-depth check covers all 27 benchmark"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from simulated circuits at fixed schedules and sampling budgets.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-result-mps-simulation-not-converged",
+     "value": "The authors report that on six gauge-randomised Wishart instances at n = 40 and 48 the MPS simulation of LR-QAOA did not converge: all tested bond caps saturate, sampled energies do not converge as the cap increases and no run reaches the optimum, so the runs do not provide a converged LR-QAOA simulation on the dense larger instances; eighteen usable runs compared bond caps 8, 16 and 32 at depth 8, one additional run used depth 40, and two attempts ended in SVD errors.",
+     "anchor": "Sec. 5.1, p.24; App. C.2, p.35",
+     "quotes": [
+      "A separate MPS simulation-convergence test uses six gauge-randomised Wishart",
+      "These runs therefore do not provide a converged LR-QAOA",
+      "simulation on the dense larger instances (details are in App. C.2).",
+      "Eighteen usable runs compare",
+      "χ = 8, 16, 32 at p = 8.",
+      "One additional usable run uses p = 40, χ = 32 at n = 40.",
+      "instances at n = 40, 48. All tested bond caps saturate, sampled energies do not"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical convergence probe on six instances.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-result-lrqaoa-success-probability-scaling",
+     "value": "The authors report exact statevector measurements of LR-QAOA probability mass on the optimal manifold for n = 8 to 16, ten families and three seeds at depths 12, n and 2n (450 measurements), with fitted slopes of log2 of the optimal probability of −0.32, −0.21 and −0.15 bits per qubit, so at depth n the probability still halves about every five qubits; against their pre-registered criterion (support if the slope magnitude is at most 0.1, refutation if at most −0.25) the result is inconclusive; at depth n the slopes for exact cover (−0.75), MIS (−0.54) and Wishart (−0.29) all lie below the refutation threshold, which they describe as a descriptive family-level reading.",
+     "anchor": "Sec. 5.2, Fig. 6, p.24-25",
+     "quotes": [
+      "We compute the exact probability mass on the full optimal manifold for n = 8–16,",
+      "across ten families and three seeds, at p = 12, n, 2n. The 450 exact statevector",
+      "The fitted slopes of log2 Popt are −0.32, −0.21, −0.15 bits per qubit,",
+      "about every five qubits.",
+      "as support and σ ≤ −0.25 as refutation, this result is inconclusive, not a confirmation",
+      "(−0.54) and Wishart (−0.29), including the family proposed as the first quantum tar-",
+      "Against the pre-registered criterion, which counted |σ| ≤ 0.1",
+      "are near-flat, but the slopes at p = n remain negative for exact cover (−0.75), MIS"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from exact simulation at 16 qubits or fewer.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Fig. 6's legend reads 0.33 for the fixed-depth slope while the text gives -0.32; the text value is used here. The measurement window is narrow, as the paper itself states."
+    },
+    {
+     "id_suggestion": "hellstern-limit-scaling-premise-unconfirmed",
+     "value": "The authors state that their small-size data do not support the success-probability scaling premise needed for polynomial LR-QAOA depth on Wishart, that the quantum-candidate region and its polynomial-depth interpretation therefore remain conditional, and that the narrow measurement window cannot rule out asymptotic softening of the decay rate; a hardware experiment on the failure regime is not a quantum win because polynomial depth depends on the unconfirmed premise and a classically simulable circuit would not outperform its own simulation.",
+     "anchor": "Sec. 5.2 p.25; Sec. 6.3 p.27; App. C.3 p.36",
+     "quotes": [
+      "must therefore remain conditional: our small-",
+      "size data do not support the required scaling premise on Wishart.",
+      "The measurement window is narrow, however, so it cannot rule out asymptotic softening of the decay",
+      "tifies a candidate regime for a hardware experiment, not a quantum win: polynomial",
+      "That premise is not established here."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these limits of its quantum-scaling conclusions in Sec. 5.2, Sec. 6.3 and App. C.3.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-setup-campaign-e-protocol",
+     "value": "The authors state that Campaign E gauge-randomises Wishart instances (hardness parameter alpha equal to 0.5 or 0.7, lower is harder), runs the native binary-quadratic Gurobi model with a 600 s limit and one-hour limits on selected instances (67 exact-solver runs on 61 distinct instances), SA with ten seeds per instance at its fixed update budget, and PT with three seeds per instance at 1, 6 and 60 s, where six instances solved in all three six-second PT runs were not repeated at 60 seconds.",
+     "anchor": "Sec. 6.1, p.25-26; Table 4, p.16",
+     "quotes": [
+      "Campaign E includes 67 exact-solver runs on 61 distinct instances; six runs repeat an",
+      "SA uses ten seeds per instance at its fixed update budget. PT uses three seeds per",
+      "Six instances solved in all three six-second PT runs",
+      "at α = 0.5 and 0.7 (lower is harder).",
+      "is solved with a 600 s default limit and one-hour limits on selected instances below.",
+      "PT uses three seeds per instance at each of 1, 6, and 60 s."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own scaling protocol in Sec. 6.1.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-result-wishart-search-wall",
+     "value": "The authors report that on the easier Wishart setting (alpha 0.7) longer PT runs extend the sizes at which optima are found, while on the harder setting (alpha 0.5) no tested classical method reaches the planted optimum from n = 72 upward, a statement based on 95 heuristic runs per size at n = 72, 80 and 96 and 19 runs on the single surviving n = 128 instance; the table gives the rates.",
+     "anchor": "Sec. 6.2, Table 7, p.26 (rates read from the page image)",
+     "quotes": [
+      "on α = 0.7, longer PT runs reach larger instances, while on α = 0.5 no tested classical",
+      "method reaches the optimum from n = 72 upward. At those sizes this is based on 95",
+      "heuristic runs per size at n = 72, 80, 96 and 19 runs on the single surviving n = 128",
+      "At α = 0.5 (harder), no tested budget yields an optimum at the sampled",
+      "sizes from n = 72 onward."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from five instances per cell and fixed budgets.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": "In Table 7 (page image) the PT 60 s rate at alpha 0.5 is 0.53 at n = 48 and 0.13 at n = 56 and 64, so the wall is at n = 72, not lower."
+    },
+    {
+     "id_suggestion": "hellstern-result-exact-solver-frontier",
+     "value": "The authors report that across all 61 gauge-randomised instances with n at least 48, branch-and-cut certifies none (median MIP gap about 0.2) and for the harder instances (alpha 0.5) finds none of the 31; one-hour runs at n = 48, 64 and 72 confirm the misses despite exploring up to about ∼5 × 107 nodes; for the easier instances (the easier setting) exact-solver hits occur early, all within 2.3 s (median 0.1 s), and disappear by n = 80; all recorded SA hits at alpha 0.5 occur at n = 48.",
+     "anchor": "Sec. 6.3, p.26-27",
+     "quotes": [
+      "Across all 61 gauge-randomised instances with n ≥ 48, branch-and-cut certifies none",
+      "(median mixed-integer-programming (MIP) gap ≈ 0.2).",
+      "0.5) it also finds none of the 31 instances. One-hour runs at n = 48, 64, 72 confirm the",
+      "misses, despite exploring up to ∼5 × 107 nodes.",
+      "exact solver hits occur early, all within 2.3 s (median 0.1 s), and disappear by n = 80.",
+      "All recorded SA hits with α = 0.5 occur at n = 48."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result with truncated long runs.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-limit-scaling-not-intractability",
+     "value": "The authors state that recurring Gurobi licence-token outages truncated some long runs and prevented broader escalation, that the timeouts do not prove the optimum is unreachable in principle so shorter-budget results are weaker evidence, and that the Campaign E failures are statements about tested budgets, not proofs of intractability; the result is for the tested implementations and budgets, not a bound on classical optimisation in general, and fixed-budget comparisons alone do not establish asymptotic advantage.",
+     "anchor": "Sec. 6.3 p.27; Sec. 7.1 p.30; Sec. 8 p.31",
+     "quotes": [
+      "Recurring Gurobi licence-token outages truncated some long runs and prevented",
+      "These timeouts do not prove that the optimum is unreachable in",
+      "its failures remain statements about tested",
+      "Fixed-budget comparisons alone do not establish asymptotic advantage [34].",
+      "optimisation in general. It identifies a concrete regime for further comparison without"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these limits of its scaling results in Sec. 6.3, Sec. 7.1 and Sec. 8.",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-result-gauge-effect-on-sa-and-exact",
+     "value": "The authors state that the Wishart generator places its planted optimum at the all-zero bitstring, the trivial incumbent of the mixed-integer program, so the exact solver starts at the answer and only the bound is work, which flatters it; and they report that in a control with ten runs on each of ten instances per size SA's rate at n = 48 falls from 0.44 on planted instances to 0.25 on gauged ones (exact sign test p = 0.008), a running of the gauged instances with the planted frame's start temperature restores it to 0.39, and at n = 40 the frames do not differ (0.63 in both).",
+     "anchor": "Sec. 7.1, p.29",
+     "quotes": [
+      "On those instances the exact solver starts at the",
+      "answer and only the bound is work, which flatters it.",
+      "falls from 0.44 on the planted instances to 0.25 on the gauged ones (exact sign test",
+      "restores it to 0.39. At n = 40 the frames do not differ (0.63 in both).",
+      "over instances, p = 0.008).",
+      "SA’s rate at n = 48"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical control on ten instances per size.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": "The Campaign A Wishart results use the ungauged planted frame, so they favor the exact solver and, via the start temperature, SA."
+    },
+    {
+     "id_suggestion": "hellstern-limit-threats-to-validity",
+     "value": "The authors state that the heuristic comparison depends on the solver portfolio and budget (at n = 48 on the enlarged gauged set the hit rate rises from SA's 0.25 to PT's 0.44 at 0.75 s and 1.00 at 60 s per run), that a portfolio solver, tabu search or Burer-Monteiro relaxation could change the comparison, that Campaign A covers ten synthetic families up to n = 48 so its comparison need not transfer to industrial instances or other size ranges, that the calibration and evaluation sets are not exchangeable (SA reaches the optimum in every calibration run, 96% of out-of-sample runs and 66% on out-of-sample Wishart), and that timing boundaries and implementation languages differ across solvers.",
+     "anchor": "Sec. 7.1, p.27-30",
+     "quotes": [
+      "The heuristic comparison depends on the solver portfolio and budget.",
+      "0.44 at a 0.75 s allocation and to 1.00 at 60 s per PT run.",
+      "A portfolio solver, tabu search, or Burer–Monteiro",
+      "Its solver comparison",
+      "need not transfer to industrial instances or other size ranges.",
+      "SA reaches the optimum in every calibration run, in 96% of",
+      "of-sample runs, and on Wishart out-of-sample in 66%.",
+      "These differences limit the interpretation of",
+      "gauged set at n = 48, the reported hit rate rises from SA’s 0.25 to PT’s"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these limits in its threats-to-validity section.",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-limit-no-noise-model",
+     "value": "The authors state that their LR-QAOA simulations do not model device noise, that the circuit-depth estimates do not by themselves establish performance on noisy hardware, and that they do not evaluate the noisy-optimisation bounds of the cited work for the instances studied.",
+     "anchor": "Sec. 7.1, p.29-30",
+     "quotes": [
+      "Our LR-QAOA simulations do not model device noise, and the circuit-depth",
+      "We do not evaluate those bounds for the instances studied here."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in Sec. 7.1.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-conclusions-main",
+     "value": "The authors conclude that the comparison of QUBO solvers depends on whether the objective is to find a solution or to certify optimality; that branch-and-cut matches every reference energy and proves optimality on 176 instances within 600 s (a strong baseline for the tested families and sizes, not a universal recommendation); that at n = 40 branch-and-cut certifies seven of ten gauged optima and at n = 48 finds four of ten and certifies none, while PT given 60 s per run reaches every optimum but provides no certificate; and that the tested LR-QAOA runs show no solution-quality advantage over the classical comparators.",
+     "anchor": "Sec. 8, p.30-31",
+     "quotes": [
+      "The comparison of QUBO solvers depends on whether the objective is to find a solution",
+      "purpose branch-and-cut matches every reference energy and proves optimality on 176",
+      "At n = 40, branch-and-cut certifies seven",
+      "of ten optima. At n = 48, it finds four of ten and certifies none within its budget. PT,",
+      "The tested LR-QAOA runs show no solution-quality advantage over the",
+      "instances within the 600 s cap, including 86 larger instances outside the enumeration",
+      "given 60 s per run, reaches every optimum in every tested run on this enlarged control"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion resting on the benchmark results above.",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-conclusion-quantum-evidence-needed",
+     "value": "The authors state that the small-size measurements do not establish the success-probability scaling needed to make LR-QAOA efficient on Wishart instances, and that a direct quantum evaluation in the hard regime, together with stronger classical baselines and estimates of success probability at comparable computational budgets, is needed to determine whether an advantage exists; they state the result identifies a regime for further comparison without establishing a quantum advantage.",
+     "anchor": "Sec. 8, p.31; Abstract p.2",
+     "quotes": [
+      "with stronger classical baselines and estimates of success probability at comparable",
+      "computational budgets, is needed to determine whether an advantage exists.",
+      "While this does not provide evidence for quantum advantage, it"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its quantum conclusions in the abstract and Sec. 8.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-setup-certificate-and-gurobi-details",
+     "value": "The authors state that the certificate flag means Gurobi returned OPTIMAL under its numerical tolerances with the default relative MIP-gap tolerance, that four of the 176 flagged records have nonzero relative gaps below this tolerance and are counted as certified, that the saved main baseline uses 165 linearised and 15 native quadratic models, and that all wall-clock figures were measured on one machine (Intel Core Ultra 9 285H, WSL2 Linux, Gurobi 13.0.2).",
+     "anchor": "App. A p.32; App. B p.32-33",
+     "quotes": [
+      "Four of the 176 flagged records have nonzero relative MIP gaps,",
+      "uses 165 linearised and 15 native quadratic models.",
+      "All wall-clock figures quoted in this paper were measured on one machine",
+      "The exact solver is Gurobi 13.0.2.",
+      "Core Ultra 9 285H (16 logical cores)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own solver configuration and environment in Appendices A and B.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-setup-sa-pt-details",
+     "value": "The authors state that SA uses four restarts of 2000 sweeps (8000 n proposed updates per run) with a geometric schedule whose start temperature includes the diagonal of Q and so is not invariant under the gauge transformation, with reference-energy runs given four times the update budget; and that parallel tempering uses 16 replicas because on gauged Wishart instances at n = 40 and 48 with 0.75 s per run the median swap acceptance was 0.08 with eight replicas and 0.27 with 16.",
+     "anchor": "App. B, p.33",
+     "quotes": [
+      "8000n proposed updates per run.",
+      "includes the diagonal of Q, it is not invariant under the gauge transformation",
+      "median swap acceptance was 0.08 with eight replicas and 0.27 with 16;",
+      "SA [16] uses single-flip Metropolis updates with R = 4 restarts and nsw = 2000 sweeps",
+      "On the gauged Wishart instances at n = 40 and 48, with 0.75 s per run, the"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own solver settings in Appendix B.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-limit-candidate-indicator-in-sample",
+     "value": "The authors state that the structural quantum-candidate indicator (density at least 0.9, coupling range at least 5, local-minimum hit rate at most 0.3, magic barrier at least 8 bits) has thresholds chosen on the Campaign A data against the six SA misses it is scored on, so its perfect recall is an in-sample property and not a validated detection rate; its precision is 0.33, with nine SK and three Wishart false positives on which SA succeeds.",
+     "anchor": "App. C.3, Eq. (C1), Fig. C1, p.36-37",
+     "quotes": [
+      "All four thresholds were chosen on",
+      "the Campaign A data, against the six SA misses that the indicator is then scored on.",
+      "Its perfect recall is therefore an in-sample property, not a validated detection rate.",
+      "Precision is 0.33 (Fig. C1): nine false positives are SK instances and three are Wishart",
+      "Q(Q) = [ρG ≥ 0.9] ∧ [DJ ≥ 5] ∧ [hLM ≤ 0.3] ∧ [M2max ≥ 8 bits],"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its indicator in App. C.3.",
+     "result_type": "claim",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-conditional-depth-projection",
+     "value": "The authors state a conditional resource calculation: on all-to-all connectivity the cost gates can be scheduled in rounds equal to the edge-chromatic number, at most the maximum degree plus one by Vizing's theorem, giving gate-level circuit depth at most one plus p times the maximum degree plus two; if the literature's near-constant success probability at depth proportional to n carries over to Wishart, dense-instance depth grows as the square of n, and the relevant classical comparison would be exact contraction rather than the bond-capped DMRG anneal.",
+     "anchor": "App. C.3, Eq. (C2), p.36",
+     "quotes": [
+      "D = 1 + p [χedge(G) + 1] ≤ 1 + p [dmax(G) + 2],",
+      "If this carries over to Wishart, dense-instance depth",
+      "grows as D ∼ n2.",
+      "That premise is not established here."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conditional projection resting on a cited success-probability result.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hellstern-provenance-ai-use-and-data-access",
+     "value": "The authors state that AI assistance (Claude, Anthropic) was used for code development, running analysis and verification scripts, and drafting, with all results checked against tests; and that the datasets and code are deposited in a Zenodo repository with access restricted until publication, containing per-run result records of all campaigns and a script that recomputes the reported numbers.",
+     "anchor": "Sec. 2.6, p.17; Declarations, p.31",
+     "quotes": [
+      "AI assistance (Claude, Anthropic) was used for code development, running analysis",
+      "Access is restricted until publication of this article and",
+      "a script that recomputes the numbers reported in this paper;"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own tooling and data-availability terms.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The underlying run records were not available to this reader, so the reported numbers here are as stated in the paper."
+    }
+   ]
+  }
+ ]
+}

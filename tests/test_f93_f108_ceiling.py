@@ -94,9 +94,15 @@ def test_no_relation_is_linked():
 
 
 def test_the_store_holds_exactly_what_the_script_sets(live_conn):
+    """Sprint 14 (F120) corrected one value at Phase 2 commit 6242b8a; the
+    store holds that script's text for it, and this one's for the rest."""
     f93 = _script()
+    spec = importlib.util.spec_from_file_location("f120", ROOT / "scripts" / "sprint14_f120_phase2.py")
+    f120 = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(f120)
+    current = {a.id: a for a in f93.ASSERTIONS} | {a.id: a for a in f120.CORRECTED}
     bad = []
-    for a in f93.ASSERTIONS:
+    for a in current.values():
         row = live_conn.execute(
             "SELECT r.value, r.certainty, r.certainty_reasons, r.provenance, r.evidence_tag, f.citation_context "
             "FROM records r JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (a.id,)).fetchone()
