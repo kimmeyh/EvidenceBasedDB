@@ -331,8 +331,20 @@ F25 D1-D3 so it measures adjudication of corrected records.
 Sprint 14 carry-forward, after PR #140 merged to develop and PR #148 merged
 develop to main).
 
-- **Scope**: not yet selected. Phase 1.4 slate presented 2026-11-01.
-- **Plan**: none yet (Phase 3).
+- **Scope** (DEFINED, team lead 2026-11-01): F114 (next release, 100
+  papers), F125, F126, F127, F128, F115, F95, F98, F124, F129, F116, F57
+  and F130. The permanent items are released as copies: F131 (F95),
+  F132 (F98) and F133 (F57). The team lead marked F128, F95 and F98
+  "always in addition to F114": their reads do not count toward F114's
+  100. F39 was not selected. Priorities renumbered as the slate proposed.
+- **The team lead on F114**: "Hoping this process was updated to ensure
+  the entire paper was read and processed (no time limit per paper),
+  nothing left to be done later. Updated for all the best practices found
+  while reading the last couple of hundred papers (models...)". On F116:
+  "This is adding an ability to read picture files and images withing
+  PDFs".
+- **Plan**: `docs/sprints/SPRINT_15_PLAN.md` (drafted 2026-11-01, waiting
+  for approval).
 
 ## Next Sprint Candidates
 
@@ -374,7 +386,7 @@ and in git. Remaining items below.
 
 ### Permanent items
 
-**F39. Evaluate the available models and update the model-assignment heuristics -- PERMANENT (~30m per release) Priority 50** (NEW 2026-09-29; effort re-derived from Sprint 10's release at Sprint 11 Task B, F94)
+**F39. Evaluate the available models and update the model-assignment heuristics -- PERMANENT (~30m per release) Priority 70** (NEW 2026-09-29; effort re-derived from Sprint 10's release at Sprint 11 Task B, F94)
 - Phase: Process (recurring)
 - Value: this prevents agent work being assigned to a retired model or a
   tier whose measured outcomes no longer support it.
@@ -402,7 +414,7 @@ and in git. Remaining items below.
   change names its evidence; its test proven to fail by injection.
 - Depends on: nothing
 
-**F95. Ingest and read the new papers in the Papers folder -- PERMANENT (~90m per release) Priority 20** (NEW 2026-10-21, team lead at Sprint 11 Phase 1.4)
+**F95. Ingest and read the new papers in the Papers folder -- PERMANENT (~90m per release) Priority 40** (NEW 2026-10-21, team lead at Sprint 11 Phase 1.4)
 - Phase: Sourcing / intake, then reading (permanent item, like F39)
 - Value: this enables every paper the team lead saves to reach the store
   and be read within a sprint ("in general new papers are valuable").
@@ -510,7 +522,7 @@ and in git. Remaining items below.
 
 ### Carded at Sprint 6 Manual Validation, 2026-10-05
 
-**F57. Read for claims: the records still at `seen` and `screened`, each read in full (no estimate: as long as the reads take; permanent, no reading budget since 2026-10-25) Priority 70** (NEW 2026-10-05, team lead at Sprint 6 MV)
+**F57. Read for claims: the records still at `seen` and `screened`, each read in full (no estimate: as long as the reads take; permanent, no reading budget since 2026-10-25) Priority 90** (NEW 2026-10-05, team lead at Sprint 6 MV)
 - Phase: Sourcing / extraction (permanent item, like F39)
 - Platform: the store; first-pass readers under the parallel-reading
   pattern (`.claude/model_assignment_heuristics.json`), every quote checked
@@ -693,7 +705,7 @@ and in git. Remaining items below.
 
 ### Carded at Sprint 11 Phase 1.4 (2026-10-21)
 
-**F98. Review Christophe Pere's QML paper repository for new papers, then ingest and read them -- PERMANENT (~60m per release) Priority 22** (NEW 2026-10-21, team lead at Sprint 11 Phase 1.4, for Sprint 12 onward)
+**F98. Review Christophe Pere's QML paper repository for new papers, then ingest and read them -- PERMANENT (~60m per release) Priority 42** (NEW 2026-10-21, team lead at Sprint 11 Phase 1.4, for Sprint 12 onward)
 - Phase: Sourcing / intake, then reading (permanent item, like F39)
 - Value: this enables the store to keep pace with a curated QML paper
   list maintained by an author whose papers it already holds.
@@ -743,7 +755,7 @@ and in git. Remaining items below.
 
 ### Carded during Sprint 14 (2026-10-30)
 
-**F124. Re-read and repoint Phase 2's F151, F153 and F154 source records at a current commit (~45m) Priority 30** (NEW 2026-10-30, the fresh-eyes review of 1f904ba, Sprint 14 Task D)
+**F124. Re-read and repoint Phase 2's F151, F153 and F154 source records at a current commit (~45m) Priority 50** (NEW 2026-10-30, the fresh-eyes review of 1f904ba, Sprint 14 Task D)
 - Phase: Inbound evidence (F79)
 - Value: prevents three Phase 2 source records from failing the
   local-file check and their assertions from resting on documents Phase
@@ -762,7 +774,7 @@ and in git. Remaining items below.
   unchanged; a second apply writes nothing.
 - Depends on: none
 
-**F125. A way back in for a record left unread in a reviewed group (~30m) Priority 40** (NEW 2026-10-30, the fresh-eyes review of 1cb63bb, Sprint 14 Task F)
+**F125. A way back in for a record left unread in a reviewed group (~30m) Priority 12** (NEW 2026-10-30, the fresh-eyes review of 1cb63bb, Sprint 14 Task F)
 - Phase: Reading (F114's next release)
 - Value: lets F114's next release enter the records Sprint 14 left
   unread inside a group it reviewed, instead of losing them.
@@ -781,7 +793,7 @@ and in git. Remaining items below.
   proven red; the status script reads `work\f114\local\`.
 - Depends on: none
 
-**F126. Page-anchor leftovers from Sprint 14's local reads (~20m) Priority 50** (NEW 2026-10-30, the fresh-eyes reviews of ccaedc2 and 59233c1, and the F117 sign-off, Sprint 14 Task F)
+**F126. Page-anchor leftovers from Sprint 14's local reads (~20m) Priority 14** (NEW 2026-10-30, the fresh-eyes reviews of ccaedc2 and 59233c1, and the F117 sign-off, Sprint 14 Task F)
 - Phase: Reading (F114's next release)
 - Value: closes the anchor defects Sprint 14 found and left, so no
   stored page names the wrong PDF page.
@@ -805,7 +817,7 @@ and in git. Remaining items below.
   muta anchor is corrected through a path a test covers.
 - Depends on: none
 
-**F127. Two latent defects in F114's cloud path and the applier (~20m) Priority 50** (NEW 2026-10-30, the fresh-eyes review of d2fcc8d and cecf20d, Sprint 14 Task E)
+**F127. Two latent defects in F114's cloud path and the applier (~20m) Priority 16** (NEW 2026-10-30, the fresh-eyes review of d2fcc8d and cecf20d, Sprint 14 Task E)
 - Phase: Reading (F114's next release)
 - Value: closes two paths that would mislabel a read or let one id
   stand for two papers; neither is live on 2026-10-30.
@@ -841,7 +853,7 @@ and in git. Remaining items below.
 - Acceptance: each with a test proven red, then green.
 - Depends on: none
 
-**F128. Reading targets for the gaps F118 found (~30m to card, reads per F57) Priority 40** (NEW 2026-10-30, the F118 memo, Sprint 14 Task G)
+**F128. Reading targets for the gaps F118 found (~30m to card, reads per F57) Priority 20** (NEW 2026-10-30, the F118 memo, Sprint 14 Task G)
 - Phase: Sourcing / intake, then reading
 - Value: the store cannot answer these questions from
   `docs/spikes/F118_WHAT_THE_STORE_SAYS.md`; each source below fills
@@ -881,7 +893,7 @@ and in git. Remaining items below.
   F57's path.
 - Depends on: none
 
-**F129. Re-check the LOW grades that rest only on an unproved textbook fact (~30m) Priority 50** (NEW 2026-10-30, F117's sign-off, Sprint 14 Task E)
+**F129. Re-check the LOW grades that rest only on an unproved textbook fact (~30m) Priority 60** (NEW 2026-10-30, F117's sign-off, Sprint 14 Task E)
 - Phase: Reading (F114's next release)
 - Value: makes F117's early groups agree with the cross-group rule the
   later groups used, so one grade means one thing.
@@ -902,7 +914,7 @@ and in git. Remaining items below.
   the keyword cut's misses sampled.
 - Depends on: none
 
-**F130. Phase 2's Sprint 30 results into the store (~60m) Priority 30** (NEW 2026-10-31, Sprint 14 retrospective Q8 = 1)
+**F130. Phase 2's Sprint 30 results into the store (~60m) Priority 52** (NEW 2026-10-31, Sprint 14 retrospective Q8 = 1)
 - Phase: Intake (`docs/INTAKE_WORKFLOW.md`, "Phase 2 results"), as
   F120 did for Sprint 29
 - Value: the store's F118 answers rest on Phase 2's own measurements;
@@ -922,6 +934,40 @@ and in git. Remaining items below.
 - Acceptance: each result entered from the merged commit, not an
   unmerged branch; links reviewed; a second apply writes nothing.
 - Depends on: Phase 2's Sprint 30 merged to develop.
+
+### Released for Sprint 15 (2026-11-01)
+
+**F131. F95 release for Sprint 15: new papers in `Papers\` (~5m) Priority 40** (NEW 2026-11-01, released copy of F95)
+- Phase: Sourcing / intake, then reading
+- Value: F95's, for the files in hand when the task starts.
+- Platform: `D:\Data\Harold\EvidenceBasedDB\Papers\`; `scripts/intake.py`
+- F95's steps (1) to (5). On 2026-11-01 no file was new beyond F123's 4
+  papers, already entered. Any file saved before the task starts is
+  included. Its reads are in addition to F114's 100 (team lead,
+  2026-11-01).
+- Acceptance: F95's per release.
+- Depends on: none
+
+**F132. F98 release for Sprint 15: Roadmap-to-QML from ea6f42a7c0 (~5m) Priority 42** (NEW 2026-11-01, released copy of F98)
+- Phase: Sourcing / intake, then reading
+- Value: F98's, for the list at its commit on the task's day.
+- Platform: github.com/Christophe-pere/Roadmap-to-QML, read only; the intake door
+- The list was still at ea6f42a7c0 on 2026-11-01. A newer commit's diff
+  is entered and read; its reads are in addition to F114's 100 (team
+  lead, 2026-11-01).
+- Acceptance: F98's per release.
+- Depends on: none
+
+**F133. F57 release for Sprint 15: records with no read row, read in full (no estimate: as long as the reads take; size set at plan approval) Priority 90** (NEW 2026-11-01, released copy of F57)
+- Phase: Reading
+- Value: F57's, for the records that have never been read at all.
+- Platform: the store; F57's ranking; local first-pass readers under the
+  Sprint 15 reader prompt
+- On 2026-11-01, 524 records had no read row. The 11 that name only a
+  local file come first (they need no fetch), then F57's relevance
+  ranking. The size is the plan's question.
+- Acceptance: F57's per release.
+- Depends on: the Sprint 15 reader prompt (F114's task)
 
 ### Carded during Sprint 13 (2026-10-26 to 2026-10-28)
 
@@ -996,7 +1042,7 @@ and in git. Remaining items below.
   the team lead funds the cloud path again. Sprint 14's local rate: 50
   papers inside a 744-minute sprint with review and apply.
 
-**F115. Convert the text in page images to text, mainly in PDFs (~120m [no-history] timebox) Priority 20** (NEW 2026-10-27, team lead: "add a method to convert images in documents (primarly PDF's) that are text to text")
+**F115. Convert the text in page images to text, mainly in PDFs (~120m [no-history] timebox) Priority 30** (NEW 2026-10-27, team lead: "add a method to convert images in documents (primarly PDF's) that are text to text")
 - Phase: Sourcing / extraction
 - Value: a source whose pages are images gives the quote check no text, so
   no assertion from it can be verified, and a reader gets nothing to read.
@@ -1017,7 +1063,7 @@ and in git. Remaining items below.
   when an image-only page is read as empty without being flagged.
 - Depends on: none
 
-**F116. Read the figures in a source: what a graph shows, and where the text confirms it (~180m [no-history] timebox) Priority 40** (NEW 2026-10-27, team lead: "read images that are graphs... and interpret the images (if a graph, what does the graph say and how is it confirmed in text)")
+**F116. Read the figures in a source: what a graph shows, and where the text confirms it (~180m [no-history] timebox) Priority 80** (NEW 2026-10-27, team lead: "read images that are graphs... and interpret the images (if a graph, what does the graph say and how is it confirmed in text)")
 - Phase: Sourcing / extraction
 - Value: readers now skip figures (Task G's prompt counts a plot as read
   when its caption and the text around it are read), so a result shown

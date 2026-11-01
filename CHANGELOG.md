@@ -29,6 +29,14 @@ this project keeps having to replace with a step.
   lead), F98 (list unchanged at ea6f42a7c0), F51 (hold unchanged) and
   F130 (Phase 2's Sprint 30 PR #74 not merged). Phase 1.3: 0 re-checks
   due; no ADR or schema change in Sprint 14. Slate presented
+- **docs**: Sprint 15 scope selected (team lead, 2026-11-01): F114 at 100
+  papers, F125, F126, F127, F128, F115, F95, F98, F124, F129, F116, F57
+  and F130; released copies F131 (F95), F132 (F98) and F133 (F57);
+  priorities renumbered as the slate proposed; F39 not selected. Plan
+  drafted (`docs/sprints/SPRINT_15_PLAN.md`): F115 and F116 run before
+  F114's reads, so the 100 papers are read with figures and image pages;
+  pre-flight: Windows' built-in OCR read udaru's page 1 (no Tesseract
+  installed)
 
 ### 2026-10-29 to 2026-10-31 (Sprint 14, PR #140, merged to develop 2026-10-31 and to main via PR #148 the same day; tagged sprint-14)
 
