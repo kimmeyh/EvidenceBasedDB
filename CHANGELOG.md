@@ -37,6 +37,13 @@ this project keeps having to replace with a step.
   F114's reads, so the 100 papers are read with figures and image pages;
   pre-flight: Windows' built-in OCR read udaru's page 1 (no Tesseract
   installed)
+- **docs**: Sprint 15 plan approved (team lead, 2026-11-01): Q1 = 1, Q2 =
+  2 (F133 reads 100 records), Q3 = 3 with the team lead's qualification
+  (OCR of a stored PDF's page grades as text-layer text; OCR of an image
+  file outside a PDF is HIGH only when corroborated, otherwise MEDIUM at
+  most), Q4 = 1. F115's engine changed to RapidOCR (cross-platform, in its
+  own virtual environment), at the team lead's request. Issues #150 to
+  #162 (Tasks A to M)
 
 ### 2026-10-29 to 2026-10-31 (Sprint 14, PR #140, merged to develop 2026-10-31 and to main via PR #148 the same day; tagged sprint-14)
 

@@ -965,7 +965,9 @@ and in git. Remaining items below.
   Sprint 15 reader prompt
 - On 2026-11-01, 524 records had no read row. The 11 that name only a
   local file come first (they need no fetch), then F57's relevance
-  ranking. The size is the plan's question.
+  ranking. The size is the plan's question. Team lead, 2026-11-01, at
+  plan approval: Q2 = 2, so this release is 100 records (about 240
+  minutes of review).
 - Acceptance: F57's per release.
 - Depends on: the Sprint 15 reader prompt (F114's task)
 

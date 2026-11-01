@@ -64,10 +64,10 @@ Sprint 14's `learning_log` row).
 | C | **F125, a way back in.** A record left unread in a reviewed group (8 today, among them g113's three chen-2026 records) can be read, reviewed and entered under its own group file and review file; `scripts/sprint13_g_status.py` reads `work\f114\local\` | 30m | none | Claude, top tier |
 | D | **F126, page anchors.** The three page-fixer cases ("p.12-15.3", a stray "of 10", "p.12a") each with a test proven red, then green; the muta-hardware-scope-photonic-gkp anchor corrected from p.9 to p.8 through a tested path | 20m | one store write, with its verified backup | Claude, top tier |
 | E | **F127, latent defects.** The merged-branch refusal, the clash check's substring match, the builder's three edge cases, and the refusal guard that ignores a later reversal (9 QCI Dirac papers): each with a test proven red, then green | 20m | none | Claude, top tier |
-| F | **F115, text from page images.** Every local source whose text layer is empty or nearly empty, page by page, listed with its date; those pages converted by Windows' built-in OCR (`Windows.Media.Ocr`, pre-flight passed on udaru's page 1, below), from page images rendered by `pdftoppm`; the text kept outside git in the text cache, marked as OCR, with the engine and Windows build named in provenance; the quote check reads it; the OCR grading rule per Q3; a test proven red when an image-only page is read as empty without a flag. udaru-2025-qml-credit-risk is then read in full as the first of F114's 100 | 120m | [unbounded] until the scan runs: the dominant term is `pdftotext` over every local source (cached by SHA-256, so mostly cache hits), then OCR at about 1 to 3 s per page on the pages found | Claude, top tier |
+| F | **F115, text from page images.** Every local source whose text layer is empty or nearly empty, page by page, listed with its date; those pages converted by RapidOCR (cross-platform, pip-installed into its own virtual environment outside git, pinned in `requirements-ocr.txt`; amended at approval from Windows' built-in OCR, see "Decisions for the team lead"), from page images rendered by `pdftoppm`; the text kept outside git in the text cache, marked as OCR, with the engine, its version, the ONNX Runtime version and the model files named in provenance; the quote check reads it; the OCR grading rule per Q3; a test proven red when an image-only page is read as empty without a flag. udaru-2025-qml-credit-risk is then read in full as the first of F114's 100 | 120m | [unbounded] until the scan runs: the dominant term is `pdftotext` over every local source (cached by SHA-256, so mostly cache hits), then OCR at about 1 to 3 s per page on the pages found | Claude, top tier |
 | G | **F116, figures and images.** Readers render each page that holds a figure or an embedded image (`pdftoppm`, `pdfimages`) and view it. For each figure: its kind, what it shows (axes, trend, marked values), and the passage that confirms it, quoted, or a statement that no text confirms it. A value read only from a figure is marked so and never graded HIGH on the figure alone. A pilot on 5 papers whose key results are in plots sizes the cost per figure before Task H's readers start | 180m | the pilot's 5 papers by one reader; the per-figure time it measures sizes Task H | Claude, top tier; one Sonnet 5.5 pilot reader |
 | H | **F114, 100 papers, with nothing left for later.** Step 1: the Sprint 15 reader prompt and review protocol (below), each new rule with a test proven red. Step 2: the 100 papers: udaru (after F), the 8 records left unread in reviewed groups (after C), then ledger order from g114. The 18 papers the team lead kept out stay out. Read in full by up to 5 local first-pass readers, figures and image pages included; each group reviewed by a Sonnet 5.5 reviewer with the paper's text; the coordinator's sign-off and a cross-group pass on Opus 5.5; the team lead decides each certainty change. Applied by `scripts/full_read_apply.py` after a trial on a store copy, with its verified backup | 60m (prompt) + 240m (review and sign-off) | no estimate as a limit (no reading budget). [unbounded] until piloted: the dominant term is the whole-paper reads with their figures, 20 groups of 5; the first group's time sizes the rest (heartbeat to a file) | Claude, top tier (sign-off, certainty); Sonnet 5.5 readers and reviewers |
-| I | **F133, the F57 release** (size per Q2). The 11 records that name only a local file first, then F57's relevance ranking, from the 524 with no read row; read under H's prompt, after H's readers, sharing the 5 reader slots; reviewed and applied as H's are | 120m at Q2 = 1 | no estimate as a limit; sized from H's measured time per paper | as H |
+| I | **F133, the F57 release** (size per Q2). The 11 records that name only a local file first, then F57's relevance ranking, from the 524 with no read row; read under H's prompt, after H's readers, sharing the 5 reader slots; reviewed and applied as H's are | 240m (Q2 = 2: 100 records) | no estimate as a limit; sized from H's measured time per paper | as H |
 | J | **F128, the gaps F118 found.** Each target placed: a free copy (arXiv or the publisher) fetched and read in full under H's prompt, in addition to the 100; a book or paywalled source put on the hand-download list with its reason. Targets on 2026-11-01: Gidney and Ekera (1905.09749), Babbush et al. 2021 (2011.04149), Chakrabarti et al. (2012.03819), Woerner and Egger (1806.06893), Stoudenmire and Schwab (1605.05775), XGBoost (1603.02754), LightGBM (NeurIPS 2017), a QRAM architecture paper (0708.1879) and its critique (2305.10310), Ferrari Dacrema et al. (not in the store), Faryad in full (stored, read in part), Dal Pozzolo 2014 (stored, unread), Nielsen and Chuang (book), vendor native-gate documents, a concept-drift source for card fraud, tuned anomaly-detection baselines on fraud, and the 3 split candidates | 30m + 120m (review) | about 12 papers at F52's 18 s per arXiv request; reads in the background | as H |
 | K | **F124, three Phase 2 records.** F151, F153 and F154's documents re-read whole at Phase 2's develop head (af03165 on 2026-11-01, through the GitHub API; no fetch in a sibling repository); each stored value corrected or confirmed by name; the earlier read and blob SHA-256 kept; the local-file check passes | 45m | a few GitHub API reads | Claude, top tier (certainty) |
 | L | **F129, LOW grades on a textbook fact.** The 11 keyword candidates each read against its passage and the cross-group rule; a sample of the keyword cut's misses checked; each proposed change put to the team lead as a certainty change at Manual Validation | 30m | none | Claude, top tier |
@@ -111,8 +111,9 @@ the tools H uses. F, then G's pilot, then H's step 1. H's readers then
 start: udaru first, then the 8, then g114 on. J's reads and I's reads share
 the 5 reader slots after H's first groups, in that order. K and L run while
 the readers work. M when PR #74 merges. One apply at a time: H, then I and
-J. Total about 1,085 minutes at the cards' estimates; at Sprint 14's ratio,
-about 675 active minutes, plus the reader time in the background. No
+J. Total about 1,205 minutes at the cards' estimates (1,085 at planning,
+plus 120 for Q2 = 2); at Sprint 14's ratio, about 750 active minutes, plus
+the reader time in the background. No
 findings allowance: the scope is not dominated by verification. **If a
 Criterion 3 stop becomes necessary, the cut line is inside I**: I stops at
 the records it has reviewed, and the rest return to F57. Deferring approved
@@ -140,6 +141,16 @@ commit runs `python scripts/run_suite.py --changed`.
   Risk: A Next-Generation Approach To Risk Assessment ... DOI:
   10.63278/jicrcr.vi.3419"). Its maximum image dimension is 10,000 pixels.
   No install is needed.
+  **Superseded at approval (2026-11-01)**: the team lead asked for a
+  cross-platform engine. RapidOCR 3.10.0 (Apache-2.0) over ONNX Runtime
+  1.31.1 (MIT), installed by pip into a scratch virtual environment, read
+  the same page to 103 lines in 5.9 s, with the title, DOI and abstract
+  correct. Its three models (PP-OCRv6 detection and recognition, and a
+  direction classifier) ship inside the wheel with their SHA-256 in the
+  wheel's RECORD, so no model is downloaded at run time. An install into
+  the main interpreter would raise numpy from 1.26.2 to 2.5.4, so the
+  engine gets its own virtual environment. Pip-installable on Linux and
+  macOS by its packaging; verified on Windows only.
 - **F116**: `pdftoppm` and `pdfimages` are present; the Read tool views a
   rendered PNG, so a reader can see a figure.
 - **F128**: of the targets, 9 named by arXiv id are not in the store; Faryad
@@ -156,13 +167,37 @@ commit runs `python scripts/run_suite.py --changed`.
 
 ## Decisions for the team lead
 
-Q1 to Q4 are in the approval message; their answers are recorded here at
-approval.
+Team lead, 2026-11-01, approving the plan: "q1 1 q2 2 q3 3 however
+anything in an ocr of a pdf is likely confirmed in the pdf for ocr of
+images not in pdf's I would hold high's for things that can be otherwise
+corroborated, otherwise medium is the highest. q4 1". And on F115: "would
+prefer a cross platform OCR ability even if for Windows this is the best
+one (what is the next best alternative python package)?"
+
+- **Q1 = 1**: F115 and F116 run before F114's reads, so the 100 papers are
+  read with figures and image pages included.
+- **Q2 = 2**: the F57 release (Task I) is 100 records, about 240 minutes of
+  review.
+- **Q3 = 3, with the team lead's qualification.** The rule as recorded:
+  - Text OCR'd from a page of a stored PDF is graded the same as text-layer
+    text: HIGH is allowed.
+  - Text OCR'd from an image file that is not inside a PDF (a picture file
+    entered as a source) is HIGH only when another source corroborates the
+    claim; otherwise MEDIUM is the highest grade.
+  - This is consistent with Task G's rule: Q3 is about OCR text (words read
+    by the engine), while G's rule is about a value estimated by eye from a
+    plot, which is never HIGH on the figure alone.
+- **Q4 = 1**: if Phase 2's PR #74 has not merged by the Manual Validation
+  hand-over, F130 returns to the backlog for Sprint 16.
+- **F115's engine**: changed from Windows' built-in OCR to RapidOCR, the
+  cross-platform choice (pre-flight above). Disclosed in the approval
+  acknowledgment: the planning message said nothing needed installing; the
+  engine now needs a pip install into its own virtual environment.
 
 ## Premise falsifier
 
 **The premises**: (a) figures hold results the text alone does not give;
-(b) Windows' OCR gives text good enough for the quote check; (c) the
+(b) RapidOCR gives text good enough for the quote check; (c) the
 Sprint 15 prompt leaves nothing in a paper unread; (d) the F128 targets
 answer the gaps F118 named; (e) Phase 2's F151, F153 and F154 documents
 changed values the store holds.
