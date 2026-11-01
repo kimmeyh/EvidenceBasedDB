@@ -13,7 +13,24 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-10-29 onward (Sprint 14, in progress)
+### 2026-10-31 onward (Sprint 15, in progress)
+
+- **chore**: Sprint 15 opened (2026-10-31). The team lead merged PR #140
+  into develop (9059061) and PR #148 to main (934a416); `sprint-14`
+  tagged on 934a416; branch `feature/20261031_Sprint_15` cut from the
+  Sprint 14 branch (6.6 carry-forward). Phase 1.1 reconciliation: every
+  commit since 2026-10-29 changed this file; no day lacks its entry
+- **docs**: Backlog refinement 2026-11-01 (Sprint 15 Phase 1.2 to 1.4):
+  Sprint 14's issues #145 to #147 closed by hand (PR #140 named them
+  without `Closes`); shipped cards pruned by hand (F117, F118, F119,
+  F120, and the released copies F122 and F123); F114 stays with a
+  snapshot (1,091 of its 1,430 records not yet read in full, in 227
+  groups); snapshots refreshed on F57, F95 (no new file from the team
+  lead), F98 (list unchanged at ea6f42a7c0), F51 (hold unchanged) and
+  F130 (Phase 2's Sprint 30 PR #74 not merged). Phase 1.3: 0 re-checks
+  due; no ADR or schema change in Sprint 14. Slate presented
+
+### 2026-10-29 to 2026-10-31 (Sprint 14, PR #140, merged to develop 2026-10-31 and to main via PR #148 the same day; tagged sprint-14)
 
 - **chore**: Sprint 14 opened (2026-10-29). The team lead merged PR #131
   into develop (bb4cb80) and PR #139 to main (952c9e3); `sprint-13`
