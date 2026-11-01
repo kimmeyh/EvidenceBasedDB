@@ -945,6 +945,12 @@ and in git. Remaining items below.
   papers, already entered. Any file saved before the task starts is
   included. Its reads are in addition to F114's 100 (team lead,
   2026-11-01).
+- **Done 2026-11-01 (Sprint 15 Task A; counts a snapshot as of that
+  date)**: before and after, 378 PDFs in `Papers\` and its subfolders;
+  165 named by no record's `access` (file-name match), all Sprint 13 Task
+  G downloads that F114 names as it reads their groups; no file saved
+  since F123's 4 papers of 2026-10-30, which records already name.
+  Nothing to enter or read; no store write.
 - Acceptance: F95's per release.
 - Depends on: none
 
@@ -955,6 +961,9 @@ and in git. Remaining items below.
 - The list was still at ea6f42a7c0 on 2026-11-01. A newer commit's diff
   is entered and read; its reads are in addition to F114's 100 (team
   lead, 2026-11-01).
+- **Done 2026-11-01 (Sprint 15 Task B)**: the list's head is still
+  ea6f42a7c0 (2026-10-27, GitHub REST, read only). No new paper; nothing
+  to enter or read; no store write.
 - Acceptance: F98's per release.
 - Depends on: none
 

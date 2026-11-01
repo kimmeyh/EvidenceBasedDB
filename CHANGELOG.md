@@ -44,6 +44,9 @@ this project keeps having to replace with a step.
   most), Q4 = 1. F115's engine changed to RapidOCR (cross-platform, in its
   own virtual environment), at the team lead's request. Issues #150 to
   #162 (Tasks A to M)
+- **docs**: Sprint 15 Tasks A and B (F131, F132): `Papers\` holds 378
+  PDFs, none new since 2026-10-30; Roadmap-to-QML is still at
+  ea6f42a7c0. No store write
 
 ### 2026-10-29 to 2026-10-31 (Sprint 14, PR #140, merged to develop 2026-10-31 and to main via PR #148 the same day; tagged sprint-14)
 
