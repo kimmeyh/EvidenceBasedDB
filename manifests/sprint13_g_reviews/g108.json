@@ -1,0 +1,368 @@
+{
+ "group": "g108",
+ "reviewed_on": "2026-10-31",
+ "tag": "Sprint 14 Task F, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint14_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "cemin-dilation-ansatz-unitary-nn": [
+   "setup",
+   "Sec. II B, p.2: the model is a Stinespring ansatz with U parametrized by a neural network and constrained unitary (torch orthogonal parametrization). Read in context."
+  ],
+  "cemin-training-loss-and-validation": [
+   "setup",
+   "Sec. II B, p.3: loss proportional to average squared distance, Adam, validation on r = 10 further initial conditions. Paper's own setup."
+  ],
+  "cemin-env-dimension-hyperparameter": [
+   "setup",
+   "Sec. II B, p.3: dE treated as a hyper-parameter, values other than the Kraus rank explored."
+  ],
+  "cemin-subsystem-setup": [
+   "setup",
+   "Sec. III B, p.4-5: two adjacent qubits in an L-qubit circuit, train t=1..10, validate to T=20. The 'not expected to be Markovian' is the authors' stated expectation for the task, not a result."
+  ],
+  "cemin-ibm-access-and-data-split": [
+   "setup",
+   "Sec. III C p.6 (t=11..20, M=30 train, r=10 validation) and App. B 2 p.8 (accessed 3 January 2024)."
+  ],
+  "cemin-ibm-data-subsets-pretraining": [
+   "setup",
+   "Sec. III C, p.6: 10 subsets averaged, larger per-point statistical error, pre-training by estimating the state at t=10."
+  ],
+  "qchannel-ibmq-setup": [
+   "setup",
+   "Sec. III C, p.5-6: 27-qubit ibmq ehningen, 20 000 shots in each of the 9 Pauli bases."
+  ],
+  "qchannel-markovian-limit": [
+   "stated limit",
+   "Sec. II C, p.3: the authors say the Markovian assumption is a limitation on capturing generic evolutions."
+  ],
+  "cepaite-warm-start-procedure": [
+   "definition",
+   "Sec. I A, p.2: the paper introduces and defines quantum-enhanced optimization and its five-step procedure."
+  ],
+  "cepaite-parameters-without-variational-loop": [
+   "setup",
+   "Sec. I B, p.3: the authors state the single quantum access and that they introduce new parameter-choice methods (detailed in Sec. IV)."
+  ],
+  "cepaite-q-factor-definition": [
+   "definition",
+   "Sec. III Eq. (13)-(15), p.8-9: C(T), minimal expected runtime and Q = ratio of minima are defined by the paper."
+  ],
+  "cepaite-q-factor-iterations-not-time": [
+   "setup",
+   "Sec. VII A, p.21: iteration counts used to estimate expected runtime for the emulated Q-factors. Later hardware runs also use time in seconds (Sec. VII C 2), so the value holds for the emulation case it names."
+  ],
+  "cepaite-baseline-optimizer-bare-bones": [
+   "setup",
+   "Sec. IV, p.10: bounded L-BFGS-B, 5 initializations, bare-bones comparison stated by the authors."
+  ],
+  "cepaite-ar-star-metric": [
+   "definition",
+   "Sec. IV Eq. (16), p.10: AR* rescales by lambda_min and lambda_max, equals 1 at the ground state and 0 at the maximally excited state."
+  ],
+  "cepaite-a-star-not-admissible": [
+   "stated limit",
+   "Sec. V B 2, p.19: the authors say their routing heuristic is not admissible and may overestimate the swap count."
+  ],
+  "cepaite-error-mitigation-sampling-need": [
+   "setup",
+   "Sec. I B, p.4: the authors state why standard mitigation does not apply and that they use readout mitigation plus frequency and energy filtering."
+  ],
+  "cepaite-filters-defined": [
+   "definition",
+   "Sec. VI B, p.21: energy (10%), frequency (0.05% or at least 5 in 10000) and Hamming (1% plus 9% nearest) filters are defined by the paper."
+  ],
+  "cepaite-readout-mitigation-lnf": [
+   "setup",
+   "Sec. VI A, p.20: the least norm filter of Yang et al. is the readout mitigation used."
+  ],
+  "cepaite-line-graph-setup": [
+   "setup",
+   "Sec. VII C 1, p.25: unweighted Max-Cut on line graphs of 10 to 55 nodes, three IBM devices, LNF, 1000 runs per Q-factor."
+  ],
+  "cepaite-line-graph-easy-benchmark": [
+   "setup",
+   "Sec. VII C 1, p.25: the authors state why they use line graphs (easy for greedy, not exploited by tabu search). Their stated rationale for the benchmark, not a measured result."
+  ],
+  "cepaite-heavyhex-setup": [
+   "setup",
+   "Sec. VII C 2, p.26-27: 10 graphs of 24 vertices/40 edges and 10 of 41/68, weights in [-1,1], ibmq_torino, 1000 tabu-search optimizations."
+  ],
+  "cepaite-time-limit-resource-pool-setup": [
+   "setup",
+   "Sec. VII C 2, p.27: warm starts as a resource pool, 0.1 s limit, timing begins after the sample set is generated."
+  ],
+  "cepaite-er-regular-setup": [
+   "setup",
+   "Sec. VII C 3, p.28-29: 15 to 40 nodes, ibmq_torino, 1 to 6 layers, depth above 1000 excluded, 10,000 shots, energy and frequency filtering."
+  ],
+  "cepaite-needs-benchmark-vs-best-solvers": [
+   "stated limit",
+   "Sec. IX, p.31: the authors say benchmarking against best-in-class solvers on larger instances is still needed and pose it as an open question."
+  ],
+  "cepaite-full-pipeline-runtime-needs-larger": [
+   "stated limit",
+   "Sec. IX, p.31: runtime metrics exclude sample generation; the authors expect much larger instances are needed for a full-pipeline gain. The expectation is hedged ('likely')."
+  ],
+  "cepaite-open-questions-denser-problems": [
+   "stated limit",
+   "Sec. IX, p.31: the study stops at 55 qubits; larger partitioned instances and denser problems are listed as future work."
+  ],
+  "cepaite-dweight-precomputed-range": [
+   "scope",
+   "Sec. IV A, p.10: parameters pre-calculated for 1<=p<=6 and d in [1,10] and 20, as the paper states."
+  ],
+  "cepaite-swap-enhanced-purpose": [
+   "scope",
+   "App. B, p.38: instances can match device connectivity (no swaps) but are sparse and simple; the SWAP-enhanced construction adds distance-two edges at lower gate cost."
+  ],
+  "cepaite-swap-merge-cnot-saving": [
+   "definition",
+   "App. B, p.38: merging a ZZ interaction with the following SWAP removes 2 CNOT, equal to 4 native CZ on IBM hardware, as the paper states for its circuit identity."
+  ],
+  "cepaite-appendix-c-emulation-setup": [
+   "setup",
+   "App. C, p.39: ER p 0.1 to 0.9, regular degrees 1 to N-2, 4<=N<=19, 10 graphs, 1000 emulator samples, balanced prediction."
+  ],
+  "cepaite-approximation-ratio-definition": [
+   "definition",
+   "App. E, Eq. (E1), p.47: AR is the Max-Cut value after T iterations over the true optimal value."
+  ],
+  "cepaite-classical-benchmark-setup": [
+   "setup",
+   "App. F, Fig. 23, p.48-50: Burer, FestaGVNSPR, PalubeckisMST3 and CPLEX; 3-regular Max-Cut and MIS on defect lattices; 50 runs of 2 s (100 s time-out); CPLEX 5000 s."
+  ],
+  "cepaite-classical-benchmark-limits": [
+   "stated limit",
+   "App. F, p.48-49: heuristic performance is hard to assess; higher-degree regular graphs not benchmarked because CPLEX times out."
+  ],
+  "cepaite-no-advantage-yet": [
+   "stated limit",
+   "Sec. IX, p.31: the authors say several questions remain before genuine quantum advantage can be claimed."
+  ],
+  "cepaite-runtime-excludes-sampling": [
+   "stated limit",
+   "Sec. IX p.31 and Sec. VII C 2 p.28: the authors say runtime metrics exclude sample generation and the comparison is not fair as a final one."
+  ],
+  "cepaite-scale-and-noise": [
+   "scope",
+   "Sec. IX, p.31: 'our study focused on problem sizes up to 55 qubits on IBM hardware'."
+  ],
+  "cerezo-prop1-narrow-gorge": [
+   "proved result",
+   "Prop. 1, p.3 with proof in Supp. Note 2, p.21 (Markov inequality for the global part, Paley-Zygmund for the local part). Conditions: x-rotation tensor-product ansatz, uniform angles, delta in (0,1) for CG and [1/2,1] for CL."
+  ],
+  "cerezo-prop2-zero-mean-gradient": [
+   "proved result",
+   "Prop. 2, p.4 with proof in Supp. Note 3, p.22-23 (Lemma 4). Condition (WA or WB a 1-design) is carried."
+  ],
+  "cerezo-variance-formula-2-designs": [
+   "proved result",
+   "Eq. (31), p.9-10, derived in Supp. Note 4, p.23-24 (Lemmas 1, 2, 3, 5). Condition (WA and WB independent 2-designs) is carried."
+  ],
+  "cerezo-theorem1-global-upper-bound": [
+   "proved result",
+   "Thm. 1, p.4-5 with proof in Supp. Notes 6-7, p.27-37. Conditions carried: local 2-designs for WA, WB and all blocks; cases (i) and (ii) of O."
+  ],
+  "cerezo-corollary1-global-exponential": [
+   "proved result",
+   "Cor. 1, p.5 with proof in Supp. Note 8 A, p.37-38. Conditions carried (c1^2 R in O(2^n), N in O(2^n), L in O(poly log n)). m>=2 checks against exponents 1-(1/m)log2 3 and 1-1/m, which are positive only for m>=2."
+  ],
+  "cerezo-theorem2-local-lower-bound": [
+   "proved result",
+   "Thm. 2, p.5 with proof in Supp. Note 6, p.27-33 (Eqs. 143-146). Conditions carried: m-local O of form (16), local 2-designs."
+  ],
+  "cerezo-corollary2-local-polynomial": [
+   "proved result",
+   "Cor. 2, p.5 with proof in Supp. Note 8 B, p.38. Conditions carried (term not vanishing faster than 1/poly, L in O(log n); polylog case gives the transition region)."
+  ],
+  "cerezo-theorem2-remark-maximally-mixed": [
+   "stated limit",
+   "p.5 and Supp. Note 6 p.32: the authors state no trainability guarantee when the input is maximally mixed on the backward light-cone; the proof text says no angle in W can be trained then."
+  ],
+  "cerezo-lemma1-two-design-first-moment": [
+   "proved result",
+   "Lemma 1, Supp. Note 1, p.16-17: stated for t>=1 and proved from the first Haar moment."
+  ],
+  "cerezo-lemma2-two-design-second-moment": [
+   "proved result",
+   "Lemma 2, Supp. Note 1, p.17: stated for t>=2 and proved from the second Haar moment (Eq. 53)."
+  ],
+  "cerezo-lemma3-product-of-traces": [
+   "proved result",
+   "Lemma 3, Supp. Note 1, p.17-18: stated for t>=2 and proved from Lemma 2."
+  ],
+  "cerezo-lemma4-partial-block-average": [
+   "proved result",
+   "Lemma 4, Supp. Note 1, p.18: stated for t>=1 and proved with Eq. (52)."
+  ],
+  "cerezo-lemma5-trace-decomposition": [
+   "proved result",
+   "Lemma 5, Supp. Note 1, p.18-19: an algebraic identity proved by expansion in the computational basis."
+  ],
+  "cerezo-lemma6-block-integration": [
+   "proved result",
+   "Lemma 6, Supp. Note 1, p.19-20: stated with conditions (t>=2); the proof is direct integration via Eq. (53), shown for one representative case, and the coefficient bound over the finite cases is asserted ('we can verify'). Borderline: the proof is a computation not fully displayed."
+  ],
+  "cerezo-lemma7-no-overlap-vanishes": [
+   "proved result",
+   "Lemma 7, Supp. Note 1, p.20: proof is a direct computation for one representative case, the rest 'follow similarly'. Borderline for the same reason as Lemma 6."
+  ],
+  "cerezo-alternating-layered-ansatz-setup": [
+   "scope",
+   "Sec. General framework, p.3: the ansatz of L layers of m-qubit blocks, n=m xi, m not scaling with n, hardware-efficient when blocks are native."
+  ],
+  "cerezo-cost-form-and-operators": [
+   "definition",
+   "Sec. General framework, p.3: C=Tr[O V rho V^dagger] with O=c0 1+sum ci Oi and at least one ci nonzero."
+  ],
+  "cerezo-variance-concentration-meaning": [
+   "scope",
+   "p.3-4: the authors state that the average gradient may not represent the landscape near the minimum, and give Chebyshev's inequality for the variance (a standard fact applied to their metric)."
+  ],
+  "cerezo-global-local-definition-terms": [
+   "definition",
+   "Discussion, p.8: the paper's own definition of global and local operators, its open question about many-bodiness, and the statement that case (ii) of Thm. 1 rules out cardinality as the cause."
+  ],
+  "cerezo-open-unify-and-approx-designs": [
+   "stated limit",
+   "Discussion, p.9: extending Prop. 1, unifying Thms. 1 and 2, and the exact-2-design assumption versus approximate designs are named as future work."
+  ],
+  "cerezo-autoencoder-setup": [
+   "setup",
+   "Sec. Numerical Simulations, p.6-7: nA=1, two-state ensemble (2/3, 1/3), nB=10,15,...,100, two layers of the Fig. 4 ansatz, real-coefficient simplification."
+  ],
+  "cerezo-global-cost-barren-plateau-shallow": [
+   "proved result",
+   "Thm. 1 and Cor. 1 are proved in Supp. Notes 6-8 (p.27-38). The narrowed value carries the conditions: local 2-designs, cases (i) and (ii) of O, L in O(poly log n), m>=2."
+  ],
+  "cerezo-local-cost-polynomial-gradient-log-depth": [
+   "proved result",
+   "Thm. 2 and Cor. 2 are proved in Supp. Notes 6 and 8 B (p.27-33, 38). The corrected value uses Cor. 2's actual condition (a term of Gn not vanishing faster than 1/poly(n), L in O(log n)) and the maximally mixed caveat."
+  ],
+  "vqa-cost-form-definition": [
+   "definition",
+   "Sec. II A, p.2: Eq. (2) and (3) define the cost form in the review."
+  ],
+  "vqa-cost-criteria": [
+   "definition",
+   "Sec. II A, p.2-3: the review states its criteria (faithful, efficiently estimable, operationally meaningful, trainable). It calls them desirable criteria, which the value's 'must' slightly hardens, but the list is the paper's own."
+  ],
+  "vqa-cost-not-classically-computable": [
+   "scope",
+   "Sec. II A, p.3: the review states this as an implicit assumption of its framework, with its reasoning (no advantage if classically computable)."
+  ],
+  "vqa-ansatz-structure": [
+   "definition",
+   "Sec. II B, p.3: Eq. (4)-(5) give the product form, and the review distinguishes problem-inspired and problem-agnostic ansatzes."
+  ],
+  "vqa-quantum-estimates-cost-classical-optimizes": [
+   "definition",
+   "Sec. II p.2 and Sec. I p.1: the review defines the VQA architecture (quantum estimate of C, classical optimizer, shallow circuits)."
+  ],
+  "cerezo25-loss-form-setup": [
+   "setup",
+   "Sec. II Eq. (1), p.2-3: the paper assumes the expectation-value loss with bounded O and says it focuses on this case."
+  ],
+  "cerezo25-problem-instance-definition": [
+   "definition",
+   "Sec. II, p.3: definition of a problem instance and class."
+  ],
+  "cerezo25-bp-free-definition": [
+   "definition",
+   "Sec. II Eq. (2), p.3: provably barren plateau-free class defined by the variance bound; the average-statement note is on the same page."
+  ],
+  "cerezo25-compute-loss-definition": [
+   "definition",
+   "Sec. II Eq. (3), p.3-4: computing the loss defined with high probability over P, plus the stronger all-theta version; estimating only the loss is stated."
+  ],
+  "cerezo25-csim-definition": [
+   "definition",
+   "Sec. II, p.4: CSIM defined."
+  ],
+  "cerezo25-qesim-definition": [
+   "definition",
+   "Sec. II, p.4: QESIM defined with an initial data acquisition phase and no later device access."
+  ],
+  "cerezo25-qsim-and-inclusions": [
+   "definition",
+   "Sec. II Eq. (4), p.4-5: QSIM defined; the inclusions hold by definition. The BPP, BPP/Samp, BQP links are stated as 'related to', informally, and the value keeps that wording."
+  ],
+  "cerezo25-polysub-definition": [
+   "definition",
+   "Sec. III, p.6: CpolySub defined."
+  ],
+  "cerezo25-proper-vs-effective-subspace": [
+   "definition",
+   "Sec. III, Fig. 3 caption, p.6: proper and effective subspaces defined."
+  ],
+  "cerezo25-no-data-generated": [
+   "scope",
+   "Data availability, p.15: 'No data was generated.' The paper contains no numerical experiments."
+  ],
+  "cerezo25-simulation-recipe": [
+   "definition",
+   "Sec. IV, p.9: the paper's own three-step recipe, and its remark that the subspace is found by reverse engineering the absence-of-barren-plateau proof. The claim that it applies to every CpolySub problem is the authors' and is not in the value."
+  ],
+  "cerezo25-subspace-necessary-not-sufficient": [
+   "stated limit",
+   "Sec. III, p.7: the authors say a polynomial subspace is 'clearly not sufficient' and give the exponentially small component case."
+  ],
+  "cerezo25-cost-of-simulation-may-be-poor": [
+   "stated limit",
+   "Sec. IV p.9, Sec. V B p.12, Supp. A 1 p.23: the authors say polynomial cost can still be poor or prohibitive and a polynomial speed-up might remain on hardware (the last point is framed as possible)."
+  ],
+  "cerezo25-caveat-case-by-case": [
+   "stated limit",
+   "Sec. V A, p.10-11: the authors say their arguments rest on a case-by-case study of Table 1 and other mechanisms may exist."
+  ],
+  "cerezo25-caveat-heuristic-large-gradients": [
+   "stated limit",
+   "Sec. V A, p.11: the arguments require provable absence; heuristic large gradients and warm starts are outside them; the ADAPT-VQE/Majorana propagation note is called preliminary."
+  ],
+  "cerezo25-caveat-effective-subspaces-average-case": [
+   "stated limit",
+   "Sec. V A, p.11-13: for effective subspaces simulation holds only with high probability over P and may fail if the sector shifts in training; the authors say this is yet to be explored."
+  ],
+  "cerezo25-caveat-other-loss-types-boltzmann": [
+   "stated limit",
+   "Sec. V A, p.11-12: the claims do not apply directly to losses of other forms such as quantum Boltzmann machines."
+  ],
+  "cerezo25-caveat-resource-variation-qesim": [
+   "stated limit",
+   "Sec. V A, p.11: QESIM quantum resource needs vary by case; the single-parameter deep circuit stretches the spirit of QESIM."
+  ],
+  "cerezo-no-proof-always-simulable": [
+   "stated limit",
+   "Sec. I, p.2: 'we do not prove that this will always be possible', with the BP-free-but-unsimulable possibility named."
+  ],
+  "cerezo-scope-excludes-some-protocols": [
+   "scope",
+   "Sec. I, p.2: the argument covers expectation-value losses and measurement-plus-post-processing variants and 'does not cover all possible quantum learning protocols'."
+  ]
+ },
+ "theory_low": {
+  "cerezo-prop3-autoencoder-local-cost-faithful": "cross-group consistency, Rule A (coordinator, 2026-10-30): Supp. Note 9, Proposition 3, p.39: CL <= CG <= nB CL is proved here, but the value's conclusion that the local cost is faithful rests on 'because CG is faithful [11]', a cited result not proved in this paper.",
+  "cerezo-single-layer-global-variance": "Supp. Note 5 A, Eq. (113), p.25-26 is derived, but only with Ok rank-1 projectors and WA, WB 2-designs (and a single layer). The value and quote drop those conditions. With them it would be HIGH proved result.",
+  "cerezo-single-layer-local-variance": "Supp. Note 5 B, Eq. (117), p.26-27 is derived under a single layer, 2-design blocks and ultralocal OL; the value drops these. It is also an equality in the derivation, not only a lower bound. With the conditions it would be HIGH proved result.",
+  "cerezo-warmup-variances": "Warm-up, p.2-3: the variances 1/8 (3/8)^(n-1) and 1/(8n^2) are stated for the toy example without a derivation in the paper (Supp. Note 5 treats the general single layer, not these formulas).",
+  "cerezo25-shallow-local-variance-lower-bound": "Supp. C, p.34-37: the bound (C23)-(C25) is built from the 2-design twirl rules and one 4-qubit worked example, then a 'pattern that will be universally true' is generalised. The path-sum step is not shown in full, so this is not a complete proof. The volume-law and area-law remark cites [42].",
+  "cerezo25-theorem1-qcnn-simulability": "cross-group consistency, Rule A (coordinator, 2026-10-30): Supp. Info. A 6 b, Theorem 1, pp.30-31: the proof states 'Theorem S1 combined with Proposition S1 of [95] guarantees' the shadow estimates, and the finite gate set rests on 'Theorem 1 of the Supplemental Information of Ref. [155]' (Eq. A35). The counting of observables is the paper's own; the guarantee rests on the cited results.",
+  "cerezo25-bp-not-equal-qesim-example": "Supp. B, p.32-33: conditional on the unproved assumption that B(x) is not in BPP/poly; the step 'data from quantum experiments are a form of advice string' is argued informally; the authors call the example contrived. Not a proved result."
+ },
+ "keep_stored": {},
+ "requote": {
+  "vqa-local-costs-polynomial-gradients-log-depth": "regraded LOW at the team lead's decision: Sec. IV A 1, p.16: the review reports the result of Ref. [166] ('it was shown'). It is a cited result, not proved in this review, so it is not HIGH here (the proof is in the cost-function paper in this group).",
+  "vqa-practical-quantum-advantage-not-yet-realized": "regraded LOW at the team lead's decision: Sec. I, p.1 and abstract: a statement about the status of the field, with the review's own opinion that VQAs are a leading strategy. It is not a limit of the review's own work. Not settled by this paper."
+ },
+ "value_replace": {
+  "cerezo-training-algorithm-setup": "The authors state that training is gradient-free: at each iteration a subspace search of dimension d = 10 over a randomly generated isometry is solved, the cost is first evaluated with 10 shots and the shot count is raised by a factor of 3/2 once the optimization reaches a plateau, until a termination condition is met or a maximum of ten to the fifth shots per function evaluation is reached (the text layer prints it as 105, a lost superscript).",
+  "cerezo-trainable-definition-and-shots": "The authors define a cost as trainable when its gradients vanish polynomially, because with a polynomial number of shots per optimization step one can resolve against finite sampling noise and train the parameters if the gradients vanish polynomially."
+ },
+ "extra_quotes": {
+  "cerezo-training-algorithm-setup": [
+   "we employ a gradient-free training algorithm"
+  ]
+ }
+}

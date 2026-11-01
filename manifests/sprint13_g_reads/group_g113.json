@@ -1,0 +1,1684 @@
+{
+ "papers": [
+  {
+   "record_id": "chen-2026-hybrid-quantum-neural-networks-amplitude",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Chen-et-al._2025_Hybrid-Quantum-Neural-Networks-with-Amplitude-Encoding-Advancing-Recovery__2501.15828.pdf",
+   "title_in_file": "Hybrid Quantum Neural Networks with Amplitude Encoding for Credit Recovery Rate Prediction",
+   "version_note": "arXiv:2501.15828v6 [q-fin.CP], dated 25 Jan 2026. The PDF is the main paper (pages 1-50, with Appendices A and B) followed by Supplementary Materials (pages 51-66). The record id says 2026, the file folder says 2025; the file is v6 of 2501.15828.",
+   "pages": 66,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A hybrid classical-quantum neural network that amplitude-encodes 256 classical features into 8 qubits, tested on simulators (plus one small preliminary QPU run) for bond recovery-rate regression against an FNN, an angle-encoding QML model and XGBoost.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "recovery-rate-rmse",
+     "verdict": "widened",
+     "note": "The stored value is right. The paper adds that the figures are best average test RMSE over four-fold cross-validation (Table 7), that leave-one-out cross-validation gives 0.160, 0.153 and 0.136 for the same three models, and that the dataset covers 576 firms.",
+     "value": "The authors report a best average test RMSE of 0.228 for the amplitude-encoded hybrid model, against 0.246 for the classical feedforward neural network and 0.242 for QML with angle encoding, in four-fold cross-validation, and 0.136, 0.160 and 0.153 respectively in leave-one-out cross-validation, on 1,725 observations with 256 features.",
+     "anchor": "Abstract p.2; Table 7, Section 5.3.1, p.24",
+     "quotes": [
+      "achieving a lower Root Mean Squared Error (RMSE) of 0.228, compared to 0.246 and 0.242, respectively.",
+      "on a global recovery rate dataset comprising 1,725 observations and 256 features from 1996 to 2023.",
+      "0.246 (CV) 0.160 (LOOCV) 0.242 (CV) 0.153 (LOOCV) 0.228 (CV) 0.136 (LOOCV)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, on one proprietary dataset.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The best RMSE is the lowest test-set RMSE over epochs (the table reports the best average RMSE and the epoch at which it occurs), so it is selected on the test folds and is optimistic for every model."
+    },
+    {
+     "id": "recovery-rate-simulator-proof-of-concept",
+     "verdict": "narrowed",
+     "note": "The main experiments are simulator-only, as stored. Appendix B adds one preliminary run of the ANGLE-encoding model on the Rigetti Ankaa-3 QPU (100 samples, 32 features, 13 epochs, one fold, one experiment). So the sentence that all QML models were tested on simulators holds for the amplitude-encoding model and the main results, not for every model run in the paper.",
+     "value": "The authors state that all QML models in the paper are developed and tested using quantum simulators and that the study should be read as a proof of concept; the only real-hardware run is a preliminary Appendix B run of the angle-encoding model on 100 samples and 32 features for 13 epochs.",
+     "anchor": "Section 6.1 Limitation, pp.32-34; Appendix B.1, p.47",
+     "quotes": [
+      "First, all QML models in this paper are developed and tested using quantum simulators rather than real quantum hardware.",
+      "the present study should be interpreted as a proof of concept demonstrating methodological feasibility rather than a cost-efficient alternative to classical machine-learning systems.",
+      "we trained our model on a relatively small dataset comprising 100 samples and 32 features, which we trained for just 13 epochs on the quantum hardware."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Section 6.1) and its own description of its Appendix B hardware run.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "recovery-rate-vs-xgboost",
+     "verdict": "widened",
+     "note": "Right as stored. The paper adds the Table 8 numbers, that the gap is small and the Diebold-Mariano intervals include zero, and that XGBoost's lower cross-validation RMSE is not statistically significant.",
+     "value": "The authors state that the amplitude-encoded model does not demonstrate clearly superior performance to XGBoost: XGBoost has the lower average RMSE in four-fold cross-validation (0.222 against 0.228) and the QML model the lower one in leave-one-out cross-validation (0.136 against 0.141), with a gap of +0.006 under cross-validation and -0.005 under leave-one-out that they say does not make either model consistently better in a statistically robust sense.",
+     "anchor": "Section 6 Conclusion and Discussion, pp.31-32; Table 8, p.29; Section 5.4.2, p.30",
+     "quotes": [
+      "When compared to XGBoost, the proposed QML model with Amplitude Encoding does not demonstrate clearly superior performance.",
+      "Moreover, in the leave-one-out cross-validation, the proposed QML model outperforms XGBoost.",
+      "0.222 (CV) 0.141 (LOOCV) 0.228 (CV) 0.136 (LOOCV)",
+      "ranging from +0.006 under CV to −0.005 under LOOCV",
+      "neither model consistently dominates the other in a statistically robust sense"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Appendix A.3 (Table A3) reports XGBoost at depth six reaching 0.220 after about 270 trees, below the 0.222 of Table 8, so the XGBoost comparison depends on how many trees are allowed."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "data-setup-576-firms",
+     "value": "The authors state that the data are 256 features and 1,725 observations covering 576 firms from 1996 to 2023, from the NRF Research Project UP5 at the National University of Singapore, with Macroeconomic features from FRED and Refinitiv, financial statements from Bloomberg and credit features from the Credit Research Initiative.",
+     "anchor": "Section 3 Data, p.9",
+     "quotes": [
+      "We consider a dataset comprising 256 features and 1,725 observations covering 576 firms from 1996 to 2023.",
+      "The data is obtained through the NRF Research Project UP5 of the National University of Singapore."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own dataset (Section 3).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "value": "The authors define the recovery amount of each bond as the bond's price 30 days after the default date, which they say follows the literature.",
+     "anchor": "Section 3 Data, pp.9-10",
+     "quotes": [
+      "The recovery amount of each bond in this study is defined as the bond’s price 30 days after the default date.",
+      "We follow the literature and use the 30-day period."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own target variable.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": "",
+     "id_suggestion": "data-recovery-definition-30-days"
+    },
+    {
+     "value": "The authors report that the 1,725 recovery rates have a mean of 48%, a median of 42% and a standard deviation of 0.33, range from 0 to 1.0996 (so they occasionally exceed 1), and show a bimodal pattern with peaks around 10% and 100%.",
+     "anchor": "Section 3.1, Table 2, Figure 1, p.10",
+     "quotes": [
+      "It has a mean value of 48%, a median value of 42%, and a standard deviation (STD) of 0.33.",
+      "The histogram also exhibits a bimodal pattern with primary and secondary peaks around 10% and 100% respectively.",
+      "1,725 0.4845 0.3317 0 0.1811 0.4170 0.7896 1.0996"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own target data (Section 3.1, Table 2).",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": "",
+     "id_suggestion": "data-recovery-rate-distribution"
+    },
+    {
+     "value": "The authors report a strong imbalance across years: 597 defaulted bonds between 1999 and 2015 and 1,128 observations from 2016 to 2023.",
+     "anchor": "Section 3.1, p.11",
+     "quotes": [
+      "with a total of 597 defaulted bonds between 1999 and 2015.",
+      "defaults become considerably more frequent after 2015, with 1,128 observations from 2016 to 2023."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own sample.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": "",
+     "id_suggestion": "data-default-year-imbalance"
+    },
+    {
+     "value": "The authors report that the 256 features fall into five categories: 29 bond-specific variables, 17 firm-level financial indicators, 78 credit risk measures (77 probability-of-default variables plus one volatility variable), 98 categorical industry, region and currency dummies (55 industry dummies and 43 regional or currency indicators), and 34 macroeconomic and market variables.",
+     "anchor": "Section 3.2, Table 3, pp.12-14",
+     "quotes": [
+      "In total, we construct 256 features that encompass firm-level characteristics",
+      "In total, we include 77 PD-related variables",
+      "In total, this category comprises 29 variables.",
+      "This category includes 17 variables and is sourced entirely from Bloomberg.",
+      "In total, the credit risk category therefore contains 78 variables.",
+      "There are 55 industry dummies and 43 regional or currency indicators, summing to 98 variables in this category.",
+      "These 34 variables are collected from FRED and Bloomberg"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's description of its own feature set.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "98 of the 256 features (38%) are one-hot dummies, which matters for what amplitude encoding of a 256-vector represents.",
+     "id_suggestion": "data-feature-categories"
+    },
+    {
+     "value": "The authors state that continuous inputs are standardized by z-score computed from the training set only, that True/False features are mapped to 0 and 1, that no missing entries remain so no imputation is applied, and that no principal component analysis or other dimensionality reduction is applied.",
+     "anchor": "Section 3.2, pp.14-15",
+     "quotes": [
+      "the categorical True/False features are simply mapped to 0 and 1",
+      "Before training, all continuous input features are standardized using z-score normalization, computed from the training set only.",
+      "The selected dataset contains no missing entries in the variables retained for modeling, so no imputation step is required.",
+      "We also do not apply principal component analysis (PCA) or other dimensionality-reduction techniques."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own preprocessing.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "",
+     "id_suggestion": "data-preprocessing-zscore-no-pca"
+    },
+    {
+     "value": "The authors describe the model as four steps: a classical preprocessing network, amplitude encoding of the transformed features into a quantum state needing n = log2 N qubits for N features, a parameterized quantum circuit of rotation gates and CNOT gates, and computational-basis measurement forwarded to a classical output layer that produces the recovery-rate prediction.",
+     "anchor": "Section 4, p.15",
+     "quotes": [
+      "requiring only n = log2 N qubits for N features.",
+      "composed of rotation gates and CNOT gates which produce entanglement.",
+      "The measurement results are forwarded to a classical output layer to generate the final prediction (i.e., the recovery rate)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own architecture description.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "architecture-four-step-pipeline"
+    },
+    {
+     "value": "The authors state that 256 input features are encoded using only eight qubits, whereas angle encoding needs one qubit per input feature.",
+     "anchor": "Section 4.2, p.17",
+     "quotes": [
+      "In our case, 256 input features are encoded using only eight qubits.",
+      "Angle Encoding requires four qubits (one per feature), while Amplitude Encoding only requires two qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own encoding setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "architecture-256-features-8-qubits"
+    },
+    {
+     "value": "The authors state that the classical master layer comprises an input layer and a hidden layer of equal size with a LeakyReLU activation, which prepares the features before amplitude encoding.",
+     "anchor": "Section 4.1, pp.15-16; Table 6, p.23",
+     "quotes": [
+      "The classical master layer comprises an input layer and a hidden layer of equal size, using a LeakyReLU activation",
+      "Second, it acts as a feature transformation or embedding layer to prepare the data for quantum data encoding."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own architecture.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "A 256 by 256 classical layer holds 65,792 weights and biases; with 24 quantum rotation angles and a 9-parameter output layer this accounts for the reported 65,825 parameters, so almost all trainable parameters sit in the classical layer, not in the 8-qubit circuit.",
+     "id_suggestion": "architecture-classical-master-layer"
+    },
+    {
+     "value": "The authors state that the circuit is a strongly entangling parameterized quantum circuit with one general rotation R(alpha, beta, gamma) on each qubit and CNOT gates with a range of one, and that this has O(3n) trainable parameters for n qubits, so the QNN parameter count scales as O(3 log2 N) for N features.",
+     "anchor": "Section 4.3, pp.17-18",
+     "quotes": [
+      "A layer of n single-qubit rotation gates, R(α, β, γ), applied to each qubit.",
+      "specifically O(3n) trainable parameters for n qubits.",
+      "specifically scaling as O(3 log2 N ), where N represents the number of features."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own circuit definition and parameter count.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "architecture-pqc-strongly-entangling-parameter-count"
+    },
+    {
+     "value": "The authors state that, because the quantum circuits consist entirely of unitary transformations, the learned quantum feature map is always 1-Lipschitz continuous with respect to its quantum state inputs, with the norm of the difference of two states preserved under any unitary U.",
+     "anchor": "Section 4.4, Equation (2), p.18",
+     "quotes": [
+      "the learned quantum feature map is always 1-Lipschitz continuous with respect to its quantum state inputs.",
+      "∥U |ψ⟩ − U |ϕ⟩ ∥ = ∥ |ψ⟩ − |ϕ⟩ ∥."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A one-line statement without a proof in the paper; the property is the standard norm preservation of unitaries.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The equality is the standard fact that unitaries preserve inner products. It is a property of the quantum state, not a generalization bound for the hybrid model.",
+     "id_suggestion": "theory-unitarity-1-lipschitz"
+    },
+    {
+     "value": "The authors state that in backpropagation the gradient arriving at the quantum layer is transformed by the adjoint of the circuit unitary, so the norm of U-dagger g equals the norm of g, meaning the quantum layer cannot amplify the gradient norm and removes the risk of gradient explosion through that layer.",
+     "anchor": "Section 4.4, Equations (3) and (4), pp.18-19",
+     "quotes": [
+      "Since every unitary satisfies ∥U †v∥ = ∥v∥ for all vectors v, we obtain ∥U †g∥ = ∥g∥.",
+      "This means the quantum layer cannot amplify the gradient norm, eliminating the risk of gradient explosion"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Stated without proof or an experiment that tests it; the norm identity is standard, the stability and generalization consequence is the authors' claim.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The identity holds for the circuit as a linear map; the classical layers before and after it are unconstrained, and the paper runs no gradient-norm measurement.",
+     "id_suggestion": "theory-unitarity-gradient-norm"
+    },
+    {
+     "value": "The authors state that the constraints of Equations (2) and (4) do not act directly on classical vectors, only on the internal quantum state of the circuit.",
+     "anchor": "Section 4.4, p.19",
+     "quotes": [
+      "the constraints expressed in Equations (2) and (4) do not act directly on classical vectors, but only on the internal quantum state of the PQC."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit on its unitarity argument (Section 4.4).",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "theory-unitarity-limit-classical-inputs"
+    },
+    {
+     "value": "The authors state that the quantum layers contribute a product of spectral norms equal to one, implying that the complexity of the hybrid model is dominated by the classical output head while the quantum feature extractor is fully spectrally normalized.",
+     "anchor": "Section 4.4, p.18",
+     "quotes": [
+      "the quantum layers contribute a product of spectral norms equal to one, implying that the complexity of the hybrid model is dominated by the classical output head"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument by analogy to classical spectral-norm bounds, with no bound derived for this model.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": "The paper's own Section 4.4 wording says the hybrid model's complexity is dominated by the classical part, which cuts against the framing that the quantum layer is the source of the regularization.",
+     "id_suggestion": "theory-spectral-norm-complexity-dominated-by-classical-head"
+    },
+    {
+     "value": "The authors state that the angle-encoding baseline uses a classical auxiliary layer to reduce the input to the number of qubits, so that its trainable parameters scale as O(3Nn) for N input features and n qubits.",
+     "anchor": "Section 4.5, p.19",
+     "quotes": [
+      "The number of trainable parameters in the additional auxiliary layer and the QNN scales as O(3N n), where N is the number of input features, and n is the number of selected qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own baseline definition.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "baselines-angle-encoding-auxiliary-layer"
+    },
+    {
+     "value": "The authors state that every model is benchmarked with four-fold cross-validation (75% training, 25% test) on the same splits, trained for a fixed 100 epochs (100 decision trees for XGBoost), and also with leave-one-out cross-validation as a robustness check.",
+     "anchor": "Sections 5.2, pp.22-24",
+     "quotes": [
+      "we perform four-fold cross-validation, divid- ing the dataset into four folds, each comprising 75% training data and 25% test data.",
+      "of 100 epochs, which for XGBoost corresponds to sequential updates of 100 decision trees.",
+      "we also perform leave-one-out crossvalidation (LOOCV) as an additional robustness check."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own evaluation protocol.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "",
+     "id_suggestion": "setup-four-fold-cv-100-epochs"
+    },
+    {
+     "value": "The authors state that a strict chronological split (train on 1996 to 2015, test on 2016 to 2023) would leave too few defaults for model estimation, so they use four-fold cross-validation with fold-specific preprocessing.",
+     "anchor": "Section 5, footnote 3, p.20",
+     "quotes": [
+      "a strict chronological split (e.g., train on 1996–2015 and test on 2016–2023) would leave an insufficient number of defaults for model estimation."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit on its validation design.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "Folds that mix default years mean the reported RMSE is not an out-of-time forecast error; the paper itself says it cannot assess temporal generalization (Section 6.2).",
+     "id_suggestion": "setup-no-chronological-split"
+    },
+    {
+     "value": "The authors state that the QML models were implemented in PennyLane 0.38.0 and executed on its default.qubit state-vector simulator on a CPU (13th Gen Intel Core i9-13900H), that the classical models ran on an NVIDIA GeForce RTX 4050 Laptop GPU with Python 3.12.3 and PyTorch 2.4.1, and that the experiments used no more than 14 qubits.",
+     "anchor": "Section 5.1, p.21",
+     "quotes": [
+      "All experiments presented in the following sections were conducted on an NVIDIA GeForce RTX™ 4050 Laptop GPU.",
+      "we conducted our quantum experiments on the 13th Gen Intel® Core™ i9-13900H CPU.",
+      "All QML models with PQCs were executed on a state-vector quantum simulator.",
+      "we employ Python (version 3.12.3) and the PyTorch framework (version 2.4.1)",
+      "The QML models were implemented using PennyLane (version 0.38.0)",
+      "with a limited number of qubits (no more than 14)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own experimental setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "setup-simulator-software-hardware"
+    },
+    {
+     "value": "The authors report that the FNN and the QML model were trained with Adam and learning rate 0.001, with gradients by backpropagation on the simulator, and that XGBoost used a learning rate of 0.1, a tree depth of six chosen by grid search, and the Newton-Raphson optimizer; they state backpropagation is not feasible on real quantum hardware.",
+     "anchor": "Section 5.1, Table 5, p.22",
+     "quotes": [
+      "Adam Newton-Raphson Adam Backpropagation None Backpropagation 64 None 64 0.001 0.1 0.001",
+      "tree depth was tuned via grid search, with a depth of six yielding the best results.",
+      "backpropagation is not feasible on real quantum hardware"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own training setup.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "",
+     "id_suggestion": "setup-hyperparameters-table5"
+    },
+    {
+     "value": "The authors state that the number of hidden nodes in the FNN and the number of qubits in the angle-encoding model were chosen to match the trainable parameter count of the amplitude-encoding model, giving 67,857 (FNN), 67,873 (angle encoding) and 65,825 (amplitude encoding) parameters.",
+     "anchor": "Section 5.2, p.22; Table 7, p.24",
+     "quotes": [
+      "we selected the number of hidden nodes in the FNN and the number of qubits in the QML with Angle Encoding to match the trainable parameter count of the QML with Amplitude Encoding.",
+      "FNN 67,857 QML Angle Encoding QML Amplitude Encoding 67,873 65,825"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own comparison design.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "Matching total parameters hides that 65,825 is mostly classical (see the architecture note), so the comparison is a 256-256 classical front end plus 8 qubits against a classical network of the same size, not a comparison of quantum and classical expressive power.",
+     "id_suggestion": "setup-parameter-matched-baselines"
+    },
+    {
+     "value": "The authors report that both QML models outperform the classical FNN with lower average RMSE in both cross-validation and leave-one-out cross-validation, reaching their best epoch earlier (epoch 55 in cross-validation for amplitude encoding, against 78 for angle encoding and 90 for the FNN), with smaller standard deviations.",
+     "anchor": "Section 5.3.1, Table 7, p.24",
+     "quotes": [
+      "First, the QML models (using Amplitude Encoding and Angle Encoding) outperform the classical FNN model, showcasing superior generalizability.",
+      "90 (CV) 93 (LOOCV) 78 (CV) 90 (LOOCV) 55 (CV) 86 (LOOCV)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "result-qml-beats-fnn-and-fewer-epochs"
+    },
+    {
+     "value": "The authors report an average time per epoch of 0.03 seconds for the FNN, 0.81 for angle encoding and 0.73 for amplitude encoding, and state that a direct runtime comparison between classical and quantum models is not meaningful because the classical models ran on a GPU and the quantum ones on a CPU simulator.",
+     "anchor": "Table 7 p.24; Section 5.3.3, p.27; Section 6, p.32",
+     "quotes": [
+      "67,873 65,825 0.03 0.81 0.73",
+      "direct comparisons of execution times between classical and quantum models are not meaningful."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical timing from one study, with the paper's own caveat.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "result-training-time-per-epoch"
+    },
+    {
+     "value": "The authors report from Diebold-Mariano tests across folds and epochs that amplitude encoding is significantly better than both the FNN and angle encoding across nearly all folds and training epochs, while the FNN against angle-encoding comparison does not give consistent significance.",
+     "anchor": "Section 5.3.2, Figure 9, pp.26-27",
+     "quotes": [
+      "are significantly greater than zero across nearly all folds and training epochs (regardless of the starting points in training).",
+      "However, the comparison between FNN and QML with Angle Encoding does not yield consistent results, as the significance tests frequently fail throughout the training process."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical statistical result from one study.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": "The test is applied per fold and per epoch with a 0.05 threshold and no multiple-testing correction, and the paper's own assumption of independent forecast errors is stated in Section 5.2.",
+     "id_suggestion": "result-diebold-mariano-significance"
+    },
+    {
+     "value": "The authors state that the Diebold-Mariano test is run under the assumption of independent forecast errors across observations and that, given over 400 test observations, the statistic is compared with the critical value 0.05 of a standard normal distribution.",
+     "anchor": "Section 5.2, pp.23-24",
+     "quotes": [
+      "we compare the DM statistic to the critical values 0.05 from a standard normal distribution",
+      "independent forecast errors across observations.",
+      "Given the large number of test observations (over 400)"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated assumption for its significance test.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "Bonds defaulting in the same year share macro conditions, so independent errors is a strong assumption for this data.",
+     "id_suggestion": "method-diebold-mariano-assumptions"
+    },
+    {
+     "value": "The authors report that across cross-validation and leave-one-out cross-validation the amplitude-encoding model has lower RMSE than the FNN and angle-encoding model, with average improvements ranging from 0.014 to 0.024.",
+     "anchor": "Section 5.3.2, p.27",
+     "quotes": [
+      "with average improvements ranging from 0.014 to 0.024."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "result-effect-size-0014-0024"
+    },
+    {
+     "value": "The authors report that XGBoost has 6,400 parameters and 0.02 seconds per epoch against 65,825 and 0.73 seconds for the amplitude-encoding model, that in the early stages of training the QML model had a statistically significant advantage over XGBoost, and that no statistically significant advantage consistently emerged for XGBoost.",
+     "anchor": "Table 8, p.29; Section 5.4.3, p.30",
+     "quotes": [
+      "XGBoost 6,400 0.02 QML Amplitude 65,825 0.73 Encoding",
+      "Notably, in the early stages of training, QML demonstrated a statistically significant advantage over XGBoost, suggesting faster initial learning.",
+      "no statistically significant advantage consistently emerged for XGBoost over the proposed QML model"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "result-amplitude-vs-xgboost-early-epochs"
+    },
+    {
+     "value": "The authors report that increasing the FNN hidden nodes from 8 to 8192 does not improve accuracy or stability: the best average RMSE stays between 0.244 and 0.250 (0.246 at 8 nodes, 0.250 at 8192) with 67,857 to 2,179,329 parameters, against 0.228 for the 65,825-parameter amplitude model.",
+     "anchor": "Appendix A.1, Table A1, pp.43-44",
+     "quotes": [
+      "increasing the number of hidden nodes does not improve the FNN’s prediction accuracy or stability",
+      "8 16 128 512 2048 8192 None 67,857 69,921 98,817 197,889 594,177 2,179,329 65,825 0.246 0.244 0.244 0.246 0.246 0.250 0.228",
+      "0.246 0.244 0.244 0.246 0.246 0.250 0.228 0.018 0.017 0.023 0.021 0.024 0.031 0.008"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "",
+     "id_suggestion": "appendix-a1-fnn-more-hidden-nodes-no-help"
+    },
+    {
+     "value": "The authors report that the angle-encoding model does not improve with more qubits (a slight improvement with six and seven qubits that saturates after eight; best average RMSE 0.241 and 0.242 across the configurations, against 0.228 for amplitude encoding), and that its execution time per epoch increases exponentially with the number of qubits on the state-vector simulator.",
+     "anchor": "Appendix A.2, Table A2, Figure A2, pp.44-46",
+     "quotes": [
+      "the QML model with Angle Encoding does not demonstrate improved predictive performance with an increasing number of qubits.",
+      "While there is a slight improvement with six and seven qubits, this effect saturates after eight qubits.",
+      "QML Angle Encoding QML Amplitude Encoding 8 67,353 67,613 67,873 68,393 68,913 69,433 65,825 0.241 0.241 0.242 0.242 0.242 0.242 0.228",
+      "increases exponentially with the number of qubits, consistent with the resource demands of the state-vector default.qubit simulator."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "appendix-a2-angle-encoding-more-qubits-no-help"
+    },
+    {
+     "value": "The authors report that XGBoost reaches its lowest average RMSE at depth six (0.220, needing around 270 trees), that deeper trees give no further gain and degrade performance, that shallower trees need a larger number of tree estimators to converge, and that the QML model beats XGBoost models of depth greater than nine.",
+     "anchor": "Appendix A.3, Table A3, Figure A3, pp.46-47",
+     "quotes": [
+      "0.223 0.223 0.220 0.222 0.224 0.227",
+      "depth six yields the lowest average RMSE.",
+      "Beyond this, deeper trees result in no further accuracy gains and even degrade performance",
+      "they require a larger number of tree estimators to achieve convergence.",
+      "with depth six, XGBoost required around 270 trees.",
+      "compared to XGBoost models with depth greater than nine, our QML model achieves better generalization performance (lower RMSE)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "Table 6 and Table 8 run XGBoost for 100 trees at depth six, while Table A3 says depth six needs about 270 trees to reach its best RMSE; the two XGBoost budgets differ.",
+     "id_suggestion": "appendix-a3-xgboost-depth-and-trees"
+    },
+    {
+     "value": "The authors report an orthogonality-constrained neural network control: best average RMSE 0.236 in cross-validation and 0.153 in leave-one-out, against 0.246 and 0.160 for the FNN and 0.228 and 0.136 for the amplitude-encoding QML model, and they conclude the QML gains cannot be attributed solely to orthogonal regularization.",
+     "anchor": "Supplementary Materials Section 3, Table 5, pp.63-64",
+     "quotes": [
+      "0.246 (CV) 0.160 (LOOCV) 0.236 (CV) 0.153 (LOOCV) 0.228 (CV) 0.136 (LOOCV)",
+      "This suggests that the performance gains observed for the QML model cannot be attributed solely to orthogonal regularization."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The step from the OrthNN gap to the quantum layer providing capacity beyond classical orthogonality is the authors' interpretation; no classical control with an equally small 8-dimensional bottleneck and a nonlinear map of the same shape is reported.",
+     "id_suggestion": "supp-orthnn-control-experiment"
+    },
+    {
+     "value": "The authors report a preliminary run of the angle-encoding model on the Rigetti Ankaa-3 QPU on 100 samples and 32 features for 13 epochs in one fold (75% train, 25% test), and state that the results do not support a definitive conclusion but that both the noisy simulation and the real QPU outperformed the classical FNN in RMSE in the first 13 epochs.",
+     "anchor": "Appendix B.1, Figure B4a, pp.47-49",
+     "quotes": [
+      "we trained our model on a relatively small dataset comprising 100 samples and 32 features, which we trained for just 13 epochs on the quantum hardware.",
+      "with 75% used for training and 25% for testing.",
+      "Due to hardware compatibility limitations, only the QML model employing Angle Encoding was tested on a real quantum processor",
+      "Although our results are still preliminary and do not support a definitive conclusion",
+      "both the noisy simulation and the execution on a real QPU outperform the classical FNN in terms of RMSE value."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A single preliminary experiment; the RMSE values appear only in Figure B4a.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Figure B4 caption says the QPU curve is one single experiment, while the noisy-simulator and FNN curves are averages over ten; the 0.5 to 0.675 RMSE range on this subset is far above 0.228 of the main results.",
+     "id_suggestion": "appendix-b1-real-qpu-ankaa3-angle-encoding"
+    },
+    {
+     "value": "The authors report that the amplitude-encoding model was trained on the full dataset for one hundred epochs under a noise model based on Rigetti Ankaa-3 using a single 75%/25% split, that it shows reasonable noise tolerance with only minor deviations from the noiseless model, and that the limited scale of the experiments prevents any statistically significant assessment of the impact of hardware noise.",
+     "anchor": "Appendix B.2, Figure B4b, pp.49-50",
+     "quotes": [
+      "only a single train/test split (75%/25%) was used at this stage.",
+      "shows reasonable noise tolerance, with only minor deviations from the noiseless model",
+      "the limited scale of these experiments prevents any statistically significant assessment of the impact of hardware noise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A single preliminary simulation on one split; the authors disclaim statistical significance.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "appendix-b2-noisy-simulator-amplitude-encoding"
+    },
+    {
+     "value": "The authors state that the amplitude state preparation has a circuit depth scaling approximately linearly with the number of nonzero amplitudes, that for dense 256-dimensional vectors this can lead to circuits with several hundred single- and two-qubit operations, and that the full amplitude-encoding architecture remains challenging to deploy on current NISQ hardware without circuit compression or approximation.",
+     "anchor": "Appendix B.2, pp.49-50",
+     "quotes": [
+      "introduces a circuit depth that scales approximately linearly with the number of nonzero amplitudes.",
+      "For dense 256-dimensional vectors, this can lead to circuits with several hundred single- and two-qubit operations.",
+      "the full Amplitude Encoding architecture remains challenging for deployment on current NISQ hardware without circuit compression or approximation."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated hardware limit (Appendix B.2 and Section 6).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "appendix-b2-amplitude-state-prep-depth-limit"
+    },
+    {
+     "value": "The paper states that the Möttönen amplitude-encoding protocol uses 2^n minus 1 one-qubit Ry gates and 2^n minus 2 CNOT gates, a total of 2^(n+1) minus 3 elementary gates for n qubits; the authors call this exponential gate count a major drawback of amplitude encoding on real hardware.",
+     "anchor": "Supplementary Materials Section 1, Equations (11) and (12) and footnote 3, p.53 (PDF page image read)",
+     "quotes": [
+      "which sums up to a total of 2n+1 − 3 elementary gates3.",
+      "This exponential gate count is a major drawback of Amplitude Encoding",
+      "# one-qubit Ry(β) gates: 2k = 2n − 1 (11)",
+      "# two-qubit CNOT gates: 2k − 1 = 2n − 2, (12)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The gate counts follow from sums of powers of two stated in Equations (11) and (12) of the supplementary section; the exponents are read from the page image because the text layer prints them flat.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "For n = 8 the count 2^9 minus 3 is 509 gates, which is the number behind the several hundred operations of Appendix B.2. The sentence in Appendix B.2 that depth is linear in the number of nonzero amplitudes agrees with this exponential count in n.",
+     "id_suggestion": "supp-moettoenen-gate-count"
+    },
+    {
+     "value": "The paper defines a uniformly controlled rotation as a gate defined by a sequence of all possible controlled rotations on the target qubit controlled by k qubits, and a one-qubit rotation as a gate with a rotation axis and an angle (after Mottonen et al.).",
+     "anchor": "Supplementary Materials Section 1, Definitions 1 and 2, p.51",
+     "quotes": [
+      "is a quantum gate defined by a sequence of all possible controlled rotations Ra(γi(k)), on the target qubit m controlled by the k qubits.",
+      "The one qubit rotation gate Ra(β), with rotation axis a and angle β, is defined as"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definitions the paper states for its amplitude-encoding construction, attributed to Möttönen et al. (2004a).",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "supp-definition-uniformly-controlled-rotation"
+    },
+    {
+     "value": "The authors state that amplitude encoding requires a feature vector of length 2^n, so padding or zero-filling is needed when the number of features is not a power of two, which may introduce redundancy or distort input distributions, and that the qubit count still grows logarithmically (encoding 1,024 features requires at least 10 qubits).",
+     "anchor": "Section 6.1 Limitation, p.33",
+     "quotes": [
+      "Amplitude Encoding requires the feature vector to be of length 2n",
+      "necessitating the use of padding or zero-filling techniques when the number of features does not match a power of two",
+      "While padding allows compatibility, it may introduce redundancy or distort input distributions.",
+      "encoding 1,024 features would require at least 10 qubits"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Section 6.1).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "limit-padding-and-qubit-growth"
+    },
+    {
+     "value": "The authors state that the current implementation does not explicitly model or mitigate noise effects such as decoherence and gate errors, and that quantum noise can significantly deteriorate performance on real hardware.",
+     "anchor": "Section 6.1 Limitation, p.33",
+     "quotes": [
+      "our current implementation does not explicitly model or mitigate noise effects such as decoherence and gate errors.",
+      "These sources of quantum noise can significantly deteriorate model performance when deploying on real quantum hardware."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Section 6.1).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "limit-no-noise-modelling-main-results"
+    },
+    {
+     "value": "The authors state that the high-dimensional input is first processed by a classical master layer, which may reduce the quantum speedup benefits by introducing computational bottlenecks, and that the QML model inherits reduced interpretability and increased computational cost from classical neural networks.",
+     "anchor": "Section 6.1 Limitation, p.33",
+     "quotes": [
+      "which may reduce the quantum speedup benefits by introducing computational bottlenecks.",
+      "our QML model inherits challenges such as reduced interpretability and increased computational cost during training and inference on high-dimensional datasets"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Section 6.1).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "limit-classical-master-layer-bottleneck"
+    },
+    {
+     "value": "The authors state that the hybrid model yields a 7-8% reduction in RMSE relative to a strong classical FNN baseline, that its economic value is context dependent, and that quantum models incur substantially higher computational costs, so the study is a proof of concept rather than a cost-efficient alternative to classical systems.",
+     "anchor": "Section 6.1 Limitation, pp.33-34",
+     "quotes": [
+      "Although the hybrid quantum model yields a 7–8% reduction in RMSE relative to a strong classical FNN baseline",
+      "quantum models incur substantially higher computational costs"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit (Section 6.1).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "0.246 to 0.228 is a 7.3% reduction. The paper's strongest classical result is XGBoost at 0.222 (Table 8) and 0.220 (Table A3), better than the amplitude model, so the 7-8% is against the FNN, not the best classical model.",
+     "id_suggestion": "limit-economic-significance-7-8-percent"
+    },
+    {
+     "value": "The authors conclude that the central trade-off of hybrid quantum models in the NISQ era is improved predictive regularization and stability at the cost of greater computational overhead, with the FNN and XGBoost training faster in simulation (around 0.03 and 0.02 s per epoch against approximately 0.73 s).",
+     "anchor": "Section 6 Conclusion and Discussion, p.32",
+     "quotes": [
+      "improved predictive regularization and stability at the cost of greater computational overhead.",
+      "around 0.03/0.02 s per epoch versus approximately 0.73 s for the hybrid QML model"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion from one simulated study.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "conclusion-runtime-tradeoff-nisq"
+    },
+    {
+     "value": "The authors conclude that the amplitude-encoding model consistently outperforms the angle-encoding model and the classical FNN in accuracy, stability and generalization, and attribute the weaker angle-encoding result to the added complexity of its auxiliary classical layer.",
+     "anchor": "Section 6, p.31",
+     "quotes": [
+      "consistently outperforms the QML model with Angle Encoding and classical FNN in terms of accuracy, stability, and generalization.",
+      "The performance of the QML with Angle Encoding is hindered by the added complexity of the auxiliary classical layer, which increases the risk of overfitting."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation; the attribution to the auxiliary layer is not tested by an ablation.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Appendix A.2 varies qubit count (6 to 14) and finds no change in angle-encoding RMSE, but no experiment removes the auxiliary layer, so the stated cause is untested.",
+     "id_suggestion": "conclusion-amplitude-outperforms-angle-and-fnn"
+    },
+    {
+     "value": "The authors state that the number of trainable parameters in the amplitude-encoded QNN scales logarithmically with the number of input features, in contrast to classical FNNs and angle-encoded QNNs where it scales linearly.",
+     "anchor": "Section 5.5, p.31",
+     "quotes": [
+      "the number of trainable parameters in the amplitude-encoded QNN scales logarithmically with the number of input features."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A scaling claim about the quantum part only, without a count for the whole model.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "True for the 3n rotation angles of the circuit, but the model's total of 65,825 parameters grows quadratically with the 256-wide classical layer.",
+     "id_suggestion": "claimed-parameters-scale-logarithmically"
+    },
+    {
+     "value": "The authors cite Havlicek et al. as demonstrating that a quantum-enhanced kernel method achieves 98% accuracy on a 100-image MNIST subset, outperforming a classical SVM at 92%.",
+     "anchor": "Section 1 Introduction, p.3",
+     "quotes": [
+      "achieves 98% accuracy on a 100-image MNIST subset, outperforming classical SVM (92%)"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The coordinator should check this against Havlicek et al. 2019 (Nature 567, 209); the reader recalls that paper reporting a synthetic classification dataset on superconducting qubits, not MNIST.",
+     "id_suggestion": "cited-havlicek-mnist-98-vs-92"
+    },
+    {
+     "value": "The authors cite Li et al. (2019) as showing that optimal generalization is achieved when weight matrices have equal singular values, and Schuld and Killoran (2019) as having theoretically established that QNNs exhibit slower growth of Rademacher complexity with increasing qubits.",
+     "anchor": "Section 1 Introduction, p.3",
+     "quotes": [
+      "Li et al. (2019) showed that optimal generalization is achieved when weight matrices have equal singular values.",
+      "Schuld and Killoran (2019) theoretically established that QNNs exhibit slower growth of Rademacher complexity with increasing qubits"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "cited-li-2019-equal-singular-values-and-schuld-killoran"
+    },
+    {
+     "value": "The authors state that the code is available only from the corresponding author upon reasonable request and that the data are subject to a nondisclosure agreement.",
+     "anchor": "Declarations, p.35",
+     "quotes": [
+      "The codes used in this study are available from the corresponding author upon reasonable request.",
+      "are subject to a nondisclosure agreement."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own statement of availability.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The results cannot be reproduced from public material.",
+     "id_suggestion": "limit-data-and-code-availability"
+    },
+    {
+     "value": "The authors list future work: alternative encodings (basis encoding, hybrid schemes, data re-uploading), systematic tests of padding for non-power-of-two feature dimensions, real-device deployment needing low-noise hardware with logical qubits on the order of 8-12, a trading-strategy test of economic value, and tests of temporal generalization across market regimes.",
+     "anchor": "Section 6.2 Future Works, pp.34-35",
+     "quotes": [
+      "alternative encoding strategies such as basis encoding, hybrid schemes Ranga et al. (2024), or data re-uploading",
+      "low-noise hardware with sufficient logical qubits (on the order of 8–12)",
+      "the rarity of default events and limited sample size make it difficult to assess temporal generalization directly."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated open problems.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "future-work-listed"
+    }
+   ]
+  },
+  {
+   "record_id": "chen-2026-photonic-quantum-enhanced-knowledge-distillation",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Chen-et-al._2026_Photonic-Quantum-Enhanced-Knowledge-Distillation__2603.14898.pdf",
+   "title_in_file": "Photonic Quantum-Enhanced Knowledge Distillation",
+   "version_note": "arXiv:2603.14898v1 [quant-ph], 16 Mar 2026. Pages 1-25 are the main paper (Results, Conclusion, Methods, references); pages 26-53 are the Supplementary Information. Page 8 (Table 1) and page 11 (Table 2) were also viewed as images.",
+   "pages": 53,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A knowledge-distillation method in which a simulated 16-mode continuous-variable photonic sampler generates a 512-dimensional feature that fixes the channel mixing of dictionary-convolution layers in a compressed CNN student, tested on MNIST, Fashion-MNIST and CIFAR-10.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "pqkd-cifar-teacher-stronger",
+     "verdict": "widened",
+     "note": "Right as stored. Table 1 adds the numbers: training accuracy 91.81 (teacher) against 80.35 (PQKD), validation accuracy 86.99 against 79.72, final validation cross-entropy 0.397 against 0.597.",
+     "value": "The authors report that on CIFAR-10, under partial convolutional compression with the same compression budget, the teacher is stronger than the PQKD student in both training accuracy (91.81 against 80.35 percent) and validation accuracy (86.99 against 79.72 percent), with a final validation cross-entropy of 0.397 for the teacher and 0.597 for PQKD, as means over five independent runs.",
+     "anchor": "Section 2.2, p.8; Table 1, p.8",
+     "quotes": [
+      "For CIFAR-10, the teacher remains stronger in both training and validation accuracy, reflecting increased task complexity under the same compression budget.",
+      "91.81 80.35 86.99 79.72 0.397 0.597 4.95",
+      "Values are mean ± s.d. over five independent runs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The validation gap on CIFAR-10 is 7.27 percentage points, far above the reported standard deviations (0.29 and 0.37)."
+    },
+    {
+     "id": "pqkd-compression-frontier",
+     "verdict": "narrowed",
+     "note": "The abstract says the frontier is traced across all three datasets. The compression scaling study (Fig. 3, Table 2, up to a compression factor of 105.40) is MNIST only. For Fashion-MNIST and CIFAR-10 the paper reports only partial compression of the first two layers (about 1.5 times). At the strongest MNIST compression (all convolutions) the PQKD validation accuracy is 96.85 to 97.33 against 98.91 to 99.06 for the teacher.",
+     "value": "The authors state in the abstract that across MNIST, Fashion-MNIST and CIFAR-10 PQKD traces a controllable compression-accuracy frontier, remaining close to teacher performance on simpler benchmarks under aggressive convolutional compression. The scaling of compression from partial to full convolutional compression is reported on MNIST only; on Fashion-MNIST and CIFAR-10 the compressed student has about 1.5 times fewer parameters. On MNIST with all convolutions compressed, PQKD validation accuracy is 96.85 at a compression factor of 48.81 and 97.33 at 105.40, against 98.91 and 99.06 for the teachers.",
+     "anchor": "Abstract p.2; Section 2.2 p.8; Table 2 and Section 2.3, p.11",
+     "quotes": [
+      "Across MNIST, Fashion-MNIST and CIFAR-10, PQKD traces a controllable compression–accuracy frontier",
+      "remaining close to teacher performance on simpler benchmarks under aggressive convolutional compression.",
+      "corresponding to ∼ 1.5× compression.",
+      "Table 2 Representative operating points for scaling convolutional compression on MNIST (fixed R=4, dim(θ)=30).",
+      "(32, 64, 128) 48.81 All Convs (48, 96, 128) 76.18 (64, 128, 128) 105.40",
+      "98.91 (± 0.09) 99.11 (± 0.06) 99.06 (± 0.18) 96.85 (± 0.15) 97.17 (± 0.03) 97.33 (± 0.11)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the abstract's three-dataset wording is wider than the evidence.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "With all convolutions compressed the MNIST validation error rises from about 0.9% to about 2.7%, roughly 2.8 times the teacher's error, which is a larger loss than the abstract's wording close to teacher performance suggests."
+    },
+    {
+     "id": "pqkd-shot-noise-degradation",
+     "verdict": "narrowed",
+     "note": "The 'predictable' degradation rests on a fit of the accuracy gain to delta_inf minus k over root S, restricted to S of at least 75, with a weighted goodness of fit of only 0.596 when feature smoothing is off (0.901 with it on) and large parameter uncertainties (k = 236.89 ± 160.35 without smoothing). The theory the paper cites bounds the feature noise, not accuracy.",
+     "value": "The authors state in the abstract that performance degrades predictably with finite sampling, consistent with shot-noise scaling. In the robustness section they fit the accuracy gain from the photonic feature to a form delta(S) = delta_inf minus k over the square root of S, with the fit restricted to S of at least 75, and report a weighted goodness of fit of 0.596 with exponential moving average smoothing off and 0.901 with it on.",
+     "anchor": "Abstract p.2; Section 2.4, p.12; Figure 4, p.13",
+     "quotes": [
+      "Performance degrades predictably with finite sampling, consistent with shot-noise scaling",
+      "fit restricted to S ≥ 75",
+      "for EMA-off (Rw2 = 0.596)",
+      "for EMA-on (Rw2 = 0.901)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the fit for the unsmoothed case is poor.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "A goodness of fit of 0.596 does not support the word predictably for the unsmoothed case. Section 2.4 and the caption of Figure 4 do not say which dataset or compression scope the shot sweep used."
+    },
+    {
+     "id": "pqkd-simulator-backend",
+     "verdict": "confirmed",
+     "note": "Right as stored. The paper also says its primary backend is a photonic sampler and that a simulator with the same interface is used when hardware is unavailable; no result is described as hardware-run.",
+     "value": "The authors state that photonic sampling was executed via the ORCA simulator backend in CUDA-Q, and that the same experiment can be run on ORCA Computing's ptseries backend when available.",
+     "anchor": "Section 4.7 Implementation details, pp.18-19",
+     "quotes": [
+      "was executed via the ORCA simulator backend in CUDA-Q",
+      "when available, the same experiment can be run against ORCA Computing’s ptseries backend"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own setup (Section 4.7).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "method-pqkd-overview",
+     "value": "The authors describe PQKD as a hybrid photonic-classical framework in which a programmable photonic circuit of 16 modes generates a conditioning signal from shot-limited measurement statistics, the student replaces fully trainable convolutional kernels with dictionary convolutions, and training alternates between gradient-based updates of the student and gradient-free updates of the photonic parameters, avoiding differentiation through photonic hardware.",
+     "anchor": "Abstract p.2; Section 1, pp.3-4",
+     "quotes": [
+      "PQKD replaces fully trainable convolutional kernels with dictionary convolutions",
+      "computed from shot-limited measurement statistics of a 16-mode circuit",
+      "Training alternates between standard gradient-based optimisation of the student and sampling-robust, gradient-free updates of photonic parameters, avoiding differentiation through photonic hardware."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own setup (Methods).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "def-kd-loss-temperature-lambda",
+     "value": "The authors define the distillation objective as a mix, weighted by lambda in the interval from 0 to 1, of cross-entropy against hard labels and a Kullback-Leibler term between the temperature-softened teacher and student distributions scaled by temperature squared, and state that unless otherwise stated they used temperature 3 and lambda 0.5.",
+     "anchor": "Section 2.1, Equations (1) and (2), p.4; Section 4.4.1, p.17",
+     "quotes": [
+      "with λ ∈ [0, 1].",
+      "Unless stated otherwise, we used τ = 3 and λ = 0.5."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own training objective and its settings.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theory-kl-equals-soft-target-cross-entropy",
+     "value": "The authors state that the Kullback-Leibler term is equivalent, up to an additive constant independent of the student parameters, to cross-entropy against the teacher soft targets, because the KL divergence equals cross-entropy minus the Shannon entropy of the teacher distribution, which does not depend on the student.",
+     "anchor": "Section 2.1, Equation (3), p.4; Supplementary Note S1.1, Equations (S3) and (S4), p.27",
+     "quotes": [
+      "The KL term is equivalent (up to an additive constant independent of student parameters) to cross-entropy against teacher soft targets",
+      "is the Shannon entropy of the teacher distribution and is independent of the student parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The identity follows from the definitions, derived in Equations (S3) and (S4) of the paper; a standard fact.",
+     "result_type": "theoretical",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "def-dictionary-convolution-photonic-mixing",
+     "value": "The paper defines the compressed layer: each kernel is a sum over R trainable spatial basis filters weighted by a channel-mixing tensor, and the mixing tensor is not learned but generated as a fixed linear map A applied to the photonic feature z of theta, where A is fixed at initialisation with Gaussian i.i.d. entries of variance 1/d and is not trained.",
+     "anchor": "Section 2.1, Equations (7) and (8), p.6; Section 4.3.3, Equations (18) and (19), p.16",
+     "quotes": [
+      "we introduce R trainable spatial basis filters B ∈ RR×k×k and a channel-mixing tensor M ∈ RCout×Cin×R",
+      "PQKD constrains it to be generated from the photonic feature z(θ) via a fixed linear map",
+      "is fixed at initialisation (Gaussian i.i.d. entries with variance 1/d) and is not trained."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own parameterisation.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The kernels therefore depend on theta only through the 512-dimensional feature z, through a fixed random linear map; a classical random feature in place of z would give the same functional form."
+    },
+    {
+     "id_suggestion": "def-parameter-count-compression-factor",
+     "value": "The authors state that a compressed convolutional layer has R k squared plus Cout trainable parameters for the basis and bias, plus a shared photonic budget dim(theta), whereas a dense kernel has Cout Cin k squared plus Cout, giving an approximate per-layer compression factor of Cout Cin k squared over (R k squared plus Cout) when the shared theta term is ignored.",
+     "anchor": "Section 2.1, Equation (9), p.6; Supplementary Note S3.1, Equations (S32) to (S36), pp.37-38",
+     "quotes": [
+      "the number of trainable parameters is Rk2+Cout for (B, b), plus the global photonic parameter budget dim(θ)",
+      "In contrast, a dense kernel contains CoutCink2 + Cout trainable parameters.",
+      "Ignoring the shared θ term, the approximate per-layer compression factor is therefore"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own parameter accounting.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "setup-fixed-projection-excluded-from-counts",
+     "value": "The authors state that the fixed projection matrices A are not trainable and are excluded from all trainable-parameter counts and compression ratios, that they can contribute to memory footprint, and that they can be implemented implicitly, for example via structured random features, if memory becomes a constraint.",
+     "anchor": "Section 4.6, p.18; Supplementary Note S3.1, p.38",
+     "quotes": [
+      "Fixed matrices A used to generate mixing coefficients are not trainable and are not counted toward adaptation capacity.",
+      "they can contribute to memory footprint and can be implemented implicitly (e.g., via structured random features) if memory becomes a constraint."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own accounting convention and stated caveat.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "For the widest teacher (64, 128, 128) and R = 4, the projection for the third layer maps a 512-dimensional feature to 128 x 128 x 4 = 65,536 mixing values, a fixed matrix of about 33.5 million entries, against a teacher of 224,394 trainable parameters; the reported compression factors do not count this fixed storage."
+    },
+    {
+     "id_suggestion": "setup-photonic-feature-two-marginal-histograms",
+     "value": "The authors state that each shot is thresholded to a 16-bit occupancy vector, split into two 8-bit halves mapped to indices from 0 to 255, and that two normalised histograms over those indices are concatenated and standardised into a feature of dimension 512, with 16 photonic modes.",
+     "anchor": "Section 4.3.2, p.16; Supplementary Note S5.3, pp.47-48",
+     "quotes": [
+      "Convert each sample to a length-N binary vector (thresholded occupancy) b ∈ {0, 1}16.",
+      "Split b into two 8-bit halves and map each half to an integer index in {0, . . . , 255}.",
+      "Form two histograms over {0, . . . , 255}, normalise them to probability vectors, and concatenate to obtain z ∈ R512."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own feature map.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The feature uses only the 16 single-shot occupancy bits split into two 8-bit marginals, so it is a function of marginal bit statistics of a 16-mode sampler that the simulator can produce classically."
+    },
+    {
+     "id_suggestion": "setup-teacher-cnn-architecture",
+     "value": "The authors state that the teacher is a CNN with three convolutional blocks (5 x 5 kernels with 1 to c1 channels, then 3 x 3 kernels with c1 to c2, then 3 x 3 kernels with c2 to c3 and dropout of 0.25), global average pooling and a linear classifier, with widths of (32, 64, 128), (48, 96, 128) and (64, 128, 128) giving 94,474, 154,826 and 224,394 trainable parameters.",
+     "anchor": "Section 4.2, p.15",
+     "quotes": [
+      "conv1: 1 → c1, kernel 5 × 5, padding 2, ReLU, 2 × 2 max-pool;",
+      "conv3: c2 → c3, kernel 3 × 3, padding 1, ReLU, dropout (p = 0.25);",
+      "(c1, c2, c3) = (32, 64, 128) ⇒ Pteacher = 94,474 ;",
+      "(c1, c2, c3) = (48, 96, 128) ⇒ Pteacher = 154,826 ;",
+      "(c1, c2, c3) = (64, 128, 128) ⇒ Pteacher = 224,394."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own setup (Methods).",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The Table 1 teacher (about 2.25 x 10^5 parameters) is the widest (64, 128, 128) network, so the partial compression there is the 1.50 factor of Table 2."
+    },
+    {
+     "id_suggestion": "setup-partial-compression-45-theta",
+     "value": "The authors report that for the main training and validation dynamics the student compresses the first two convolutional layers, reducing the effective parameter count from ∼ 2.25 × 105 (teacher) to ∼ 1.50 × 105 (student), where the printed 105 means the fifth power of ten, with 45 trainable photonic parameters, corresponding to about 1.5 times compression.",
+     "anchor": "Section 2.2, p.8",
+     "quotes": [
+      "This reduces the effective parameter count from ∼ 2.25 × 105 (teacher) to ∼ 1.50 × 105 (student), while introducing only 45 trainable photonic parameters θ, corresponding to ∼ 1.5× compression."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own setup of its main experiment.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "setup-training-schedule-hyperparameters",
+     "value": "The authors state that the teacher and the student were each trained for 100 epochs with Adam at learning rate 10 to the minus 3, batch size 64, dropout 0.25, temperature 3, lambda 0.5, 16 photonic modes, feature dimension 512 and 10 theta updates per epoch, with a fixed but unstated shot budget S held constant within an experiment.",
+     "anchor": "Section 4.4.2, p.17; Section 4.7, p.19",
+     "quotes": [
+      "We used 100 epochs for the teacher and 100 epochs for the student.",
+      "Unless otherwise stated, we used: batch size 64; Adam learning rate 10−3 for both teacher and student; dropout p = 0.25; temperature τ = 3; distillation mixing λ = 0.5;",
+      "N = 16 photonic modes; feature dimension d = 512; theta updates per epoch = 10; and a fixed shot budget S (held constant within an experiment)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own setup (Methods).",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The shot budget S used for Table 1 and Table 2 is not given in the text, and the SPSA step sizes (a, c) and clipping bound are not given."
+    },
+    {
+     "id_suggestion": "method-spsa-validation-proxy",
+     "value": "The authors state that photonic parameters are updated by simultaneous perturbation stochastic approximation (SPSA) with a Rademacher perturbation and two objective evaluations per step, on an objective defined as the negative validation accuracy or the validation distillation loss, with 10 SPSA steps per student epoch.",
+     "anchor": "Section 4.4.3, p.17; Supplementary Note S6.3 and S6.4, p.50",
+     "quotes": [
+      "we used simultaneous pertur- bation stochastic approximation (SPSA).",
+      "J(θ) is defined as the negative validation accuracy (or, equivalently, the validation distillation loss) computed with the current student weights w and with the photonic feature map evaluated at θ.",
+      "perform theta updates per epoch = 10 SPSA steps to update θ while holding w fixed."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own setup (Methods).",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The photonic parameters are tuned on the validation set, and Tables 1 and 2 report accuracy on that validation set, so the PQKD validation numbers are partly fitted to it; the teacher is not tuned this way. Section 4.6 says held-out test accuracy is reported too, but no test accuracy appears in the tables."
+    },
+    {
+     "id_suggestion": "def-bilevel-alternating-approximation",
+     "value": "The authors state that PQKD optimises the student weights and photonic parameters under a bilevel formulation in which the outer objective uses a validation proxy robust to shot noise, and that the training loop approximates this by alternating gradient-based updates of the student weights with sampling-robust gradient-free updates of the photonic parameters.",
+     "anchor": "Section 2.1, Equation (10), p.7; Supplementary Note S6.3, p.50",
+     "quotes": [
+      "Our training loop approximates Eq. (10) by alternating (i) gradient-based updates for w and (ii) sampling-robust, gradient-free updates for θ (Methods).",
+      "Direct bilevel optimisation is typically computationally expensive"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own formulation of its training objective.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cited-hoeffding-per-bin-concentration",
+     "value": "The authors apply Hoeffding's inequality to the empirical histogram of S i.i.d. shots: for each bin, the probability that the empirical frequency differs from the true probability by at least epsilon is at most 2 exp(−2Sε2), which gives an inverse square-root scaling of shot noise per histogram entry.",
+     "anchor": "Section 2.1, Equation (11), p.7; Supplementary Note S3.3, Equation (S44), p.40",
+     "quotes": [
+      "For each bin ω, Hoeffding's inequality gives P(|pθ(ω) − pθ(ω)| ≥ ε) ≤ 2 exp(−2Sε2).",
+      "For any fixed bin ω, the random variable pθ(ω) is the sample mean of Bernoulli trials with mean pθ(ω)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A standard inequality applied by the paper; the paper gives no proof of it.",
+     "result_type": "cited",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theory-finite-shot-feature-noise-bound",
+     "value": "The authors state that if the feature map is Lipschitz in the histogram (true for the marginal-based mapping used, away from degenerate normalisation), then with high probability the distance between the finite-shot feature and the infinite-shot feature is bounded by the Lipschitz constant times the L1 distance between the histograms, which is of order the square root of K over S, where K is the number of histogram bins (K = 512 for two concatenated 256-bin marginals); the supplement states the expected value of this distance is of the same order.",
+     "anchor": "Section 2.1, Equation (12), p.7; Section 2.4, Equation (14), p.12; Supplementary Note S3.3, Equations (S45) to (S48), pp.40-41",
+     "quotes": [
+      "If Φ is Lipschitz in the histogram (true for the marginal-based mapping used here away from degenerate normalisation; Methods), then with high probability",
+      "where K is the effective number of histogram bins used by Φ",
+      "Standard multinomial concentration bounds imply that",
+      "(e.g., K = 512 for two concatenated 256-bin marginals)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation resting on an assumed Lipschitz property and on cited concentration bounds, without a full proof.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": "The feature map is an affine function of the histogram (concatenation, then fixed standardisation and scaling), so the Lipschitz assumption holds with a constant set by the scaling. The bound is on feature noise; no bound on accuracy is derived."
+    },
+    {
+     "id_suggestion": "theory-kernel-lipschitz-in-feature",
+     "value": "The paper states that because the mixing tensor depends linearly on the feature and the kernel is linear in the mixing tensor, the reconstructed kernel is Lipschitz in the feature, with the Frobenius norm of the kernel perturbation at most the spectral norm of A times the Frobenius norm of the basis B times the Euclidean norm of the feature perturbation.",
+     "anchor": "Section 2.1, Equation (13), p.7; Supplementary Note S3.3, Equations (S49) to (S51), p.41",
+     "quotes": [
+      "Because M depends linearly on z and W is linear in M , the reconstructed kernel is Lipschitz in z",
+      "so the induced perturbation obeys",
+      "Using submultiplicativity of operator norms, one obtains a Lipschitz bound for the kernel perturbation"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The bound is derived in the supplement from submultiplicativity of operator norms (Equations S49 to S51).",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": "A deterministic worst-case bound on the kernel; it says nothing about how kernel noise affects accuracy."
+    },
+    {
+     "id_suggestion": "theory-least-squares-mixing-subspace",
+     "value": "The paper states that all attainable mixing vectors lie in the column space of the fixed matrix A; if A has full column rank, the best approximation to any target mixing vector in that subspace is the orthogonal projection, with a unique least-squares solution given by the normal equations, and the residual measures the approximation error caused by the restriction.",
+     "anchor": "Supplementary Note S3.1, Equations (S39) to (S42), p.39; Note S3.2, Equation (S43), p.40",
+     "quotes": [
+      "If A has full column rank (a typical case when d ≤ p and A is drawn from a continuous distribution), then dim(Range(A)) = d.",
+      "When A has full column rank, the minimiser is unique and given by",
+      "the corresponding attainable mixing is the orthogonal projection of m⋆ onto Range(A)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Standard linear algebra, stated with its condition (full column rank) in the supplement.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "limit-idealised-best-case-subspace",
+     "value": "The authors state that the best-approximation result describes an idealised best case, the closest mixing achievable if the feature could be chosen arbitrarily, and that in practice the attainable set is further constrained by the photonic map from theta to the feature and by finite-shot variability.",
+     "anchor": "Supplementary Note S3.1, p.39",
+     "quotes": [
+      "Thus, Eq. (S42) characterises an idealised best case",
+      "In practice, the attainable set is further constrained by"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limit on its expressivity argument.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "theory-ema-variance-reduction",
+     "value": "The authors state that under the approximation that the feature equals a mean plus zero-mean noise with approximately independent increments across successive evaluations, exponential moving average smoothing leaves the mean unbiased and reduces the variance by a factor of (1 minus beta) over (1 plus beta), equivalent to a larger effective shot budget; for beta 0.9 the theoretical attenuation is 0.0526, against a measured median variance ratio of 0.0406 (interquartile range 0.0322 to 0.0532) in an MNIST trace at 200 shots.",
+     "anchor": "Supplementary Note S6.6, Equations (S81) to (S83), p.52; Figure S1, p.52",
+     "quotes": [
+      "Under this standard approximation, E[z ̄t] = μ(θ) (no bias in the mean signal)",
+      "In our MNIST EMA-mechanism trace at S=200 shots and β=0.9",
+      "with a median 0.0406 (IQR 0.0322–0.0532) over the analysis window",
+      "(1 − β)/(1 + β) = 0.0526"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation under an independence approximation plus one measured trace.",
+     "result_type": "theoretical",
+     "context": "method",
+     "reader_inference": "The independence and zero-mean assumptions hold only for fixed theta; theta changes every epoch under SPSA, so the smoothed feature averages over a drifting mean and is biased toward past theta values."
+    },
+    {
+     "id_suggestion": "result-ema-fit-parameters-shot-sweep",
+     "value": "The authors report weighted nonlinear least-squares fits of the accuracy gain from the photonic feature against the shot budget, giving an asymptotic gain of 46.68 ± 10.86 and k of 236.89 ± 160.35 without exponential moving average smoothing, and an asymptotic gain of 89.05 ± 5.61 and k of 275.75 ± 85.88 with it, and conclude that smoothing enlarges the effective operating regime at low-to-moderate shot budgets.",
+     "anchor": "Section 2.4, Equation (15), Figure 4, pp.12-13",
+     "quotes": [
+      "yield δ∞ = 46.68 ± 10.86 and k = 236.89 ± 160.35",
+      "δ∞ = 89.05 ± 5.61 and k = 275.75 ± 85.88 for EMA-on",
+      "feature smoothing enlarges the effective operating regime at low-to-moderate shot budgets"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical fit from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The gain is measured against a baseline with the feature set to zero, which makes every mixing tensor zero and the compressed kernels zero, so the baseline accuracy is near chance and gains of 46 to 89 percentage points are large by construction; it is not a comparison with a classical conditioning signal."
+    },
+    {
+     "id_suggestion": "claim-perturbation-families-and-sigma-sweeps",
+     "value": "The authors state that in addition to finite-shot noise they include two perturbation families, additive Gaussian feature corruption and Gaussian parameter drift of the photonic parameters between epochs, and that accuracy and loss were reported as a function of S, sigma_z and sigma_theta, with and without smoothing.",
+     "anchor": "Section 2.4, p.12; Section 4.5, p.18",
+     "quotes": [
+      "We additionally include two perturbation families that emulate hardware variability",
+      "Accuracy and loss were reported as a function of S, σz, and σθ, and compared with and without EMA smoothing to quantify stability improvements."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A stated experimental plan whose results do not appear in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "Only the shot sweep (Figure 4) has a reported result in the PDF; no figure or table reports results for feature corruption or parameter drift."
+    },
+    {
+     "id_suggestion": "result-table1-mnist-fashion-validation",
+     "value": "The authors report in the first results table (means over five runs) for MNIST a teacher training accuracy of 100.00 and PQKD 99.71, validation accuracy 99.07 for the teacher and 99.09 for PQKD, final validation cross-entropy 0.031 and 0.030; and for Fashion-MNIST training accuracy 100.00 and 97.10, validation accuracy 91.86 and 92.42, cross-entropy 0.291 and 0.239.",
+     "anchor": "Table 1, Section 2.2, p.8",
+     "quotes": [
+      "100.00 99.71 99.07 99.09 0.031 0.030 5.94",
+      "100.00 97.10 91.86 92.42 0.291 0.239 6.73",
+      "Values are mean ± s.d. over five independent runs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; no significance test is reported.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The MNIST validation difference (0.02 points) is far inside the reported standard deviations (0.13 and 0.09); the Fashion-MNIST gain (0.56 points) is a few standard deviations (0.26 and 0.16). The PQKD validation accuracy is also the quantity the photonic parameters were tuned on."
+    },
+    {
+     "id_suggestion": "claim-regularisation-and-stability-interpretation",
+     "value": "The authors state that, on MNIST and Fashion-MNIST, the teacher shows comparatively larger run-to-run fluctuations in validation accuracy and cross-entropy consistent with over-parameterisation, and that distillation combined with the compressed photonic kernel parameterisation regularises the effective hypothesis space and improves generalisation beyond what accuracy alone captures.",
+     "anchor": "Section 2.2, p.8",
+     "quotes": [
+      "consistent with over-parameterisation for these tasks.",
+      "These trends indicate that distillation, combined with the compressed photonic kernel parameterisation, regularises the effective hypothesis space and improves generalisation beyond what is captured by accuracy alone."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An interpretation of the Table 1 numbers; no ablation separates distillation, the dictionary structure and the photonic feature.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "No KD-only or dictionary-only student is reported, so the credit given to the photonic parameterisation cannot be separated from distillation or from a smaller network."
+    },
+    {
+     "id_suggestion": "result-photonic-delta-diagnostic-positive",
+     "value": "The authors report a photonic optimisation diagnostic Delta, defined in Table 1 as the value at epoch 1 minus the value at the final epoch, of 5.94 for MNIST, 6.73 for Fashion-MNIST and 4.95 for CIFAR-10, and state that it is consistently positive, indicating systematic progress of the photonic module during training.",
+     "anchor": "Section 2.2 and Table 1, p.8",
+     "quotes": [
+      "the photonic optimisation diagnostic ∆ is consistently positive (shown in Table 1), indicating systematic progress of the photonic module during training.",
+      "Photonic ∆ is (epoch 1)−(final epoch).",
+      "0.031 0.030 5.94",
+      "0.291 0.239 6.73",
+      "0.397 0.597 4.95"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 1 does not say which quantity Delta is measured on (loss or objective J), so its size has no stated unit; progress of the objective by SPSA does not by itself show the photonic feature matters."
+    },
+    {
+     "id_suggestion": "result-table2-conv1-and-conv1plus2-near-teacher",
+     "value": "The authors report on MNIST (rank R of 4 and photonic parameters of 30, means over 5 seeds) that compressing only Conv1 gives validation accuracy close to the teacher at a compression factor of 1.01, and that compressing Conv1 and Conv2 keeps validation accuracy within about 0.2 to 0.3 percent of the teacher at overall compression factors of about 1.25 to 1.50.",
+     "anchor": "Section 2.3, Table 2, Figure 3, pp.10-11",
+     "quotes": [
+      "Table 2 Representative operating points for scaling convolutional compression on MNIST (fixed R=4, dim(θ)=30).",
+      "Accuracies are mean ± s.d. over 5 seeds, reported at the final epoch.",
+      "Across all teacher widths, PQKD maintains validation accuracy within ∼0.2–0.3% of the teacher at overall compression factors of Cx ≈ 1.25– 1.50",
+      "(32, 64, 128) 1.01 (48, 96, 128) 1.01 (64, 128, 128) 1.01",
+      "(32, 64, 128) 1.25 Conv1+2 (48, 96, 128) 1.38 (64, 128, 128) 1.50"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "In the Table 2 rows the Conv1+2 gaps are 0.02, 0.11 and 0.04 points, smaller than the stated 0.2 to 0.3; at 1.25 to 1.50 compression the student still has most of the teacher's parameters, so this is mild compression."
+    },
+    {
+     "id_suggestion": "result-table2-all-convs-compression-frontier",
+     "value": "The authors report on MNIST that compressing all convolutional layers gives overall compression factors of 48.81, 76.18 and 105.40 for the three teacher widths, with PQKD validation accuracy 96.85, 97.17 and 97.33 against 98.91, 99.11 and 99.06 for the teachers, that lowering the basis rank R raises compression at the cost of higher accuracy drop, and that PQKD converges to well-defined operating points rather than showing catastrophic degradation.",
+     "anchor": "Section 2.3, Table 2, Figure 3, pp.10-11",
+     "quotes": [
+      "decreasing the basis rank R increases compression at the cost of higher accuracy drop, while increasing R recovers accuracy with diminishing returns in parameter count.",
+      "PQKD retains stable training and converges to well-defined operating points, rather than exhibiting catastrophic degradation.",
+      "(32, 64, 128) 48.81 All Convs (48, 96, 128) 76.18 (64, 128, 128) 105.40",
+      "98.91 (± 0.09) 99.11 (± 0.06) 99.06 (± 0.18) 96.85 (± 0.15) 97.17 (± 0.03) 97.33 (± 0.11)",
+      "96.62 (± 0.09) 96.96 (± 0.17) 97.19 (± 0.08)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, on MNIST only.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The validation accuracy gap to the teacher is 2.06, 1.94 and 1.73 points, so the error rate roughly triples; the paper's phrase exceeding two orders of magnitude refers to the convolutional subnetwork, while the overall factor is 105.40 only for the widest teacher."
+    },
+    {
+     "id_suggestion": "setup-fig3-sweep-grid",
+     "value": "The authors state that the compression scaling sweep covers three teacher widths, three compression scopes, photonic parameter dimensions of 15, 30 and 45 and basis ranks of 4, 8 and 12, plotted as validation accuracy drop relative to the corresponding teacher against compression factor.",
+     "anchor": "Section 2.3, Figure 3 caption, p.10",
+     "quotes": [
+      "Marker shape encodes the photonic parameter dimension dim(θ) ∈ {15, 30, 45}, and marker size encodes the kernel-manifold rank R ∈ {4, 8, 12}.",
+      "Rows correspond to three teacher widths"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own sweep design.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "setup-photonic-theta-tiling",
+     "value": "The authors state that the photonic sampler's interferometer has N minus 1 mixing angles per tiling, which is 15 for the main 16-mode experiments, that longer parameter vectors are read as concatenated tilings, and that the user-specified vector is zero-padded or truncated to match the sampler's expected length.",
+     "anchor": "Supplementary Note S5.1, Equations (S57) to (S63), pp.44-46",
+     "quotes": [
+      "For the main experiments with N = 16 modes, this implies Ltile = N − 1 = 15.",
+      "(zero-padding)",
+      "(truncation)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own description of its photonic circuit parameterisation.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "A dim(theta) of 45 is three tilings of the 15-angle circuit."
+    },
+    {
+     "id_suggestion": "setup-datasets-and-splits",
+     "value": "The authors state that MNIST, Fashion-MNIST and CIFAR-10 were each split into fixed train and validation sets of 45,000 and 5,000 images with a fixed seed, with data loaders of batch size 64, no data augmentation, and a synthetic ten-class 28 x 28 dataset also created, split in the same ratios.",
+     "anchor": "Section 4.1, pp.14-15",
+     "quotes": [
+      "Data loaders used batch size 64 with shuffling enabled for training only.",
+      "we constructed fixed splits of train/val = 45,000/5,000 by randomly permuting the canonical MNIST training and test sets using a fixed seed",
+      "We constructed fixed train/val splits of 45,000/5,000 using a fixed seed.",
+      "we additionally created a synthetic 10-class image dataset of size-matched 28×28 grayscale images."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own setup (Methods).",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The splits use 50,000 of 60,000 or 70,000 images and give no separate test-set size, and no result for the synthetic dataset appears in the paper."
+    },
+    {
+     "id_suggestion": "limit-baselines-isolating-photonic-factor-deferred",
+     "value": "The authors state that rigorous comparisons against classical conditioning and hypernetwork baselines under matched parameter budgets are left to future studies, while the supplement lists four planned controls (a KD-only student, a dictionary-only student, random-feature conditioning and a fixed photonic feature without theta learning) that would isolate the photonic factor.",
+     "anchor": "Section 1, p.4; Supplementary Note S4.3, pp.43-44",
+     "quotes": [
+      "PQKD provides a blueprint for future studies on larger datasets, more expressive optical circuits, and rigorous comparisons against classical conditioning and hypernetwork baselines under matched parameter budgets.",
+      "we include baseline models that isolate each factor.",
+      "Random-feature conditioning."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper itself defers the matched-baseline comparison to future work.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Tables 1 and 2 and Figures 2 to 4 report teacher against PQKD only. No KD-only, dictionary-only, random-feature or fixed-photonic result appears, so the paper does not show that the photonic feature, rather than distillation or the dictionary structure, produces the reported accuracy."
+    },
+    {
+     "id_suggestion": "claim-substantially-stronger-compression-than-conventional-students",
+     "value": "The authors state that PQKD maintains strong classification performance while enabling substantially stronger compression than conventional students, particularly when compression is applied across the full convolutional stack.",
+     "anchor": "Section 1, p.4",
+     "quotes": [
+      "PQKD maintains strong classification performance while enabling substantially stronger compression than conventional students, particularly when compression is applied across the full convolutional stack."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper reports no conventional compressed-student comparison.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "No smaller dense student or other compression method is evaluated, so substantially stronger than conventional students is unsupported by a reported comparison."
+    },
+    {
+     "id_suggestion": "scope-trainable-parameter-compression-only",
+     "value": "The authors state that they focus on trainable-parameter compression, and note that a method can sharply reduce trainable parameters while leaving inference floating-point operations largely unchanged.",
+     "anchor": "Supplementary Note S1.2, p.28",
+     "quotes": [
+      "In this work, we focus on trainable-parameter compression because PQKD is designed as a structured mechanism",
+      "a method can sharply reduce trainable parameters while leaving inference FLOPs largely unchanged"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its compression scope.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The reconstructed kernels have the dense kernels' shape, so inference compute and the parameters needed at inference may not shrink in the way the compression factor suggests."
+    },
+    {
+     "id_suggestion": "limit-photonic-backend-simulated",
+     "value": "The authors state that the primary backend is a photonic sampler consistent with time-bin and interferometric circuit models, and that when hardware is unavailable they use a simulator with the same input and output interface; the caption of the first figure describes a measurement with a superconducting nanowire single-photon detector (SNSPD) array with time-tagging.",
+     "anchor": "Section 4.3.1, p.16; Figure 1 caption, p.5",
+     "quotes": [
+      "The primary backend is a photonic sampler consistent with time-bin / interferometric circuit models; when hardware is unavailable, we use a simulator with the same input/output interface.",
+      "is measured using an SNSPD array with time-tagging"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of its backend.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The only backend named in the implementation details is the ORCA simulator; no result is stated to come from photonic hardware, so the shot-noise behaviour is that of an ideal sampler and not of detector loss, dark counts or drift."
+    },
+    {
+     "id_suggestion": "claim-conclusion-practical-compression-route",
+     "value": "The authors conclude that finite-shot continuous-variable photonic processors can be used as training-time resources for practical model compression, that PQKD achieves stable knowledge distillation under progressively stronger convolutional compression, and that it provides a practical route to integrate near-term photonic quantum hardware into parameter-efficient learning pipelines.",
+     "anchor": "Section 3 Conclusion, p.13",
+     "quotes": [
+      "PQKD shows that finite-shot continuous-variable photonic processors can be used as training-time resources for practical model compression.",
+      "providing a practical route to integrate near-term photonic quantum hardware into parameter-efficient learning pipelines."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion from simulator experiments on three image benchmarks.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The evidence is simulated sampling on MNIST, Fashion-MNIST and CIFAR-10 with no classical-conditioning control, so practical and hardware integration are not tested."
+    },
+    {
+     "id_suggestion": "limit-code-and-data-availability",
+     "value": "The authors state that the code is not publicly available but may be made available to qualified researchers upon reasonable request, and that the synthetic dataset generator and split indices can be released alongside the code.",
+     "anchor": "Methods, Data and Code availability, p.19",
+     "quotes": [
+      "The underlying code for this study is not publicly available but may be made available to qualified researchers upon reasonable request to the corresponding author.",
+      "can be released alongside the code to enable exact reproduction."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own availability statement.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

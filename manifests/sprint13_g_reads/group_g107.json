@@ -1,0 +1,2580 @@
+{
+ "papers": [
+  {
+   "record_id": "carolan-2020-variational-quantum-unsampling-quantum-photonic",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2019-04_Carolan_Variational-quantum-unsampling-on-a-quantum-photonic-processor.pdf",
+   "title_in_file": "Variational Quantum Unsampling on a Quantum Photonic Processor (arXiv:1904.10463v2, 13 May 2019)",
+   "version_note": "The file is the arXiv v2 preprint dated 14 May 2019, not the 2020 journal version the record id names. The text layer holds the paper twice (the arXiv layout, then a second two-column copy); the first copy was read in full and the second was used only to confirm text.",
+   "pages": 12,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A preprint that introduces the Variational Quantum Unsampling protocol, layer-wise training of an auxiliary circuit to undo an unknown unitary on a known input state, with a two-photon proof-of-concept run on a silicon photonic processor and numerical simulations up to six photons.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "vqu-experiment-noise-floor-limits-fidelity",
+     "verdict": "widened",
+     "note": "The stored value is right. The paper also says the measured fidelity is 1.2 sigma from the maximal fidelity the noise floor allows, and it attributes the remaining deviation from that maximum to the optimizer with finite counts. The coupling loss is given as -8 dB facet to facet.",
+     "value": "The authors report a final fidelity of F = 0.695 ± 0.053, defined as the overlap between the initialization state and output state, which they state is 1.2σ from the maximal achievable fidelity given the noise floor of the experiment; they attribute the noise floor primarily to low signal-to-noise ratio caused by photon emission from the thermo-optic phase shifters and high fiber-to-chip coupling loss (-8 dB facet to facet), and they say the remaining deviation from the maximum possible fidelity is likely due to the performance of their optimizer in the presence of finite counts.",
+     "anchor": "Section IV Experimental Unsampling, p.6",
+     "quotes": [
+      "The final fidelity of the VQU protocol, defined as the overlap between the initialization state and output state F = | ψin|ψout |2, was found to be F = 0.695 ± 0.053, which is 1.2σ from the maximal achievable fidelity given the noise floor of our experiment",
+      "This noise floor is primarily due to a low signal-to-noise ratio, caused by photon emission from our thermo-optic phase shifters and high fiber-to-chip coupling loss (-8 dB facet to facet).",
+      "The deviation from the maximum possible fidelity is likely due to the performance of our optimizer in the presence of finite counts."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The experiment is two photons in a four-mode circuit with about 100 coincidence events per iteration, so the fidelity is a proof-of-concept figure from one run set."
+    },
+    {
+     "id": "vqu-protocol-photonic-demonstration",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "vqu-simulations-local-optima-limited",
+     "verdict": "confirmed",
+     "note": "Right as stored. Appendix F shows the simulations use a compression step first and Haar-random sampling unitaries, and the claim stays the authors' own suggestion from those runs.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "vqu-loss-function-definition",
+     "value": "The authors define a loss function L of the control parameters that quantifies the distance between the output state and the input state and is bounded in the interval [0, 1], and they state that searching for the condition that the minimum of L is 0 leads to the circuit approximating the time-reversed unitary over a given input state.",
+     "anchor": "Section II Variational Learning, Eqs. (1) and (2), p.2",
+     "quotes": [
+      "that quantifies the distance between the output state and the input state, and is bounded L(φ) ∈ [0, 1].",
+      "Searching for the condition that min L(φ) = 0 (2) φ leads to Vˆ (φ) ≈ Uˆ † over a given input state."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the loss function in Section II, Eq. (1).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "value": "The authors state that without a well chosen ansatz the overlap between the input state and the circuit output could be about one over D, where D is the dimension of the system, so that the probability for an individual event is exponentially unlikely and estimating it takes exponential time.",
+     "anchor": "Section II Variational Learning, p.2",
+     "quotes": [
+      "we could have | ψin|Vˆ (φ)|ψin |2 ≈ 1/D where D is the dimension of the system",
+      "The probability for an individual event is therefore exponentially unlikely and estimating the associated probability takes exponential time."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument stated in the text, not proved or measured in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "vqu-direct-optimization-exponentially-unlikely"
+    },
+    {
+     "value": "The authors state, citing other work, that gradient-based quantum circuit learning becomes exponentially inefficient due to a very flat loss landscape if one starts with a generic random initial state over the entire Hilbert space, and that initialization strategies have been proposed to overcome this obstacle.",
+     "anchor": "Section II Variational Learning, p.2",
+     "quotes": [
+      "it has recently been shown that gradient-based quantum circuit learning becomes exponentially inefficient due to a very flat loss landscape if one starts with a generic random initial state over the entire Hilbert space",
+      "however initialization strategies have been proposed to overcome this obstacle"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "vqu-flat-landscape-cited"
+    },
+    {
+     "value": "The authors state that in the layer-by-layer protocol the probability estimated at each stage is exponentially boosted, with the stage loss scaling as O(1) independently of n, and that the error in a single stage should scale as 1/n so that the overall unsampling fidelity does not vanish as n becomes large.",
+     "anchor": "Section II Variational Learning, p.3",
+     "quotes": [
+      "Critically, the probability estimated at each stage is now exponentially boosted, with Li(φ) scaling as O(1) (independently of n).",
+      "Moreover, the error in a single stage of unsampling L(φ) ≈ should scale as 1/n, such that as n becomes large the overall unsampling fidelity does not vanish."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A scaling claim stated in the text without a proof in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The text says the stage error 'should scale' as 1/n; it is not derived or measured beyond the small cases tested.",
+     "id_suggestion": "vqu-layerwise-scaling-claim"
+    },
+    {
+     "value": "The authors report numerical tests of the protocol for up to five qubits that converged to numerical precision in all instances, and they conjecture this efficacy is due to an over-parameterization effect.",
+     "anchor": "Section II Variational Learning, p.3, with Appendices A and B",
+     "quotes": [
+      "We numerically tested this protocol for up to five qubits.",
+      "converged to numerical precision in all instances.",
+      "We conjecture this efficacy is due to an over-parameterization effect"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulation result from one study; the cause is a conjecture.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "vqu-qubit-simulations-converge"
+    },
+    {
+     "value": "In Appendix B the authors report 100 Monte Carlo numerical experiments for up to five qubits, with Haar-random sampling operations, random restarts allowed when the desired threshold of 1 × 10−5 was not achieved, and numerical accuracy achieved in all cases.",
+     "anchor": "Appendix B: VQU Qubit Numerical Experiments, pp.7-8",
+     "quotes": [
+      "We perform 100 Monte Carlo numerical experiments for up to five qubits.",
+      "We allow for random restarts in case a desired threshold of 1 × 10−5 is not achieved.",
+      "sampling operation, chosen randomly according to the Haar measure"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "vqu-appendix-b-monte-carlo-setup"
+    },
+    {
+     "value": "The authors state that the Haar-random sampling circuits used in the qubit numerics would likely suffer from the barren plateaus problem, whereby the gradient becomes exponentially small with the number of qubits, and that initialization strategies proposed to overcome this limit are compatible with the protocol.",
+     "anchor": "Appendix B: VQU Qubit Numerical Experiments, pp.7-8",
+     "quotes": [
+      "it is likely such circuits would suffer from the 'barren plateaus' problem [47], whereby the gradient becomes exponentially small with the number of qubits.",
+      "Initialization strategies have been proposed to overcome this limit [48], which are also compatible with VQU."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its own Haar-random numerics in Appendix B.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "vqu-barren-plateau-caveat"
+    },
+    {
+     "value": "The authors state that, in general, performing an arbitrary operation requires a circuit depth exponential in the number of qubits, so each implementation of VQU will use a circuit parameterization unique to the problem of interest.",
+     "anchor": "Appendix B: VQU Qubit Numerical Experiments, p.8",
+     "quotes": [
+      "In general performing an arbitrary operation requires a circuit depth exponential in the number of qubits."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this as a limit on its approach in Appendix B.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "vqu-arbitrary-unitary-depth-exponential"
+    },
+    {
+     "value": "The authors state that it remains an open question exactly which ansatz are amenable to VQU, and give one example ansatz related to the fractional quantum Hall effect in Appendix C.",
+     "anchor": "Section II Variational Learning, p.4",
+     "quotes": [
+      "While it remains an open question exactly which ansatz are amenable to VQU, in Appendix C we give an example of one such ansatz that is related to the fractional quantum Hall effect."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this open problem in Section II.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "vqu-open-question-which-ansatz"
+    },
+    {
+     "value": "The authors define ansatz validation: given a system ansatz that generates a circuit or state, or a set of them, ansatz validation tests whether a trial ansatz is capable of representing the system features, and the fidelity of the full protocol quantifies how well the trial ansatz can represent the system.",
+     "anchor": "Appendix C: Ansatz Validation, pp.8-9",
+     "quotes": [
+      "ansatz validation tests whether a trail ansatz AV is capable of representing the system features",
+      "The fidelity of the full protocol thus quantifies how well the trail ansatz can represent the system."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines ansatz validation in Appendix C.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "vqu-ansatz-validation-definition"
+    },
+    {
+     "value": "The authors report that they numerically implemented the VQU ansatz validation protocol for up to n = 4 qudits, using an ansatz for Laughlin states of filling fraction one that they describe, citing Latorre et al., as requiring on the order of n squared gates and depth of order n.",
+     "anchor": "Appendix C: Ansatz Validation, p.8-9",
+     "quotes": [
+      "Numerically, we successfully implemented the VQU ansatz validation protocol for up to n = 4 qudits.",
+      "with the full circuit requiring O(n2) gates and depth O(n), thus scaling efficiently."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A small simulation from one study; the gate count is the cited ansatz's.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "vqu-laughlin-ansatz-validation-numerics"
+    },
+    {
+     "value": "The authors state that, for n photons in a number of optical modes equal to n squared, the optical VQU protocol first feeds the output state into an n squared dimensional circuit and minimizes the loss function, maximizing the probability of one and only one photon in the first mode, and that the protocol proceeds for a total of n layers until the initialization state is recovered.",
+     "anchor": "Section III Optical VQU, p.4",
+     "quotes": [
+      "into a n2-dimensional circuit Vˆ1(φn) and minimizes the loss function (3), which maximizes P ̃11, the probability of one and only photon in the first mode.",
+      "The optical VQU protocol proceeds for a total of n layers until the initialization state |1112 . . . 1n is recovered."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the optical protocol in Section III.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "vqu-optical-protocol-definition"
+    },
+    {
+     "value": "The authors derive in Appendix D that, for n photons in n squared modes, the probability of one and only one photon in a mode equals one minus the ratio of the number of ways of placing n − 1 photons in n squared − 1 modes to the total space, giving n over (n squared plus n minus 1), which scales as O(1/n); they conclude this is an efficiently accessible measurement.",
+     "anchor": "Section III p.4 and Appendix D 1, p.9",
+     "quotes": [
+      "for n photons in n2 modes, P ̃j1 the probability of one and only one photon in a mode goes as one minus the the ratio of the number ways of placing n − 1 photons in n2 − 1 modes",
+      "which is 1 − a/b = n/(n2 + n − 1) scaling as O(1/n).",
+      "Critically, the probability of exactly one photon in the ith optical mode P ̃i1 scales as O(1/n) and is therefore an efficiently accessible measurement"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A counting derivation stated with its conditions (n photons in n squared modes) in Appendix D 1.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The count weights every state, collision states included, as equally likely; the text does not say that this is the boson sampling output distribution.",
+     "id_suggestion": "vqu-single-photon-probability-scales-1-over-n"
+    },
+    {
+     "value": "The authors state that each layer of the optical protocol contains at most O of n to the fourth parameters, that careful analysis shows O of n squared parameters is sufficient for each layer, and that the full protocol then requires O of n cubed parameters; Appendix D 2 states each layer otherwise needs n squared times (n squared minus 1) phase shifters, giving O of n to the fifth elements in total, reduced to O of n cubed.",
+     "anchor": "Section III and Appendix D 2",
+     "quotes": [
+      "Each layer contains at most O(n4) parameters however careful analysis of the circuit structure reveals that O(n2) parameters is sufficient for each layer (see Appendix D 2), so the full protocol requires O(n3) parameters.",
+      "each layer requires n2(n2 − 1) phase shifters, which because there are n layers in total, requires O(n5) total elements.",
+      "Hence the circuit elements required for the full protocol can be reduced to O(n3)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A parameter-counting argument from the Reck decomposition, stated without a formal theorem.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "vqu-optical-parameter-count"
+    },
+    {
+     "value": "The authors state that an arbitrary m-dimensional unitary operator across m optical modes can always be constructed out of m(m − 1)/2 reconfigurable beamsplitters and phase shifters, citing Reck et al., and that this gives an efficient circuit ansatz for the optical protocol.",
+     "anchor": "Section III Optical VQU, p.4",
+     "quotes": [
+      "can always be constructed out of m(m − 1)/2 reconfigurable",
+      "This theorem therefore provides an efficient circuit ansatz for the optical VQU protocol."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "vqu-reck-universal-unitary-cited"
+    },
+    {
+     "value": "The authors describe the experiment as a proof-of-concept demonstration of the optical VQU procedure on a quantum photonic processor, in which the sampling circuit is a four-mode random unitary according to the Haar measure and two photons pass through it.",
+     "anchor": "Section IV Experimental Unsampling, p.5",
+     "quotes": [
+      "We implement a proof-of-concept demonstration of the optical VQU procedure on a state-of-the-art quantum photonic processor",
+      "to generate a four-mode random unitary according to the Haar measure [60].",
+      "Two photons pass through the sampling circuit"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its experiment in Section IV.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "vqu-experiment-scope-proof-of-concept"
+    },
+    {
+     "value": "The authors state that the programmable nanophotonic processor consists of 176 individually tuneable phase shifters across 26 optical modes in a CMOS compatible silicon photonics process, with a total of 88 MZIs arranged in a mesh, and that the full protocol requires active control of 46 thermo-optic phase shifters.",
+     "anchor": "Section IV p.5 and Fig. 2 caption, p.3",
+     "quotes": [
+      "The PNP consists of 176 individually tuneable phase shifters across 26 optical modes, fabricated in a CMOS compatible silicon photonics process.",
+      "A total of 88 MZIs are arranged in a mesh that enables",
+      "The full protocol requires active control of 46 thermo-optic phase shifters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its device setup in Section IV and the Fig. 2 caption.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "vqu-photonic-processor-device-setup"
+    },
+    {
+     "value": "The authors state that pairs of degenerate photons at 1582 nm are generated by spontaneous parametric down-conversion in a PPKTP crystal, detected by four tungsten silicide superconducting nanowire detectors with about 65% quantum efficiency, and that a classical optimizer running the derivative-free BOBYQA algorithm varies the layer phases to minimize a user defined loss function, with each iteration collecting approximately 100 two-fold coincidence events.",
+     "anchor": "Section IV Experimental Unsampling, p.5",
+     "quotes": [
+      "Pairs of degenerate photons at 1582 nm are generated via spontaneous parametric down-conversion (SPDC)",
+      "(SNSPDs) with ∼ 65% quantum efficiency for photon counting.",
+      "derivative-free BOBYQA algorithm [59] varies the PNP layer phases to minimize a user defined loss function.",
+      "Each iteration of the optimization collects approximately 100 two-fold coincidence events."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its experimental setup in Section IV.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "vqu-photon-source-detection-optimizer-setup"
+    },
+    {
+     "value": "The authors report that in the first unsampling layer the loss L1 fell from 0.55 at random initialization to 0.20 after 28 iterations, which is at the noise floor of the experiment, and that in the second layer L2 fell from 0.97 to 0.31 after 20 stages of optimization, 1.3σ from the noise floor.",
+     "anchor": "Section IV Experimental Unsampling, p.5-6, Fig. 3",
+     "quotes": [
+      "the phases φ4 are first randomly initialized and L1 = 0.55 and after 28 iterations of the optimization L1 = 0.20, which is at the noise floor of our experiment.",
+      "The phases φ2 are randomly initialized and L2 = 0.97.",
+      "after just 20 stages of optimization L2 = 0.31, which is 1.3σ from the noise floor of our"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "vqu-experiment-layer-loss-results"
+    },
+    {
+     "value": "The caption of the experimental results figure reports that at the end of the VQU protocol the probability P = 0.695 ± 0.053 is found in the (1, 2) coincidence event, corresponding to the initialization state, with error bars assuming Poissonian counting statistics.",
+     "anchor": "Fig. 3 caption, p.4",
+     "quotes": [
+      "P = 0.695 ± 0.053 is found in the (1, 2) coincidence event, corresponding to the initialization state |1112 .",
+      "The probability for all six two-fold coincidence events are plotted with error bars assuming Poissonian counting statistics."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "vqu-fig3-final-coincidence-probability"
+    },
+    {
+     "value": "The authors report Monte Carlo numerics for up to n = 6 photons in m = 36 modes, plotting the total number of steps to converge to F equal to one minus ten to the minus five against photon number with an expected third order polynomial fit of R squared equal to one minus ten to the minus six, with error bars of one standard deviation from N = 100 runs.",
+     "anchor": "Fig. 4 caption, p.5",
+     "quotes": [
+      "Full boson unsampling Monte Carlo numerics for up to n = 6 photons in m = 36 modes.",
+      "converge to F = 1 − 10−5 for each photon number is plotted in blue, alongside an expected third order polynomial fit in green with R2 = 1 − 10−6.",
+      "Error bars represent one standard deviation from N = 100 runs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulation result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The simulations stop at six photons, so the cubic trend is a fit over a small range.",
+     "id_suggestion": "vqu-optical-monte-carlo-cubic-scaling"
+    },
+    {
+     "value": "Table I of Appendix F reports one minus R squared fit errors for the iteration count against photon number of 0.12 for a linear model, 1.5 times ten to the minus 3 for a quadratic model, 9.6 times ten to the minus 7 for a cubic model and 1.1 times ten to the minus 3 for an exponential model.",
+     "anchor": "Appendix F, Table I, p.12",
+     "quotes": [
+      "Model 1 − R2 error a + bx 0.12 a + bx + cx2 1.5 × 10−3 a + bx + cx2 + dx3 9.6 × 10−7 a + becx+d 1.1 × 10−3"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A fit result from one simulation study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The quadratic and exponential fits have errors of similar size; only the cubic fit is clearly smaller.",
+     "id_suggestion": "vqu-fit-model-errors-table"
+    },
+    {
+     "value": "The authors state that in the optical numerics they first bring all photons into the first n modes, that a single iteration of this compression yields greater than 0.99 probability of all photons in the first n modes, and that they repeat it three times to achieve numerical accuracy, because optimizing the single-photon probabilities directly performs poorly in many cases owing to the number of parameters and the absence of an analytic expression for the gradient.",
+     "anchor": "Appendix F: Optical VQU Numerical Experiments, pp.10-11",
+     "quotes": [
+      "A single iteration of this protocol is sufficient to yield a > 0.99 probability of all photons in the first n modes.",
+      "To achieve numerical accuracy we repeat this three times.",
+      "in many cases this performs poorly due to (1) the number of parameters involved in the optimization and (2) the absence for an analytic expression of the gradient."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulation setup and result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "vqu-optical-numerics-compression-protocol"
+    },
+    {
+     "value": "The authors state in Appendix E that n photons across n squared modes can be unsampled with so called bucket detectors that distinguish zero from non-zero photon number, that a bucket detector in a mode maximizes its on/off count ratio if and only if the output state in that mode is identically a single photon, and that the compression protocol requires O of n squared parameters per optimization stage and O of n to the fourth circuit elements in total.",
+     "anchor": "Appendix E: Optical VQU using Bucket Detectors, pp.9-11",
+     "quotes": [
+      "between n = 0 and n > 0 photon number.",
+      "bucket detector in a mode will therefore maximize its on/off count ratio if and only if the output state in that mode is identically |1",
+      "each optimization stage requires O(n2) parameters, and the total protocol therefore requires O(n4) circuit elements."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument in an appendix, stated without a formal theorem and not tested in the experiment.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "vqu-bucket-detector-protocol"
+    },
+    {
+     "value": "The authors derive that, for an input with one photon in each of n modes, linear optical operations preserve average photon number per mode, so the average photon number in every output mode equals one, using the unitarity of the matrix U.",
+     "anchor": "Appendix E, pp.10-11",
+     "quotes": [
+      "given one photon input per mode, linear optical operations preserve average photon number per mode.",
+      "where the final equality follows from the unitarity of U"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A short derivation with its condition (one photon input per mode) stated in Appendix E.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "vqu-average-photon-number-preserved"
+    },
+    {
+     "value": "The authors state that they require a local, gradient-free optimization algorithm, that they determined through extensive numerical studies that BOBYQA performs well in speed and accuracy, and that all numerical experiments use it.",
+     "anchor": "Appendix A: Numerical Methods, pp.7-8",
+     "quotes": [
+      "should be local so as to converge efficiently and (2) gradient free as in general the gradients will not be a priori known.",
+      "We have determined through extensive numerical studies that the BOBYQA algorithm [59] performs well in terms of speed and accuracy"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement about the authors' own numerical studies, with no data in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "vqu-bobyqa-optimizer-choice"
+    },
+    {
+     "value": "The authors state that deviations of the final state from the known input state signal decoherent error in the sampling protocol, which can be inspected further by tomography on a reduced subset of qubits.",
+     "anchor": "Section II Variational Learning, p.3",
+     "quotes": [
+      "Second, deviations from |ψin signals decoherent error in the sampling protocol, which can further be inspected by tomography on a reduced subset of qubits."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The experiment's noise floor came from detection and coupling loss, so deviations in the demonstration cannot be read as sampling-circuit error.",
+     "id_suggestion": "vqu-deviation-signals-decoherent-error"
+    },
+    {
+     "value": "The authors state that future implementations will use low loss in/out couplers or on-chip single photon sources and detectors to increase the signal-to-noise ratio and boost fidelity.",
+     "anchor": "Section IV Experimental Unsampling, p.5",
+     "quotes": [
+      "Future implementations will use either low loss in/out couplers [61] or on-chip single photon sources [62, 63] and detectors [64] to increase the signal-to-noise ratio and boost fidelity."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's plan, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "vqu-future-implementations-improve-snr"
+    },
+    {
+     "value": "The authors state, citing other work, that state-of-the-art universal linear optical processors now contain about 200 control parameters across about 30 spatial modes.",
+     "anchor": "Section I Introduction, p.2",
+     "quotes": [
+      "State-of-the-art 'universal linear optical processors' now contain ∼ 200 control parameters across ∼ 30 spatial modes [42]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "",
+     "id_suggestion": "vqu-processor-size-cited"
+    },
+    {
+     "value": "The authors conclude that the approach can directly be applied to the verification and certification of circuit outputs and to the comparison and training of circuit ansatz, and that they demonstrated the protocol optically on a quantum photonic processor.",
+     "anchor": "Section V Concluding Remarks, p.6",
+     "quotes": [
+      "We demonstrated this protocol optically on a quantum photonic processor.",
+      "Our approach can directly be applied to the verification and certification of circuit outputs, and for the comparison and training of circuit ansatz."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusion; the demonstration is two photons in a four-mode circuit.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The application to verification of large circuits rests on the scaling claims and small simulations, not on a large experiment.",
+     "id_suggestion": "vqu-conclusion-applications"
+    }
+   ]
+  },
+  {
+   "record_id": "carreno-2026-quantum-classical-processing-photonic-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Lopez-Carreno-et-al._2026_Quantum-and-classical-processing-with-photonic-quantum-machine__2605.10471.pdf",
+   "title_in_file": "Quantum and classical processing with photonic quantum machine learning (arXiv:2605.10471v1, 11 May 2026)",
+   "version_note": "The file is the arXiv v1 main text. The text layer holds it twice (a single-column copy, then a two-column copy); the first copy was read in full. The Supplementary Information it cites (Sections SI1 to SI5, the SI figures) is not in the file, so claims that rest on it are entered as the paper's own statements and are not checked here. Some mathematical symbols come out of the text layer as unreadable characters, so quotes avoid those spans.",
+   "pages": 12,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "An experimental paper that runs quantum reservoir processing on a silicon photonic chip with single photons, for two-photon state tomography and for a classical spiral-classification task with hardware-aware training.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "limit-exponential-scaling-bottleneck",
+     "verdict": "widened",
+     "note": "Right as stored. The same passage adds that in many practical applications only specific quantum features are needed rather than the full density matrix, which reduces the feature space and gives better scaling for the classical network, with the detail in the SI.",
+     "value": "The authors state that a possible bottleneck in scalability is that both the density matrix parameter space and the reservoir feature space scale exponentially with the number of modes or particles, which results in a mild scaling of reservoir size but can result in an overwhelming workload for the classical network at the output; they add that in many practical applications one only needs to extract specific useful quantum features rather than the full density matrix, which allows for the reduction of feature space and better scaling for the classical network.",
+     "anchor": "Discussion, pp.7-8",
+     "quotes": [
+      "A possible bottleneck in the scalability may result from the fact that both the density matrix parameter space and the reservoir feature space scale exponentially with the number of modes or particles.",
+      "but can result in an overwhelming workload for the classical network at the output.",
+      "However, in many practical applications, one only needs to extract specific, useful quantum features rather than the full density matrix",
+      "This allows for the reduction of feature space and better scaling for the classical network"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit of its own approach in the Discussion.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qrp-higher-accuracy-than-pnr",
+     "verdict": "widened",
+     "note": "Right as stored. The paper gives the numbers: average fidelity 0.820 ± 0.013 for the experimental QRP against 0.747 ± 0.015 for the PNR benchmark, where the PNR benchmark replaces the reservoir unitary with the identity. The text does not give the digital simulation values.",
+     "value": "The authors report that the reservoir consistently provided higher accuracy of predictions, both in the QPU hardware implementation and in digital simulations performed using the Perceval Python package, with the experimental QRP reaching an average fidelity on the testing dataset of 0.820 ± 0.013, against 0.747 ± 0.015 for the PNR benchmark.",
+     "anchor": "Results, Quantum reservoir processing, p.4",
+     "quotes": [
+      "the reservoir consistently provided higher accuracy of predictions, both in the QPU hardware implementation and in digital simulations performed using the Perceval Python package",
+      "= 0.820 ± 0.013, outperforming the",
+      "= 0.747 ± 0.015 achieved by the PNR benchmark."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The reconstructed matrices pass through a Hermiticity step and a projection to a physical density matrix in both the QRP and the PNR runs, so the gap is between two pipelines that share that post-processing."
+    },
+    {
+     "id": "setup-100-states-70-training",
+     "verdict": "confirmed",
+     "note": "Right as stored; the paper adds that the training labels are the analytically calculated density matrices.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own setup, Results p.3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qrp-abstract-device-scope",
+     "value": "The authors report a quantum reservoir processing device, realized with a programmable silicon chip excited with single photons, that performs both quantum and classical machine learning tasks.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "Here, we report a quantum reservoir processing device capable of performing both quantum and classical machine learning tasks.",
+      "The implementation is realized with a programmable silicon chip excited with single photons"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The abstract states the scope of the work.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrp-first-optical-quantum-task-claim",
+     "value": "The authors state that experimental realizations of quantum reservoir computing in the optical domain are scarce and that no demonstration of an optical system performing a quantum task has been reported to date, and that nearly all previous experiments were limited to binary detection while their chip does photon number resolving detection.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "However, no demonstration of an optical system performing a quantum task has been reported to date.",
+      "while nearly all previous experiments were limited to binary detection (0 or 1 photon)."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A priority claim about the literature, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrp-belenos-device-setup",
+     "value": "The authors state that the experiment runs on Quandela's Belenos QPU chip, which supports up to 24 photonic modes with up to 12 single photons generated by a quantum dot source, and describe it in Methods as a single-photon source, a 12-mode active demultiplexer, a 24-mode photonic integrated circuit made of silica glass and single-photon detectors, with the first 16 detectors having polarization-resolved photon-number-resolving capabilities.",
+     "anchor": "Results, Photonic Quantum Processing Unit; Online Methods",
+     "quotes": [
+      "supports up to 24 photonic modes, with up to 12 single photons generated by a quantum dot source",
+      "It consists of a single-photon source, a 12-mode active demultiplexer followed by fibre delays, a 24-mode photonic integrated circuit made of silica glass, and single-photon detectors.",
+      "Importantly, the first 16 detectors corresponding to the first 16 modes of the chip have polarization-resolved photon-number-resolving (PNR) capabilities."
+     ],
+     "kind": "shown",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A description of the vendor's own device by authors of whom one is at the vendor.",
+     "result_type": "vendor",
+     "context": "qml",
+     "reader_inference": "One author is affiliated with Quandela, the device maker."
+    },
+    {
+     "id_suggestion": "qrp-source-purity-indistinguishability",
+     "value": "The authors report that at the time of the experiment the single-photon purity, measured as the zero-delay second-order correlation function, was estimated around (0.019±0.001) and the photon indistinguishability around (0.923±0.007).",
+     "anchor": "Online Methods, Experimental details, p.8",
+     "quotes": [
+      "was estimated around (0.019±0.001) and photon indistinguishability around (0.923±0.007)."
+     ],
+     "kind": "shown",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A description of the vendor's own device by authors of whom one is at the vendor.",
+     "result_type": "vendor",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrp-tomography-setup-postselection",
+     "value": "The authors state that in the tomography task they inject two single photons, postselect the output keeping only realisations where exactly two photons are measured, which filters out quantum trajectories containing loss events, introduce mixedness by discarding ancillary modes, and pass the state through a fixed random 4×4 reservoir unitary acting on modes 1 to 4, forming a 15-element feature vector from PNR coincidence probabilities.",
+     "anchor": "Results, Quantum reservoir processing, pp.3-4",
+     "quotes": [
+      "Crucially, we postselect the output, keeping only the realisations where exactly two photons are measured, effectively filtering out any quantum trajectories containing loss events.",
+      "4×4 unitary, UR, acting on modes 1–4.",
+      "outcomes, forming a 15-element feature vector."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experimental setup, including the postselection, in Results.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Postselection on exactly two detected photons means the reported fidelities cover only runs without photon loss."
+    },
+    {
+     "id_suggestion": "qrp-readout-and-training-labels",
+     "value": "The authors state that the output layer is a software linear layer with L2 regularization followed by numerical matrix renormalisation, trained with ridge regression in scikit-learn with a regularization parameter of ten to the minus three, that predicted vectors are made Hermitian and projected onto the probability simplex to give a physical density matrix, and that the training labels were determined by analytically calculating the corresponding density matrices.",
+     "anchor": "Results; Online Methods, Quantum state tomography",
+     "quotes": [
+      "we performed the reconstruction using a software linear layer with L2 regularization, followed by numerical matrix renormalisation",
+      "= 10−3, to learn the linear mapping from the empirical coincidence probability distributions to these target parameter vectors.",
+      "and project the eigenvalues onto the probability simplex.",
+      "labels were determined by analytically calculating the corresponding density matrices"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training and post-processing setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "Labels come from the programmed unitary, not from an independent measurement of the state the hardware made."
+    },
+    {
+     "id_suggestion": "qrp-fidelity-measure-definition",
+     "value": "The authors evaluate the accuracy of their reconstructions with quantum fidelity between the physical predicted state and the target state, a measure bounded by 0 and 1 of how well the state is predicted, with increasing fidelity meaning better prediction.",
+     "anchor": "Online Methods, Quantum state tomography, p.8",
+     "quotes": [
+      "which gives us a measure, bounded by 0 and 1 of how well the state is predicted, with increasing fidelity meaning better prediction."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its figure of merit in Methods.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrp-error-bars-and-variance",
+     "value": "The authors state that the error bars of the average fidelity show the standard deviation over 50 different partitions into training and testing datasets, and that because some states are easier to analyse than others the variance within a particular testing dataset can reach up to 10% of the reported average fidelity.",
+     "anchor": "Fig. 2 caption; Results",
+     "quotes": [
+      "Error bars show the standard deviation of result obtained over 50 different partitions into training and testing datasets.",
+      "the variance within a particular testing dataset can reach up to 10% of the reported average fidelity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical statement from one study.",
+     "result_type": "measured",
+     "context": "method",
+     "reader_inference": "The 0.820 against 0.747 gap is small beside a within-dataset variance of up to 10% of the average."
+    },
+    {
+     "id_suggestion": "qrp-pnr-benchmark-misses-coherences",
+     "value": "The authors state that without the reservoir the model captures diagonal elements of the density matrix (direct coincidence counts) but fails to detect off-diagonal coherences due to the lack of interference.",
+     "anchor": "Results, Quantum reservoir processing, pp.4-5",
+     "quotes": [
+      "Without the reservoir, the model captures diagonal elements (direct coincidence",
+      "counts), but fails to detect off-diagonal coherences due to the lack of interference."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An explanation of an empirical result, from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrp-tomography-parameter-counts-reservoir-size",
+     "value": "The authors state that, with Hermiticity and unit trace constraints, the two-mode state has 13 independent real-valued parameters and the three-mode state has 45, that a linear model needs at least as many linearly independent features as predicted parameters, and that a four-mode and a nine-mode reservoir are the minimum requirement for the two- and three-mode state respectively.",
+     "anchor": "Results, Quantum reservoir processing, p.5",
+     "quotes": [
+      "results in 13 independent real-valued parameters, whereas the three mode state has 45 independent parameters",
+      "to train successfully, the number of linearly independent features, representing distinct measurement outcomes, must be equal or exceed the number of predicted parameters.",
+      "A fourand nine-mode reservoir are the minimum requirement for the two- and three-mode state, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A parameter count and feature-count condition the paper states, with the condition quoted, in Results.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrp-detector-and-rank-scaling-from-si",
+     "value": "The authors state that the number of detectors needed for tomography grows quadratically with the number of modes the state is defined on, with a scaling factor depending only on the number of input photons, that the rank of their circuit transformation for classical tasks grows quadratically with the number of features, and that for the collisionless boson sampling limit the rank of the feature matrix grows exponentially with the number of input photons; the derivations are in the Supplementary Information, which is not in this file.",
+     "anchor": "Results, Quantum reservoir processing, pp.5-6",
+     "quotes": [
+      "the number of detectors needed to perform tomography grows quadratically with the number of modes the state is defined on, with a scaling factor depending only on the number of input photons.",
+      "in the collisionless boson sampling limit, rank grows exponentially with the number of input photons"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The proof is in the Supplementary Information, which is not in the file, so the statement is not checked here.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrp-eq2-features-from-calculated-probabilities",
+     "value": "The authors state that for the two-photon mixed input state of their second displayed equation they calculate analytically the probabilities of measuring the two photons at outputs of the interferometer and pass these probabilities to a linear regression layer, and in Methods that they used the transformation of a general interferometer to compute the probability distribution of the photon coincidences.",
+     "anchor": "Results; Online Methods",
+     "quotes": [
+      "It is straightforward to calculate analytically the probabilities of measuring the two photons at certain outputs of the interferometer",
+      "to compute the probability distribution of the photon coincidences at the output of the interferometer.",
+      "These probabilities are passed to a linear regression layer implementing a tomography task."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states how the features for this task are produced.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text describes the features for the entropy, negativity and purity task as calculated, not measured on the chip, so the abstract's phrase about measurement of entanglement via negativity is not backed by hardware data in the main text for this task."
+    },
+    {
+     "id_suggestion": "qrp-three-detectors-enough-simulated",
+     "value": "The authors report that for the two-photon state task training used 1500 quantum states and testing 150 states, averaged over 50 different reservoirs, and that three detectors are already enough to recover the input quantum state with very high fidelity, which they explain by the state having three independent real-valued parameters against the number of independent measurement outcomes for two-detector and three-detector QRP.",
+     "anchor": "Results, Quantum reservoir processing, p.6",
+     "quotes": [
+      "training is performed with 1500 quantum states, while the testing dataset consists of 150 states, and each point shows the average over 50 different reservoirs",
+      "three detectors are already enough to recover the input quantum state with very high fidelity.",
+      "has three independent real-valued parameters and comparing this number with the number of independent measurement outcomes for 2-detector (2) and 3-detector (5) QRP."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the text gives no accuracy figure for it.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "No numeric fidelity for this task is in the main text; the claim of very high fidelity rests on the figure."
+    },
+    {
+     "id_suggestion": "qrp-pnr-benchmark-negativity-zero",
+     "value": "The authors state that the negativity of the quantum state in their second displayed equation is simply given by the magnitude of its coherence term, so that the PNR benchmark predicts that magnitude as approximately zero in all cases.",
+     "anchor": "Results, Quantum reservoir processing, p.6",
+     "quotes": [
+      "One can also notice that since the negativity of the quantum state in Eq. (2) is simply given by",
+      "≈ 0 in all cases."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result from one study, here on calculated features.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrp-direct-feature-prediction-lower-accuracy",
+     "value": "The authors state that an alternative approach, training the classical neural network to predict the three quantum characteristics directly without determining the density matrix, gives much lower accuracies; the detail is in the Supplementary Information, which is not in this file.",
+     "anchor": "Results, Quantum reservoir processing, p.6",
+     "quotes": [
+      "However, we find that in this case the obtained accuracies are much lower (see SI)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The evidence is in the Supplementary Information, which is not in the file.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrp-hardware-aware-training-setup",
+     "value": "The authors state that the classical task is a binary, nonlinear classification of whether a point belongs to one of two intertwined spirals, that data are encoded in a pair of photons with dual-rail encoding, that numerical simulations of the QPU generate the training dataset and optimise the classical network, and that in training they perturb the reservoir unitary by a small random unitary different for each sample, drawing each matrix element change from a normal distribution with zero mean.",
+     "anchor": "Results, Mitigation of experimental errors, p.7",
+     "quotes": [
+      "As a proof of principle, we consider a simple binary, nonlinear classification task, which is to determine whether a specific point belongs to one of the two intertwined spirals",
+      "We used numerical simulations of the QPU to generate the training dataset and to optimise the classical network",
+      "In our training algorithm, we perturb the reservoir unitary",
+      "We modified each matrix element by a random value drawn from a normal distribution with zero mean and"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup for the classical task.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrp-spiral-accuracy-ascella-vs-insilico",
+     "value": "The authors report that the spiral classification tested experimentally on Ascella, the QPU device preceding Belenos operating with 12 photon modes, reached an accuracy of about 79.7%, while a full in-silico training and testing strategy predicted over 98% accuracy, and they attribute the discrepancy to the sensitivity of the training procedure and the imperfect experimental implementation of the unitary matrix.",
+     "anchor": "Results, Mitigation of experimental errors, p.7",
+     "quotes": [
+      "testing was performed on Ascella, the QPU device preceding Belenos, operating with 12 photon modes [40].",
+      "This approach resulted in accuracy of ∼ 79.7%, while a full in-silico training and testing strategy predicted over 98% accuracy (cf. Fig. SI4b).",
+      "The reason for such a discrepancy is the sensitivity of"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The classical task ran on Ascella, not on the Belenos chip used for tomography."
+    },
+    {
+     "id_suggestion": "qrp-hardware-aware-training-surpasses-classical",
+     "value": "The authors report that a fluctuation amplitude of 0.075 provides the best accuracy on their testing dataset, consistent with the measured transpilation error in the Ascella QPU, and state that only with this training technique were they able to surpass the accuracy of an ideal identical classical network in which quantum input and PNR detection were replaced with coherent state inputs and average intensity measurements; results are averaged over ten realisations of the reservoir matrix.",
+     "anchor": "Results, Mitigation of experimental errors, p.7; Fig. 5 caption",
+     "quotes": [
+      "= 0.075 provides the best accuracy given our testing dataset, which is consistent with the measured transpilation error in the Ascella QPU.",
+      "Only by using this training technique were we able to surpass the accuracy of an ideal identical classical network, where quantum input and PNR detection were replaced with coherent state inputs and average intensity measurements",
+      "Results are averaged over ten realisations of the reservoir matrix"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The classical comparison is an ideal identical system, described as a horizontal line in the figure; the text does not give its accuracy or say that it was measured on hardware."
+    },
+    {
+     "id_suggestion": "qrp-single-basis-bottleneck-claim",
+     "value": "The authors state that quantum tomography and quantum feature extraction require in general an exponential number of measurements in different bases except for specific input states or observables, and that they demonstrate experimentally that QRP overcomes this bottleneck by performing a number-resolved measurement in a single basis.",
+     "anchor": "Discussion, p.7",
+     "quotes": [
+      "Quantum tomography and quantum feature extraction require in general an exponential number of measurements in different bases, except for specific input states or observables [41, 42].",
+      "We demonstrate experimentally that QRP overcomes this crucial bottleneck by performing a number-resolved measurement in a single basis."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own conclusion from one two-photon, two-mode experiment.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The experiment is a two-photon, two-mode state with a trained software layer and postselection, so it is a small-scale proof of principle."
+    },
+    {
+     "id_suggestion": "qrp-limits-fock-linear-in-device-labels",
+     "value": "The authors state that the experimental implementation is limited to Fock initial states and linear optical transformations, that input state generation and tomography are performed inside a single integrated device, and that ideally the training dataset would be labelled by quantum tomography using an independent method.",
+     "anchor": "Results; Discussion",
+     "quotes": [
+      "While the experimental implementation considered here is limited to Fock",
+      "While here the input state generation and tomography are performed inside a single integrated device, input quantum states may be also generated externally.",
+      "Ideally, the training dataset would be labelled by performing quantum tomography using an independent method."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these limits of its own implementation.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrp-qrc-training-advantage-cited",
+     "value": "The authors state that training quantum machine learning models is still considered a challenge, because the optimisation landscapes can suffer from barren plateaus and local minima and backpropagation cannot be applied straightforwardly to quantum circuits, and that quantum reservoir computing is currently one of the most promising approaches for QML owing to simple implementation, minimal physical requirements and a system-agnostic learning rule.",
+     "anchor": "Introduction, p.1-2",
+     "quotes": [
+      "Indeed, training QML models is still considered a challenge: the optimisation landscapes can suffer from barren plateaus and local minima [24, 25]",
+      "The simplicity of implementation, minimal physical requirements and system-agnostic learning rule make it currently one of the most promising approaches for QML [23]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qrp-qml-best-for-quantum-data-belief",
+     "value": "The authors state that there is a strong belief in the community that QML models will be best suited for quantum data, and that it is often unclear where QML models can outperform classical models for classical data.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "In general, there is a strong belief in the community that QML models will be best suited for quantum data [13].",
+      "it is often unclear where QML models can outperform them for classical data."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement the paper attributes to the community and to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "carreras-2025-limitations-quantum-hardware-molecular-energy",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Carreras-Casanova-Orus_2025_Limitations-of-Quantum-Hardware-for-Molecular-Energy-Estimation__2506.03995.pdf",
+   "title_in_file": "Limitations of Quantum Hardware for Molecular Energy Estimation Using VQE (arXiv:2506.03995v1, 4 Jun 2025), with its Supporting Information",
+   "version_note": "The file is the arXiv v1 preprint. The text layer holds the paper and its Supporting Information twice; the first copy (main text, references, Supporting Information) was read in full, and the second copy was used only to confirm text. In the main text, two cross-references print as 'Section ??' and 'Figure ??'. Some accented characters come out as a separate space and diaeresis, so quotes avoid those words.",
+   "pages": 41,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A simulation and hardware study of Qubit-ADAPT-VQE for benzene (four electrons in four orbitals, 8 qubits) that adds Hamiltonian compression, a modified COBYLA, circuit and layout optimization, runs single-point energy evaluations on IBM-Torino, and extrapolates the coherence times needed.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "vqe-benzene-experiment-setup",
+     "verdict": "confirmed",
+     "note": "Right as stored. The Methods add the basis (STO-3G) and the mapping (Jordan-Wigner), entered as separate assertions.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own setup, Section 2.5 and Methods.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "vqe-benzene-hardware-unfeasible",
+     "verdict": "narrowed",
+     "note": "The unfeasibility conclusion rests on single-point energy evaluations of ansatz states built from an exact classical Qubit-ADAPT run, not on a VQE optimization run on hardware, and on one molecule (benzene, 4 electrons in 4 orbitals, STO-3G, 8 qubits). The paper gives the measurement count as the cause of the large errors in Section 2.5 and names insufficient coherence time as a major source of error in the Conclusions.",
+     "value": "The authors report that in single-point energy evaluations on IBM-Torino for benzene, most measurements deviate significantly from the exact Qubit-ADAPT energy, often by more than the total correlation energy range, that the large errors stem from the extensive number of measurements required to evaluate the full Hamiltonian, and that given the magnitude of the observed errors reliable VQE optimization on current quantum hardware remains unfeasible; the hardware was used only for single-point energy evaluations on ansatz states taken from an exact classical Qubit-ADAPT simulation.",
+     "anchor": "Section 2.5, p.14-15; Section 4 Methods, p.19",
+     "quotes": [
+      "the quantum machine is used exclusively for single-point energy evaluations",
+      "The large errors stem from the extensive number of measurements required to evaluate the full Hamiltonian",
+      "most measurements exhibit significant deviations from the exact QubitADAPT energy, often exceeding the total correlation energy range",
+      "given the magnitude of the observed errors in molecular energy evaluations, reliable VQE optimization on current quantum hardware remains unfeasible."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The paper does not run an optimization on hardware, so the unfeasibility statement extends the single-point result to the full loop."
+    },
+    {
+     "id": "vqe-coherence-two-orders",
+     "verdict": "narrowed",
+     "note": "The two-orders figure comes from thermal-relaxation noise simulations in Qiskit Aer, with typical coherence times of 100 and 150 microseconds scaled by a factor alpha, and the target is an energy error below 1 mHa. It covers the energy evaluation of the ansatz only; the full optimization simulation needs a scaling of about 50 to 100.",
+     "value": "The authors report from thermal relaxation noise simulations in the Qiskit Aer simulator that achieving energy errors below 1 mHa relative to analytical values would require decoherence times growing almost linearly with the number of qubit operators, and that accurate Qubit-ADAPT energies for ansatzes with up to seven operators would necessitate coherence times approximately two orders of magnitude longer than those currently available (α ≈ 100); for the full Qubit-ADAPT simulation they report a required scaling of approximately 50–100.",
+     "anchor": "Section 2.6, p.16-17",
+     "quotes": [
+      "achieving energy errors below 1 mHa relative to analytical values would require decoherence times growing almost linearly with the number of qubit operators (Figure 7b).",
+      "to seven operators (iterations) would necessitate coherence times approximately two orders of magnitude longer than those currently available (α ≈ 100).",
+      "scaled by a factor of approximately 50–100 (Figure 8b)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The result is a simulation with one noise model (thermal relaxation) and no gate or readout error model, on one molecule."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "vqe-abstract-noise-prevents-meaningful-evaluations",
+     "value": "The authors state that the noise levels in today's devices prevent meaningful evaluations of molecular Hamiltonians with sufficient accuracy to produce reliable quantum chemical insights.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "The noise levels in today's devices prevent meaningful evaluations of molecular Hamiltonians with sufficient accuracy to produce reliable quantum chemical insights."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical conclusion from one study on one molecule.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-benzene-active-space-basis-mapping",
+     "value": "The authors state that the active space is four electrons in the two-fold e1g and e2u frontier π-orbitals, with the effective core potential accounting for 38 inner electrons, that the molecular orbitals were computed with PySCF in an STO-3G basis, and that the mapping from molecular orbitals to qubits is the Jordan–Wigner transformation.",
+     "anchor": "Section 2.1.1; Section 4 Methods",
+     "quotes": [
+      "we restrict the active space to four electrons in the two-fold e1g and e2u frontier π-orbitals, significantly simplifying the Hamiltonian.",
+      "Consequently, Vˆeff accounts for 38 inner electrons.",
+      "Molecular orbitals used to construct the Hamiltonian were computed with the PySCF package [23] using a STO-3G basis set.",
+      "The mapping from molecular orbitals to qubits is performed using the Jordan–Wigner transformation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Section 2.1.1 and Methods.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "A minimal STO-3G basis and a four-orbital active space limit what the energies say about benzene itself."
+    },
+    {
+     "id_suggestion": "vqe-hamiltonian-compression-78-percent",
+     "value": "The authors report that the benzene Hamiltonian in the four-electron, four-orbital active space comprises 1057 terms and that retaining only terms with absolute value greater than ten to the minus 2 Ha gives a 78% reduction in the number of terms while keeping the ground-state energy within a precision of approximately ten to the minus 3 Ha of the full calculation; Table 1 lists exact energies of -227.94440224 Ha (full), -227.94181062 Ha (compressed canonical orbitals) and -227.94308835 Ha (compressed natural orbitals), the compressed ones with 233 terms.",
+     "anchor": "Section 2.1.2, pp.4-6, Table 1",
+     "quotes": [
+      "the electronic Hamiltonian in equation 3 comprises 1057 terms.",
+      "Retaining only terms with an absolute value greater than 10−2 Ha leads to a 78% reduction in the number of Hamiltonian terms while maintaining the ground-state energy within a precision of approximately 10−3 Ha compared to the full calculation (Table 1).",
+      "full -227.94440224 compressed MOs -227.94181062 233 compressed NOs -227.94308835 233"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A computed result for one molecule and one setting.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The compressed natural-orbital energy differs from the full energy by about 1.3 mHa and the compressed canonical-orbital energy by about 2.6 mHa, so only the first is under 1.6 mHa."
+    },
+    {
+     "id_suggestion": "vqe-natural-orbitals-cited",
+     "value": "The authors state, citing other work, that using natural orbitals derived from the unrestricted Hartree-Fock density matrix instead of canonical Hartree-Fock orbitals can systematically enhance the convergence and overall performance of VQE algorithms for calculating molecular ground-state energies.",
+     "anchor": "Section 2.1.2, p.6",
+     "quotes": [
+      "it has been demonstrated that using natural orbitals (NOs) derived from the unrestricted Hartree-Fock (UHF) density matrix, instead of canonical Hartree-Fock (HF) orbitals, can systematically enhance the convergence and overall performance of VQE algorithms"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-adapt-six-operators-vs-uccsd",
+     "value": "The authors report that applying ADAPT-VQE with a pool of single and double excitation operators to benzene requires a total of 6 iterations (operators) to converge with an error under chemical accuracy, a 90% reduction in the parameter space compared to UCCSD, which involves 64 operators.",
+     "anchor": "Section 2.2, p.7",
+     "quotes": [
+      "requires a total of 6 iterations (operators) to achieve convergence with an error under chemical accuracy. This represents a 90% reduction in the parameter space compared to UCCSD, which involves 64 operators."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulation result for one molecule.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-adapt-shot-cost-and-symmetry-pool",
+     "value": "The authors state that the ADAPT-VQE reduction in operators is accompanied by an increase in total shot count that can significantly exceed that of UCC, because at each iteration the number of energy gradients to evaluate equals the number of operators in the pool, and that restricting the pool by symmetry gives a 57% reduction in the single and double excitation operator pool, from 14 to 6 operators.",
+     "anchor": "Section 2.2.1, p.7",
+     "quotes": [
+      "This reduction in the operator space is accompanied by an increase in the total shot count, which can significantly exceed that of UCC.",
+      "Applying this symmetry restriction results in a 57% reduction in the size of the single and double (occupied-to-virtual) excitation operator pool, i.e., from 14 to 6 operators."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result for one molecule.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-fermionic-vs-qubit-adapt-comparison",
+     "value": "The authors report from benzene simulations that fermionic operators require fewer iterations and energy evaluations to converge than Qubit-ADAPT, that the maximum circuit depth for the energy evaluation is reduced by an order of magnitude in Qubit-ADAPT, and that the total number of CNOT gates across the full fermionic or qubit simulations is nearly identical, so they use Qubit-ADAPT for the rest of the study.",
+     "anchor": "Section 2.2.2, p.7-8",
+     "quotes": [
+      "Fermionic operators require a smaller number of iterations to achieve convergence (Figure 1a), resulting in fewer energy evaluations (Figure 1b).",
+      "Notably, the maximum circuit depth required for the energy evaluation (at the final iteration before convergence) is reduced by an order of magnitude in QubitADAPT.",
+      "the total number of CNOT gates required across all circuits throughout the full fermionic or qubit simulations is nearly identical (Figure S6)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulation result for one molecule.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-mod-cobyla-two-modifications",
+     "value": "The authors propose two modifications of COBYLA for Qubit-ADAPT, a parameter prescan and a dynamic tolerance criterion, and report from benzene simulations with the Aer simulator at 500 shots per measurement, each point an average of 30 simulations, that Mod-COBYLA shows a similar rate of energy convergence to standard COBYLA but better scaling with the number of energy evaluations required.",
+     "anchor": "Section 2.3, p.9-10, Fig. 2",
+     "quotes": [
+      "we propose two tailored modifications: (i) parameter prescan and (ii) dynamic tolerance criterion.",
+      "employing 500 shots per measurement.",
+      "Each point corresponds to the average of 30 simulations using 500 shots.",
+      "Comparing the performance of standard COBYLA with Mod-COBYLA, we observe a similar rate of energy convergence. However, Mod-COBYLA demonstrates better scaling with the number of energy evaluations required during the simulation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulation result for one molecule.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-job-size-limit-and-job-splitting",
+     "value": "The authors state that IBM jobs are limited by the product of the number of two-qubit gates and the number of observables, at approximately 36000 in their tests, that they use 33000 as a conservative threshold, and that for the compressed benzene Hamiltonian the whole Hamiltonian could be evaluated within a single job for small ansatzes and was split into two jobs for larger ones.",
+     "anchor": "Section 2.4.1, p.11",
+     "quotes": [
+      "gates and the number of observables being L ≈ 36000 according to our tests (S6).",
+      "and L = 33000 is chosen as a conservative threshold to ensure that each job can be executed within the hardware limits.",
+      "we found that the entire Hamiltonian could be evaluated within a single job",
+      "or split into two jobs (nj = 2 for"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own job-splitting setup in Section 2.4.1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-transpiled-depth-five-fold",
+     "value": "The authors report that the depth of the transpiled circuits (the ISA depth) on IBM-Torino is approximately five times greater than that of the original logical circuit, which they attribute mainly to limited qubit connectivity requiring SWAP gates and gate decompositions, and that the depth increases nearly linearly with the number of ADAPT iterations.",
+     "anchor": "Section 2.4.2, p.12-13",
+     "quotes": [
+      "We observe that the depth of the transpiled circuits, referred to as the Instruction Set Architecture (ISA) depth, is approximately five times greater than that of the original logical circuit.",
+      "Moreover, this depth increases nearly linearly with the number of ADAPT iterations (Figure 4b)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result for one device and one molecule.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-cnot-orientation-optimization",
+     "value": "The authors state that for the present benzene circuits their CNOT orientation optimization yields circuit depths comparable to a simple reverse orientation of the staircase pattern, and that for deeper circuits, particularly those from fermionic ADAPT-VQE, it outperforms both the standard and reverse orientations.",
+     "anchor": "Section 2.4.2, p.12",
+     "quotes": [
+      "the optimized implementation yields circuit depths comparable to those obtained with a simple reverse orientation of the staircase pattern (Table S1).",
+      "our optimization strategy outperforms both the standard and reverse orientation approaches, consistently leading to more compact circuits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result for the circuits in this study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-layout-optimization-order-of-magnitude",
+     "value": "The authors report that, for the Qubit-ADAPT ansatz after the first iteration (an ISA circuit of depth 24), energy errors from 30 independent energy evaluations on IBM-Torino at 9000 shots are systematically larger with the layout of lowest quality function than with the best layout, and that the average error with the optimal layout is approximately an order of magnitude smaller than with the worst layout.",
+     "anchor": "Section 2.4.3, p.13-14, Fig. 5",
+     "quotes": [
+      "the corresponding ISA-circuit has a depth of 24",
+      "The results, obtained from 30 independent energy evaluations for each layout, reveal a striking performance gap",
+      "the average error obtained with the optimal layout is approximately an order of magnitude smaller than that of the worst-performing layout.",
+      "The energy error is computed as the evaluated energy using IBM-torino with 9000 shots"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-hardware-experiment-setup-mitigation",
+     "value": "The authors state that the hardware experiments ran on IBM-Torino with error mitigation, named in the hardware section as zero noise extrapolation and twirled readout error extinction, 30 independent runs per iteration each of 9000 measurement shots, with the ansatz constructed from exact calculations at each iteration and only its energy evaluated on the quantum computer; the Methods give the mitigation as IBM runtime resilience level 2, which includes TREX, measurement twirling, ZNE and gate twirling.",
+     "anchor": "Section 2.5; Section 4 Methods",
+     "quotes": [
+      "These experiments were conducted on the IBM-Torino machine, incorporating error mitigation techniques available in Qiskit, specifically zero noise extrapolation (ZNE) and twirled readout error extinction (TREX).",
+      "we performed 30 independent runs per iteration, each consisting of 9000 measurement shots.",
+      "at each iteration, we construct the optimized ansatz from exact calculations and evaluate its energy on the quantum computer.",
+      "using resilience level 2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own hardware setup in Section 2.5 and Methods.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The mitigation list differs between Section 2.5 (two techniques) and the Methods (four techniques under resilience level 2)."
+    },
+    {
+     "id_suggestion": "vqe-hardware-bias-variance-zne",
+     "value": "The authors report that without error mitigation the hardware energy estimates consistently lie above the exact Qubit-ADAPT solutions, with errors growing rapidly with the number of operators and a relatively small standard deviation (stable but biased), that ZNE significantly reduces the average energy error but substantially increases the variance with outliers of very large error, and that the standard deviation increases with ansatz size in all cases; the correlation energy between HF and FCI is given as 53.9 mHa.",
+     "anchor": "Section 2.5, pp.15, 40; Supporting Information S7, Fig. S18",
+     "quotes": [
+      "Without error mitigation, energy estimates consistently lie above the exact Qubit-ADAPT solutions, with errors growing rapidly as the number of operators increases.",
+      "error mitigation using ZNE significantly reduces the average energy error but introduces a substantial increase in variance.",
+      "In all cases, both with and without mitigation, the standard deviation increases with the size of the ansatz",
+      "between HF and FCI (correlation energy) is 53.9 mHa."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-noise-model-setup-coherence-scaling",
+     "value": "The authors state that their noise simulations use a thermal relaxation noise model from the Qiskit Aer simulator, scaling the relaxation and dephasing times from T1(0) = 100 μs and T2(0) = 150 μs, described as typical values for current quantum hardware, by a factor alpha of at least one, with each data point in the energy-error figure an average of six replicates of 9000 shots.",
+     "anchor": "Section 2.6, pp.16-17, Fig. 7",
+     "quotes": [
+      "we conducted a series of simulations using a thermal relaxation noise model from the Qiskit Aer simulator.",
+      "T1(0) = 100 μs and T2(0) = 150 μs represent typical values for current quantum hardware, and α ≥ 1 is a scaling factor controlling the noise level.",
+      "Each data point corresponds to the average of six computed replicates obtained with 9000 shots each."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own simulation setup in Section 2.6.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-noise-violates-variational-principle",
+     "value": "The authors report that at typical coherence times (alpha equal to one) noise effects are excessively large and computed energies are significantly overestimated, so that ansatzes with more variational parameters exhibit larger total energies, in contradiction with the variational principle, and that this is consistent with the energy values from the hardware experiments.",
+     "anchor": "Section 2.6, p.16",
+     "quotes": [
+      "For the typical coherence times considered (α = 1), noise effects are excessively large",
+      "with more variational parameters exhibit larger total energies, in contradiction with the variational principle",
+      "This behavior is consistent with the energy values obtained from"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulation result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-full-optimization-noise-simulation",
+     "value": "The authors report that full Qubit-ADAPT simulations at 1000 shots per measurement with 30 replicates, with convergence criteria removed, fail to variationally converge for short coherence times (α < 5), with cumulative noise errors compounding as circuit depth grows, and that achieving energy accuracies on the order of 1 mHa requires scaling coherence times by approximately 50–100; they note that the energy-evaluation predictions do not account for the full optimization process, which involves gradient evaluations and parameter optimization.",
+     "anchor": "Section 2.6, p.17, Fig. 8",
+     "quotes": [
+      "do not account for the full optimization process, which involves gradient evaluations and parameter optimization.",
+      "using the Qiskit Aer simulator with 1000 shots per measurement.",
+      "For short coherence times (α < 5), the simulations fail to variationally converge toward the analytical solution.",
+      "achieving energy accuracies on the order of 1 mHa in noisy simulations requires coherence times to be scaled by a factor of approximately 50–100 (Figure 8b).",
+      "For each noise configuration, we conducted 30 independent replicates and computed the average"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulation result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-conclusion-below-chemical-accuracy",
+     "value": "The authors conclude that for quantum chemistry Hamiltonians of medium-sized molecules, exemplified by benzene, the accuracy achievable on current hardware remains well below the threshold of chemical accuracy (1 kcal/mol), that the intrinsic noise in energy evaluations prevents reliable convergence of full variational optimizations, that insufficient qubit coherence times are identified as a major source of error, and that coherence times must be improved by at least two orders of magnitude.",
+     "anchor": "Section 3 Conclusions, p.18",
+     "quotes": [
+      "the accuracy achievable on current hardware remains well below the threshold of chemical accuracy (1 kcal/mol).",
+      "we have identified insufficient qubit coherence times as a major source of error.",
+      "current quantum hardware coherence times must be improved by at least two orders of magnitude for VQE simulations to achieve the required accuracy"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conclusion from one molecule, one device and one noise model.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-scope-approximate-wavefunctions-from-exact-run",
+     "value": "The authors state that, because the limits of current hardware make a full VQE optimization of medium-sized molecules directly on a quantum processor extremely challenging, they focused on evaluating the energy accuracy of approximate wave functions obtained at each iteration of ADAPT-VQE, extracted from an ideal (exact) Qubit-ADAPT simulation.",
+     "anchor": "Section 4 Methods, p.19",
+     "quotes": [
+      "The limitations of current quantum hardware make it extremely challenging to perform a full VQE optimization of medium-sized molecules directly on a quantum processor.",
+      "These approximate wave functions were extracted from an ideal (exact) Qubit-ADAPT simulation."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its hardware experiment in Methods.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-adapt-barren-plateau-robustness-cited",
+     "value": "The authors state, citing other work, that the ADAPT-VQE parameter recycling strategy accelerates convergence, mitigates the risk of local minima, and has proven particularly robust against barren plateaus.",
+     "anchor": "Section 2.2, p.7",
+     "quotes": [
+      "This approach accelerates convergence, mitigates the risk of local minima, and has proven particularly robust against barren plateaus."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-si-compression-thresholds-active-space-size",
+     "value": "The authors report in the Supporting Information, from DMRG ground-state energies with bond dimension 200, that for a compression threshold of 1e-2 the ground-state energy error stays within chemical accuracy up to an active space of 6 orbitals and for 1e-3 up to 12 molecular orbitals, that canonical orbitals are detrimental compared to natural orbitals, and that as higher precision is required the contribution of small Hamiltonian terms becomes more significant.",
+     "anchor": "Supporting Information S2, p.S4-S7",
+     "quotes": [
+      "Even for a compression threshold of 1e-2, the GS energy error remains within chemical accuracy up to an active space of 6 orbitals. For 1e-3 compression, the GS energy remains below chemical accuracy up to 12 molecular orbitals.",
+      "we observe that the use of canonical orbitals is detrimental compared to the use of natural orbitals.",
+      "as higher precision is required, the contribution of small Hamiltonian terms becomes more significant",
+      "The GS energies have been computed using the DMRG method (with a bond dimension of 200)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A computed result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqe-si-stretched-h4-mod-cobyla",
+     "value": "The authors report in the Supporting Information that for the linear H4 molecule at 1000 shots, a highly correlated test, COBYLA-MOD shows a significant improvement in convergence of the energy over COBYLA though both converge to a similar final energy value, and that the average final energy with COBYLA is slightly smaller but the deviation of its energy distribution is much larger than with COBYLA-MOD.",
+     "anchor": "Supporting Information S4.1, p.S11-S12",
+     "quotes": [
+      "we have analyzed the linear H4 molecule",
+      "In this example we observe a significant improvement in the convergence of the energy using COBYLA-MOD with respect to COBYLA, however they converge to a similar final energy value.",
+      "In this figure we observe that the average energy using COBYLA is slighly smaller but the deviation of the energy distribution is much larger than COBYLA-MOD.",
+      "Qiskit Aer simulator to compute the energy with 1000 shots."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A simulation result from one study.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "casas-2025-quantum-circuits-high-dimensional-absolutely",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Casas-et-al._2025_Quantum-Circuits-for-High-Dimensional-Absolutely-Maximally-Entangled-States__2504.05394.pdf",
+   "title_in_file": "Quantum Circuits for High-Dimensional Absolutely Maximally Entangled States (arXiv:2504.05394v1, 7 Apr 2025)",
+   "version_note": "The file is the arXiv v1 preprint. The text layer holds the paper twice (arXiv layout, then a two-column copy); the first copy was read in full and the second was used only to confirm text. The two-column figures (Fig. 7 and Fig. 8 captions, the Appendix D and E circuit drawings) came out interleaved with the prose, and the threshold formula of Theorem 1 and Eq. (E5) is printed garbled, so the general threshold cannot be quoted; the d = 6 instance in the text can. Table I of Appendix A lost its numbers in the text layer.",
+   "pages": 18,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A theory paper that gives explicit qudit and qubit circuits for non-stabilizer absolutely maximally entangled states of four parties with four, six and eight levels, a fidelity threshold for genuine multipartite entanglement, and depolarizing-noise analyses for entanglement and teleportation; no circuit is run on hardware.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "casas-ame-definition",
+     "verdict": "confirmed",
+     "note": "Right as stored; Definition 1 in Section II gives the formal form.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, Section I and Definition 1.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "casas-circuits-presented",
+     "verdict": "confirmed",
+     "note": "Right as stored. The circuits use qudits or qubits (AME(4,4) on 8 qubits, AME(4,6) on qudits or a qubit and a qutrit per party, with a 12-qubit decomposition in Appendix C, AME(4,8) on 12 qubits); none is run on hardware.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own scope, abstract and Section III.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "casas-no-experimental-realization",
+     "verdict": "confirmed",
+     "note": "Right as stored. The paper itself does not realize an AME state either, and it encourages future experiments.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement about the field.",
+     "result_type": "field",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "casas-teleport-noise",
+     "verdict": "widened",
+     "note": "The text says around 35% for both AME(4,6) and AME(4,4). The Fig. 8 caption gives the AME(4,6) value as 12/35, about 34%, and the classical teleportation fidelity it must beat as 2/3. The model is depolarizing noise.",
+     "value": "The authors report that under depolarizing noise the AME(4, 6) and AME(4, 4) states remain useful for teleportation up to noise levels of around 35%, and the figure caption gives the AME(4, 6) limit as η = 12/35 ≈ 34%, up to which the protocol can achieve true quantum teleportation, beating a classical fidelity of 2/3.",
+     "anchor": "Section IV.D Teleportation protocol, p.11-12, Fig. 8 caption",
+     "quotes": [
+      "our findings concerning AME(4, 6) and AME(4, 4) states show that, up to noise levels of around 35%, both states even in the presence of noise are useful for teleportation",
+      "Up to noise level of η4,6 = 12/35 ≈ 34%, the protocol can achieve true quantum teleportation, beating classical fidelity of 2/3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The text gives about 35% and the caption about 34% for the same limit; 12/35 is 34.3%. The result is a calculation from a cited fidelity formula, not an experiment."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "casas-definition-1-ame-formal",
+     "value": "The paper defines an Absolutely Maximally Entangled state of n parties of local dimension d as a pure state for which, for all bipartitions into subsystems A and B with the size of A equal to the floor of n over two, the reduced density matrix of A is maximally mixed, and writes AME(n, d) for it.",
+     "anchor": "Section II Background, Definition 1, p.2",
+     "quotes": [
+      "is an Absolutely Maximally Entangled (AME) state if, for all possible bipartitions of the system into subsystems A and B, such that |A| = ⌊n/2⌋",
+      "To specify the number of particles n and their local dimension d in an AME state, we use the notation AME(n, d)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper states Definition 1 in Section II.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "casas-scope-no-experiment-run",
+     "value": "The authors state that they present circuits to foster experimental realization, that they provide a robustness analysis of the AME states against noise by providing experimental fidelity benchmarks, and in the conclusion that they encourage future experimental efforts to construct the AME states, particularly in architectures that naturally allow for qudits, like trapped ions.",
+     "anchor": "Section I Introduction, p.2; Section V Concluding remarks, p.12",
+     "quotes": [
+      "We provide a robustness analysis of these AME states against noise by providing experimental fidelity benchmarks, which certify their multipartite high-dimensional entanglement",
+      "We encourage future experimental efforts to construct the AME states researched in this paper, particularly in architectures that naturally allow for qudits, like trapped ions."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope in the Introduction and Conclusions.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "No circuit is run on a quantum computer or simulator in the text; the 'experimental fidelity benchmarks' are thresholds computed for a noise model."
+    },
+    {
+     "id_suggestion": "casas-four-qubit-and-qutrit-cited",
+     "value": "The authors state, citing other work, that AME states of four qubits do not exist, that all AME states of four qutrits can be transformed to a graph or stabilizer state by local unitary transformations, and so that local dimension 4 is the smallest dimension where four-qudit AME states can exist that cannot be transformed into a graph state.",
+     "anchor": "Section III.A Non-stabilizer four-qudit AME states, p.4",
+     "quotes": [
+      "It is known that AME states of four qubits do not exist [31–33].",
+      "all AME states of four qutrits (d = 3) can be transformed to a graph or stabilizer state using LU transformations.",
+      "d = 4 is the smallest possible local Hilbert space dimension in which four-qudit AME states can exist"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "casas-no-stabilizer-ame46-belief",
+     "value": "The authors state that no stabilizer AME state is known for four quhexes, that explicit constructions of non-stabilizer AME states have been provided by various methods, and that it is strongly believed that no stabilizer AME(4, 6) state exists, though no formal proof has been established.",
+     "anchor": "Section III.A, p.4",
+     "quotes": [
+      "While no stabilizer AME states are known for four quhexes, explicit constructions of non-stabilizer AME states have been provided using various methods [14, 15, 24].",
+      "it is strongly believed that no stabilizer AME(4, 6) state exists, though no formal proof has been established."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A belief the paper states without proof.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "casas-multiunitary-condition-for-ame",
+     "value": "The authors state that, for a four-qudit state built from a bipartite operator A through the operator-state mapping, all two-qudit reduced matrices are maximally mixed if A and its reshuffling and partial transpose are all unitary, and that a bipartite unitary for which the reshuffled and partially transposed operators are also unitary is called 2-unitary, which they call multi-unitary.",
+     "anchor": "Section III Results, Eq. (8), p.4",
+     "quotes": [
+      "it follows that all two-qudit reduced matrices are maximally mixed, i.e., ρ12 = ρ13 = ρ14 = I/d2, if A, AR, and AΓ are all unitary.",
+      "A bipartite unitary operator U for which U R and U Γ are also unitary is called 2-unitary [7, 21]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper states the condition with its premises in Section III, following from Eq. (8).",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "casas-general-circuit-clifford-except-diagonal",
+     "value": "The authors state that the general circuit of their construction is built from the multi-unitary gate made of controlled shift gates, Fourier gates and a diagonal unitary, that biunimodular vectors of the required kind exist for local dimension of at least three including six, that all gates in the circuit are Clifford gates except the diagonal unitary, and that if the diagonal unitary is non-Clifford the output is not a stabilizer AME state and so not a graph state either.",
+     "anchor": "Section III.B Circuits with qudits, p.4-5, Fig. 4",
+     "quotes": [
+      "such (bi) unimodular vectors exist for d ≥ 3 including d = 6.",
+      "Note that all the gates appearing in Fig. 4 are well-known Clifford gates except the diagonal unitary D[Λ].",
+      "If the diagonal unitary is non-Clifford, the output of the quantum circuit is not a stabilizer AME state, and consequently, not a graph state either."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A construction statement with its conditions quoted from Section III.B.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "casas-diagonal-gate-decomposition-d-controlled-phases",
+     "value": "The authors state that implementing a diagonal gate with arbitrary phases is in general costly, and propose partitioning the d squared diagonal elements into d blocks so that the gate becomes a product of d controlled-phase operations, each acting as the identity except when the control qudit is in a given level.",
+     "anchor": "Section III.B, p.6, Eqs. (17)-(21)",
+     "quotes": [
+      "In general, implementing such a gate is costly. We propose a decomposition strategy that partitions the d2 diagonal elements into d blocks",
+      "we can express the gate as a product of d controlled-phase operations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A construction the paper proposes without a hardware test.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "casas-ame44-eight-qubit-circuit",
+     "value": "The authors report an AME(4, 4) circuit in which each ququart is encoded in two qubits, needing 4 × 2 = 8 qubits, from a biunimodular vector of length 16 found by a random search over unimodular vectors with entries in the group {±1, ±i}, state that it can be verified by direct computation that the resulting gate is multi-unitary, and note that the circuit contains the non-Clifford three-qubit double controlled-Z gate.",
+     "anchor": "Section III.C.1, pp.6, 8, Fig. 5",
+     "quotes": [
+      "Assuming that each ququart (d = 4) is encoded using two qubits, we need 4 × 2 = 8 qubits in total to prepare",
+      "This is obtained using a random search over unimodular vectors of length d2 = 16 consisting of entries in a discrete group G4 = {±1, ±i}.",
+      "be verified by direct computation that U [Λ2,2] is a multi-unitary gate i.e., it remains unitary under matrix arrangements R and Γ defined in Eq. (9).",
+      "the circuit also contains non-Clifford three-qubit double controlled-Z (CCZ) gate."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A construction verified by direct computation, with its conditions stated in Section III.C.1.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The verification is by direct computation for one example vector, not a general proof."
+    },
+    {
+     "id_suggestion": "casas-ame46-construction-mixed-qubit-qutrit",
+     "value": "The authors state that for local dimension six the random search is not efficient for biunimodular vectors of length 36 so they use an iterative numerical algorithm, that their example vector has only three distinct entries from a discrete group, that the construction suits a mixed hardware architecture with a qubit and a qutrit per party, and that Appendix C gives a qubit decomposition using a mapping of each level to three qubits, with the full circuit of large depth and the reduction of its depth left as future work.",
+     "anchor": "Section III.C.2; Appendix C",
+     "quotes": [
+      "Unlike in d2 = 16 case, the random search algorithm is not efficient to find biunimodular vectors in d2 = 36.",
+      "Note that the above biunimodular vector of length 36 has only 3 distinct entries belonging to the discrete group",
+      "each qudit of dimension six is represented by a qubit and a qutrit",
+      "Despite its large depth, the circuit has a certain structure.",
+      "We leave it as future work to explore whether the depth of this circuit can be reduced with improved qudit-to-qubit mapping strategies or with other unitary compilation procedures."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A construction with no hardware test and a stated open problem on depth.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "casas-ame48-twelve-qubit-circuit",
+     "value": "The authors report an AME(4, 8) construction where each quoct is encoded in three qubits, using a biunimodular vector of length 64 found with a numerical search algorithm, giving a 12-qubit circuit, and state that decomposing the diagonal gate into single- and two-qubit gates is not simple but can be done with Qiskit, with the result given in Appendix D.",
+     "anchor": "Section III.C.3, p.8, Fig. 6; Appendix D",
+     "quotes": [
+      "As in the previous case we use the numerical search algorithm to obtain biunimodular vectors with respect to (F2 ⊗ F2 ⊗ F2)⊗2.",
+      "A 12-qubit quantum circuit that results in an AME(4, 8) state using the multi-unitary gate given by Eq. (28) is shown in Fig. (6).",
+      "is not simple but can be done using the Qiskit software [36] and is given in Appendix D.",
+      "biunimodular vector of length d2 = 64 that leads to a multi-unitary gate"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A construction with no hardware test.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "casas-lu-inequivalence-claim",
+     "value": "The authors state that the AME states obtained with the biunimodular construction in local dimensions 4, 6 and 8 are not local unitary equivalent to stabilizer or graph states, and in Appendix A report that for local dimension 4 the second-moment invariant differs between graph and non-graph states, is the same for graph and minimal support states but a higher moment shows these are also not LU equivalent, and that for local dimension 8 the invariant takes different values in all three cases.",
+     "anchor": "Section III.C.3; Appendix A",
+     "quotes": [
+      "The AME states obtained using the biunimodular construction in local dimensions d = 4, 6, and 8 are not local unitary (LU) equivalent to stabilizer or graph states.",
+      "For local dimension d = 4, the invariant takes different values for graph and non-graph states illustrating that these are not LU equivalent.",
+      "Interestingly, for local dimension d = 8, the invariant takes different values in all three cases illustrating that these are not LU equivalent."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A computed result; the numerical table lost its values in the text layer and the local dimension 6 case is not discussed in the Appendix A text.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The Appendix A prose covers local dimensions 4 and 8; for 6 the paper relies on Table I, whose numbers are not in the text layer, and no graph-state AME(4, 6) is known to compare with."
+    },
+    {
+     "id_suggestion": "casas-lu-invariant-second-moment-criterion",
+     "value": "The authors state that for multi-unitary gates U1 and U2, if the second-moment invariants of the two gates differ then the gates are not LU equivalent, and if they are equal then the gates may or may not be LU equivalent.",
+     "anchor": "Appendix A, p.14",
+     "quotes": [
+      "For multi-unitary gates U1 and U2 if Tr[I(U1)2] ̸= Tr[I(U2)2], then U1 and U2 are not LU equivalent. However, if Tr[I(U1)2] = Tr[I(U2)2] then U1 and U2 may or may not be LU equivalent."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper states the criterion and its premise in Appendix A, building on the invariance shown for the spectrum of the operator.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "casas-theorem-1-genuine-entanglement-threshold",
+     "value": "The paper states as its first theorem, based on a theorem of a cited reference, that an AME state of four particles each of dimension d with d at least three is guaranteed to be genuinely multipartite entangled in a space of dimension d to the fourth if the fidelity of an experimental state with the ideal state exceeds a threshold depending on d, which the text layer prints garbled; for four particles of local dimension six the threshold is stated as 5/6 ≈ 0.83, which the authors say may be challenging for certain experimental setups.",
+     "anchor": "Theorem 1, Section IV.B, p.9; Appendix E, p.15-16",
+     "quotes": [
+      "Consider an AME state consisting of 4 particles, each with dimension d ∈ N and d ≥ 3.",
+      "The state is guaranteed to be genuinely multipartite entangled in a space of dimension d4 if the fidelity of an experimental state with respect to the ideal state satisfies",
+      "the fidelity threshold is Fe(x4p,6) ≥ 5/6 ≈ 0.83.",
+      "Achieving this fidelity may be challenging for certain experimental setups, given the complexity of the circuit required to prepare such a state."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The general threshold formula cannot be quoted from the text layer, so the statement is graded on the d = 6 instance and the stated conditions.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The threshold for d = 6 equals (d − 1) over d, which suggests the general form, but the formula is garbled in the text layer."
+    },
+    {
+     "id_suggestion": "casas-appendix-e-proof-outline",
+     "value": "The authors outline the proof of Theorem 1 in Appendix E: an experimental fidelity above the maximum fidelity Fmax achievable by states in which one particle has local dimension reduced by one certifies genuine entanglement, the set of such states is convex so the maximum is reached by a pure state, the maximum is bounded using the Schmidt coefficients of the AME state across the single-particle bipartitions, which are all the same, and this gives a lower bound on the experimental fidelity.",
+     "anchor": "Appendix E: Certification of genuine multipartite entanglement, pp.16-18",
+     "quotes": [
+      "we want to derive the minimum fidelity that we can accept to ensure that our state lies outside the convex hull of states that can be decomposed into other states where at least",
+      "The set of (d, d, d, d − 1) states is convex, which means that the maximum in Eq. (E1) can always be achieved by a pure state",
+      "the Schmidt coefficients across bipartitions 1|123, 2|134, 3|124, and 4|123 are all the"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The proof is only partly quotable: its closing equations are garbled in the text layer.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "casas-noise-model-negativity-measure",
+     "value": "The authors state that depolarizing noise is a suitable model for most architectures because it captures the loss of coherence and mixing with the maximally mixed state, that the noise level is a parameter gamma in the interval from 0 to 1, and that they quantify entanglement by negativity, the sum of negative eigenvalues of the partially transposed state.",
+     "anchor": "Section IV.C Noise robustness, p.10",
+     "quotes": [
+      "Depolarizing noise is a suitable model for most architectures, as it captures the loss of coherence and mixing with the maximally mixed state, which is common in various quantum platforms.",
+      "we choose negativity – the sum of negative eigenvalues λi of the partially transposed state ρΓ",
+      "The level of noise is quantified via a parameter γ ∈ [0, 1]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own noise model and measure in Section IV.C.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "Depolarizing noise is one model; correlated and gate-level noise are not analyzed."
+    },
+    {
+     "id_suggestion": "casas-ame46-negativity-vs-noise-28-percent",
+     "value": "The authors report from the negativity analysis that, for depolarizing noise up to a level of 28%, the AME(4, 6) state has higher entanglement than a generic pure state of the same dimensions and is much more entangled than the GHZ state, so it can be distinguished from a random state by its entanglement alone, but in a closeup near the maximally mixed state CUE random pure states and GHZ states are more robust to mixing.",
+     "anchor": "Section IV.C, p.10-11, Fig. 7",
+     "quotes": [
+      "To conclude, for a level of noise γ up to η = 28% AME(4, 6) state has higher entanglement than a generic",
+      "It is also much more entangled under this measure than the GHZ state.",
+      "A closeup of the region near the maximally mixed state shows that in this domain, CUE random pure states and GHZ states are more robust to mixing"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A computed result for one state and one noise model.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Fig. 7 caption and body text are interleaved in the text layer; the 28% value is read from the surrounding sentences."
+    },
+    {
+     "id_suggestion": "casas-gate-noise-assumptions-4-percent",
+     "value": "The authors state that, assuming the Fourier and phase gates are much less noisy than the diagonal gate, the initial Bell-state preparation is relatively noise-free and noise is additive over the composition of gates, and using the decomposition of the diagonal gate into six controlled phase gates, a noise level of 4% at the level of individual gates would reassure distinguishability from Haar-random gates.",
+     "anchor": "Section IV.C, pp.10-11",
+     "quotes": [
+      "F6 and P gates are much less noisy than D(Λ).",
+      "The preparation of the initial pair of Bell states |Φ⟩13 ⊗ |Φ⟩24 is also relatively noise-free.",
+      "Using these assumptions as well as the decomposition of D(Λ) into 6 controlled phase gates, we can estimate",
+      "the noise level of 4% at the level of individual gates would reassure distinguishability from Haar-random gates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An estimate that rests on stated assumptions, not on a measurement.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The estimate depends on the three stated assumptions about gate noise; the paper does not test them on a device."
+    },
+    {
+     "id_suggestion": "casas-ame-teleports-bipartite-state",
+     "value": "The authors state in a footnote that a four-party GHZ state allows teleporting a state of a single subsystem of dimension d to any other party, while any AME state enables teleporting any bipartite state of dimension d squared to the remaining two parties.",
+     "anchor": "Section IV.C, footnote 1, p.10",
+     "quotes": [
+      "Four-party GHZ state allows one to teleport a state of a single subsystem of dimension d to any other party, while any AME state enables us to teleport any bipartite state of dimension d2 to the remaining two parties."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement given without a derivation in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "casas-platforms-trapped-ions-promising",
+     "value": "The authors state that a trapped-ion programmable qudit quantum computer has demonstrated control over up to seven internal levels, that photonic and superconducting circuit platforms also provide qudit control though scalability beyond four levels and three-party interactions remains challenging, and that at present trapped ions appear to be the most promising platform for implementing high-dimensional AME states; they add that if arbitrary controlled-level operations with variable phases are available, six controlled operations are sufficient for the required gate.",
+     "anchor": "Section IV.A Qudit quantum gates, p.8-9",
+     "quotes": [
+      "has demonstrated control over up to seven internal levels",
+      "though scalability beyond four levels and three-party interactions remains challenging.",
+      "At present, trapped ions appear to be the most promising platform for implementing high-dimensional AME states.",
+      "arbitrary controlled-level operations with variable phases are available, six controlled operations are sufficient to implement the required quantum gate."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author assessment of other platforms, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "casas-ame-benchmark-and-simulability-claims",
+     "value": "The authors state that, since high entanglement has to be present in quantum devices for any quantum advantage and AME states are arguably the most entangled states that can be constructed, it is natural to propose generating AME states with quantum circuits as a demanding benchmark for quantum computers, and that while stabilizer states are efficiently simulable by the Gottesman-Knill theorem, the non-stabilizer AME states studied exhibit entanglement structures beyond this regime.",
+     "anchor": "Section I Introduction, p.1-2",
+     "quotes": [
+      "it is natural to propose the generation of AME states with quantum circuits as a demanding benchmark for quantum computers [12].",
+      "While stabilizer states are efficiently simulable due to the Gottesman-Knill theorem, the nonstabilizer AME states we study exhibit entanglement structures beyond this regime."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The paper does not prove that the non-stabilizer AME circuits are hard to simulate classically; it states only that the states lie beyond the stabilizer regime."
+    },
+    {
+     "id_suggestion": "casas-no-analog-route-and-harder-than-ghz",
+     "value": "The authors state that there is no known physical process generating AME states or known Hamiltonian whose ground state is an AME state, so it is currently not feasible to create AME states using analog quantum simulators, and that from the perspective of experimentalists AME states are harder to create than GHZ states.",
+     "anchor": "Section V Concluding remarks, p.11",
+     "quotes": [
+      "Therefore, it is currently not feasible to create AME states using analog quantum simulators",
+      "From the perspective of experimentalists, AME states are harder to create than GHZ states."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this limit in its conclusion.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "casas-conclusion-benchmark-and-robustness",
+     "value": "The authors state that AME states are the most entangled states in the multipartite Hilbert space with several times larger entanglement across all bipartitions than GHZ states even for four subsystems, that while being hard to create their entanglement is very robust to noise as shown in the paper, and that benchmarking them is easily realizable by measuring Rényi entropy of order two on a random bipartition.",
+     "anchor": "Section V Concluding remarks, p.11",
+     "quotes": [
+      "AME states are the most entangled states in the multipartite Hilbert space, with several times larger entanglement across all bipartitions than GHZ states even for four subsystems.",
+      "While being hard to create, their entanglement is very robust to noise, as we have shown in this contribution.",
+      "one can measure Rényi entropy of order two, related to coincidence experiments, on a random bipartition [46]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusions, resting on the paper's noise model and not tested on hardware.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The robustness claim holds in the paper's analysis for noise up to about 28%; near the maximally mixed state other states are more robust."
+    }
+   ]
+  },
+  {
+   "record_id": "casse-2026-quantum-re-uploading-calorimetry-optimized",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Casse-et-al._2024_Optimizing-Hyperparameters-for-Quantum-Data-Re-Uploaders-in-Calorimetric__2412.12397.pdf",
+   "title_in_file": "Quantum Re-Uploading for Calorimetry: Optimized Architectures with Extended Expressivity (arXiv:2412.12397v2, 31 Jan 2026)",
+   "version_note": "The file is arXiv v2 (31 Jan 2026), with the title above; the file name still carries the v1 title and 2024 date. The text layer holds the paper twice; the first copy (main text and references, no appendices) was read in full and the second was used only to confirm text. The tables of learning-rate results (Table 4) and of the model comparison (Table 6) lost their column order in the text layer, so cells there are assigned from the surrounding sentences.",
+   "pages": 42,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A simulation study of single-qubit quantum data re-uploading units for three-class particle identification from three calorimeter features, with a Fourier-support analysis, hyperparameter sweeps, a parameter-matched comparison with a three-qubit VQC and a small MLP, and a ten-sample run on IQM Garnet.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "limits-engineered-features-thresholding-baselines",
+     "verdict": "widened",
+     "note": "Right as stored. The Conclusion also lists future work (multi-logit readouts, less curated inputs, noise-aware training and mitigation, broader baselines), and states that the Fourier analysis concerns representational capacity only.",
+     "value": "The authors state that key limitations include the use of a small set of engineered features and a scalar-to-multiclass thresholding scheme, as well as a restricted baseline class focused on mono-encoding, that the hardware run is not intended as a noise-robust performance benchmark, and that the frequency-domain analysis concerns representational capacity and does not by itself address optimization difficulty, noise sensitivity, or generalization beyond the considered task.",
+     "anchor": "Section 5 Conclusion, p.39",
+     "quotes": [
+      "Key limitations include the use of a small set of engineered features and a scalarto-multiclass thresholding scheme, as well as a restricted baseline class focused on mono-encoding.",
+      "This hardware run is not intended as a noise-robust performance benchmark",
+      "this analysis concerns representational capacity and does not by itself address optimization difficulty, noise sensitivity, or generalization beyond the considered task."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own limits in Section 5.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qru-gains-small-depths-cost-linear",
+     "verdict": "widened",
+     "note": "Right as stored. The body gives the figures: loss from 0.2558 to under 0.0667 between depths 1 and 3, a plateau near 0.03 beyond depth 4, accuracy near 0.98 from depth 4, and run time exceeding 60,000 s at depth 14. The authors say the saturation is likely because the task is relatively simple.",
+     "value": "The authors report that most gains occur at small depths, with diminishing returns as depth increases while training cost grows approximately linearly: the loss drops from 0.2558 to less than 0.0667 between depths 1 and 3, stabilizes around 0.03 beyond a depth of 4, accuracy approaches 0.98 from a depth of 4 onwards, and execution time exceeds 60,000 seconds for a depth of 14, approximately 16 hours.",
+     "anchor": "Abstract p.1; Section 4.1.1 Circuit depth, p.9-10",
+     "quotes": [
+      "indicates that most gains occur at small depths, with diminishing returns as depth increases while training cost grows approximately linearly.",
+      "between depths 1 and 3, where the loss drops from 0.2558 to less than 0.0667. Beyond a depth of 4, the loss stabilizes around 0.03",
+      "with accuracy approaching 0.98 from a depth of 4 onwards.",
+      "We observe a near linear increase in execution time with depth (Figure 5c), with the time exceeding 60,000 seconds for a depth of 14, which is approximately 16 hours."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The run time is simulator wall-clock time on a cluster, so it measures simulation cost, not hardware cost."
+    },
+    {
+     "id": "qru-higher-accuracy-than-mono-encoded-vqc",
+     "verdict": "narrowed",
+     "note": "The comparison is one parameter-matched run (90 trainable parameters, depth 10, Adam at learning rate 5×10−5 for 10 epochs, reported as per-epoch means) with a three-qubit VQC that encodes the data once; the test accuracies are 0.987 for the QRU, 0.927 for the VQC and 0.970 for a small MLP. The text gives no spread for the VQC or MLP runs, although a 50-run spread is given for the QRU baseline alone.",
+     "value": "The authors report that, compared at matched parameter count with a standard mono-encoded variational quantum circuit baseline, QRUs obtain higher accuracy; in the parameter-matched comparison with 90 trainable parameters at a learning rate of 5×10−5 for 10 epochs, the single-qubit QRU reached a test accuracy of 0.987, against 0.927 for the three-qubit VQC and 0.970 for the MLP.",
+     "anchor": "Abstract; Section 4.3, Tables 5 and 6",
+     "quotes": [
+      "compare them, at matched parameter count, to a standard mono-encoded variational quantum circuit (VQC) baseline.",
+      "In this setting, QRUs obtain higher accuracy than the mono-encoded baseline.",
+      "Under this protocol (LR = 5×10−5, 10 epochs), we obtain results shown with Table 6:",
+      "VQC (3q) 3QL Q=3, L=10 3×3×10 = 90 ⟨Z0⟩",
+      "QRU attains the highest test accuracy (0.987), followed by MLP (0.970). VQC lags (0.927)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The result is one simulated run on one task with a thresholded scalar output, so it does not show that single-qubit QRUs beat VQCs in general."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qru-dataset-setup",
+     "value": "The authors state that the data come from the OGCID/D2 simulation dataset of single-particle interactions with a simplified high-granularity calorimeter, using one file each of electrons, pions and muons at 10–100 GeV, with three selected features (total energy deposited in the ECAL, length of the shower and standard deviation of the energy deposits in the HCAL), a training set of 26 334 events and a test set of 2 926 events.",
+     "anchor": "Section 3.1 Dataset, pp.5-6, Table 1",
+     "quotes": [
+      "The data used in this study are extracted from the OGCID/D2 simulation dataset [21].",
+      "the total energy deposited in the ECAL, the length of the particle interaction shower and the standard deviation of the energy deposits in the HCAL.",
+      "Particle classes Electrons (e), pions (π), muons (μ) Energy range 10–100 GeV",
+      "Training set 26 334 events Test set 2 926 events Train/test split 90% / 10% (event-level)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own dataset setup in Section 3.1 and Table 1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The features are hand-selected for their discriminating power, which makes the task easier than raw cell energies."
+    },
+    {
+     "id_suggestion": "qru-baseline-config-scalar-thresholding",
+     "value": "The authors state that the baseline is a single-qubit QRU with Huber loss, the Adam optimizer, learning rate 5 × 10−5, input normalization in [−π, π], rotation sequence RX−RY−RX, three trainable parameters per input feature, circuit depth L = 10 and full-batch updates, and that the three-class task is cast as scalar regression with targets {−1, 0, +1} and class labels recovered by thresholding at {−0.33, +0.33}, which they say is less directly comparable to softmax cross-entropy baselines and can introduce sensitivity to threshold placement.",
+     "anchor": "Section 3.2 Baseline setups, pp.6-8",
+     "quotes": [
+      "The baseline corresponds to a single-qubit QRU with: Huber loss, Adam optimizer, learning rate 5 × 10−5, input normalization in [−π, π], rotation sequence RX−RY−RX, three trainable parameters per input feature, circuit depth L = 10, and no explicit batching (full-batch updates).",
+      "Class labels are recovered by thresholding at {−0.33, +0.33}.",
+      "it is less directly comparable to standard softmax cross-entropy baselines and can introduce sensitivity to threshold placement across random seeds or data shifts.",
+      "each model outputs y ∈ [−1, 1], trained with a regression loss against targets {−1, 0, +1}."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own baseline configuration and framing in Section 3.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qru-fifty-run-variability",
+     "value": "The authors report a variability study over 50 independent runs of the baseline, each with a new random initialization and dataset reshuffling, with test accuracy mean 0.98 and variability 0.002881 and test loss mean 0.028 and variability 0.041.",
+     "anchor": "Section 3.2 and Section 4.1, pp.6, 8, Fig. 2",
+     "quotes": [
+      "we performed a variability study over 50 independent runs to quantify the dispersion of test accuracy and loss.",
+      "For the test accuracy, the mean is 0.98 with a variability of 0.002881",
+      "On the test losses side, the mean is 0.028 with a variability of 0.041."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text does not say whether the variability is a standard deviation or a variance."
+    },
+    {
+     "id_suggestion": "qru-depth-one-is-not-reuploading-and-simple-task",
+     "value": "The authors state that a depth of 1 is a circuit that has not re-uploaded the input and so is not technically a QRU, and that the saturation of gains with depth is likely because the classification problem is relatively simple and the added complexity of deeper circuits does not translate into significant improvement.",
+     "anchor": "Section 4.1.1 Circuit depth, pp.9, 11",
+     "quotes": [
+      "It's important to note that a depth of 1 represents a quantum circuit that has not re-uploaded the input and that means it's not technically a QRU.",
+      "This is likely because our classification problem is relatively simple and the additional complexity introduced by deeper circuits does not translate into significant performance improvements."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qru-fourier-support-bound",
+     "value": "The authors state that if each feature is re-encoded a number of times through additive single-qubit rotations, the model output admits a Fourier-type expansion whose support is bounded in each feature by the number of re-encodings rather than by the number of qubits, so that a mono-encoded VQC has support within {−1, 0, 1} whereas a QRU with L re-upload blocks has support within {−L, ..., 0, ..., L}, citing earlier work for the expansion.",
+     "anchor": "Section 2 Theoretical Foundations, Eq. (2), p.3",
+     "quotes": [
+      "If each feature xj is re-encoded Kj times through additive single-qubit rotations of the form RY (xj), then the model output admits a Fourier-type expansion [16]",
+      "Hence, the highest representable frequency in xj is bounded by the number of re-encodings Kj rather than by the number of qubits.",
+      "A mono-encoded VQC has Kj = 1, leading to a limited support FVQC ⊆ {−1, 0, 1}, whereas a QRU with L re-upload blocks has FQRU ⊆ {−L, . . . , 0, . . . , L}."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to cited work and applies to its two architectures without a proof of its own.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The bound is on which frequencies can appear, not on which are reached after training."
+    },
+    {
+     "id_suggestion": "qru-spectral-activation-experiment",
+     "value": "The authors report a numerical experiment for 3 features, depth L = 4, M = 100 random parameter initializations and N = 96 points along the diagonal x = (u, u, u) with u in [−1, 1], with an activation threshold ε = 0.05 on DFT coefficients, in which the QRU activates harmonics up to order ±4 while the VQC remains confined to ±1, which they say confirms the theoretical prediction.",
+     "anchor": "Section 2, Fig. 1, p.3-4",
+     "quotes": [
+      "we performed a numerical experiment for d = 3, L = 4, M = 100 random parameter initializations, and N = 96 points along the diagonal x = (u, u, u) with u ∈ [−1, 1].",
+      "with ε = 0.05 and the index n corresponds to the DFT frequency order.",
+      "The QRU activates harmonics up to order ±4 while the VQC remains confined to ±1.",
+      "The results confirm the theoretical prediction"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A numerical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The experiment samples a one-dimensional slice of the three-dimensional input space, so it does not show activation of mixed-feature frequencies."
+    },
+    {
+     "id_suggestion": "qru-input-normalization-no-difference",
+     "value": "The authors report that normalizing inputs to 0 to 2π or to −π to π gives virtually identical results, with final mean loss 0.032016 against 0.031978 and final test accuracy 0.9796 against 0.9788, which they attribute to the circuit functions being symmetric over a period of 2π, and that non-normalized data failed to learn properly.",
+     "anchor": "Section 4.1.1 Input normalization, pp.12-13, Fig. 6",
+     "quotes": [
+      "The final mean loss is 0.032016 for 0 to 2π and 0.031978 for −π to π, indicating virtually identical outcomes.",
+      "the final test accuracy is 0.9796 for 0 to 2π and 0.9788 for −π to π",
+      "Previously, we tested the QRU model on non-normalized data and observed that it failed to learn properly."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qru-rotation-gate-templates",
+     "value": "The authors report from six symmetric circuit templates that Rx−Ry−Rx achieves the best final loss, Rz−Ry−Rz has a significantly lower final test accuracy than the others, and fully parametrized rotations involving only Rx and Ry are more stable and perform better than those involving Rz; a triplet circuit Rx−Ry−Rz reached final mean loss 0.036480 and test accuracy 0.978141, which they say shows two-rotation circuits tend to outperform in minimizing loss in their case.",
+     "anchor": "Section 4.1.1 Rotation gates, pp.15, 17-18, Figs. 9-11",
+     "quotes": [
+      "The results show that the Rx − Ry − Rx circuit achieves the best performance in terms of final loss",
+      "the Rz − Ry − Rz circuit has the lowest final test accuracy, significantly lower than the other circuits.",
+      "The final mean loss is 0.036480, with a final mean train accuracy of 0.978610 and test accuracy of 0.978141.",
+      "it becomes evident that the two-rotation circuits tend to outperform in minimizing loss in our case."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qru-parameters-per-input-three-best",
+     "value": "The authors report that the final loss falls from 0.1935 and 0.2305 with one and two parameters per input to 0.0239 with three, then rises to 0.0300 and 0.0416 with four and five, and that final test accuracy rises from 0.825 with one parameter to 0.985 with three and is 0.965 and 0.975 with four and five, so they conclude three parameters per input is optimal here.",
+     "anchor": "Section 4.1.1 Number of trainable parameters per input, p.19, Fig. 12",
+     "quotes": [
+      "the final loss decreases dramatically when moving from 1 or 2 parameters per input (0.1935 and 0.2305, respectively) to 3 parameters, where the final loss drops to 0.0239.",
+      "after 3 parameters per input, the final loss slightly increases again for 4 and 5 parameters (0.0300 and 0.0416, respectively).",
+      "the final test accuracy improves from 0.825 with 1 parameter to 0.985 with 3 parameters.",
+      "decreases with 4 and 5 parameters (0.965 and 0.975)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qru-gradient-accumulation-update-interval",
+     "value": "The authors report that varying the optimizer update interval by gradient accumulation with a fixed epoch budget, an effective batch of 20 gives a final accuracy of 0.973 and loss 0.042 while an effective batch of 100 gives 0.881 accuracy and loss 0.136, and that settings of one to three optimizer steps per epoch fail to make progress and converge near chance-level accuracy of about 0.31–0.33, which they attribute to too few parameter updates within the epoch budget.",
+     "anchor": "Section 4.1.2 Batch size, p.20, Table 2",
+     "quotes": [
+      "moderate update intervals remain effective (e.g., Beff = 20 yields a final accuracy of 0.973 and loss 0.042)",
+      "(e.g., Beff = 100 yields 0.881 accuracy and loss 0.136)",
+      "training fails to make progress and converges near chance-level accuracy (≈ 0.31–0.33)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "This varies the number of optimizer steps, not a mini-batch of circuit evaluations, so it is not a standard batch-size study."
+    },
+    {
+     "id_suggestion": "qru-optimizer-comparison-adam-best",
+     "value": "The authors report in the optimizer comparison table final test accuracies of 0.844 for RMSprop, 0.334 for SGD and 0.984 for Adam, with final losses of 0.109, 1.024 and 0.0207, and state that Adam achieved the best overall performance at slightly higher run time, while SGD with the learning rate used was more sensitive to the learning-rate choice.",
+     "anchor": "Section 4.1.2 Optimizer, pp.22-23, Table 3",
+     "quotes": [
+      "Optimizer RMSprop SGD Adam Execution time (s) 142,569.70 21,217.02 143,880.52 Final test accuracy 0.844 0.334 0.984 Final loss 0.109 1.024 0.0207",
+      "Adam achieved the best overall performance, at the cost of a slightly higher runtime due to the additional moment estimates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "SGD ran at the shared learning rate of 5e-05, so its poor result may reflect that setting, as the authors suggest."
+    },
+    {
+     "id_suggestion": "qru-loss-function-accuracy-insensitive",
+     "value": "The authors report that over 30 epochs the final loss values differ significantly between L1, L2 and Huber losses while the final test accuracy remains nearly the same for all three, and that they do not use cross-entropy because the single-qubit QRU produces only one expectation value, not a probability vector over the three classes.",
+     "anchor": "Section 4.1.2 Loss function, pp.24, 26, Figs. 16-17",
+     "quotes": [
+      "The results of our experiments using these loss functions over 30 epochs are shown in the figure 16.",
+      "the final loss values differ significantly between the functions, the final test accuracy remains nearly the same for all three.",
+      "We do not use cross-entropy as the loss function here because our single-qubit QRU produces only one expectation value in [−1, 1], rather than a probability vector over the three target classes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qru-learning-rate-sweep-and-inconsistency",
+     "value": "The authors report that with Adam a learning rate of 0.5 gives large oscillations with accuracy around 0.33, a rate of 5e-05 gives smooth convergence reaching nearly 1.0 accuracy, and 5e-06 gives stable but slower learning; they state both that 5e-05 is optimal for Adam and that a rate of 5 × 10−4 reaches a test accuracy of 98.5% and outperforms both higher and lower rates.",
+     "anchor": "Section 4.1.2 Learning rate, p.28, Fig. 18, Table 4",
+     "quotes": [
+      "For a learning rate of 0.5 using the Adam optimizer (Figure 18a), we observe significant oscillations in both loss and accuracy, indicating instability due to large parameter updates, with accuracy remaining around 0.33.",
+      "These results suggest that 5e-05 is optimal for Adam, offering a good trade-off between speed and stability.",
+      "With a learning rate of 5 × 10−4, the model reaches a test accuracy of 98.5%, outperforming both higher and lower rates.",
+      "yields smooth convergence, reaching nearly 1.0 accuracy",
+      "the smaller learning rate of 5e-06 (Figure 18c) also provides stable learning but slower convergence"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, with two statements about the best rate that disagree.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text names 5e-05 and 5e-04 as the best Adam rate in different places; Table 4's columns are scrambled in the text layer, so it cannot settle which."
+    },
+    {
+     "id_suggestion": "qru-bayesian-optimization-results",
+     "value": "The authors report a Bayesian optimization over depth, learning rate, loss function and optimizer using gp_minimize with 50 calls, a UCB acquisition and kappa of 4, whose configuration with the smallest final loss (depth 7, learning rate 0.5, Huber loss, Adagrad, score 0.018) reached accuracy 0.978, while the best accuracy of 0.9824 (depth 5, learning rate 0.5, L2 loss, Adadelta) had loss 0.0344; manual optimization reached a slightly higher accuracy of 0.9854 with a learning rate of 5e−4.",
+     "anchor": "Section 4.2.1 Bayesian optimization, pp.31-32, Fig. 22",
+     "quotes": [
+      "gp_minimize(objective, space, n_calls=50, random_state=0, acq_func=\"UCB\", kappa=4).",
+      "The optimal configuration that resulted in the smallest final loss is: depth=7, learning_rate=0.5, loss_function=Huber, optimizer=Adagrad with a score of 0.018.",
+      "reaching 0.978. In fact, the best accuracy achieved was 0.9824, obtained with the configuration depth=5, learning_rate=0.5, loss_function=L2,",
+      "reaching 0.9854 with a learning rate of 5e−4.",
+      "but this configuration produced a slightly higher loss : 0.0344."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qru-hyperband-fanova-importance",
+     "value": "The authors report that HyperBand, which also tuned input normalization so its results are not strictly comparable with the Bayesian runs, frequently selected large learning rates with adaptive optimizers and often favored deeper circuits, that an fANOVA analysis suggests most of the performance variance is explained by the learning rate and the optimizer within the explored ranges, and that HyperBand identified high-performing configurations faster than their Bayesian procedure.",
+     "anchor": "Section 4.2.2 Hyperband optimization, p.34, Fig. 23",
+     "quotes": [
+      "unlike the Bayesian runs, HyperBand also tuned input normalization. Consequently, results are not strictly comparable across the two methods.",
+      "most of the performance variance is explained by the learning rate and the optimizer, whereas depth, loss function, and normalization contributed less",
+      "HyperBand identified high-performing configurations faster than our Bayesian procedure."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, reported without numbers.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qru-parameter-matched-setup-and-generalization-gap",
+     "value": "The authors state that in the parameter-matched comparison a single-qubit QRU and a three-qubit VQC each have 90 trainable parameters at depth 10 and a two-layer MLP with 17 hidden units has 86, that the VQC shows a negative generalization gap (test below train, −0.029) unlike the QRU and MLP, and that the MLP optimizes fastest by a loss-area proxy while the QRU achieves the best generalization in this run.",
+     "anchor": "Section 4.3 Comparison of QRU, VQC, and MLP, p.35, Tables 5 and 6",
+     "quotes": [
+      "MLP (3→ h → 1) 5h+1 h=⌊(90−1)/5⌋=17 5×17+1 = 86 tanh",
+      "VQC lags (0.927) and shows a negative generalization gap (test < train, −0.029)",
+      "the MLP optimizes fastest (lowest loss area), while the QRU achieves the best generalization in this run.",
+      "Table 5 summarizes the counts used in our run (L=10)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The authors write 'in this run', so the ranking is from a single run."
+    },
+    {
+     "id_suggestion": "qru-hardware-proof-of-execution-iqm-garnet",
+     "value": "The authors report that the trained QRU (depth L = 7, three input features, Adadelta with L2 loss) was run on the qBraid-managed IQM Garnet device for the first 10 test samples at 50 and 200 shots, with all three runs, including CPU simulation, giving 10/10 correct predictions, and they describe it as only a small-scale validation, not a full hardware benchmarking campaign.",
+     "anchor": "Section 4.4 Hardware inference on a real QPU, pp.36-38, Fig. 25",
+     "quotes": [
+      "We evaluated the same first N = 10 test samples (from the saved PyTorch test loader) on: (i) CPU simulation (exact ⟨Z⟩), and (ii) the IQM Garnet QPU via qBraid with Nshots = 50 and 200.",
+      "All three runs yield 10/10 correct predictions on this subset",
+      "While this is only a small-scale validation (and not a full hardware benchmarking campaign), it demonstrates end-to-end deployability of the learned QRU inference pipeline on real hardware.",
+      "The circuit implements a data re-uploading scheme with input dimension D = 3 and depth L = 7.",
+      "Adadelta optimization is used with an L2 loss"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on ten samples from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Ten samples whose margins sit far from the thresholds say little about hardware-noise accuracy over the full test set."
+    },
+    {
+     "id_suggestion": "qru-gpu-speedup-and-compute-cost",
+     "value": "The authors report that PennyLane-Lightning was tested for GPU acceleration, with small circuits achieving up to about 2.5 times speed-ups while larger circuits did not significantly benefit, and that several runs required multiple days of continuous computation on a computing cluster.",
+     "anchor": "Section 3.2, p.7",
+     "quotes": [
+      "Small circuits achieved up to ∼ 2.5× speed-ups on GPU, whereas larger circuits did not significantly benefit due to shared cloud resources.",
+      "several runs required multiple days of continuous computation to complete."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical statement from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qru-universal-approximation-cited",
+     "value": "The authors state, citing other work, that the QRU has been shown to possess a universal approximation capability under iterative data encoding.",
+     "anchor": "Section 1 Introduction, p.2",
+     "quotes": [
+      "QRU has been shown to possess a universal approximation capability under iterative data encoding"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qru-novelty-and-expressivity-claims",
+     "value": "The authors state that the multi-class electron, muon and pion benchmark has, to their knowledge, previously been unused in the literature, and that expressivity is not simply proportional to the Hilbert space dimension or circuit depth but depends on layer depth, gate structure and the ability of parameter optimization to exploit the non-linear transformations introduced by data re-uploading.",
+     "anchor": "Section 1 Introduction; Section 4.1.1 Circuit depth",
+     "quotes": [
+      "This multi-class benchmark (electrons, muons, pions), to our knowledge previously unused in the literature",
+      "Importantly, this highlights that expressivity is not simply proportional to the Hilbert space dimension or circuit depth."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Author claims, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qru-future-work-list",
+     "value": "The authors state that future work should extend the evaluation to multi-logit readouts, less curated inputs, noise-aware training and mitigation, multi-dimensional spectral probes, and broader baselines including re-encoded multi-qubit VQCs and capacity-matched classical models.",
+     "anchor": "Section 5 Conclusion, p.39",
+     "quotes": [
+      "Future work should extend the evaluation to multi-logit readouts, less curated inputs, noise-aware training and mitigation, multi-dimensional spectral probes, and broader baselines including re-encoded multi-qubit VQCs and capacitymatched classical models."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states what its evaluation leaves out in Section 5.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from store.common_names import with_common_names  # noqa: E402
+from store.ingest import FULL_READ_MARK  # noqa: E402
 from store.quotes import QUOTE, plain, source_text, stray_quote_marks, unquoted_figures  # noqa: E402
 
 TASKS = ("F", "G")
@@ -153,6 +154,9 @@ def test_each_read_is_qualified_and_the_store_matches_the_script(live_conn, task
                                      (rid,)).fetchone()[0] == "read", rid
     bad = []
     for _, a, _, _ in s11.assertions(task):
+        if FULL_READ_MARK in (live_conn.execute("SELECT updated_reason FROM records WHERE id = ?", (a.id,)).fetchone()
+                              or ("",))[0]:
+            continue  # re-read in full by Sprint 13 Task G or F114 (Sprint 14), whose own tests check it
         row = live_conn.execute(
             "SELECT r.value, r.certainty, r.certainty_reasons, r.provenance, f.citation_context, f.claim_type "
             "FROM records r JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (a.id,)).fetchone()

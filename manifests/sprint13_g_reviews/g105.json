@@ -1,0 +1,297 @@
+{
+ "group": "g105",
+ "reviewed_on": "2026-10-30",
+ "tag": "Sprint 14 Task F, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint14_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "canonici-qubo-svm-matrix-size": [
+   "definition",
+   "Section 5 (Eq. 4) and Section 7, Appendix 10.2 (Eqs. 15 to 18): Q is KN by KN, so K x N atoms are needed. Defined by the paper's own encoding."
+  ],
+  "canonici-encoding-multiplier": [
+   "setup",
+   "Appendix 10.2, p.24: each coefficient is encoded with K binary variables in base B (Eq. 15), the equality constraint enters through a multiplier, and the paper chooses 0.5."
+  ],
+  "canonici-dataset-imbalance": [
+   "setup",
+   "Section 6, p.7: Kaggle dataset, 284315 normal and 492 anomalous transactions, PCA-transformed inputs, original features withheld. Read in context."
+  ],
+  "canonici-split-resampling": [
+   "setup",
+   "Section 6, pp.7-8: two equal halves, test half not rebalanced (0.17% fraud), SMOTE then random undersampling to 500 samples for training and validation. Matches the passage."
+  ],
+  "canonici-metrics-recall-balanced-accuracy": [
+   "setup",
+   "Section 6, pp.6-7: recall and balanced accuracy chosen because accuracy fails on imbalance (Eqs. 5, 6); the false-negative rationale is the paper's stated protocol reason."
+  ],
+  "canonici-repeats-training-sizes": [
+   "setup",
+   "Section 6 (10 repeats; 6 training samples, then 7 and 8) and Section 9 (4 to 8 samples; QPU runs 18 to 24 atoms for 9 to 12 samples). All are the paper's own protocol."
+  ],
+  "canonici-baselines-and-stack": [
+   "setup",
+   "Section 6 and Appendix 10.4, Table 1: classical KNN, Random Forest, Decision Tree, Naive Bayes, Logistic Regression, SVM (linear, RBF); stacked meta-model with first layer Naive Bayes, Random Forest, Logistic Regression, KNN."
+  ],
+  "canonici-hardware-setup": [
+   "setup",
+   "Section 1 (up to 25 atoms at the time) and Section 7 (triangular lattice, fixed lattice constant), pp.3-9. Own hardware setup."
+  ],
+  "canonici-pulse-sequence": [
+   "setup",
+   "Section 7, p.9, Eq. 8 and Figure 2: 10 us in simulation, 5 us on the device, amplitude median(Q) capped at 15.71 rad/us, linear detuning ramp -10 to 10 rad/us."
+  ],
+  "canonici-embedding-method": [
+   "setup",
+   "Section 7, pp.8-9: COBYLA for continuous positions, simulated annealing for the triangular lattice. The last clause only says the paper will show the constraint does not appear to hurt; it claims no result."
+  ],
+  "canonici-noise-parameters-varied": [
+   "setup",
+   "Section 8, pp.11-12 (Figures 3, 4): the four noise parameters and the percent scale up to 1000% of the QPU-claimed levels are the paper's own scan design."
+  ],
+  "canonici-future-work": [
+   "scope",
+   "Section 9, p.17: one-class SVM, modified-loss SVM, counterdiabatic driving and logical qubits are listed as future developments. States what the paper does not cover."
+  ],
+  "canonici-simulation-label-qpu": [
+   "setup",
+   "Appendix 10.4, Table 1 labels the QPU model 'Trained with a QPU simulation, final state sampled with less than 100 shots'; Acknowledgements thank Pasqal for running the simulations. The paper's own description of how the QPU runs were made."
+  ],
+  "canonici-experimental-setup": [
+   "setup",
+   "Section 9, p.14: 10 splits and training sizes 4 to 8 with 8 to 16 atoms, quoted verbatim in the conclusion."
+  ],
+  "canonici-qpu-training-only": [
+   "scope",
+   "Section 1, p.2 and Section 7: only the training phase uses the QPU; encoding and testing are classical. The paper's own design scope."
+  ],
+  "cantori-circuit-architecture": [
+   "setup",
+   "Section 2.1, p.3, Figure 1 caption: N qubits, P layers, Ry on each qubit and CNOT on adjacent pairs with open boundaries, input all zeros."
+  ],
+  "cantori-angle-distributions": [
+   "setup",
+   "Section 2.1, pp.3-4, Eq. 2 and Figure 2: sum of qubit-dependent and layer-dependent uniform terms; three configurations."
+  ],
+  "cantori-target-and-metric": [
+   "definition",
+   "Section 2.2, Eqs. 4 to 6, pp.5-7: target is magnetization per qubit, loss is mean squared error trained with ADAM, accuracy is R-squared on test circuits not in the training set."
+  ],
+  "cantori-architectures": [
+   "setup",
+   "Section 2.2 and Appendix A, pp.19-21: MLP 5 layers (4 x 512), LSTM 3 x 256, CNN 32/64/128/128 filters, global average pooling for the scalable CNNs; MLP and flatten CNN need fixed input size (Section 2.2)."
+  ],
+  "cantori-extrapolation-qubits-setup": [
+   "setup",
+   "Section 3.2, pp.8-9, Figure 6: 1D CNN, three consecutive training sizes starting at 8 to 18 qubits, 1.2e6 circuits each, mean 0.4, variance 0.1024, depth 30."
+  ],
+  "cantori-benchmark-dataset": [
+   "scope",
+   "Section 5, p.18 (and Section 1): benchmark data of descriptors with network-predicted magnetization up to 60 qubits are provided in a repository (ref. 35). The values are network predictions, which the value states."
+  ],
+  "scope-limit-future-simulation-may-reach": [
+   "stated limit",
+   "Section 5, p.18: the authors state it is plausible that further algorithmic or hardware developments might reach sizes comparable to theirs. A caveat the paper states on its own intractability claim."
+  ],
+  "qneuron-classical-neuron-definition": [
+   "definition",
+   "Construction of the quantum neuron, p.4: the paper defines a classical neuron and the neuron state a in [-1,1]."
+  ],
+  "qneuron-qubit-encoding": [
+   "definition",
+   "p.4, Figure 1b: state Ry(a pi/2 + pi/2)|0> = cos(a pi/4 + pi/4)|0> + sin(a pi/4 + pi/4)|1>; a=-1 and a=1 map to |0> and |1>; interior values are superpositions."
+  ],
+  "qneuron-rus-circuit": [
+   "definition",
+   "pp.5-6, Figures 1c, 1d, 2: the paper defines its RUS circuit, the map q = arctan(tan^2), the failure branch (Ry(pi/2), corrected by Ry(-pi/2), repeat) and the k-fold recursion."
+  ],
+  "qneuron-threshold-attractors": [
+   "definition",
+   "p.6: states the design goal (threshold at pi/4, attractors 0 and pi/2). It states the intended behaviour, not a performance result. See qneuron-appendix-a-convergence for a flaw in the Appendix A constant."
+  ],
+  "qneuron-superposition-amplitude-distortion": [
+   "stated limit",
+   "p.6, Figure 3 and Appendix B (Eqs. 24 to 28): the paper itself states that the factor F_i deforms the superposition amplitudes and is a random variable."
+  ],
+  "qneuron-weight-resolution-setting": [
+   "setup",
+   "p.7 and Supplementary C, Eqs. 29, 30: phi = gamma theta + pi/4, weights k delta, bias k delta + delta/2, gamma = 0.7/(w_max n + b_max), so |signal| >= delta/2. The paper's own parameter setting."
+  ],
+  "qneuron-error-accumulation-limit": [
+   "stated limit",
+   "Appendix E, pp.28-29: the paper states it is unclear whether amplitudes stay concentrated after several layers and gives a measure-and-majority-vote remedy. Checked: Chernoff with epsilon=1/4 gives M >= 8 ln(1/eta); 8 ln(1e9) = 166."
+  ],
+  "qneuron-training-method-accuracy": [
+   "setup",
+   "pp.11-12, Eqs. 6 to 8: training maximizes the average <ZZ> on the superposition state, accuracy = (<ZZ>+1)/2, test on single inputs, Nelder-Mead used because gradients are hard with RUS."
+  ],
+  "qneuron-superposition-preparation-assumption": [
+   "scope",
+   "p.11: the paper states it makes no assumption on how the training superposition is generated (QRAM, a circuit, or a database owner)."
+  ],
+  "qneuron-numerics-are-simulations": [
+   "scope",
+   "Introduction p.4 and Discussion p.17: the paper states it simulates classifiers and associative memories and that its evidence for superposition learning and attractor recovery is numerical."
+  ],
+  "cao18-review-scope-audience": [
+   "scope",
+   "Abstract, p.2: the paper states it is an overview of algorithms and results for quantum chemistry, for quantum chemists and quantum computing researchers."
+  ],
+  "cao18-bo-approximation-scope": [
+   "scope",
+   "Section 2.1: 'in this review we focus on treating quantum chemistry problems within this regime' (Born-Oppenheimer), with the non-BOA remark. Scope as the paper states it."
+  ],
+  "cao18-complexity-class-definitions": [
+   "definition",
+   "Section 3.1, pp.36-39: P, NP, NP-hard, NP-complete, BQP and QMA are each defined in the text (BQP: 'problems that can be efficiently solved on a quantum computer'; QMA: candidate solution as a quantum state verified on a quantum computer)."
+  ],
+  "cao18-sparse-hamiltonian-definition": [
+   "definition",
+   "Section 4.1.1, Eqs. 23, 24: 'A sparse Hamiltonian is a Hamiltonian for which d in poly(n)'; oracles O_loc and O_val; 'row-computable' defined in the text."
+  ],
+  "cao18-hqc-framework-vqe-steps": [
+   "definition",
+   "Section 5 and 5.1, pp.74-78, Figures 6 and 7: the three-step HQC layout and the four VQE steps are the paper's own description; the 'exchanges coherence time for sampling' phrase is its description of Hamiltonian averaging."
+  ],
+  "cao18-chemical-accuracy-definition": [
+   "definition",
+   "Section 5.1.2, pp.100-107: the term 'chemical accuracy' is defined as 1 kcal/mol (1.59e-3 Hartree, 43.3 meV) or less, with the paper's motivation (reaction-rate sensitivity). The paper's own definition of the term."
+  ],
+  "cao18-vqs-mechanism": [
+   "definition",
+   "Section 5.2.1, Eq. 83, pp.117-118: the paper describes the variational quantum simulator (variational principle, M and V measured with an ancilla, classical matrix inversion and update)."
+  ],
+  "cao26-definition-qnode-qnpde": [
+   "definition",
+   "Definition 1, Section III B, p.7 (and Section I, p.2): closed QNODE for finite-dimensional DV states, closed QNPDE for qumodes, open versions with a channel."
+  ],
+  "cao26-lemma-2-adjoint-gradient": [
+   "proved result",
+   "Lemma 2, Section IV A, Eqs. 22, 23, p.16, proved in Appendix A 1, p.29 (chain rule and Duhamel's principle). Statement and conditions match."
+  ],
+  "cao26-lemma-2-remarks-terminal-state": [
+   "stated limit",
+   "Section IV A, p.17: the paper states that the loss enters only in the terminal state, that this state may be hard to prepare, that its normalisation is absorbed in the learning rate, and that its sign must be known. Conditions on its own algorithm."
+  ],
+  "cao26-theorem-3-partial-discretisation": [
+   "proved result",
+   "Theorem 3, Section IV B, Eqs. 24, 25, p.18, proved in Appendix A 2, p.30 (the identity between the integrand and 2 tr[sigma_y x dH/dtheta rho_aux]). Conditions quoted; circuit with one ancilla, adjoint register and system."
+  ],
+  "cao26-corollary-4-linear-combination": [
+   "proved result",
+   "Corollary 4, p.18: the linear-combination case follows from Theorem 3 (proved) by linearity of the trace and of the functional derivative; the formula is displayed. No separate proof is written, but the step is immediate. The clause about SGD or importance sampling is advice, not a claim."
+  ],
+  "cao26-theorem-5-continuous-time": [
+   "proved result",
+   "Theorem 5, Section IV C, Eqs. 26 to 30, pp.18-19, proved in Appendix A 3, pp.30-31: the exact top-hat case gives (1/T) integral of the expectation, and the bound with operator norm times total variation distance is derived. Time-independent Hamiltonian, as the value says."
+  ],
+  "cao26-table-ii-measurement-bounds": [
+   "proved result",
+   "Table II, p.20 (page image checked), backed by Propositions 18, 20, 21, 22, 24, 25 proved in Appendix B under Assumptions 12 to 15; checked the L-infinity MC entry T^2 K^3 and the L2 entries against Prop. 20 (page 36) and Prop. 22 to 24. The caption states the bounds may not be tight."
+  ],
+  "cao26-appendix-b-assumptions": [
+   "setup",
+   "Appendix B 1, p.32, Assumptions 12 to 15: unit operator norms, uniform bounds on the control functions and derivatives, PL condition, known bounded terminal-state coefficient; 'needs to be validated case by case'."
+  ],
+  "cao26-proposition-18-linf-midpoint": [
+   "proved result",
+   "Proposition 18, Appendix B 2 a, pp.34-35: statement with Assumption 13; proof gives the midpoint error bound (B7) and the Hoeffding-type tail bound. Both parts stated and proved."
+  ],
+  "cao26-proposition-22-mc-time": [
+   "proved result",
+   "Proposition 22, Appendix B 4 a, pp.38-40: proved by Markov and Hoeffding with conditioning on the sampled times; the estimator is unbiased by construction. Table II gives the K^3 T^2 form."
+  ],
+  "cao26-propositions-21-25-training": [
+   "proved result",
+   "Propositions 21 and 25, Appendix B 3 and B 5, pp.37-38, 42: proved by the PL-based SGD recursion with the bias and variance bounds (Lemma 19, Prop. 20, Lemma 23). Assumptions are the stated ones plus a Lipschitz-gradient assumption named in the proofs and in the Table II caption."
+  ],
+  "cao26-non-cloning-copies-limit": [
+   "stated limit",
+   "Section IV D, p.21: the paper states that the Theorem 3 algorithm needs at least N_t copies because of non-cloning and that Theorem 5 avoids this. A limit the paper states on its own discretised algorithm."
+  ],
+  "cao26-lemma-7-hessian": [
+   "proved result",
+   "Lemma 7, Section IV E, Eqs. 33, 34, p.22, with Assumption 6; proved in Appendix C, p.44 (Duhamel expansion to second order at the optimum). Conditions: pure initial state, fixed final time, unique optimum."
+  ],
+  "cao26-numerics-setup-emulation": [
+   "scope",
+   "Section V, p.23-24: all results are classical emulation in PennyLane, only Theorem 3 is simulated, Theorem 5 is left to future work, shot noise is modelled, test error is fidelity based."
+  ],
+  "cao26-numerics-training-details": [
+   "setup",
+   "Appendix D 1 and D 3, pp.44-46, Eq. D4 and Table III (page images checked): H2 from ref. 54, Ising parameters as in ref. 24, SGD for the toy model and Adam otherwise, trapezoidal rule, test error over M_s = 50 states. Own training setup."
+  ],
+  "cao26-open-systems-purification-loss": [
+   "definition",
+   "Section III D, p.10, Eq. 11: the purification construction (unitary on system plus fixed ancilla) and the loss one minus purity, whose functional derivative is the state itself, assumed preparable. The paper's own construction."
+  ],
+  "cao26-state-learning-setting-scope": [
+   "scope",
+   "Section III C, p.9: the target state's classical description is not provided, only trusted copies of a pure state from a third party; 'can be viewed as a quantum analogue of a generative model' is the paper's framing."
+  ],
+  "cao26-future-work-limits": [
+   "scope",
+   "Section VI, pp.27: each application needs more in-depth study left to future work; future work will cover rigorous complexity bounds, hardware, control and generative tasks, open QNODEs. States what the paper does not cover."
+  ],
+  "cao26-lemma-16-moment-generating": [
+   "proved result",
+   "Lemma 16, Appendix B 2, p.33, Eq. B5: proved from independence of samples and Hoeffding's lemma. Conditions (Assumption 12, outcomes in [-1,1]) match."
+  ],
+  "cao26-lemma-17-discretised-mgf": [
+   "proved result",
+   "Lemma 17, Appendix B 2, p.33: proved from Lemma 16 and exp|x| <= exp(x) + exp(-x). Bound checked: exponent lambda^2 K T^2 alpha^2 / (2 N_t L)."
+  ],
+  "cao26-lemma-19-midpoint-bias": [
+   "proved result",
+   "Lemma 19, Appendix B 2 b, p.36 (page image checked): bounded by the l1 norm of the gradient times the l-infinity bias from the midpoint error (B7). Statement and proof match the value."
+  ],
+  "cao26-proposition-20-l2-midpoint": [
+   "proved result",
+   "Proposition 20, Appendix B 2 c, p.36 (page image checked): bias-variance split; sampling term M K T^2 alpha^2/(N_t L) and discretization term M (K T alpha)^6/N_t^4; the sample counts in the value follow from them."
+  ],
+  "cao26-lemma-23-mc-variance": [
+   "proved result",
+   "Lemma 23, Appendix B 4 b, pp.40-41: proved by the law of total variance; bound alpha^2 T^2/N_t (K/L + K^2) as in the value."
+  ],
+  "cao26-proposition-24-l2-mc": [
+   "proved result",
+   "Proposition 24, Appendix B 4 b, p.41: follows from Lemma 23; O(alpha^2 T^2 K^3 M / delta^2) with L = 1, matching Table II."
+  ],
+  "qnode-framework-adjoint": [
+   "definition",
+   "Definition 1 (p.7) defines the QNODE and QNPDE framework, and Lemma 2 (p.16, proved in Appendix A 1) gives the adjoint-state gradient."
+  ],
+  "qnode-tightness-open": [
+   "stated limit",
+   "Section IV D, p.20 ('It remains to investigate whether the above analysis is tight') and Section VI, p.27 ('we leave this to future work'). The paper's own stated limits."
+  ]
+ },
+ "theory_low": {
+  "qneuron-appendix-a-convergence": "Supplementary A, Eq. 12, p.23 (page image checked): the paper writes Delta_{i+1} >= (pi/8)^-1 arctan(tan^2(pi/8+pi/4)) Delta_i = alpha Delta_i with alpha = 3.5673. That number is q(3 pi/8)/(pi/8). But Delta_{i+1} = q(phi_i) - pi/4, so the factor is (q(3 pi/8) - pi/4)/(pi/8) = 1.5673. I computed the minimum of Delta_{i+1}/Delta_i on (pi/4, 3 pi/8) as 1.5673. So alpha = 3.5673 is wrong. beta = 0.4327 checks out. The qualitative log-iteration claim holds, the stated constant does not.",
+  "qneuron-rus-runtime-bound": "Appendix B: p(theta) = sin^4 + cos^4 and 1/p <= 2 are exact. The bound of 7 trials 'for essentially every RUS iteration of every level' (Eqs. 20, 22) is argued by analogy across levels, and the 14^k scaling (Eq. 23) follows from it. That is an informal bound, not a proved theorem.",
+  "qneuron-theorem-1": "Theorem 1, p.7, proof in Appendix D, Eq. 33. The exponent 2.075 equals log_alpha(14) with alpha = 3.5673 from Eq. 12, which is wrong (correct alpha = 1.5673, giving exponent about 5.87). It also uses the informal 14^k bound. The stated proof does not establish the stated exponent. The 3.15 exponent (beta) checks out.",
+  "qneuron-theorem-2": "Theorem 2, p.11, proof Appendix E. The time bound n^3.075 / delta^2.075 inherits the Theorem 1 exponent (alpha error, Eq. 12) and the informal 14^k bound. Appendix E also treats error accumulation by a sketch (majority vote). Conditions are quoted correctly but the stated bound is not proved. Theorem text uses eta, proof uses nu.",
+  "qneuron-theorem-2-qubits-overhead": "Appendix E, Eqs. 35, 36, p.29: 'roughly n^3, a linear overhead' comes from the n^3.075 bound, which rests on the wrong alpha in Eq. 12. With alpha = 1.5673 the overhead is not linear. The qubit count is a minor part of the value.",
+  "qneuron-theorem-3": "Theorem 3, p.16, proof Appendix F (short sketch). The n^2.075 t / delta^2.075 bound again rests on the Eq. 12 alpha error and the informal 14^k bound. The stated runtime is not established.",
+  "qneuron-hopfield-overhead": "p.16: 'roughly linear overhead in time' is derived from Theorem 3, whose exponent 2.075 rests on the wrong alpha in Eq. 12. 'Behaviours unique to quantum systems' is an authors' claim shown by one example.",
+  "qneuron-simulates-classical-neurons": "Theorems 2 and 3 do restrict to a resolution grid and basis-state inputs, so the narrowing is right, and superposition inputs have numerical evidence only. Not graded high: the proofs of Theorems 2 and 3 rest on the Eq. 12 constant error and an informal 14^k bound, and Appendices E and F are sketches. Stays low (no change).",
+  "cao18-qpe-initial-state-overlap": "Section 2.3.1, p.30: an overlap of at least inverse polynomial is needed for polynomial run time. The paper gives a one-line argument, not a theorem. A statement about a known algorithm in a review.",
+  "cao18-qpe-mechanics": "Section 4.1.2, p.57-60: describes phase estimation, but the value states properties (high-probability binary approximation, one digit per ancilla; 'It can be shown ...'). Properties of a known algorithm, not shown here.",
+  "cao18-uccsd-parameter-and-gate-scaling": "Section 5.1.1, p.82: O(N^2 eta^2) parameters and O(f N^4) gates are stated without derivation, with citations (refs 52, 53, 59, 325 to 330). Not proved in the paper.",
+  "cao18-hva-depth-scaling": "Section 5.1.1: statements about other groups' ansatze (Hubbard scaling, O(N^4) terms, GTO scaling, refs 79, 306). A field or cited statement in a review, not settled by the paper itself.",
+  "cao18-hamiltonian-averaging-cost": "Section 5.1.2: the M^2/epsilon^2 scaling is stated 'roughly' with no derivation (proposal cited to Peruzzo and others). Not proved here.",
+  "cao18-jordan-wigner-vs-bravyi-kitaev-weight": "Appendix B, p.138-140: operator weights O(log N) for Bravyi-Kitaev are cited (Havlicek et al., ref. 402; Seeley, ref. 181), not derived. A field or cited statement in a review, not settled by the paper itself.",
+  "cao26-time-integral-discretisation-cost": "Section IV D, p.19-20, Eq. 32: a cost discussion following from Theorem 3 and the quadrature, not a numbered or proved statement; counts expectation values only and ignores state-preparation cost.",
+  "cao26-hessian-examples-training-difficulty": "Section IV E, Examples 9 to 11, p.22-23: only lower bounds on the Hessian via the smallest eigenvalue lambda_G, assumed positive. A small lower bound does not show training difficulty; 'reveals the difficulty' is the authors' interpretation."
+ },
+ "keep_stored": {},
+ "requote": {},
+ "value_replace": {
+  "cantori-training-data-source": "The authors generate the training data by circuit simulations using the Qiskit and qsimcirq libraries, mostly exact state-vector simulations, and also adopt tensor-network methods to assess the cost of classical simulation."
+ },
+ "extra_quotes": {
+  "cantori-training-data-source": [
+   "Tensor-network methods are also adopted to assess the cost of classical simulations; see Section 5."
+  ]
+ }
+}

@@ -1,0 +1,1789 @@
+{
+ "papers": [
+  {
+   "record_id": "qci-applications-image-classification-using-emucore",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\References\\QCi-site\\applications\\image-classification-using-emucore.html",
+   "title_in_file": "Image Classification using EmuCore - Quantum Computing Inc",
+   "version_note": "",
+   "pages": 1,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A vendor application page (a Jupyter-style walkthrough) in which Quantum Computing Inc classifies MNIST digits by passing flattened images through its EmuCore reservoir and fitting a linear model to the responses.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "emucore-mnist-dataset-split",
+     "value": "The authors state that the dataset consists of 70,000 images of handwritten digits 0-9, with 60,000 samples used for training and the remaining 10,000 images kept for testing, and that each sample is a 28 x 28 pixel image.",
+     "anchor": "Introduction",
+     "quotes": [
+      "The dataset consists of 70,000 images of handwritten digits 0-9; 60,000 samples are used for training and the remaining 10,000 images are kept for testing.",
+      "Each sample is a 28 x 28 pixel image."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The page states its own dataset and split in the Introduction.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emucore-mnist-source-tensorflow",
+     "value": "The authors state that the training data are imported with the mnist package from tensorflow, and the conclusion names the data as the MNIST digit dataset.",
+     "anchor": "Get train and test datasets; Conclusion",
+     "quotes": [
+      "We use the mnist package from tensorflow to import training data.",
+      "build an image classification model using the MNIST digit dataset"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The page states its own data source in the data section and the conclusion.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emucore-pipeline-serialize-then-linear",
+     "value": "The authors state that the images are serialized in one of the two spatial directions and sent through EmuCore, and that the output is an enriched dataset which is then used to train a simple linear model.",
+     "anchor": "Introduction",
+     "quotes": [
+      "The images are serialized in one of the two spatial directions and sent through EmuCore.",
+      "The output is an enriched dataset which is then used to train a simple linear model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The page describes its own pipeline in the Introduction and the code that follows.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "Only the linear readout is trained; the reservoir is a fixed feature map, the usual reservoir computing arrangement. The page does not call it that in this paragraph."
+    },
+    {
+     "id_suggestion": "emucore-normalize-0-1-claim",
+     "value": "The authors state that pixel values (integers from 0 to 255, representing 256 colors) are normalized to a 0-1 range, and claim that this normalization improves the behavior of the reservoir. The page shows no comparison without normalization.",
+     "anchor": "Normalize data",
+     "quotes": [
+      "The elements of the matrix are integers between 0 and 255, each representing one of the 256 colors.",
+      "We can normalize values to a 0-1 range. This normalization improves the behavior of the reservoir."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim without a measurement in the page.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emucore-flatten-direction-claim",
+     "value": "The authors state that the flattening can be done in either of the two spatial directions, and claim that they tested both and the results are nearly identical. The page shows the results for one direction only (the swapaxes lines are commented out in the code).",
+     "anchor": "Flatten data",
+     "quotes": [
+      "We should now flatten in one of the two spatial directions. We have tested with both directions and the results are nearly identical."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the other direction is not shown in the page.",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "No numbers are given for the second direction, so the claim cannot be checked from the page."
+    },
+    {
+     "id_suggestion": "emucore-flattened-shapes",
+     "value": "The authors report that flattening gives arrays of shape (60000, 784) for training and (10000, 784) for testing.",
+     "anchor": "Flatten data, output of In [36]",
+     "quotes": [
+      "Flat x_train shape: (60000, 784) Flat x_test shape: (10000, 784)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "A printed output of the page's own setup.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emucore-reservoir-configuration",
+     "value": "The authors report the reservoir settings used for this run: VBIAS 0.31, GAIN 0.72, NUM_NODES 2500, NUM_TAPS 2500, FEATURE_SCALING 0.1 and DENSITY 1.0.",
+     "anchor": "Run the dataset through EmuCore, In [42]",
+     "quotes": [
+      "VBIAS = 0.31 GAIN = 0.72 NUM_NODES = 2500 NUM_TAPS = 2500 FEATURE_SCALING = 0.1 DENSITY = 1.0"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The page states the settings of its own run in code.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The page does not say how these settings were chosen or whether they were tuned on the test set."
+    },
+    {
+     "id_suggestion": "emucore-network-device-access",
+     "value": "The authors show the device being used through a client object created from an IP address, with a lock acquired by wait_for_lock, a reservoir reset, an rc_config call, and a release_lock call at the end.",
+     "anchor": "Run the dataset through EmuCore, In [42]",
+     "quotes": [
+      "client = EmuCoreClient(ip_addr=IP_ADDR)",
+      "lock_id, start, end = client.wait_for_lock()",
+      "client.reservoir_reset(lock_id=lock_id)",
+      "client.release_lock(lock_id=lock_id)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The page shows its own access code.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The device is a shared, network-attached resource used under an exclusive lock. The page gives no run time, throughput or energy figure."
+    },
+    {
+     "id_suggestion": "emucore-response-shapes",
+     "value": "The authors report that the EmuCore responses have shape (60000, 2500) for the training set and (10000, 2500) for the testing set.",
+     "anchor": "Run the dataset through EmuCore, output of In [42]",
+     "quotes": [
+      "Training response shape: (60000, 2500) Testing response shape: (10000, 2500)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "A printed output of the page's own setup.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "Each 784-value input becomes a 2500-value response, so the reservoir expands the features from 784 to 2500."
+    },
+    {
+     "id_suggestion": "emucore-label-encoding-plus-minus-one",
+     "value": "The authors state that each label from 0 to 9 is converted to an array with one element set to 1 and the other elements set to -1, and that the encoded labels have shape (60000, 10) for training and (10000, 10) for testing.",
+     "anchor": "Build a linear model",
+     "quotes": [
+      "As each label (from 0 to 9) represents a category of digits",
+      "each label is converted to an array with one element set to 1 and the other elements set to -1",
+      "Categorical y_train.shape: (60000, 10) Categorical y_test.shape: (10000, 10)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The page defines its own target encoding and prints the shapes.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emucore-readout-linear-regression-argmax",
+     "value": "The authors fit scikit-learn LinearRegression with an intercept from the reservoir responses to the encoded labels, and obtain a predicted digit with np.argmax over the ten outputs.",
+     "anchor": "Train a linear model; Calculate classification success rates",
+     "quotes": [
+      "model = LinearRegression(fit_intercept= True ) model.fit(resp_train, y_train_cat)",
+      "y.append(np.argmax(y_cat[i]))"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The page shows the readout in its own code.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "The readout is a least-squares regression onto the encoded labels, not a logistic or softmax classifier. No regularization is shown."
+    },
+    {
+     "id_suggestion": "emucore-training-r2",
+     "value": "The authors report an R2 of 0.6806182222229208, computed by model.score on the training responses and the encoded training labels.",
+     "anchor": "Train a linear model, output of In [44]",
+     "quotes": [
+      "model.score(resp_train, y_train_cat)",
+      "Out [ ]: R2 = 0.6806182222229208"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one run on training data.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The R2 is a training-set fit of the encoded targets, not a test-set figure, and the page does not interpret it."
+    },
+    {
+     "id_suggestion": "emucore-mnist-success-rates",
+     "value": "The authors report a classification success rate of 0.919 on the training data and 0.903 on the test data for the EmuCore reservoir with a linear readout on MNIST.",
+     "anchor": "Calculate classification success rates, output of In [45]",
+     "quotes": [
+      "Success rate on train data: 0.919 Success rate on test data: 0.903"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one run, with no repeat, interval or baseline.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The page shows one run with no variance, no classical baseline (for example the same linear model on the raw 784 pixels, or a random reservoir of 2500 units) and no stated hold-out for the settings, so the page does not show what EmuCore adds. A linear model on raw pixels is commonly reported near 92 percent on MNIST, which is the same range, but that figure is not from this page."
+    },
+    {
+     "id_suggestion": "emucore-conclusion-91-percent",
+     "value": "The authors state in the conclusion that the classification model yields a success rate of about 91% on both training and testing data, and that images are flattened in one of the two spatial dimensions and passed through EmuCore, followed by a linear model trained on the EmuCore output.",
+     "anchor": "Conclusion",
+     "quotes": [
+      "The classification model yields a success rate of about 91% on both training and testing data.",
+      "A linear model is then trained using the output of EmuCore."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor describing its own product's result.",
+     "result_type": "vendor",
+     "context": "ml",
+     "reader_inference": "The printed rates are 0.919 and 0.903; 'about 91%' averages them and rounds the test rate up from 90.3 percent."
+    },
+    {
+     "id_suggestion": "emucore-test-plot-uses-x-train",
+     "value": "The authors label one plot as showing the testing data, but the code under that label plots x_train[i] with the plasma colormap.",
+     "anchor": "Plot some of the samples, In [34]",
+     "quotes": [
+      "And in the testing data,",
+      "plt.imshow(x_train[i], cmap=plt.get_cmap( \"plasma\" ))"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A reader observation on the page's own code; it does not affect the reported rates.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": "Probably a copy error in the plotting cell. The reported success rates use x_test_flat for the test responses, so they are not affected."
+    }
+   ]
+  },
+  {
+   "record_id": "qci-applications-narma10-on-emucore",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\References\\QCi-site\\applications\\narma10-on-emucore.html",
+   "title_in_file": "NARMA10 Univariate Time Series Forecasting: Device: Emucore",
+   "version_note": "Web page text of a QCi notebook tutorial; no page breaks in the text layer, read as one page.",
+   "pages": 1,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A QCi tutorial notebook that forecasts the NARMA10 series with the EmuCore reservoir computing device and a linear readout.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "emucore-described-as-electronic-reservoir",
+     "value": "The authors state that EmuCore, developed by QCi, is an electronic reservoir computing platform designed for complex time series forecasting tasks.",
+     "anchor": "Web page, section Reservoir computing with EmuCore",
+     "quotes": [
+      "EmuCore, developed by QCi, represents a cutting-edge electronic reservoir computing platform designed specifically for tackling complex time series forecasting tasks."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "vendor",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emucore-called-photonic-emulator",
+     "value": "The page calls EmuCore QCi's photonic reservoir emulator in its contents list.",
+     "anchor": "Web page, introduction, notebook organization list",
+     "quotes": [
+      "We will be utilzing QCi's photonic reservoir emulator EmuCore."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "vendor",
+     "context": "ml",
+     "reader_inference": "The same page calls EmuCore an electronic reservoir platform in its own section; the two descriptions differ and the page does not reconcile them."
+    },
+    {
+     "id_suggestion": "emucore-reservoir-mapping",
+     "value": "The authors state that the reservoir maps input signals from their original values to a higher dimensional feature space.",
+     "anchor": "Web page, section Reservoir computing with EmuCore",
+     "quotes": [
+      "The reservoir maps input signals from their original values to a higher dimensional feature space."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "vendor",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emucore-time-delay-architecture-ref",
+     "value": "The page refers readers to a QCI paper at arXiv 2102.09049 for the reservoir architecture, and says EmuCore uses a time delayed reservoir architecture.",
+     "anchor": "Web page, section Reservoir computing with EmuCore",
+     "quotes": [
+      "utilizing a time delayed reservoir architecture",
+      "see this paper from QCI at https://arxiv.org/pdf/2102.09049.pdf"
+     ],
+     "kind": "cited",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "narma10-recurrence-definition",
+     "value": "The page defines the NARMA10 benchmark by a recurrence with coefficients 0.3, 0.05, 1.5 and 0.1, with the input drawn uniformly from the interval 0 to 0.5.",
+     "anchor": "Web page, section Create NARMA10 time series",
+     "quotes": [
+      "we will utilze a common forecasting benchmark NARMA10",
+      "is drawn from a uniform distribution in the interval [ 0 , 0.5 ]",
+      "0.3 y k + 0.05 y k ∑ i = 0 9 y k − i + 1.5 u k u k − 9 + 0.1"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The page states the benchmark definition it uses.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": "The recurrence is printed in the page text with a sum over nine lags (i = 0 to 9)."
+    },
+    {
+     "id_suggestion": "narma10-description-chaotic",
+     "value": "The authors describe NARMA 10 as a synthetic generator that mimics real-world processes by producing nonlinear and chaotic patterns.",
+     "anchor": "Web page, introduction",
+     "quotes": [
+      "NARMA 10 is a synthetic time series generator that mimics the behavior of real-world processes by generating nonlinear and chaotic patterns."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The page gives no evidence for the claim that the series is chaotic."
+    },
+    {
+     "id_suggestion": "narma10-split-800-200",
+     "value": "The authors use a NARMA10 series of size 1000, with 800 samples for training and 200 for testing, generated with seed 0.",
+     "anchor": "Web page, section Create NARMA10 time series, In [2]",
+     "quotes": [
+      "Let us consider a NARMA10 series of size 1000 with 800 samples in the training portion and 200 in the testing portion.",
+      "dataset = NARMA10(seed= 0 , train_size=TRAIN_SIZE, test_size=TEST_SIZE)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The page states the data split and seed it ran.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-applications-narma10-emucore-reservoir-config",
+     "value": "The authors configure the reservoir with vbias 0.31, gain 0.72, 400 nodes and 400 taps, and process data with feature scaling 0.1 and density 1.0.",
+     "anchor": "Web page, section Modelling data using reservoir, In [6] and In [7]",
+     "quotes": [
+      "VBIAS = 0.31 GAIN = 0.72 NUM_NODES = 400 NUM_TAPS = 400",
+      "FEATURE_SCALING = 0.1 DENSITY = 1.0"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The page states the settings of its own run.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emucore-parameter-definitions",
+     "value": "The page defines vbias and gain as parameters in the range 0 to 1, num_nodes as the number of hidden nodes in a single hidden layer, and num_taps as the number of connections, which should generally be set to less than the number of nodes.",
+     "anchor": "Web page, section Modelling data using reservoir",
+     "quotes": [
+      "vbias: bias to apply to each node in reservoir range for parameter [0,1].",
+      "num_nodes: the total number of hidden nodes to instantiate within the reservoir, a single hidden layer.",
+      "num_taps: number of connections in reservoir, generally should be set to less than the number of nodes in reservoir."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "vendor",
+     "context": "ml",
+     "reader_inference": "The example sets num_taps equal to num_nodes (400 each), which is not less than the number of nodes as the guidance suggests."
+    },
+    {
+     "id_suggestion": "emucore-gain-definition",
+     "value": "The page describes gain as a memory setting for how long inputs affect the reservoir, in the range 0 to 1.",
+     "anchor": "Web page, section Modelling data using reservoir",
+     "quotes": [
+      "gain: memory setting for system how long should inputs effect reservoir similar to beta in adaptive gradient descent range for parameter [0,1]."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "vendor",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emucore-device-lock",
+     "value": "The authors state that the client must acquire a device lock before use, that the lock call waits indefinitely until the lock is available, and that the lock is released after processing so other users can access the reservoir.",
+     "anchor": "Web page, section Modelling data using reservoir, In [5] and In [8]",
+     "quotes": [
+      "The above function will wait indefinitely until the device lock is avaialble.",
+      "Once finished processing it is important to release the lock so that other users can access the reservoir computer"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "vendor",
+     "context": "ml",
+     "reader_inference": "Access is exclusive and serial: one user at a time per device."
+    },
+    {
+     "id_suggestion": "narma10-linear-readout",
+     "value": "The authors train a simple linear regression model on the reservoir response to predict the NARMA10 target.",
+     "anchor": "Web page, section Train prediction model, In [10]",
+     "quotes": [
+      "we can build a simple linear regression model using the reservoir response as its input."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The page states the readout it used.",
+     "result_type": "setup",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "narma10-emucore-results",
+     "value": "The authors report a train mean squared error of 0.0001, train R-squared 0.99, test mean squared error 0.0003, test R-squared 0.96, train NRMSE 0.09582885843850779 and test NRMSE 0.19772048772699802 for the EmuCore reservoir with a linear readout on NARMA10.",
+     "anchor": "Web page, section Evaluate predictions, In [12] output",
+     "quotes": [
+      "Train Mean Squared Error: 0.0001 Train R-squared: 0.99 Test Mean Squared Error: 0.0003 Test R-squared: 0.96 Train NRMSE: 0.09582885843850779 Test NRMSE: 0.19772048772699802"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "One run, one seed, 800 training and 200 test samples; no repeat, no error bar and no baseline appears on the page. The test NRMSE is about twice the train NRMSE."
+    },
+    {
+     "id_suggestion": "nrmse-definition",
+     "value": "The page defines NRMSE as the root mean squared difference between estimate and target divided by the standard deviation of the target.",
+     "anchor": "Web page, section Evaluate predictions, In [11]",
+     "quotes": [
+      "def NRMSE ( target, estimate ): return np.sqrt(((estimate - target) ** 2 ).mean()) / np.std(target)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The page gives the NRMSE code it ran.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "reservoir-simpler-models-claim",
+     "value": "The authors state that using a reservoir allows simpler models to obtain higher accuracy than is possible without this data augmentation approach.",
+     "anchor": "Web page, section Train prediction model",
+     "quotes": [
+      "Utilzing a reservoir allows for simpler models to obtain higher accuracy than is possible without this data augmentation approach"
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "ml",
+     "reader_inference": "The page runs no comparison with a model that lacks the reservoir, so the page does not support this statement with its own result."
+    }
+   ]
+  },
+  {
+   "record_id": "qci-lessons-a-gentle-introduction-to-optimization",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\References\\QCi-site\\lessons\\a-gentle-introduction-to-optimization.html",
+   "title_in_file": "A gentle introduction to optimization",
+   "version_note": "Web lesson page (Quantum Computing Inc), copyright line 2018-2026; no page breaks in the text layer, so read as one page.",
+   "pages": 1,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A vendor tutorial that explains optimization with a fence-and-garden example and solves it on the Dirac-3 entropy quantum computing device through the qci_client API.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "eqc-analog-paradigm-for-optimization",
+     "value": "The authors state that entropy quantum computing (EQC) is an analog quantum computing paradigm for optimization.",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "Entropy quantum computing (EQC) is an analog quantum computing paradigm for optimization."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor describes its own product category.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dirac3-qudit-variables-beyond-binary",
+     "value": "The authors state that Dirac-3 uses qudit variables, which take more than two values, so it can solve problems beyond binary, including integers and continuous numbers (all positive real rational numbers).",
+     "anchor": "Introduction, p.1",
+     "quotes": [
+      "Unlike qubits, qudits can take more than two possible values. This means that Dirac-3 can solve problems beyond binary (0,1), including integers and continuous numbers (all positive real rational numbers)."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor describes its own device.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": "The stated variable domain is the positive real numbers only; negative values are not covered by the quoted statement."
+    },
+    {
+     "id_suggestion": "optimization-objective-and-constraints-definition",
+     "value": "The authors define optimization as searching for the best solution from a range of options. They call the goal the objective function, or in physics-oriented literature energy, and they define constraints as rules or limitations such as budget restrictions, time limits, or fuel constraints.",
+     "anchor": "What Is Optimization, p.1",
+     "quotes": [
+      "Optimization starts with identifying goals: searching for the best solution from a range of options",
+      "These goals are often referred to as the objective function, and less commonly in more physics oriented literature, energy.",
+      "Constraints are the rules or limitations, such as budget restrictions, time limits, or fuel constraints."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own terms in the section What Is Optimization.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vendor-genius-mathematician-claim",
+     "value": "The authors state that Dirac-3 is like having a genius mathematician working for the user, ensuring good choices and saving time, energy, and resources.",
+     "anchor": "What Is Optimization, p.1",
+     "quotes": [
+      "In a nutshell, Dirac-3 is like having a genius mathematician working for you, ensuring that you make good choices, saving you time, energy, and resources."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor describes its own product; the paper offers no evidence for it.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": "The page reports no benchmark, timing or comparison with another solver, so this is marketing language and not a measured result."
+    },
+    {
+     "id_suggestion": "garden-problem-statement-and-constraint",
+     "value": "The paper sets a worked example: 100 ft of wire fencing for the three free sides of a rectangular garden against a rock wall, with the task of finding the dimensions of maximum area. The constraint is 2x + y = 100, where x is the side perpendicular to the wall and y the side parallel to it.",
+     "anchor": "Optimization for an 8th Grader, p.1",
+     "quotes": [
+      "Given 100ft of wire fencing, determine the dimensions that would create a garden of maximum area.",
+      "Therefore, the constraint equation is 2 x + y = 100."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own example problem and constraint.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The paper borrows the example from a calculus textbook (Stewart, via LibreTexts), so the problem has a known closed-form answer."
+    },
+    {
+     "id_suggestion": "eqc-minimizes-so-objective-negated",
+     "value": "The authors state that EQC devices aim to find the global minimum, so the maximization problem is negated and rewritten as a minimization problem.",
+     "anchor": "Optimization for an 8th Grader, p.1",
+     "quotes": [
+      "The objective of EQC devices is to find the global minimum, representing the lowest values.",
+      "we need to negate the equation:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states how it sets up its own problem for the device.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dirac3-input-ising-hamiltonian-up-to-fifth-order",
+     "value": "The authors state that Dirac-3 takes an Ising Hamiltonian up to fifth order as input and determines the lowest energy state. The paper writes the objective with linear (C), quadratic (J), cubic (T), quartic (Q) and quintic (P) coupling terms.",
+     "anchor": "Formulating our equation into Dirac-3, p.1",
+     "quotes": [
+      "Dirac-3 takes an Ising Hamiltonian (up to fifth-order) as input and determines the lowest energy state."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor describes its own device input format.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "garden-hamiltonian-matrix-encoding",
+     "value": "The authors encode the garden problem with two variables and only quadratic terms, so no higher order couplings are needed, giving the linear vector C = [-100, 0] and the coupling matrix J = [[2, 0], [0, 0]].",
+     "anchor": "Formulating our equation into Dirac-3, p.1",
+     "quotes": [
+      "Since our problem only involves quadratic terms, we do not need higher order couplings",
+      "C = [ − 100 0 ] , J = [ 2 0 0 0 ]"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own encoding of the example.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The second variable carries only zero coefficients; the paper does not say in this lesson why it is needed beyond the hardware sum constraint."
+    },
+    {
+     "id_suggestion": "dirac3-sum-constraint-hardware-requirement",
+     "value": "The authors state that the second variable is included because of an additional constraint on the problem information that comes from the way the hardware is designed, known as a sum constraint. They defer the details to the Dirac-3 quick start.",
+     "anchor": "Formulating our equation into Dirac-3, p.1",
+     "quotes": [
+      "The reason relates to an addtional constraint on the problem information from the way the hardware is designed",
+      "known as a \"sum constraint\""
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor describes a constraint of its own device.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": "The reported solution x1 = 25, x2 = 75 sums to 100, equal to the sum_constraint set in the code, which suggests x2 is a slack variable; the paper does not say so."
+    },
+    {
+     "id_suggestion": "dirac3-job-settings-garden-run",
+     "value": "The paper runs the garden problem as a sample-hamiltonian job on device type dirac-3 with one sample, relaxation schedule 1 (described as the fastest solver mode, best for a first run) and a sum constraint of 100.",
+     "anchor": "Code cells, p.1",
+     "quotes": [
+      "\"num_samples\" : 1 ,",
+      "# Choose sum_constraint large enough to contain solution(s) of interest. sum_constraint = 100",
+      "# Use fastest solver mode (best choice for first run). relaxation_schedule = 1"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the settings of its own run in its code.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "dirac3-relaxation-schedules-time-vs-quality",
+     "value": "The authors state that schedules 1, 2, 3 and 4 correspond to different time settings, and that higher schedule numbers mean longer runtime and a higher probability of favorable results.",
+     "anchor": "Code cells, p.1",
+     "quotes": [
+      "Schedules 1, 2, 3, and 4 correspond to different time settings.",
+      "Higher schedule numbers indicate longer runtime and, consequently, a higher probability of obtaining favorable results."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor describes its own device settings; no data is given on this page.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": "The page gives no runtimes or success rates per schedule."
+    },
+    {
+     "id_suggestion": "garden-dirac3-result-25-optimal-area-1250",
+     "value": "The authors report that Dirac-3 returned the solution x1 = 25, x2 = 75, that x = 25 is the optimal solution with an evaluated energy of -1,250 corresponding to a maximum area of 1,250, and that A_max = 1250.",
+     "anchor": "Breakdown, p.1",
+     "quotes": [
+      "Our solution x 1 = 25 , x 2 = 75",
+      "25 is the optimal solution for x, the result of the evaluation is -1,250 corresponding to a maximum area of 1,250.",
+      "A_{max} = 1250."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one run of a vendor tutorial on a trivial one-variable problem; the output cell is not in the text layer.",
+     "result_type": "measured",
+     "context": "qc",
+     "reader_inference": "The text layer holds the code cell that prints energies and solutions but not its output, so the returned values are known only from the Breakdown prose. The Breakdown line shows '= 0' after substituting x = 25 into 2x squared minus 100x, which is an arithmetic slip: the value is -1250, as the next sentence states. The problem has a closed-form answer that textbook calculus gives, so this run shows the device reproducing a known answer and says nothing about advantage."
+    },
+    {
+     "id_suggestion": "energy-terminology-from-physics-cooling-analogy",
+     "value": "The authors state that calling the objective function value energy comes from physics, where optimization can be seen as analogous to cooling processes that minimize system energy.",
+     "anchor": "Breakdown, p.1",
+     "quotes": [
+      "The terminology of calling the objective function value \"energy\" originates in physics, where optimization processes can be thought of as analogies to cooling processes which minimize system energy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper explains its own terminology in the Breakdown section.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "tutorial-scope-integer-continuous-optimization",
+     "value": "The authors state that the tutorial is a very gentle introduction to optimization, specifically integer and continuous optimization with Dirac-3, and point to other tutorials for binary and constrained binary optimization and to a preprint for the device.",
+     "anchor": "Conclusion, p.1",
+     "quotes": [
+      "This tutorial has been a very gentle introduction into optimization, specifically integer/continuous optimization with Dirac-3."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope in the Conclusion.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": "The page reports no benchmark against classical solvers and no problem larger than a two-variable example, so it cannot support any claim about speed or solution quality at scale."
+    }
+   ]
+  },
+  {
+   "record_id": "qci-lessons-combinatorial-optimization-problems",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\References\\QCi-site\\lessons\\combinatorial-optimization-problems.html",
+   "title_in_file": "Combinatorial optimization problems",
+   "version_note": "",
+   "pages": 1,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A Quantum Computing Inc. web tutorial page that explains combinatorial hardness, the traveling salesperson problem, P versus NP and approximate optimization, and positions the vendor's entropy quantum computing devices as solvers.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "qci-eqc-devices-target-combinatorial-optimization",
+     "value": "The authors (Quantum Computing Inc.) state that the problems their entropy quantum computing devices aim to solve are known as combinatorial optimization problems.",
+     "anchor": "Combinatorial hardness, opening paragraph, p.1",
+     "quotes": [
+      "The problems which our entropy quantum computing devices aim to solve are known as combinatorial optimization problems."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor's description of the target problem class of its own product.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-combinatorial-optimization-definition",
+     "value": "The page defines combinatorial optimization problems as a class of optimization problems that are hard specifically because there are many potential solutions but no apparent practical way to find the best solution.",
+     "anchor": "Combinatorial hardness, opening paragraph, p.1",
+     "quotes": [
+      "These are a class of optimization problems that are hard specifically because there are many potential solutions but no apparent practical way to find the best solution."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The page's own definition of the term, given in its opening paragraph.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-check-easy-search-space-explodes",
+     "value": "The authors state that for such problems it is easy to check the quality of a potential solution, but there are so many potential solutions that checking them all would be unreasonable for large instances, a combinatorial explosion that grows very fast with the number of variables.",
+     "anchor": "Combinatorial hardness, opening paragraph, p.1",
+     "quotes": [
+      "For such problems, it is easy to check the quality of a potential solution, but there are many potential solutions, such that checking them all would be unreasonable for large instances.",
+      "the space of potential ways to solve the problem grows very fast"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A general tutorial statement without proof in the page.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-enumeration-possible-but-infeasible",
+     "value": "The authors state that such problems can be solved by enumeration, scoring each potential solution one at a time and comparing it to the best found so far, but that this can be infeasible in practice because the number of possible solutions can easily exceed large numbers such as the number of atoms in the universe.",
+     "anchor": "Combinatorial hardness, paragraph 2, p.1",
+     "quotes": [
+      "Mathematically speaking, such problems can be solved by enumeration;",
+      "the number of possible solutions can easily exceed \"large\" numbers, like the number of atoms in the universe."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A general tutorial statement without proof in the page.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-tsp-route-count-factorial",
+     "value": "The authors state that in the simplest traveling salesperson problem, where a salesperson visits n cities, returns to the start and may use any order, there are (n-1)! possible routes because the starting point is fixed, and that adding one more city multiplies the number of potential routes by n.",
+     "anchor": "Combinatorial hardness, traveling salesperson example, p.1",
+     "quotes": [
+      "a salesperson must visit a number of cities n n n , return to the city they started, and can do so in any order.",
+      "possible routes (since the starting point is fixed), and adding one more city would multiply the number of potential routes by n n n"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A counting statement given in a tutorial without a derivation; the formula is printed in the text layer in duplicated form.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The count (n-1)! is the standard number of orderings with a fixed start; the printed formula is garbled by the text layer but reads (n-1)! = (n-1)(n-2)..."
+    },
+    {
+     "id_suggestion": "qci-tsp-factorial-faster-than-exponential",
+     "value": "The authors state that the factorial function which defines the number of routes explodes quickly, in fact faster than exponentially.",
+     "anchor": "Combinatorial hardness, traveling salesperson example, p.1",
+     "quotes": [
+      "The factorial function which defines the number of cities explodes quickly, (in fact, faster than exponentially)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Tutorial statement without proof in the page.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The page words this as the factorial 'which defines the number of cities'; the context shows it means the number of routes."
+    },
+    {
+     "id_suggestion": "qci-tsp-small-instance-route-counts",
+     "value": "The authors give route counts for small traveling salesperson instances when a route and its reverse are treated as equivalent: four cities have 6 potential routes with a fixed start, of which only three need checking; five cities need 12 routes checked; six cities need 60 routes checked.",
+     "anchor": "Combinatorial hardness, traveling salesperson example, p.1",
+     "quotes": [
+      "For four cities, there will only be 6 6 6 potential routes (recall the starting city is fixed)",
+      "only three routes would need to be checked",
+      "For five cities, 12 12 12 routes would need to be checked",
+      "For six cities 60 60 60 routes would need to be checked"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Illustrative counts in a tutorial, stated without derivation.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The counts match (n-1)!/2 for four, five and six cities taken as n, so they are internally consistent with the stated formula and the reversal observation."
+    },
+    {
+     "id_suggestion": "qci-tsp-feasibility-11-and-21-cities",
+     "value": "The authors state that for 11 cities millions of routes would have to be checked, which is doable, but for 21 cities over a billion times a billion routes would need to be checked, which is not feasible.",
+     "anchor": "Combinatorial hardness, traveling salesperson example, p.1",
+     "quotes": [
+      "For 11 11 11 cities millions of routes would have to be checked (doable), but for 21 21 21 , over a billion times a billion would need to be checked (not feasible)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Order-of-magnitude illustration in a tutorial, without derivation.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "Consistent with the stated formula: 10!/2 is about 1.8 million and 20!/2 is about 1.2 times ten to the 18th, i.e. just over a billion times a billion."
+    },
+    {
+     "id_suggestion": "qci-exact-methods-use-problem-structure",
+     "value": "The authors state that beyond the point where enumeration is feasible there are additional mathematical tricks that find the optimal route without enumerating all routes, by using the structure of the problem to prove that unchecked solutions must be less optimal than the one found; the page says these algorithms are not the topic of the tutorial.",
+     "anchor": "Combinatorial hardness, traveling salesperson example, p.1",
+     "quotes": [
+      "They instead use the mathematical structure of the problem to prove that potential solutions that haven't been checked have to be less optimal than the one found.",
+      "Such strategies (i.e. algorithms) are very interesting, but not the topic of this tutorial."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The page states what its tutorial does not cover, in the same paragraph.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-p-neq-np-widely-believed-not-proven",
+     "value": "The authors state that it is widely believed, although not strictly proven, that no matter how clever a strategy is, the time to find the most optimal route will always blow up with the size of the problem, and name this the famous P ≠ NP conjecture.",
+     "anchor": "Combinatorial hardness, P versus NP paragraph, p.1",
+     "quotes": [
+      "It is widely believed (although not strictly proven) that no matter how clever a strategy is, the time to find the most optimal route will always blow up with the size of the problem",
+      "This is the famous P ≠ N P P\\neq NP P"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement of a widely held belief about an open conjecture, attributed to common belief and not proven in the page.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The page presents the statement as a belief about the traveling salesperson problem; it is the usual statement of the conjecture applied to that problem."
+    },
+    {
+     "id_suggestion": "qci-large-search-space-necessary-not-sufficient",
+     "value": "The authors state that a large solution space is a necessary but not sufficient condition for a combinatorial optimization problem to be hard, because there also must be no known efficient strategy to solve the problem.",
+     "anchor": "Combinatorial hardness, hardness-condition paragraph, p.1",
+     "quotes": [
+      "a large solution space is a necessary, but not sufficient, condition for a combinatorial optimization problem to be hard",
+      "There also has to not be any known efficient strategy to solve the problem."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A tutorial statement without proof in the page.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-shortest-path-counterexample-efficient",
+     "value": "The authors state that the shortest path problem has an exponentially growing number of possible solutions yet famous algorithms solve it quickly, because short paths between closer nodes can be built up into short paths between more distant nodes, whereas the traveling salesperson problem cannot be efficiently broken down in that way.",
+     "anchor": "Combinatorial hardness, shortest-path paragraph, p.1",
+     "quotes": [
+      "Some problems have an exponentially growing number of possible solutions, but there is an efficient way to find the optimal answer.",
+      "there are famous algorithms that can solve this problem quickly",
+      "the smaller short paths between closer nodes can be built up to make short paths between more distant nodes"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A tutorial statement; the algorithms are referred to but not named or proved in the page.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-approximate-optimization-christofides-bound",
+     "value": "The authors state that, assuming the P ≠ NP conjecture is true, the most optimal solution of large enough problems cannot be found in practice, but a suboptimal route can still be useful, and a number of algorithms, such as the Christofides Algorithm, have a determined upper limit on the sub-optimality of the approximate solution.",
+     "anchor": "Approximate optimization, p.1",
+     "quotes": [
+      "for large enough problems, we won't be able to practically find the most optimal solution",
+      "A route for a traveling salesperson problem can still be useful without being the single most optimal route.",
+      "A number of algorithms, like the Christofides Algorithm , have a determined upper limit on the sub-optimality of the approximate solution."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result about named algorithms attributed to other work; no bound value is given in the page.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The page gives no approximation ratio; the Christofides guarantee is cited only by name."
+    },
+    {
+     "id_suggestion": "qci-task-best-route-by-deadline",
+     "value": "The authors state that for large instances the task becomes finding the best route possible by a deadline, that is, before the salesperson starts the route.",
+     "anchor": "Approximate optimization, p.1",
+     "quotes": [
+      "The task becomes rather to find the best route possible by a deadline (i.e. before the salesperson starts the route)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The page's own framing of the task it considers at large sizes.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-eqc-could-potentially-shine-vendor-claim",
+     "value": "The authors (Quantum Computing Inc.) state that hardware solvers like their entropy quantum computing devices could potentially shine, searching the complicated space of potential solutions quickly and efficiently and finding a better solution for the general case than competing methods in a practical amount of time. The page gives no data, benchmark or comparison for this.",
+     "anchor": "Approximate optimization, final paragraph, p.1",
+     "quotes": [
+      "This is where hardware solvers like our entropy quantum computing devices could potentially shine, they search the complicated space of potential solutions quickly and efficiently, finding a better solution for the general case than competing methods in a practical amount of time."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A vendor's performance claim about its own product, hedged with 'could potentially' and given without evidence in the page.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": "The page does not name the competing methods, the problem sizes or the metric, so the comparison is not checkable from this page."
+    }
+   ]
+  },
+  {
+   "record_id": "qci-lessons-complexity-theory-p-and-np",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\References\\QCi-site\\lessons\\complexity-theory-p-and-np.html",
+   "title_in_file": "Complexity theory, P and NP",
+   "version_note": "",
+   "pages": 1,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A Quantum Computing Inc. web lesson that explains the P and NP classes, NP-completeness, NP-hardness, their caveats for real optimization work, and the expert view on quantum algorithms and NP-hard optimization.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "qci-p-np-conjecture-informal",
+     "value": "The authors state that, informally, the conjecture that P does not equal NP says that optimization problems exist that cannot be solved to optimality quickly, no matter how clever an algorithm is.",
+     "anchor": "First informally, web lesson",
+     "quotes": [
+      "there are optimization problems in existence that cannot be solved (to optimality) quickly, no matter how clever an algorithm is."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The lesson states its own informal definition of the conjecture in the first section.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-p-np-not-rigorous-informal",
+     "value": "The authors state that the informal statement of the conjecture is not mathematically rigorous, and that complexity theory must be explained in detail to show what it does and does not tell us.",
+     "anchor": "First informally, web lesson",
+     "quotes": [
+      "While this statement may be intuitively clear, it is not mathematically rigorous.",
+      "It is as important to understand what complexity theory tells us, but it is also very important to understand what it doesn't tell us."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The lesson states the scope of its own informal statement.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-p-np-unproven-why-conjecture",
+     "value": "The authors state that the claim that hard optimization problems exist is a conjecture rather than a proven statement, because a proof would have to consider every possible method to solve them.",
+     "anchor": "First informally, web lesson",
+     "quotes": [
+      "it is easy to see why this is a conjecture rather than a proven statement",
+      "would have to consider every possible method to solve them"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An informal argument by the authors, without a proof in the lesson.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-p-np-complete-problem-mapping",
+     "value": "The authors state that hard problems in NP can be mapped into each other, so an efficient algorithm for one problem in the hardest class would show that none of them are hard in a particular formal sense.",
+     "anchor": "First informally, web lesson",
+     "quotes": [
+      "can be mapped into each other, a demonstration that an efficient algorithm exists for one problem in the hardest class of problems is also a demonstration that none of them are hard"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A textbook result stated informally without proof in the lesson.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-p-np-informal-consensus",
+     "value": "The authors state that the enormous amount of work on optimization algorithms, together with the easier route to a proof of equality than of inequality, has led to an informal consensus among experts that P does not equal NP.",
+     "anchor": "First informally, web lesson",
+     "quotes": [
+      "the enormous amount of work that has gone into the study of optimization algorithms has led to an informal consensus among experts that"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement of expert opinion with no survey or citation in the lesson.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-p-np-letters-meaning",
+     "value": "The authors state that NP stands for non-deterministic polynomial time, and that a frequent error is to state that NP stands for non-polynomial.",
+     "anchor": "What the letters P and NP mean, web lesson",
+     "quotes": [
+      "non-deterministic polynomial time",
+      "Note that a frequent error is to state that N P NP NP stands for"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The lesson defines the class names in its own words.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-p-class-definition",
+     "value": "The authors define a problem as in P when the time to solve it, using an algorithm that can run on a classical non-quantum computer, grows only polynomially with the number of variables.",
+     "anchor": "P, web lesson",
+     "quotes": [
+      "means that the time to solve a problem (using some algorithm which can be run on a classical i.e. non-quantum computer)",
+      "only grows polynomially with"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The lesson defines the class P in its own words.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-exponential-vs-polynomial-growth",
+     "value": "The authors state that growth can be slower than exponential but faster than polynomial, and that an algorithm with such growth cannot solve a problem in polynomial time.",
+     "anchor": "P, web lesson",
+     "quotes": [
+      "Growth can be slower than exponential but faster than polynomial",
+      "Such an algorithm therefore cannot solve a problem in polynomial time"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A textbook statement given without a proof in the lesson.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-np-class-definition",
+     "value": "The authors define a problem as in NP when it can be solved in polynomial time if one gets maximally lucky guessing solutions, with the added requirement that the quality of an answer can be verified efficiently.",
+     "anchor": "NP, web lesson",
+     "quotes": [
+      "if it can be solved in polynomial time if you get maximally lucky guessing solutions",
+      "we have to be able to efficiently (polynomially increasing time with the problem size) verify the quality of our answer from guessing"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The lesson defines the class NP in its own words.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": "The lesson describes NP through lucky guessing and verification, which is an informal form of the standard definition."
+    },
+    {
+     "id_suggestion": "qci-np-equals-p-meaning",
+     "value": "The authors state that if P equals NP then any optimization problem that could be solved quickly by getting maximally lucky could also be solved quickly without that benefit, while the suspected case of inequality means at least some optimization problems will not be fast to solve by any method.",
+     "anchor": "NP, web lesson",
+     "quotes": [
+      "any optimization problem that could be solved \"quickly\" by getting maximally lucky could also be solved quickly without this benefit",
+      "at least some optimization problems will not be fast to solve by any method"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An informal restatement of the conjecture, not a proof.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-tsp-guess-verify-example",
+     "value": "The authors give the traveling salesperson problem as an example of a problem solvable in polynomial time by maximally lucky guessing: one guesses the order of the cities, and the length of the route can be verified quickly with a simple calculation.",
+     "anchor": "NP, web lesson",
+     "quotes": [
+      "you just guess the order of the cities",
+      "The length of this route could also be quickly verified, with a simple and fast calculation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An illustrative example in a tutorial, not a derivation.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-verifiable-optimization-vs-counting",
+     "value": "The authors state that all optimization problems with efficiently calculable objective functions are verifiable, but other kinds of problems, such as counting problems, are not.",
+     "anchor": "NP, web lesson",
+     "quotes": [
+      "All optimization problems with efficiently calculable objective functions are verifiable, but other kinds of problems aren't.",
+      "Some examples here are counting problems."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A general statement given without proof in the lesson.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-sharp-sat-not-in-np",
+     "value": "The authors state that the #SAT counting problem is not in NP, because even with maximally lucky guesses the satisfying strings must be counted one by one, and an efficient verification of a decision version would not be possible.",
+     "anchor": "NP and Optimization versus decision problems, web lesson",
+     "quotes": [
+      "Getting maximally lucky means you can find a new string satisfying the conditions very quickly, but they still need to be counted one by one.",
+      "no such efficient verification would be possible, #SAT problems are therefore said to not be"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An informal argument in a tutorial, not a proof.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-decision-problems-focus",
+     "value": "The authors state that the problems complexity theory usually deals with are decision problems with yes or no answers, and that optimization problems can be translated into decision problems.",
+     "anchor": "Optimization versus decision problems, web lesson",
+     "quotes": [
+      "The problems that complexity theory usually deals with are decision problems, with yes or no answers.",
+      "Optimization problems can be translated into decision problems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The lesson states the scope of the problems that the theory treats.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-np-complete-definition",
+     "value": "The authors describe NP-complete problems as decision problems that can be efficiently solved by maximally lucky guessing and efficiently verified, and into which any other such problem can be mapped by a reduction whose time grows only polynomially with the problem size.",
+     "anchor": "Optimization versus decision problems, web lesson",
+     "quotes": [
+      "can be mapped into them in a time that scales only polynomially with the size of the problem",
+      "These mappings are known as reductions"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The lesson defines NP-complete problems and reductions in its own words.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-reduction-efficiency-formal-only",
+     "value": "The authors state that the polynomial factors coming from reductions could be very detrimental to the performance of an algorithm in practice, and that this is a general weakness of complexity theory, which describes efficiency only in a very abstract sense.",
+     "anchor": "Optimization versus decision problems, web lesson",
+     "quotes": [
+      "In practice, the polynomial factors coming from these mappings could be very detrimental to the performance of an algorithm.",
+      "it tells us about efficiency only in a very abstract sense"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The lesson states a limit of the theory it describes.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-hard-not-implies-np-complete",
+     "value": "The authors state that some problems appear to be hard but are not NP-complete, and that hardness, even for all algorithms, does not imply NP-completeness.",
+     "anchor": "Optimization versus decision problems, web lesson",
+     "quotes": [
+      "It is worth emphasizing that there are problems that appear to be hard but are not N P NP NP -complete.",
+      "does not imply N P NP NP -completeness"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A general statement given without proof in the lesson.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-satisfiability-universal-computer-reduction",
+     "value": "The authors state that programs on a universal computer can be reduced to a certain class of satisfiability problems, which are now known to be NP-complete, and that this is used to show all NP problems reduce to NP-complete problems.",
+     "anchor": "Optimization versus decision problems, web lesson",
+     "quotes": [
+      "This fact can be proven by showing that programs on a universal computer can be reduced to a certain class of satisfiability problems"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A known result that the lesson reports without a proof or a citation.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-np-hard-definition",
+     "value": "The authors define NP-hard problems as problems at least as hard as NP-complete problems, in the sense that NP-complete problems can be efficiently reduced to them, without the restriction of being decision problems and without a requirement that solutions be verifiable.",
+     "anchor": "NP-Hard, web lesson",
+     "quotes": [
+      "problems that are at least as hard as N P NP NP -complete problems (in the sense that N P NP NP -complete problems can be efficiently reduced to them)",
+      "There is also no requirement for N P NP NP -hard solutions to be verifiable in any way."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The lesson defines NP-hard in its own words.",
+     "result_type": "theoretical",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-np-hard-includes-undecidable",
+     "value": "The authors state that NP-hard problems formally include some problems that are proven to be undecidable, such as the halting problem, and that such problems are excluded from the hard optimization problems of interest because they are not optimization problems.",
+     "anchor": "NP-Hard, web lesson",
+     "quotes": [
+      "they formally include some problems which are proven to be undecidable",
+      "Problems like the halting problem are excluded from this distinction by not being optimization problems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A textbook statement given without proof in the lesson.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-np-hard-optimization-scope",
+     "value": "The authors state that the hard optimization problems they are interested in are formally NP-hard optimization problems, meaning optimization problems at least as hard to solve as NP-complete decision problems.",
+     "anchor": "NP-Hard, web lesson",
+     "quotes": [
+      "optimization problems which are at least as hard to solve as N P NP NP -complete decision problems"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The lesson states the scope of the problems it treats.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-shorthand-terms-imprecise",
+     "value": "The authors state that, in practice, technically incorrect shorthand terms are often used for hard optimization problems, and that the set of problems that are interesting in practice is cumbersome to define in a rigorous theoretical framework.",
+     "anchor": "NP-Hard, web lesson",
+     "quotes": [
+      "shorthand terms that are technically incorrect but generally clear from context are often used when discussing hard optimization problems",
+      "the set of problems that are interesting in practice are cumbersome to define within a rigorous theoretical framework"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The lesson states a limit on the precision of its own terminology.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-np-hardness-worst-case",
+     "value": "The authors state that NP-hardness and NP-completeness are worst-case statements, so not all instances of an NP-hard or NP-complete problem will actually be hard, and for some problems typical cases are not hard.",
+     "anchor": "Caveats and Limitations, web lesson",
+     "quotes": [
+      "so not all instances of an N P NP NP -hard or complete problem will actually be hard",
+      "In fact, for some problems, typical cases are not hard."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The lesson states a limit of what NP-hardness implies.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-video-game-np-hard-typical-easy",
+     "value": "The authors state that video games such as Super Mario are formally NP-hard but typical gameplay does not require advanced optimization algorithms, because a level that is fun to play looks very different from one that maps a hard problem.",
+     "anchor": "Caveats and Limitations, web lesson",
+     "quotes": [
+      "typical gameplay does not require advanced optimization algorithms",
+      "building a level that is fun to play looks very different from one that maps a hard problem"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An illustrative claim in a tutorial without evidence in the lesson.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-dwave-random-benchmark-easy",
+     "value": "The authors report that early attempts to benchmark D-Wave quantum annealers used randomly assigned couplings within the restricted hardware graph, and that work in the spin glass community showed such problems were relatively easy for the Monte Carlo family of algorithms.",
+     "anchor": "Caveats and Limitations, web lesson",
+     "quotes": [
+      "Early attempts to benchmark D-Wave quantum annealers were based on randomly assigned couplings within the restricted hardware graph",
+      "work done within the spin glass community showed that such problems were relatively easy for the Monte Carlo family of algorithms"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the lesson attributes to other work, with the citation lost in the text layer.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": "The lesson names no source in the text layer; the links were lost."
+    },
+    {
+     "id_suggestion": "qci-polynomial-scaling-can-be-infeasible",
+     "value": "The authors state that algorithms that scale polynomially can become infeasible at certain sizes, and that a high-order polynomial such as n to the power 50 may as well be exponential for large n.",
+     "anchor": "Examples (caveat list), web lesson",
+     "quotes": [
+      "In practice, even algorithms that scale polynomially can become infeasible to use at certain sizes",
+      "a high-order polynomial like n 50 n^{50} n 50 may as well be exponential for large n n n"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The lesson states a limit of what polynomial scaling implies.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-superpolynomial-speedup-matters-practically",
+     "value": "The authors state that reducing a runtime that is still super-polynomial can make a huge difference in practice, and that this is all any commercial optimization solver is able to do on hard instances of NP-hard optimization.",
+     "anchor": "Examples (caveat list), web lesson",
+     "quotes": [
+      "Reducing the runtime of a problem in a way where the runtime is still super-polynomial.",
+      "can actually make a huge difference in practice",
+      "This is all any commercial optimization solver is able to do on (hard instances of) N P NP NP -hard optimization"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An unreferenced statement about commercial solvers in a vendor tutorial.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-scaling-limits-of-theory",
+     "value": "The authors state that the theory tells us nothing about the prefactors on the scaling terms or about the size at which the scaling approximation becomes valid, and that scaling can be observed empirically but there is no guaranteed way to tell whether one is in the large-size limit.",
+     "anchor": "Examples (caveat list), web lesson",
+     "quotes": [
+      "the theory tells us nothing about the prefactors on the scaling terms or at what size the scaling approximation becomes valid",
+      "Scaling can be empirically observed, but there is no guaranteed way to tell if one is in the large-size limit."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The lesson states a limit of asymptotic scaling analysis.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-optimal-scaling-not-always-best",
+     "value": "The authors state that scaling only tells how an algorithm performs on very large problems, and that it is sometimes better in practice to use an algorithm that does not have the optimal scaling, or whose scaling is unknown.",
+     "anchor": "Examples (caveat list), web lesson",
+     "quotes": [
+      "Scaling only tells us how an algorithm performs on very large problems",
+      "it is sometimes better in practice to use an algorithm that is not the one with the optimal scaling, or even where the scaling is unknown"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The lesson states a limit of scaling analysis.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-not-all-hard-problems-np-hard",
+     "value": "The authors state that nothing in the theory says that all hard optimization problems must be NP-hard, and that, assuming P does not equal NP, showing a problem is not NP-hard does not imply an algorithm with polynomial scaling.",
+     "anchor": "Examples (caveat list), web lesson",
+     "quotes": [
+      "nothing in the theory says that all hard optimization problems must be N P NP NP -hard",
+      "showing that a problem is not N P NP NP -hard does not imply an algorithm with polynomial scaling"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A general statement given without proof in the lesson.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-reductions-not-practical",
+     "value": "The authors state that the reduction techniques used in computer science proofs tend to be designed to be general rather than efficient and are often not very useful in practice.",
+     "anchor": "Examples (caveat list), web lesson",
+     "quotes": [
+      "The reduction techniques used in computer science proofs tend to be designed to be general rather than efficient and are often not very useful in practice."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A general statement without evidence in the lesson.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-exact-solution-scope-no-approximation",
+     "value": "The authors state that solving in the context of NP-hardness implies finding the single most optimal solution, that complexity theory for approximate solutions is not discussed in the lesson, and that in practice a good-quality approximate solution is often the goal.",
+     "anchor": "Examples (caveat list), web lesson",
+     "quotes": [
+      "implies finding the single most optimal solution",
+      "There is complexity theory relating to approximate solutions but we do not discuss it here.",
+      "In practice, finding a good-quality approximate solution is often the goal."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The lesson states the scope of its own treatment.",
+     "result_type": "setup",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-p-ne-np-belief-basis",
+     "value": "The authors state that it is widely believed among experts, though not formally proven, that P does not equal NP, that this belief rests on decades of research not finding an efficient algorithm for any of these problems, and that a single efficient algorithm for any NP-hard problem would show P equals NP.",
+     "anchor": "Examples (caveat list), web lesson",
+     "quotes": [
+      "Although not formally proven, it is widely believed among experts that",
+      "This belief is based on decades of research not finding an efficient algorithm for any of these problems."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement of expert opinion with no survey or citation in the lesson.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-p-np-prize-unclaimed",
+     "value": "The authors state that an unclaimed one million dollar prize exists for a solution to the question of whether P equals NP.",
+     "anchor": "Examples (caveat list), web lesson",
+     "quotes": [
+      "There is an unclaimed one-million-dollar prize for a solution to this question"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An unreferenced statement in a vendor tutorial.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-quantum-np-hard-expert-view",
+     "value": "The authors state that experts widely agree that quantum algorithms will probably not be able to solve NP-hard optimization in polynomial time, and that this is a question about the relation between NP and BQP rather than about P versus NP, because the definition of P does not include quantum resources.",
+     "anchor": "Examples (caveat list), web lesson",
+     "quotes": [
+      "Experts widely agree that quantum algorithms will probably not be able to solve N P NP NP -hard optimization in polynomial time.",
+      "Formally the definition of P P P does not include quantum resources"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement of expert opinion with no survey or citation in the lesson.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qci-bqp-definition-and-sqrt-speedup",
+     "value": "The authors describe BQP as the class of problems efficiently solvable by quantum computers, and state that the belief rests on the advantage seen in simplified database search problems, which suggest but do not formally prove that a quantum algorithm can solve an optimization problem in the square root of the classical runtime but not exponentially faster.",
+     "anchor": "Examples (caveat list), web lesson",
+     "quotes": [
+      "the class of problems efficiently solvable by quantum computers",
+      "making an algorithm quantum can make an optimization problem solvable in the square root of the runtime of the classical equivalent",
+      "but not exponentially faster"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement about a known quantum search speedup without a derivation or citation in the lesson.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": "The lesson refers to the Grover style square root speedup but does not name it."
+    },
+    {
+     "id_suggestion": "qci-pnp-main-driver-quantum-computing",
+     "value": "The authors, a quantum computing company, state that the P versus NP problem is one of the main drivers of quantum computing and that understanding it explains why many unconventional computing approaches are valuable.",
+     "anchor": "Introduction, web lesson",
+     "quotes": [
+      "is one of the main drivers of quantum computing",
+      "why many unconventional computing approaches are so valuable in today's world"
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor describing the motivation for its own field of products.",
+     "result_type": "vendor",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

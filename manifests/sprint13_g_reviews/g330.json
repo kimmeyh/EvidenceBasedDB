@@ -1,0 +1,287 @@
+{
+ "group": "g330",
+ "reviewed_on": "2026-10-30",
+ "tag": "Sprint 14 Task F, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint14_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "sein-setup-noiseless-simulation": [
+   "setup",
+   "Sec. 5.1 p.11: Pennylane noiseless simulator with JAX; QLGC experiments simulate the effective polynomial filter P(A) rather than a compiled gate-level QSVT/LCU circuit."
+  ],
+  "sein-loss-is-surrogate": [
+   "definition",
+   "Sec. 4.0.3 p.7, Eq. (11): the overlap loss is called a surrogate for the row-wise softmax cross-entropy, and the model does not implement the classical loss."
+  ],
+  "sein-unitary-replaces-weight-matrix": [
+   "scope",
+   "Sec. 4.1 p.9: W can be any real C x F_K matrix whereas U(theta) is unitary, so the PQC is not a direct implementation of W."
+  ],
+  "sein-readout-needs-classes-le-features": [
+   "scope",
+   "Sec. 4.1 p.9, after Eq. (20): label readout over basis states of Reg(k) requires F_K <= C."
+  ],
+  "sein-activations-omitted-nonlinear-future": [
+   "stated limit",
+   "Sec. 4.1 p.8: activations are omitted to keep the models classically simulable or NISQ-runnable; Sec. 4.0.2 p.7: an explicit quantum implementation of nonlinear activations is left for future work."
+  ],
+  "sein-qsvt-polynomial-restrictions": [
+   "scope",
+   "Sec. 4.2 p.10: QSVT needs defined parity and ||P_K(L)|| <= 1; the authors propose optimizing the QSP phases (Eqs. 24-25) to keep the norm condition. These are the construction's own conditions as stated."
+  ],
+  "sein-hyperparameter-grid-and-training": [
+   "setup",
+   "Sec. 5.1-5.2 p.12-13: p in {1,2,3,4,8,16}, layers in {1,2,4,8,12,16}, lr 0.01, Adam, Strongly Entangling Layers with 3 parameters per qubit per layer, 5 seeds per combination."
+  ],
+  "sein-barren-plateau-definition": [
+   "definition",
+   "Sec. 6 p.17, Eq. (26): barren plateau means Var(dL/dtheta) = O(1/b^n) with b > 1, n the number of qubits."
+  ],
+  "sein-trainability-assumptions": [
+   "scope",
+   "Sec. 6.1 and 6.1.1 p.17-18: fully supervised task, graph approximated as k-regular, whole Hilbert space of Reg(k) used (C = N_k), variance averaged over inputs and targets with one-hot targets and multihot inputs."
+  ],
+  "sein-input-problem-cancels-advantage": [
+   "stated limit",
+   "Sec. 7 p.20: compilation needs at least storing and reading each classical input, so compilation complexity alone matches classical GCN and cancels the advantage unless an oracle or QRAM is assumed. The authors state it as a limit of their own complexity claims."
+  ],
+  "sein-conclusion-no-end-to-end-advantage": [
+   "stated limit",
+   "Sec. 8 p.22: the advantage concerns trainable parameters and asymptotic scaling and is not a demonstrated end-to-end advantage; Sec. 1 p.2: the parameter-count reduction concerns the trainable variational component."
+  ],
+  "sein-conclusion-dequantizable-and-future-work": [
+   "stated limit",
+   "Sec. 8 p.22: the efficient-oracle assumption means reality is less favorable and the low-rank analysis indicates dequantization for structured graphs; p.23 lists noise-aware designs and real quantum implementations as future work."
+  ],
+  "sein-datasets-and-features": [
+   "setup",
+   "Table 1, Sec. 5.1 p.11: five datasets with the listed counts (Karate Club 34/34/4, 4/10/20; Cora 2,708/1,433/7, 140/500/1,000); Karate Club nodes are one-hot encoded so X = I_N."
+  ],
+  "sein-parameter-counts-table2": [
+   "definition",
+   "Table 2, p.12: quantum 3 l ceil(log2 C) (+p for QLGC); classical C F_K (+p for CLGC)."
+  ],
+  "sein-lemma-a1-eigenvector": [
+   "proved result",
+   "Lemma A.1, App. A.2.1 p.31: stated and proved in Eqs. (55)-(56) by direct computation (A~ 1 = D~ 1)."
+  ],
+  "sein-corollary-a31-k-regular-product": [
+   "proved result",
+   "Corollary A.3.1, p.32: in the weighted k-regular case D_A = D_B = (k+1)I, so no appeal to Lemma A.2 is needed; setting c = 1 gives D_C = (k+1)I and C~ = A~B~/(k+1) has row sums k+1 and is symmetric when A-hat and B-hat commute. I checked this directly. It is stated under Prop. A.3's commuting hypothesis."
+  ],
+  "sein-gradient-mean-zero": [
+   "proved result",
+   "App. B.3 p.36, Eq. (82) (restated Eq. 158 p.50): the boundary terms U(theta_mu = pi) and U(theta_mu = -pi) coincide because V^2 = 1, so the integral vanishes; conditions are parameters uniform over a full period and generators squaring to identity. (The text writes exp(-i(+-pi)V) = 1; it is -1, but the cancellation holds either way.)"
+  ],
+  "sein-exact-gradient-variance-formula": [
+   "proved result",
+   "App. B.3 p.35-38, Eqs. (76)-(99): exact derivation for the ansatz U = prod exp(-i theta V) W with V^2 = 1 and parameters uniform over [-pi, pi]; the angle integrals are done explicitly (cos^2 and sin^2 give pi, cross terms vanish) and the remaining parameters follow the same step. No approximation enters Eq. (29)."
+  ],
+  "sein-independence-assumption-inputs-targets": [
+   "stated limit",
+   "App. B.5 p.39, footnote 15: the paper states that inputs and targets are taken as independent 'for the sake of estimating' and that in practice they will have hidden correlations."
+  ],
+  "sein-lemma-e1-e2-e3-hamming-sums": [
+   "proved result",
+   "App. E.1 p.63-66: H1 and H2 closed forms are proved exactly (I checked H1 and the N=3 case of H2); the H1' asymptotic uses a Taylor expansion about the binomial mean with the remainder asserted as O(N_k^-5/2) rather than bounded (I checked the 1/(8N_k) coefficient); E.2 follows by expansion; E.3 is proved by monotonicity and binomial symmetry. Borderline only for the remainder bound in Eq. (253)."
+  ],
+  "sein-lower-bound-attainment-constraint": [
+   "stated limit",
+   "App. B.7.2 p.46-47: the paper states the lower bound can be attained only if |<1|D|1>|^2 = 0, 'a significant constraint to the ansatz'. This is a limit the paper states on its own bound; the high grade does not extend to the bound itself (see the lower-bound entry)."
+  ],
+  "sein-lemma-e4-sign-flip": [
+   "proved result",
+   "Lemma E.4, App. E.2 p.66-67, Eqs. (279)-(282): the map W_lambda -> V_lambda W_lambda flips alpha_lambda (V^2 = 1), a bijection on bit strings, so the alternating sum changes sign; S^c is unchanged. The main-text expressivity remark (Sec. 6.1.2 p.18) is not proved; the value says so."
+  ],
+  "sein-lemma-e6-weighted-regular-bounds": [
+   "proved result",
+   "Lemma E.6, App. E.4 p.67-68: proved from row sums of A-hat equal to 1 (weighted k-regular), non-negativity and Cauchy-Schwarz; I rechecked (N-1)^2 <= R|| <= N(N-1), 0 <= R-wedge, R-vee <= N-1, 1 <= R| <= N. The paper's use of them for the trainability orders on weighted graphs (C.1) is an application under the Appendix B assumptions, not part of the lemma."
+  ],
+  "sein-complexity-input-problem-appendix": [
+   "stated limit",
+   "App. D.1 p.55, Eqs. (190)-(191): the authors state the input problem adds O(|E|C + NC) space and Omega of the same to time, comparable to classical SGC, so the problem as it stands is not scalable and an oracle or QRAM must be assumed."
+  ],
+  "sein-dequantization-overhead-and-approximation": [
+   "stated limit",
+   "App. D.5 p.59-61, footnote 25 and Eqs. (237)-(243): the paper states Tang's sampling uses a power of the rank, precision is fixed, the overhead can be immense, the sampling description is 'a simplified sketch', and the polynomial step is a 'heavy approximation' judged reasonable by the low variance of the distribution."
+  ],
+  "sein-lemma-e7-rank-sparsity": [
+   "proved result",
+   "Lemma E.7, App. E.5 p.68-69, Eqs. (295)-(298): proved by Cauchy-Schwarz on the eigenvalues, Tr(A~) = N and Tr(A~^2) <= N s. The proof uses 0/1 entries of A~ (unweighted graphs with unit self-loops), which is the setting of Sec. 7.2."
+  ],
+  "cordero-scope-narrative-primer": [
+   "scope",
+   "Introduction, p.2: the authors state the article is a narrative primer, not a systematic review, and give their databases, end date and selection priority."
+  ],
+  "wang-setup-model-fixed-writer-haar-router": [
+   "setup",
+   "Letter p.1-2 and Sec. S2 p.10: repeated-input protocol, U = (I x V)W with writer fixed before the Haar router V is drawn, histories from I/D, history lengths fixed as D grows."
+  ],
+  "wang-main-result-recursive-kernel": [
+   "proved result",
+   "Eqs. (10)-(11) with derivation in S2.A-S2.B p.10-11 and the error bound proved as Theorem S2.3 (p.14-15). The leading-order step cites asymptotic freeness [S1] as standard background, but the finite-D proof does not rest on it; it uses explicit Weingarten counting (Lemmas S2.1-S2.2)."
+  ],
+  "wang-theorem-s23-finite-history-error": [
+   "proved result",
+   "Theorem S2.3, S2 p.14: stated with conditions (writer and histories fixed before V, start from zero memory, fixed Kraus number and norm bounds, no estimate for growing times) and proved on p.15 from Lemmas S2.1-S2.2 and the linear recurrence for the error. Weingarten bounds are cited standard Haar identities."
+  ],
+  "wang-letter-self-averaging": [
+   "proved result",
+   "Eq. (12) is Theorem S2.3 (RMS error O(D^-1), constants depend on L), proved in S2.C p.14-15. The Letter only cites [26-29] for it; the proof is in the Supplement."
+  ],
+  "wang-lemmas-s21-s22-haar-counting": [
+   "proved result",
+   "Lemmas S2.1 and S2.2, S2.C p.12-14: each is stated with conditions (fixed word length, bounded norms, boundary factors traceless except at most one) and proved in the text, using the standard Weingarten bound as background."
+  ],
+  "wang-asymptotic-freeness-orthogonality": [
+   "proved result",
+   "Eqs. (6)-(8) derived in S2.B p.10-11 (leading order, via freeness) and the O(D^-1) RMS bounds proved in Theorem S2.3 (S2.27). The freeness theorem [S1] is cited standard background; the finite-D remainders are proved independently by explicit Haar counting."
+  ],
+  "wang-kernel-psd-and-cost": [
+   "proved result",
+   "PSD: S1.C p.9 and S2.B p.11 (sum and product of PSD local kernels). Cost: S5.A p.21 counts two complex DxD products per step for dense propagation, O(LD^3), and O(L) per Haar-kernel entry. Counting arguments for named algorithms. Borderline: the cost counts are operation tallies, not theorems."
+  ],
+  "wang-otoc-connection-exact": [
+   "proved result",
+   "Eq. (13) is derived exactly in S3.A p.17 (Pauli completeness, no Haar average); the multi-time generalization for arbitrary U is derived in S3.B p.17-18, Eq. (S3.8), with a worked two-step example."
+  ],
+  "wang-memory-injection-bound": [
+   "proved result",
+   "S1.C p.9: Eq. (S1.13) squares the evolved input operator, with a nonnegative remainder, to give b + 2a <= 2; the Letter p.3 gives the induction to kappa <= 2 and PSD to |kappa| <= 2. The paper states these are necessary constraints only."
+  ],
+  "wang-local-kernels-seven-coefficients": [
+   "proved result",
+   "S1.A-S1.B p.8-9: the seven coefficients (three in B, four in a0 and C) are derived from an arbitrary unitary writer, Eqs. (S1.3), (S1.9)-(S1.10), with no symmetry assumption on the writer."
+  ],
+  "wang-factorization-freedom-counterexample": [
+   "stated limit",
+   "Letter p.3 and S2.D p.16: the independence condition is stated, and the counterexample is worked out (swap writer, k_{D,2} = 1, kappa_{D,2} = 3/2, error 1/2 at every D). The zero-measure remark is stated, not proved, but the limit and example are the paper's own."
+  ],
+  "wang-readouts-in-haar-feature-space": [
+   "proved result",
+   "S4.A p.19: inductive proof, Eqs. (S4.2)-(S4.4), that H_{k_D,L} is contained in H_{kappa_D,L} for any fixed writer and router from I/D; the text states the inclusion gives no guarantee of equal learning performance (Letter p.3)."
+  ],
+  "wang-sample-budget-ratio-bound": [
+   "proved result",
+   "S4.B-S4.C p.19-21: the ratio n_H/n_D = s_H/s_D <= Gamma_D = lambda_max(K_k^{1/2} K_kappa^+ K_k^{1/2}) is proved by a Rayleigh quotient. 'Sufficient budget' is defined from the Bartlett-Mendelson bound [S5] (cited, with bounded amplitude and noise variance), which the value carries as 'under a common generalization bound'. Borderline: the ratio is exact by definition, the sufficiency rests on the citation."
+  ],
+  "wang-classical-kernel-family-controls": [
+   "definition",
+   "Eq. (16), Letter p.5 and S6.A p.24: the family is defined, PSD shown, a(u,u) = R for every input, factor R^l for source age l, eta allocates constant versus input-dependent propagation."
+  ],
+  "wang-narma10-protocol-and-limits": [
+   "stated limit",
+   "S7.B-S7.C p.25-26: two controls and 64 frozen candidates per family, controls and ridge chosen by validation, eight paired streams of length 16384, ideal noise-free full Hilbert-Schmidt readout, and the paper calls the comparison exploratory conditional on the fixed candidate sets."
+  ],
+  "wang-limit-no-echo-state-guarantee": [
+   "stated limit",
+   "S2.C p.16: warm-up from I/D is retained and increasing D alone does not erase it or establish an echo-state property; S4.A p.19: a continuing stream needs its boundary state or a forgetting bound."
+  ],
+  "hellstern-setup-benchmark-and-references": [
+   "setup",
+   "Sec. 2.2.1 p.5 and Sec. 2.3 p.7: 180 instances indexed by family, size and seed, not 180 distinct matrices; Eref = E* for 179 (90 enumeration, 36 construction, 53 exact solver); one SK instance at n = 48 is the exception."
+  ],
+  "hellstern-setup-solver-configs": [
+   "setup",
+   "Sec. 2.4 p.7-8: Gurobi 600 s; SA four restarts of 2000 sweeps; PT 16 replicas with wall-clock budget; two-site DMRG with chi capped at 32; LR-QAOA statevector n<=16 and MPS 16<n<=32 with a 3000 cost-gate limit."
+  ],
+  "hellstern-limit-lrqaoa-simulated-only": [
+   "stated limit",
+   "Sec. 2.4 p.8-9: all LR-QAOA results are classical simulation, times are classical cost, small-size agreement does not show convergence of larger MPS runs, MPS results are approximate simulations."
+  ],
+  "hellstern-limit-exact-baseline-not-limit": [
+   "stated limit",
+   "Sec. 2.4 p.7: the general-purpose baseline does not establish limits of exact optimization; p.9: wall-clock comparisons reflect implementation choices including threading and compiled routines."
+  ],
+  "hellstern-definition-hit-criterion": [
+   "definition",
+   "Eq. (5), Sec. 2.5.4 p.14 defines hit with epsilon 1e-9 and a max(1,|Eref|) scale; Sec. 2.3 p.7 says a hit implies the optimum only when the reference is known optimal and separates the certificate flag."
+  ],
+  "hellstern-limit-diagnostic-proxy-and-threshold": [
+   "stated limit",
+   "Sec. 2.5.2 p.12-13: the Schmidt-component diagnostic is a ranking proxy (Spearman 0.69 and 0.73), being below the cap does not establish convergence, and the 8-bit threshold has no independent motivation (set on Campaign A, App. C.3). The two rho figures are the paper's own numbers inside the caveat."
+  ],
+  "hellstern-scope-optimum-no-entanglement": [
+   "scope",
+   "Sec. 1 p.2, Sec. 2.5.2 p.13: the paper states every QUBO optimum is a computational-basis state with no entanglement or magic, that entanglement alone does not decide simulability (Gottesman-Knill, cited standard background), and that magic alone does not fix simulation cost."
+  ],
+  "hellstern-limit-scaling-premise-unconfirmed": [
+   "stated limit",
+   "Sec. 5.2 p.25: small-size data do not support the scaling premise on Wishart, the region stays conditional, the narrow window cannot rule out softening; Sec. 6.3 p.27: a hardware experiment is a candidate regime, not a quantum win, and a classically simulable circuit would not beat its own simulation."
+  ],
+  "hellstern-setup-campaign-e-protocol": [
+   "setup",
+   "Sec. 6.1 p.25-26 and Table 7 caption: gauge-randomized Wishart, alpha 0.5 and 0.7, 600 s Gurobi plus one-hour limits, 67 exact runs on 61 instances, SA ten seeds, PT three seeds at 1, 6, 60 s, six instances not repeated at 60 s."
+  ],
+  "hellstern-limit-scaling-not-intractability": [
+   "stated limit",
+   "Sec. 6.3 p.27: license-token outages truncated runs and timeouts do not prove unreachability; Sec. 7.1 p.30: failures are statements about tested budgets, fixed-budget comparisons do not establish asymptotic advantage; Sec. 8 p.31: not a bound on classical optimization in general."
+  ],
+  "hellstern-limit-threats-to-validity": [
+   "stated limit",
+   "Sec. 7.1 p.27-30 (threats to validity): portfolio and budget dependence, untested solvers, synthetic families up to n = 48, non-exchangeable calibration and evaluation sets, differing timing boundaries and languages. The hit rates quoted (0.25, 0.44, 1.00, 96%, 66%) are the paper's own figures inside the caveat."
+  ],
+  "hellstern-limit-no-noise-model": [
+   "stated limit",
+   "Sec. 7.1 p.29-30: LR-QAOA simulations do not model device noise, depth estimates do not establish noisy-hardware performance, the cited noisy-optimization bounds are not evaluated here."
+  ],
+  "hellstern-conclusion-quantum-evidence-needed": [
+   "stated limit",
+   "Sec. 8 p.31 and Abstract p.2: Campaign D small-size data do not establish the success-probability scaling; a direct quantum evaluation, stronger classical baselines and success-probability estimates at comparable budgets are needed; no quantum advantage is claimed."
+  ],
+  "hellstern-setup-certificate-and-gurobi-details": [
+   "setup",
+   "App. B p.33: certificate means OPTIMAL under default MIP gap 1e-4, four of 176 flagged records have nonzero gaps below it, 165 linearized and 15 native models; App. A p.32: one machine (Core Ultra 9 285H, WSL2), Gurobi 13.0.2."
+  ],
+  "hellstern-setup-sa-pt-details": [
+   "setup",
+   "App. B p.33: SA R = 4, nsw = 2000, 8000n updates, T0 includes the diagonal of Q so not gauge invariant, reference runs get four times the updates; PT 16 replicas, median swap acceptance 0.08 with eight and 0.27 with 16 on gauged Wishart n = 40, 48 at 0.75 s. The acceptance figures are the stated reason for the setup."
+  ],
+  "hellstern-limit-candidate-indicator-in-sample": [
+   "stated limit",
+   "App. C.3 p.36: all four thresholds chosen on Campaign A against the six SA misses it is scored on; perfect recall is in-sample, not a validated detection rate; precision 0.33 with nine SK and three Wishart false positives."
+  ],
+  "hellstern-provenance-ai-use-and-data-access": [
+   "setup",
+   "Sec. 2.6 p.17: AI assistance (Claude, Anthropic) for code, analysis scripts and drafting, results checked against tests; Declarations p.31: Zenodo deposit restricted until publication, with per-run records and a recompute script."
+  ]
+ },
+ "theory_low": {
+  "sein-upper-bound-expected-variance": "Sec. 6.1.2 p.18, Eq. (33), App. B.6-B.7.1 p.44-46: a calculation under modeling assumptions the paper itself calls approximations (k-regular graph, full register C = N_k, inputs and targets independent across nodes, which footnote 15 says is false in practice, averaging over states), kept only to leading order in N_k with O(N_k^-2) terms dropped. Not a theorem with conditions proved as stated; tightness is open ('work in progress').",
+  "sein-lower-bound-expected-variance": "Sec. 6.1.2 p.18, Eq. (36), App. B.7.2 p.46-47: same modeling assumptions as the upper bound, leading order only, and it holds only for 'efficient' ansatze after a sign correction (Lemma E.4). It is attained only if |<1|D|1>|^2 = 0, a significant constraint the paper notes.",
+  "sein-expected-variance-arbitrary-ansatz": "Sec. 6.1.2 p.19, Eq. (37), App. B.8 p.47: rests on Lemma E.5, which proves only that the mean squared overlap of two random states is 1/2^n. The claim that |<1|D|1>|^2 'strongly peaks' near 1/N_k needs concentration, which is not proved, and D|1> for a fixed ansatz is not a Haar-random state. The result is also under the Appendix B modeling assumptions.",
+  "sein-trainability-interpretation-feature-scaling": "Sec. 6.1.3 p.19: the authors' interpretation of the bounds (Eqs. 33, 36, 37), which are themselves modeling-assumption derivations; 'may be preserved' for C = O(polylog N) is a suggestion, not a proved result.",
+  "sein-semi-supervised-factor": "Sec. 6.1.3 p.19 and App. B.5 p.39, Eq. (104): the M/N factor comes from letting unlabeled targets collapse to zero, which the paper calls a mathematical trick (not physically realizable), applied to the modeling-assumption expected variance. The 'still efficiently trained' conclusion for a 10 percent labeled fraction is an interpretation.",
+  "sein-all-qgcn-reduce-to-qsgc": "Sec. 6.2 p.19 with App. A.2, C.1-C.3: the reduction needs the commuting-product and convex-sum results (Prop. A.3, A.4), whose proofs lean on Lemma A.2, which fails when eigenvalue 1 is degenerate (see the Lemma A.2 entry). The QLGC analysis in C.3 covers only a polynomial with coefficients a_q in [0,1] summing to 1 over q = 1..p, narrower than the QLGC of Table 2 (sum_{i=0}^p alpha_i L^i with free alpha_i). Also under the k-regular and averaging assumptions. So 'any QGCN' is not shown.",
+  "sein-shot-noise-factor": "Sec. 7 p.20 and App. D.1 p.55, Eq. (189): the factor O(C^2) uses the arbitrary-ansatz expected variance (itself unproved, see Eq. 37) and a shot-noise scaling Omega(log(1/delta)/eps^2) imported from [1]; the parameter-shift O(D) and O(D+p) counts are standard costs, not proved here.",
+  "sein-regimes-of-advantage-qsgc": "Sec. 7.1 p.21 and App. D.2: the three regimes follow from complexity formulas imported from [1] (Eqs. 185-188, 192-195) with fixed C and efficient data loading assumed; polynomial and exponential regimes are shown by plugging in ancilla scalings, not proved as theorems in this paper.",
+  "sein-qlgc-loses-regime-three": "Sec. 7.1 p.21, Eq. (44), App. D.4 p.58-59: derived from the QLGC depth formula of [1] and a minimization with the claimed result 'at best polynomial'; it holds under the same QRAM and fixed-p assumptions and includes an iterative approximation (x_2 ~ a log a) without error control.",
+  "sein-dequantization-conditions": "Sec. 7.2 p.21, App. D.5 p.59-62: the exponents (r^11, r^16.5) come from Tang's algorithm [59] as cited, and the paper itself calls its sampling process 'informal' and 'a simplified sketch', with the polynomial step a 'heavy approximation' (Eqs. 237-243) and precision treated as fixed. The thresholds N^0.09 and N^0.11 depend on that sketch.",
+  "sein-dequantization-sparse-or-dense-advantage": "Sec. 7.2 p.21: rests on Lemma E.7 (N/s <= r), whose proof uses 0/1 entries of A (unweighted graphs), then on the dequantization sketch for the rank threshold. The 'may still have an advantage' conclusion is an interpretation.",
+  "sein-lemma-a2-degree-proportional": "Lemma A.2, p.31: the proof assumes that D^{1/2}1 for both graphs lies in the common eigenbasis of the commuting matrices, which fails when eigenvalue 1 is degenerate (disconnected graphs). Counterexample: two nodes with no edges and self-loop weights 1 and 2 give A-hat = I; self-loop weights 1 and 1 give B-hat = I. They commute but the degree matrices diag(1,2) and I are not proportional. The lemma is false as stated; it needs a connectedness condition.",
+  "sein-proposition-a3-product-adjacency": "Prop. A.3, p.31-32: the construction of G_C uses Lemma A.2 (D_B = b D_A), which fails for disconnected graphs (see that entry). Also the stated direction 'only if commute' is not argued in the proof, which assumes commutation to build G_C (necessity follows trivially from symmetry of the product but is not written).",
+  "sein-proposition-a4-convex-sum": "Prop. A.4 and Cor. A.4.1-A.4.2, p.32-33: the general proof uses Lemma A.2 for D_B = b D_A, which fails for disconnected graphs. The k-regular case (A.4.2) stands because the degree matrices are equal by hypothesis. The induction in A.4.1 inherits the gap.",
+  "sein-asymptotic-graph-size-independence": "App. B.5.1 p.41: the paper says 'it is thus safe to assume' that all edge-pair expected values are O(1) in N and k; this is an asserted asymptotic, not proved, and holds under the k-regular, full-register and independent-input assumptions. The spread over inputs and targets is left for future work.",
+  "sein-upper-bound-tightness-and-iqp": "App. B.7.1 p.46 and B.9 p.48: the 'exactly half the maximum' statement is relative to the leading-order expression of the Appendix B model (O(N_k^-2) terms dropped, k-regular, independent inputs and targets), so it is not exact for the physical variance; the IQP overlaps equal 1 (Eqs. 149-151) but the underlying bound is the modeling-assumption derivation. Tightness is stated as unresolved.",
+  "sein-curse-of-dimensionality-lemma-e5": "Lemma E.5, App. E.3 p.67: the lemma gives only the mean E|<phi|psi>|^2 = 1/2^n (proof valid for Haar-random states). The paper uses it for a concentration claim ('strongly peaks around N_k^-1', B.8 p.47) that needs the variance, not shown, and the ansatz overlap |<1|D|1>|^2 is not an overlap of two Haar-random states.",
+  "sein-padding-and-random-permutation": "App. B.10 p.49-50 (Lemma E.3): argued informally ('recovers the previous results up to an overhead O(1)', 'approximately'), by recomputing the H terms for Hamming weight <= C and averaging over permutations; the paper calls the permutation fix 'ad-hoc' and it sits on the Appendix B modeling assumptions.",
+  "sein-p-th-order-qsgc-reduces": "App. C.2 p.52: the graph reduction (A-hat^p is a k-regular normalized adjacency) is sound in the regular case via Prop. A.3 and Cor. A.3.1, but the conclusion that the bounds hold for any p inherits the Appendix B modeling assumptions and leading-order approximations, and is stated as 'our results should hold'.",
+  "sein-qlgc-trainability-convex-coefficients": "App. C.3 p.52-54, Eqs. (173)-(181): analyzed only for P(A) = sum_{q=1}^p a_q A^q with a_q in [0,1] and sum a_q = 1 (convex), narrower than the QLGC of Table 2 (sum_{i=0}^p alpha_i L^i with free coefficients, including q = 0). The cross-covariance Cov(dL_q, dL_q') is asserted to have the same N, C dependence by 'rerunning the same arguments'; the gradient with respect to a_r treats the constraint surface informally. Rests on the Appendix B assumptions and on Prop. A.4.",
+  "sein-exponential-advantage-space-or-time-not-both": "App. D.2 p.55-57: obtained by substituting ancilla scalings into complexity formulas imported from [1] with C, precisions and failure probability fixed and an efficient oracle assumed; 'not both' is a case analysis, not a proved lower bound.",
+  "sein-polylog-features-barren-plateau-avoided": "App. D.3 p.57-58, Eq. (205): follows from the arbitrary-ansatz expected variance (Eq. 37, unproved concentration) with C = polylog N, plus complexity formulas imported from [1]; 'for most ansatze' is not quantified.",
+  "sein-qlgc-depth-minimum-no-exponential-speedup": "App. D.4 p.58-59, Eqs. (220)-(224): the minimum over n_anc' uses the QLGC depth formula from [1] and an iterative approximation (x_2 ~ a log a) without error control; the no-exponential-speedup conclusion also assumes QRAM and fixed p.",
+  "sein-dequantization-rank-thresholds": "App. D.5 p.62, Eqs. (246)-(250): thresholds beta_max = 1/11 and 2/17.5 are algebra on the exponents of Tang's algorithm [59] (cited) and on an informal sampling sketch (p.60-61); the stable-rank loosening and 'classically simulable for any r = O(N^0.11)' are not proved.",
+  "wang-swap-readout-cost": "S5.A p.23: an upper bound from a Hoeffding-type tail estimate, stated without derivation of the update count; the value says 'needs' (a lower bound) but the passage gives only a sufficient count for independent SWAP estimation, which the paper itself says is 'specific to independent SWAP estimation'.",
+  "hellstern-conditional-depth-projection": "App. C.3 p.36: conditional on the literature's near-constant success probability at p ~ n [19] carrying over to Wishart; the paper says 'That premise is not established here'. Eq. (C2) rests on Vizing's theorem [36] (cited). D ~ n^2 is a conditional projection, not a proved or measured result."
+ },
+ "keep_stored": {},
+ "requote": {},
+ "value_replace": {
+  "sein-lemma-e7-rank-sparsity": "The paper proves (Lemma E.7) that the rank r of the normalized adjacency matrix with self-loops of a graph with sparsity s is at least N over s, so a sparse graph has high rank; the proof uses the Cauchy-Schwarz inequality on the eigenvalues, the trace, and a count of the ones in the matrix, so it covers unweighted graphs (entries zero or one, with unit self-loops)."
+ },
+ "extra_quotes": {
+  "sein-lemma-e7-rank-sparsity": [
+   "which counts the maximum number of ones present in the matrix"
+  ]
+ }
+}

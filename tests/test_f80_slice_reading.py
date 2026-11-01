@@ -30,6 +30,16 @@ def _script():
     return _load(importlib.util.spec_from_file_location("f80", ROOT / "scripts" / "sprint9_f80_reading.py"))
 
 
+def rewritten_by_a_full_read(conn, aid: str) -> bool:
+    """The row's last change is a full read's rewrite (Sprint 13 Task G, F113, or F114): the full read owns it now,
+    not the script that entered it. A "NOT in the paper" note marks a row without rewriting it; a format-only note
+    (Sprint 14 retrospective Q7) is not a change of its words, and is skipped."""
+    from store.ingest import FULL_READ_MARK, last_change
+    row = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (aid,)).fetchone()
+    last = last_change(row[0]) if row else ""
+    return FULL_READ_MARK in last and "NOT in the paper" not in last
+
+
 def _source_text(f80, paper: dict, a: dict | None = None) -> str:
     """The text an assertion's quotes were taken from, as the quote check compares it."""
     if paper["record_id"] == "qci-package-eqc-models":
@@ -134,10 +144,19 @@ def test_the_store_holds_exactly_what_the_script_sets(live_conn):
     """Review of 9f71f19: a changed quote or context was never synced, and
     the quote test read the manifest, so the two could diverge.
     Proven to fail by injection, 2026-10-15: with one VALUE_EDITS
-    replacement changed and not applied, this test named the assertion."""
+    replacement changed and not applied, this test named the assertion.
+    An id a later full read rewrote (F114, Sprint 14: 12 ids, their
+    certainty changes the team lead's) is the full read's, and its history
+    must say so in its last change (a "NOT in the paper" note marks a row
+    without rewriting it; review of 0eddd23); every other id is held to the
+    script. Proven to fail by injection, 2026-10-31: with the value of an
+    id the full reads did not touch changed in the script, this test named
+    it."""
     f80 = _script()
     bad = []
     for _, a, _ in f80.assertions():
+        if rewritten_by_a_full_read(live_conn, a.id):
+            continue
         row = live_conn.execute(
             "SELECT r.value, r.certainty, r.certainty_reasons, r.provenance, f.citation_context, f.claim_type "
             "FROM records r JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (a.id,)).fetchone()

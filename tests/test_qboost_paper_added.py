@@ -32,14 +32,16 @@ def _papers() -> list[dict]:
     return json.loads((_DUMP["dir"] / "papers.json").read_text(encoding="utf-8"))
 
 
-def test_qboost_paper_is_present_at_screened_tier():
+def test_qboost_paper_is_present_at_read_tier():
+    """Added at `screened`; read in full by an F114 cloud reader and raised
+    to `read` at F114's first apply (Sprint 14, 2026-10-30)."""
     papers = _papers()
     qboost = next(
         (p for p in papers if p["id"] == "neven-2012-qboost-adiabatic-quantum-optimization"),
         None,
     )
     assert qboost is not None, "the QBoost paper (Neven et al. 2012) is missing from the store"
-    assert qboost["tier"] == "screened"
+    assert qboost["tier"] == "read"
 
 
 def test_qboost_paper_has_applicability_in_qml_and_qc():

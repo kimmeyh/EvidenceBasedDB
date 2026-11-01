@@ -59,9 +59,11 @@ def test_every_screened_or_read_paper_has_real_applicability():
 
 def test_screened_paper_without_applicability_is_detected_regression():
     """Injection for the guard above: take a real screened paper and strip
-    its applicability; the same filter must report it."""
+    its applicability; the same filter must report it. Any paper the filter
+    covers serves: since F114's first apply (Sprint 14, 2026-10-30) no paper
+    is left at `screened`."""
     papers = _papers()
-    victim = next(p for p in papers if p.get("tier") == "screened")
+    victim = next(p for p in papers if p.get("tier") in ("screened", "read"))
     stripped = [{**p, "applicability": []} if p["id"] == victim["id"] else p for p in papers]
     without = [p["id"] for p in stripped if p.get("tier") in ("screened", "read") and not p.get("applicability")]
     assert without == [victim["id"]]

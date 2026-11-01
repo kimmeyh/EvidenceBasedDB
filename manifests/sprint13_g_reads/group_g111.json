@@ -1,0 +1,2219 @@
+{
+ "papers": [
+  {
+   "record_id": "chen-2018-universal-discriminative-quantum-neural-networks",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2018-05_Chen_Universal-discriminative-quantum-neural-networks.pdf",
+   "title_in_file": "Universal discriminative quantum neural networks",
+   "version_note": "arXiv:1805.08654v1 (22 May 2018), marked 'Preprint. Work in progress.' The stored anchors cite 'Section 4' and 'Section 5' for the numerical results; in this file the numerical experiments are Section 3 and Section 4 holds the measurement-repetition study; the conclusions are Section 5.",
+   "pages": 19,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A preprint that trains shallow parametrised quantum circuits, simulated on classical hardware, to act as POVMs that discriminate non-orthogonal quantum states, with a cost function that trades error against inconclusive outcomes.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "chen2018-error-inconclusive-tradeoff",
+     "verdict": "narrowed",
+     "note": "The statement holds for the test with training data centred at a0 (the unambiguous-discrimination comparison with a prior optical experiment), not for all training. It is in Section 3 (p.7, Fig. 3 on p.8), not Section 4. The paper adds that a close-to-minimum Pinc is reachable if a small non-zero error probability is allowed, and attributes part of the gap to the training data being centred at, not fixed at, a0.",
+     "value": "The authors report that, in repeated experiments with training data centred at a0, training did not on average reach the theoretical minimum inconclusiveness Pinc when a high penalty forced the error probability Perr close to zero, and that allowing a small non-zero error probability gave a Pinc close to the theoretical minimum, so a less strict constraint on Perr allows a much lower inconclusiveness rate. The experiment uses exact measurement probabilities on a simulated quantum computer.",
+     "anchor": "Section 3, 'Discriminate an input from a normal distribution centred at a0', p.7; Fig. 3, p.8",
+     "quotes": [
+      "In repeated experiments, we did not reach on average the theoretical minimum inconclusiveness Pinc when we use a high penalty to force the error probability Perr to be close to zero.",
+      "Also, we are able to obtain a Pinc which is close the the theoretical minimum, if we allow a small, but non-zero error probability.",
+      "This demonstrates that a less strict constraint on Perr allows for a much lower inconclusiveness rate"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "chen2018-shallow-circuits-discriminate",
+     "verdict": "narrowed",
+     "note": "The abstract says 'comparable performance to theoretically optimal POVMs'. The body gives two reference points in Fig. 2: at a0 = 0.25 the success probability is 0.84 against a stated optimum of 0.833; at a0 = 0.50 it is 0.59 against a stated optimum of 0.666. So 'comparable' is exact at one setting and below the optimum at the other. The comparison is for a two-family, two-qubit problem on a simulator.",
+     "value": "The authors report that numerical simulations show shallow quantum circuits could be trained to discriminate among various pure and mixed quantum states, and the abstract calls the performance comparable to theoretically optimal POVMs. The authors give Psuc = 0.84 for a0 = 0.25 and Psuc = 0.59 for a0 = 0.50, against theoretically optimal success rates of 0.833 and 0.666.",
+     "anchor": "Abstract, p.1; Fig. 2, p.7",
+     "quotes": [
+      "shallow quantum circuits could be trained to discriminate among various pure and mixed quantum states",
+      "(a) a0 = 0.25, Psuc = 0.84",
+      "(b) a0 = 0.50, Psuc = 0.59",
+      "optimal success rate of 0.833 for a0 = 0.25 and 0.666 for a0 = 0.50 from Mohseni"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "At a0 = 0.50 the reported success probability is below the cited optimum, so 'comparable' is a loose word for that setting."
+    },
+    {
+     "id": "chen2018-simulated-exact-probabilities",
+     "verdict": "confirmed",
+     "note": "The quoted sentence is in the Conclusions (Section 5, p.13). Section 3 (p.6) also states the numerical experiments were performed on classical hardware using exact probabilities. The stored anchor 'Section 4' is not where the sentence is.",
+     "value": "The authors state that the experiment was done on a simulated quantum computer, on classical hardware where exact measurement probabilities are available.",
+     "anchor": "Section 5, Conclusions, p.13",
+     "quotes": [
+      "Although this experiment was done on a simulated quantum computers, i.e., classical hardware, where exact measurement probabilities are available"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own setup and scope in Section 5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "chen2018-pov-circuit-setup",
+     "value": "The authors state that the quantum circuit is implemented as a general POVM with 4 possible measurement outcomes, using 2 (ancilla) qubits for the measurements.",
+     "anchor": "Section 2, p.5",
+     "quotes": [
+      "Our quantum circuit is implemented as a general POVM with 4 possible measurement outcomes (Eq. 2.5).",
+      "We hence use 2 (ancilla) qubits for the measurements"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own circuit setup in Section 2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-cost-function-definition",
+     "value": "The authors define the cost function J1 as a sum of an award for successful discrimination, a penalty weighted by alpha-err for wrong discrimination and a penalty weighted by alpha-inc for inconclusive outcomes, averaged over training samples S_i.",
+     "anchor": "Section 2, Eq. 2.6, p.6",
+     "quotes": [
+      "where |Si| is the number of samples in the training sets Si, αerr is the penalty for making errors, and αinc is the penalty for giving inconclusive outcomes.",
+      "This cost function reflects three things: the award given to a successful discrimination of the states, the penalty (controlled by αerr) for a wrong discrimination"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own cost function in Section 2 (Eq. 2.6).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-adam-settings",
+     "value": "The authors state that for the centred-data experiment Adam used a stochastic gradient taking 50 sub-samples of a in the training set, with beta1 = 0.9, beta2 = 0.999, epsilon-hat = 10-8 and learning rate 0.001, and that gradients were calculated with the forward differences formula.",
+     "anchor": "Section 3, footnote 3, p.7; Section 2, p.6",
+     "quotes": [
+      "The Adam used a stochastic gradient taking 50 sub-samples of a in the training set.",
+      "Parameters for Adam are β1 = 0.9, β2 = 0.999, εˆ = 10−8 and learning rate 0.001",
+      "using Adam, where the gradients are calculated using forward differences."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own optimiser settings in footnote 3.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-train-test-set-sizes",
+     "value": "The authors state that for the all-data experiment the training set was 100 evenly spaced points from the range [0, 1] and the test set was 150 i.i.d. randomly chosen points in [0, 1]; all data was obtained after 5000 iterations of Adam.",
+     "anchor": "Section 3, footnotes 4 and 5, p.7",
+     "quotes": [
+      "Strain chosen to be 100 evenly spaced points from the range [0, 1]",
+      "Stest was chosen to be 150 i.i.d., randomly chosen points in [0, 1]",
+      "All data is obtained after 5000 iterations of Adam."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own data setup in footnotes 4 and 5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-centred-data-sampling",
+     "value": "The authors state that the centred training data was 100 points, i.i.d. randomly sampled from a normal distribution with mean a0 and variance 0.01, truncated so that 0 <= a <= 1; the test set was the single point a0.",
+     "anchor": "Section 3, footnote 1, p.6; p.7",
+     "quotes": [
+      "The centred data was chosen from 100 points that were i.i.d., randomly sampled from a normal distribution with mean µ = a0 and variance σ = 0.01.",
+      "The normal distribution was truncated so that 0 ≤ a ≤ 1.",
+      "train our model using Adam 3 and test it on the test set Stest = {a0}."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own sampling setup in footnote 1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The footnote writes the normal distribution's variance with the symbol sigma, which usually denotes a standard deviation; the Fig. 2 and Fig. 3 captions say 'standard deviation 0.01'."
+    },
+    {
+     "id_suggestion": "chen2018-fig2-success-probabilities",
+     "value": "The authors report, for training data centred at a0 with penalties (25, 2) and values averaged over 50 runs, Psuc = 0.84 at a0 = 0.25 and Psuc = 0.59 at a0 = 0.50, and give theoretically optimal success rates of 0.833 for a0 = 0.25 and 0.666 for a0 = 0.50.",
+     "anchor": "Fig. 2, p.7",
+     "quotes": [
+      "(a) a0 = 0.25, Psuc = 0.84",
+      "(b) a0 = 0.50, Psuc = 0.59",
+      "The penalty parameters are set to be (αerr, αinc) = (25, 2).",
+      "averaged over 50 runs",
+      "optimal success rate of 0.833 for a0 = 0.25 and 0.666 for a0 = 0.50 from Mohseni"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "At a0 = 0.25 the reported value is above the cited optimum of 0.833 (0.84, a mean over runs of a trained circuit tested on a distribution centred at a0, so the two need not be directly comparable)."
+    },
+    {
+     "id_suggestion": "chen2018-fig3-tradeoff-curve",
+     "value": "The authors report that, although training does not reach the minimal inconclusiveness rate when Perr is required to be near zero, a much smaller Pinc is obtained by accepting a small non-zero Perr; alpha-err was increased from 10, 15, 20 to 40 with alpha-inc fixed at 2, and the standard deviation of Perr is estimated at 0.001 to 0.01 and of Pinc at 0.04 to 0.12.",
+     "anchor": "Fig. 3 caption, p.8",
+     "quotes": [
+      "Although the training does not reach the minimal inconclusiveness rate when we require Perr ≈ 0, we are able to obtain much smaller Pinc by accepting small non-zero Perr.",
+      "The standard deviation of Perr are estimated to be 0.001 to 0.01 and 0.04 to 0.12 for Pinc.",
+      "by increasing αerr from 10, 15, 20, · · · to 40, with αinc fixed at 2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-penalties-regularise-transition",
+     "value": "The authors report that, in the all-data experiment, the penalties act as a form of regularisation that can be adjusted for a higher success probability or a lower inconclusiveness rate than with zero penalties, and that a gradual transition from unambiguous discrimination (near-zero error probability) to minimal error discrimination (near-zero inconclusiveness) is observed as the penalties vary.",
+     "anchor": "Section 3, 'Discriminate among all data', p.7; Fig. 5, p.10",
+     "quotes": [
+      "the penalties act as a form of regularisation and can be adjusted to give a higher success probability or a lower inconclusiveness rate for the final model",
+      "we observe a gradual transition from unambiguous discrimination (characterised by near-zero error probability) to minimal error discrimination (characterised by near-zero inconclusiveness) with varying penalties"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-fig4-two-strategies",
+     "value": "The authors report that with alpha-err greater than alpha-inc, with (alpha-err, alpha-inc) = (20, 2), the circuit gives unambiguous discrimination with zero error rate, and with alpha-inc greater than alpha-err, with (5, 20), it gives minimal error discrimination with zero inconclusiveness rate; values are exact probabilities averaged over 50 repeated runs.",
+     "anchor": "Fig. 4 caption, p.9",
+     "quotes": [
+      "When αerr > αinc, (Fig. (a) and Fig. (b), where (αerr, αinc) = (20, 2)), we obtain unambiguous discrimination with zero error rate.",
+      "When αinc > αerr (Fig. (c) and Fig. (d), where (αerr, αinc) = (5, 20)), we obtain a minimal error discrimination with zero inconclusiveness rate.",
+      "averaged over 50 repeated runs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-fig5-hardness-asymmetry",
+     "value": "The authors report that in the figure the bottom right regions of all plots are mostly uniform, which they say shows that it is much harder to obtain a small inconclusiveness rate than a small error rate, and that the result becomes increasingly unstable when the two penalties are comparable in magnitude.",
+     "anchor": "Fig. 5 caption, p.10",
+     "quotes": [
+      "The bottom right regions in all plots are mostly uniform, which shows that it is much harder to obtain a small inconclusiveness rate than a small error rate.",
+      "the result becomes increasingly unstable when the two penalties (αerr and αinc) are comparable in magnitude."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-training-dominated-by-hard-states",
+     "value": "The authors report that circuits trained on a small range of a close to 1 perform similarly to circuits trained on the whole range when tested on the full range of a, and conclude that the training is highly dominated by the wave functions with a close to 1, which are harder to discriminate because fidelity grows with a; the test data was averaged over 10 repeated runs.",
+     "anchor": "Section 3, 'Generalisability of training data', p.7-8; Fig. 6, p.11",
+     "quotes": [
+      "The circuits trained on a small range a close to 1, shows a performance that is similar to a circuits trained on the whole range of a ∈ [0, 1].",
+      "We therefore conclude, that the training is highly dominated by the wave functions ψ1(a) with a close to 1.",
+      "The test data was averaged over 10 repeated runs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-distributions-classification",
+     "value": "The authors report that the trained circuit can classify data with a and b drawn from a normal distribution, a uniform distribution or a mixture of the two, unambiguously with error rate below 0.01, with a success rate inversely correlated with the averaged fidelity between the input states; the data is an average over 50 repetitions.",
+     "anchor": "Section 3, 'Distinguishing data from different probability distributions', p.8; Fig. 7, p.11",
+     "quotes": [
+      "We show that the trained circuit can successfully classify data with a and b drawn from the normal distribution, the uniform distribution, or a mixture of two.",
+      "The classification is done in an unambiguous manner (with error rate < 0.01), and we find an inverse correlation between the success rate and the averaged fidelity between the input quantum states.",
+      "The data is obtained as an average over 50 repetitions."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-sgd-saddle-points",
+     "value": "The authors state that they found empirically that saddle points often exist in training and that stochastic gradient descent therefore does not perform well, which motivates Adam; the optimiser comparison figure shows SGD often stopping at a plateau of higher cost, and the authors say they can only hypothesise about the origins of this behaviour.",
+     "anchor": "Section 3, p.6; Appendix C, p.16; Fig. 10, p.17",
+     "quotes": [
+      "We found empirically that saddle points often exists in training and hence stochastic gradient descent does not perform well.",
+      "where SGD often stops at a plateau of higher cost functions.",
+      "we can hence only hypothesise about origins of the observed behaviour."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation from one study; the paper itself calls the cause a hypothesis.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-adam-vs-barren-plateau-ref",
+     "value": "The authors state that a cited result (their reference 47) implies that classical-quantum hybrid methods might not perform well in practice, based on a proof involving random unitaries, and that they showed the optimisation works well for the qubit distributions studied when SGD is replaced by Adam or RMSProp; they conjecture that randomly sampled circuits do not apply to their structured problem.",
+     "anchor": "Appendix C, p.16",
+     "quotes": [
+      "Recent result by [47] imply that classical-quantum hybrid methods might not perform well in practice based on a proof involving random unitaries.",
+      "However, we showed here that the optimisation procedure works well for the distributions of qubits studied if we replace the stochastic gradient descent with improved methods like Adam, or RMSProp [48](c.f. Fig.10).",
+      "we conjecture that the special case of randomly sampled matrices does not apply in our highly structured problem"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conjecture and a cited result; the paper presents no proof for the conjecture.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-larger-qubits-open",
+     "value": "The authors state that they observe a stable optimisation process up to the number of qubits they used and leave open whether this holds for a larger number of qubits.",
+     "anchor": "Appendix C, p.16",
+     "quotes": [
+      "hypothesis with the observation that up to the number of qubits we obtain a stable optimisation",
+      "process. However, we leave open whether this holds for larger amount of qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this open question and limit in Appendix C.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-measurement-repetitions-ideal",
+     "value": "The authors state that an ideal number of repeated measurements is of the order the inverse fourth power of epsilon, which for epsilon = 10-3 is 1012 (ten to the twelfth) repetitions, under an assumption about the variance of the cost function; they do not use that many in practice.",
+     "anchor": "Section 4, p.9 and footnote 6",
+     "quotes": [
+      "For example, when ε = 10−3, the ideal number of repetitions is given by 1012.",
+      "This assumes that the cost function follows a normal distribution with variance of the order"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An order-of-magnitude estimate under a stated assumption, not a proved bound.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-robust-105-repetitions",
+     "value": "The authors report that for a fixed maximum of 5000 Adam iterations, a gradient step epsilon = 10-2 with 105 (ten to the fifth) repeated measurements gives robust results, with a final cost function within 3% of the exact-probability value and a relative standard deviation of 13%; penalties were alpha-inc = 5 and alpha-err = 40.",
+     "anchor": "Section 4, 'Large number of repetitions', p.9-10; Fig. 8, p.12",
+     "quotes": [
+      "Our results show that for a fixed maximum number of iterations (5000) for Adam, a combination of ε = 10−2 and 105 repeated measurements gives robust results,",
+      "(with an error within 3%) and is stable (with a relative standard deviation of 13%)",
+      "the penalties were set to αinc = 5 and αerr = 40."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-small-learning-rate-100-reps",
+     "value": "The authors report that with only 100 repeated measurements, the variance of the cost function J1 after 20000 iterations decreased as the learning rate was lowered, and that a lowered learning rate could counter the noise from insufficient sampling at the price of a longer optimisation.",
+     "anchor": "Section 4, 'Small learning rates and high number of iterations', p.10; Fig. 9, p.12",
+     "quotes": [
+      "with only 100 repeated measurements, the variance of cost function J1 after 20000 iterations decreased as we lowered the learning rate (Fig.9(a)).",
+      "lowered learning rate could effectively counter the noisy brought by the insufficient sampling."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-parameter-count-polynomial",
+     "value": "The authors state that their discriminator circuit model uses a number of parameters that is polynomial in the size of the quantum states input to the circuit, and contrast this with classical deep learning weights that they say are exponential in the number of qubits for analysing quantum data; no derivation of the count is given in the body.",
+     "anchor": "Section 1, p.3",
+     "quotes": [
+      "it uses a number of parameters that is polynomial in the size of the quantum states that are input into the circuit.",
+      "however they will be exponential in the number of qubits for analysing quantum data."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim without a derivation in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-nearly-optimal-conjecture",
+     "value": "The authors state that they adapt optimal channel circuit decompositions to POVMs and conjecture that the adapted decompositions are also nearly optimal; they describe a parameter-counting argument as the high-level idea for the near-optimality of the channel decomposition.",
+     "anchor": "Section 1, p.2; Section 2, p.5",
+     "quotes": [
+      "directly adapt these channel decompositions to POVMs, conjecturing that our adapted decompositions for POVMs are also nearly optimal.",
+      "The high level idea for proving the near optimality of the channel decomposition is then based on a parameter counting argument."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conjecture stated without proof for the POVM case.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-universal-topology-claim",
+     "value": "The abstract claims that the universal circuit topologies, with a theoretically motivated design, guarantee that the circuits can in principle learn to perform arbitrary input-output mappings; the body does not prove this.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "Notably we use universal circuit topologies, with a theoretically motivated circuit design, which guarantees that our circuits can in principle learn to perform arbitrary input-output mappings."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim in the abstract without a proof in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-no-classical-analogue-claim",
+     "value": "The abstract claims the work provides an example of quantum machine learning for a task that has inherently no classical analogue, and the introduction says a comparison with classical algorithms is not appropriate for it.",
+     "anchor": "Abstract, p.1; Section 1, p.2",
+     "quotes": [
+      "provides an example of quantum machine learning for a task that has inherently no classical analogue.",
+      "Hence we solve a problem where a comparison with classical algorithms is not appropriate"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper runs no classical comparison.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper runs no classical baseline, so the claim of no classical analogue stands without a comparison in the paper."
+    },
+    {
+     "id_suggestion": "chen2018-generalisation-conclusion",
+     "value": "The authors state that the training was performed over a prior specified range of input states without training on the whole range, and that it generalised well to states from the parameter range not seen in training; they say this distinguishes the work from earlier circuit learning that optimises circuits for specific inputs.",
+     "anchor": "Section 5, Conclusions, p.13",
+     "quotes": [
+      "The training was performed over a prior specified range of input states, however, without training the circuit on the whole range.",
+      "This training process generalised well for the discrimination task on new data, i.e., states from the parameter range which have not been seen during the training process."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-cosine-sine-decomposition",
+     "value": "The paper states the Cosine-Sine Decomposition of a unitary matrix into block-diagonal unitary matrices A0, A1, B0, B1 and real diagonal matrices C and S satisfying C 2 + S 2 = 1 (squares, as printed), and uses it to parametrise the POVM circuit.",
+     "anchor": "Appendix A.1, p.14",
+     "quotes": [
+      "where A0, A1, B0, B1 are unitary matrices of size 2n−1 × 2n−1, C and S are real diagonal matrices",
+      "of size 2n−1 × 2n−1 satisfying C2 + S2 = 1."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A standard decomposition the paper uses, taken from its references 41 and 42; not proved here.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2018-preprint-status",
+     "value": "The paper is marked as a preprint and as work in progress.",
+     "anchor": "Section 1 footer, p.1",
+     "quotes": [
+      "Preprint. Work in progress."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own status on page 1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "chen-2020-quantum-long-short-term-memory",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2020\\Chen_Yoo-and-Fang_2020_Quantum-Long-Short-Term-Memory__2009.01783.pdf",
+   "title_in_file": "Quantum Long Short-Term Memory",
+   "version_note": "arXiv:2009.01783v1 (3 Sep 2020), Brookhaven National Laboratory. The file is the paper its record names. Tables I to V were checked against page images (row QLSTM then row LSTM; columns training loss then testing loss). The stored anchors place the limits statements on page 20 and the setup on pages 11 to 12; in the PDF they are on page 21 and pages 12 to 13.",
+   "pages": 27,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A preprint that builds an LSTM cell from six variational quantum circuits (QLSTM) and compares it in noiseless simulation with a 166-parameter classical LSTM on five time-series tasks, including sine, a damped pendulum, a Bessel function and two open-quantum-system dynamics.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qlstm-converges-faster",
+     "verdict": "narrowed",
+     "note": "The claim holds for the training loss at Epoch 15, which is lower for the QLSTM in all five experiments, but the testing loss at Epoch 15 is higher for the QLSTM in the damped oscillator (Table II) and delayed quantum control (Table IV) experiments. The comparison is one fixed epoch, simulated, with 146 QLSTM against 166 LSTM parameters.",
+     "value": "The authors report that for certain testing cases this quantum version of LSTM converges faster, or equivalently reaches a better accuracy, than its classical counterpart; in the loss tables at Epoch 15 the QLSTM's training loss is lower than the LSTM's in all five experiments, while its testing loss is higher in the damped oscillator and delayed quantum control experiments.",
+     "anchor": "Abstract, p.1; Tables I-V, p.14-20",
+     "quotes": [
+      "we show that for certain testing cases, this quantum version of LSTM converges faster, or equivalently, reaches a better accuracy, than its classical counterpart.",
+      "TABLE II: The comparison of loss values at Epoch 15 for the damped oscillator",
+      "TABLE IV: The comparison of loss values at Epoch 15 for the delayed quantum control"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table II reads QLSTM 2.92e-2 and 6e-3 against LSTM 3.15e-2 and 5e-3, and Table IV reads QLSTM 2.88e-3 and 5.7e-3 against LSTM 1.44e-2 and 4.7e-3 (training, then testing), so the testing loss favours the LSTM in those two."
+    },
+    {
+     "id": "qlstm-noiseless-no-nisq-training",
+     "verdict": "confirmed",
+     "note": "Correct as stored; the page is 21, not 20. The paper also says that inference on a NISQ device with pre-trained parameters could be possible.",
+     "value": "The authors state that the simulations assume a perfect quantum computer, and that training on an actual NISQ device remains a significant challenge because of the excessive number of circuit evaluations.",
+     "anchor": "Section VI, Conclusion and outlook, p.21",
+     "quotes": [
+      "Finally, we have assumed a perfect quantum computer in our numerical simulations",
+      "It remains a significant challenge, as of today, to conduct the training phase on an actual NISQ device due to the excessive number of circuit evaluations"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own limits in Section VI.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qlstm-setup-param-counts",
+     "verdict": "widened",
+     "note": "The paper also gives the QLSTM parameter count (6 x 4 x 2 x 3 + 2 = 146, including 2 parameters for the final scaling), the classical LSTM hidden size of 5, and the simulation software. The setup is on pages 12 to 13.",
+     "value": "The authors state that the comparison uses numerical simulations of the QLSTM against a classical LSTM with hidden size 5 and 166 parameters, where the QLSTM has 6 VQCs, each with 4 qubits and depth 2 in the variational layer, plus 2 parameters for the final scaling, giving 146 parameters.",
+     "anchor": "Section V, p.12-13",
+     "quotes": [
+      "We present numerical simulations of the proposed QLSTM architecture applied to several scenarios.",
+      "The classical LSTM architecture is implemented using PyTorch [57] with the hidden size 5.",
+      "The total number of parameters is 166 in the classical LSTM.",
+      "QLSTM, there are 6 VQCs (Figure 5), in each of which we use 4 qubits with depth = 2 in the variational layer.",
+      "In addition, there are 2 parameters for the final scaling. Therefore, the number of parameters in our QLSTM is 6 × 4 × 2 × 3 + 2 = 146."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Section V.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qlstm-sine-result",
+     "value": "The authors report for the sine function that both QLSTM and LSTM learn it, that QLSTM learns significantly more information after the first training epoch, that its training loss at Epoch 15 is slightly lower than the LSTM's, and that its loss decreases more stably with no spikes; Table I gives QLSTM 1.89 x 10-2 training and 1.69 x 10-2 testing loss against LSTM 2.86 x 10-2 and 2.81 x 10-2.",
+     "anchor": "Section V.A, Fig. 6 and Table I, p.13-14",
+     "quotes": [
+      "QLSTM and LSTM successfully learn the sine function.",
+      "QLSTM’s training loss at Epoch 15 is slightly lower than LSTM’s",
+      "there are no spikes in the quantum case",
+      "QLSTM 1.89 × 10−2 1.69 × 10−2 LSTM 2.86 × 10−2 2.81 × 10−2"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "A single run per model is shown; no seed count or spread is given."
+    },
+    {
+     "id_suggestion": "qlstm-damped-oscillator-result",
+     "value": "The authors report for the damped pendulum oscillation that QLSTM learns more as early as Epoch 1, refines faster than the LSTM, and has a stabler decreasing loss; Table II gives QLSTM 2.92 x 10-2 training and 6 x 10-3 testing loss against LSTM 3.15 x 10-2 and 5 x 10-3 at Epoch 15.",
+     "anchor": "Section V.B.1, Fig. 7 and Table II, p.15-16",
+     "quotes": [
+      "QLSTM surprisingly learns more on the damped oscillation as early as Epoch 1, refines faster than the classical LSTM (cf. Epoch 15), and has stabler decreasing in loss.",
+      "QLSTM 2.92 × 10−2 6 × 10−3 LSTM 3.15 × 10−2 5 × 10−3"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The testing loss is lower for the LSTM at Epoch 15 in this table; the training loss values differ by under ten percent."
+    },
+    {
+     "id_suggestion": "qlstm-bessel-result",
+     "value": "The authors report for the Bessel function J2 that QLSTM learns faster, converges stabler and has a milder symptom in undershooting, and that the LSTM predicted poorly at Epoch 1 and 15; Table III gives QLSTM 2.26 x 10-2 training and 5.5 x 10-3 testing loss against LSTM 5.43 x 10-2 and 1.28 x 10-2 at Epoch 15.",
+     "anchor": "Section V.B.2, Fig. 8 and Table III, p.16-17",
+     "quotes": [
+      "QLSTM learns faster, converges stabler, and has a milder symptom in undershooting.",
+      "QLSTM 2.26 × 10−2 5.5 × 10−3 LSTM 5.43 × 10−2 1.28 × 10−2",
+      "It is particularly interesting to note the poor prediction made by the LSTM at Epoch 1 and 15",
+      "TABLE III: The comparison of loss values at Epoch 15"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qlstm-delayed-control-result",
+     "value": "The authors report for the delayed quantum feedback dynamics that QLSTM predicts better at the local minima than the LSTM and that its training loss is almost one order of magnitude smaller by Epoch 15; Table IV gives QLSTM 2.88 x 10-3 training and 5.7 x 10-3 testing loss against LSTM 1.44 x 10-2 and 4.7 x 10-3.",
+     "anchor": "Section V.B.3, Fig. 9 and Table IV, p.17-19",
+     "quotes": [
+      "QLSTM’s training loss is almost one order of magnitude smaller than LSTM’s by Epoch 15",
+      "QLSTM 2.88 × 10−3 5.7 × 10−3 LSTM 1.44 × 10−2 4.7 × 10−3"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The table training-loss ratio is about five, and the LSTM testing loss is lower than the QLSTM's."
+    },
+    {
+     "id_suggestion": "qlstm-population-inversion-result",
+     "value": "The authors report for the cavity QED population inversion that QLSTM outperforms the LSTM in learning speed, accuracy and convergence stability and learns the zero offset where the LSTM has a large nonzero offset at Epoch 15 and 30; Table V gives QLSTM 1.78 x 10-3 training and 2.1 x 10-3 testing loss against LSTM 1.25 x 10-2 and 1.26 x 10-2.",
+     "anchor": "Section V.B.4, Fig. 10 and Table V, p.19-20",
+     "quotes": [
+      "The QLSTM outperforms the LSTM, as before, in the learning speed, accuracy, and convergence stability.",
+      "QLSTM 1.78 × 10−3 2.1 × 10−3 LSTM 1.25 × 10−2 1.26 × 10−2",
+      "at Epoch 15 and 30, for example, the LSTM has a large nonzero offset",
+      "TABLE V: The comparison of loss values at Epoch 15"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The table training-loss ratio is about seven, which the text calls one order of magnitude."
+    },
+    {
+     "id_suggestion": "qlstm-training-setup",
+     "value": "The authors state that (Q)LSTM predicts the next value from the first N = 4 values, data from mathematical functions is rescaled to [-1, 1], the first 67% of the sequence is used for training and the remaining 33% for testing, each experiment trains with a maximum of 100 epochs, and both models use RMSprop with learning rate 0.01, smoothing constant 0.99 and epsilon 10-8; the circuits are simulated with PennyLane and Qulacs.",
+     "anchor": "Section V, p.13",
+     "quotes": [
+      "We set N = 4 throughout.",
+      "For data generated by mathematical functions, we rescale them to the interval [−1, 1].",
+      "We use the first 67% elements in the sequence for training and the rest (33%) for testing. For each experiment, we train with maximum 100 epochs.",
+      "learning rate η = 0.01, smoothing constant α = 0.99, and  = 10−8.",
+      "we use PennyLane [54, 58] and Qulacs [59] for the simulation of quantum circuits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training setup in Section V.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qlstm-test-systems-setup",
+     "value": "The authors state the test systems: a simple pendulum with g = 9.81, damping factor b = 0.15, length l = 1 and mass m = 1 starting at angular velocity 3 rad/sec; the Bessel function J2; a delayed-feedback qubit-waveguide system; and a cavity QED population inversion with g = 1, mean photon number 40 and the sum truncated to nmax = 100.",
+     "anchor": "Section V.B, p.15-19",
+     "quotes": [
+      "in which we set the system with the parameters gravitational constant g = 9.81, damping factor b = 0.15, pendulum length l = 1 and mass m = 1.",
+      "the angular velocity θ ̇ = 3 rad/sec.",
+      "In this example, we choose J2 for the training.",
+      "In Figure 10 we study D(t) with g = 1, n ̄ = |α|2 = 40, and the summation truncated to nmax = 100."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own test setup in Section V.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qlstm-architecture-definition",
+     "value": "The authors define the QLSTM by replacing the classical neural networks in the LSTM cells with VQCs; each VQC block has a data encoding layer, a variational layer and a quantum measurement layer, and a QLSTM cell has six VQCs: VQC1 to VQC4 take the concatenation of the previous hidden state and the current input, with outputs through sigmoid or tanh, while VQC5 gives the hidden state and VQC6 the output.",
+     "anchor": "Section IV, Fig. 4-5 and Eq. (5), p.7-12",
+     "quotes": [
+      "we extend the classical LSTM into the quantum realm by replacing the classical neural networks in the LSTM cells with VQCs",
+      "There are six VQCs in a QLSTM cell.",
+      "For V QC1 to V QC4, the input is the concatenation vt of the hidden state ht−1 from the previous time step and the current input vector xt",
+      "This value can then be further processed with V QC5 to get the hidden state ht or V QC6 to get the output yt."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own architecture in Section IV.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qlstm-encoding-variational-layer",
+     "value": "The authors state that the encoding applies a Hadamard gate then Ry(arctan(x)) and Rz(arctan(x squared)) rotations per input element, that arctan is chosen over arcsin and arccos because inputs are not in the interval [-1, 1], that CNOT gates act on every pair of qubits with fixed adjacency 1 and 2 in a cyclic way followed by trainable single-qubit rotations, that the depth is 2 in all experiments, and that the measurement layer returns Pauli Z expectation values of every qubit.",
+     "anchor": "Section IV.A, p.8-9; Section IV.B, p.10",
+     "quotes": [
+      "We choose the arctan function here, as opposed to arcsin and arccos used in Ref. [21], because in general the input values are not in the interval of [−1, 1] but in R",
+      "The CNOT gates are applied to every pairs of qubits with a fixed adjacency 1 and 2 (in a cyclic way) to generate multi-qubit entanglement.",
+      "In this study, we set the depth to 2 in all experiments.",
+      "The measured values, which are Pauli Z expectation values of each qubit by design"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own encoding and circuit in Section IV.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qlstm-parameter-shift-cited",
+     "value": "The authors state that they use the parameter-shift method to derive analytic gradients of the quantum circuits, and that it can be shown (citing their reference 21) that the gradient of the expectation value f with respect to parameter theta-i is given by a difference of the function evaluated at the parameter shifted by a fixed amount in each direction, as printed in the equation that follows.",
+     "anchor": "Section IV.C, Eq. (6)-(7), p.12",
+     "quotes": [
+      "we employ the parameter-shift method [54, 56] to derive the analytical gradient of the quantum circuits.",
+      "it can be shown [21] that the gradient of f with respect to the parameter θi is"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work; the equation is garbled in the text layer.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The equation itself is garbled in the text layer, so the value does not restate it."
+    },
+    {
+     "id_suggestion": "qlstm-intro-learns-faster-claim",
+     "value": "The authors state that through numerical simulations the QLSTM learns faster (takes less epochs) than the classical LSTM with a similar number of network parameters, and that its convergence is more stable, with no peculiar spikes of the kind typical in LSTM loss functions observed with QLSTM.",
+     "anchor": "Section I, p.3",
+     "quotes": [
+      "Through numerical simulations we show that the QLSTM learns faster (takes less epochs) than the classical LSTM does with a similar number of network parameters.",
+      "no peculiar spikes that are typical in LSTM’s loss"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical statement from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qlstm-conclusion-learns-more",
+     "value": "The authors conclude that under the constraint of similar number of parameters the QLSTM learns significantly more information than the LSTM right after the first training epoch, its loss decreases more stably and faster, and it learns local features (minima, maxima) better in general, especially when the input data has a complicated temporal structure.",
+     "anchor": "Section VI, p.20-21",
+     "quotes": [
+      "We show that under the constraint of similar number of parameters, the QLSTM learns significantly more information than the LSTM does right after the first training epoch",
+      "It also learns the local features (minima, maxima, etc) better than the LSTM does in general, especially when the input data has a complicated"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical conclusion from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qlstm-circuit-evaluation-scaling",
+     "value": "The authors state that training needs a number of circuit evaluations depending on the number of circuits m, parameters n and dataset size s; in this work m = 6, n = 146 and s ranges from 200 to 2000, so evaluations per epoch grow at least as O(nms) under parameter-shift gradients, while inference on a NISQ device with pre-trained parameters could be possible and scales as O(ms'), with s' < s.",
+     "anchor": "Section VI, p.21",
+     "quotes": [
+      "In this work we have m = 6, n = 146, and s ranges from 200 to 2000 depending on the experiments",
+      "the number of quantum circuit evaluations per epoch grows at least as O(nms) in the training phase",
+      "it could be possible to perform the inference phase on a NISQ device with pre-trained variational parameters"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this cost limit itself in Section VI.",
+     "result_type": "theoretical",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qlstm-large-scale-impractical",
+     "value": "The authors state that it is impractical to run large-scale time-dependent data modeling because of the performance limitation in the quantum simulator software combined with the classical ML training framework, and that robustness of the framework against quantum noise is left for future work.",
+     "anchor": "Section VI, p.21",
+     "quotes": [
+      "While it is impractical to run large-scale time-dependent data modeling due to the performance limitation in the quantum simulator software combined with the (classical) ML",
+      "the robustness of our QML framework against quantum noise is a very interesting subject",
+      "We leave these open questions and challenges for future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states its own limits in Section VI.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qlstm-nisq-claim-untested",
+     "value": "The abstract claims that due to the variational nature of the approach the requirements on qubit counts and circuit depth are eased and the work paves the way toward implementing sequence-modeling ML algorithms on NISQ devices, and the introduction says that with an iterative process the noise in quantum devices can be effectively absorbed into the learned parameters; the experiments in the paper assume a perfect quantum computer.",
+     "anchor": "Abstract, p.1; Section I, p.2",
+     "quotes": [
+      "Due to the variational nature of our approach, the requirements on qubit counts and circuit depth are eased",
+      "With such an iterative process, the noise in quantum devices can be effectively absorbed into the learned parameters without incorporating any knowledge of the noise properties."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper's simulations assume no noise.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The noise-absorption statement is not tested here: Section VI says a perfect quantum computer was assumed."
+    },
+    {
+     "id_suggestion": "qlstm-vqc-expressive-cited",
+     "value": "The paper states, citing other works, that VQCs are robust against quantum noise and that they are more expressive than classical neural networks, so potentially better than the latter, and that using VQCs as building blocks of quantum LSTM enables faster learning.",
+     "anchor": "Section III, p.7",
+     "quotes": [
+      "Previous results have shown that such circuits are robust against quantum noise [46–",
+      "it has been pointed out that the VQCs are more expressive than classical neural networks [17, 22, 52] and so are potentially better than the latter."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper attributes to other work; not tested in the paper.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qlstm-quantum-advantage-claim",
+     "value": "The authors state they propose a novel framework to show the feasibility of implementing RNNs with variational quantum circuits and show that quantum advantages can be harvested in this scheme; the paper's evidence is the simulated loss comparisons at similar parameter counts, with no complexity-theoretic advantage proven.",
+     "anchor": "Section I, p.3",
+     "quotes": [
+      "We propose a novel framework to demonstrate the feasibility of implementing RNNs with variational quantum circuits (VQC)",
+      "show that quantum advantages can be harvested in this scheme."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper proves no advantage.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The 'quantum advantage' here is a lower loss in a simulated comparison with a classical LSTM of 166 parameters, not a proven or hardware-demonstrated advantage."
+    }
+   ]
+  },
+  {
+   "record_id": "chen-2022-quantum-deep-recurrent-reinforcement-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Chen_2022_Quantum-deep-recurrent-reinforcement-learning__2210.14876.pdf",
+   "title_in_file": "Quantum deep recurrent reinforcement learning",
+   "version_note": "arXiv:2210.14876v1 (26 Oct 2022), a five-page conference-style preprint by one author at Wells Fargo. The file is the paper its record names. The text layer scrambles Table 1; its numbers were checked against an image of PDF page 4 (rows Full and Partial; columns QLSTM-1, QLSTM-2, LSTM-8, LSTM-16). The stored setup anchor (Sections 6.1 and 6.3) is right: Cart-Pole is described in Section 6.1 (p.3-4), the 8-qubit and dimension statements are in Section 6.3 (p.4) and the hyperparameters are in Section 6.2 (p.4).",
+   "pages": 5,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A short preprint that uses a quantum LSTM (five variational quantum circuits) as the Q-function approximator in deep recurrent Q-learning and compares it with classical LSTM agents on fully and partially observable Cart-Pole in simulation.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "chen2022-partial-observation",
+     "verdict": "confirmed",
+     "note": "Correct as stored. Section 6.4, p.4 (lower panel of Fig. 5). The partially observable setting drops the last element of the 4-dimensional observation. The paper gives no seed count or error bars in the text.",
+     "value": "The authors report that in the partially observable Cart-Pole the classical LSTM with 16 hidden neurons collapses after 800 episodes of training while the QLSTM agents remain stable.",
+     "anchor": "Section 6.4, Partially Observable Cart-Pole, Fig. 5, p.4",
+     "quotes": [
+      "For example, the classical LSTM with 16 hidden neurons collapses after 800 episodes of training while the QLSTM agents remain stable."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "In Fig. 5 the 16-neuron LSTM curve declines in both panels; the text places the collapse after 800 episodes in the partially observable (lower) panel."
+    },
+    {
+     "id": "chen2022-qdrqn-result",
+     "verdict": "narrowed",
+     "note": "The abstract says classical DRQN with 'similar architecture and number of model parameters'. Table 1 (p.4) lists 626 to 634 parameters for the 8-neuron classical LSTM and 2274 to 2290 for the 16-neuron one, against 146 to 270 for the QLSTM models, and the paper says it set the classical LSTM size 'similar' to the QLSTM. The result is for Cart-Pole only (full and partial observation), and the 1-layer QLSTM was slightly worse than the 2-layer one.",
+     "value": "The authors report numerical simulations in which the QLSTM-DRQN solves Cart-Pole with more stable and higher average scores than a classical DRQN, with the classical LSTM size set similar to the QLSTM; the parameter table lists counts (full observation, then partial observation) of 150 and 146 for the one-layer QLSTM, 270 and 266 for QLSTM-2, 634 and 626 for LSTM-8, and 2290 and 2274 for LSTM-16.",
+     "anchor": "Abstract, p.1; Section 6.3-6.4, Table 1 and Fig. 5, p.4",
+     "quotes": [
+      "We demonstrate the results via numerical simulations that the QLSTM-DRQN can solve standard benchmark such as Cart-Pole with more stable and higher average scores than classical DRQN with similar architecture and number of model parameters.",
+      "we set classical LSTM with model size (number of parameters) similar to the QLSTM model.",
+      "Full 150 Partial 146",
+      "270 634 2290",
+      "Partial 146 266 626 2274"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The classical LSTM-8 has more than twice the parameters of QLSTM-2 in Table 1 and LSTM-16 more than eight times, so 'similar number of model parameters' holds loosely at best."
+    },
+    {
+     "id": "chen2022-qdrqn-setup",
+     "verdict": "confirmed",
+     "note": "Correct as stored, with the sections as stored: Cart-Pole is in Section 6.1 and the 8-qubit and dimension statements are in Section 6.3; the paper also gives the cell state as 8 dimensional.",
+     "value": "The authors state that the QLSTM uses 8-qubit VQCs with input and hidden dimension 4, that QLSTM with 1 or 2 VQC layers is considered, and that the test environment is Cart-Pole.",
+     "anchor": "Section 6.1, p.3-4; Section 6.3, p.4",
+     "quotes": [
+      "The QLSTM used in this paper includes 8-qubit VQCs. The input and hidden dimension of the QLSTM are both 4.",
+      "We consider QLSTM with 1 or 2 VQC layers",
+      "The testing environment we choose in this work is Cart-Pole"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Sections 6.1 and 6.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "chen2022-fully-observable-result",
+     "value": "The authors report that in fully observable Cart-Pole, among QLSTM with 1 or 2 VQC layers and LSTM with 8 or 16 hidden neurons, the QLSTM with 2 VQC layers achieved the best performance, the QLSTM with 1 VQC layer performed slightly worse, and under the same training hyperparameters the quantum models performed much better than their classical counterparts in both stability and average scores.",
+     "anchor": "Section 6.4, Fully Observable Cart-Pole, Fig. 5 upper panel, p.4",
+     "quotes": [
+      "QLSTM with 1 or 2 VQC layers and LSTM with 8 or 16",
+      "the QLSTM model with 2 VQC layers achieve the best performance.",
+      "The QLSTM model with 1 VQC layer performs slightly worse than the one with two VQC layers.",
+      "the quantum models perform much better than their classical counterparts in both the stability and average scores."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text gives no seed count, error bars or numeric score table."
+    },
+    {
+     "id_suggestion": "chen2022-partial-observation-setup",
+     "value": "The authors state that the partially observable Cart-Pole reduces one dimension of the observation by dropping the last element of the observation vector, and report that in it the agent learns slower than in the fully observed case, requiring more training episodes to reach high scores, while the quantum models again performed better than the classical ones in stability and average scores.",
+     "anchor": "Section 6.4, Partially Observable Cart-Pole, p.4",
+     "quotes": [
+      "dimension of the observation by dropping the last element in the observation vector.",
+      "the RL agent learns slower (requires more training episodes to reach high scores).",
+      "the quantum models perform better than their classical counterparts in both the stability and average scores."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2022-hyperparameters",
+     "value": "The authors state the QDRQN hyperparameters: batch size 8, Adam learning rate 1 x 10-3, memory buffer length N of 100, lookup steps L of 10, and a target network update every S = 4 steps with a soft update with tau = 1 x 10-2.",
+     "anchor": "Section 6.2, p.4",
+     "quotes": [
+      "batch size: 8, learning rate (Adam): 1 × 10−3, memory buffer length N : 100, lookup steps L: 10.",
+      "The target network θ− is updated every S = 4 steps with the soft update",
+      "where τ = 1 × 10−2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training setup in Section 6.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2022-epsilon-schedule",
+     "value": "The authors state that the epsilon-greedy strategy updates epsilon by multiplying it by 0.995, with initial epsilon 0.1 and final epsilon 0.001.",
+     "anchor": "Section 6.2, p.4",
+     "quotes": [
+      "The -greedy strategy used in this work is ← × 0.995 with the initial = 0.1 and the final = 0.001"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training setup in Section 6.2.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The text layer lost the epsilon symbol, so the quote carries it as a blank."
+    },
+    {
+     "id_suggestion": "chen2022-cartpole-environment",
+     "value": "The authors describe Cart-Pole as a four-dimensional observation (cart position, cart velocity, pole angle, pole velocity at the tip), two actions (+1 pushing rightwards and -1 pushing leftwards), a reward of +1 for every time step the pole remains close to upright, and termination if the pole is angled over 15 degrees from vertical or the cart moves more than 2.4 units from the centre.",
+     "anchor": "Section 6.1, p.3-4",
+     "quotes": [
+      "A four dimensional vector st including values of the cart position, cart velocity, pole angle, and pole velocity at the tip",
+      "A reward of +1 is given for every time step where the pole remains close to being upright.",
+      "An episode terminates if the pole is angled over 15 degrees from vertical, or the cart moves away from the center more than 2.4 units."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own test environment in Section 6.1.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2022-qlstm-model-definition",
+     "value": "The authors state that the QLSTM, first proposed in an earlier work and the quantum version of LSTM, replaces the classical neural networks of the LSTM by VQCs; the VQC has a data encoding part with Ry and Rz rotations, a variational part with multiple CNOT gates and trainable general unitary U gates, and a final quantum measurement; the proposed QDRQN uses a classical NN layer before and after a QLSTM core, called a dressed QLSTM model.",
+     "anchor": "Section 5, p.3",
+     "quotes": [
+      "The main idea behind this model is that the classical neural networks are replaced by the VQCs.",
+      "The data encoding part includes Ry and Rz rotations, the variational part includes multiple CNOT gates to entangle qubits and trainable general unitary U gates.",
+      "Such kind of architecture is called dressed QLSTM model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own model architecture in Section 5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2022-conclusion",
+     "value": "The authors conclude that, from the results of the testing environments considered, the proposed framework shows higher stability and average scores than the classical counterparts when the model sizes are similar and training hyperparameters are fixed, and state that the proposed method paves a new way of pursuing QRL with memory of previous time steps.",
+     "anchor": "Section 7, Conclusions, p.4",
+     "quotes": [
+      "From the results obtained from the testing environments we consider, our proposed framework shows higher stability and average scores than their classical",
+      "counterparts when the model sizes are similar and training hyperparameters are fixed.",
+      "The proposed method paves a new way of pursuing QRL with memory of previous time steps."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical conclusion from one study on one environment family.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2022-intro-comparable-or-better",
+     "value": "The authors state in the introduction that the numerical simulation shows the proposed framework can reach performance comparable to or better than the classical LSTM counterparts, under similar model sizes and the same training setting.",
+     "anchor": "Section 1, p.1",
+     "quotes": [
+      "Our numerical simulation shows that the proposed framework can reach performance comparable to or better than their classical LSTM"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical statement from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The introduction says 'comparable to or better'; the abstract and conclusion say 'more stable and higher'."
+    },
+    {
+     "id_suggestion": "chen2022-novelty-claim",
+     "value": "The authors state that, to their best knowledge, the potential of recurrent architectures is not yet studied in quantum RL, that existing quantum RL methods focus on VQCs without recurrent structures, and in the conclusions that they first show quantum recurrent neural network based RL.",
+     "anchor": "Section 1, p.1; Section 7, p.4",
+     "quotes": [
+      "existing quantum RL methods focus on various VQCs without the recurrent structures.",
+      "The potential of such architectures, to our best knowledge, is not yet studied in the quantum RL.",
+      "In this paper, we first show the quantum recurrent neural network (QRNN)-based RL."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim of novelty, qualified by 'to our best knowledge'.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2022-vqc-benefits-cited",
+     "value": "The paper states, citing other works, that VQCs are more robust against quantum device noise, that they may be more expressive than classical neural networks, and that they can be trained with a smaller dataset.",
+     "anchor": "Section 4, p.2",
+     "quotes": [
+      "One of the benefits provided by the VQCs is that such circuits are more robust against quantum device noise [22, 23, 24].",
+      "and can be trained with smaller dataset [29]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper attributes to other work; none is tested in this paper.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": "The paper tests no noise model, so the noise-robustness statement is not examined in its experiments."
+    },
+    {
+     "id_suggestion": "chen2022-recurrent-benefit-claim",
+     "value": "The authors state that the recurrent policies considered may provide benefits in environments requiring memory of previous steps, and that the (Q)LSTM may be more crucial in the partially observable setting because the agent may need information from previous steps.",
+     "anchor": "Section 2, p.2; Section 6.4, p.4",
+     "quotes": [
+      "The recurrent policies considered in this work may provide benefits in environments requiring memory of previous steps.",
+      "The (Q)LSTM here may be more crucial because the agent may need information from previous steps."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A hedged author statement without a test in the paper (no feed-forward quantum baseline is run).",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The experiments compare QLSTM with classical LSTM only; no feed-forward quantum policy is run, so the benefit of recurrence in the quantum model is not isolated."
+    },
+    {
+     "id_suggestion": "chen2022-wells-fargo-disclaimer",
+     "value": "The paper states that the views expressed are those of the authors and do not represent the views of Wells Fargo, and that nothing in it should be construed as investment advice.",
+     "anchor": "Section 1 footnote, p.1",
+     "quotes": [
+      "The views expressed in this article are those of the authors and do not",
+      "Nothing contained in this article should be construed as investment"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope disclaimer.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "chen-2022-reservoir-computing-quantum-recurrent-neural",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Chen-Fry-Deshmukh_2022_Reservoir-Computing-via-Quantum-Recurrent-Neural-Networks__2211.02612.pdf",
+   "title_in_file": "Reservoir Computing via Quantum Recurrent Neural Networks",
+   "version_note": "arXiv:2211.02612v1 (4 Nov 2022), authors at Wells Fargo and IBM Quantum. The file is the paper its record names. Table I was checked against an image of PDF page 17; pages 18, 19, 21 to 24 and 26 to 29 are mostly plots (Figs. 7 to 21), read through their captions and the surrounding text.",
+   "pages": 39,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A preprint that uses quantum RNN, GRU and LSTM circuits with frozen random quantum parameters as reservoirs, training only a final classical linear layer, and compares them in simulation (noise-free and noisy) with fully trained quantum models and classical RC models on damped SHM, Bessel and NARMA tasks.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qrnn-rc-comparable",
+     "verdict": "narrowed",
+     "note": "The text and Table I show the comparison is task-dependent. On the two function approximation tasks, the last-epoch losses of QRNN-RC are one to two orders of magnitude higher than those of the fully trained QRNN (damped SHM, Bessel), and for QLSTM the paper says the loss values of the fully trained model are much lower after training; QRNN-RC reaches comparable performance 'except some of the large amplitude regions'. On the NARMA tasks the RC losses are close to or below the fully trained ones. Conclusion is on p.25.",
+     "value": "The authors state that numerical simulations show QRNN-RC can reach results comparable to fully trained QRNN models in several function approximation and time-series prediction tasks, with comparable performance after 15 epochs except some of the large amplitude regions; in the table, for damped SHM the last-epoch losses are 1.18 x 10-2/4.91 x 10-3 for reservoir True and 6.8 x 10-4/4.89 x 10-5 for reservoir False, for Bessel 1.52 x 10-2/3.57 x 10-3 and 6.45 x 10-4/2.62 x 10-5, for NARMA5 1.40 x 10-4/4.13 x 10-5 and 1.84 x 10-4/4.63 x 10-5, and for NARMA10 3.03 x 10-4/1.24 x 10-4 and 3.99 x 10-4/1.56 x 10-4.",
+     "anchor": "Section VIII, Conclusion, p.25; Section VI.A.1, p.16; Table I, p.17",
+     "quotes": [
+      "We show via numerical simulations that the QRNN-RC can reach results comparable to fully trained QRNN models in several function approximation and time-series prediction tasks.",
+      "We observe that QRNN-RC can achieve performance comparable to fully trained QRNN after 15 epochs of training, except some of the large amplitude regions.",
+      "Damped SHM QRNN True 1.72 × 10−1/2.21 × 10−2 1.81 × 10−2/5.17 × 10−3 1.81 × 10−2/4.96 × 10−3 1.18 × 10−2/4.91 × 10−3",
+      "Damped SHM QRNN False 1.01 × 10−1/5.04 × 10−3 7.19 × 10−3/9.06 × 10−4 1.87 × 10−3/2.16 × 10−5 6.8 × 10−4/4.89 × 10−5",
+      "Bessel QRNN True 1.77 × 10−1/2.91 × 10−2 1.65 × 10−2/3.60 × 10−3 1.53 × 10−2/3.61 × 10−3 1.52 × 10−2/3.57 × 10−3",
+      "Bessel QRNN False 4.16 × 10−2/5.54 × 10−3 5.10 × 10−3/6.08 × 10−4 1.40 × 10−3/3.19 × 10−5 6.45 × 10−4/2.62 × 10−5",
+      "NARMA5 QRNN True 2.72 × 10−3/2.93 × 10−4 1.03 × 10−4/7.28 × 10−5 1.26 × 10−4/3.44 × 10−5 1.40 × 10−4/4.13 × 10−5",
+      "NARMA5 QRNN False 3.19 × 10−2/1.82 × 10−4 3.26 × 10−4/9.52 × 10−5 1.57 × 10−4/4.64 × 10−5 1.84 × 10−4/4.63 × 10−5",
+      "NARMA10 QRNN True 1.00 × 10−1/8.73 × 10−3 2.22 × 10−4/7.99 × 10−5 2.63 × 10−4/9.42 × 10−5 3.03 × 10−4/1.24 × 10−4",
+      "NARMA10 QRNN False 3.54 × 10−2/1.03 × 10−4 3.27 × 10−4/1.96 × 10−4 3.65 × 10−4/1.55 × 10−4 3.99 × 10−4/1.56 × 10−4",
+      "Reservoir Epoch 1 Epoch 15 Epoch 30 Epoch 100"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Read as training and testing loss with reservoir True meaning RC, by inference; the table does not label either."
+    },
+    {
+     "id": "qrnn-rc-fewer-epochs",
+     "verdict": "narrowed",
+     "note": "The paper's own words are 'in most cases' (abstract and conclusion). The text reports exceptions: QGRU-RC only beats classical GRU-RC up to the first 30 epochs on damped SHM and then reaches similar performance; on Bessel QGRU-RC performs similar to GRU-RC after 15 epochs; Table III shows near-equal last-epoch QLSTM-RC and LSTM-RC losses for Bessel. Page is p.25.",
+     "value": "The authors state that compared with classical RNN-based reservoir computing the quantum solutions require fewer training epochs in most cases; the text reports that QGRU-RC beats classical GRU-RC up to the first 30 epochs of training on damped SHM and reaches similar performance after 100 epochs, and that on Bessel QGRU-RC performs similar to the classical GRU-RC after 15 epochs.",
+     "anchor": "Section VIII, p.25; Section VI.A.2, p.17",
+     "quotes": [
+      "We also compare to classical RNN-based RC and show that the quantum solutions require fewer training epochs in most cases.",
+      "we can observe that the QGRU-RC beats GRU",
+      "up to the first 30 epochs of training and reaches similar performance to GRU-RC and fully trained GRU after 100 epochs of training.",
+      "We also observe that the QGRU-RC performs similar to the classical GRU-RC after 15 epochs of training."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qrnn-rc-setup",
+     "verdict": "confirmed",
+     "note": "Correct as stored. The paper defines the same setup again in Section V.B (p.13): all quantum parameters are frozen after random initialization.",
+     "value": "The authors state that in the reservoir computing approach the QRNN with randomly initialized weights is treated as a dynamical system and only the final classical linear layer is trained.",
+     "anchor": "Abstract, p.1; Section V.B, p.13",
+     "quotes": [
+      "The main idea to this RC approach is that the QRNN with randomly initialized weights is treated as a dynamical system and only the final classical linear layer is trained."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own RC setup in the abstract and Section V.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "rc-table1-function",
+     "value": "The authors report in a table of QRNN and classical RNN results on the two function approximation tasks, as two unlabeled losses per cell, the following: Damped SHM QRNN reservoir True: Epoch 1 1.72 x 10-1/2.21 x 10-2, Epoch 100 1.18 x 10-2/4.91 x 10-3; Damped SHM QRNN reservoir False: Epoch 1 1.01 x 10-1/5.04 x 10-3, Epoch 100 6.8 x 10-4/4.89 x 10-5; Damped SHM RNN reservoir True: Epoch 1 2.02 x 10-1/6.46 x 10-2, Epoch 100 2.87 x 10-2/5.87 x 10-3; Damped SHM RNN reservoir False: Epoch 1 7.22 x 10-1/6.78 x 10-2, Epoch 100 1.69 x 10-3/3.60 x 10-4; Bessel QRNN reservoir True: Epoch 1 1.77 x 10-1/2.91 x 10-2, Epoch 100 1.52 x 10-2/3.57 x 10-3; Bessel QRNN reservoir False: Epoch 1 4.16 x 10-2/5.54 x 10-3, Epoch 100 6.45 x 10-4/2.62 x 10-5; Bessel RNN reservoir True: Epoch 1 5.22 x 10-1/1.65 x 10-1, Epoch 100 4.37 x 10-2/1.11 x 10-2; Bessel RNN reservoir False: Epoch 1 1.79 x 10-1/2.93 x 10-2, Epoch 100 3.05 x 10-4/1.79 x 10-5.",
+     "anchor": "Table I, Section VI.A, p.17",
+     "quotes": [
+      "Damped SHM QRNN True 1.72 × 10−1/2.21 × 10−2 1.81 × 10−2/5.17 × 10−3 1.81 × 10−2/4.96 × 10−3 1.18 × 10−2/4.91 × 10−3",
+      "Damped SHM QRNN False 1.01 × 10−1/5.04 × 10−3 7.19 × 10−3/9.06 × 10−4 1.87 × 10−3/2.16 × 10−5 6.8 × 10−4/4.89 × 10−5",
+      "Damped SHM RNN True 2.02 × 10−1/6.46 × 10−2 1.29 × 10−1/2.68 × 10−2 9.49 × 10−2/1.97 × 10−2 2.87 × 10−2/5.87 × 10−3",
+      "Damped SHM RNN False 7.22 × 10−1/6.78 × 10−2 1.66 × 10−2/4.04 × 10−3 2.82 × 10−3/9.40 × 10−4 1.69 × 10−3/3.60 × 10−4",
+      "Bessel QRNN True 1.77 × 10−1/2.91 × 10−2 1.65 × 10−2/3.60 × 10−3 1.53 × 10−2/3.61 × 10−3 1.52 × 10−2/3.57 × 10−3",
+      "Bessel QRNN False 4.16 × 10−2/5.54 × 10−3 5.10 × 10−3/6.08 × 10−4 1.40 × 10−3/3.19 × 10−5 6.45 × 10−4/2.62 × 10−5",
+      "Bessel RNN True 5.22 × 10−1/1.65 × 10−1 7.82 × 10−2/1.93 × 10−2 7.11 × 10−2/1.76 × 10−2 4.37 × 10−2/1.11 × 10−2",
+      "Bessel RNN False 1.79 × 10−1/2.93 × 10−2 3.80 × 10−3/2.83 × 10−4 4.49 × 10−3/3.25 × 10−3 3.05 × 10−4/1.79 × 10−5",
+      "Reservoir Epoch 1 Epoch 15 Epoch 30 Epoch 100"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The table does not say what the two numbers in a cell are, and does not define the Reservoir column; reservoir True is read here as the RC (frozen-quantum) model, and the pair is read as training and testing loss, by inference from the text."
+    },
+    {
+     "id_suggestion": "rc-table1-narma",
+     "value": "The authors report in a table of QRNN and classical RNN results on the two NARMA tasks, as two unlabeled losses per cell, the following: NARMA5 QRNN reservoir True: Epoch 1 2.72 x 10-3/2.93 x 10-4, Epoch 100 1.40 x 10-4/4.13 x 10-5; NARMA5 QRNN reservoir False: Epoch 1 3.19 x 10-2/1.82 x 10-4, Epoch 100 1.84 x 10-4/4.63 x 10-5; NARMA5 RNN reservoir True: Epoch 1 2.73 x 10-2/7.02 x 10-3, Epoch 100 1.45 x 10-4/6.01 x 10-5; NARMA5 RNN reservoir False: Epoch 1 1.03 x 10-1/2.94 x 10-2, Epoch 100 2.44 x 10-4/9.76 x 10-5; NARMA10 QRNN reservoir True: Epoch 1 1.00 x 10-1/8.73 x 10-3, Epoch 100 3.03 x 10-4/1.24 x 10-4; NARMA10 QRNN reservoir False: Epoch 1 3.54 x 10-2/1.03 x 10-4, Epoch 100 3.99 x 10-4/1.56 x 10-4; NARMA10 RNN reservoir True: Epoch 1 6.87 x 10-2/6.73 x 10-4, Epoch 100 5.70 x 10-4/1.71 x 10-4; NARMA10 RNN reservoir False: Epoch 1 2.70 x 10-1/5.75 x 10-2, Epoch 100 4.23 x 10-4/1.27 x 10-4.",
+     "anchor": "Table I, Section VI.A, p.17",
+     "quotes": [
+      "NARMA5 QRNN True 2.72 × 10−3/2.93 × 10−4 1.03 × 10−4/7.28 × 10−5 1.26 × 10−4/3.44 × 10−5 1.40 × 10−4/4.13 × 10−5",
+      "NARMA5 QRNN False 3.19 × 10−2/1.82 × 10−4 3.26 × 10−4/9.52 × 10−5 1.57 × 10−4/4.64 × 10−5 1.84 × 10−4/4.63 × 10−5",
+      "NARMA5 RNN True 2.73 × 10−2/7.02 × 10−3 1.78 × 10−4/7.28 × 10−5 1.73 × 10−4/7.07 × 10−5 1.45 × 10−4/6.01 × 10−5",
+      "NARMA5 RNN False 1.03 × 10−1/2.94 × 10−2 3.47 × 10−4/1.37 × 10−4 3.27 × 10−4/1.29 × 10−4 2.44 × 10−4/9.76 × 10−5",
+      "NARMA10 QRNN True 1.00 × 10−1/8.73 × 10−3 2.22 × 10−4/7.99 × 10−5 2.63 × 10−4/9.42 × 10−5 3.03 × 10−4/1.24 × 10−4",
+      "NARMA10 QRNN False 3.54 × 10−2/1.03 × 10−4 3.27 × 10−4/1.96 × 10−4 3.65 × 10−4/1.55 × 10−4 3.99 × 10−4/1.56 × 10−4",
+      "NARMA10 RNN True 6.87 × 10−2/6.73 × 10−4 5.82 × 10−4/1.75 × 10−4 5.80 × 10−4/1.74 × 10−4 5.70 × 10−4/1.71 × 10−4",
+      "NARMA10 RNN False 2.70 × 10−1/5.75 × 10−2 5.25 × 10−4/1.57 × 10−4 5.07 × 10−4/1.51 × 10−4 4.23 × 10−4/1.27 × 10−4",
+      "Reservoir Epoch 1 Epoch 15 Epoch 30 Epoch 100"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The table does not say what the two numbers in a cell are, and does not define the Reservoir column; reservoir True is read here as the RC (frozen-quantum) model, and the pair is read as training and testing loss, by inference from the text."
+    },
+    {
+     "id_suggestion": "rc-table2-function",
+     "value": "The authors report in a table of QGRU and classical GRU results on the two function approximation tasks, as two unlabeled losses per cell, the following: Damped SHM QGRU reservoir True: Epoch 1 2.26 x 10-1/2.78 x 10-2, Epoch 100 4.55 x 10-2/1.29 x 10-2; Damped SHM QGRU reservoir False: Epoch 1 1.97 x 10-1/1.51 x 10-2, Epoch 100 1.39 x 10-3/1.19 x 10-4; Damped SHM GRU reservoir True: Epoch 1 4.62 x 10-1/1.18 x 10-1, Epoch 100 4.61 x 10-2/9.92 x 10-3; Damped SHM GRU reservoir False: Epoch 1 2.12 x 10-1/8.54 x 10-2, Epoch 100 4.51 x 10-4/7.75 x 10-5; Bessel QGRU reservoir True: Epoch 1 1.54 x 10-1/2.58 x 10-2, Epoch 100 3.82 x 10-2/9.89 x 10-3; Bessel QGRU reservoir False: Epoch 1 5.53 x 10-2/9.39 x 10-3, Epoch 100 1.31 x 10-3/1.37 x 10-5; Bessel GRU reservoir True: Epoch 1 1.71 x 10-1/3.33 x 10-2, Epoch 100 3.05 x 10-2/8.51 x 10-3; Bessel GRU reservoir False: Epoch 1 1.03 x 10-1/9.98 x 10-2, Epoch 100 4.68 x 10-4/9.09 x 10-6.",
+     "anchor": "Table II, Section VI.A, p.20",
+     "quotes": [
+      "Damped SHM QGRU True 2.26 × 10−1/2.78 × 10−2 4.54 × 10−2/1.31 × 10−2 4.55 × 10−2/1.30 × 10−2 4.55 × 10−2/1.29 × 10−2",
+      "Damped SHM QGRU False 1.97 × 10−1/1.51 × 10−2 2.01 × 10−2/3.64 × 10−3 1.04 × 10−2/1.30 × 10−3 1.39 × 10−3/1.19 × 10−4",
+      "Damped SHM GRU True 4.62 × 10−1/1.18 × 10−1 1.13 × 10−1/2.26 × 10−2 7.45 × 10−2/1.50 × 10−2 4.61 × 10−2/9.92 × 10−3",
+      "Damped SHM GRU False 2.12 × 10−1/8.54 × 10−2 2.22 × 10−2/3.90 × 10−3 2.94 × 10−3/1.80 × 10−4 4.51 × 10−4/7.75 × 10−5",
+      "Bessel QGRU True 1.54 × 10−1/2.58 × 10−2 3.90 × 10−2/9.92 × 10−3 3.82 × 10−2/9.90 × 10−3 3.82 × 10−2/9.89 × 10−3",
+      "Bessel QGRU False 5.53 × 10−2/9.39 × 10−3 1.10 × 10−2/2.05 × 10−3 2.94 × 10−3/9.69 × 10−5 1.31 × 10−3/1.37 × 10−5",
+      "Bessel GRU True 1.71 × 10−1/3.33 × 10−2 4.16 × 10−2/1.13 × 10−2 3.78 × 10−2/1.05 × 10−2 3.05 × 10−2/8.51 × 10−3",
+      "Bessel GRU False 1.03 × 10−1/9.98 × 10−2 1.98 × 10−2/4.77 × 10−3 4.62 × 10−3/1.72 × 10−3 4.68 × 10−4/9.09 × 10−6",
+      "Reservoir Epoch 1 Epoch 15 Epoch 30 Epoch 100"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The table does not say what the two numbers in a cell are, and does not define the Reservoir column; reservoir True is read here as the RC (frozen-quantum) model, and the pair is read as training and testing loss, by inference from the text."
+    },
+    {
+     "id_suggestion": "rc-table2-narma",
+     "value": "The authors report in a table of QGRU and classical GRU results on the two NARMA tasks, as two unlabeled losses per cell, the following: NARMA5 QGRU reservoir True: Epoch 1 9.48 x 10-2/6.59 x 10-3, Epoch 100 1.10 x 10-4/3.50 x 10-5; NARMA5 QGRU reservoir False: Epoch 1 4.12 x 10-3/5.58 x 10-5, Epoch 100 1.22 x 10-4/3.55 x 10-5; NARMA5 GRU reservoir True: Epoch 1 1.90 x 10-3/2.23 x 10-2, Epoch 100 2.69 x 10-4/1.09 x 10-4; NARMA5 GRU reservoir False: Epoch 1 9.00 x 10-2/6.43 x 10-4, Epoch 100 1.22 x 10-4/4.99 x 10-5; NARMA10 QGRU reservoir True: Epoch 1 1.54 x 10-3/2.91 x 10-4, Epoch 100 2.74 x 10-4/1.21 x 10-4; NARMA10 QGRU reservoir False: Epoch 1 6.30 x 10-3/1.28 x 10-4, Epoch 100 2.97 x 10-4/1.25 x 10-4; NARMA10 GRU reservoir True: Epoch 1 2.08 x 10-1/8.04 x 10-2, Epoch 100 2.14 x 10-4/7.50 x 10-5; NARMA10 GRU reservoir False: Epoch 1 5.39 x 10-1/6.93 x 10-2, Epoch 100 2.32 x 10-4/7.47 x 10-5.",
+     "anchor": "Table II, Section VI.A, p.20",
+     "quotes": [
+      "NARMA5 QGRU True 9.48 × 10−2/6.59 × 10−3 6.46 × 10−5/3.21 × 10−5 8.62 × 10−5/2.36 × 10−5 1.10 × 10−4/3.50 × 10−5",
+      "NARMA5 QGRU False 4.12 × 10−3/5.58 × 10−5 1.53 × 10−4/3.22 × 10−5 1.36 × 10−4/2.41 × 10−5 1.22 × 10−4/3.55 × 10−5",
+      "NARMA5 GRU True 1.90 × 10−3/2.23 × 10−2 3.62 × 10−4/1.45 × 10−4 3.46 × 10−4/1.39 × 10−4 2.69 × 10−4/1.09 × 10−4",
+      "NARMA5 GRU False 9.00 × 10−2/6.43 × 10−4 2.63 × 10−4/1.04 × 10−4 2.36 × 10−4/9.39 × 10−5 1.22 × 10−4/4.99 × 10−5",
+      "NARMA10 QGRU True 1.54 × 10−3/2.91 × 10−4 2.20 × 10−4/7.22 × 10−5 2.50 × 10−4/9.23 × 10−5 2.74 × 10−4/1.21 × 10−4",
+      "NARMA10 QGRU False 6.30 × 10−3/1.28 × 10−4 3.63 × 10−4/1.14 × 10−4 4.04 × 10−4/1.20 × 10−4 2.97 × 10−4/1.25 × 10−4",
+      "NARMA10 GRU True 2.08 × 10−1/8.04 × 10−2 2.25 × 10−4/8.21 × 10−5 2.18 × 10−4/7.57 × 10−5 2.14 × 10−4/7.50 × 10−5",
+      "NARMA10 GRU False 5.39 × 10−1/6.93 × 10−2 2.56 × 10−4/8.03 × 10−5 2.52 × 10−4/7.94 × 10−5 2.32 × 10−4/7.47 × 10−5",
+      "Reservoir Epoch 1 Epoch 15 Epoch 30 Epoch 100"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The table does not say what the two numbers in a cell are, and does not define the Reservoir column; reservoir True is read here as the RC (frozen-quantum) model, and the pair is read as training and testing loss, by inference from the text."
+    },
+    {
+     "id_suggestion": "rc-table3-function",
+     "value": "The authors report in a table of QLSTM and classical LSTM results on the two function approximation tasks, as two unlabeled losses per cell, the following: Damped SHM QLSTM reservoir True: Epoch 1 3.19 x 10-1/5.86 x 10-2, Epoch 100 5.55 x 10-2/1.41 x 10-2; Damped SHM QLSTM reservoir False: Epoch 1 1.66 x 10-1/1.35 x 10-2, Epoch 100 2.86 x 10-3/1.94 x 10-4; Damped SHM LSTM reservoir True: Epoch 1 3.45 x 10-1/7.49 x 10-2, Epoch 100 1.10 x 10-1/2.32 x 10-2; Damped SHM LSTM reservoir False: Epoch 1 3.32 x 10-1/3.29 x 10-2, Epoch 100 2.32 x 10-3/1.68 x 10-3; Bessel QLSTM reservoir True: Epoch 1 7.53 x 10-2/1.36 x 10-2, Epoch 100 3.90 x 10-2/1.02 x 10-2; Bessel QLSTM reservoir False: Epoch 1 1.04 x 10-1/1.66 x 10-2, Epoch 100 6.97 x 10-4/1.21 x 10-5; Bessel LSTM reservoir True: Epoch 1 1.21 x 10-1/2.46 x 10-2, Epoch 100 3.76 x 10-2/1.02 x 10-2; Bessel LSTM reservoir False: Epoch 1 3.03 x 10-1/4.55 x 10-2, Epoch 100 1.31 x 10-3/3.53 x 10-4.",
+     "anchor": "Table III, Section VI.A, p.20",
+     "quotes": [
+      "Damped SHM QLSTM True 3.19 × 10−1/5.86 × 10−2 6.42 × 10−2/1.08 × 10−2 5.55 × 10−2/1.38 × 10−2 5.55 × 10−2/1.41 × 10−2",
+      "Damped SHM QLSTM False 1.66 × 10−1/1.35 × 10−2 2.89 × 10−2/5.53 × 10−3 9.06 × 10−3/3.41 × 10−4 2.86 × 10−3/1.94 × 10−4",
+      "Damped SHM LSTM True 3.45 × 10−1/7.49 × 10−2 1.89 × 10−1/3.98 × 10−2 1.66 × 10−1/3.51 × 10−2 1.10 × 10−1/2.32 × 10−2",
+      "Damped SHM LSTM False 3.32 × 10−1/3.29 × 10−2 3.65 × 10−2/7.38 × 10−3 6.74 × 10−3/7.27 × 10−4 2.32 × 10−3/1.68 × 10−3",
+      "Bessel QLSTM True 7.53 × 10−2/1.36 × 10−2 3.94 × 10−2/9.67 × 10−3 3.90 × 10−2/1.01 × 10−2 3.90 × 10−2/1.02 × 10−2",
+      "Bessel QLSTM False 1.04 × 10−1/1.66 × 10−2 2.30 × 10−2/5.35 × 10−3 1.27 × 10−2/2.42 × 10−3 6.97 × 10−4/1.21 × 10−5",
+      "Bessel LSTM True 1.21 × 10−1/2.46 × 10−2 6.58 × 10−2/1.65 × 10−2 5.43 × 10−2/1.39 × 10−2 3.76 × 10−2/1.02 × 10−2",
+      "Bessel LSTM False 3.03 × 10−1/4.55 × 10−2 3.48 × 10−2/8.71 × 10−3 6.97 × 10−3/1.41 × 10−3 1.31 × 10−3/3.53 × 10−4",
+      "Reservoir Epoch 1 Epoch 15 Epoch 30 Epoch 100"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The table does not say what the two numbers in a cell are, and does not define the Reservoir column; reservoir True is read here as the RC (frozen-quantum) model, and the pair is read as training and testing loss, by inference from the text."
+    },
+    {
+     "id_suggestion": "rc-table3-narma",
+     "value": "The authors report in a table of QLSTM and classical LSTM results on the two NARMA tasks, as two unlabeled losses per cell, the following: NARMA5 QLSTM reservoir True: Epoch 1 8.54 x 10-4/5.40 x 10-4, Epoch 100 1.13 x 10-4/2.58 x 10-5; NARMA5 QLSTM reservoir False: Epoch 1 3.99 x 10-3/4.07 x 10-4, Epoch 100 9.85 x 10-5/2.52 x 10-5; NARMA5 LSTM reservoir True: Epoch 1 4.15 x 10-2/2.10 x 10-4, Epoch 100 3.65 x 10-4/1.45 x 10-4; NARMA5 LSTM reservoir False: Epoch 1 1.19 x 10-1/7.97 x 10-4, Epoch 100 1.91 x 10-4/8.78 x 10-5; NARMA10 QLSTM reservoir True: Epoch 1 1.97 x 10-3/2.78 x 10-4, Epoch 100 2.59 x 10-4/9.64 x 10-5; NARMA10 QLSTM reservoir False: Epoch 1 4.19 x 10-3/4.71 x 10-4, Epoch 100 2.59 x 10-4/9.50 x 10-5; NARMA10 LSTM reservoir True: Epoch 1 1.16 x 10-2/4.50 x 10-3, Epoch 100 3.74 x 10-4/1.12 x 10-4; NARMA10 LSTM reservoir False: Epoch 1 1.70 x 10-1/4.21 x 10-4, Epoch 100 2.31 x 10-4/8.12 x 10-5.",
+     "anchor": "Table III, Section VI.A, p.20",
+     "quotes": [
+      "NARMA5 QLSTM True 8.54 × 10−4/5.40 × 10−4 1.32 × 10−4/1.10 × 10−4 9.06 × 10−5/2.96 × 10−5 1.13 × 10−4/2.58 × 10−5",
+      "NARMA5 QLSTM False 3.99 × 10−3/4.07 × 10−4 3.30 × 10−4/4.23 × 10−4 1.86 × 10−4/2.06 × 10−4 9.85 × 10−5/2.52 × 10−5",
+      "NARMA5 LSTM True 4.15 × 10−2/2.10 × 10−4 3.73 × 10−4/1.48 × 10−4 3.72 × 10−4/1.48 × 10−4 3.65 × 10−4/1.45 × 10−4",
+      "NARMA5 LSTM False 1.19 × 10−1/7.97 × 10−4 3.34 × 10−4/1.38 × 10−4 2.93 × 10−4/1.15 × 10−4 1.91 × 10−4/8.78 × 10−5",
+      "NARMA10 QLSTM True 1.97 × 10−3/2.78 × 10−4 3.01 × 10−4/1.39 × 10−4 2.36 × 10−4/8.78 × 10−5 2.59 × 10−4/9.64 × 10−5",
+      "NARMA10 QLSTM False 4.19 × 10−3/4.71 × 10−4 3.35 × 10−4/4.73 × 10−4 3.20 × 10−4/3.74 × 10−4 2.59 × 10−4/9.50 × 10−5",
+      "NARMA10 LSTM True 1.16 × 10−2/4.50 × 10−3 4.26 × 10−4/1.27 × 10−4 4.17 × 10−4/1.25 × 10−4 3.74 × 10−4/1.12 × 10−4",
+      "NARMA10 LSTM False 1.70 × 10−1/4.21 × 10−4 2.94 × 10−4/8.68 × 10−5 2.76 × 10−4/8.53 × 10−5 2.31 × 10−4/8.12 × 10−5",
+      "Reservoir Epoch 1 Epoch 15 Epoch 30 Epoch 100"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The table does not say what the two numbers in a cell are, and does not define the Reservoir column; reservoir True is read here as the RC (frozen-quantum) model, and the pair is read as training and testing loss, by inference from the text."
+    },
+    {
+     "id_suggestion": "rc-table4-noisy-bessel",
+     "value": "The authors report in a table of noisy-simulation results on the Bessel function task for GRU, LSTM and RNN models, as two unlabeled losses per cell, the following: Bessel GRU reservoir False: Epoch 1 3.88 x 10-2/9.71 x 10-3, Epoch 100 5.43 x 10-3/4.47 x 10-3; Bessel GRU reservoir True: Epoch 1 5.18 x 10-2/1.3 x 10-2, Epoch 100 3.67 x 10-2/1.0 x 10-2; Bessel LSTM reservoir False: Epoch 1 7.77 x 10-2/1.96 x 10-2, Epoch 100 1.49 x 10-2/7.69 x 10-3; Bessel LSTM reservoir True: Epoch 1 6.16 x 10-2/1.4 x 10-2, Epoch 100 4.18 x 10-2/1.28 x 10-2; Bessel RNN reservoir False: Epoch 1 4.27 x 10-2/1.0 x 10-2, Epoch 100 6.49 x 10-3/4.95 x 10-3; Bessel RNN reservoir True: Epoch 1 3.77 x 10-2/8.71 x 10-3, Epoch 100 1.62 x 10-2/4.95 x 10-3.",
+     "anchor": "Table IV, Section VI.A, p.21",
+     "quotes": [
+      "Bessel GRU False 3.88 × 10−2/9.71 × 10−3 1.33 × 10−2/4.7 × 10−3 9.65 × 10−3/5.32 × 10−3 5.43 × 10−3/4.47 × 10−3",
+      "Bessel GRU True 5.18 × 10−2/1.3 × 10−2 3.72 × 10−2/1.05 × 10−2 3.74 × 10−2/1.05 × 10−2 3.67 × 10−2/1.0 × 10−2",
+      "Bessel LSTM False 7.77 × 10−2/1.96 × 10−2 2.74 × 10−2/9.08 × 10−3 2.5 × 10−2/1.21 × 10−2 1.49 × 10−2/7.69 × 10−3",
+      "Bessel LSTM True 6.16 × 10−2/1.4 × 10−2 4.02 × 10−2/1.55 × 10−2 3.89 × 10−2/1.58 × 10−2 4.18 × 10−2/1.28 × 10−2",
+      "Bessel RNN False 4.27 × 10−2/1.0 × 10−2 1.24 × 10−2/4.43 × 10−3 7.49 × 10−3/5.23 × 10−3 6.49 × 10−3/4.95 × 10−3",
+      "Bessel RNN True 3.77 × 10−2/8.71 × 10−3 1.69 × 10−2/4.15 × 10−3 1.61 × 10−2/4.32 × 10−3 1.62 × 10−2/4.95 × 10−3",
+      "Reservoir Epoch 1 Epoch 15 Epoch 30 Epoch 100"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table IV lists only models named GRU, LSTM and RNN with no Q prefix, although the text says it summarizes noisy simulation of the quantum models; the table does not define the Reservoir column or the two numbers per cell. Reservoir True is read as RC and the labels as the quantum models, by inference from the text."
+    },
+    {
+     "id_suggestion": "rc-table4-noisy-damped",
+     "value": "The authors report in a table of noisy-simulation results on the damped SHM task for GRU, LSTM and RNN models, as two unlabeled losses per cell, the following: Damped SHM GRU reservoir False: Epoch 1 1.27 x 10-1/2.47 x 10-2, Epoch 100 7.17 x 10-3/6.49 x 10-3; Damped SHM GRU reservoir True: Epoch 1 8.34 x 10-2/1.29 x 10-2, Epoch 100 4.51 x 10-2/1.2 x 10-2; Damped SHM LSTM reservoir False: Epoch 1 1.21 x 10-1/2.19 x 10-2, Epoch 100 1.86 x 10-2/1.41 x 10-2; Damped SHM LSTM reservoir True: Epoch 1 1.18 x 10-1/2.37 x 10-2, Epoch 100 6.01 x 10-2/1.75 x 10-2; Damped SHM RNN reservoir False: Epoch 1 2.45 x 10-2/5.18 x 10-3, Epoch 100 8.56 x 10-3/4.95 x 10-3; Damped SHM RNN reservoir True: Epoch 1 7.24 x 10-2/1.72 x 10-2, Epoch 100 1.94 x 10-2/5.47 x 10-3.",
+     "anchor": "Table IV, Section VI.A, p.21",
+     "quotes": [
+      "Damped SHM GRU False 1.27 × 10−1/2.47 × 10−2 1.88 × 10−2/4.18 × 10−3 7.89 × 10−3/3.32 × 10−3 7.17 × 10−3/6.49 × 10−3",
+      "Damped SHM GRU True 8.34 × 10−2/1.29 × 10−2 4.52 × 10−2/1.51 × 10−2 4.42 × 10−2/1.45 × 10−2 4.51 × 10−2/1.2 × 10−2",
+      "Damped SHM LSTM False 1.21 × 10−1/2.19 × 10−2 2.96 × 10−2/9.09 × 10−3 2.28 × 10−2/8.77 × 10−3 1.86 × 10−2/1.41 × 10−2",
+      "Damped SHM LSTM True 1.18 × 10−1/2.37 × 10−2 5.92 × 10−2/1.9 × 10−2 5.96 × 10−2/1.72 × 10−2 6.01 × 10−2/1.75 × 10−2",
+      "Damped SHM RNN False 2.45 × 10−2/5.18 × 10−3 1.38 × 10−2/5.48 × 10−3 1.17 × 10−2/6.43 × 10−3 8.56 × 10−3/4.95 × 10−3",
+      "Damped SHM RNN True 7.24 × 10−2/1.72 × 10−2 1.91 × 10−2/6.21 × 10−3 1.76 × 10−2/6.8 × 10−3 1.94 × 10−2/5.47 × 10−3",
+      "Reservoir Epoch 1 Epoch 15 Epoch 30 Epoch 100"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table IV lists only models named GRU, LSTM and RNN with no Q prefix, although the text says it summarizes noisy simulation of the quantum models; the table does not define the Reservoir column or the two numbers per cell. Reservoir True is read as RC and the labels as the quantum models, by inference from the text."
+    },
+    {
+     "id_suggestion": "rc-definition-reservoir",
+     "value": "The paper states, citing its reference 46, that reservoir computing is an approach to processing sequential data in which a large, nonlinear, randomly connected and fixed recurrent network (the reservoir) is separated from a linear output layer with trainable parameters, and that only the output weights W out are trained while the other weights are randomly initialized.",
+     "anchor": "Section II, p.3-4",
+     "quotes": [
+      "Reservoir computing (RC) is defined in [46] as an approach to processing sequential data, where large, nonlinear, randomly connected, and fixed recurrent network (the reservoir ) is separated from a linear output layer with trainable parameters.",
+      "Only W out needs to be trained, other weights are randomly initialized."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A definition the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rc-qrnn-rc-configuration",
+     "value": "The authors state that in the RC experiments all the quantum parameters are frozen after random initialization, so only classical parameters are trainable, with the same hyperparameters as the full optimization cases; in the RC cases the VQCs are randomly initialized and no quantum gradients are needed.",
+     "anchor": "Section V.B, p.13; Section III, p.6",
+     "quotes": [
+      "The only difference is that all the quantum parameters are frozen after the random initialization. Therefore, only classical parameters are trainable.",
+      "in the reservoir computing cases, the VQCs are randomly initialized and then the parameters are fixed, no quantum gradients are needed in this case."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own RC setup in Section V.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rc-quantum-model-sizes",
+     "value": "The authors state the full-optimization configurations: for damped SHM and Bessel, QRNN has 1 x 2 x 4 x 3 = 24 trainable quantum parameters, QGRU has 3 x 2 x 4 x 3 = 72 and QLSTM has 6 x 2 x 4 x 3 = 144, with 4, 4 and 5 trainable classical parameters; for the NARMA tasks the quantum parameters are 48, 144 and 288; the input is one-dimensional and the hidden unit three-dimensional, the QLSTM cell state four-dimensional, and the last step is t = 4.",
+     "anchor": "Section V.A, p.13; Section IV, p.7-10",
+     "quotes": [
+      "QRNN is with 1 × 2 × 4 × 3 = 24 trainable quantum parameters and 3 × 1 + 1 = 4 trainable classical parameters; QGRU is with 3 × 2 × 4 × 3 = 72",
+      "QLSTM is with 6 × 2 × 4 × 3 = 144 trainable quantum parameters and 4 × 1 + 1 = 5 trainable classical parameters.",
+      "the number of trainable quantum parameters are 48, 144 and 288 for QRNN, QGRU and QLSTM, respectively.",
+      "The cell state or internal state ct is set to be four-dimensional.",
+      "the xt is set to be one dimensional and the hidden unit ht is set to be three dimensional."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own model setup in Sections IV and V.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rc-classical-baseline-sizes",
+     "value": "The authors state that the classical baselines are sized to be similar to their quantum counterparts: RNN with 40 parameters, GRU with 120 and LSTM with 160, each plus 6 parameters in the final linear layer, with RC training freezing the recurrent parameters after random initialization.",
+     "anchor": "Section V.D, p.14",
+     "quotes": [
+      "RNN is with 40 parameters in RNN and 6 parameters in the final linear layer; GRU is with 120 parameters in GRU and 6 parameters in the final linear layer; LSTM is with 160 parameters in LSTM and 6 parameters in the final linear layer."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own baseline setup in Section V.D.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The classical baselines have 46, 126 and 166 parameters in total against 28, 76 and 149 for the quantum models, by the paper's own counts, so the sizes are similar in order of magnitude but not equal."
+    },
+    {
+     "id_suggestion": "rc-training-scheme",
+     "value": "The authors state that the model predicts the (N + 1)-th value given the first N values with N = 4 in all experiments, that 67% of each dataset is used for training and the remaining 33% for testing, that the optimizer is RMSprop with learning rate 0.01, smoothing constant 0.99 and epsilon 10-8, and that they use PyTorch, PennyLane for the circuits and Qiskit for noisy quantum simulation.",
+     "anchor": "Section V, p.12-13; Section VI, p.16",
+     "quotes": [
+      "the model is expected to predict the (N + 1)-th value given the first N values in the sequence.",
+      "We set N = 4 for all experiments in this paper.",
+      "For all datasets we consider in this paper, 67% are used for the training and the remaining 33% are for testing.",
+      "learning rate η = 0.01, smoothing constant α = 0.99, and  = 10−8.",
+      "We use PyTorch [110] for the overall ML workflow, PennyLane [106] for building the quantum circuits and Qiskit [5] for noisy quantum simulation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training setup in Sections V and VI.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rc-noise-model",
+     "value": "The authors state the noisy simulation uses serial thermal relaxation and depolarization channels with high-performance parameters largely based on the upper limit performance of the IBM Peekskill superconducting device, with T1 and T2 sampled per qubit from N(500 us, 50 us) and N(400 us, 40 us), gate times of 0 ns for RZ, 20 ns for X90, 300 ns for CNOT, 700 ns for measurement and 800 ns for reset, and depolarization errors sampled from N(1 x 10-4, 1 x 10-5) for single-qubit and N(1 x 10-3, 1 x 10-4) for CNOT gates.",
+     "anchor": "Section V.C, p.13-14",
+     "quotes": [
+      "We use high-performance noise model parameters that are largely based on the upper limit performance of the IBM Peekskill superconducting quantum device, currently in exploratory mode.",
+      "N (500μs, 50μs) and N (400μs, 40μs), respectively",
+      "Quantum gate and instruction times were fixed values of 0 ns for the RZ virtual gate, 20 ns for X90 gate, 300 ns for CNOT gate, 700 ns for measurement and 800 ns for reset instruction.",
+      "single-qubit errors and CNOT gate errors were sampled from N (1 × 10−4, 1 × 10−5) and N (1 × 10−3, 1 × 10−4), respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own noise-model setup in Section V.C.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "The noise parameters are those of the best case of a named device, so the noisy results are an optimistic noise scenario."
+    },
+    {
+     "id_suggestion": "rc-task-definitions",
+     "value": "The authors define the tasks: a damped pendulum with g = 9.81, b = 0.15, l = 1 and m = 1 starting at angular velocity 3 rad/sec; the Bessel function J2; and NARMA series with (alpha, beta, gamma, delta) = (0.3, 0.05, 1.5, 0.1), inputs with (alpha-bar, beta-bar, gamma-bar, T) = (2.11, 3.73, 4.11, 100), length M = 300 and n0 = 5 and n0 = 10 (NARMA5 and NARMA10).",
+     "anchor": "Section V.E, p.14-15",
+     "quotes": [
+      "in which the gravitational constant g = 9.81, the damping factor b = 0.15, the pendulum length l = 1 and mass m = 1.",
+      "In this paper, we choose J2 as the function used for training.",
+      "where (α, β, γ, δ) = (0.3, 0.05, 1.5, 0.1) and n0 is used to determine the nonlinearity.",
+      "(2.11, 3.73, 4.11, 100) as used in [116]. We set the length of inputs and outputs to M = 300. In this paper, we consider n0 = 5 and n0 = 10, NARMA5 and NARMA10 respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own task setup in Section V.E.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rc-qrnn-function-text",
+     "value": "The authors report for QRNN on damped SHM and Bessel that both QRNN-RC and QRNN learn the important features after single training epochs but the fully trained QRNN captures more amplitude information in the first epoch, that QRNN-RC achieves performance comparable to fully trained QRNN after 15 epochs except some of the large amplitude regions, and that QRNN-RC beats RNN-RC even after 100 epochs of training in damped SHM and from Epoch 1 to Epoch 100 in the Bessel case.",
+     "anchor": "Section VI.A.1, p.16",
+     "quotes": [
+      "However, the fully trained QRNN captures more amplitude information in the first epoch.",
+      "We observe that QRNN-RC can achieve performance comparable to fully trained QRNN after 15 epochs of training, except some of the large amplitude regions.",
+      "QRNN-RC beats RNN-RC even after 100 epochs of training and reaches comparable performance to fully trained RNN.",
+      "we observe that QRNN-RC beat RNN-RC from Epoch 1 to Epoch 100."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The comparison is read from plotted curves and Table I; Table I shows the fully trained QRNN reaching losses of order 10-4 to 10-5 on the function tasks where QRNN-RC stays at order 10-2 to 10-3."
+    },
+    {
+     "id_suggestion": "rc-qgru-function-text",
+     "value": "The authors report for QGRU that the fully trained QGRU learns more amplitude information than QGRU-RC after the first epoch, that in damped SHM QGRU-RC reaches comparable performance to QGRU after 15 epochs, beats classical GRU-RC up to the first 30 epochs and reaches similar performance to GRU-RC and fully trained GRU after 100 epochs, and that in the Bessel case QGRU-RC saturates after 15 epochs, captures most of the data except some of the large amplitude regions, and performs similar to classical GRU-RC after 15 epochs.",
+     "anchor": "Section VI.A.2, p.16-17",
+     "quotes": [
+      "In the case of damped SHM, we observe that the QGRU-RC can reach comparable performance to QGRU after 15 epochs of training.",
+      "the QGRU-RC beats GRURC up to the first 30 epochs of training and reaches similar performance to GRU-RC and fully trained GRU after 100 epochs of training.",
+      "In the case of Bessel function, we observe that QGRU-RC saturates after 15 epochs of training and can capture most of the data, except some of the large amplitude regions.",
+      "We also observe that the QGRU-RC performs similar to the classical GRU-RC after 15 epochs of training."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "For QGRU the text reports parity with the classical reservoir after 15 to 100 epochs, not an advantage, in contrast with the abstract."
+    },
+    {
+     "id_suggestion": "rc-qlstm-function-text",
+     "value": "The authors report for QLSTM that in the Bessel case QLSTM-RC and QLSTM give similar learning outcomes in the first epoch and similar results after 100 epochs of training, but that the loss values of QLSTM are much lower after the training since all model parameters are trained, and that QLSTM-RC captures more features than LSTM-RC after the same number of training epochs in both the damped SHM and Bessel cases.",
+     "anchor": "Section VI.A.3, p.18",
+     "quotes": [
+      "We observe that both models reach similar results after 100 epochs of training.",
+      "However, the loss values of QLSTM are much lower after the training.",
+      "If we compare QLSTM-RC to LSTM-RC, we can observe that the quantum version captures more features after the same number of training epochs in both the damped SHM and Bessel function cases."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text uses plots for both claims; Table III at the last epoch shows the QLSTM-RC and LSTM-RC losses for Bessel close together."
+    },
+    {
+     "id_suggestion": "rc-narma-text",
+     "value": "The authors report on NARMA5 and NARMA10 that the QRNN learns more structure in the first epoch but QRNN-RC catches up quickly, with results very close to QRNN after 15 epochs and superior to classical models with similar parameters; that QGRU-RC is very similar to QGRU after 15 epochs, indistinguishable after 100 epochs, and superior to the classical GRU-RC and GRU; and that for QLSTM the training performance of QLSTM-RC is better than the fully optimized one after 30 epochs and quantum LSTM, RC or fully optimized, performs better than the classical counterparts.",
+     "anchor": "Section VI.B, p.19-22",
+     "quotes": [
+      "After 15 epochs of training, the results from QRNN-RC are very close to QRNN.",
+      "QRNN-RC provides results superior than classical models with a similar number of parameters.",
+      "In addition, the simulation shows that the performance of QGRU-RC is superior than the classical GRU-RC and GRU with a similar number of parameters.",
+      "indistinguishable after 100 epochs of training.",
+      "Surprisingly, the training performance of QLSTM-RC is better than the fully optimized one",
+      "QLSTM-RC predicts the sequence better than QLSTM after 30 epochs of training.",
+      "we observe that the quantum LSTM, either RC or fully optimized one, perform better than their classical counterparts."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table II shows that on NARMA5 the classical GRU-RC has a lower first-epoch training loss than QGRU-RC, so superiority is not uniform across epochs."
+    },
+    {
+     "id_suggestion": "rc-noise-conclusion-smoother",
+     "value": "The authors report that with simulated quantum device noise both full optimization and RC training reach reasonable performance, that QRNN-RC, QGRU-RC and QLSTM-RC generate smoother outputs than the fully optimized models in the damped SHM and Bessel cases, and that the noisy simulation results show prediction curves less corrupted by noise and MSE loss curves, particularly for QRNN-RC, that stabilize to a loss minimum in fewer epochs.",
+     "anchor": "Section VI.A, p.16-18; Section VII.A, p.23-24",
+     "quotes": [
+      "Particularly, in both the damped SHM and Bessel function cases, we see that QRNN-RC can provide smoother outputs than the fully trained QRNN.",
+      "the QGRU-RC can generate smoother outputs than the fully optimized QGRU.",
+      "prediction curves that are less corrupted by simulation noise.",
+      "has less noise and stabilizes to a loss minimum in fewer epochs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The smoothness is a qualitative reading of plots; the noisy-simulation table lists no matching fully trained quantum rows in the form given."
+    },
+    {
+     "id_suggestion": "rc-hardware-efficiency-claim",
+     "value": "The authors state that they consider hardware efficiency to be achieved by running fewer quantum circuits, that the RC framework is well-suited for NISQ computers because training is limited to the final layer so the quantum computer is only used to generate outputs for the classical linear layer, and that as a hardware efficient approach RC reduces the negative effects of noise on the quantum computation and therefore can improve time-series prediction.",
+     "anchor": "Section VII.A, p.23",
+     "quotes": [
+      "In this paper we consider that hardware efficiency is achieved by running fewer quantum circuits.",
+      "efficient training is limited to the final layer, meaning that a quantum computer would only be used for generating the outputs for the classical linear layer and the quantum parameters are not trained.",
+      "it reduces the negative effects of noise on the quantum computation and therefore can improve the performance of timeseries prediction."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper reports no count of circuit evaluations and no noise-sensitivity measurement beyond the plotted noisy runs.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The paper does not report circuit-evaluation counts or wall-clock time for RC against full training."
+    },
+    {
+     "id_suggestion": "rc-training-time-claim",
+     "value": "The abstract states that since the QRNN training complexity is significantly reduced the proposed model trains notably faster, and the introduction says that since the QRNN does not need to be trained the overall process is much faster than the fully trained ones; the paper reports no wall-clock or circuit-count measurement for this.",
+     "anchor": "Abstract, p.1; Section I, p.3",
+     "quotes": [
+      "Since the QRNN training complexity is significantly reduced, the proposed model trains notably faster.",
+      "the overall process is much faster than the fully trained ones."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; no timing is reported.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rc-parameter-shift-cost-cited",
+     "value": "The paper states, citing other work, that quantum gradient calculation by the parameter-shift method requires two circuit evaluations for each parameter, and that variational quantum algorithms and quantum circuit learning require a significant amount of circuit evaluation to calculate gradients and update circuit parameters.",
+     "anchor": "Section I, p.2",
+     "quotes": [
+      "the commonly used parameter-shift quantum gradient calculation method requires two circuit evaluations for each parameter [37, 38]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rc-vqc-advantages-cited",
+     "value": "The paper states, citing other work, that VQCs have resilience of quantum noise, can be trained with smaller datasets, and may have more expressive power than classical neural networks.",
+     "anchor": "Section III, p.5-6",
+     "quotes": [
+      "Noteworthy advantages of VQCs include resilience of quantum noise [52–54], which makes them favorable for NISQ era quantum devices, and the ability to train VQCs with smaller datasets [47]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper attributes to other work; not tested in this paper.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "rc-conclusion",
+     "value": "The authors conclude that they show via numerical simulations that QRNN-RC can reach results comparable to fully trained QRNN models in several function approximation and time-series prediction tasks, that the overall process is much faster than the fully trained ones, that the quantum solutions require fewer training epochs than classical RNN-based RC in most cases, and that the results demonstrate a possibility to use quantum neural networks for sequential modeling with very small amount of resource requirement.",
+     "anchor": "Section VIII, p.25",
+     "quotes": [
+      "We show via numerical simulations that the QRNN-RC can reach results comparable to fully trained QRNN models in several function approximation and time-series prediction tasks.",
+      "We also compare to classical RNN-based RC and show that the quantum solutions require fewer training epochs in most cases.",
+      "Our results demonstrate a new possibility to utilize quantum neural networks for sequential modeling with very small amount of resource requirement."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The conclusion words match the abstract; the abstract adds that QRNN-RC trains notably faster and that this gives greater hardware efficiency."
+    },
+    {
+     "id_suggestion": "rc-financial-applications-claim",
+     "value": "The authors state that the method can be applied to other sequential tasks, and that there are numerous financial applications including time series prediction for stock price and market behavior and classification problems for risk and fraud detection; no financial or fraud data is used in the paper.",
+     "anchor": "Section VII.B, p.24",
+     "quotes": [
+      "In order to facilitate maximal advantage of a quantum approach to machine learning, the method proposed in this paper can be utilized to decrease the time and complexity required by existing methods for certain applications.",
+      "Additionally, there are numerous financial applications [119] including time series prediction [42, 43] for stock price and market behavior, and classification problems for risk and fraud detection."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement of possible applications; the paper tests none of them.",
+     "result_type": "claim",
+     "context": "world",
+     "reader_inference": "The only tasks run are damped SHM, Bessel and NARMA; the fraud and finance applications are named, not tested."
+    },
+    {
+     "id_suggestion": "rc-wells-fargo-disclaimer",
+     "value": "The paper states that the views expressed are those of the authors and do not represent the views of Wells Fargo, and that nothing in it should be construed as investment advice.",
+     "anchor": "Acknowledgments, p.30",
+     "quotes": [
+      "The views expressed in this article are those of the authors and do not represent the views of Wells Fargo.",
+      "Nothing contained in this article should be construed as investment advice."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope disclaimer.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": ""
+    }
+   ]
+  },
+  {
+   "record_id": "chen-2023-asynchronous-training-quantum-reinforcement-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2023\\Chen_2023_Asynchronous-training-of-quantum-reinforcement-learning__2301.05096.pdf",
+   "title_in_file": "Asynchronous training of quantum reinforcement learning",
+   "version_note": "arXiv:2301.05096v1 (12 Jan 2023), a single author at Wells Fargo. The file is the paper its record names. The stored anchors give the Cart-Pole and MiniGrid results as p.13; they are on p.14.",
+   "pages": 20,
+   "read_extent": "full",
+   "not_read": "",
+   "what_it_is": "A single-author preprint that trains dressed variational-quantum-circuit actor-critic agents asynchronously on 80 parallel simulated workers and compares them with similar-size classical agents on Acrobot, Cart-Pole and MiniGrid-SimpleCrossing.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "chen2023-cartpole-result",
+     "verdict": "confirmed",
+     "note": "Correct as stored. The results are on p.14 (Section VI.C.2, Fig. 8), not p.13. The scores are read from a single plotted curve per model; the paper reports no statistical test, no number of seeds and no error bars in the text.",
+     "value": "The authors report that in the Cart-Pole environment over 100,000 episodes the quantum model achieved significantly higher scores than the classical model, although the classical model learned faster early in training.",
+     "anchor": "Section VI.C.2, Cart-Pole results, Fig. 8, p.14",
+     "quotes": [
+      "The next experiment was conducted in the Cart-Pole environment. The total number of episodes was 100,000.",
+      "the quantum model achieved significantly higher scores than the classical model",
+      "While the classical model demonstrated faster learning in the early training episodes, the quantum model eventually surpassed it"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The word 'significantly' is the author's word; no significance test is reported."
+    },
+    {
+     "id": "chen2023-minigrid-result",
+     "verdict": "widened",
+     "note": "The paper adds that in the remaining scenario (S9N1) the difference between the two models was minor, and says the quantum model outperformed in S9N2 and S9N3 with faster convergence and higher scores. Page is p.14, with the sentence continuing to p.15.",
+     "value": "The authors report that in the MiniGrid-SimpleCrossing environment over 100,000 episodes the quantum model outperformed the classical model in two of the three scenarios, MiniGrid-SimpleCrossingS9N2-v0 and MiniGrid-SimpleCrossingS9N3-v0, with faster convergence and higher scores, and that in the remaining scenario, MiniGrid-SimpleCrossingS9N1-v0, the difference in performance between the two models was minor.",
+     "anchor": "Section VI.C.3, MiniGrid results, Fig. 9, p.14-15",
+     "quotes": [
+      "comprising a total of 100,000 episodes",
+      "the quantum model outperformed the classical model in two of the three scenarios",
+      "demonstrating faster convergence and higher scores.",
+      "Even in the remaining scenario, MiniGrid-SimpleCrossingS9N1-v0, the difference in performance between the two models",
+      "was minor."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "chen2023-setup-simulation-8-qubits",
+     "verdict": "confirmed",
+     "note": "Correct as stored. The parameter count is derived in the paper as 8 x 3 x 2 = 48 per VQC, with separate actor and critic VQCs. Section is VI.B, p.11-13.",
+     "value": "The authors state that results are from numerical simulations within the tasks considered, with an 8-qubit VQC of two variational layers, 96 quantum parameters in total, and 80 parallel agents.",
+     "anchor": "Abstract, p.1; Section VI.B, p.11-13",
+     "quotes": [
+      "We demonstrate the results via numerical simulations that within the tasks considered",
+      "For the VQC, we set the number of qubits to be 8 and two variational layers are used.",
+      "the total number of quantum parameters is 96",
+      "The number of CPU cores and hence the number of parallel agents is 80 in this work."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Section VI.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "chen2023-acrobot-result",
+     "value": "The authors report that in the Acrobot environment over 100,000 episodes the quantum model improved gradually during early training while the classical model struggled to improve its policy, that the quantum model had superior average score, and that it converged more stably without significant fluctuations or collapses after reaching optimal scores.",
+     "anchor": "Section VI.C.1, Acrobot results, Fig. 7, p.13",
+     "quotes": [
+      "The total number of episodes was 100,000.",
+      "the quantum model exhibits a gradual improvement during the early training episodes, while the classical model struggles to improve its policy.",
+      "In terms of average score, the quantum model demonstrates superior performance compared to the classical model.",
+      "without significant fluctuations or collapses after reaching optimal scores."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The text reports one curve per model and no seed count or error bars."
+    },
+    {
+     "id_suggestion": "chen2023-conclusion-outperform-or-match",
+     "value": "The authors conclude that, through numerical simulations in the benchmark tasks considered, advantage actor-critic quantum policies trained asynchronously can outperform or match the performance of classical models with similar architecture and sizes.",
+     "anchor": "Section VII, Conclusion, p.15",
+     "quotes": [
+      "Through numerical simulations, we show that in the benchmark tasks considered, advantage actor-critic quantum policies trained asynchronously can outperform",
+      "or match the performance of classical models with similar architecture and sizes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical conclusion from one study, limited by the paper to the tasks considered.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2023-training-time-claim",
+     "value": "The authors state that the suggested training approach has the practical advantage of requiring significantly less time for training, and in the conclusion that the technique affords a strategy for expediting the training of quantum RL agents through parallelization; the paper body reports no wall-clock timing comparison.",
+     "anchor": "Section I, p.2; Section VII, p.15",
+     "quotes": [
+      "Furthermore, the suggested training approach has the practical advantage of requiring significantly less time for training, allowing for more quantum RL applications.",
+      "This technique affords a strategy for expediting the training of quantum RL agents through parallelization"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; no training-time measurement is reported in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The experiments section compares scores per episode, not time; the speed-up claim has no reported measurement."
+    },
+    {
+     "id_suggestion": "chen2023-hyperparameters",
+     "value": "The authors state that QA3C uses the Adam optimizer with learning rate 1 x 10-4, beta1 = 0.92 and beta2 = 0.999, that local agents update with the global shared memory every S = 5 steps, and that the discount factor gamma is 0.9.",
+     "anchor": "Section VI.B, p.11",
+     "quotes": [
+      "we use the Adam optimizer with learning rate 1 × 10−4, β1 = 0.92 and β2 = 0.999.",
+      "The local agents will update the parameters with the global shared memory every S = 5 steps.",
+      "The discount factor γ is set to be 0.9."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training setup in Section VI.B.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2023-classical-baseline-size",
+     "value": "The authors state that the classical benchmark replaces the 8-qubit VQC with a single layer with input and output dimensions equal to 8, and give in Table I parameter counts of 148 classical plus 96 quantum, total 244, against 292 for the classical benchmark on Acrobot; 107, 96, 203 against 251 on Cart-Pole; and 2431, 96, 2527 against 2575 on SimpleCrossing.",
+     "anchor": "Section VI.B and Table I, p.12",
+     "quotes": [
+      "we replace the 8-qubit VQC with a single layer with input and output dimensions equal to 8.",
+      "Acrobot 148 96 244 292",
+      "Cart-Pole 107 96 203 251",
+      "SimpleCrossing 2431 96 2527 2575",
+      "The classical benchmarks were designed with architectures similar to the quantum model, resulting in similar model sizes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A reading of a table; the column headings are scrambled by the text layer.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "In each environment the classical benchmark has 48 more parameters than the quantum model's total, so the models are close but not equal in size."
+    },
+    {
+     "id_suggestion": "chen2023-environments",
+     "value": "The authors describe the three test environments: Acrobot with a reward threshold of -100; Cart-Pole ending an episode if the pole is inclined more than 15 degrees from vertical or the cart moves more than 2.4 units from centre; and MiniGrid-SimpleCrossing with a 147-dimensional observation (7 x 7 x 3), six actions, grid size n = 9 and a sparse reward.",
+     "anchor": "Section VI.A, p.9-11",
+     "quotes": [
+      "The reward threshold is −100.",
+      "An episode ends if the pole is inclined more than 15 degrees from vertical or the cart moves more than 2.4 units away from the center.",
+      "the RL agent receives a 7 × 7 × 3 = 147 dimensional vector through observation and must choose an action from the action space A, which offers six options.",
+      "In this work, n is set to 9."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own test environments in Section VI.A.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2023-evaluation-metric",
+     "value": "The authors state that the simulation results are scores from the past 100 episodes averaged.",
+     "anchor": "Section VI.B, p.13",
+     "quotes": [
+      "We present simulation results in which the scores from the past 100 episodes are"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own evaluation setup.",
+     "result_type": "setup",
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2023-vqc-architecture",
+     "value": "The authors state that the VQC encodes classical values with Ry and Rz rotations, entangles with CNOT gates, applies general unitary rotations and outputs Pauli-Z expectation values obtained through multiple shots, and that single-layer classical networks before and after the VQC convert dimensions (input to the number of qubits; output to the number of actions for the actor or 1 for the critic); actor and critic each have their own VQC.",
+     "anchor": "Sections IV-V, Fig. 1 and Fig. 3, p.6-9; Section VI.B, p.11",
+     "quotes": [
+      "The VQC used here includes Ry and Rz for encoding classical values x, multiple CNOT gates to entangle qubits, general unitary rotations R and the final measurement.",
+      "The output of the VQC consists of Pauli-Z expectation values, which are obtained through multiple runs (shots) of the circuit.",
+      "output dimensions equal to the number of actions (for the actor function π (at | st; θ)) or 1 (for the critic function V (st; θv)).",
+      "Actor and critic both have their own VQC"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own model architecture in Sections IV-VI.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2023-qa3c-framework",
+     "value": "The authors define quantum A3C as a global shared memory holding dressed-VQC policy and value parameters plus process-specific local copies per agent; local gradients are uploaded to the global memory when criteria are met and the updated global parameters are downloaded immediately to the agent that uploaded; the policy and value function are updated after every S steps or at a terminal state.",
+     "anchor": "Section V, p.7-9; Algorithm 1, p.16",
+     "quotes": [
+      "When certain criteria are met, the gradients of the local model parameters are uploaded to the global shared memory, and the global model parameters are modified accordingly.",
+      "The updated global model parameters are then immediately downloaded to the local agent that just uploaded its own gradients.",
+      "The policy and value function are updated after every S steps or when the agent reaches the terminal state."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own training framework in Section V.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2023-software-simulation",
+     "value": "The authors state that they used the open-source PennyLane package to construct the quantum circuit models and PyTorch as the overall machine learning framework; the paper states no noise model and no quantum hardware run.",
+     "anchor": "Section VI.B, p.12",
+     "quotes": [
+      "We utilize the open-source PennyLane package [47]",
+      "to construct the quantum circuit models and the PyTorch as a overall machine learning"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own software setup.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": "No mention of noise or hardware was found anywhere in the 20 pages; the results are noiseless simulation, by inference from the abstract's 'numerical simulations'."
+    },
+    {
+     "id_suggestion": "chen2023-novelty-and-evolutionary-comparison",
+     "value": "The authors claim that, unlike previous quantum policy gradient approaches that used single-threaded training, their asynchronous method may offer reduced training time through multi-core CPU computing and potential use of multiple QPUs, that individual agents share gradients with the global gradient asynchronously rather than waiting for all agents to finish, which may further improve efficiency, and that these contributions represent a novel advancement.",
+     "anchor": "Section II, p.4",
+     "quotes": [
+      "While previous approaches have employed single-threaded training, our method utilizes an asynchronous approach, which may offer practical benefits such as reduced training time through the use",
+      "rather than waiting for all agents to finish before calculating fitness and creating the next generation of agents. This characteristic may further improve the efficiency of the training process.",
+      "These contributions represent a novel advancement in the field of quantum reinforcement learning."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim of novelty and efficiency without a measurement in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2023-a3c-stability-cited",
+     "value": "The paper states, citing the original A3C work, that asynchronous training across multiple environment instances diminishes the correlation between states or observations, which enhances the numerical stability of on-policy RL algorithms such as actor-critic, and that it does not require maintaining a large replay memory.",
+     "anchor": "Section III, p.5-6",
+     "quotes": [
+      "This diminished correlation between states or observations enhances the numerical stability of on-policy RL algorithms such as actor-critic [33].",
+      "asynchronous training does not require the maintenance of a large replay memory, thus reducing memory requirements [33]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "chen2023-wells-fargo-disclaimer",
+     "value": "The paper states that the views expressed are those of the authors and do not represent the views of Wells Fargo, and that nothing in it should be construed as investment advice.",
+     "anchor": "Acknowledgments, p.15",
+     "quotes": [
+      "The views expressed in this article are those of the authors and do not represent the views",
+      "Nothing contained in this article should be construed as investment advice."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope disclaimer.",
+     "result_type": "setup",
+     "context": "world",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

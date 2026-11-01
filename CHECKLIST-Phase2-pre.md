@@ -246,3 +246,49 @@ Evidence for each row is the commit named, on the sprint branch
 - [x] **H+C**: Manual Validation Q1-Q3 decided and applied (ae29cc1, bed6746); F100 carded (1844986)
 - [x] **H+C**: Retrospective, 16 x 4 (bed6746, a87112a); I1a, I1b, I2 applied (bc658b1) with a security fix (9046f08); I3 carded, I4 applied, I5 skipped (7db1e84)
 - [x] **C**: Summary, master plan roll and this section (this commit); Copilot review waived by the team lead; PR #113 ready
+
+## Sprint 12: Fix the Entities, Speed the Suite, Then Read 400 Records (back-filled 2026-10-31 at Sprint 14 Phase 7.7)
+
+Not reconciled at Sprint 12's or Sprint 13's Phase 7, and neither Phase 1.2
+sweep caught it; found when this file was walked at Sprint 14 Phase 7.7.
+Evidence for each row is the commit named, on `feature/20261023_Sprint_12`
+(PR #122).
+
+- [x] **C**: Task A (F101) -- HTML entities out of the store; every stored quote parses (5466953); review fixes (6d2bed4, 4c109e7)
+- [x] **C**: Task B (F100) -- the suite in 199 s warm, from 781 s (fdedff9); review fixes (536e0f1)
+- [x] **C**: Task C (F102) -- Phase 2's Sprint 28 results by the inbound path (5bcafe0); F111 entered, five values corrected (7ff07f5)
+- [x] **C**: Task D (F106) -- ADR-0005 A11, a source link resting on a recorded team-lead decision (ffc3c2b)
+- [x] **C**: Task E (F103) -- the Classiq challenge posts, wrap-up and named repository (c80c195); review fixes (77beaa0, 9698ead)
+- [x] **C**: Task F (F104) -- Roadmap-to-QML's first release (f99139e); review fixes (9698ead)
+- [x] **C**: Task G (F105) -- HIGH only with a named basis (e09a244); the slice, fetch and ledger (ce5c222); 413 reads entered (5744e2d); review fixes (eeabd3b)
+- [x] **H+C**: Manual Validation (18e9f43)
+- [x] **H+C**: Retrospective, 16 x 4, summary (48196d5); I1 and I3 applied, I2 carded on F57 (7b65d12); review fix (90af614)
+
+## Sprint 13: Fix Sprint 12's Two Defects, Check the Models, Then Read 800 Records (back-filled 2026-10-31 at Sprint 14 Phase 7.7)
+
+Not reconciled at Sprint 13's Phase 7; found with Sprint 12's gap. Evidence
+for each row is the commit named, on `feature/20261024_Sprint_13` (PR #131).
+
+- [x] **C**: Task A (F107) -- the ".;" joins out of paper evidence; theoretical LOW grades name their cause (6c6f0ac); review fix (44502b8)
+- [x] **C**: Task B (F111, F39 release) -- models unchanged; Sprint 11 and 12 outcomes logged (2599140)
+- [x] **C**: Tasks C, D, E (F109, F110, F108) -- Papers and Roadmap checked; Phase 2's F162 entered (88bd065); review fix (c468a90)
+- [x] **C**: Task F (F112) -- every LOW names its reason (dd620c7, ac91f2f); the slice and ledger (e621771); half 1 (cec6020, f782e53) and half 2 (ce2412e, 6cfc137) read and applied; anchors (7ea56e7, 84df57e)
+- [x] **H+C**: Manual Validation Q2 to Q4 (ed53933, b0b41a3, 6173bad, b6cdcd0, 745c6e6, ce95e82, 8c869cc, 44e2512); Q7 (2bab87b); Q11 to Q13 (71705d8)
+- [x] **C**: Task G (F113), added at Manual Validation -- no reading budget (a3b8074); the apply script and g001 to g042 (6d8dec7 to c827018, eb3941a, 5e10948); F114's cloud readers stopped at $0 credit (296863a to d5fe761)
+- [x] **H+C**: Retrospective, 16 x 4 (db8aeb7, af2c2ca); I1, I2 and I4 applied, I3 skipped (c978e50, 8a06bf5)
+- [x] **C**: Copilot finding fixed (9e7d9fb); summary, master plan roll (83b2e99); PR #131 ready
+
+## Sprint 14: Read PHI-OMEGA, Review the 302 Cloud Reads, Then Learn What the Store Says (reconciled 2026-10-31 at Phase 7.7)
+
+Evidence for each row is the commit named, on the sprint branch
+(`feature/20261029_Sprint_14`, PR #140).
+
+- [x] **C**: Task A (F119) -- PHI-OMEGA paper, posts, images and code (1b987dd); review fixes (6d5bcec, f1257c1)
+- [x] **C**: Task B (F122, F95 release) -- 165 unnamed PDFs linked (ebff67c)
+- [x] **C**: Task C (F123, F98 release) -- Roadmap-to-QML at ea6f42a7c0, 4 papers entered (577380e)
+- [x] **C**: Task D (F120) -- Phase 2's Sprint 29 results (1f904ba); review fix (454c7a4)
+- [x] **C**: Tasks E and F (F117, F114) -- cloud results rebuilt and reviewed (92d7634 to fed2d56); local reads (1cb63bb to 59233c1); first release applied (b185729, 4d969d9)
+- [x] **C**: Task G (F118) -- inventory and theme packets (6400b23); the memo (ed5ab01, 6e4bfb7)
+- [x] **H+C**: Manual Validation Q1 = 1 and Q2 = 1; the last 19 groups applied (0eddd23); review fixes (bb82d0a, 25d3985)
+- [x] **H+C**: Retrospective, 16 x 4 (b665ee3, 25d3985); all nine improvements option 1: Q1 to Q7 applied, Q8 carded as F130, Q9 added to F128 (this commit)
+- [x] **C**: Summary, master plan roll and this section (this commit); PR #140 ready after CI
