@@ -207,10 +207,27 @@ def ledger() -> dict:
     return json.loads(LEDGER.read_text(encoding="utf-8"))
 
 
+# F125 (Sprint 15 Task C): a record a reviewed group left unread is read later in a re-entry group "<g>-r<n>", with its
+# own group file and review file; a reviewed group's files are never rewritten. Its records are exactly the ones its
+# predecessor's review left unread (g113-r1 takes what g113 left, g113-r2 what g113-r1 left), so no record is entered
+# by two groups.
+REENTRY = re.compile(r"^(g\d+)-r([1-9]\d*)$")
+
+
+def group_records(g: str) -> set[str]:
+    m = REENTRY.match(g)
+    if not m:
+        return {r["record_id"] for r in ledger()["groups"][g]["records"]}
+    before = m[1] if m[2] == "1" else f"{m[1]}-r{int(m[2]) - 1}"
+    if before not in REVIEWED_ON:
+        raise ValueError(f"{g}: re-enters what {before} left unread, and {before} has no review")
+    return set(UNREAD.get(before, {}))
+
+
 def groups() -> list[str]:
     """The reviewed groups: those with a date in REVIEWED_ON, or ONLY's for a dry run."""
     names = ONLY or sorted(REVIEWED_ON)
-    missing = [g for g in names if g not in ledger()["groups"]]
+    missing = [g for g in names if (REENTRY.match(g) or [None, g])[1] not in ledger()["groups"]]
     if missing:
         raise ValueError(f"not in the ledger: {missing}")
     return names
@@ -218,10 +235,10 @@ def groups() -> list[str]:
 
 def load_groups() -> list[tuple[str, dict]]:
     """Every paper of the reviewed groups; refuses a reader file whose records are not its group's."""
-    out, L = [], ledger()
+    out = []
     for g in groups():
         papers = json.loads((READS_DIR / f"group_{g}.json").read_text(encoding="utf-8"))["papers"]
-        want = {r["record_id"] for r in L["groups"][g]["records"]} - set(UNREAD.get(g, {}))
+        want = group_records(g) - set(UNREAD.get(g, {}))
         got = [p["record_id"] for p in papers]
         if set(got) != want or len(got) != len(want):
             raise ValueError(f"group {g}: reader file records {sorted(set(got) ^ want)} differ from the ledger")

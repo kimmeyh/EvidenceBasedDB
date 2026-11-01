@@ -61,6 +61,7 @@ UNREAD = {
 # team lead kept it unread, 2026-10-27), so only its local read counts. A record of a group F reads in part is left
 # for F114's next release.
 LOCAL = cloud.WORK / "local"
+REENTRY = re.compile(r"^(g\d+)-r([1-9]\d*)$")  # F125: as full_read_apply.REENTRY
 NOT_A_READ = {"boyd-2004-convex-optimization"}
 NEXT_RELEASE = ("left for F114's next release: Sprint 14 Task F read 50 papers (Q1 = 2), and this group's other "
                 "records were among them")
@@ -240,6 +241,16 @@ def buildable(exclude: set[str] = frozenset()) -> dict[str, list[str]]:
         rids = [r["record_id"] for r in v["records"]]
         if all(r in have or r in UNREAD for r in rids) and any(r in have for r in rids):
             out[g] = [r for r in rids if r in have and r not in UNREAD]
+    # F125 (Sprint 15 Task C): a re-entry group ("g113-r1") has no ledger entry; its local brief names the records its
+    # predecessor's review left unread, so its parent's NEXT_RELEASE mark does not keep them out. The applier checks
+    # that they are exactly those.
+    for brief in sorted((LOCAL / "briefs").glob("g*-r*.json")):
+        g = brief.stem
+        if not REENTRY.match(g):
+            continue
+        rids = [r["record_id"] for r in json.loads(brief.read_text(encoding="utf-8"))["records"]]
+        if g not in exclude and g not in wait and rids and all(r in have for r in rids):
+            out[g] = rids
     return out
 
 

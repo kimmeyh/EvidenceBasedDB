@@ -47,6 +47,14 @@ this project keeps having to replace with a step.
 - **docs**: Sprint 15 Tasks A and B (F131, F132): `Papers\` holds 378
   PDFs, none new since 2026-10-30; Roadmap-to-QML is still at
   ea6f42a7c0. No store write
+- **feat**: Sprint 15 Task C (F125): a record a reviewed group left unread
+  is read later in a re-entry group `<g>-r<n>` with its own group file and
+  review file. The applier takes exactly the records the predecessor's
+  review left unread; the builder builds the group from its local brief;
+  the review finalizes it without a ledger entry. The status script reads
+  `work\f114\local\`, counts a read only for the group it names, and
+  calls a group with only its unread records left "applied". Each with a
+  test proven red
 
 ### 2026-10-29 to 2026-10-31 (Sprint 14, PR #140, merged to develop 2026-10-31 and to main via PR #148 the same day; tagged sprint-14)
 

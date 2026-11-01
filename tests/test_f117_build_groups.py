@@ -284,3 +284,21 @@ def test_two_different_ids_on_one_assertion_are_refused(tmp_path, monkeypatch):
     b = _build(tmp_path, monkeypatch, {"c": [{"id": "one", "id_suggestion": "two"}], "d": []})
     with pytest.raises(ValueError, match="two ids"):
         b.entry("c")
+
+
+def test_a_re_entry_group_is_built_from_its_local_reads(tmp_path, monkeypatch):
+    """F125 (Sprint 15 Task C): a local brief named "g080-r1" holds records a reviewed group left unread; once its
+    reader's group file exists, the group is built under that name, though its parent's brief marks the records for
+    the next release. Proven to fail, 2026-11-01, run before the change: the re-entry group was never buildable."""
+    b = _build(tmp_path, monkeypatch, {"c": []})
+    local = tmp_path / "work" / "local"
+    (local / "briefs" / "g080.json").write_text(json.dumps({"records": [{"record_id": "c"}]}), encoding="utf-8")
+    (local / "reads" / "group_g080.json").write_text(json.dumps({"papers": [{"record_id": "c"}]}), encoding="utf-8")
+    monkeypatch.setattr(b, "UNREAD", {**b.UNREAD, **b.local_unread()})
+    assert b.UNREAD["d"] == b.NEXT_RELEASE
+    (local / "briefs" / "g080-r1.json").write_text(json.dumps({"records": [{"record_id": "d"}]}), encoding="utf-8")
+    assert "g080-r1" not in b.buildable()  # its reader is at work
+    (local / "reads" / "group_g080-r1.json").write_text(
+        json.dumps({"papers": [{"record_id": "d", "assertions": [{"id_suggestion": "d-one"}]}]}), encoding="utf-8")
+    assert b.buildable()["g080-r1"] == ["d"]
+    assert b.entry("d") == {"record_id": "d", "assertions": [{"id_suggestion": "d-one"}]}

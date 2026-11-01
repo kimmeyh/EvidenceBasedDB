@@ -66,5 +66,11 @@ def test_the_status_of_a_group_comes_from_its_files(tmp_path, monkeypatch):
     assert status.state("g1", records, set()) == ("read", "")
     (reviews / "g1.json").write_text("{}")
     assert status.state("g1", records, set()) == ("reviewed", "")
-    assert status.state("g1", records, {"r1", "r2"}) == ("reviewed", ""), "one record not yet applied"
-    assert status.state("g1", records, set(records)) == ("applied", "")
+    assert status.state("g1", records, {("g1", "r1"), ("g1", "r2")}) == ("reviewed", ""), "one not yet applied"
+    assert status.state("g1", records, {("g1", r) for r in records}) == ("applied", "")
+    # F125 (Sprint 15 Task C): a read is the group's only when it names the group, and a record its review left
+    # unread does not hold the group back. Proven to fail, 2026-11-01: with the group not compared, g2's read
+    # counted for g1; with the review's unread ignored, g1 stayed "reviewed".
+    assert status.state("g1", records, {("g2", r) for r in records}) == ("reviewed", "")
+    (reviews / "g1.json").write_text(json.dumps({"unread": {"r3": "next release"}}))
+    assert status.state("g1", records, {("g1", "r1"), ("g1", "r2")}) == ("applied", "1 left unread")

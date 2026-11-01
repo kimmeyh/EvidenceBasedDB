@@ -437,3 +437,37 @@ def test_a_field_no_review_item_names_is_listed(synthetic_store, monkeypatch):
         assert g.apply_changes(conn)[1:] == ["undecided claim-one [context]"]
     finally:
         conn.close()
+
+
+def test_a_record_left_unread_is_entered_later_by_a_re_entry_group(tmp_path, monkeypatch):
+    """F125 (Sprint 15 Task C): g113's review left three records unread for F114's next release, and its group file
+    and review file are never rewritten, so nothing could enter them later. A re-entry group "g113-r1" holds exactly
+    the records g113's review left unread, under its own group file and review; "g113-r2" holds what g113-r1 left.
+    Proven to fail, 2026-11-01, run before the change: a re-entry group was refused as not in the ledger."""
+    import json
+    g = _script()
+    ledger = {"groups": {"g113": {"records": [{"record_id": r} for r in ("a", "b", "c")]}}}
+    monkeypatch.setattr(g, "ledger", lambda: ledger)
+    monkeypatch.setattr(g, "READS_DIR", tmp_path)
+    monkeypatch.setattr(g, "REVIEWED_ON", {"g113": "2026-10-31"})
+    monkeypatch.setattr(g, "UNREAD", {"g113": {"b": "next release", "c": "next release"}})
+    for name, rids in (("g113", ["a"]), ("g113-r1", ["b", "c"]), ("g113-r2", ["c"])):
+        (tmp_path / f"group_{name}.json").write_text(json.dumps({"papers": [{"record_id": r} for r in rids]}),
+                                                     encoding="utf-8")
+    monkeypatch.setattr(g, "ONLY", ["g113", "g113-r1"])
+    assert [(x, p["record_id"]) for x, p in g.load_groups()] == [("g113", "a"), ("g113-r1", "b"), ("g113-r1", "c")]
+    # a re-entry group may hold only what its predecessor left unread, never a record entered there
+    (tmp_path / "group_g113-r1.json").write_text(json.dumps({"papers": [{"record_id": r} for r in "abc"]}),
+                                                 encoding="utf-8")
+    with pytest.raises(ValueError, match="differ from the ledger"):
+        g.load_groups()
+    # the second re-entry takes what the first left unread, and only once the first is reviewed
+    monkeypatch.setattr(g, "ONLY", ["g113-r2"])
+    with pytest.raises(ValueError, match="g113-r1 has no review"):
+        g.load_groups()
+    monkeypatch.setattr(g, "REVIEWED_ON", {"g113": "2026-10-31", "g113-r1": "2026-11-02"})
+    monkeypatch.setattr(g, "UNREAD", {"g113": {"b": "x", "c": "x"}, "g113-r1": {"c": "still unread"}})
+    assert [p["record_id"] for _, p in g.load_groups()] == ["c"]
+    monkeypatch.setattr(g, "ONLY", ["g999-r1"])
+    with pytest.raises(ValueError, match="not in the ledger"):
+        g.load_groups()

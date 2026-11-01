@@ -226,11 +226,14 @@ def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> 
                                                                     encoding="utf-8")
         raise ValueError(f"{g}: {len(escalate)} certainty changes wait for the team lead "
                          f"(escalations/{g}.pending.json)")
-    ledger = {r["record_id"] for r in json.loads(build.cloud.LEDGER.read_text(encoding="utf-8"))["groups"][g]["records"]}
-    unread = {r: why for r, why in build.UNREAD.items() if r in ledger}
+    held = {p["record_id"] for p in papers(g)}
+    # F125 (Sprint 15 Task C): a re-entry group has no ledger entry and is built only once every record of its brief is
+    # read, so it leaves nothing unread; its records' parent mark (NEXT_RELEASE) is not its own.
+    ledger = held if build.REENTRY.match(g) else {
+        r["record_id"] for r in json.loads(build.cloud.LEDGER.read_text(encoding="utf-8"))["groups"][g]["records"]}
+    unread = {r: why for r, why in build.UNREAD.items() if r in ledger and r not in held}
     if unread:
         review["unread"] = unread
-    held = {p["record_id"] for p in papers(g)}
     local = {r for r in held if build.local_file(r)}
     if local and local == held:  # read wholly by Task F's local readers
         review["tag"], review["reader"] = LOCAL_TAG, LOCAL_READER

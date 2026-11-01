@@ -78,6 +78,20 @@ def test_finalize_writes_the_applier_tables(review):
     assert (out["tag"], out["reader"]) == (review.TAG, review.READER)
 
 
+def test_a_re_entry_group_is_finalized_without_a_ledger_entry(review, monkeypatch):
+    """F125 (Sprint 15 Task C): g050-r1 re-enters a record g050 left for the next release; it has no ledger entry,
+    and the builder's NEXT_RELEASE mark on its record is its parent's, not its own. Proven to fail by injection,
+    2026-11-01: with the re-entry branch removed, finalize raised KeyError on the ledger; with `r not in held` removed, its read record was
+    listed unread."""
+    group = (review.READS_DIR / "group_g050.json").read_text(encoding="utf-8")
+    (review.READS_DIR / "group_g050-r1.json").write_text(group, encoding="utf-8")
+    (review.REVIEW / "decisions" / "g050-r1.json").write_text(json.dumps(GOOD), encoding="utf-8")
+    monkeypatch.setattr(review.build, "UNREAD", {"u": "no text", "p1": review.build.NEXT_RELEASE})
+    out = review.finalize("g050-r1", "2026-11-01", review.STORED)
+    assert "unread" not in out
+    assert out["graded_high"]["thm"] == ["proved result", "Theorem 1, proved in Appendix A"]
+
+
 def test_a_local_read_names_task_fs_reader(review, monkeypatch):
     """Sprint 14 Task F: a group read wholly by local readers takes F's tag and reader; in a group that mixes cloud and
     local reads, each local record names the local reader and F's tag (review of 1cb63bb: the group's cloud tag went
