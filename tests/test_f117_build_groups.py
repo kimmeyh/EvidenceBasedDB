@@ -289,16 +289,30 @@ def test_two_different_ids_on_one_assertion_are_refused(tmp_path, monkeypatch):
 def test_a_re_entry_group_is_built_from_its_local_reads(tmp_path, monkeypatch):
     """F125 (Sprint 15 Task C): a local brief named "g080-r1" holds records a reviewed group left unread; once its
     reader's group file exists, the group is built under that name, though its parent's brief marks the records for
-    the next release. Proven to fail, 2026-11-01, run before the change: the re-entry group was never buildable."""
+    the next release. Proven to fail, 2026-11-01, run before the change: the re-entry group was never buildable.
+    After the review of 34034bd, proven to fail by injection: with the predecessor check removed, the brief missing
+    e was built; with the brief's "unread" ignored, the group with e still unread was never built."""
     b = _build(tmp_path, monkeypatch, {"c": []})
     local = tmp_path / "work" / "local"
     (local / "briefs" / "g080.json").write_text(json.dumps({"records": [{"record_id": "c"}]}), encoding="utf-8")
     (local / "reads" / "group_g080.json").write_text(json.dumps({"papers": [{"record_id": "c"}]}), encoding="utf-8")
     monkeypatch.setattr(b, "UNREAD", {**b.UNREAD, **b.local_unread()})
     assert b.UNREAD["d"] == b.NEXT_RELEASE
-    (local / "briefs" / "g080-r1.json").write_text(json.dumps({"records": [{"record_id": "d"}]}), encoding="utf-8")
+    reviews = tmp_path / "reviews"
+    reviews.mkdir()
+    monkeypatch.setattr(b, "REVIEWS_DIR", reviews)
+    brief = local / "briefs" / "g080-r1.json"
+    brief.write_text(json.dumps({"records": [{"record_id": "d"}]}), encoding="utf-8")
+    # review of 34034bd: a brief is checked against its predecessor's review before anything is built
+    with pytest.raises(ValueError, match="g080 has no review"):
+        b.buildable()
+    (reviews / "g080.json").write_text(json.dumps({"unread": {"d": "next release", "e": "no text"}}), encoding="utf-8")
+    with pytest.raises(ValueError, match=r"\['e'\] differ from what g080's review left unread"):
+        b.buildable()
+    brief.write_text(json.dumps({"records": [{"record_id": "d"}, {"record_id": "e"}],
+                                 "unread": {"e": "no text, still"}}), encoding="utf-8")
     assert "g080-r1" not in b.buildable()  # its reader is at work
     (local / "reads" / "group_g080-r1.json").write_text(
         json.dumps({"papers": [{"record_id": "d", "assertions": [{"id_suggestion": "d-one"}]}]}), encoding="utf-8")
-    assert b.buildable()["g080-r1"] == ["d"]
+    assert b.buildable()["g080-r1"] == ["d"]  # e stays unread, as its brief says
     assert b.entry("d") == {"record_id": "d", "assertions": [{"id_suggestion": "d-one"}]}

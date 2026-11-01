@@ -81,14 +81,18 @@ def test_finalize_writes_the_applier_tables(review):
 def test_a_re_entry_group_is_finalized_without_a_ledger_entry(review, monkeypatch):
     """F125 (Sprint 15 Task C): g050-r1 re-enters a record g050 left for the next release; it has no ledger entry,
     and the builder's NEXT_RELEASE mark on its record is its parent's, not its own. Proven to fail by injection,
-    2026-11-01: with the re-entry branch removed, finalize raised KeyError on the ledger; with `r not in held` removed, its read record was
-    listed unread."""
+    2026-11-01: with the re-entry branch removed, finalize raised KeyError on the ledger; with the parent's marks
+    used for a re-entry group, its read record was listed unread."""
     group = (review.READS_DIR / "group_g050.json").read_text(encoding="utf-8")
     (review.READS_DIR / "group_g050-r1.json").write_text(group, encoding="utf-8")
     (review.REVIEW / "decisions" / "g050-r1.json").write_text(json.dumps(GOOD), encoding="utf-8")
     monkeypatch.setattr(review.build, "UNREAD", {"u": "no text", "p1": review.build.NEXT_RELEASE})
+    monkeypatch.setattr(review.build, "reentry_briefs", lambda: {"g050-r1": (["p1"], {})})
     out = review.finalize("g050-r1", "2026-11-01", review.STORED)
     assert "unread" not in out
+    # review of 34034bd: a record the re-entry brief leaves unread is named unread in its review
+    monkeypatch.setattr(review.build, "reentry_briefs", lambda: {"g050-r1": (["p1", "u"], {"u": "no text, still"})})
+    assert review.finalize("g050-r1", "2026-11-01", review.STORED)["unread"] == {"u": "no text, still"}
     assert out["graded_high"]["thm"] == ["proved result", "Theorem 1, proved in Appendix A"]
 
 

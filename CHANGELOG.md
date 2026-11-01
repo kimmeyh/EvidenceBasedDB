@@ -55,6 +55,12 @@ this project keeps having to replace with a step.
   `work\f114\local\`, counts a read only for the group it names, and
   calls a group with only its unread records left "applied". Each with a
   test proven red
+- **fix**: the fresh-eyes review of 34034bd (Task C). A re-entry brief may
+  leave a record unread again (its own `unread`, with why), so a group
+  whose predecessor left a no-text record is buildable, and its review
+  names it; the builder checks each re-entry brief against its
+  predecessor's review before anything is built; a test ties the status
+  script's group pattern to the applier's read detail. Each proven red
 
 ### 2026-10-29 to 2026-10-31 (Sprint 14, PR #140, merged to develop 2026-10-31 and to main via PR #148 the same day; tagged sprint-14)
 

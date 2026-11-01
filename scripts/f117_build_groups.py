@@ -38,6 +38,7 @@ cloud = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(cloud)
 
 READS_DIR = ROOT / "manifests" / "sprint13_g_reads"
+REVIEWS_DIR = ROOT / "manifests" / "sprint13_g_reviews"
 # Left out of its group, unread, with why. The team lead's mark on udaru (page images only), and four results whose
 # file gave the reader nothing to read, kept unread on that precedent (the coordinator, 2026-10-30): each holds no
 # assertion. abbas-2020-power-quantum-neural-networks is never launched in the cloud again (f114_cloud.UNREAD) but is
@@ -242,15 +243,38 @@ def buildable(exclude: set[str] = frozenset()) -> dict[str, list[str]]:
         if all(r in have or r in UNREAD for r in rids) and any(r in have for r in rids):
             out[g] = [r for r in rids if r in have and r not in UNREAD]
     # F125 (Sprint 15 Task C): a re-entry group ("g113-r1") has no ledger entry; its local brief names the records its
-    # predecessor's review left unread, so its parent's NEXT_RELEASE mark does not keep them out. The applier checks
-    # that they are exactly those.
+    # predecessor's review left unread, so its parent's NEXT_RELEASE mark does not keep them out. A record that stays
+    # unread is named in the brief's "unread" with why, and goes into the group's review as unread again.
+    for g, (rids, unread) in reentry_briefs().items():
+        if g not in exclude and g not in wait and all(r in have or r in unread for r in rids) \
+                and any(r in have for r in rids):
+            out[g] = [r for r in rids if r not in unread]
+    return out
+
+
+def reentry_briefs() -> dict[str, tuple[list[str], dict[str, str]]]:
+    """re-entry group -> (its records, those it leaves unread with why), from its local brief. Its records must be
+    exactly what its predecessor's review left unread, checked here, before a group file or review exists (review of
+    34034bd: only the applier's dry run caught a wrong brief, after its review file was written)."""
+    out = {}
     for brief in sorted((LOCAL / "briefs").glob("g*-r*.json")):
-        g = brief.stem
-        if not REENTRY.match(g):
+        m = REENTRY.match(brief.stem)
+        if not m:
             continue
-        rids = [r["record_id"] for r in json.loads(brief.read_text(encoding="utf-8"))["records"]]
-        if g not in exclude and g not in wait and rids and all(r in have for r in rids):
-            out[g] = rids
+        body = json.loads(brief.read_text(encoding="utf-8"))
+        rids = [r["record_id"] for r in body["records"]]
+        before = m[1] if m[2] == "1" else f"{m[1]}-r{int(m[2]) - 1}"
+        review = REVIEWS_DIR / f"{before}.json"
+        if not review.exists():
+            raise ValueError(f"{brief.stem}: re-enters what {before} left unread, and {before} has no review")
+        left = set(json.loads(review.read_text(encoding="utf-8")).get("unread") or {})
+        if set(rids) != left or len(rids) != len(left):
+            raise ValueError(f"{brief.stem}: its brief's records {sorted(set(rids) ^ left)} differ from what "
+                             f"{before}'s review left unread")
+        unread = body.get("unread") or {}
+        if set(unread) - set(rids):
+            raise ValueError(f"{brief.stem}: leaves unread {sorted(set(unread) - set(rids))}, not its records")
+        out[brief.stem] = (rids, unread)
     return out
 
 
