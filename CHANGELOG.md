@@ -244,6 +244,21 @@ this project keeps having to replace with a step.
   LOW, 13 not a textbook fact; snapshot 2026-11-01). The full suite of
   2026-11-04 found it unnamed (`test_every_committed_manifest_is_named_in_the_workflow`);
   nothing in it is applied before Manual Validation
+- **feat**: Sprint 15 Task M (F130): Phase 2's Sprint 30 results by the
+  inbound path (`scripts/sprint15_f130_phase2.py`, INTAKE_WORKFLOW.md
+  section 66): five records (F174's IEEE-CIS comparison set, F176, F169,
+  F170, F171) and nine HIGH assertions, every quote checked verbatim
+  with its value at Phase 2 commit 366cf37; none linked, each reason
+  names the stored claims it bears on. F166 repointed at the same
+  commit, its four values confirmed, which clears the local-file block
+  (Question 1 = 3). `tests/test_sprint15_f130.py`, each injection proven red
+- **fix**: Sprint 14's F120 apply leaves a record re-read whole at a later
+  commit alone; it would have put F166's 6242b8a evidence back over the
+  F130 repoint. Proven red on a store copy
+- **fix**: the fresh-eyes review of F130 (no blocking defect): five values
+  carry the limits their documents state, one reason no longer
+  overstates F152, a rerun syncs corrected values and keeps a later F166
+  repoint (proven red), and the run-file test checks all seven gaps
 - **fix**: three older checks that Sprint 15's full reads broke, found by
   the full suite on 2026-11-04 (each red there before its fix). Sprint 9's
   F46 apply leaves a record a later full read owns alone; it would have
@@ -252,6 +267,10 @@ this project keeps having to replace with a step.
   (qci-2026, read whole by OCR). The spelling fixer protects the stored
   id optimised-parameter-shift-two-versus-three-evaluations, which section
   64 names
+- **feat**: Sprint 15 Task M applied (2026-11-04) after PR #74 merged as
+  43bc362 (366cf37 its ancestor, no F130 input changed): trial, live
+  apply with verified backup, second apply wrote nothing. The store
+  test compares a tuple, not a sqlite3.Row (proven red by injection)
 - **fix**: the fresh-eyes review of the three fixes: F46's guard also
   keeps a full read's correction after a later note that is not a full
   read (the rule `sync_assertion` applies; a test proven red on a store

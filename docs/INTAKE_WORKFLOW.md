@@ -3567,3 +3567,75 @@ does. Every count below is a snapshot as of 2026-11-01.
   "textbook, stated not proved (F129)" (section 64). They join this
   list at Manual Validation; the manifest itself is not changed.
 
+## 66. Phase 2's Sprint 30 results, and F166 repointed (Sprint 15 Task M, F130)
+
+Written 2026-11-04, before the apply. Every count here is a snapshot as of
+2026-11-04. The team lead chose on 2026-11-04 (Question 1 = 3) to wait for
+Phase 2's PR #74 to merge rather than change the local-file check.
+
+- **The read.** Every document read whole at Phase 2 commit 366cf37, PR
+  #74's head, through `git show` on the team lead's clone; no fetch
+  (F79). The script (`scripts/sprint15_f130_phase2.py`) checks each blob's
+  SHA-256 before it reads, so a document that changes before the merge
+  stops it. If the merge changes a blob, the script is re-read at the
+  merge commit before the apply.
+- **Five new records, nine assertions.** F174's IEEE-CIS comparison and
+  its seven algorithm documents (one record, three assertions: the
+  ranking and its paired tests, recall at the alert budget against its
+  capacity, and the proxy's tied scores and train-test gap); F176 (two:
+  below greedy on 3 of 6 instances by under 2e-05, and the swap search's
+  misses on exact instances); F169 (one: the LightGBM-bins plug-in
+  passes F108's rule, with its stated limits); F170 (one: ULB frauds
+  every model misses sit among legitimate rows); F171 (two: the
+  missed-by-all share on IEEE-CIS against ULB, not shown smaller, and
+  its raw-field profile). Every one is HIGH, the project's own
+  measurement, evidence tag SIM. Context by section 43's rule: `ml` for
+  F169, `hsbc-2026` for the rest.
+- **No links.** The plan named `supports` or `contradicts` links to the
+  LOW claims each result bears on. No stored claim states the same fact
+  whole (ADR-0004 A8 (b)'s rule for a link), so each reason names the
+  stored claims it bears on instead: F152's IEEE-CIS lanes and Han et
+  al.'s random-split scores (LOW), F166's ULB gap, F160's room check,
+  F108's and F114's ceiling failures, and F154's ULB subsets.
+- **F166 repointed.** Sprint 30 added TP, FP, TN and FN to F166's eight
+  ULB documents (72182b2), so the local-file check read
+  ULB_COMPARISON.md as changed: the block behind Question 1. The four
+  stored F166 values are verbatim at 366cf37 and confirmed by name; its
+  access, evidence and checked_against_source move to 366cf37, with the
+  first read (2026-10-30, 6242b8a) kept in the evidence, and a read row
+  is added. Sprint 14's F120 apply would have put the old evidence back,
+  so it now leaves a record re-read at a later commit alone (proven red).
+- **Checks.** Trial on a copy of the store first (5 records, 9
+  assertions, one read and one repoint; a second apply wrote nothing;
+  F120's apply wrote nothing; all six records pass the local-file
+  check), then live with its verified backup.
+- **The fresh-eyes review (2026-11-04)** found no blocking defect and
+  every figure right. Fixed before the apply: five values that dropped a
+  limit their document states (F170's "in every seed in which they are
+  test rows" and its 12 mixed frauds; F174's tied scores flagged past
+  the 427-row budget; F171's 1,708-alert step to 42%; F171's profile,
+  which borrowed a sentence about the cross-data-set comparison and
+  missed its 5,264 rows); one reason that overstated F152 (XGBoost
+  against logistic regression is months 4 and 5 only); a rerun now
+  syncs a corrected value instead of skipping it, and never moves F166
+  back from a later repoint (proven red); the run-file test checks all
+  seven gaps, since the quote check reads the eight documents joined.
+  F166's stored recall value is kept as it stands: Sprint 30's matching
+  tie note (the proxy up to 297 rows against 284) is named in the
+  repointed evidence, and the recall range it states is unchanged.
+- **The merge and the apply (2026-11-04).** PR #74 merged as 43bc362,
+  a merge commit whose parents are develop (af03165) and the PR's last
+  head (a428b92); 366cf37 is its ancestor, and none of the 27 files the
+  script reads changed after 366cf37, so the script names 366cf37
+  unchanged. Trial on a fresh store copy (5 records, 9 assertions, one
+  read, one repoint; a second apply wrote nothing), then live with its
+  verified backup; a second live apply wrote nothing. The first live run
+  of the store test failed on its own comparison (a sqlite3.Row against
+  a tuple, never equal); fixed and proven red by injection.
+- **Older checks the Sprint 15 full reads broke**, found by the full
+  suite while the merge was pending (2026-11-04): Sprint 9's F46 apply
+  now leaves a record a later full read owns alone (it would have undone
+  F114's correction of faryad-state-prep-omega-2n-dimension-count); F80's
+  refusal test accepts a refused record a later full read took (qci-2026,
+  read whole by OCR); the spelling fixer protects the stored id that
+  section 64 names with a British spelling.

@@ -544,7 +544,9 @@ def apply_changes(conn) -> list[str]:
         if row is None:
             insert_paper(conn, intake.build_record(entry, today=TODAY))
             log.append(f"paper  {entry['id']}")
-        elif row[0] != entry["evidence"]:
+        # A record re-read whole at a later commit keeps that evidence: Sprint 15's F130 repointed F166 at PR #74
+        # (INTAKE_WORKFLOW.md section 66), and this rewrite is only the 1f904ba fix
+        elif row[0] != entry["evidence"] and "re-read whole on" not in row[0]:
             conn.execute("UPDATE paper_fields SET evidence = ? WHERE record_id = ? AND evidence = ?",
                          (entry["evidence"], entry["id"], row[0]))
             append_updated_reason(conn, entry["id"], EVIDENCE_NOTE, TODAY)
