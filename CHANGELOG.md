@@ -278,6 +278,13 @@ this project keeps having to replace with a step.
   check. The full suite of 2026-11-04 after the F130 apply: 1,531 passed
   (marked INVALID: these fixes were edited during the run; their own test
   files pass, 66 tests). No further full run, at the team lead's word
+- **docs**: correction to d485069's title ("100 papers read whole and
+  applied"): every record of Tasks H and I is read and reviewed, but
+  only the 23 finalized groups of Sprint 15's 47 are applied. The other
+  24 (about 114 records) each hold a certainty change only the team lead
+  decides (36 in all), so their reviews are not finalized and the apply
+  does not take them; they are applied after Manual Validation.
+  Snapshot as of 2026-11-04. Sprint 15 moves to Manual Validation
 
 ### 2026-10-29 to 2026-10-31 (Sprint 14, PR #140, merged to develop 2026-10-31 and to main via PR #148 the same day; tagged sprint-14)
 
