@@ -81,7 +81,9 @@ from store.backup import backup_before_write  # noqa: E402
 from store.grading import grade, high_grades, low_grade  # noqa: E402
 from store.ingest import (FULL_READ_MARK, AssertionRecord, add_read, append_updated_reason,  # noqa: E402
                           insert_verified_assertion, set_tier, sync_verified_assertion, validate_assertion)
-from store.quotes import QUOTE, plain, require_edit_basis, require_verbatim, source_text  # noqa: E402
+from store.ocr import IMAGE_SUFFIXES  # noqa: E402
+from store.quotes import (QUOTE, ocr_only_quotes, plain, read_from_figure, require_edit_basis, require_verbatim,  # noqa: E402
+                          source_text)
 
 _spec = importlib.util.spec_from_file_location("f80", Path(__file__).with_name("sprint9_f80_reading.py"))
 f80 = importlib.util.module_from_spec(_spec)
@@ -109,6 +111,9 @@ EXTRA_QUOTES: dict[str, list[str]] = {}
 VALUE_REPLACE: dict[str, str] = {}  # each replacement says only what its quotes say
 CONTEXT_FIX: dict[str, str] = {}
 ANCHOR_FIX: dict[str, str] = {}
+# F126: when and by which task a later sign-off corrected a confirmed stored assertion's anchor, "<date> (<task>)";
+# without it the group's review day and tag are used.
+ANCHOR_FIX_ON: dict[str, str] = {}
 DROP: dict[str, str] = {}  # a new assertion not entered, with the reason
 KEEP_STORED: dict[str, str] = {}  # a stored assertion kept against the reader's verdict, with why
 REQUOTE: dict[str, str] = {}  # a confirmed stored assertion rebuilt from the reader's fuller quotes, with why
@@ -139,7 +144,7 @@ _TABLES = {"quote_edits": QUOTE_EDITS, "extra_quotes": EXTRA_QUOTES, "value_repl
            "context_fix": CONTEXT_FIX, "anchor_fix": ANCHOR_FIX, "drop": DROP, "keep_stored": KEEP_STORED,
            "requote": REQUOTE, "not_in_paper": NOT_IN_PAPER, "theory_low": THEORY_LOW,
            "measured_despite": MEASURED_DESPITE, "result_type_fix": RESULT_TYPE_FIX, "extent_fix": EXTENT_FIX,
-           "id_fix": ID_FIX, "reenter": REENTER}
+           "id_fix": ID_FIX, "reenter": REENTER, "anchor_fix_on": ANCHOR_FIX_ON}
 RESULT_TYPES = {"measured": "measured result", "claim": "authors' claim", "cited": "cited claim",
                 "field": "field statement", "setup": "authors' claim"}
 
@@ -388,6 +393,37 @@ def grades_not_written(conn) -> list[str]:
     return problems
 
 
+def ocr_check(a, file: str, text: str) -> None:
+    """F115 (Sprint 15 Task F). A quote found only in a source's OCR text says "OCR" in its anchor, so a reader of
+    the record knows the words came from a page image. The team lead's grading rule (2026-11-01, plan Q3): OCR of a
+    stored PDF's page grades as its text layer; a claim from an image file outside a PDF is HIGH only when another
+    source corroborates it, named in its HIGH's why ("corroborated by <record>"), otherwise MEDIUM at most."""
+    # The anchor runs to the ")" that ends the quote's entry, so an anchor holding "(Methods)" is read whole (review
+    # of Task F: "[^)]*" stopped at the first ")").
+    unmarked = [q for q in ocr_only_quotes(a.citation_context, text)
+                if not re.search(rf'"{re.escape(q)}" \((?:(?!\)(?:; "|$)).)*\bOCR\b', a.citation_context)]
+    if unmarked:
+        raise ValueError(f"{a.id}: quotes found only in OCR text need \"OCR\" in their anchor: {unmarked}")
+    if (Path(file).suffix.lower() in IMAGE_SUFFIXES and a.certainty == "high"
+            and not re.search(r"\bcorroborated by\b", a.certainty_reasons or "")):
+        raise ValueError(f"{a.id}: a claim read from an image file is HIGH only when another source corroborates "
+                         "it (\"corroborated by <record>\" in its why); otherwise MEDIUM at most")
+
+
+def figure_ids(p: dict) -> set[str]:
+    """The stored ids of a paper's assertions read from a figure (F116, Sprint 15 Task G)."""
+    return ({ID_FIX.get(a["id_suggestion"], a["id_suggestion"]) for a in p.get("assertions", []) if a.get("from_figure")}
+            | {e["id"] for e in p.get("existing", []) if e.get("from_figure")})
+
+
+def figure_check(a) -> None:
+    """F116 (Sprint 15 Task G): a value read by eye from a figure says so, and is never HIGH on the figure alone."""
+    if not re.search(r"\bread from (figure|fig\.|table|the image)", a.value, re.I):
+        raise ValueError(f'{a.id}: a value read from a figure says so ("Read from Figure N: ...")')
+    if a.certainty == "high":
+        raise ValueError(f"{a.id}: a value read from a figure is never HIGH on the figure alone")
+
+
 def verify() -> list[tuple[AssertionRecord, str, dict, object]]:
     """Every quote verbatim in its source, every coordinator edit resting on named passages, and every figure in
     a value in its own quotes, BEFORE anything is written. Every refusal is collected and raised together (Sprint 14
@@ -399,11 +435,16 @@ def verify() -> list[tuple[AssertionRecord, str, dict, object]]:
         try:
             quotes = QUOTE.findall(a.citation_context)
             text = texts.setdefault(p["file"], plain(source_text(p["file"])))
-            verified = require_verbatim(a.id, a.citation_context, text, value=a.value)
+            from_figure = a.id in figure_ids(p)
+            verified = require_verbatim(a.id, a.citation_context, text, value=a.value,
+                                        read_from_page=read_from_figure(a.value) if from_figure else ())
+            if from_figure:
+                figure_check(a)
             if a.id in VALUE_REPLACE:
                 require_edit_basis(a.id, a.value, quotes, text)
             if a.id in QUOTE_EDITS:
                 require_edit_basis(a.id, None, [n for _, n in QUOTE_EDITS[a.id] if n] or quotes, text)
+            ocr_check(a, p["file"], text)
             validate_assertion(a)
         except ValueError as e:
             problems.append(str(e))
@@ -475,11 +516,38 @@ def refused_without_reversal(conn, p: dict) -> bool:
     if rid in REENTER:
         return False
     row = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (rid,)).fetchone()
-    if not (row and REFUSED.search(row[0] or "")):
+    if not (row and standing_refusal(row[0] or "")):
         return False
     new = [ID_FIX.get(a["id_suggestion"], a["id_suggestion"]) for a in p.get("assertions", [])
            if a["id_suggestion"] not in DROP]
     return any(not conn.execute("SELECT 1 FROM records WHERE id = ?", (i,)).fetchone() for i in new)
+
+
+REVERSED = re.compile(r"\brefusal\b.*\bno longer applies\b")
+
+
+def standing_refusal(reason: str) -> bool:
+    """A refusal in the record's history that no later note reverses (F127, from the review of 4d969d9: 9 QCI Dirac
+    papers carry Sprint 9's refusal, which Sprint 10 reversed with "... refusal ... no longer applies")."""
+    notes = reason.split(" | ")
+    # a reversal that quotes the refusal's words is not itself a refusal (review of the uncommitted D and E)
+    refusals = [i for i, n in enumerate(notes) if REFUSED.search(n) and not REVERSED.search(n)]
+    return bool(refusals) and not any(REVERSED.search(n) for n in notes[refusals[-1] + 1:])
+
+
+def same_source(rid: str, provenance: str) -> bool:
+    """The provenance names this record as a whole token: not the start of a longer record id, and not one that goes
+    on with a dot ("v-2" in "v-2.5"), though a sentence may end after it (F127; as f117_build_groups.same_source).
+    Case is ignored, as the SQL LIKE it replaces ignored it."""
+    return re.search(rf"(?<![\w-]){re.escape(rid)}(?![\w-]|\.\w)", provenance, re.I) is not None
+
+
+def held_by_another(conn, aid: str, owner: str) -> bool:
+    """A stored assertion `aid` whose provenance does not name `owner` (F127, from the review of cecf20d: the check
+    was NOT LIKE %owner%, a substring test)."""
+    row = conn.execute("SELECT r.provenance FROM records r JOIN assertion_fields f ON f.record_id = r.id "
+                       "WHERE r.id = ?", (aid,)).fetchone()
+    return row is not None and not same_source(owner, row[0] or "")
 
 
 def refusal_reason(p: dict) -> str:
@@ -487,6 +555,77 @@ def refusal_reason(p: dict) -> str:
     say where its assertions were to be entered (review of 4d969d9: 6 notes said "entered under qc")."""
     dropped = [DROP[a["id_suggestion"]] for a in p.get("assertions", []) if a["id_suggestion"] in DROP]
     return "; ".join(dict.fromkeys(dropped)) if dropped else p.get("why_not") or ""
+
+
+def anchor_moves(conn) -> list[tuple[AssertionRecord, object]]:
+    """F126 (Sprint 15 Task D): an ANCHOR_FIX on a confirmed stored assertion that nothing rebuilds (not in REQUOTE)
+    was never written; g104's review found muta-hardware-scope-photonic-gkp's passage on PDF p.8, stored as p.9, and
+    the reader's entry held no quotes to rebuild from. Such an assertion is rebuilt from its stored row with only its
+    anchor changed, each stored quote checked against the source again; a grade the review gives it is written, as
+    for any assertion the review grades, and otherwise the stored grade is kept."""
+    out = []
+    for g, p in load_groups():
+        rid = p["record_id"]
+        for e in p.get("existing", []):
+            aid = e["id"]
+            if (aid not in ANCHOR_FIX or e["verdict"] in CHANGED or aid in REQUOTE or aid in KEEP_STORED
+                    or aid in NOT_IN_PAPER):
+                continue
+            row = conn.execute(
+                "SELECT r.value, r.evidence_tag, r.certainty, r.certainty_reasons, r.fidelity, r.reading_level, "
+                "f.units, f.rounding, f.citation_context, f.derivation, f.claim_type, f.search_scope FROM records r "
+                "JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (aid,)).fetchone()
+            if row is None:
+                raise ValueError(f"{aid}: anchor_fix on a stored assertion the store does not hold")
+            value, tag_, cert, reasons, fidelity, level, units, rounding, cc, derivation, claim_type, scope = row
+            quotes = QUOTE.findall(cc or "")
+            if not quotes:
+                raise ValueError(f"{aid}: no stored quote to carry the corrected anchor")
+            # one anchor for every quote: quotes from different places are not collapsed onto one (review of the
+            # uncommitted D and E); such an assertion is rebuilt through REQUOTE instead
+            # each anchor read whole, as ocr_check reads it: "[^)]*" stopped at an inner ")" and missed the anchor
+            # "Section 2 (Methods), p.3" (fresh-eyes review, 2026-11-02)
+            anchors = set(re.findall(r'" \(((?:(?!\)(?:; "|$)).)*)\)(?=; "|$)', cc))
+            if len(anchors) > 1:
+                raise ValueError(f"{aid}: its stored quotes carry {len(anchors)} anchors; correct it through REQUOTE")
+            if aid in HIGH or aid in THEORY_LOW:
+                cert, reasons = (grade(aid, HIGH, otherwise=low_grade("authors' claim")) if aid in HIGH
+                                 else low_grade("theoretical result", THEORY_LOW[aid]))
+            contexts = [r[0] for r in conn.execute("SELECT context_id FROM record_contexts WHERE record_id = ?",
+                                                   (aid,))]
+            if not contexts:
+                raise ValueError(f"{aid}: no stored context to keep")
+            anchor = anchor_safe(ANCHOR_FIX[aid])
+            when = ANCHOR_FIX_ON.get(aid) or f"{REVIEWED_ON.get(g, '')} ({tag(g, rid)})"
+            day = when[:10]
+            a = AssertionRecord(
+                id=aid, value=value, provenance=f"{rid}, {anchor}",
+                citation_context="; ".join(f'"{q}" ({anchor})' for q in quotes), evidence_tag=tag_,
+                context=contexts[0], units=units, rounding=rounding, certainty=cert,
+                certainty_reasons=reasons, fidelity=fidelity, reading_level=level, derivation=derivation,
+                claim_type=claim_type, search_scope=scope, updated=day,
+                updated_reason=f"{when}: {FULL_READ_MARK}: anchor corrected at the sign-off to "
+                               f"{anchor}; the stored quotes checked against the source again")
+            out.append((a, require_verbatim(aid, a.citation_context, plain(source_text(p["file"])), value=value)))
+    return out
+
+
+def write_anchor_moves(conn) -> list[str]:
+    log = []
+    for a, verified in anchor_moves(conn):
+        changed = sync_verified_assertion(conn, a, verified, a.updated_reason, a.updated)
+        # sync's date guard writes nothing when the row changed after the fix's day; the dry run listed the move, so
+        # a skip is said, not dropped (fresh-eyes review, 2026-11-02)
+        stored = conn.execute("SELECT citation_context FROM assertion_fields WHERE record_id = ?", (a.id,)).fetchone()
+        if not changed and stored[0] != a.citation_context:
+            raise ValueError(f"{a.id}: anchor not written: the stored row changed after {a.updated}; date the fix in "
+                             "ANCHOR_FIX_ON or rebuild it through REQUOTE")
+        if changed:
+            log.append(f"anchor {a.id} [{', '.join(changed)}]")
+            undecided = [c for c in changed if c not in decided_fields(a.id, "confirmed")]
+            if undecided:
+                log.append(f"undecided {a.id} [{', '.join(undecided)}]")
+    return log
 
 
 def apply_changes(conn) -> list[str]:
@@ -555,7 +694,7 @@ def apply_changes(conn) -> list[str]:
         undecided = [c for c in changed if c not in decided_fields(a.id, verdict)]
         if undecided:
             log.append(f"undecided {a.id} [{', '.join(undecided)}]")
-    return log
+    return log + write_anchor_moves(conn)
 
 
 class ReadRowsRewritten(Exception):
@@ -589,10 +728,12 @@ def main(argv: list[str] | None = None) -> int:
     dupes = [i for i, n in Counter(ids).items() if n > 1]
     owner = {a.id: rid for _, a, rid, _ in kept}
     with connect(DB_PATH) as conn:
-        clash = [i for i in ids if conn.execute(
-            "SELECT 1 FROM records r JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ? AND "
-            "r.provenance NOT LIKE ?", (i, f"%{owner[i]}%")).fetchone()]
+        clash = [i for i in ids if held_by_another(conn, i, owner[i])]
         unwritten = grades_not_written(conn)
+        try:  # F126: the anchor moves' quotes are checked at the dry run too
+            moves = [a.id for a, _ in anchor_moves(conn)]
+        except ValueError as e:
+            moves, unwritten = [], unwritten + [str(e)]
     if "--apply" not in args:
         try:  # the quote checks too, so a dry run names every refusal at once (Q4); verify names assertions' own
             verify()
@@ -606,6 +747,7 @@ def main(argv: list[str] | None = None) -> int:
     if "--apply" not in args:
         papers = load_groups()
         print(Counter(a.certainty for _, a, _, _ in kept), Counter(a.context for _, a, _, _ in kept))
+        print(f"anchor fixes on confirmed stored assertions: {moves}")
         print(f"{len(kept)} assertions entered or changed from {len(papers)} records. Every quote verbatim, every "
               "edit on named passages, every figure in its quotes. DRY RUN: nothing written. Re-run with --apply.")
         return 0

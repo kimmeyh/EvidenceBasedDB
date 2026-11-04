@@ -283,6 +283,57 @@ def test_a_paper_refused_earlier_gets_no_new_assertion_unless_the_reversal_is_na
     assert not g.refused_without_reversal(conn, paper)
 
 
+REFUSAL = "2026-10-15 (Sprint 9 Task G, F80): read at first pass and NOT entered: no Dirac-1 context"
+REVERSAL = ("2026-10-18 (Sprint 10 Task F, F84): read and entered under platform:dirac-1; Sprint 9's refusal (no "
+            "Dirac-1 context) no longer applies")
+
+
+def test_a_refusal_a_later_note_reversed_does_not_refuse_a_new_read(monkeypatch):
+    """F127 (Sprint 15 Task E), from the review of 4d969d9: the refusal guard matched a refusal anywhere in a record's
+    history, so 9 QCI Dirac papers whose Sprint 9 refusal Sprint 10 reversed were refused at any new read. Only a
+    refusal no later note reverses refuses now; a refusal after the reversal still does. Proven to fail, 2026-11-01,
+    run before the change: the reversed record was refused."""
+    g = _script()
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE records (id TEXT, updated_reason TEXT)")
+    conn.executemany("INSERT INTO records VALUES (?, ?)", [
+        ("rev", f"{REFUSAL} | {REVERSAL}"),
+        ("again", f"{REFUSAL} | {REVERSAL} | 2026-10-30 (Sprint 14 Task E, F117): read whole at first pass and NOT "
+                  "entered: off topic")])
+    monkeypatch.setattr(g, "DROP", {})
+    monkeypatch.setattr(g, "REENTER", {})
+    assert not g.refused_without_reversal(conn, {"record_id": "rev", "assertions": [{"id_suggestion": "x"}]})
+    assert g.refused_without_reversal(conn, {"record_id": "again", "assertions": [{"id_suggestion": "x"}]})
+    # review of the uncommitted D and E: a reversal that quotes the refusal's words reverses it; proven to fail by
+    # injection, 2026-11-01: with reversals counted as refusals, "quoted" was refused
+    conn.execute("INSERT INTO records VALUES (?, ?)", ("quoted", f"{REFUSAL} | 2026-10-18: the note 'read at first "
+                                                                 "pass and NOT entered' is a refusal that no longer "
+                                                                 "applies"))
+    assert not g.refused_without_reversal(conn, {"record_id": "quoted", "assertions": [{"id_suggestion": "x"}]})
+
+
+def test_the_clash_check_reads_a_record_id_as_a_whole_token():
+    """F127 (Sprint 15 Task E), from the review of cecf20d: the applier's clash check matched the owner in the stored
+    provenance with NOT LIKE %owner%, so an id that begins another's (...-assessment and ...-assessment-appendix-b)
+    counted as the same source, and an id ending in a digit matched inside one that goes on with a dot. Proven to
+    fail, 2026-11-01, run before the change: held_by_another did not exist; by injection, with the dot guard removed,
+    v-2.5's assertion counted as v-2's."""
+    g = _script()
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE records (id TEXT, provenance TEXT)")
+    conn.execute("CREATE TABLE assertion_fields (record_id TEXT)")
+    rows = [("a1", "rand-2022-x-assessment-appendix-b, p.3"), ("a2", "rand-2022-x-assessment, p.4"),
+            ("a3", "drawn from v-2."), ("a4", "v-2.5, p.1")]
+    conn.executemany("INSERT INTO records VALUES (?, ?)", rows)
+    conn.executemany("INSERT INTO assertion_fields VALUES (?)", [(r,) for r, _ in rows])
+    assert g.held_by_another(conn, "a1", "rand-2022-x-assessment")
+    assert not g.held_by_another(conn, "a2", "rand-2022-x-assessment")
+    assert not g.held_by_another(conn, "a3", "v-2")
+    assert g.held_by_another(conn, "a4", "v-2")
+    assert not g.held_by_another(conn, "new", "v-2")
+    assert not g.held_by_another(conn, "a2", "RAND-2022-X-Assessment")  # as LIKE did, case is ignored
+
+
 def test_a_refusal_note_names_the_sign_off_drop_over_the_readers_why_not(monkeypatch):
     """Review of 4d969d9: where the reader wrote a `why_not`, it won over the sign-off drop, so 6 notes on dropped
     papers said where the assertions were entered and never named the team lead's decision. Proven to fail by
@@ -380,6 +431,28 @@ def test_a_high_the_applier_would_not_write_and_an_empty_value_are_refused(monke
         g.assertions()
 
 
+def test_an_ocr_quote_is_marked_and_an_image_files_high_is_corroborated():
+    """F115 (Sprint 15 Task F) and the team lead's Q3 (2026-11-01): a quote found only in OCR text says "OCR" in its
+    anchor; a claim from an image file outside a PDF is HIGH only with a named corroboration. Proven to fail by
+    injection, 2026-11-01: with ocr_check emptied, both unmarked and uncorroborated assertions passed."""
+    from types import SimpleNamespace
+    g = _script()
+    text = "a text layer sentence || OCR: words read from a page image"
+    ok = SimpleNamespace(id="ok", certainty="high", certainty_reasons="Started HIGH: x",
+                         citation_context='"a text layer sentence" (p.1); "words read from a page image" (p.3, OCR)')
+    g.ocr_check(ok, "paper.pdf", text)
+    bare = SimpleNamespace(**{**vars(ok), "id": "bare", "citation_context": '"words read from a page image" (p.3)'})
+    with pytest.raises(ValueError, match="bare: quotes found only in OCR text"):
+        g.ocr_check(bare, "paper.pdf", text)
+    image = SimpleNamespace(id="img", certainty="high", certainty_reasons="Started HIGH: the slide says so",
+                            citation_context='"words" (slide 2, OCR)')
+    with pytest.raises(ValueError, match="img: a claim read from an image file is HIGH only"):
+        g.ocr_check(image, "slide.png", "OCR: words")
+    g.ocr_check(SimpleNamespace(**{**vars(image), "certainty_reasons": "Started HIGH: corroborated by smith-2024-x"}),
+                "slide.png", "OCR: words")
+    g.ocr_check(SimpleNamespace(**{**vars(image), "certainty": "moderate"}), "slide.png", "OCR: words")
+
+
 def test_every_refusal_is_named_in_one_run(monkeypatch):
     """Sprint 14 retrospective Q4: a dry run named the first refusal, and each fix found the next. Proven to fail by
     injection, 2026-10-31: with assertions() raising at the first refused record, as before, only a1 was named; with
@@ -435,6 +508,82 @@ def test_a_field_no_review_item_names_is_listed(synthetic_store, monkeypatch):
         paper["existing"][0]["verdict"] = "corrected"
         monkeypatch.setattr(g, "CONTEXT_FIX", {})
         assert g.apply_changes(conn)[1:] == ["undecided claim-one [context]"]
+    finally:
+        conn.close()
+
+
+def test_an_anchor_fix_on_a_confirmed_stored_assertion_is_written(synthetic_store, monkeypatch):
+    """F126 (Sprint 15 Task D): g104's review found muta-hardware-scope-photonic-gkp's passage on PDF p.8, stored as
+    p.9; the reader's confirmed entry held no quotes, so REQUOTE had nothing to rebuild from, and an ANCHOR_FIX on a
+    confirmed stored assertion was never written. It is now rebuilt from the stored row with only its anchor changed,
+    each quote checked again, and a second apply writes nothing. Proven to fail, 2026-11-01, run before the change:
+    write_anchor_moves did not exist, and nothing else wrote the anchor; by injection, with ANCHOR_FIX_ON ignored,
+    the correction took the group's review day."""
+    from store import connect
+    g = _script()
+    paper = {"record_id": "alpha-2024-first-paper", "file": "alpha.pdf",
+             "existing": [{"id": "claim-two", "verdict": "confirmed", "quotes": [], "anchor": "", "value": ""}]}
+    monkeypatch.setattr(g, "load_groups", lambda: [("g104", paper)])
+    monkeypatch.setattr(g, "REVIEWED_ON", {"g104": "2026-11-01"})
+    monkeypatch.setattr(g, "ANCHOR_FIX", {"claim-two": "Section V, p.8"})
+    monkeypatch.setattr(g, "ANCHOR_FIX_ON", {"claim-two": "2026-11-02 (Sprint 15 Task D, F126)"})
+    monkeypatch.setattr(g, "source_text", lambda f: "text with a quoted sentence in it")
+    conn = connect(synthetic_store)
+    try:
+        before = tuple(conn.execute("SELECT value, certainty FROM records WHERE id = 'claim-two'").fetchone())
+        assert g.write_anchor_moves(conn) == ["anchor claim-two [provenance, citation_context]"]
+        row = conn.execute("SELECT r.provenance, f.citation_context, r.value, r.certainty FROM records r JOIN "
+                           "assertion_fields f ON f.record_id = r.id WHERE r.id = 'claim-two'").fetchone()
+        assert tuple(row[:2]) == ("alpha-2024-first-paper, Section V, p.8", '"a quoted sentence" (Section V, p.8)')
+        assert tuple(row[2:]) == before
+        # the correction carries its own day and task, not the group's review day (Sprint 14's g104)
+        reason = conn.execute("SELECT updated, updated_reason FROM records WHERE id = 'claim-two'").fetchone()
+        assert reason[0] == "2026-11-02"
+        assert reason[1].split(" | ")[-1].startswith("2026-11-02 (Sprint 15 Task D, F126): ")
+        assert g.write_anchor_moves(conn) == []  # a second apply writes nothing
+        monkeypatch.setattr(g, "REQUOTE", {"claim-two": "rebuilt from the reader's quotes"})
+        assert g.write_anchor_moves(conn) == []  # REQUOTE's rebuild carries the anchor instead
+        monkeypatch.setattr(g, "REQUOTE", {})
+        monkeypatch.setattr(g, "source_text", lambda f: "the passage is not here")
+        monkeypatch.setattr(g, "ANCHOR_FIX", {"claim-two": "Section V, p.7"})
+        with pytest.raises(ValueError, match="claim-two"):
+            g.write_anchor_moves(conn)
+        # quotes from two places are never collapsed onto one anchor (review of the uncommitted D and E)
+        conn.execute("UPDATE assertion_fields SET citation_context = '\"a quoted\" (p.1); \"sentence\" (p.2)' "
+                     "WHERE record_id = 'claim-two'")
+        monkeypatch.setattr(g, "source_text", lambda f: "text with a quoted sentence in it")
+        with pytest.raises(ValueError, match="2 anchors"):
+            g.write_anchor_moves(conn)
+        # an anchor with its own parentheses is still counted (fresh-eyes review, 2026-11-02: "[^)]*" missed it, so
+        # two places read as one). Proven to fail by injection, 2026-11-02, with the old pattern restored.
+        conn.execute("UPDATE assertion_fields SET citation_context = '\"a quoted\" (Section 2 (Methods), p.3); "
+                     "\"sentence\" (Section 5, p.9)' WHERE record_id = 'claim-two'")
+        with pytest.raises(ValueError, match="2 anchors"):
+            g.write_anchor_moves(conn)
+    finally:
+        conn.close()
+
+
+def test_an_anchor_fix_the_date_guard_would_skip_is_refused_not_dropped(synthetic_store, monkeypatch):
+    """Fresh-eyes review, 2026-11-02: when the row changed after the fix's day, sync's date guard wrote nothing and
+    the apply said nothing, while the dry run listed the move. Proven to fail by injection, 2026-11-02: with the
+    after-sync comparison removed, write_anchor_moves returned [] and the stored anchor stayed p.9."""
+    from store import connect
+    g = _script()
+    paper = {"record_id": "alpha-2024-first-paper", "file": "alpha.pdf",
+             "existing": [{"id": "claim-two", "verdict": "confirmed", "quotes": [], "anchor": "", "value": ""}]}
+    monkeypatch.setattr(g, "load_groups", lambda: [("g104", paper)])
+    monkeypatch.setattr(g, "REVIEWED_ON", {"g104": "2026-11-01"})
+    monkeypatch.setattr(g, "ANCHOR_FIX", {"claim-two": "Section V, p.8"})
+    monkeypatch.setattr(g, "ANCHOR_FIX_ON", {"claim-two": "2026-11-02 (Sprint 15 Task D, F126)"})
+    monkeypatch.setattr(g, "source_text", lambda f: "text with a quoted sentence in it")
+    conn = connect(synthetic_store)
+    try:
+        # a full read changed the row after the fix's day, so sync's guard leaves it as it is
+        conn.execute("UPDATE records SET updated = '2026-11-05', updated_reason = ? WHERE id = 'claim-two'",
+                     (f"2026-11-05 (a later full read): {g.FULL_READ_MARK}: value confirmed",))
+        with pytest.raises(ValueError, match="claim-two: anchor not written"):
+            g.write_anchor_moves(conn)
     finally:
         conn.close()
 

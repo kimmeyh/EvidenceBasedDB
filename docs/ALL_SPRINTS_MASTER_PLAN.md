@@ -980,6 +980,46 @@ and in git. Remaining items below.
 - Acceptance: F57's per release.
 - Depends on: the Sprint 15 reader prompt (F114's task)
 
+### Carded during Sprint 15 (2026-11-01)
+
+**F134. Table cells that hold only a number are dropped from the text a quote is checked against (~30m) Priority 30** (NEW 2026-11-01, Sprint 15 Task H, reader g115)
+- Phase: Reading (quote check)
+- Value: a quote or a value number from a table cell is checked against
+  the text the paper holds, not refused or passed by accident.
+- Platform: `store/quotes.py` `plain()`, which drops each line that holds
+  only a number so a quote may cross a page break (line 52 on
+  2026-11-01).
+- The non-layout text puts a table cell on its own line, so cells such
+  as 881 and 160 are dropped with the page numbers. The layout text
+  keeps them inside their row, so most table quotes still pass; a quote
+  that runs across a number-only line in the non-layout text does not.
+  The rule predates Sprint 15.
+- Seen twice in Sprint 15's reads (2026-11-01): reader g115, and reader
+  g120 on cumming-2022, whose Tables XIII, XV and XVI node counts and
+  chain lengths could not be quoted; those values are held only in the
+  figures list's `shows`.
+- Acceptance: a page number is still dropped; a number-only table cell
+  is kept, or the check finds it some other way; each with a test proven
+  red, and the full live suite still green (every stored quote still
+  verbatim).
+- Depends on: none
+
+**F135. A stated limit about a measured result meets the "measured is never HIGH" check (~20m) Priority 32** (NEW 2026-11-01, Sprint 15 Task H, reader g118)
+- Phase: Reading (reader prompt and check)
+- Value: a reader records a stated limit with its true result type
+  instead of changing the type to clear a check.
+- Platform: `scripts/sprint13_g_check.py`;
+  `manifests/sprint15_f114_reads/READER_PROMPT.md`.
+- Reader g118 set `result_type` to "theoretical", "claim" or "setup" on
+  five stated-limit assertions (four in coopmans-2024, one in
+  cortes-2026) because the check refuses a HIGH suggestion on a
+  "measured" result. Each group's review judges these items, but the
+  prompt does not say which type a stated limit on a measured result
+  takes.
+- Acceptance: the prompt names the type of a stated limit; the check
+  and the prompt agree; a test proven red.
+- Depends on: none
+
 ### Carded during Sprint 13 (2026-10-26 to 2026-10-28)
 
 **F114. Read in full the papers in Task G groups g043 to g329, with no reading budget (no estimate: as long as the reads take) Priority 10** (NEW 2026-10-26, team lead at Sprint 13 Task G: "pause after the 5 current agents complete and backlog the remaining for the next sprint")

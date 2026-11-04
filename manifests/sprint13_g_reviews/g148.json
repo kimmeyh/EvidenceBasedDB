@@ -1,0 +1,388 @@
+{
+ "group": "g148",
+ "reviewed_on": "2026-11-01",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "scope-gate-based-model": [
+   "scope",
+   "Section 1, p.2: the paper states the model of computation it considers is the gate-based (circuit) model."
+  ],
+  "scope-qaoa-review-not-exhaustive": [
+   "scope",
+   "Section 5, pp.22-23: the authors say the QAOA literature review is a non-exhaustive list of trends, not a complete overview."
+  ],
+  "problem-form-binary-minimization": [
+   "setup",
+   "Section 1, p.2, eq. (1): the paper's own problem form, min f(x) over {0,1}^n with f any function."
+  ],
+  "def-qubit": [
+   "definition",
+   "Definition 1, Section 2.1, p.3: qubit defined with the normalizing condition."
+  ],
+  "def-n-qubit-state": [
+   "definition",
+   "Definition 4, Section 2.1, pp.3-4: n-qubit state defined as a normalized combination of basis states."
+  ],
+  "def-unitary-matrix": [
+   "definition",
+   "Definition 7, Section 2.2, p.5: unitary defined by UU^dagger = U^dagger U = I; gates are modeled by unitary matrices."
+  ],
+  "def-universal-gate-set": [
+   "definition",
+   "Definition 11, Section 2.3, p.7: universal set defined verbatim as in the value."
+  ],
+  "def-efficient-circuit-family": [
+   "definition",
+   "Section 2.3, p.8 (after Theorem 13): a family decomposed on O(poly(n)) universal gates is said to be efficient."
+  ],
+  "def-measurement": [
+   "definition",
+   "Definition 14, Section 2.4.1, pp.8-9: measurement outputs bitstring i with probability |psi_i|^2 and the state is replaced by |i>."
+  ],
+  "remark-sampling-approximation": [
+   "setup",
+   "Remark 15, p.9: the paper's own statement of how states are accessed (by repeated sampling); it is part of the paper's computation model."
+  ],
+  "def-superposition": [
+   "definition",
+   "Definition 16, Section 2.4.2, p.9: at least two non-zero coefficients; a non-basis state is in superposition."
+  ],
+  "claim-hadamard-exponential-coefficients": [
+   "proved result",
+   "Section 2.4.2, pp.9-10: eq. (9) computes H^{(x)n}|0^n> = |+>^{(x)n} directly (with H|0>=|+> in Example 17); the paper also notes H = RX(pi)RY(pi/2) mod phase so H^{(x)n} is 2n universal gates. A direct computation in the paper, not an informal bound."
+  ],
+  "def-product-and-entangled-state": [
+   "definition",
+   "Definitions 19 and 20, Section 2.4.3, p.10: product and entangled states defined; the paper states entangled implies superposition and that the two notions differ."
+  ],
+  "proof-phi-plus-entangled": [
+   "proved result",
+   "Section 2.4.3, pp.10-11: |Phi+> is shown by contradiction to admit no product decomposition; the proof is in the text with its four equations."
+  ],
+  "def-parametrized-circuit": [
+   "definition",
+   "Definition 21, Section 3.2, p.12: continuous function from R^d to unitaries."
+  ],
+  "def-vqa-three-elements": [
+   "definition",
+   "Section 3.1, pp.11-12: VQA defined as a hybrid algorithm with the three elements listed."
+  ],
+  "setup-optimizer-aim-high-probability": [
+   "setup",
+   "Section 3.3, p.14, eq. (10): the optimizer's aim as the authors state it (probability on optimal set at least 1 - epsilon)."
+  ],
+  "def-guiding-function": [
+   "definition",
+   "Definition 24, Section 3.3.1, p.14: guiding function defined by continuity and condition (11)."
+  ],
+  "prop25-mean-guiding": [
+   "proved result",
+   "Proposition 25, p.15, proved in Appendix B.1.1, p.32: continuity, then contradiction on the minimizers. No outside theorem used."
+  ],
+  "def-gibbs-function": [
+   "definition",
+   "Section 3.3.1, pp.15-16, eq. (16): Gibbs function defined; the motivation is quoted as the authors' stated reason."
+  ],
+  "prop27-gibbs-guiding": [
+   "proved result",
+   "Proposition 27, p.16, proved in Appendix B.1.2, pp.32-33: continuity, then contradiction using that -ln is decreasing. No outside theorem used."
+  ],
+  "minimum-function-not-guiding": [
+   "proved result",
+   "Example 28, p.16: explicit counterexample on the Figure 6 circuit shows g_min violates (11) and is discontinuous at (0,0,0); worked in the text."
+  ],
+  "def-cvar-function": [
+   "definition",
+   "Section 3.3.1, p.16, eq. (18): CVaR defined; the alpha=1 and alpha->0 special cases follow at once from the definition."
+  ],
+  "def-pseudo-guiding-function": [
+   "definition",
+   "Definition 30, p.17: pseudo-guiding function defined as quoted."
+  ],
+  "def-hamiltonian-from-f": [
+   "definition",
+   "Section 4.1, pp.18-19, eq. (20): H_f built from z_i = 1 - 2x_i and Z on the matching qubit."
+  ],
+  "prop32-eigenvectors-hf": [
+   "proved result",
+   "Proposition 32, p.19, with its proof on the same page: H_f is diagonal (terms are tensor products of I and Z) and eigenvalues computed term by term. No outside theorem."
+  ],
+  "example33-hamiltonian-eigenvalue": [
+   "proved result",
+   "Example 33, pp.19-20: explicit computation H_f|10> = f(1,0)|10> = |10>. Checked by hand: -1/4 -1/4 +3/4 +3/4 = 1."
+  ],
+  "def-qaoa-circuit": [
+   "definition",
+   "Section 4.2, p.20, eq. (22): QAOA circuit with 2p parameters, p layers of two blocks, on the uniform superposition."
+  ],
+  "prop34-first-block": [
+   "proved result",
+   "Proposition 34 first block, statement p.21, proof Appendix B.2.1, p.34: commuting terms so the exponential splits. Textbook fact e^{A+B}=e^A e^B for commuting A,B used as a step, not a cited paper."
+  ],
+  "prop34-second-block": [
+   "proved result",
+   "Proposition 34 second block: statement p.21, proof pp.34-35 (power series, X^2=I, lines (26)-(31)). Confirmed the quotes lie on pp.21, 34 and 35, so the anchor in the item lacks pages. Note line (30) writes cos(t) where beta is meant; a typo, the result stands."
+  ],
+  "prop35-qubo-decomposition": [
+   "proved result",
+   "Proposition 35, statement p.21, proof Appendix B.2.2, pp.35-36: RZ identity by power series and the CX-RZ-CX block identity checked by matrix product."
+  ],
+  "lemma36-x-conjugation": [
+   "proved result",
+   "Lemma 36, p.21, proof Appendix B.2.3, pp.36-37: induction on n, with base case and step shown."
+  ],
+  "prop37-general-decomposition": [
+   "proved result",
+   "Proposition 37, p.21, proof Appendix B.2.4, pp.37-38: induction, base case from Proposition 35, step uses Lemma 36 (the paper's own). The circuit step is read off Figure 11, a little informal, but present."
+  ],
+  "limit-noise-not-addressed": [
+   "stated limit",
+   "Section 6, p.26: the authors state that noise at the implementation level was not addressed in this work."
+  ],
+  "grange-tutorial-scope": [
+   "scope",
+   "Abstract, p.1: the paper states it is a tutorial giving a mathematical description of VQAs, assuming no prior quantum physics. The stored result_type 'measured' is wrong; it should be a scope statement."
+  ],
+  "three-components": [
+   "definition",
+   "Section II, p.2: the paper defines the OnionVQE strategy as these three listed components."
+  ],
+  "onion-init-definition": [
+   "definition",
+   "Section II C, p.4: onion-initialization defined (first and last layers random and negated, middle layers zero, CZ gates cancel); the text says 'even number of layers'. Fig. 4 shows the 3-qubit, 2-layer example."
+  ],
+  "ansatz-linear-cz": [
+   "setup",
+   "Section II B, p.3: linear entangling map and CZ gates stated as the paper's ansatz; the Heron-native reason is on p.3 and the cancellation reason on p.4 ('the reason for choosing this type of entangling gates')."
+  ],
+  "system-aim-cacuo2": [
+   "scope",
+   "Section I, p.2: AIM with 1-4 bath sites mapped to 4, 6, 8, 10 qubits; Appendix C, p.11: U = 3.11 eV for all sizes."
+  ],
+  "scope-simulated-noise-only": [
+   "scope",
+   "Section III, p.5: FakeMumbai used for all noisy simulations, and the fake backend is a snapshot-based mimic. The text says 'all our numerical simulations', loosely, since the statevector runs also exist. The paper reports no hardware run anywhere (read in full)."
+  ],
+  "optimizer-settings": [
+   "setup",
+   "Section III, p.6: BFGS on the statevector simulator, NFT on FakeMumbai, 10240 shots, no error mitigation; Appendix E, p.12 repeats the optimizers."
+  ],
+  "energy-error-definition": [
+   "definition",
+   "Appendix E, p.12: energy error defined as E - E0."
+  ],
+  "fidelity-definition": [
+   "definition",
+   "Section II B, p.3: fidelity is measured between the exact-diagonalization ground state and the VQE-optimized state, as the value says."
+  ],
+  "fidelity-computed-on-statevector": [
+   "setup",
+   "Figure 7 caption, p.5: in both cases the fidelities are computed by running the circuit on the statevector simulator with the respective optimal parameters. This is a setup point: the FakeMumbai fidelities are not noisy-state fidelities."
+  ],
+  "limit-beyond-10-qubits": [
+   "stated limit",
+   "Section IV, pp.6-7: the authors name behaviour beyond 10 qubits and the effect of falling HF fidelity at larger sizes as still to be examined."
+  ],
+  "limit-error-mitigation-untested": [
+   "stated limit",
+   "Section IV, p.6: performance with error mitigation is left to future research; Section III, p.6 states the noisy runs used none."
+  ],
+  "dmft-setup": [
+   "setup",
+   "Appendix C, p.11: AIM with chain topology (eq. C1), CTHYB at beta = 30/eV, 15 DMFT cycles with 100 x 10^6 QMC samples, then 10 exact-diagonalization DMFT cycles."
+  ],
+  "research-questions": [
+   "scope",
+   "Section 1, p.2: the three research questions are listed as the study's own."
+  ],
+  "greinert-2024-study-aim": [
+   "scope",
+   "Section 1, p.2: the aim of the study stated verbatim; the European industry scope is in the next sentence."
+  ],
+  "mixed-methods-design": [
+   "setup",
+   "Section 2, p.3: interviews plus a short follow-up questionnaire, called a mixed-methods approach."
+  ],
+  "pilot-and-main-interviews": [
+   "setup",
+   "Figure 1 caption, p.3: four pilot interviews, 30 main interviews, 55 questionnaire responses."
+  ],
+  "interview-length-participants": [
+   "setup",
+   "Section 2.3.1, p.6: 15 to 56 minutes, mean 34; 20 of 34 arranged with QuIC; 39 participants. Checked against the rendered page."
+  ],
+  "interview-company-types": [
+   "setup",
+   "Section 2.3.1, p.6: row mapping checked on the rendered page: start-up 13, SME providers of enabling technologies 5, large multi 7, only qComp 9; they sum to 34."
+  ],
+  "interview-countries": [
+   "setup",
+   "Section 2.3.1, p.6: nine European countries; Germany 13, France 6, UK 4, Netherlands 3, Spain 3 interviews."
+  ],
+  "interview-qt-areas": [
+   "setup",
+   "Section 2.3.1, p.6: eight interviews each for areas (a) to (c); (d) ten, (e) five, (f) 13; the paper says the numbers sum to more than 34."
+  ],
+  "interviews-in-summer-2023": [
+   "setup",
+   "Section 7, p.31: 34 interviews 'conducted in summer 2023'."
+  ],
+  "questionnaire-design": [
+   "setup",
+   "Section 2.1.2, p.4: 19 items rated high, low or no need (with a can't-assess option), median 3 minutes, distributed Oct/Nov 2023 via EQTC, LinkedIn and QT networks."
+  ],
+  "questionnaire-respondents": [
+   "setup",
+   "Section 2.3.2, p.6: 55 respondents, 46 industry, ten academia (four also industry), three other; 45 from Europe. Checked against the rendered page."
+  ],
+  "intercoder-agreement": [
+   "setup",
+   "Section 2.2.1, p.5: kappa 0.61 on 10% of the main interviews, as the authors report it, with the 'substantial' label from Landis and Koch. It is a figure the paper reports about its own coding protocol, not an experimental result."
+  ],
+  "qualitative-analysis-173-passages": [
+   "setup",
+   "Section 2.2.1, p.5: qualitative content analysis with MaxQDA 24, edited quote language, 173 transcript passages as the basis."
+  ],
+  "no-further-statistics-small-sample": [
+   "scope",
+   "Section 2.2.2, p.5: descriptive statistics only; authors decided against further statistical analysis due to few responses."
+  ],
+  "limit-subgroups-small": [
+   "stated limit",
+   "Section 2.4, p.7: the authors state the sub-groups are too small for valid separate analysis (13 start-ups against 5 SMEs)."
+  ],
+  "limit-europe-germany-focus": [
+   "stated limit",
+   "Section 2.4, p.7: the authors state the regional focus (Europe, strong emphasis on Germany) and that they link to US studies in Section 7."
+  ],
+  "limit-role-roles-comparison": [
+   "stated limit",
+   "Section 7, p.31: the authors state they did not ask interviewees to name all roles, which may limit the validity of the comparison with Fox et al."
+  ],
+  "cfqt-six-proficiency-levels": [
+   "definition",
+   "Section 4.6, p.20: the framework structure (six levels, three areas, proficiency triangle, Fig. 4) as the authors state it; the paper's team also updated the CFQT."
+  ],
+  "cfqt-nine-profiles-p1-p3": [
+   "definition",
+   "Section 4.6, p.21: P1 to P3 and their levels match the text exactly."
+  ],
+  "cfqt-nine-profiles-p4-p6": [
+   "definition",
+   "Section 4.6, p.21: P4 to P6 and their levels match the text exactly."
+  ],
+  "cfqt-nine-profiles-p7-p9": [
+   "definition",
+   "Section 4.6, p.21: P7 to P9 and their levels match the text exactly."
+  ],
+  "not-representative-biased": [
+   "stated limit",
+   "Section 2.4, p.7: the authors state the picture is not complete or representative and responses are expected to be biased, since all companies were already active in QT. The stored result_type 'measured' should be 'stated limit'."
+  ],
+  "study-basis-interviews": [
+   "scope",
+   "Abstract, p.1: the findings are based on 34 semi-structured interviews and a follow-up questionnaire. The stored result_type 'measured' should be a scope or setup statement."
+  ],
+  "paper-scope-data-quality": [
+   "scope",
+   "Abstract, p.1 and Section V, p.9: the paper states its aim (quantum computing for data quality, focus on anomaly detection) and calls itself a visionary work."
+  ],
+  "contributions-list": [
+   "scope",
+   "Section I, p.2: the four contributions are listed; the third (the quantum reservoir computing regime-change study) is in the full list on p.2, though the quotes cover the other three."
+  ],
+  "qrc-task-definition": [
+   "setup",
+   "Section III, p.6 and III-B, p.7: the task is predicting when the standard deviation of returns exceeds the threshold tau = mu + lambda*sigma of the normalized rolling volatilities, lambda = 1. Checked against the equations."
+  ],
+  "qrc-window-nine-qubits": [
+   "setup",
+   "Section III-B, p.7: window size equals the number of qubits, 9."
+  ],
+  "groppe-2025-qrc-hamiltonians": [
+   "setup",
+   "Section III-A, pp.6-7, eqs. (1)-(4): H_X, H_Z, H_ZZ, their sum, the neutral-atom source [177], and single and pairwise Pauli-Z measurements."
+  ],
+  "qrc-train-test-split": [
+   "setup",
+   "Section III-D, p.8: first 80% train, last 20% test, grid search per case, averages over 29 stocks."
+  ],
+  "qrc-class-imbalance": [
+   "setup",
+   "Section III-D, p.8: the authors state the task is imbalanced with class 0 overrepresented, the reason they add precision. No class counts are given; this is their stated rationale, not a measured result."
+  ],
+  "qrc-tools": [
+   "setup",
+   "Section III-C, pp.7-8: Qiskit for quantum reservoirs, ReservoirPy for classical reservoirs, scikit-learn and PyTorch for models, code on GitHub [34]."
+  ],
+  "limit-qrc-future-real-hardware": [
+   "stated limit",
+   "Section III-B, p.7: multi-class regimes, higher moments and real hardware with a larger window are stated as future research."
+  ],
+  "qrc-experiment-setup-limits": [
+   "setup",
+   "Section III-C, pp.7-8: circuits simulated with Qiskit without noise; Section III-B, p.7: 29 DJIA stocks, 2015 to 2020, window and qubits 9; Section III-D, p.8: 'preliminary work and we used only 9 qubits' (a stated limit). The stored result_type 'measured' should be setup or stated limit."
+  ],
+  "scope-domains-hep-finance-health": [
+   "scope",
+   "Section 1, p.2: HEP, finance and healthcare named as the survey's domains of interest, with the real-world relevance reason."
+  ],
+  "scope-excludes-quantum-chemistry": [
+   "scope",
+   "Section 1, pp.2-3: quantum chemistry excluded, with the stated reason that its QML use resembles HEP (simulating complex quantum systems)."
+  ],
+  "scope-gate-based-only": [
+   "scope",
+   "Section 1, p.3: D-Wave annealing noted and set aside; the survey focuses on gate-based hardware."
+  ],
+  "scope-two-frameworks-ion-sc-hardware": [
+   "scope",
+   "Section 1, p.3: the two frameworks (quantum kernel methods and variational algorithms) and the ion trap and superconducting hardware focus; the Section 1 outline (p.3) repeats the kernel and VQC focus."
+  ],
+  "setup-all-tests-on-qpu": [
+   "scope",
+   "Section 1, p.3: the authors state that all tests cited in the surveyed papers ran on a QPU, and that the tables record whether training used a QPU or a simulator. This is the survey's inclusion criterion (hardware execution), consistent with the abstract. The paper itself notes simulator training in some cited works, e.g. [387] on p.18."
+  ],
+  "scope-coverage-not-exhaustive": [
+   "stated limit",
+   "Section 9, p.26: the authors state their coverage may not be exhaustive. A limit on the survey's own coverage."
+  ],
+  "gujju-2024-def-angle-encoding": [
+   "definition",
+   "Section 5.1.4, p.11: angle encoding defined with the displayed product-state equation; the O(d) classical representation and constant depth follow directly from that equation. The remark on entangling layers is the authors' comment."
+  ],
+  "def-quantum-kernel-estimation": [
+   "definition",
+   "Section 5.2.1, p.12, eq. (1): kernel entry as squared inner product and its estimation by the all-zero frequency, called quantum kernel estimation. The paper cites [120] for the key steps; the value states only the definition."
+  ],
+  "def-vqc-three-steps": [
+   "definition",
+   "Section 5.2.3, pp.13-14: feature map, model circuit, measurement; re-run to estimate probabilities. Stated by the paper as the basic VQC structure."
+  ],
+  "def-auc-roc": [
+   "definition",
+   "Section 6, p.17: AUC-ROC explained as the area under the ROC curve, range 0 to 1, 0.5 for random guessing."
+  ],
+  "qml-survey-excludes-qrl": [
+   "scope",
+   "Section 1, p.1: quantum reinforcement learning is stated as not addressed in this survey, with pointers to other overviews. The stored result_type 'measured' should be a scope statement."
+  ],
+  "qml-survey-scope": [
+   "scope",
+   "Abstract, p.1: the survey focuses on selected supervised and unsupervised applications executed on quantum hardware. The stored result_type 'measured' should be a scope statement."
+  ]
+ },
+ "theory_low": {
+  "claim-reachability-condition-weak": "The authors say condition (12) is weak and easily satisfied and that the Figure 6 circuit satisfies it. They give no argument; it is the authors' claim, not a proved result.",
+  "claim-gibbs-small-eta-mean": "textbook, stated not proved (F129): p.16 asserts the first-order Taylor expansion of g_{G,eta} at eta=0 gives eta*g_mean, with no derivation. Confirmed the passage is on p.16.",
+  "cvar-violates-guiding-condition": "Example 29, p.17, does show the violation of (11) for any alpha in ]0,1[. But the value also says CVaR keeps continuity, which p.16 only asserts; the Proposition 31 proof says only 'for the same reason as g_mean'. With the discrete tail index N_alpha that does not follow. Graded by the weaker claim.",
+  "prop31-cvar-pseudo-guiding": "Proposition 31 has a proof in Appendix B.1.3, pp.33-34, with the two cases of N_alpha. But continuity of g_{C,alpha} is argued only 'for the same reason as g_mean', and g_mean's argument (sums and products of continuous functions) does not cover a tail index N_alpha that jumps with theta. The second case says 'essentially the same proof' as Prop. 25. Not a complete proof; coordinator may overrule.",
+  "claim-monte-carlo-lln": "textbook, stated not proved (F129): p.18 invokes the Law of Large Numbers (citing [50]) for convergence of the Monte Carlo estimate; no argument in the paper.",
+  "claim-qaoa-no-reachability-guarantee": "p.22: 'one can show' the probability of measuring 00 never reaches 1 for the Figure 8 circuit. No proof is given; the authors' assertion.",
+  "claim-qaoa-entangling-gates": "p.22: the entangling claim for Exp(Zi x Zj, t) rests on the CX-RZ-CX form (Prop. 35) but is argued in a sentence, and 'entanglement is not necessary to (12)' is asserted without argument. The authors' interpretation."
+ },
+ "keep_stored": {},
+ "requote": {}
+}

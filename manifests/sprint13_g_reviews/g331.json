@@ -1,0 +1,422 @@
+{
+ "group": "g331",
+ "reviewed_on": "2026-11-01",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "gidney-hardware-assumptions": [
+   "setup",
+   "Abstract, p.1: the paper states the assumed hardware (planar nearest-neighbor grid, 1e-3 gate error, 1 us cycle, 10 us reaction time). Same values appear in Section 1.1, 2.11 and 2.13."
+  ],
+  "gidney-accounts-for-overheads": [
+   "scope",
+   "Abstract, p.1: the authors state which factors their estimate includes (noise, repeated attempts, spacetime layout). Section 3.1 shows the retry risk and layout in the method."
+  ],
+  "gidney-systemic-uncertainty": [
+   "stated limit",
+   "Section 1.1, p.2: the authors caution that their two-significant-figure tables carry large systemic uncertainties and give the error-rate example. A limit of their own estimates."
+  ],
+  "gidney-ballpark-estimates": [
+   "stated limit",
+   "Section 1.1, p.2: the authors state the estimates are ballpark figures, not exact predictions."
+  ],
+  "gidney-surface-code-model": [
+   "setup",
+   "Section 1.1, p.2: the 2(d+1)^2 physical qubits per logical qubit and lattice surgery, as the paper states (Figure 8 caption repeats it)."
+  ],
+  "gidney-parameter-choices": [
+   "setup",
+   "Section 2.8, p.9: the parameter settings the paper uses in its overview (cexp=cmul=5, csep=1024, cpad=2 lg n + lg ne + 10). The 'work well' remark is the authors' choice rationale; the settings themselves are the setup."
+  ],
+  "gidney-topological-error-scaling": [
+   "setup",
+   "Section 2.13, p.13: the paper states it bases its estimates on a factor-10 suppression per two code distances at 1e-3 (from [29]). The 'we believe 1e-3 is sufficient' remark is the stated basis of the assumption."
+  ],
+  "gidney-retry-on-failure": [
+   "setup",
+   "Section 2.15, p.14: the paper states that a failed classical post-processing step restarts the algorithm, a step of its own construction."
+  ],
+  "gidney-error-rate-rule-limits": [
+   "stated limit",
+   "Section 2.16, p.15: the authors state the rule of thumb is imperfect and list the three things it ignores. A limit on their own heuristic."
+  ],
+  "gidney-method-optimization": [
+   "setup",
+   "Section 3.1, p.15-16: the method of the paper's parameter search, as stated: independent error probabilities combined into an upper bound, and minimizing s^1.2 t/(1-eps)."
+  ],
+  "gidney-nist-model-for-z": [
+   "setup",
+   "Section 3.3.2, p.17: the paper states it uses the NIST SP 800-56A model for z and that NIST rounds z to the nearest multiple of eight."
+  ],
+  "gidney-ecc-not-concluded": [
+   "stated limit",
+   "Section 3.4, p.18: the authors state the paper should not be read as showing finite-field problems are easier than elliptic curve problems. A limit on their own conclusions."
+  ],
+  "gidney-dense-idle-qubits": [
+   "stated limit",
+   "Section 4.3, p.20-21: the authors present the 1.5 d^2 packing as a possibility and state its untested status, leaving simulations to future work."
+  ],
+  "gidney-low-end-sensitive": [
+   "stated limit",
+   "Section 5, p.22: the authors state that the low end of Mosca's range is sensitive to advances and that predicting them is beyond their scope. A caveat on what the paper covers; the sensitivity is a qualitative remark."
+  ],
+  "gidney-table1-volume-assumptions": [
+   "scope",
+   "Table 1 caption, p.3 and Appendix A.1, p.28: the authors state the modern-construction assumption, that older papers gave no volumes so they plugged formulas into realizations, and that the retry chance is assumed negligible for all but their own paper."
+  ],
+  "gidney-table2-assumption-sensitivity": [
+   "stated limit",
+   "Table 2 caption, p.3: the authors caution that physical assumptions differ between papers and give the 5x cycle-time example. A limit on their own comparison."
+  ],
+  "lee-abstract-key-insight": [
+   "scope",
+   "Abstract, p.1 and Section II.C, p.10-11: the method the paper analyzes (THC factorization, a diagonal Coulomb operator in a non-orthogonal auxiliary basis, then qubitization) as the authors state it."
+  ],
+  "lee-error-budget": [
+   "setup",
+   "Section III.A, p.14, Eq. 25: epsilon >= eps_PEA + eps_THC with 0.0016, 0.001 and 0.0006 Hartree, and the recomputation of the DF cost at eps_PEA <= 0.001, all as stated (0.001 + 0.0006 = 0.0016)."
+  ],
+  "lee-error-difference-assumption": [
+   "scope",
+   "Section III.A, p.14-15: the paper states it keeps 0.0016 Hartree overall, with its stated reason (correlated errors between configurations). The accuracy convention of its estimates."
+  ],
+  "lee-select-self-inverse": [
+   "proved result",
+   "Section III.C, p.18-19, Eq. 36-42: the paper carries the state through the circuit and shows that the X on the swap-control register gives V_mu V_nu + V_nu V_mu, so select is self-inverse (Figures 6 and 7). Condition stated: the one-electron term is ignored in the derivation, and the nu=M+1 case is argued separately."
+  ],
+  "lee-error-metric-criteria": [
+   "setup",
+   "Section III.E, p.21: the three criteria the authors list for a good error metric (tractable; size-extensive and size-consistent; a reliable and well-correlated bound), which they apply to choose their metric. Their stated method criteria."
+  ],
+  "lee-ccsdt-limit": [
+   "stated limit",
+   "Section III.E, p.22: the authors state that CCSD(T) errors may not correlate with the exact ground state error and leave it to future study."
+  ],
+  "lee-recommended-m": [
+   "setup",
+   "Section IV.A, p.24, Tables IV and V: the paper states its chosen THC ranks (M=350 Reiher, M=450 Li) and bit counts. The text says chemical accuracy holds for M>=250 (Reiher) but Fig. 8 says M>=350 for both; the recommendation itself is the paper's stated choice."
+  ],
+  "lee-table3-conventions": [
+   "setup",
+   "Table III caption, p.7: half the T count is reported as the Toffoli-equivalent for Trotter methods (the paper's stated Toffoli = 2 T conversion), with 10 state-preparation bits and 16/20 rotation bits as listed."
+  ],
+  "lee-table2-assumptions": [
+   "stated limit",
+   "Table I/II caption, p.6: the authors state that Table II rests on a speculative Trotter-error assumption and omits non-Galerkin and special-basis methods."
+  ],
+  "lee-hydrogen-setup": [
+   "setup",
+   "Section IV.B, p.24-25: 1.4 Bohr spacing, STO-6G, N_H=10 to 100, THC rank 7 N_H; H4 in cc-pVTZ with 300 Cholesky vectors for SF and THC rank 576, as stated."
+  ],
+  "lee-surface-code-assumptions": [
+   "setup",
+   "Section IV.C, p.26: 0.1% gate error, 10 us reaction time, 1 us cycle time, and the 0.01% comparison case, as the paper states."
+  ],
+  "lee-layout-choices": [
+   "setup",
+   "Section IV.C.2, p.27: single side storage, four factories, expansion factors 16 and 1, as the authors state their choice."
+  ],
+  "lee-lambda-lambda-suppression": [
+   "setup",
+   "Section IV.C.5, p.31: the paper states its 0.1% error rate and Lambda=10 assumption, defined as a factor-10 drop in logical error per round for each distance increase of 2."
+  ],
+  "lee-limit-thc-optimization": [
+   "stated limit",
+   "Section V and Data availability, p.32-33: the authors state the non-linear THC optimization is challenging and point readers to their shared factors."
+  ],
+  "woerner-algorithm-scope": [
+   "scope",
+   "Abstract, p.1: the authors state the method they employ (amplitude estimation for VaR and CVaR on a gate-based computer). Read against Sections I-III."
+  ],
+  "woerner-assume-state-prep": [
+   "scope",
+   "Section III, p.3: the authors state they assume a given operator R for the remainder of the section. Scope of the Section III gate counts only; the two-asset simulation loads its distribution with the circuits in Fig. 8."
+  ],
+  "woerner-tbill-setup": [
+   "setup",
+   "Section IV, p.4: the one-period binomial tree model as the paper states it, with dr=0.25%-points, 70% rise and 30% no change (p=30%), and footnote [50]'s assumption. Read with Eq. 13."
+  ],
+  "woerner-hardware-setup": [
+   "setup",
+   "Section IV, p.5: m=1..4, M=2,4,8,16, at most five qubits, IBM Q 5 Yorktown (ibmqx2), as the paper states them."
+  ],
+  "woerner-hardware-shots-overhead": [
+   "stated limit",
+   "Section IV, p.5: 8192 shots per circuit and the constant overhead ignored in the comparison, both stated by the paper. A limit of its own comparison."
+  ],
+  "woerner-mc-comparison-method": [
+   "setup",
+   "Appendix E, p.10: the comparison method as stated (95% interval, exact standard error, 0.898/sqrt(M) for p=0.3; interval for theta from the most probable y). Checked: 1.96*sqrt(0.21)=0.898."
+  ],
+  "woerner-portfolio-setup": [
+   "setup",
+   "Section V.A, p.6: VF1=VF2=$100, r1,0=1.8%, r2,0=2.25%, c=2.5% in Eq. 14, as stated."
+  ],
+  "woerner-qubit-encoding": [
+   "setup",
+   "Section V.A, p.6: three qubits for S (eight values), two for T (four values), more for S because the shift explains more variance; only S and T are retained. All stated in the passage."
+  ],
+  "woerner-symmetric-fit-assumption": [
+   "scope",
+   "Section V and V.A, p.6-7: the shift-twist correlation is -1%, so the authors assume independence; symmetric fits because the data are almost symmetric. Modelling assumptions as stated."
+  ],
+  "woerner-first-order-approx": [
+   "stated limit",
+   "Section V.B, p.7: first-order approximation of V (Eq. 18), the duration view, with higher orders left at the cost of depth. A simplification the paper states about its own model."
+  ],
+  "woerner-qubit-counts": [
+   "setup",
+   "Section V.C, p.7: m+12 and m+13 qubits, with the breakdown 5+1+6 (+1 for CVaR) stated; Table I shows 13 qubits at m=1 and 17 at m=5. Consistent."
+  ],
+  "woerner-noise-model": [
+   "scope",
+   "Section V.C-D, p.7-8: the relaxation probability 1-exp(-gamma t), 100 ns CNOTs, instant error-free single-qubit gates and the ZZ cross-talk term, as stated. The value gives no numeric rate, so the printed rate-exponent inconsistency does not touch it."
+  ],
+  "woerner-limit-practical-advantage": [
+   "stated limit",
+   "Section VI, p.8: the authors state that more samples are needed for practical advantage and that Monte Carlo parallelizes. A limit of their own result."
+  ],
+  "woerner-limit-coherence": [
+   "stated limit",
+   "Section VI, p.8-9: stated by the authors as a requirement for running the VaR calculation on hardware. Note: the paper's own current-hardware value, gamma=1e-4 s^-1 'loosely based on T1=100 us', is inconsistent (T1=100 us is 1e4 s^-1), but the stated limit does not rest on it."
+  ],
+  "woerner-open-distribution-loading": [
+   "stated limit",
+   "Section VI, p.9: the authors state distribution loading was only briefly addressed, can be costly for auto-correlated processes and needs study."
+  ],
+  "woerner-cmt-data": [
+   "setup",
+   "Appendix F, p.10: CMT rates from the U.S. Treasury, only periods with all rates, more than 5000 data points, as stated."
+  ],
+  "chakrabarti-table1-contracts": [
+   "setup",
+   "Table 1 caption, p.3: the benchmark contracts and the 2e-3 target error as stated. They match Sections 4.1.2 and 4.2.3 (d=3, T=20, 5 payment dates; d=1, T=26). The contracts only, not the Table 1 estimates."
+  ],
+  "chakrabarti-oracle-depth-requirement": [
+   "stated limit",
+   "Section 3.1, p.6: the paper states that the full quadratic speedup needs oracle depth O(1/epsilon) and calls this a demanding requirement and a dominant contributor to resources. A limit of the method it costs; the O(1/epsilon) depth is the standard amplitude estimation scaling."
+  ],
+  "chakrabarti-riemann-nonorm-assumption": [
+   "scope",
+   "Section 4.1.2, p.11: the paper states that it continues the Riemann analysis 'for the sake of argument' with Pmax=1, assuming a normalization method could be invented, and points to Appendix D.2."
+  ],
+  "chakrabarti-riemann-confidence-choice": [
+   "setup",
+   "Section 4.1.2, p.11: the paper states it sets 1-alpha=0.68 in Eq. 19, matching a classical Monte Carlo standard-deviation error. A choice of its own estimate."
+  ],
+  "chakrabarti-gaussian-loader-setup": [
+   "setup",
+   "Section 4.2.1, p.13: the Ry-CNOT ansatz with linear connectivity, the harmonic-oscillator energy cost, the follow-up re-optimization on the infinity-norm (Eq. 41), and w=5, all as stated."
+  ],
+  "chakrabarti-training-cost-excluded": [
+   "scope",
+   "Section 4.2.1, p.13: the paper states the pre-trained Gaussian circuits are reused and their training cost is excluded from its estimates. This excludes a cost the estimates would otherwise carry."
+  ],
+  "chakrabarti-appendix-noiseless-training": [
+   "setup",
+   "Appendix F, p.38: the eight repeats per (n, L), the COBYLA then BFGS runs, and the classical emulation so that only optimizer error remains, all stated."
+  ],
+  "babbush-scope-surface-code": [
+   "scope",
+   "Introduction, p.2: the paper states it focuses on a modest surface code realization with a few distillation factories and emphasizes current surface code projections."
+  ],
+  "babbush-model-primitive-calls": [
+   "setup",
+   "Introduction, p.2: 'Here we will assume' M^d classical calls against M quantum calls; the paper's model setup."
+  ],
+  "babbush-no-prefactor-assumption": [
+   "scope",
+   "Introduction, p.2: stated by the authors as a generous assumption of their model."
+  ],
+  "babbush-limit-other-use-cases": [
+   "stated limit",
+   "Introduction, p.2: the authors state that some quadratic-speedup use cases may defy their framework."
+  ],
+  "babbush-runtime-definition": [
+   "definition",
+   "Eq. 1, p.2: the paper defines TQ=M tQ and TC=M^d tC with M, d and t as the value says."
+  ],
+  "babbush-breakeven-time": [
+   "definition",
+   "Eq. 3, p.2: T* is defined as the time at which TQ=TC, equal to tQ (tQ/tC)^(1/(d-1)); consistent with Eq. 1-2."
+  ],
+  "babbush-amdahl-model": [
+   "definition",
+   "Eq. 4, p.2: the paper defines TC with parallel speedup S=(alpha+(1-alpha)/P)^-1, alpha the serial fraction."
+  ],
+  "babbush-round-time-assumption": [
+   "setup",
+   "p.3: the paper states a 1 microsecond round time, decoding included, as its assumption for superconducting qubits; it is the input to Eq. 6."
+  ],
+  "babbush-limit-parallelism-assumption": [
+   "stated limit",
+   "Conclusion, p.5: the authors state that the strongest conclusions assume S of 1e3 or more and that advantage prospects improve where that fails."
+  ],
+  "babbush-appendix-decoder-assumption": [
+   "setup",
+   "Appendix A, p.10: the paper states the decoder, the 1 us feedforward at d near 30, the 30 us bound and the 1e-3 error rate as its assumptions."
+  ]
+ },
+ "theory_low": {
+  "gidney-hundredfold-volume": "Abstract, p.1; Table 2, p.3: the raw Table 2 expected volumes give 6200/5.9 (Jones), 1100/5.9 (Fowler), 170/5.9 (Gheorghiu), about 1050x, 186x and 29x. The abstract names Gheorghiu among the works, so 'hundredfold' does not follow from Table 2 as printed. A comparison with other papers' estimates under different assumptions.",
+  "gidney-abstract-circuit-costs": "Abstract, p.1; Section 2.8, p.9: approximate upper-bound formulas from the authors' counting with chosen parameters. The measurement-depth coefficients are rounded up (300 x 1.5 = 450 shown as 500; 0.5 x 1.5 = 0.75 shown as 1). Modeled, not proved.",
+  "gidney-headline-2048": "Title, p.1: a resource estimate, not a demonstration. The paper's own figures differ: Section 2.11 gives about 7 hours, Section 2.14 about 23 million qubits, Table 3 gives 5.1 hours per run, 7.4 expected, and 20 million qubits.",
+  "gidney-table3-n2048": "Table 3, p.16: the row is read correctly (31%, 4.1, 5.9, 20 megaqubits, 5.1 hours; 4.1/(1-0.31) is 5.9). An output of the authors' cost script under stated physical assumptions: a modeled estimate.",
+  "gidney-table3-n1024": "Table 3, p.16: the row is read correctly (6%, 0.5, 0.5, 9.7, 1.3). An output of the authors' cost script under stated physical assumptions: a modeled estimate.",
+  "gidney-table3-larger-n": "Table 3, p.16: the rows for 3072, 8192 and 16384 match the value (9%/21/38/12; 5%/510/140/86; 24%/5100/270/350). An output of the authors' cost script under stated physical assumptions: a modeled estimate.",
+  "gidney-table2-ours-parallel": "Table 2, p.3: the last column reads 20 million qubits, 0.31 days, 5.9 megaqubitdays, as the value says. A modeled estimate; the table compares with other papers' figures under different assumptions.",
+  "gidney-improvement-over-100x": "Section 1.1, p.2: Table 2 as printed gives 170/5.9, about 29x, against Gheorghiu et al. (and 186x, 1050x for Fowler and Jones). The 'over 100x' rests on an adjustment for 'slight remaining differences' that the table does not show, and the Gheorghiu cycle time (0.2 us) differs by 5x. Not settled by the passage.",
+  "gidney-toffoli-10x": "Section 1.1, p.2; Table 1, p.3: a comparison with other papers' counts, some filled in by the authors (Appendix A). The authors add that Toffoli counts alone may mislead. A comparison claim, not a proved result.",
+  "gidney-reference-toffoli-count": "Section 2.2, p.5: a counting argument from assumed per-operation costs (five additions per modular addition, 2n Toffolis per Cuccaro adder). The arithmetic is right (ne x 2n x 5 x 2n = 20 ne n^2), but it is a modeled count of a reference design, not a proved result.",
+  "gidney-coset-saving": "Section 2.4, p.6: a counting argument using a 4n-Toffoli adder taken from [18, 32], with the padding cost treated as small. Modeled, with cited components.",
+  "gidney-coset-padding-log": "Section 2.4, p.6: stated in prose; the formal analysis is in reference [33] (approximate encoded permutations). A cited result, not proved here.",
+  "gidney-windowed-toffoli-term": "Section 2.5, p.7: a counting argument from the windowed arithmetic of [35]. The Toffoli expression is the authors' estimate; 24 ne n^2/lg^2 n follows by substitution. Modeled.",
+  "gidney-logical-qubit-count": "Section 2.5, p.7: a space count given in prose with O(lg n) terms. Modeled, not proved.",
+  "gidney-runway-halving": "Section 2.6, p.8: a prose example with 'a couple percent' and 'nearly halved'; the runway construction is from reference [33]. No derivation here.",
+  "gidney-toffoli-depth-formulas": "Section 2.8, p.9: approximate upper bounds from the authors' counting with chosen parameters. Modeled, not proved.",
+  "gidney-lookup-addition-dominates": "Section 2.8, p.9: a statement from the authors' analysis, with the count 0.1 ne n an approximation (2 n ne/(25) x 1025/1024). Modeled.",
+  "gidney-approximation-error": "Section 2.9, p.10: the per-addition deviation and the sqrt(2 eps) trace-distance step come from results of reference [33]; I checked the arithmetic (0.1/(1024 x 2^10) is about 1e-7). A bound from cited results, not proved here.",
+  "gidney-layout-size": "Section 2.10, p.11: sizes derived from cited factory footprints ([36, 37]); the 14-factory count assumes d=27. Modeled layout design. Figure 7's caption gives 225x63, the text 226x63.",
+  "gidney-lookup-addition-time": "Section 2.11, p.11: I checked 1 us x 27/2 x 2^10 = 13.8 ms and 2 x (1024+43) x 10 us = 21 ms. A timing estimate from the stated hardware assumptions; modeled.",
+  "gidney-total-runtime-7h": "Section 2.11, p.11: I checked 4 x 3072 x 2048 ms = 7.0 hours. A runtime estimate that the authors say ignores larger code distances; the title says 8 hours and Table 3 differs. Modeled.",
+  "gidney-distillation-error": "Section 2.12, p.13: the 6.4% distillation error comes from a spreadsheet in reference [36], a cited result.",
+  "gidney-topological-error-2048": "Section 2.13, p.13: I checked 10^-15 x 226 x 63 x 0.75 x 2.5e10 = 0.27 and 1/(1-0.27) = 1.4. An estimate from the assumed error scaling; Table 3 later gives a 31% retry risk for the same case.",
+  "gidney-board-size-cycles": "Section 2.13, p.13: an estimate from the paper's layout (4 ne n x 1000 is 2.5e10 cycles, checked). Modeled.",
+  "gidney-physical-qubit-count": "Section 2.14, p.13: 226 x 63 x 1568 is 22.3 million, printed as about 23 million, and the authors say it disagrees with the title's 20 million because of rounding. A simplified calculation, not the paper's final estimate.",
+  "gidney-error-rate-rule": "Section 2.16, p.15: a heuristic scaling the authors call imperfect, not derived or proved.",
+  "gidney-shor-vs-ekera-dlp": "Section 3.3.2, p.17: the operation-count comparison is simple, but the 99% success claim is a heuristic analysis cited to reference [22]. Two claims; graded by the weaker.",
+  "gidney-table5-schnorr-112": "Table 5, p.18: the row is read correctly (6%, 0.6, 0.7, 0.8 hours). An output of the authors' cost script under stated physical assumptions: a modeled estimate.",
+  "gidney-table4-schnorr-112": "Table 4, p.18: the row is read correctly (9%, 0.9, 1.0, 1.2 hours). An output of the authors' cost script under stated physical assumptions: a modeled estimate.",
+  "gidney-table4-full-length": "Table 4, p.18: the safe-prime full-length row for n=2048 reads 6%, 12, 12, 26, 11 hours, as the value says. An output of the authors' cost script under stated physical assumptions: a modeled estimate.",
+  "gidney-distribute-computation": "Section 4.4, p.21-22: a surface analysis; the authors say they have not carefully explored distributing the computation. The machine sizes are rough estimates.",
+  "gidney-table1-ours-counts": "Table 1, p.3: the paper's own counts follow from its formulas (at n=1024, 0.3 n^3 + 0.0005 n^3 lg n is 0.37 billion, shown as 0.4). Modeled estimates assembled with other papers' formulas.",
+  "gidney-fig1-jump": "Figure 1 caption, p.3: the printed n = 32786 conflicts with the plot's axis, which carries 32768; the value appears to be a typo, so the passage does not settle the position of the jump. A caption statement about a script output.",
+  "lee-abstract-on-toffoli": "Abstract, p.1: the per-step O(N) Toffoli claim is the authors' complexity result; the paper derives the step cost by counting in Section III and gives no theorem. Modeled/asymptotic claim, not proved as a theorem.",
+  "lee-abstract-repetitions": "Abstract, p.1; Section III.A, p.13: the O(lambda/epsilon) repetition count is the standard qubitization/phase estimation scaling from earlier work [16], used here by citation (Eq. 23). Not proved in this paper.",
+  "lee-abstract-least-resources": "Abstract, p.1; Table III, p.7: 'least fault-tolerant resources of any known approach' overreaches Table III itself, where the Trotter (111 qubits) and qDRIFT (270-328) rows use fewer logical qubits. Section V narrows it to 'competitive methods'. A comparison under the authors' own accounting.",
+  "lee-abstract-femoco-4m-4d": "Abstract, p.1; Section IV.C, p.31: a modeled layout estimate. The paper's own figures differ: Section IV.C.4 gives about 3 days and 6.7e9 Toffolis, Section IV.C.5 gives 3.5 days, and Table III gives 5.3e9 Toffolis for the Reiher Hamiltonian. Not a run.",
+  "lee-reiher-distill-volume": "Section I.A, p.4: a back-of-the-envelope figure from cited per-gate volumes [27, 28]. A modeled estimate on cited inputs.",
+  "lee-sparse-error-corrected": "Section I.A, p.4: the authors' correction of their earlier numbers. Table III as printed gives 5.0e13/8.8e10, about 570, for the Reiher column, not the stated 1,100 times. The passage does not settle which number holds.",
+  "lee-vonburg-compared-wrong": "Section I.A, p.4: the authors' reading of another group's comparison. Table III gives Li sparse/DF ratios of 2489/6404 = 0.39 for qubits and 4.4e10/6.4e10 = 0.69 for Toffolis, so 'half' is loose. A recomputation, not a proof.",
+  "lee-lambda-ordering": "Table I and Section I.A, p.5-6: the authors say 'we expect' the ordering and that the scaling is hard to report. An expectation supported by numerics on a few systems, not proved.",
+  "lee-thc-gamma": "Section I.B, p.5: a complexity statement for direct THC qubitization, developed in Appendix E by counting. An asymptotic claim, not a theorem.",
+  "lee-direct-thc-bad-lambda": "Section I.B, p.5; Appendix E, Fig. 19-20: a numerical observation that direct THC qubitization gives a larger lambda. A measured result on FeMoCo and hydrogen chains.",
+  "lee-thc-main-complexity": "Section I.B, p.5: the asymptotic cost of the paper's method, claimed from Section III counting. 'Essentially matching' the double-factorization lambda is a numerical observation. Not proved as a theorem.",
+  "lee-spacetime-improvement": "Section I.B, p.5-6: an author statement based on asymptotics and numerics (Table II); 'about O(N) in most contexts' is hedged.",
+  "lee-qdrift-orders": "Section I.B, p.7-8: orders of magnitude computed from Table III (5.2e27 to 5.3e9 is about 18; 1.8e28 to 1.9e16 is 12). Modeled results; Table III's qDRIFT columns also conflict with Appendix D (see lee-table3-trotter-qdrift).",
+  "lee-qdrift-fat-tails": "Section I.B, p.7-8: an author's qualitative claim about qDRIFT error distributions; the supporting analysis is in Appendix D and is not a theorem here.",
+  "lee-lambda-thc-eq9": "Section II.C, p.10: the claim that lambda_thc exceeds lambda_V rests on the sum being outside the absolute value, an argument in prose, with numerics in Appendix E. Not proved.",
+  "lee-non-orthogonal-diagonal": "Section II.C, p.10-11, Eq. 10-12: the substitution is shown, but the value also holds a 'factor between 4 and 10' basis growth claim and a priority claim ('first to derive'). Two kinds of claim; graded by the weaker.",
+  "lee-rotation-per-factor": "Section II.D, p.11: the N/2 Givens rotation count is taken from Eq. 51 of reference [10]; the non-orthogonality remark is argued in prose. A cited result.",
+  "lee-lambda-zeta-derivation": "Section II.D, p.11-12, Eq. 13-20: the identity lambda = sum|t_l| + (1/2) sum|zeta| is derived (I followed Eq. 15-20 and it checks), but the closing '= O(lambda_zeta)' is asserted, not proved: nothing in the section bounds sum|t_l| by lambda_zeta, and Section IV.B says the one-body term is comparable to the two-body term for H4. Graded by the weaker part.",
+  "lee-qubitization-cost": "Section III.A, p.13, Eq. 23: the pi*lambda/(2 eps) repetition formula is taken from earlier work [16] by citation. A cited result.",
+  "lee-unary-iteration-integer": "Section III.A, p.13: a construction with its cost stated in prose, using unary iteration from [16]. Not proved here.",
+  "lee-prepare-coefficients": "Section III.B, p.15: counts derived in the paper's circuits (Figures 3 and 4). Modeled counts, not stated as a theorem.",
+  "lee-contiguous-register": "Section III.B, p.15: the cost n M^2 + n M - 1 is referred to Appendix F, whose proof uses cited components (see lee-appendix-f-cost); the output size is a count. Modeled.",
+  "lee-prepare-total": "Section III.B, p.16: a cost formula from counting the circuit. Modeled, not a theorem.",
+  "lee-select-cost": "Section III.C, p.19: a cost 'two Toffolis more' than a listed count. Counting, not a theorem.",
+  "lee-step-cost": "Section III.D, p.20, Eq. 44: a cost formula from counting the circuit. Modeled; the rotation-bit symbol is lost in the text layer.",
+  "lee-logical-qubits-count": "Section III.D, p.20: a register-by-register qubit count. Modeled, not a theorem.",
+  "lee-coherent-incoherent-loose": "Section III.E, p.21-22: the authors' assessment of von Burg et al.'s metrics from classical numerics ('we find these bounds too loose'). A measured and interpretive result about another group's method.",
+  "lee-table3-thc": "Table III, p.7: the values match Tables IV and V (2,142 qubits and 5.3e9 Toffolis at M=350; 2,196 and 3.2e10 at M=450). A modeled count; Section IV.C.4 gives 6.7e9 Toffolis for the same Reiher case, so the table and the layout section disagree.",
+  "lee-table3-df": "Table III, p.7: the authors' recomputed costs for another group's method (corrected, with eps_PEA <= 0.001). Modeled counts, not stated as a theorem.",
+  "lee-table3-sparse-sf": "Table III, p.7: the authors' recomputed costs for Berry et al.'s methods. Modeled counts, and the paper corrects its own earlier numbers for these (Appendix A).",
+  "lee-table3-trotter-qdrift": "Table III, p.7: the qDRIFT row lists 5.2e27 (288 qubits) for Reiher and 1.8e28 (328) for Li, but Appendix D, p.59 gives 1.8e28 (168 qubits) for Reiher and 5.2e27 (211) for Li, so the two sections contradict each other. I recomputed Eq. D16 with lambda=2183.6 and eps=0.0016: it gives about 1.8e28, so the appendix is right and the Table III columns look swapped. The 95% interval row (1.9e16, 1.0e16) agrees with Appendix D.",
+  "lee-table3-reductions": "Table III caption, p.7: the 13x, 8x, 3x and 2x reductions are the authors' corrections of Berry et al.'s earlier numbers (Appendices A and B). Modeled recomputation.",
+  "lee-factory-design": "Section IV.C.4, p.31: the failure probability, qubit count and 25 kHz rate come from a cited spreadsheet [52]. A cited result.",
+  "lee-data-distance-31": "Section IV.C.4, p.31: d=31 sufficiency is taken from the spreadsheet of [52]. A cited estimate.",
+  "lee-floorplan": "Figure 10 caption, p.28: 1908 x 2 x 32^2 is 3.9 million (checked) with d=31 described as 32 in the product. A layout count; modeled.",
+  "lee-fig10-12-read": "Figures 11 and 12, p.29-30 (rendered and viewed): never HIGH on a figure alone. The reading is partly right. Fig. 11 peaks near 1,850 qubits (about 1,900 fine) and its first QROM spans about 4,500 Toffolis (right). Fig. 12 peaks near 2,650 qubits, not 2,500; 2,500 is only the top of the CCZ factory band. Figures 11 and 12 are stacked qubit-allocation plots against Toffoli count, not floorplans, so 'four CCZ factory blocks beside AutoCCZ fixup boxes ... single side storage' belongs to Fig. 10 and the text, not to Fig. 11.",
+  "lee-runtime-3-days": "Section IV.C.4, p.31: 483,000 x 13,880 = 6.70e9 (checked) and 6.7e9/25 kHz is 3.1 days, but Table III gives 5.3e9 Toffolis for this case and Section IV.C.5 gives 3.5 days. The printed figures disagree.",
+  "lee-optimistic-estimate": "Section IV.C.5, p.31: a modeled estimate at 0.01% error and Lambda=100 (distances 9, 15, 15; qubits 4e6 to 1e6 by (32/16)^2 = 4, checked). The runtime does not follow from the printed numbers: 3.5 days x 15/31 is 1.7 days, not 1.5; 3 days (Section IV.C.4) x 15/31 is 1.45. The paper prints both 3 and 3.5 days for the baseline. Not proved.",
+  "lee-conclusion-comparison": "Section V, p.32: the authors' conclusion from Table III, qualified by 'competitive' (the Trotter and qDRIFT rows use fewer logical qubits). The upper-bound remark follows from their admission that the THC factors are suboptimal.",
+  "lee-appendix-a-corrections": "Appendix A.1, p.37: the corrected values match Tables IX and X (Reiher 90.4 + 2,045 = 2,135.3 at 7.5e-5; Li 561.5 + 986 = 1,547.3 at 3.5e-5). A recomputed numerical result, not a proved one.",
+  "lee-appendix-a-factor-error": "Appendix A.1, p.37: the authors' account of an error in their earlier derivation. A correction statement, not a proof.",
+  "lee-appendix-a-step-cost": "Appendix A.2, p.40: a cost formula from counting the circuit. Modeled.",
+  "lee-appendix-a-select-cost": "Appendix A.2, p.38: a cost by counting the Majorana-circuit select. Modeled, not a theorem.",
+  "lee-appendix-b-oaa": "Appendix B.1, p.43: oblivious amplitude amplification is taken from reference [10] and applied here. A cited construction.",
+  "lee-appendix-b-improvement": "Appendix B.2, p.44: a cost improvement stated in prose, with the QROM construction in Appendix G. Modeled.",
+  "lee-appendix-c-errors": "Table III and Appendices C.2 and F: the authors' claim about errors in another group's algorithm and a needed correction. A claim about another paper, not proved here.",
+  "lee-appendix-c-claim": "Appendix C.1, p.48: the authors' claim that the earlier comparison fails once lambda is corrected. A comparison claim under their own recomputation.",
+  "lee-appendix-d-qdrift-mse": "Appendix D.1, p.58-59, Eq. D2-D14: the derivation is explicit, but its first step is Campbell's qDRIFT bound ||U - E|| <= 2 lambda^2 tau^2 (Eq. D2, from [49]) with the argument of [103]. A proof that uses a specific cited result is LOW. The result is an upper bound (Nexp <= 8 pi^2 lambda^4/eps^4).",
+  "lee-appendix-d-qdrift-numbers": "Appendix D.1, p.59: Reiher 1.8e28 (168 qubits) and Li 5.2e27 (211 qubits) follow from Eq. D16 (I recomputed 1.8e28 at lambda=2183.6) but contradict Table III, which lists them swapped with 288 and 328 qubits. The text also says it takes the smallest thresholds of Tables IX and X (5e-5), but lambda=2183.6 and 1600.9 belong to the 1e-6 rows (5e-5 gives 2157.6 for Reiher). Modeled counts, not settled.",
+  "lee-appendix-d-kaiser": "Appendix D.2, p.61: numerical solutions of integrals defined in the appendix. Computed values, not a proof.",
+  "lee-appendix-d-ci-numbers": "Appendix D.2, p.62: counts from the paper's formulas under a 95% confidence criterion. Modeled; the 4.0e18 and 2.1e18 comparison comes from a cited bound (Campbell).",
+  "lee-appendix-d-hl": "Appendix D.2, p.63: counts from the paper's formulas that assume a symmetric qDRIFT error, which the paper says 'is not completely rigorous'. Modeled.",
+  "lee-appendix-e-lzeta": "Appendix E, p.63-65: a complexity statement and a coefficient count by counting. Modeled, not a theorem.",
+  "lee-appendix-f-cost": "Appendix F, p.68-72: the bit-sum derivation is explicit and the count n^2 + n - 1 checks (n=1 gives 1 Toffoli, n=6 gives 41), but the proof takes its 3-bit adder (one Toffoli per triple) from reference [83] and the bit-sum method from [18]. A proof that uses specific cited constructions as steps is LOW. The coordinator may judge these as circuit components.",
+  "lee-appendix-g-qrom": "Appendix G, p.72: a construction with its cost stated, building on cited QROM work. Not proved.",
+  "woerner-shortest-depth-rate": "Abstract, p.1; derived in Section III, Eq. 10-12, p.4: first-order Taylor argument that states it ignores higher-order terms. An approximate bound, not a proved theorem.",
+  "woerner-rate-approaches-optimum": "Section III, p.4: follows from the approximate bound of Eq. 12 with higher-order terms ignored; the 'approaches M^-1' is stated, not proved.",
+  "woerner-variance-encoding": "Section II, p.2: a construction (f(i)=i^2/(N-1)^2) stated in one sentence with no proof; the later circuit for it uses the approximation sin^2(y) ~ y^2 (Section III).",
+  "woerner-var-bisection-accuracy": "Section II, p.2: claim stated in prose, no proof; each bisection step needs its own amplitude estimation and the cost is not counted. Section III, p.4 also prints the condition as >= alpha, against 1-alpha here.",
+  "woerner-cvar-estimator": "Section II, p.2 (Eq. 6-7): a construction; the normalization uses an estimated P[X<=l_alpha], so it is not exact, and the paper proves nothing here. It also inherits the VaR condition inconsistency.",
+  "woerner-cvar-error-bound": "Appendix C, p.10: first-order Taylor bound that says 'we omit higher order terms'. An approximate bound, not a proved theorem.",
+  "woerner-contribution-approx-f": "Section III, p.3: an author summary of the contribution; the supporting bounds (Eq. 9-12) drop higher-order terms. A claim, not a proved result.",
+  "woerner-polynomial-operator-cost": "Section III, p.3: an informal counting argument with a simplifying choice of O(n) gates per multi-controlled rotation. Not stated as a theorem and not proved.",
+  "woerner-taylor-error": "Section III, p.3 and Appendix B, p.9-10: a sketch that bounds the next Taylor coefficient and adds O(c^(2u+5)). Higher-order terms are dropped, and Appendix B's per-term bound is written in a different form from Eq. 9. Not a proof.",
+  "woerner-gate-count-scaling": "Section III, p.3: follows by substitution into the O(n^(k+1)) count, which is itself informal. Not separately proved.",
+  "woerner-smallest-scenario": "Section III, p.4: follows from the informal gate-count formula (s=1, u=0 gives n^2). Not proved.",
+  "woerner-convergence-rate-expectation": "Section III, p.4, Eq. 10-12: derived after 'we ignore the higher order terms'. An approximate rate, not a proved theorem.",
+  "woerner-variance-rate": "Section III, p.4: stated by analogy with the expected value, one sentence, no derivation.",
+  "woerner-var-operator-cost": "Section III, p.4: the O(n) adder-circuit count is taken from reference [21] by citation, with no proof here. The same paragraph prints the VaR condition as >= alpha.",
+  "woerner-cvar-tradeoff": "Section III, p.4: stated as following 'from the previous discussion', which is itself approximate. No proof.",
+  "chakrabarti-abstract-8k-54m": "Abstract, p.1; Table 1, p.3: 8k qubits and 54 million T-depth are the autocallable figures only (re-parameterization, 5.4e7, 8k). The TARF needs 11.5k qubits and 8.2e7 T-depth, so 'the benchmark use cases require 8k and 54 million' overstates. A modeled estimate under stated assumptions.",
+  "chakrabarti-table1-riemann": "Table 1, p.3: the lower bounds 1e43 and 1e18 rest on the Pmax^T scaling factor, which the paper prints as about 1e40 for Pmax=43, T=20 (43^20 is about 1e32.7), so the numbers do not follow from the printed inputs. A modeled estimate, not settled by the passage.",
+  "chakrabarti-table1-no-norm": "Table 1, p.3 and Section 4.1.2, p.11: the no-norm values agree with the text (1.5e8 and 1.6e8 T-depth, 23k and 17k qubits), but they are modeled estimates under the assumption Pmax=1, which the paper adopts only 'for the sake of argument'.",
+  "chakrabarti-table1-reparam": "Table 1, p.3 and Section 4.2.3, p.14: the values agree with the text (5.4e7, 8.2e7, 8k, 11.5k), but they are modeled estimates under stated assumptions, with loaders emulated classically and training cost excluded.",
+  "chakrabarti-grover-rudolph-not-applicable": "Table 1 caption, p.3: an author conclusion; Appendix B, p.26 argues it in prose and cites [30] for a rigorous result. Not proved in this paper.",
+  "chakrabarti-return-space-independent": "Section 2.2, p.4: 'dT independent Gaussians' holds across time steps only. Within a step the d assets are correlated by Sigma (Eq. 9), and the paper makes them uncorrelated by a Cholesky step in Section 4.2. Stated in prose, not proved, and overstated as written.",
+  "chakrabarti-normalization-rescaling": "Section 3, p.5: a conceptual statement in prose with no derivation; the Riemann-specific case is argued in Section 4.1.",
+  "chakrabarti-amplitude-readout-linear": "Section 3, p.5: textbook, stated not proved (F129). A conceptual remark about amplitude estimation, not derived here.",
+  "chakrabarti-grover-rudolph-limited": "Section 3.2, p.7: an argument in prose; Appendix B, p.26 repeats it and cites [30]. Not proved in this paper.",
+  "chakrabarti-truncation-error": "Section 3.3.1, p.7, Eq. 20: the Chernoff and union-bound steps are textbook, but the window is [mu +- w sigma_max] with sigma_max defined as the maximum eigenvalue of Sigma, which is a variance (Sigma = dt x sigma^2). With the paper's parameters (sigma=0.4, dt=1/20) that eigenvalue is 0.008 against a per-step standard deviation of 0.089, so the window is 0.45 standard deviations wide and 2dT e^(-w^2/2) would not hold. The Section 4.1.2 numbers instead use sigma_max=0.4, the annualized volatility. The printed definition and the printed use conflict, and the Pmax^T prefactor conflicts with the Section 4.1.2 figures, so the passage does not settle the bound as written.",
+  "chakrabarti-discretization-error": "Section 3.3.2, p.7-8, Eq. 21-23: the cell error integrates beta*x^2/2 over the dT-cube as if x were a single coordinate (the result is beta*l^(dT+2)/24). A bound on deviation from linearity in dT dimensions gives |x|^2, a sum of dT squares, which would add a factor dT. The bound as printed is not shown to hold, so it is not settled.",
+  "chakrabarti-riemann-normalization-exponential": "Section 4.1, p.8: an argument in prose. The normalization 1/Pmax^T is exponential in T only if Pmax>1, and the numbers given for Pmax in Section 4.1.2 conflict with the printed scaling factor.",
+  "chakrabarti-riemann-window-conflict": "Section 4.1, p.10: Eq. 30 gives Pmax=(2w/sqrt(2 pi))^d <= 1 only for w <= sqrt(pi/2), about 1.25, not pi/sqrt(2), about 2.22 as printed. The 0.17 truncation figure uses the printed pi/sqrt(2) (2 e^(-pi^2/4)); at w=1.25 it is about 0.91. The printed numbers contradict each other.",
+  "chakrabarti-riemann-resource-setup": "Section 4.1.2, p.11: the paper prints Pmax about 43 and Pmax^T about 1e40 for T=20, but 43^20 is about 1e32.7. The printed number is contradicted by its own inputs. The truncation figure also conflicts: 2dT e^(-12.5) is about 4.5e-4, not the 1e-4 stated.",
+  "chakrabarti-riemann-nonorm-numbers": "Section 4.1.2, p.11: a resource calculation under the Pmax=1 assumption. I checked 26k x 6k = 1.56e8 and N_oracle about 5.7k from Eq. 19; arithmetic consistent. Modeled, not proved, and it rests on the assumed Pmax=1.",
+  "chakrabarti-riemann-tarf-numbers": "Section 4.1.2, p.11: a resource calculation for one contract, again under Pmax=1 for the normalization. Modeled, not proved.",
+  "chakrabarti-reparam-idea": "Section 4.2, p.11: a method description; the claimed benefits (no normalization issue, lower cost) are the authors' claim supported only by their modeled estimates.",
+  "chakrabarti-gaussian-domain-mass": "Section 4.2.1, p.13: no calculation shown. The two-sided Gaussian tail beyond 5 sigma is about 5.7e-7, so '~5e-7' is a rounding. A textbook numeric value, stated not proved (F129).",
+  "chakrabarti-reparam-error-bound": "Section 4.2.2, p.14, Eq. 43-44: the bound keeps only linear error terms, and its factor 2w multiplies a per-entry L-infinity error on probability masses summed over 2^n grid points, where a sum would give 2^n, not 2w. An approximate first-order bound with an unchecked factor, not a proof.",
+  "chakrabarti-reparam-resource-autocall": "Section 4.2.3, p.14: a resource calculation for one contract. I checked 9.5k x 5.7k = 5.4e7. Modeled, under stated errors and with loaders emulated classically; the stated trunc of 1e-4 conflicts with 2dT e^(-12.5), about 4.5e-4.",
+  "chakrabarti-reparam-resource-tarf": "Section 4.2.3, p.14: a resource calculation for one contract. Modeled, not proved.",
+  "chakrabarti-autocall-payoff-resource": "Section 5.1 (p.16) and 5.2 (p.18): the autocallable circuit needs 1.6k qubits and T-depth 3.2k, and the TARF circuit 9k and 6k, each at a payoff error of 1e-4 and assuming parallelism 'wherever possible'. The TARF figure also carries the sqrt(T) error tightening of Section 5.2. Modeled resource calculations, not proved.",
+  "chakrabarti-tarf-error-quadrature": "Section 5.2, p.18: the 1/sqrt(T) tightening and the 10x multiplication margin are error-budget choices stated in prose. The quadrature rule assumes independent errors in the T discounted payoffs, which the paper does not state or show. No derivation.",
+  "chakrabarti-discussion-10mhz": "Section 6, p.20: the 10 MHz does not follow from the paper's own numbers. A 54 million T-depth in 1 second needs about 54 MHz of sequential T-gate layers (T-count 1.2e10 would need far more if gates were not parallel). The printed rate is contradicted by Table 1.",
+  "chakrabarti-grover-rudolph-insufficient": "Appendix B, p.26: an argument in prose; the rigorous demonstration is attributed to a later preprint [30], a cited result.",
+  "chakrabarti-importance-sampling-idea": "Appendix D.2, p.33-34: a construction in formulas (Eq. 88-93) with no resource estimate or numerics; 'can still help to lower the overhead' is a claim.",
+  "chakrabarti-appendix-reparam-qubits": "Appendix E, p.35: a register-counting formula with the assumption |L_ji|<=1, which the paper argues is 'not hard to satisfy'. A derived count under an assumption, not a theorem.",
+  "chakrabarti-appendix-energy-training": "Appendix F, p.36: a method description in formulas. The pairing m=1/(2 sigma^2) is the textbook oscillator result, stated not proved (F129).",
+  "babbush-conclusion-quadratic-no-advantage": "Abstract, p.1; Conclusion, p.5: the authors' conclusion from a model the paper calls 'back-of-the-envelope', with assumptions it calls crude. Not a theorem.",
+  "babbush-conclusion-robust-to-gate-rate": "Abstract, p.1; body p.5: an author statement resting on Table II, a modeled result. The body says two orders of magnitude 'cannot be categorically ruled out', so the abstract phrase holds only for 'more than an order of magnitude'.",
+  "babbush-quartic-more-practical": "Abstract, p.1; Table I, p.6: an author conclusion from the model estimates; for the simulated annealing case the paper says a quartic speedup is not expected.",
+  "babbush-fig1-ten-orders": "Fig. 1 caption, p.1: an order-of-magnitude comparison. The quantum figure is cited to reference [13] and the classical figure is not computed in the paper. Appendix A, p.10 gives about 23 qubit-seconds.",
+  "babbush-optimistic-assumptions": "Introduction, p.2: the authors' own judgment that their assumptions favor the quantum computer, and a conclusion from an approximate model. A claim, not a proved result.",
+  "babbush-advantage-condition": "Eq. 2, p.2-3: one-step algebra from TQ<TC and Eq. 1 ('and thus'), not stated or proved as a theorem; the basis list needs a theorem, lemma, proposition or corollary proved in the paper. I checked the algebra and the 1/(d-1) exponent and it is correct. Decided together with Eq. 5 and Eq. 12, which are the same kind; the coordinator may judge these as definition-level.",
+  "babbush-parallel-conditions": "Eq. 5, p.3: algebra from Eq. 1 with TC divided by S (Eq. 4); I checked M^(d-1) > tQ S/tC and T*=tQ(tQ S/tC)^(1/(d-1)) and it is correct. It is not stated or proved as a theorem, so it has no listed HIGH basis; same reasoning as Eq. 2 and Eq. 12.",
+  "babbush-toffoli-time": "Eq. 6, p.3: tG=30 x 5.5 x 1 us is an estimate from the assumed d and round time (arithmetic gives 165, rounded to 170). A modeled value; the match to [13] is the authors' statement.",
+  "babbush-ion-trap-gate-time": "p.3: a rough estimate resting on a cited 'ambitious but attainable' 10 kHz cycle frequency. A modeled value under cited assumptions.",
+  "babbush-classical-bound-33ns": "Eq. 10, p.4: follows from the assumed 330 ps cycle and one Toffoli per cycle. A modeled value under stated assumptions.",
+  "babbush-minimal-example-runtime": "p.4: T*=tQ^2/tC=(17 ms)^2/33 ns = 2.4 hours; I checked the arithmetic. It is a modeled value from assumed primitive times, single core.",
+  "babbush-more-toffolis-worse": "p.4: an argument in prose from the model (T* grows with tQ^2/tC). Not stated as a theorem and not proved; it also assumes tC does not fall.",
+  "babbush-sa-breakeven": "p.4: 320 days, 6.3e7 and 4.0e15 follow from tQ=440 ms and tC=7 ns, both taken from reference [12]; I checked the arithmetic. A modeled value on cited inputs.",
+  "babbush-p3000-breakeven": "p.5: 2.4 hours x 3000 is about one year (checked: 0.83 y). Modeled, and assumes S close to P.",
+  "babbush-table1-quadratic": "Table I, p.6: model estimates from assumed primitive times; the entries I checked (5.2e5, 2.4 h, 280 y, 880 millennia) follow from Eq. 5. Modeled, not proved.",
+  "babbush-table1-cubic": "Table I, p.6: model estimates from assumed primitive times (7.2e5 at S=1e6 checked). Modeled, not proved.",
+  "babbush-table1-quartic": "Table I, p.6: model estimates from assumed primitive times (80 calls, 1.4 s checked). Modeled, not proved.",
+  "babbush-quadratic-vs-quartic-sa": "p.5: modeled values; the paper says a quartic speedup is not expected for this problem, so the comparison is only illustrative.",
+  "babbush-cubic-ambiguous": "p.5: the authors' judgment read from Table I. A claim.",
+  "babbush-faster-toffoli-model": "Eq. 12, p.5: the definition of R is a model choice, and the two conditions follow by algebra (checked: M>tQ S/(tC R), T*=tQ^2 S/(tC R^2) for the quadratic case). They are 'in analogy to Eq. 5', not a stated and proved theorem. Same reasoning as Eq. 2 and Eq. 5.",
+  "babbush-table2-results": "Table II, p.6: model estimates at S=1e3 from assumed primitive times (R=10 gives 1.0 day, checked). Modeled, not proved.",
+  "babbush-order-of-magnitude-insufficient": "p.5: the authors' conclusion from Table II, with 'cannot categorically rule it out'. A modeled result under stated assumptions.",
+  "babbush-hard-limit-measurement": "p.5: a prose argument with no derivation or number. A claim.",
+  "babbush-conclusion-parallel-damning": "Conclusion, p.5: the authors' interpretation of their model results and a field statement about amplitude-amplification problems.",
+  "babbush-appendix-ion-trap-time": "Appendix A, p.10: a rough estimate (CG 5.5 x 30 x 100 us gives 16.5 ms, stated as 17,000 us) from an assumed syndrome time. Modeled.",
+  "babbush-appendix-ec-overhead": "Appendix A, p.10: 5.5 x 30 us / 100 ns = 1,650, printed as 1,700; a calculation from assumed timings. Modeled."
+ },
+ "keep_stored": {},
+ "requote": {}
+}

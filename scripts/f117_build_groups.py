@@ -18,11 +18,11 @@ file is never overwritten.
 from __future__ import annotations
 
 import functools
+import hashlib
 import importlib.util
 import json
 import re
 import sqlite3
-import subprocess
 import sys
 from collections import Counter
 from pathlib import Path
@@ -98,7 +98,12 @@ def local_file(rid: str) -> Path | None:
 _TO = r"(?:\s*[-–—]\s*|\s+to\s+)(?:pp?\.\s*)?"
 _ENDS = r"(?!\.\d)(?=\s*(?:[,;.()\[\]]|\band\b|&|$))"
 _TO_ENDS = r"(?!\.\d)(?=\s*(?:[,;.()\[\]]|\band\b|\bof\b|&|$))"
-_PAGES = rf"\d+(?!\d|\.\d)(?:\s*[-–—]\s*(?:pp?\.\s*)?\d+|\s+to\s+(?:pp?\.\s*)?\d+{_TO_ENDS})?"
+# F126 (Sprint 15 Task D): a number followed by a letter ("p.12a") or a dash range whose end is ("p.12-15.3") is not
+# read as pages, so either is left as written, as "p.12.3" is.
+_NOT_PAGE = r"\d|\.\d|[A-Za-z]"
+_BAD_RANGE = rf"(?:\s*[-–—]\s*|\s+to\s+)(?:pp?\.\s*)?\d+(?:\.\d|[A-Za-z])"
+_PAGES = (rf"\d+(?!{_NOT_PAGE}|{_BAD_RANGE})(?:\s*[-–—]\s*(?:pp?\.\s*)?\d+(?!{_NOT_PAGE})"
+          rf"|\s+to\s+(?:pp?\.\s*)?\d+{_TO_ENDS})?")
 PAGE = re.compile(rf"(?:\b(?i:PDF|printed)[\s:]+)?(?:\b[Pp]p?\.|\b[Pp]ages?\b)\s*{_PAGES}"
                   rf"(?:\s*(?:,|\band\b|&)\s*{_PAGES}{_ENDS})*")
 PAGE_NOTES: list[str] = []
@@ -127,7 +132,11 @@ def _page_text(pages: list[int]) -> str:
 def _without_pages(anchor: str, clauses: list[re.Match]) -> str:
     s = anchor
     for m in reversed(clauses):  # a preposition that led into a page goes with it ("Theorem 2 on p.4")
-        s = re.sub(r"(?:^|(?<=[(\[])|\s+)(?i:on|at|in|see)\s*$", "", s[:m.start()]) + s[m.end():]
+        # and so does the page count that followed a "to" range ("p.4 to 6 of 10"; F126, Sprint 15 Task D)
+        rest = s[m.end():]
+        if re.search(r"\sto\s", m.group(0)):  # only a "to" range may be followed by its page count
+            rest = re.sub(r"^\s*of\s+\d+\b", "", rest)
+        s = re.sub(r"(?:^|(?<=[(\[])|\s+)(?i:on|at|in|see)\s*$", "", s[:m.start()]) + rest
     s = re.sub(r"(?:\(\s*[,;]?\s*\)|\[\s*[,;]?\s*\])", "", s)
     s = re.sub(r"([(\[])\s*[,;]\s*", r"\1", s)
     s = re.sub(r"\s*[,;]\s*([)\]])", r"\1", s)
@@ -144,9 +153,10 @@ def _norm(s: str) -> str:
 
 @functools.cache
 def pdf_pages(path: str) -> tuple[str, ...]:
-    """The PDF's pages as pdftotext splits them (form feeds), each normalized."""
-    out = subprocess.run(["pdftotext", "-enc", "UTF-8", path, "-"], capture_output=True, check=True).stdout
-    return tuple(_norm(p) for p in out.decode("utf-8", "replace").split("\f"))
+    """The PDF's pages, each normalized. Split by `store.ocr.page_texts`, as the reader check splits them (Sprint 15
+    Task H): a page's own text may hold a form feed, so a split on form feeds alone can put a quote pages late."""
+    from store.ocr import page_texts
+    return tuple(_norm(p) for p in page_texts(path))
 
 
 def fix_pages(rid: str, a: dict, pages: tuple[str, ...]) -> None:
@@ -218,8 +228,9 @@ def entry(rid: str) -> dict:
     if [p["record_id"] for p in papers] != [rid]:
         raise ValueError(f"{rid}: its result holds {[p['record_id'] for p in papers]}")
     p = papers[0]
-    if local:
-        pages = pdf_pages(local_pdf(local, rid))
+    source = local_pdf(local, rid) if local else ""
+    if source.lower().endswith(".pdf"):  # a saved web page has no pages to fix (g120's cycorp-2002, Sprint 15)
+        pages = pdf_pages(source)
         for a in p.get("assertions", []) + p.get("existing", []):
             fix_pages(rid, a, pages)
     for a in p.get("assertions", []):
@@ -280,8 +291,8 @@ def reentry_briefs() -> dict[str, tuple[list[str], dict[str, str]]]:
 
 def held_elsewhere(ids: set[str]) -> dict[str, str]:
     """id -> provenance, for each id the store holds as a record."""
-    if not DB_PATH.exists():
-        return {}
+    if not DB_PATH.exists():  # F127: an empty answer would pass every store check without a word
+        raise FileNotFoundError(f"{DB_PATH}: no store, so no id can be checked against it")
     conn = sqlite3.connect(f"{DB_PATH.as_uri()}?mode=ro", uri=True)
     try:
         return {i: row[0] or "" for i in ids
@@ -292,8 +303,9 @@ def held_elsewhere(ids: set[str]) -> dict[str, str]:
 
 def same_source(rid: str, provenance: str) -> bool:
     """The provenance names this record as a whole token, not as the start of a longer record id (review of
-    cecf20d: "...-assessment" matched "...-assessment-appendix-b")."""
-    return re.search(rf"(?<![\w-]){re.escape(rid)}(?![\w-])", provenance) is not None
+    cecf20d: "...-assessment" matched "...-assessment-appendix-b"), nor of one that goes on with a dot ("v-2" in
+    "v-2.5"), though a sentence may end after it (F127, Sprint 15 Task E)."""
+    return re.search(rf"(?<![\w-]){re.escape(rid)}(?![\w-]|\.\w)", provenance) is not None
 
 
 def prefixed(rid: str, aid: str, taken: set[str]) -> str:
@@ -309,9 +321,12 @@ def prefixed(rid: str, aid: str, taken: set[str]) -> str:
 
 def written_ids() -> set[str]:
     """Every assertion id already in a group file: a group written earlier keeps its ids, and no later group takes
-    one (review of cecf20d: a lower group built late took an id a higher group's file held)."""
-    return {a.get("id_suggestion") or a.get("id") for f in READS_DIR.glob("group_g*.json")
-            for p in json.loads(f.read_text(encoding="utf-8"))["papers"] for a in p.get("assertions", [])}
+    one (review of cecf20d: a lower group built late took an id a higher group's file held); nor the id a review's
+    id_fix moves one to (F127, from the review of 7914e80)."""
+    return ({a.get("id_suggestion") or a.get("id") for f in READS_DIR.glob("group_g*.json")
+             for p in json.loads(f.read_text(encoding="utf-8"))["papers"] for a in p.get("assertions", [])}
+            | {new for f in REVIEWS_DIR.glob("g*.json")
+               for new in (json.loads(f.read_text(encoding="utf-8")).get("id_fix") or {}).values()})
 
 
 def assemble(groups: dict[str, list[str]], written: set[str] = frozenset()) -> tuple[dict[str, list[dict]], list[str]]:
@@ -341,8 +356,33 @@ def decided_ids(g: str) -> set[str]:
     return set(json.loads(path.read_text(encoding="utf-8"))) if path.exists() else set()
 
 
+def read_sha256(g: str) -> str:
+    """The SHA-256 of a local group's reader file, or "" for a group read in the cloud."""
+    path = LOCAL / "reads" / f"group_{g}.json"
+    return hashlib.sha256(path.read_bytes()).hexdigest() if path.exists() else ""
+
+
+def stale(groups) -> list[str]:
+    """Built groups whose reader file changed after the build (Sprint 15: g130 was built by another group's run
+    while its reader was still editing, and the builder never rebuilds, so the reader's last edits were lost
+    silently). A group built before the hash was recorded has none to compare."""
+    out = []
+    for g in groups:
+        path = READS_DIR / f"group_{g}.json"
+        built = json.loads(path.read_text(encoding="utf-8")).get("read_sha256") if path.exists() else None
+        if built and built != read_sha256(g):
+            out.append(g)
+    return out
+
+
 def main(argv: list[str]) -> int:
     groups = buildable()
+    if "--group" in argv:  # only the named groups: a run for one group never builds another reader's (Sprint 15)
+        named = set(argv[argv.index("--group") + 1].split(","))
+        groups = {g: rids for g, rids in groups.items() if g in named}
+    if moved := stale(groups):
+        raise SystemExit(f"reader files changed after their group was built: {moved}; delete the built file of each "
+                         "and rebuild it before its review")
     new = {g: rids for g, rids in groups.items() if not (READS_DIR / f"group_{g}.json").exists()}
     for g in sorted(set(groups) - set(new)):
         print(f"exists group_{g}.json (not rebuilt: delete it to take up a changed reader file)")
@@ -358,7 +398,8 @@ def main(argv: list[str]) -> int:
     for g, papers in built.items():
         path = READS_DIR / f"group_{g}.json"
         if "--write" in argv:
-            path.write_text(json.dumps({"papers": papers}, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+            body = {"papers": papers, **({"read_sha256": h} if (h := read_sha256(g)) else {})}
+            path.write_text(json.dumps(body, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
         print(f"{'wrote' if '--write' in argv else 'would write'} {path.name} ({len(papers)} records)")
     print("\n".join(f"rename {x}" for x in renames))
     print("\n".join(f"page   {x}" for x in PAGE_NOTES))

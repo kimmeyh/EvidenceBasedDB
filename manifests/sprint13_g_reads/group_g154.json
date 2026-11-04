@@ -1,0 +1,1091 @@
+{
+ "papers": [
+  {
+   "record_id": "he-2024-parameter-setting-heuristics-make-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\He-et-al._2024_Parameter-Setting-Heuristics-Make-the-Quantum-Approximate-Optimization__2408.09538.pdf",
+   "title_in_file": "Parameter Setting Heuristics Make the Quantum Approximate Optimization Algorithm Suitable for the Early Fault-Tolerant Era (Invited Paper)",
+   "version_note": "arXiv:2408.09538v1, 18 Aug 2024; matches the record.",
+   "pages": 7,
+   "read_extent": "full",
+   "not_read": "",
+   "sections_read": [
+    "Abstract",
+    "1 Introduction",
+    "2 Background on Quantum Approximate Optimization Algorithm",
+    "2.1 Properties of QAOA parameterized quantum circuit and connections to other algorithms",
+    "3 Overview of QAOA Parameter Setting Methods",
+    "3.1 Parameter concentration and transferability",
+    "3.2 Schedule reparameterization",
+    "3.3 Parameter optimization",
+    "4 End-to-End Parameter Setting Protocol",
+    "5 Opportunities for EFTQC Experiments with QAOA",
+    "5.1 Evaluating the evidence of QAOA speedup",
+    "5.2 Benchmarking quantum hardware",
+    "6 Discussion",
+    "References",
+    "Disclaimer"
+   ],
+   "figure_count": 2,
+   "figures": [
+    {
+     "figure": "Figure 1",
+     "page": 4,
+     "kind": "block diagram",
+     "shows": "Flow from Problem instance to Fine tune parameters through a dashed box holding four stacked steps: a) Rescale cost function, b) Select initial parameters, c) Select and configure optimizer, d) Allocate shot budget; no numeric axes.",
+     "confirmed_by": "proposes an end-to-end protocol for setting high-quality QAOA parameter for the execution on a quantum processor, as summarized in Fig. 1.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 1",
+     "page": 4,
+     "kind": "table",
+     "shows": "Fitted scaling factor and 95% confidence interval for time-to-solution for LABS and 8-SAT: QAOA 0.546 (p=12) and 0.302 (p=60); QAOA+QMF 0.275 (p=12) and 0.151 (p=60); best classical 0.432 and 0.325, with intervals as entered in the table assertions.",
+     "confirmed_by": "Table 1: Summary of evidence of scaling advantage of QAOA.",
+     "no_text_confirms": false
+    }
+   ],
+   "what_it_is": "A short invited survey from JPMorganChase of QAOA parameter-setting methods and an end-to-end shot-frugal protocol, arguing QAOA suits early fault-tolerant hardware.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "he-qaoa-eftqc-no-broad-speedup",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "The authors state that they do not expect broadly applicable speedups from QAOA experiments on early fault-tolerant hardware without significant advances in error correction, and that currently proposed surface-code architectures are unlikely to be competitive in time to solution.",
+     "anchor": "Section 1 Introduction, p.1",
+     "quotes": [
+      "we do not expect broadly applicable speedups from such experiments in absence of significant advances in error correction.",
+      "currently proposed quantum architectures like those based on the surface code [4] are unlikely to be competitive in terms of"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own expectation, stated in the introduction without a test in the paper.",
+     "result_type": "claim",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "he-qaoa-instance-independent-parameters",
+     "verdict": "confirmed",
+     "note": "The paper cites this (refs given in the text) and ties it to constant depth; Section 6 says it is the beyond-constant-depth regime that is unsolved.",
+     "value": "The authors state that QAOA parameters are known to be instance-independent when the QAOA depth is kept constant, so parameters optimized for small instances of a problem class can be used on larger instances with little or no reoptimization.",
+     "anchor": "Section 1 Introduction, p.1",
+     "quotes": [
+      "QAOA parameters are known to be instance-independent if the QAOA depth (i.e. the number of alternating operators) is kept constant",
+      "optimize the parameters for small instances from a given problem class once and use these parameters on larger instances with little or no reoptimization"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work and does not test.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "he-qaoa-shot-frugal-finetuning",
+     "verdict": "confirmed",
+     "note": "The paper attributes the benchmark to Ref. [30]; Section 4 gives the total budget as 10, 000 shots.",
+     "value": "The authors report, from a cited protocol, that fine-tuning of QAOA parameters can be done with a small shot budget of at most 10k shots, and that the trust-region optimizers COBYLA and BOBYQA perform best in that shot-limited setting.",
+     "anchor": "Section 4 End-to-end parameter setting protocol, p.4",
+     "quotes": [
+      "Since fine-tuning can be accomplished with a small (≤ 10k) shot budget, this end-to-end protocol is directly applicable to the shot-constrained EFTQC setting.",
+      "The benchmark shows that trust-region optimizers with a simple internal model, namely COBYLA [54] (linear model) and BOBYQA [55] (quadratic model) perform best in this setting."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper cites from Ref. [30]; not run in this paper.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id": "he-qaoa-speedup-evidence-small-simulated",
+     "verdict": "widened",
+     "note": "Section 5.1 gives the statevector limit per reference: at most 40 qubits in the LABS study and at most 42 in a third study; Section 1 gives 40 for the two speedup references. The evidence is called numerical.",
+     "value": "The authors state that evidence of a QAOA speedup over classical state of the art has so far been demonstrated only on small instances of at most 40 qubits in classical simulation. A later section states that the results focus on small problems because they come primarily from classical simulation of deep circuits, with full statevector propagation limited to at most 40 qubits in one reference and at most 42 in another.",
+     "anchor": "Section 1 Introduction, p.1; Section 5.1 Evaluating the evidence of QAOA speedup, p.5",
+     "quotes": [
+      "which so far have only been demonstrated on small (≤ 40 qubits) instances in classical simulation [11, 61].",
+      "they focus on small problems. This is due to the results obtained primarily by classical simulation of deep circuits",
+      "which can only be achieved for a modest number of qubits (≤ 40 in [61] and ≤ 42 in [46])."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work and does not test.",
+     "result_type": "cited",
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "he-qaoa-original-form",
+     "value": "The authors state that, unless specified otherwise, they take the original form of QAOA, whose initial state is the plus state and whose mixer is the sum of Pauli X operators.",
+     "anchor": "Section 2, p.2",
+     "quotes": [
+      "unless specified otherwise, we take the original form [37] whose initial state is a |+⟩ state and mixer"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Section 2 states the QAOA form used throughout the paper.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-approximation-ratio-definition",
+     "value": "The authors define the solution quality of a QAOA state by the approximation ratio, AR, computed from the energy expectation and the minimum and maximum values of the classical cost function.",
+     "anchor": "Section 2, Eq. 4, p.2",
+     "quotes": [
+      "The solution quality of a QAOA state is quantified by the approximation ratio (AR):"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 2 defines AR (Eq. 4) as the quality measure.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-parameter-setting-np-hard",
+     "value": "The authors state that setting the QAOA free parameters is challenging in general and is NP-hard in the worst case, citing other work.",
+     "anchor": "Section 1 Introduction, p.1",
+     "quotes": [
+      "This is a challenging problem in general; in fact, it is NP-hard in the worst case [6]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-barren-plateau-random-init",
+     "value": "The authors state that QAOA viewed as a variational algorithm trained from a random initialization is known to suffer from the barren plateau problem in many cases, citing other work.",
+     "anchor": "Section 1 Introduction, p.1",
+     "quotes": [
+      "it is known to suffer from the barren plateau problem in many cases"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-smooth-schedules",
+     "value": "The authors state, citing other work, that annealing-like smooth parameter schedules are both easy to optimize and offer good performance.",
+     "anchor": "Section 1 Introduction, p.1",
+     "quotes": [
+      "annealing-like smooth parameter schedules are both easy to optimize and offer good performance"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-instance-finetune-gain",
+     "value": "The authors state that instance-specific parameter fine-tuning can still offer meaningful performance gains over directly using instance-independent parameters, and that configuring the classical optimizer can lead to considerable performance improvements, both citing other work.",
+     "anchor": "Section 1 Introduction, p.1",
+     "quotes": [
+      "instance-specific parameter fine-tuning can still offer meaningful performance gains over directly using instance-independent parameters",
+      "configuring the classical optimizer can lead to considerable performance improvements"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-eftqc-viable-vs-variational",
+     "value": "The authors state that the availability of good instance-independent parameters makes QAOA a viable EFTQC algorithm, in sharp contrast to variational algorithms, which would require a prohibitively high number of samples to train.",
+     "anchor": "Section 1 Introduction, p.1",
+     "quotes": [
+      "The availability of good instance-independent parameters makes QAOA a viable EFTQC algorithm, in sharp contrast to variational algorithms which would require a prohibitively high number of samples to train."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' argument; not tested in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-tgate-count",
+     "value": "The authors state, citing other work, that QAOA can be implemented for many problems with a linear or quadratic number of T gates per layer, making it possible to study problems with hundreds to thousands of variables using only millions of T gates.",
+     "anchor": "Section 1 Introduction, p.1",
+     "quotes": [
+      "QAOA can be implemented for many problems with a linear or quadratic number of T gates per layer [59]",
+      "problems with hundreds to thousands of variables using only millions of T gates"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-small-problems-classically-easy",
+     "value": "The authors state that the vast majority of industry-relevant problems that can be mapped to hundreds of qubits can be solved classically in seconds.",
+     "anchor": "Section 1 Introduction, p.1",
+     "quotes": [
+      "The vast majority of industry-relevant problems that can be mapped to hundreds of qubits can be solved classically in seconds."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' assertion; no data in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-asymptotic-speedup-needs-ec",
+     "value": "The authors state that recent results provide evidence that QAOA offers an asymptotic speedup over state-of-the-art classical algorithms for certain problems, although with circuit sizes that require error correction.",
+     "anchor": "Section 1 Introduction, p.1",
+     "quotes": [
+      "recent results providing evidence that QAOA offers an asymptotic speedup over state-of-the-art classical algorithms for certain problems",
+      "although with circuit sizes that requires error correction"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-fault-tolerance-needed-theory",
+     "value": "The authors state that theoretical analysis suggests that achieving better-than-classical performance with QAOA will likely require fault tolerance, citing other work.",
+     "anchor": "Section 1 Introduction, p.1",
+     "quotes": [
+      "theoretical analysis suggests that achieving better-than-classical performance will likely require fault tolerance"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-paper-thesis",
+     "value": "The authors state that their paper makes the case that QAOA is a promising heuristic for combinatorial optimization to study on EFTQC devices, with a focus on the end-to-end protocol of one cited reference.",
+     "anchor": "Section 1 Introduction, p.1-2",
+     "quotes": [
+      "We focus in particular on Ref. [30], which proposes an end-to-end protocol for obtaining high-quality QAOA parameters with a limited number of shots",
+      "Our paper makes the case that QAOA is a promising heuristic for combinatorial optimization to study on EFTQC devices."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section 1 states the paper's scope and aim.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-analytic-params-small-depth",
+     "value": "The authors state that optimal QAOA parameters can be derived analytically for some problems at small constant depth, that theoretical analysis is challenging for larger depth, and that large depth is likely required for quantum advantage.",
+     "anchor": "Section 3, p.2",
+     "quotes": [
+      "While optimal QAOA parameters can be derived analytically for some problems in small constant depth",
+      "theoretical analysis is challenging for larger",
+      "is likely required for quantum advantage"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-grover-and-adiabatic-views",
+     "value": "The authors state that quantum unstructured search can be viewed in the singular value transformation framework as a sequence of similar unitaries as in QAOA, with the mixer generating a walk over the complete graph.",
+     "anchor": "Section 2.1, p.2",
+     "quotes": [
+      "quantum unstructured search can viewed in the singular value transformation framework [25] as a sequence of similar unitaries as in the QAOA",
+      "where the mixer generates a walk over the complete graph"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An interpretation the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-slow-regime-wraparound",
+     "value": "The authors state that in the slow-changing unitaries regime the final QAOA state may not be the ground state of the cost Hamiltonian, due to eigenphase wrap around.",
+     "anchor": "Section 2.1, p.2",
+     "quotes": [
+      "due to eigenphase wrap around"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-aqo-superexponential",
+     "value": "The authors state that adiabatic quantum optimization can have a runtime that is super exponential, due to the minimum spectral gap, citing other work.",
+     "anchor": "Section 2.1, p.2",
+     "quotes": [
+      "can have a runtime that is super exponential [3]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-concentration-definition",
+     "value": "The authors define parameter concentration as the optimal parameters being concentrated over random instances from a given problem class, and parameter transferability as the transfer of optimized parameters from one instance to another when optimal parameters for a problem class are all close to each other.",
+     "anchor": "Section 3.1, p.2",
+     "quotes": [
+      "Parameter concentration refers to the optimal parameters being concentrated over random instances from a given problem class.",
+      "if optimal parameters for instances of a given problem class are all close to each other, optimized parameters for one instance can be transferred to another."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Section 3.1 defines both terms.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-energy-concentration-constant-depth",
+     "value": "The authors state that the fundamental fact underlying parameter concentration is the concentration of the QAOA energy if the QAOA depth is constant, citing other work for mean energies concentrating over random instances.",
+     "anchor": "Section 3.1, p.2",
+     "quotes": [
+      "The fundamental fact underlying this phenomenon is the concentration of the QAOA energy if QAOA depth is constant.",
+      "the QAOA state has been shown to have a mean energy that concentrates over random problem instances"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-topological-barriers-logdepth",
+     "value": "The authors state that, in the regime where depth grows slower than logarithmically in problem size, the smoothness of QAOA over random instances also leads it to suffer from topological barriers that plague classical local approximation algorithms applied to hard combinatorial problems.",
+     "anchor": "Section 3.1, p.3",
+     "quotes": [
+      "also leads it to suffer from topological barriers that plague classical local approximation algorithms applied to hard combinatorial problems"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work; the depth regime is read from the printed page, where it is written with a little-o of log n.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-exact-solver-setting",
+     "value": "The authors state that QAOA can also be used as an exact solver, where the probability of measuring the optimal solution is the target metric, and that in that setting the comparison is to exponential-time algorithms, so the topological barriers are no longer relevant.",
+     "anchor": "Section 3.1, p.3",
+     "quotes": [
+      "It is also possible to utilize QAOA as an exact solver, i.e. the probability of measuring the optimal solution is the target metric",
+      "thus the previously mentioned topological barriers are no longer relevant."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement of setting, tied to cited work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-labs-fixed-param-scaling",
+     "value": "The authors report, from a cited study, that for the LABS problem constant-depth QAOA with a fixed set of parameters obtained at small problem sizes produces a decay in overlap that, combined with quantum minimum finding, outperformed the best classical exact solutions, a scaling advantage.",
+     "anchor": "Section 3.1, p.3",
+     "quotes": [
+      "constant-depth QAOA with a fixed set of parameters, obtained at small problems sizes, produces a decay in overlap",
+      "outperformed the best classical exact solutions, i.e. a scaling advantage."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-ground-state-transfer-no-theory",
+     "value": "The authors state that the transferability of QAOA parameters optimized with respect to ground state fidelity still lacks a theoretical explanation, because the standard concentration arguments do not apply.",
+     "anchor": "Section 3.1, p.3",
+     "quotes": [
+      "The transferability of QAOA parameters optimized with respect to ground state fidelity still lacks a theoretical explanation"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 3.1 states this as an open gap.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-linear-ramp-definition",
+     "value": "The authors describe the linear ramp parameterization as inspired by quantum annealing, linearly ramping up the cost Hamiltonian and ramping down the mixer.",
+     "anchor": "Section 3.2, p.3",
+     "quotes": [
+      "The simplest parameterization is inspired by quantum annealing and corresponds to linearly “ramping up” the cost Hamiltonian and “ramping down” the mixer"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A description of a method the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-root-tangent-like-linear",
+     "value": "The authors state, citing other work, that the root and tangent schedules perform similarly to a linear ramp.",
+     "anchor": "Section 3.2, p.3",
+     "quotes": [
+      "gent schedules perform similarly to a linear ramp."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work (the quote starts at a line-break hyphen split of tangent).",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-gradient-cost-grows-with-params",
+     "value": "The authors state that the best known techniques for obtaining gradients of parameterized quantum circuits have a cost that grows with the number of parameters, so the high sample cost makes gradient-based optimization largely uncompetitive and gradient-free optimizers, typically trust-region ones, are preferred.",
+     "anchor": "Section 3.3, p.3",
+     "quotes": [
+      "the best known techniques for obtaining gradients of parameterized quantum circuits have cost that grows with the number of parameters",
+      "makes gradient-based optimization methods largely uncompetitive.",
+      "Preference is therefore given to gradient-free optimizers, typically but not exclusively trust-region ones."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement the paper supports with a cited reference.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-learning-optimizers-unclear",
+     "value": "The authors state that learning-based optimizers can achieve good performance on the concentrated landscape, but it is unclear whether they can outperform simpler parameter transfer.",
+     "anchor": "Section 3.3, p.3-4",
+     "quotes": [
+      "While such techniques can achieve good performance, it is unclear if they can outperform simpler parameter transfer."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 3.3 states this as an unresolved question.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-protocol-four-steps",
+     "value": "The authors describe the end-to-end protocol of a cited reference as four steps, summarized in Figure 1: rescale the cost function, select initial parameters, select and configure a classical optimizer, and allocate the shot budget; the key idea is to start with good instance-independent initial parameters and fine tune per instance.",
+     "anchor": "Section 4, Figure 1, p.4",
+     "quotes": [
+      "proposes an end-to-end protocol for setting high-quality QAOA parameter for the execution on a quantum processor, as summarized in Fig. 1.",
+      "The key idea is to start with good instanceindependent initial parameters and fine tune the parameters per instance."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A protocol the paper attributes to Ref. [30].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-protocol-noise-240-gates",
+     "value": "The authors state that the cited protocol can tolerate realistic hardware noise, shown by executions of QAOA using up to 240 two-qubit gates.",
+     "anchor": "Section 4, p.4",
+     "quotes": [
+      "can tolerate realistic hardware noise by performing executions of QAOA with",
+      "using up to 240 two-qubit gates."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. [30].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-rescaling-keeps-optimum",
+     "value": "The authors state that dividing the cost function by a constant scaling factor does not change the optimum solution of the original problem but makes parameter optimization much easier.",
+     "anchor": "Section 4 step a, p.4",
+     "quotes": [
+      "Applying such a constant scalar does not change the optimium solution of the original problem, but it will make the parameter optimization much easier [68]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement the paper supports with a cited reference.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-rescaling-optimal-maxcut",
+     "value": "The authors state that the scaling rule has been shown theoretically to be optimal for weighted MaxCut on large-girth regular graphs with i.i.d. weights, and performs well empirically for a broad class of problems.",
+     "anchor": "Section 4 step a, p.4",
+     "quotes": [
+      "This scaling rule has been shown theoretically to be optimal for weighted MaxCut on large-girth regular graphs with i.i.d. weights [68], and performs well empirically for a broad class of problems."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-averaged-params-initial-point",
+     "value": "The authors state that averaged optimized parameters from several problem instances serve as a high-quality initial point, because the optimal parameters of different problem instances are very similar for many problem settings.",
+     "anchor": "Section 4 step b, p.4",
+     "quotes": [
+      "the optimal parameters of different problem instances are very similar",
+      "the averaged optimized parameters from several problem instances serve as a high-quality initial point"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-simple-models-reason",
+     "value": "The authors state that trust-region optimizers with simple internal models perform best in the shot-frugal setting because simple models require only a small initial stencil to calibrate an initial model at the start of optimization.",
+     "anchor": "Section 4 step c, p.4",
+     "quotes": [
+      "This is due to simple models requiring only a small initial stencil to calibrate an initial model at the start of optimization."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An explanation the paper gives for a result it attributes to Ref. [30].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-cobyla-step-size",
+     "value": "The authors state that the cited benchmark shows COBYLA performance is not very sensitive to the initial step size, though smaller values are preferable if the quality of the initial parameter guess is higher.",
+     "anchor": "Section 4 step c, p.4",
+     "quotes": [
+      "COBYLA’s performance is not very sensitive to initial step size, though smaller values are preferable if the quality of initial parameter guess is higher"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. [30].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-shot-allocation-two-steps",
+     "value": "The authors state that, given a total budget of 10, 000 shots and a good initialization, the cited work finds the most performant strategy is to take only two additional optimizer steps after the initial stencil.",
+     "anchor": "Section 4 step d, p.4",
+     "quotes": [
+      "given a total budget of 10, 000 shots and availability of a good initialization, the most performant strategy is to take only two additional steps after the initial stencil."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. [30].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-table1-labs-qaoa",
+     "value": "Table 1 reports, from a cited study, a fitted scaling factor for QAOA on the LABS problem of 0.546 at p=12 with a 95% confidence interval of [0.506,0.585].",
+     "anchor": "Table 1, p.4",
+     "quotes": [
+      "0.546 (p=12) [0.506,0.585]",
+      "and its 95% confidence intervals (CI)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Table values the paper takes from Ref. [61].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "A smaller scaling factor means slower growth of time-to-solution."
+    },
+    {
+     "id_suggestion": "he-qaoa-table1-labs-qmf",
+     "value": "Table 1 reports, from a cited study, a fitted scaling factor for QAOA combined with quantum minimum finding on the LABS problem of 0.275 at p=12 with a 95% confidence interval of [0.253,0.293].",
+     "anchor": "Table 1, p.4",
+     "quotes": [
+      "0.275 (p=12) [0.253,0.293]",
+      "and its 95% confidence intervals (CI)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Table values the paper takes from Ref. [61].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-table1-labs-classical",
+     "value": "Table 1 reports, from a cited study, a fitted scaling factor for the best classical approach on the LABS problem of 0.432 with a 95% confidence interval of [0.411,0.465].",
+     "anchor": "Table 1, p.4",
+     "quotes": [
+      "0.432 [0.411,0.465]",
+      "and its 95% confidence intervals (CI)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Table values the paper takes from Ref. [61].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "On LABS the QAOA+QMF factor 0.275 is below the classical 0.432, and its interval does not overlap."
+    },
+    {
+     "id_suggestion": "he-qaoa-table1-8sat-qaoa",
+     "value": "Table 1 reports, from a cited study, a fitted scaling factor for QAOA on 8-SAT of 0.302 at p=60 with a 95% confidence interval of [0.295, 0.309].",
+     "anchor": "Table 1, p.4",
+     "quotes": [
+      "0.302 (p=60) [0.295, 0.309]",
+      "problem is from Ref. [61], and the data for 8-SAT problem is",
+      "and its 95% confidence intervals (CI)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Table values the paper takes from Ref. [11].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "QAOA alone (0.302) is below the classical 0.325 on 8-SAT, but the intervals are close."
+    },
+    {
+     "id_suggestion": "he-qaoa-table1-8sat-qmf",
+     "value": "Table 1 reports, from a cited study, a fitted scaling factor for QAOA combined with quantum minimum finding on 8-SAT of 0.151 at p=60 with a 95% confidence interval of [0.130,0.155].",
+     "anchor": "Table 1, p.4",
+     "quotes": [
+      "0.151 (p=60) [0.130,0.155]",
+      "problem is from Ref. [61], and the data for 8-SAT problem is",
+      "and its 95% confidence intervals (CI)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Table values the paper takes from Ref. [11].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-table1-8sat-classical",
+     "value": "Table 1 reports, from a cited study, a fitted scaling factor for the best classical approach on 8-SAT of 0.325 with a 95% confidence interval of [0.317, 0.333].",
+     "anchor": "Table 1, p.4",
+     "quotes": [
+      "0.325 [0.317, 0.333]",
+      "problem is from Ref. [61], and the data for 8-SAT problem is",
+      "and its 95% confidence intervals (CI)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Table values the paper takes from Ref. [11].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-table1-qmf-definition",
+     "value": "The Table 1 caption states that QAOA+QMF refers to QAOA combined with quantum minimum finding, and that best classical includes both exact solvers and empirically evaluated heuristics.",
+     "anchor": "Table 1 caption, p.4",
+     "quotes": [
+      "“QAOA+QMF” refers to QAOA combined with",
+      "includes both exact solvers and empirically evaluated heuris-"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The Table 1 caption defines both labels.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-fixed-param-results",
+     "value": "The authors state that the cited speedup results were obtained with QAOA at fixed parameters, set to the mean of rescaled parameters optimized for small instances, and that one other cited study uses fixed linear ramps with heuristically chosen ramp parameters.",
+     "anchor": "Section 5.1, p.5",
+     "quotes": [
+      "These results are obtained using QAOA with fixed parameters.",
+      "set the fixed parameters to be mean QAOA parameters over appropriate rescaled parameters optimized for small problem instances",
+      "uses fixed linear ramps, with ramp parameters chosen heuristically."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A description of cited work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-speedup-evidence-limits",
+     "value": "The authors state that the cited speedup results have two limitations that EFTQC experiments could overcome: they focus on small problems, and the scaling can only be determined for small depth because for high depth but low qubit count the overlap gets too large, making the scaling estimated from small depth unrepresentative.",
+     "anchor": "Section 5.1, p.5",
+     "quotes": [
+      "The results of Refs. [11, 46, 61] have two important limitations which can be overcome by EFTQC experimentation.",
+      "Second, as a consequence of the small qubit count, the scaling can only be determined for small",
+      "the overlap gets too large, making the scaling estimated from small"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 5.1 states the limits of the cited evidence.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-eftqc-higher-depth",
+     "value": "The authors state that EFTQC experiments using hundreds of qubits would allow exploration of the higher-depth regime, which has the potential to enable better scaling.",
+     "anchor": "Section 5.1, p.5",
+     "quotes": [
+      "Experiments on EFTQC devices using hundreds of qubits would allow exploration of the higher-depth regime, which has the potential to enable better scaling [11]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' expectation; not tested in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-energy-as-benchmark",
+     "value": "The authors state that the quality of QAOA execution on an imperfect quantum device can be easily measured by QAOA energy, making it a convenient benchmark to evaluate and compare quantum devices.",
+     "anchor": "Section 5.2, p.5",
+     "quotes": [
+      "The quality of QAOA execution on an imperfect quantum device can be esaily measured by QAOA energy, making it a convenient benchmark to evaluate and compare quantum devices."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' claim; not tested in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-hardware-benchmark-results",
+     "value": "The authors report, from cited work, a product of qubit count and depth of up to 320 on trapped-ion quantum processors and up to 127 times 2 equals 254 on superconducting quantum processors, and state that to the best of their knowledge these remain the state of the art.",
+     "anchor": "Section 5.2, p.5",
+     "quotes": [
+      "Ref. [64] executes this benchmark on trapped-ion quantum processors, achieving",
+      "of up to 320 using",
+      "of up to 127 · 2 = 254 on superconducting quantum processors.",
+      "To the best of our knowledge, these results remain the state-of-the-art"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Results the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-large-products-need-ec",
+     "value": "The authors state that moving to a larger product of qubit count and depth on hardware would require error correction.",
+     "anchor": "Section 5.2, p.5",
+     "quotes": [
+      "would require error correction."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' claim; not tested in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-discussion-constant-depth-solved",
+     "value": "The authors state that recent advances largely solve the problem of parameter setting in QAOA with constant depth, through good initial instance-independent parameters and shot-frugal fine-tuning.",
+     "anchor": "Section 6 Discussion, p.5",
+     "quotes": [
+      "As this paper shows, recent advances largely solve the problem of parameter setting in QAOA with constant depth."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' conclusion; the paper is a summary and runs no experiment.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-discussion-high-depth-limit",
+     "value": "The authors state that schedule reparameterization techniques such as the linear ramp take a step toward high depth, but their performance is sometimes not as expected and could be drastically worse than direct QAOA parameter optimization.",
+     "anchor": "Section 6 Discussion, p.5",
+     "quotes": [
+      "their performance is sometimes not as expected and could be drastically worse than direct QAOA parameter optimization"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 6 states this limit of schedule reparameterization.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-discussion-open-challenge",
+     "value": "The authors state that instance-independent parameters are typically nearly optimal in the small constant depth regime, and that developing parameter-setting techniques that work beyond small or constant depth is an important challenge for the community.",
+     "anchor": "Section 6 Discussion, p.5",
+     "quotes": [
+      "instance-independent parameters are typically nearly optimal.",
+      "development of parameter-setting techniques that work beyond"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 6 states the open problem.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "he-qaoa-discussion-eftqc-experiments",
+     "value": "The authors state that current techniques enable EFTQC experimentation with small constant depth QAOA, expected to yield insights into the potential of QAOA to provide practically relevant speedups and into the strengths of quantum hardware.",
+     "anchor": "Section 6 Discussion, p.5",
+     "quotes": [
+      "EFTQC experimentation with small",
+      "valuable insights"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' expectation; not tested in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ],
+ "read_sha256": "e18249e8be011b41c242182ebe23da92999558e4e8f1304050f1315d7137b644"
+}

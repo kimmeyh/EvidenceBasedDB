@@ -117,6 +117,28 @@ def test_a_local_read_names_task_fs_reader(review, monkeypatch):
     assert out["tags"] == {"p1": review.LOCAL_TAG}
 
 
+def test_a_sprint15_read_names_sprint15s_prompt(review, monkeypatch):
+    """Sprint 15 Task H: g062-r1 was first finalized naming Sprint 14's tag and prompt. A read that carries
+    figure_count (Sprint 15's prompt requires it) names Sprint 15's. Proven to fail by injection, 2026-11-01: with
+    every local read given Sprint 14's tag, the Sprint 15 group named Sprint 14's prompt."""
+    _decide(review, GOOD)
+    monkeypatch.setattr(review.build, "local_file", lambda rid: Path(f"{rid}.json"))
+    path = review.READS_DIR / "group_g050.json"
+    group = json.loads(path.read_text(encoding="utf-8"))
+    for p in group["papers"]:
+        p["figure_count"] = 0
+    path.write_text(json.dumps(group), encoding="utf-8")
+    out = review.finalize("g050", "2026-11-01", review.STORED)
+    assert (out["tag"], out["reader"]) == (review.S15_TAG, review.S15_READER)
+    assert "sprint15_f114_reads" in out["reader"]
+    # a group mixing a Sprint 14 and a Sprint 15 local read names each read's own
+    group["papers"].append({"record_id": "p2", "assertions": [], "existing": []})
+    path.write_text(json.dumps(group), encoding="utf-8")
+    out = review.finalize("g050", "2026-11-01", review.STORED)
+    assert out["tags"]["p2"] == review.LOCAL_TAG and out["readers"]["p2"] == review.LOCAL_READER
+    assert {out["tags"][r] for r in out["tags"] if r != "p2"} == {review.S15_TAG}
+
+
 def test_a_missing_or_malformed_decision_is_refused(review):
     """Proven to fail by injection, 2026-10-30: with the basis check removed, a HIGH on "measured result" passed."""
     _decide(review, {k: v for k, v in GOOD.items() if k != "sketch"})

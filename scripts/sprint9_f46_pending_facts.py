@@ -36,7 +36,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from store import connect, recheck, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
-from store.ingest import AssertionRecord, add_read, append_updated_reason, insert_assertion, set_tier  # noqa: E402
+from store.ingest import (FULL_READ_MARK, AssertionRecord, add_read, append_updated_reason,  # noqa: E402
+                          insert_assertion, last_change, set_tier)
 
 _spec = importlib.util.spec_from_file_location("f78", Path(__file__).with_name("sprint9_f78_ceiling_reading.py"))
 f78 = importlib.util.module_from_spec(_spec)
@@ -245,9 +246,17 @@ def apply_changes(conn) -> list[str]:
                 f"{TODAY}, Claude, read the opening and every quoted passage in context; first pass by a subagent"))
             log.append(f"tier   {rid} -> read")
     for g, a, rid in assertions():
-        stored = conn.execute("SELECT value, certainty, certainty_reasons FROM records WHERE id = ?",
-                              (a.id,)).fetchone()
-        if stored and tuple(stored) != (a.value, a.certainty, a.certainty_reasons):
+        stored = conn.execute("SELECT value, certainty, certainty_reasons, updated_reason, updated FROM records "
+                              "WHERE id = ?", (a.id,)).fetchone()
+        last = last_change(stored[3]) if stored else ""
+        if stored and ((FULL_READ_MARK in last and "NOT in the paper" not in last)
+                       or (FULL_READ_MARK in (stored[3] or "") and TODAY < (stored[4] or ""))):
+            # A later full read rewrote it and owns it now, also after a later note that is not a full read (the
+            # rule sync_assertion applies; fresh-eyes review, 2026-11-04); this script would undo the correction
+            # (Sprint 15: F114's full read of faryad-2026 corrected faryad-state-prep-omega-2n-dimension-count)
+            log.append(f"exists {a.id} (owned by a later full read)")
+            continue
+        if stored and tuple(stored[:3]) != (a.value, a.certainty, a.certainty_reasons):
             conn.execute("UPDATE records SET value = ?, certainty = ?, certainty_reasons = ? WHERE id = ?",
                          (a.value, a.certainty, a.certainty_reasons, a.id))
             append_updated_reason(conn, a.id, f"{TODAY} ({TAG}): corrected to the script's current text", TODAY)

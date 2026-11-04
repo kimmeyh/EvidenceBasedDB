@@ -51,6 +51,8 @@ TAG = "Sprint 14 Task E, F117 (F114 cloud read)"
 READER = "Claude Sonnet 5.5 (F114 cloud session)"
 LOCAL_TAG = "Sprint 14 Task F, F114 (local read)"
 LOCAL_READER = "Claude Sonnet 5.5 (F114 local reader, manifests/sprint14_f114_reads/READER_PROMPT.md)"
+S15_TAG = "Sprint 15 Task H, F114 (local read)"
+S15_READER = "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)"
 UNRECORDED = "Claude (F114 cloud session; the model is not in the result's commits, the launcher's default was Sonnet)"
 CHANGED = {"corrected", "narrowed", "widened", "contradicted"}
 
@@ -238,12 +240,17 @@ def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> 
     if unread:
         review["unread"] = unread
     local = {r for r in held if build.local_file(r)}
-    if local and local == held:  # read wholly by Task F's local readers
-        review["tag"], review["reader"] = LOCAL_TAG, LOCAL_READER
+    # Sprint 15 Task H: a read under Sprint 15's prompt carries figure_count (its check requires it); it names that
+    # sprint's prompt, not Sprint 14's (g062-r1 was first finalized as a Sprint 14 read)
+    s15 = {p["record_id"] for p in papers(g) if "figure_count" in p}
+    tag_of = {r: (S15_TAG, S15_READER) if r in s15 else (LOCAL_TAG, LOCAL_READER) for r in local}
+    whole = local and local == held and len(set(tag_of.values())) == 1  # read wholly by one sprint's local readers
+    if whole:
+        review["tag"], review["reader"] = next(iter(tag_of.values()))
     readers = {r: UNRECORDED for r in held if r in UNRECORDED_MODEL and r not in local}
-    if local and local != held:  # a mixed group: each local read names its own reader and tag (review of 1cb63bb)
-        readers.update({r: LOCAL_READER for r in local})
-        review["tags"] = {r: LOCAL_TAG for r in sorted(local)}
+    if local and not whole:  # a mixed group: each local read names its own reader and tag (review of 1cb63bb)
+        readers.update({r: tag_of[r][1] for r in local})
+        review["tags"] = {r: tag_of[r][0] for r in sorted(local)}
     if readers:
         review["readers"] = readers
     own_requotes = set(review["requote"])

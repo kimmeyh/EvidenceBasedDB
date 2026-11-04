@@ -338,9 +338,12 @@ def validate_paper(paper: PaperRecord, check_local_paths: bool = True) -> None:
                     f"paper {pid!r}: the saved page {local!r} has {words} visible words, fewer than "
                     f"{MIN_VISIBLE_WORDS}: a bot challenge, a JavaScript-only shell or a redirect stub, "
                     "not the content. Save the real page (print to PDF, or the text) and point access at it.")
-    if paper.citation and any(marker.lower() in paper.citation.lower() for marker in _AUDIT_MARKERS):
+    # A marker counts only as a word of its own: "error-corrected" in a title is not one (Babbush et al. 2021,
+    # Sprint 15 Task J).
+    audit = [m for m in _AUDIT_MARKERS if paper.citation and re.search(rf"(?<![\w-]){re.escape(m)}", paper.citation, re.I)]
+    if audit:
         raise ValueError(
-            f"paper {pid!r}: citation carries audit-trail text ({', '.join(m for m in _AUDIT_MARKERS if m.lower() in paper.citation.lower())}). "
+            f"paper {pid!r}: citation carries audit-trail text ({', '.join(audit)}). "
             "Corrections and notes belong in updated_reason or evidence, not in the citation."
         )
     # An api-origin record must let the door derive its citation, unless it

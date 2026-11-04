@@ -444,6 +444,14 @@ def test_door_refuses_audit_trail_inside_the_citation(marker):
         validate_paper(_api_paper(citation=f"Cite, 2026. {marker}"))
 
 
+def test_a_title_word_that_holds_a_marker_is_not_audit_text():
+    """Sprint 15 Task J: Babbush et al.'s "Focus beyond quadratic speedups for error-corrected quantum advantage"
+    was refused as a "CORRECTED" note. Proven to fail by injection, 2026-11-01: with the substring match restored,
+    the citation was refused."""
+    validate_paper(_api_paper(citation='Babbush, R., "Focus beyond quadratic speedups for error-corrected quantum '
+                                       'advantage," arXiv:2011.04149v2'))
+
+
 def test_door_refuses_multiline_disposition_and_a_tier_named_in_prose():
     with pytest.raises(ValueError, match="one line"):
         validate_paper(_api_paper(disposition="line one\nline two"))

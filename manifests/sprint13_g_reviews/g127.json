@@ -1,0 +1,495 @@
+{
+ "group": "g127",
+ "reviewed_on": "2026-11-01",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "docking-mapped-to-mvwcp": [
+   "setup",
+   "Section II, p.2: the paper states its own formulation, mapping docking to the maximum vertex weight clique problem (taken from Ref. [32])"
+  ],
+  "docking-qubits-equal-vertices": [
+   "setup",
+   "Section III.A, p.6: states the qubit count of its own encoding, N = m x n, with m and n defined in the same sentence"
+  ],
+  "docking-bqp-formulation": [
+   "definition",
+   "Section II.B, p.4, Eq. (1): the paper defines its BQP objective, x_i binary, N = |V| qubits, and w_ij = P on complement-graph edges"
+  ],
+  "docking-compatibility-edge-rule": [
+   "definition",
+   "Appendix B, p.15, Eq. B1: element is 1 if the connectivity strength is positive, 0 otherwise; the paper defines this rule itself"
+  ],
+  "docking-flexible-epsilon-definition": [
+   "definition",
+   "Section III.A, p.6 and Appendix B: defines the second compatibility criterion, tau + eps1 + eps2, with a shorter distance eps_s for acceptor and donor pairs"
+  ],
+  "docking-6q-setup": [
+   "setup",
+   "Section III.A, p.7: 3-layer QAOA, P = 6, 500 initial parameter sets, 5000 samples; all stated as the paper's own protocol"
+  ],
+  "docking-6q-epsilon-8skh": [
+   "setup",
+   "Appendix B, p.15: eps = 4, eps_s = 3, tau = 0.6 Angstrom for the 6-qubit 8SKH example"
+  ],
+  "docking-8q-params-3hac": [
+   "setup",
+   "Appendix C, p.17: eps = 3.1, eps_s = 2.5, tau = 0.1 Angstrom, with the stated reason of spatial compactness of the points"
+  ],
+  "docking-12q-params-5f4l": [
+   "setup",
+   "Appendix D, p.18: eps = 2.8, eps_s = 2.5, tau = 0.1 Angstrom for the 12-qubit 5F4L example"
+  ],
+  "docking-noise-config-8layer-p8": [
+   "setup",
+   "Section III.B, p.9: eight-layer circuit, penalty 8, 500 trials per point with random initialization; the paper's own noise-study protocol"
+  ],
+  "docking-simulation-mindquantum-only": [
+   "scope",
+   "Section III.B, p.9: 'All computational simulations were executed using the Mindquantum framework'; the paper's own scope, no hardware run"
+  ],
+  "docking-12q-config-13layers-p8": [
+   "setup",
+   "Section III.C, p.10: 13 layers, P = 8 fixed, quantum natural gradient descent, details in Appendix D"
+  ],
+  "docking-12q-exponential-params-challenge": [
+   "stated limit",
+   "Section IV, p.11: the authors state that their 12-qubit run met substantial challenges, likely from the growth in parameters, not fully fixed by CD terms. The cause is hedged ('likely') as the value says. True result type is measured, a limit on their own simulation"
+  ],
+  "docking-cd-single-qubit-only": [
+   "definition",
+   "Section II.C, p.5: defines its CD term A_t = i sigma_y, which adds only single-qubit parameter gates after each layer and avoids two-qubit gates"
+  ],
+  "docking-cd-pool-second-order": [
+   "scope",
+   "Section II.C, p.5: the paper limits itself to second order, l = 2, and gives the operator pool in the next sentence"
+  ],
+  "docking-qng-eta-01": [
+   "setup",
+   "Appendix A, p.15: all DC-QAOA experiments use eta = 0.1 and uniform random gate-parameter initialization U(0,1)"
+  ],
+  "docking-12-qubit-local-optima-limit": [
+   "stated limit",
+   "Section III.C end, p.11: 'one notable caveat of our approach is the algorithm's vulnerability to converging towards local optima'. The paper states this limit about its own method"
+  ],
+  "qal-definition-replace-model-with-qnn": [
+   "definition",
+   "Section I, p.1: the paper states what it takes QAL to be, replacing the classical model by a QNN in the active-learning workflow. The passage cites [29] only for a related experiment"
+  ],
+  "qal-contribution-statement": [
+   "scope",
+   "Section I, p.2: the paper states its own contribution, QAL in the gate-model paradigm with equivariant deep QNNs"
+  ],
+  "qal-uncertainty-sampling-defn": [
+   "definition",
+   "Section II.A, p.2: describes USAMP as mapping the model to P_theta and, for binary tasks, querying the sample nearest fifty-fifty. A known strategy, cited to [42], but stated here as the strategy the paper uses"
+  ],
+  "qal-def1-least-confidence": [
+   "definition",
+   "Definition 1, Section II.A, p.2, Eq. (1): argmax of 1 minus the probability of the most probable label"
+  ],
+  "qal-def2-margin-sampling": [
+   "definition",
+   "Definition 2, Section II.A, p.2, Eq. (2): argmin of the gap between the two most likely labels; the 'small margin is ambiguous' reason is in the next sentence"
+  ],
+  "qal-def3-entropy-sampling": [
+   "definition",
+   "Definition 3, Section II.A, p.2, Eq. (3): argmax of the entropy of the predicted class distribution"
+  ],
+  "qal-def4-voting-entropy": [
+   "definition",
+   "Definition 4, Section II.A, p.3, Eq. (4): committee vote-share entropy, V(y_j) the votes for a class"
+  ],
+  "qal-def5-density-weighted": [
+   "definition",
+   "Definition 5, Section II.A, p.3, Eq. (5): largest average similarity to the other pool samples; the combination remark is in the next sentence"
+  ],
+  "qal-def-label-invariance-quantum": [
+   "definition",
+   "Section II.C, p.3 to 4, Eq. (8): f(U rho U dagger) = f(rho) = y for all rho of label y and every U in G. The formula is in the text layer after the quoted words"
+  ],
+  "qal-def-gate-invariance": [
+   "definition",
+   "Definition 7, Section II.C, p.4, Eq. (14): the gate is equivariant iff it commutes with R_q(g) for all theta and all g in S"
+  ],
+  "qal-def-twirling-formula": [
+   "definition",
+   "Definition 8, Section II.C, p.4, Eq. (15): the twirl averages R(g) G R dagger(g) over S, commutes with each R(g), and gives the equivariant gate exp(-i theta T_R[G])"
+  ],
+  "qal-donut-dataset-setup": [
+   "setup",
+   "Figure 3 caption, p.5: 500 samples, Gaussian radius, uniform angle, label by the sign of cos(2 theta + 0.58), 3:1:1 split"
+  ],
+  "qal-eqnn-z-three-params-per-layer": [
+   "definition",
+   "Section III.B, p.5, Eqs. (17) to (19): RZ and RXX gates from generators unchanged by the Z tensor Z twirl, giving 3d parameters for d layers"
+  ],
+  "qal-encoder-breaks-swap-pseudosymmetry": [
+   "setup",
+   "Section III.B, p.5: the RX and RY order differs on the two qubits to break the SWAP pseudo-symmetry; the same-expectation consequence is stated in the next sentences"
+  ],
+  "qal-hea-baseline-design": [
+   "setup",
+   "Section III.B, p.6, Eq. (20): two RX gates outside the equivariant set plus a CNOT, same measured operator, trained as a baseline to validate GQML"
+  ],
+  "qal-donut-training-setup": [
+   "setup",
+   "Section III.C, p.6: binary cross-entropy, Adam at 0.1, 100 epochs, no batching, uniform init in [-pi, pi], best validation accuracy in history selects the model"
+  ],
+  "qal-fidelity-sampling-defn-lambda": [
+   "definition",
+   "Section III.D, p.7, Eq. (22): FSAMP combines USAMP with density weighting, similarity as fidelity, lambda = 0.1 in the numerical experiments"
+  ],
+  "qal-ttt-setup-d4-order8": [
+   "setup",
+   "Section IV.A and IV.B, p.8: 500 games split 3:1:1, three classes, label symmetry D4 of order 8, all stated by the paper"
+  ],
+  "qal-ttt-encoding-9-qubits-onehot": [
+   "definition",
+   "Section IV.B, p.8: one-hot encoding, one qubit per site, RX angle 2 pi g_i / 3 with g_i in {+1, -1, 0}, D4 acting as SWAPs on the 9-qubit grid"
+  ],
+  "qal-ttt-network-config-l2-d5": [
+   "setup",
+   "Section IV.B, p.8: (l, d) = (2, 5) in the numerical experiments, with the layer string and the corner, middle and edge observables in Eqs. (25) to (27)"
+  ],
+  "qal-ttt-training-setup-mse": [
+   "setup",
+   "Section IV.C, p.9: MSE loss, Adam at 0.1, 200 epochs, no batching, and the stated reason for MSE over cross-entropy"
+  ],
+  "qal-limit-mitigation-out-of-scope": [
+   "stated limit",
+   "Section V, p.10: exploring QAL strategies that mitigate the biased sampling 'goes beyond the scope of this study'"
+  ],
+  "qal-code-availability-mindspore-quantum": [
+   "setup",
+   "Code Availability, p.11: the authors state they used MindSpore Quantum and provide codes, datasets and results in a repository. This records what they state, not that the repository was checked"
+  ],
+  "qal-two-scenarios-setup": [
+   "scope",
+   "Section V, p.10: the methodology is exemplified in two scenarios, slicing-a-donut with Z2 and tic-tac-toe with D4"
+  ],
+  "restaurant-game-rules": [
+   "definition",
+   "The Restaurant Game section, p.3, Eq. (1): n restaurants, one closed at random, Eve knows the strategy but not the private channel, conditions (h1) p(y=x|x) = 0 and (h2) sum over x of p(y|x)p(x) = 1/n"
+  ],
+  "restaurant-source-parameters": [
+   "setup",
+   "Figure 2 caption, p.3: UV pulses at 390 nm, 150 fs, 80 MHz through a HWP between two BBO crystals; the PBS post-selects horizontal polarization to give single photons in H"
+  ],
+  "restaurant-ten-games-setup": [
+   "setup",
+   "Results, p.3: ten H3 games, PPBS vertical split ratio 1/3, probabilities from detected-photon ratios, about 4800 photons per experiment"
+  ],
+  "restaurant-winning-index-definition": [
+   "definition",
+   "Results, p.3: E is the maximum of a k1-weighted violation of (h1) and a k2-weighted deviation from gamma, with k1 = 1/3 and k2 = 1; E = 0 is ideal and lower E is closer to ideal"
+  ],
+  "restaurant-classical-optimum-by-discretized-lp": [
+   "setup",
+   "Supplement II.D, p.16 to 17: E_C comes from a linear program per distribution p_A, minimum taken, by discretizing p_A; the 10^-3 precision is the paper's statement about LP algorithms in general, as the value reports"
+  ],
+  "restaurant-prop3-certification": [
+   "proved result",
+   "Proposition 3, Supplement III, p.18: proved in the paper by showing orthogonal encodings and projective measurements are each classically simulable with one bit, so advantage needs coherence and a non-projective measurement. No outside theorem is used"
+  ],
+  "restaurant-device-certification-protocol": [
+   "definition",
+   "Supplement III, p.17 to 18: the verifier compares E_V with E_C and confirms quantumness if E_V < E_C, otherwise certification fails; the paper defines this protocol"
+  ],
+  "restaurant-games-on-curve-gamma": [
+   "setup",
+   "Supplement II.C, p.16: PPBS reflection ratio 1/3 and ten games on the curve Gamma of Eq. (41)"
+  ],
+  "satrouting-n-squared-encoding": [
+   "definition",
+   "Section 3.1, p.5, Eq. (2): x_ik = 1 if node i is the k-th path node; N^2 variables; chosen as a plain baseline over logarithmic encodings"
+  ],
+  "satrouting-vqe-ansatz-basic-entangler": [
+   "setup",
+   "Section 4.1, p.7 to 8: BasicEntanglerLayers from PennyLane, Adam, gradients by the parameter-shift rule"
+  ],
+  "satrouting-qaoa-setup": [
+   "setup",
+   "Section 4.2, p.8: p alternating cost and mixer layers, 2p parameters, Adam, Max-Cut Hamiltonians from standard definitions"
+  ],
+  "satrouting-qrl-reinforce-baseline-choice": [
+   "setup",
+   "Section 4.3, p.8: REINFORCE chosen as the direct quantum analogue of a foundational policy gradient method, to set a baseline"
+  ],
+  "satrouting-reinforce-known-limits": [
+   "stated limit",
+   "Section 4.3, p.8: the authors acknowledge REINFORCE's high variance and sample inefficiency as limits they expect in their own quantum agent. True result type: a caveat on their method, not measured"
+  ],
+  "satrouting-qrl-pqc-architecture": [
+   "setup",
+   "Section 4.3, p.8 to 9: ceil(log2 N) qubits, a state-encoding layer then a trainable circuit, parameter-shift gradients, Adam"
+  ],
+  "satrouting-simulator-default-qubit": [
+   "setup",
+   "Section 4.4, p.9: PennyLane default.qubit statevector simulator, NetworkX environment, to separate algorithmic from hardware errors"
+  ],
+  "satrouting-scenario-a-maxcut-instance": [
+   "setup",
+   "Section 5.1, p.9 to 10: one 5-node, 7-edge Max-Cut instance as a control"
+  ],
+  "satrouting-scenario-b-optimal-path-11": [
+   "setup",
+   "Section 5.2, p.10: 4-node, 5-edge weighted graph, optimal path 0-1-2-3 with cost 11, 16-qubit N^2 encoding"
+  ],
+  "satrouting-scenario-c-ba-graph": [
+   "setup",
+   "Section 5.3, p.10: 8-node Barabasi-Albert graph, weights uniform in [1, 10], random source and destination, at most 25 steps"
+  ],
+  "satrouting-scenario-c-edge-churn": [
+   "scope",
+   "Section 5.3, p.10: every 10 steps one edge is removed and one added, as the paper's simple model of LEO link churn"
+  ],
+  "satrouting-approx-ratio-definition": [
+   "definition",
+   "Section 5.4, p.11: ratio of found cost to known optimal cost; 1.0 is optimal; solution validity is the primary static metric"
+  ],
+  "satrouting-qrl-metrics-moving-window": [
+   "definition",
+   "Section 5.4, p.11: success rate and mean reward per episode, tracked over a 100-episode moving window"
+  ],
+  "satrouting-code-availability": [
+   "setup",
+   "Code Availability, p.15: the authors state the full code and figure scripts are on GitHub. This records the statement, not a check of the repository"
+  ],
+  "all-experiments-ideal-noise-free-simulator": [
+   "scope",
+   "Section 4.4, p.9: 'All experiments were conducted on a classical computer simulating an ideal, noise-free quantum processor'"
+  ],
+  "domingo-rc-only-readout-trained": [
+   "definition",
+   "Section 2.3.1, p.56: W_in, W and W_back are fixed; only W_out is learned; the thesis defines its setup"
+  ],
+  "domingo-echo-states-definition": [
+   "definition",
+   "Definition 1, Section 2.3.2, p.57, Eq. (2.12): states uniquely fixed by input and output sequences on compact sets; stated as a definition, attributed to Jaeger"
+  ],
+  "domingo-qrc-nontemporal-pipeline": [
+   "definition",
+   "Section 2.4.8, p.94 to 96, Eqs. (2.89) to (2.90): the thesis describes the scheme it uses, V(x) on |0>, unitary U, local Pauli expectations, linear or ridge model. The scheme is from the literature [Fujii and Nakajima]; only the description is claimed, no performance claim"
+  ],
+  "domingo-qrc-temporal-needs-extra-qubits": [
+   "definition",
+   "Section 2.4.8, p.96, Eqs. (2.91) to (2.92): requires N > n so the remaining qubits keep past information through the partial trace"
+  ],
+  "domingo-agri-dataset-splits": [
+   "setup",
+   "Section 3.1.1, p.102 to 103: March 2013 to March 2022, train to Dec 2019 (356), validation 2020 (53), test from Jan 2021 (62), 16 regressors"
+  ],
+  "domingo-agri-models-and-benchmarks-hyperparameters": [
+   "setup",
+   "Section 3.1.2, p.106: NG-RC k = 3, gamma = 0.56; LSTM 128 neurons and 5000 epochs; best SARIMA(0,0,1)(1,0,1,45)"
+  ],
+  "domingo-mda-definition": [
+   "definition",
+   "Section 3.1.5, p.110: change beyond +/-0.05 euro per kg is up or down, else constant; labels 1, -1, 0; a random model scores about one third on three labels"
+  ],
+  "domingo-ci-three-set-definition": [
+   "definition",
+   "Section 3.2.1, Eq. (3.1), p.114: Increase at +10% or more, Decrease at -10% or less, Constant between; classified on the predicted price only"
+  ],
+  "domingo-ci-limitation-ignores-regressors": [
+   "stated limit",
+   "Section 3.2.1, p.116: the thesis states the method ignores external regressors and is 'not the most accurate method'; a limit on its own method"
+  ],
+  "domingo-pepper-setup-multivariate": [
+   "setup",
+   "Section 3.2.2, p.119: seven pepper varieties, train 2013 to 2019, validation 2020, test 2021, seven individual against seven multivariate D-RC models"
+  ],
+  "domingo-nn-vibrational-scenario1-setup": [
+   "setup",
+   "Section 4.1.1, p.126 to 127: random polynomial potentials up to degree four in 1D and 2D, variational eigenfunctions taken as exact, one network per vibrational state, tests on polynomial, harmonic and Morse potentials"
+  ],
+  "domingo-nn-vibrational-network-architecture": [
+   "setup",
+   "Section 4.1.1, p.131 to 132: 256-256-128-128 ReLU layers with dropout 0.2, Adam at 0.0005, 1000 iterations, 5000 samples, batch 64; the 2D CNN as quoted"
+  ],
+  "domingo-nn-coupled-morse-training-by-decoupled": [
+   "setup",
+   "Section 4.1.3, p.138: trains on decoupled Morse potentials with analytical eigenfunctions, one model per (nx, ny), in coordinates where the coupling sits in the potential"
+  ],
+  "domingo-nn-coupled-morse-training-parameters": [
+   "setup",
+   "Section 4.1.3, p.139: a in [0.09, 0.12], De in [1, 10], G11 = 1.05, G12 = 0.015 and 0.35; curve fitting or Taylor matching for the decoupled parameters; grid search for the ranges (p.111 to 112)"
+  ],
+  "domingo-nn-coupled-morse-custom-loss": [
+   "setup",
+   "Section 4.1.3, Eqs. (4.18) and (4.19), p.140 to 141: Schrodinger and normalization terms; the rendered page shows lambda_norm = 10^4 (the text layer lost the superscript); 300 iterations, lambda = 0 for the first 100, lambda = 10^5 afterwards"
+  ],
+  "domingo-nn-coupled-morse-near-degenerate-limit": [
+   "stated limit",
+   "Section 4.1.4, p.141 to 143: with near-degenerate levels the decoupled-trained network reproduces only the most similar wavefunction; a finer approximation such as raising G12 stepwise would be needed"
+  ],
+  "domingo-rc-schrod-nn-bottleneck-per-level": [
+   "stated limit",
+   "Section 4.2, p.144: one network per quantum number; 'time-consuming and computationally demanding'; the thesis calls it the bottleneck of its earlier method"
+  ],
+  "domingo-rc-eigen-via-wavepacket-fourier": [
+   "definition",
+   "Section 4.2, p.145 to 146, Eqs. (4.20) to (4.23): the thesis states the procedure it uses, wavepacket propagation, time correlation, Fourier transform, peaks give eigenenergies, then eigenfunctions"
+  ],
+  "domingo-rc-schrod-symmetry-limits-eigenfunctions": [
+   "stated limit",
+   "Section 4.2, p.146: the wavepacket symmetry fixes the eigenfunction set and the integral runs over finite T; both stated as limits of the method"
+  ],
+  "domingo-rc-complex-ridge-regression": [
+   "definition",
+   "Section 4.2.2, p.147 to 148, Eqs. (4.24) to (4.27): proposes f(x) = tanh(Re x) + i tanh(Im x), f_out = id, and complex ridge regression with an analytical solution"
+  ],
+  "domingo-rc-multistep-training-procedure": [
+   "definition",
+   "Section 4.2.2, p.149, Eq. (4.29) and steps 1 to 4: split, ridge on part one, evolve on part two, retrain with the old W_out as initial guess"
+  ],
+  "domingo-rc-schrod-benchmarks-lstm-fft": [
+   "setup",
+   "Section 4.2.2, p.150 to 151: LSTM with 1024 neurons for 1000 epochs; FFT of Kosloff and Kosloff taken as exact"
+  ],
+  "domingo-rc-schrod-four-systems-setup": [
+   "setup",
+   "Section 4.2.3, p.151 to 152: three 1D systems and one 2D system, 5000 steps for training and testing, multi-step 85% and 15%"
+  ],
+  "domingo-coupled-morse-water-parameters": [
+   "setup",
+   "Section 4.3, p.161: masses, frozen angle 104.5 degrees, a = 1.1484, De = 0.20276, xe = 0 for the O-H stretch"
+  ],
+  "domingo-coupled-morse-reduction-limit-analytic-basis": [
+   "stated limit",
+   "Section 4.3.1, p.163: the strategy 'could only be used' because the decoupled Hamiltonian has an analytical solution; a limit the thesis states"
+  ],
+  "domingo-coupled-morse-rc-training-parameters": [
+   "setup",
+   "Section 4.3.1, p.163: ttrain = 15000, ttest = 10000, tmin = 100, N = 500, gamma = 5e-5, alpha = 0.9, spectral radius 0.04, density 0.025"
+  ],
+  "domingo-coupled-morse-symmetry-limit": [
+   "stated limit",
+   "Section 4.3.2, p.163 to 164: only eigenfunctions with the symmetry of the initial wavepacket are obtained; other symmetries need a different initial wavefunction"
+  ],
+  "domingo-scar-function-construction-defn": [
+   "definition",
+   "Section 4.4.3, p.173, Eqs. (4.40) to (4.43): frozen Gaussian on the orbit with alpha_x = alpha_y = 1, phase from the action and Maslov index, Bohr-Sommerfeld condition theta(T) = 2 pi n"
+  ],
+  "domingo-quartic-initial-energies-setup": [
+   "setup",
+   "Section 4.4.2, p.175: three initial energies E = 1, 10, 100, all scaled to E = 1 by the homogeneity relations (4.46)"
+  ],
+  "domingo-quartic-rc-training-setup": [
+   "setup",
+   "Section 4.4.3, p.178: multi-step 80% and 20%, spectral radius 0.5, density 0.005, tmin = 500"
+  ],
+  "domingo-qrc-ch5-highdim-bottleneck-for-rc": [
+   "stated limit",
+   "Chapter 5 introduction, p.187 to 188: high-dimensional scaling is 'a clear bottleneck' for RC, since larger reservoirs need more training data and a longer numerical solution, reducing the advantage of RC"
+  ],
+  "domingo-qr-majorization-definition": [
+   "definition",
+   "Section 5.1.1, p.191 to 192, Eq. (5.1): y majorizes x by partial sums of non-increasing order; some pairs are not comparable (Fig. 5.1 c)"
+  ],
+  "domingo-qr-simulation-plan-400-per-family": [
+   "setup",
+   "Section 5.1.2, p.195: 400 simulations per family, gate counts 20, 50, 100, 150, 200, up to 1000 for G3, 5, 10, 15 for MG"
+  ],
+  "domingo-qr-ising-baseline-parameters": [
+   "setup",
+   "Section 5.1.2, p.195: transverse-field Ising baseline, T = 10, uniform couplings, constant field with h/Js = 0.1 from Ref. [Martinez-Pena et al., 2021]"
+  ],
+  "domingo-qr-qc-task-excited-energies-lih-h2o": [
+   "setup",
+   "Section 5.1.3, p.196 to 198: predict excited energies of LiH and H2O from the ground state, R ranges, angle 104.45 degrees, STO-3G"
+  ],
+  "domingo-qr-qc-ground-state-by-exact-diagonalization": [
+   "scope",
+   "Section 5.1.3, p.196 to 197: the ground state is found by exact diagonalization and given to the QRC; the VQE remark is on p.196"
+  ],
+  "domingo-qr-qc-active-space-8-and-10-qubits": [
+   "setup",
+   "Section 5.1.3, p.199 to 200: NOON-based removal leaves 8 spin orbitals for LiH (8 qubits) and 10 for H2O"
+  ],
+  "domingo-qr-training-split-and-ridge": [
+   "setup",
+   "Section 5.1.3, p.201 to 202: 30% test data in the stated bond ranges, chosen so the reservoir must extrapolate; ridge with gamma = 1e-7 on local X and Z expectations"
+  ],
+  "domingo-qr-pauli-space-toy-model-setup": [
+   "setup",
+   "Section 5.1.5, p.206: 4000 random circuits per family with 5, 10 and 20 gates, 16 Pauli basis operators, UMAP reduction, compared with uniform sampling"
+  ],
+  "domingo-qr-noise-study-design": [
+   "setup",
+   "Section 5.2.1, p.212 to 213: three channels, p = 0.0001 to 0.003, 100 runs each, 25 to 215 gates and 300 to 900 gates; only LiH first excited energy"
+  ],
+  "domingo-noise-depol-phase-unital-attenuate-only": [
+   "proved result",
+   "Section 5.2.3, Table 5.3 and Eq. (5.24), p.217 to 218: a short derivation in the paper that depolarizing and phase damping map each Pauli operator to a multiple alpha_i in [0, 1] of itself, so b_i = alpha_i a_i. It uses the standard channel action in Table 5.3, a textbook step"
+  ],
+  "domingo-noise-amplitude-damping-introduces-terms": [
+   "proved result",
+   "Section 5.2.3, Eq. (5.25), p.216 to 218: derived with its conditions (channel acting on qubit j, P_i with Z on j, P_k with I on j) to b_i = (1 - p) a_i + p a_k; the paper then concludes the channel is not unital and can add terms"
+  ],
+  "domingo-qrc-ts-setup": [
+   "setup",
+   "Section 5.3.1 and 5.3.2, p.221 to 223: zucchini prices as in Chapter 3, scaled to [0, 1], nine regressors, N = 7, feature dimension 28, gamma 1e-10 and 0.1, eight families, 100 runs each"
+  ],
+  "domingo-hybrid-cnn-pdbbind-data": [
+   "setup",
+   "Section 5.4.1, p.234: PDBBind 2020 with 14127 general, 5316 refined and 290 core complexes"
+  ],
+  "domingo-hybrid-cnn-input-format": [
+   "setup",
+   "Section 5.4.1, p.234 to 236: 48 x 48 x 48 voxels of 1 Angstrom, 19 features, more than 2 million values"
+  ],
+  "domingo-hybrid-cnn-classical-architecture": [
+   "setup",
+   "Section 5.4.2, p.237: five 3D conv layers of 64, 64, 64, 128, 256 filters, kernel 7 except the last 5, two residual connections, two pooling layers, FC of 10 and 1"
+  ],
+  "domingo-hybrid-cnn-architecture-quantum-layer": [
+   "setup",
+   "Section 5.4.3, p.237 to 238: the first conv layer is replaced by a quantum convolutional layer whose outputs join a classical branch by a residual connection"
+  ],
+  "domingo-hybrid-cnn-quantum-reservoir-g3": [
+   "setup",
+   "Section 5.4.3, p.241 to 243: G3 random circuits of 20 to 600 gates, an Ising reservoir for comparison, simulation on classical hardware with Qiskit and PyTorch on GPUs"
+  ],
+  "domingo-hybrid-cnn-error-mitigation-drem": [
+   "stated limit",
+   "Section 5.4.4, p.243: the thesis states it could not test amplitude damping on the hybrid CNN for lack of computing resources; the DREM setup (1000 training circuits, 500 test circuits, 10 qubits, 300 gates) is also stated"
+  ],
+  "domingo-hybrid-cnn-evaluation-protocol": [
+   "setup",
+   "Section 5.4.5, p.244 to 245: train and validate on the refined set, test on the core set, early stopping, training stopped at 50 epochs"
+  ],
+  "domingo-appC-publication-status": [
+   "scope",
+   "Appendix C, p.293 to 294: five items carry journal references and four are marked 'Submitted, 2023', as the value says"
+  ],
+  "nn-solver-one-network-per-eigenstate": [
+   "stated limit",
+   "Conclusions item 7, p.257, and Section 4.2, p.144: 'obtaining each eigenstate requires training a separate neural network'; the thesis states this limit of its own method"
+  ]
+ },
+ "theory_low": {
+  "qal-binary-strategies-equivalent": "textbook, stated not proved (F129): Section III.D, p.6 gives it in one 'Note that' sentence with no argument; the equivalence is true for two classes but the paper does not prove it",
+  "restaurant-supp-all-games-quantum-winnable": "Supplement I.B.2, p.12: 'we deduce' from Eqs. (8a) to (10) and the plotted locus in Fig. 3 of the supplement. An outline backed by a figure, not a written proof",
+  "restaurant-supp-classical-boundary-games": "Supplement I.B.1, p.11: an explicit strategy is given only for gamma1 = 0; 'similar strategies can be applied' for gamma2 or gamma3 = 0 is not worked out, and the value includes both claims",
+  "restaurant-prop1-robust-advantage": "Proposition 1, Supplement I.C, p.13: the statement rests on an assumption that the noisy quantum index tends to zero with the noise, and on Proposition 2 for continuity; the argument is not written out in full",
+  "restaurant-prop2-min-continuous": "Proposition 2, Supplement I.C, p.14: stated for any continuous f with no domain condition, so the conditions are lost; the proof assumes a minimizer exists. True only on a compact domain, which the statement does not say",
+  "restaurant-polarimeter-arbitrary-pov-m-extension": "Supplement II.B, p.16: a design argument, not a theorem with stated conditions; the rank-1 proof text is partly missing from the text layer",
+  "domingo-rc-multistep-hoeffding-motivation": "textbook, stated not proved (F129): Section 4.2.2, p.148 to 149 cites Hoeffding through [Mohri et al., 2018] and states Eq. (4.28) loosely, with no conditions. The overfitting remark is the author's interpretation",
+  "domingo-quantum-chaos-no-direct-equivalent-linearity": "textbook, stated not proved (F129): Section 4.4.1, p.171 gives background on linearity of the Schrodinger equation with no derivation",
+  "domingo-appA-variational-method-reduces-to-eigenproblem": "textbook, stated not proved (F129): Appendix A, p.279 derives the Lagrange eigenproblem (A.9 to A.13), but 'when N goes to infinity the solution converges to the ground state' is the textbook convergence of the variational method, stated without proof. Graded by the weaker claim",
+  "domingo-appB-coupled-morse-henon-heiles": "Appendix B, p.289 to 291: the transformation and Taylor expansion (B.1 to B.11) are derived, but 'identical to Henon and Heiles up to order 3' is a comparison with a cited Hamiltonian, worded 'indicating', and the coefficients are not matched to Henon and Heiles"
+ },
+ "keep_stored": {},
+ "requote": {},
+ "value_replace": {
+  "qrc-g3-family-optimal-design": "The author reports, for seven circuit families used as reservoirs to predict excited energies of LiH and H2O, that families with higher majorization complexity perform better and the G3 family gives the lowest error, with MG slightly worse and the Ising model similar; the author calls G3 the optimal design also because MG gates are harder to implement and the Ising circuits need far more gates."
+ },
+ "extra_quotes": {
+  "qrc-g3-family-optimal-design": [
+   "predicting the excited energies of the electronic Hamiltonian of two molecules, LiH and H2O, given their ground state."
+  ]
+ }
+}
