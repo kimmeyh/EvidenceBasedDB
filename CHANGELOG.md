@@ -13,7 +13,348 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-10-29 onward (Sprint 14, in progress)
+### 2026-10-31 onward (Sprint 15, in progress)
+
+- **chore**: Sprint 15 opened (2026-10-31). The team lead merged PR #140
+  into develop (9059061) and PR #148 to main (934a416); `sprint-14`
+  tagged on 934a416; branch `feature/20261031_Sprint_15` cut from the
+  Sprint 14 branch (6.6 carry-forward). Phase 1.1 reconciliation: every
+  commit since 2026-10-29 changed this file; no day lacks its entry
+- **docs**: Backlog refinement 2026-11-01 (Sprint 15 Phase 1.2 to 1.4):
+  Sprint 14's issues #145 to #147 closed by hand (PR #140 named them
+  without `Closes`); shipped cards pruned by hand (F117, F118, F119,
+  F120, and the released copies F122 and F123); F114 stays with a
+  snapshot (1,091 of its 1,430 records not yet read in full, in 227
+  groups); snapshots refreshed on F57, F95 (no new file from the team
+  lead), F98 (list unchanged at ea6f42a7c0), F51 (hold unchanged) and
+  F130 (Phase 2's Sprint 30 PR #74 not merged). Phase 1.3: 0 re-checks
+  due; no ADR or schema change in Sprint 14. Slate presented
+- **docs**: Sprint 15 scope selected (team lead, 2026-11-01): F114 at 100
+  papers, F125, F126, F127, F128, F115, F95, F98, F124, F129, F116, F57
+  and F130; released copies F131 (F95), F132 (F98) and F133 (F57);
+  priorities renumbered as the slate proposed; F39 not selected. Plan
+  drafted (`docs/sprints/SPRINT_15_PLAN.md`): F115 and F116 run before
+  F114's reads, so the 100 papers are read with figures and image pages;
+  pre-flight: Windows' built-in OCR read udaru's page 1 (no Tesseract
+  installed)
+- **docs**: Sprint 15 plan approved (team lead, 2026-11-01): Q1 = 1, Q2 =
+  2 (F133 reads 100 records), Q3 = 3 with the team lead's qualification
+  (OCR of a stored PDF's page grades as text-layer text; OCR of an image
+  file outside a PDF is HIGH only when corroborated, otherwise MEDIUM at
+  most), Q4 = 1. F115's engine changed to RapidOCR (cross-platform, in its
+  own virtual environment), at the team lead's request. Issues #150 to
+  #162 (Tasks A to M)
+- **docs**: Sprint 15 Tasks A and B (F131, F132): `Papers\` holds 378
+  PDFs, none new since 2026-10-30; Roadmap-to-QML is still at
+  ea6f42a7c0. No store write
+- **feat**: Sprint 15 Task C (F125): a record a reviewed group left unread
+  is read later in a re-entry group `<g>-r<n>` with its own group file and
+  review file. The applier takes exactly the records the predecessor's
+  review left unread; the builder builds the group from its local brief;
+  the review finalizes it without a ledger entry. The status script reads
+  `work\f114\local\`, counts a read only for the group it names, and
+  calls a group with only its unread records left "applied". Each with a
+  test proven red
+- **fix**: the fresh-eyes review of 34034bd (Task C). A re-entry brief may
+  leave a record unread again (its own `unread`, with why), so a group
+  whose predecessor left a no-text record is buildable, and its review
+  names it; the builder checks each re-entry brief against its
+  predecessor's review before anything is built; a test ties the status
+  script's group pattern to the applier's read detail. Each proven red
+- **fix**: Sprint 15 Task D (F126): the page fixer leaves "p.12-15.3" and
+  "p.12a" as written and drops a "to" range's "of 10" with it; the applier
+  writes an ANCHOR_FIX on a confirmed stored assertion (it was dropped
+  without a word), rebuilt from the stored row with every quote checked
+  again, dated by the review's `anchor_fix_on`. Store: one assertion,
+  muta-hardware-scope-photonic-gkp, now cites Section V, p.8 (INTAKE
+  section 60; backup `evidence-20261101T155312102348-...db`). Each with a
+  test proven red
+- **fix**: Sprint 15 Task E (F127): `f114_cloud.fetch` refuses a merged
+  result branch for every record and a record with no launch base (it
+  saved one and raised KeyError on the other); the applier's clash check
+  reads a record id as a whole token, not a substring; its refusal guard
+  ignores a refusal a later note reversed ("... refusal ... no longer
+  applies", 9 QCI Dirac papers); the builder counts id_fix targets as
+  taken, raises when the store file is missing, and no longer matches
+  "v-2" inside "v-2.5". Each with a test proven red. No store write
+- **fix**: the fresh-eyes review of Tasks D and E (before their commit):
+  "of N" is dropped only after a "to" range ("of 2019 survey" was lost);
+  "p.12 to 15.3" is left as written, as "p.12-15.3" is; "p.4ff" is kept
+  (a test records it); a reversal note that quotes the refusal's words no
+  longer counts as a refusal; the clash check ignores case, as LIKE did;
+  an anchor move refuses quotes with more than one anchor or no stored
+  context. Each proven red
+- **feat**: Sprint 15 Task F (F115): text from page images. A PDF page
+  whose text layer holds fewer than 40 visible characters is rendered by
+  `pdftoppm` and read by RapidOCR 3.10.0 on ONNX Runtime 1.31.1, in its
+  own virtual environment outside git (`requirements-ocr.txt`,
+  `scripts/ocr_worker.py`, `store/ocr.py`); an image file given as a
+  source is read the same way. The text is cached by file and engine,
+  follows the text layer in `source_text` after ` || OCR: `, and a quote
+  found only there needs "OCR" in its anchor. A missing engine raises,
+  never reads as empty. The grading rule of plan Q3 (an image file outside
+  a PDF is HIGH only when corroborated) is enforced by the applier. Scan
+  (2026-11-01): 64 of 1,703 local PDFs have thin pages, 221 in all; OCR
+  supplies the text of udaru, mancilla and qci-2026 whole (INTAKE section
+  61). Each test proven red. No store write
+- **feat**: Sprint 15 Task H step 1: the Sprint 15 reader prompt
+  (`manifests/sprint15_f114_reads/READER_PROMPT.md`): figures and images
+  are read (the caption-only exemption is gone), each in a `figures` list;
+  a value read from a figure says so, writes each number read by eye as
+  "about N", and is never HIGH; OCR text is quoted as given and marked;
+  a full read lists its sections; a reader never changes a stored context;
+  anchors are PDF pages; one claim per assertion; a textbook result is no
+  reason for LOW; a paper on no context is still read in full. The reader
+  check's `--sprint15` option checks each rule (a quote must be on a page
+  its anchor names), and the applier refuses a figure value that is HIGH
+  or unlabeled. Each test proven red
+- **fix**: the fresh-eyes review of Tasks F and H step 1 (before their
+  commit): OCR boxes are joined by spaces, so a box holding only a number
+  (a table cell) is no longer dropped as a page number; the OCR cache key
+  holds the pages read, the worker's hash and the engine's interpreter, so
+  a newly thin page reads again instead of being served empty; the
+  applier reads an OCR anchor that holds parentheses; the prompt finds a
+  page by `page_texts`, never by counting form feeds; the page check reads
+  page lists ("p.4 and 9") and shortened ranges ("pp. 123-24") and skips
+  an anchor with no page; `page_count`, the page split and the check's
+  page text are kept per process; "about -0.5" is a figure reading; a
+  reader may not add a context where the stored one is empty. Each proven
+  red
+- **feat**: Sprint 15 Task H: `scripts/sprint15_f114_local.py` writes the
+  100 papers' briefs (24 groups, 2026-11-01): re-entry groups g062-r1,
+  g064-r1, g076-r1 (the three image-only papers, now read from OCR text)
+  and g113-r1, then ledger order from g114 to g133. Four records whose
+  source is a directory (a code repository) are left for a later release:
+  the quote check reads one file per source. g069's and g072's unread
+  records stay unread (the saved web page holds no article)
+- **feat**: Sprint 15 Task K (F124): Phase 2's F151, F153 and F154 source
+  records re-read whole at Phase 2 develop af03165 and repointed there
+  (`scripts/sprint15_f124_phase2.py`, INTAKE section 62). Their 5 stored
+  values confirmed by name; every stored quote verbatim at af03165; the
+  first read and its blob SHA-256 kept. Store: 3 read rows, 3 repoints
+  (backup `evidence-20261101T174117632352-...db`); the local-file check
+  reads all three as unchanged. Test proven red on the pre-apply backup
+- **docs**: Sprint 15 Task L (F129): the LOW grades resting on a textbook
+  fact (`manifests/sprint15_f129_proposals.json`): of 29 keyword
+  candidates (snapshot 2026-11-01), 10 proposed HIGH for the team lead's
+  decision at Manual Validation, 6 kept LOW for another cause, 13 not a
+  textbook fact; 30 sampled misses hold none. No store write
+- **feat**: Sprint 15 Task J (F128): the gap-reading targets
+  (`scripts/sprint15_f128_targets.py`, INTAKE section 63). 8 arXiv papers
+  fetched by the paced fetcher and entered at `seen` (Gidney and Ekera,
+  Lee et al., Woerner and Egger, Chakrabarti et al., Babbush et al.,
+  Stoudenmire and Schwab, XGBoost, Jaques and Rattew; backup
+  `evidence-20261101T182904857546-...db`); with Faryad they are ledger
+  groups g331 and g332, read under Sprint 15's prompt. Giovannetti et
+  al. was held under its DOI with a local copy: the copy fetched again
+  was deleted the same hour, and the script now never fetches it. 7 on
+  the hand-download list with their reasons (LightGBM, Ferrari Dacrema,
+  Nielsen and Chuang, vendor gate documentation, Dal Pozzolo 2014, and two
+  with no source chosen)
+- **docs**: Sprint 15 Task G (F116): the figure pilot, ledger group g114
+  under Sprint 15's prompt (2026-11-01): 5 papers, 86 pages, 47 figures,
+  174 new assertions, 0 check problems, about 85 minutes. Rendering and
+  viewing a figure took about 15 s and entering it about as long again,
+  so figures add roughly 10 to 15 percent to a read. The prompt gained a
+  dated amendment from it: a crop command for small panels, and text-layer
+  tables are entered as figures
+- **fix**: the door no longer reads a title word as an audit marker
+  ("error-corrected" held "CORRECTED"; `store/ingest.py`). Test proven red
+- **feat**: Sprint 15 Task H: the review prompt
+  (`manifests/sprint15_f114_reads/REVIEW_PROMPT.md`), Sprint 14's with
+  three rules added: a textbook-standard result is never by itself the
+  reason for LOW (F129), a value read from a figure is never HIGH (F116),
+  and OCR text of a stored PDF grades as its text layer while an image
+  file outside a PDF is HIGH only when corroborated (plan Q3)
+- **fix**: the reader check's `--sprint15` option refuses a new assertion
+  that names its id `id` instead of `id_suggestion` (reader g117: 36 of
+  one paper's 37 assertions passed the check that way; the builder already
+  took either key). Test proven red
+- **fix**: the reader check's `--sprint15` option lets a stored assertion
+  keep its own context when it is not one of the five (reader g133: two
+  emami-2025 assertions stored under `platform:dirac-3` could neither
+  keep the stored context nor pass the five-context check). Test proven
+  red
+- **fix**: the fresh-eyes review of Sprint 15's uncommitted scripts
+  (2026-11-02), each fix with a test proven red:
+  - g064-r1's review names the reversal of qci-2026's 2026-10-15 refusal
+    (its PDF had no text layer; OCR now reads it), which had stopped the
+    apply;
+  - `full_read_apply.py` counts an anchor holding its own parentheses,
+    so quotes from two places are never collapsed onto one, and raises
+    when sync's date guard would skip an anchor move the dry run listed;
+  - `f117_build_groups.py` builds only the groups `--group` names, and
+    records each local reader file's SHA-256 so a run stops when a
+    reader file changed after its group was built (g130 was built while
+    its reader was editing);
+  - `store/quotes.py` treats a figure or table label as a name without
+    excusing its number elsewhere in the value ("Read from Figure 3:
+    ... at depth 3" passed); one g123 value read off an axis became
+    "about 10" at the sign-off;
+  - the reader check's page anchors include "page", "pages" and any
+    case, and "p.0" names no page;
+  - `f114_cloud.py fetch` keeps a branch pushed before its first commit
+    pending, not refused as merged;
+  - `sprint15_f114_local.py`: a Task J record needs a local file (not a
+    URL ending ".pdf") and a store row; `sprint15_f128_targets.py`
+    writes its manifest only on an apply, adding to what was entered
+- **feat**: Task I's 100 records (F133): `sprint15_f114_local.py
+  --task-i` writes the briefs of ledger groups g134 to g154, never
+  reaching Task J's groups. Test proven red
+- **test**: Task J's groups are added to the ledger once, after g330, and
+  never over a record another group holds
+  (`scripts/sprint15_f114_local.py` `add_j_groups`). Proven red
+- **fix**: `f117_review.py finalize` names Sprint 15's tag and reader
+  prompt for a read that carries `figure_count`; it named Sprint 14's.
+  g062-r1's review was written that way, deleted before any apply and
+  written again. Test proven red
+- **fix**: the group builder skips the page fixer for a source that is not
+  a PDF (g120's saved web page stopped the build) and splits a PDF's
+  pages with `store.ocr.page_texts`, as the reader check does, not on
+  form feeds alone. No group built so far was affected: each of their
+  PDFs splits on form feeds into its page count. Each proven red
+- **docs**: carded F134 (a table cell that holds only a number is dropped
+  by `plain()`, so it is missing from the non-layout text a quote is
+  checked against) and F135 (a stated limit on a measured result meets the
+  check that a measured result is never HIGH; reader g118 changed five
+  result types to pass it)
+- **fix**: a figure label's panel letter may be upper case
+  (`store/quotes.py` `FIGURE_LABEL`): the recheck of every Sprint 15 read
+  under the wider page rule refused g134's "Figure 7C and 7D" for its 7.
+  The recheck found one other problem, g123's "n = 10", already fixed at
+  sign-off. Proven red
+- **fix**: a number joined to a figure label is part of the label only
+  when no word follows it (`store/quotes.py` `FIGURE_LABEL`): in "Figure
+  3, 4 qubits" the 4 is a count and must be in a quote. Found by the
+  fresh-eyes review of the panel-letter fix. Proven red
+- **test**: F128's manifest is written only by an apply, which keeps what
+  an earlier apply entered (`scripts/sprint15_f128_targets.py`
+  `record_entered`, moved out of `main`). Proven red both ways
+- **feat**: Sprint 15 Tasks H and I applied (2026-11-04, INTAKE section
+  64, snapshot as of that date): every finalized group applied in one live
+  apply after a trial on a store copy, with a verified backup: 4,947
+  assertions, 190 read rows, 86 updated, 11 records set to `read`, 8
+  applicability rows; the 3 undecided fields accepted; a second apply
+  entered nothing. The cross-group
+  pass on absence items set g144's two "no experiment" items HIGH (9 of 10
+  stored precedents are HIGH) and kept pqc-no-experiments LOW; five
+  dees-2023 items and 64 escalations go to Manual Validation
+- **docs**: INTAKE_WORKFLOW.md section 65 names Task L's
+  `manifests/sprint15_f129_proposals.json` (10 proposed HIGH, 6 kept
+  LOW, 13 not a textbook fact; snapshot 2026-11-01). The full suite of
+  2026-11-04 found it unnamed (`test_every_committed_manifest_is_named_in_the_workflow`);
+  nothing in it is applied before Manual Validation
+- **feat**: Sprint 15 Task M (F130): Phase 2's Sprint 30 results by the
+  inbound path (`scripts/sprint15_f130_phase2.py`, INTAKE_WORKFLOW.md
+  section 66): five records (F174's IEEE-CIS comparison set, F176, F169,
+  F170, F171) and nine HIGH assertions, every quote checked verbatim
+  with its value at Phase 2 commit 366cf37; none linked, each reason
+  names the stored claims it bears on. F166 repointed at the same
+  commit, its four values confirmed, which clears the local-file block
+  (Question 1 = 3). `tests/test_sprint15_f130.py`, each injection proven red
+- **fix**: Sprint 14's F120 apply leaves a record re-read whole at a later
+  commit alone; it would have put F166's 6242b8a evidence back over the
+  F130 repoint. Proven red on a store copy
+- **fix**: the fresh-eyes review of F130 (no blocking defect): five values
+  carry the limits their documents state, one reason no longer
+  overstates F152, a rerun syncs corrected values and keeps a later F166
+  repoint (proven red), and the run-file test checks all seven gaps
+- **fix**: three older checks that Sprint 15's full reads broke, found by
+  the full suite on 2026-11-04 (each red there before its fix). Sprint 9's
+  F46 apply leaves a record a later full read owns alone; it would have
+  undone F114's correction of faryad-state-prep-omega-2n-dimension-count.
+  F80's refusal test accepts a refused record a later full read took
+  (qci-2026, read whole by OCR). The spelling fixer protects the stored
+  id optimised-parameter-shift-two-versus-three-evaluations, which section
+  64 names
+- **feat**: Sprint 15 Task M applied (2026-11-04) after PR #74 merged as
+  43bc362 (366cf37 its ancestor, no F130 input changed): trial, live
+  apply with verified backup, second apply wrote nothing. The store
+  test compares a tuple, not a sqlite3.Row (proven red by injection)
+- **fix**: the fresh-eyes review of the three fixes: F46's guard also
+  keeps a full read's correction after a later note that is not a full
+  read (the rule `sync_assertion` applies; a test proven red on a store
+  copy), and F80's refusal test fails if no refused record is left to
+  check. The full suite of 2026-11-04 after the F130 apply: 1,531 passed
+  (marked INVALID: these fixes were edited during the run; their own test
+  files pass, 66 tests). No further full run, at the team lead's word
+- **docs**: correction to d485069's title ("100 papers read whole and
+  applied"): every record of Tasks H and I is read and reviewed, but
+  only the 23 finalized groups of Sprint 15's 47 are applied. The other
+  24 (about 114 records) each hold a certainty change only the team lead
+  decides (36 in all), so their reviews are not finalized and the apply
+  does not take them; they are applied after Manual Validation.
+  Snapshot as of 2026-11-04. Sprint 15 moves to Manual Validation
+- **feat**: Sprint 15 Manual Validation applied (team lead, 2026-11-04;
+  INTAKE section 67): Q1's 36 certainty changes recorded in the
+  escalation files, the 24 waiting groups finalized and applied (trial:
+  6,282 new assertions, 228 read rows, 157 updates);
+  `scripts/sprint15_mv_decisions.py` sets F129's 10 proposals HIGH (Q2),
+  g144's two absence items MODERATE (Q4) and one context from `method`
+  to `qc` (Q6); Q3 and Q8 write nothing. `tests/test_sprint15_mv_decisions.py`
+- **fix**: the applier checks a sign-off's edited figure reading with the
+  figure exemption its own quote check gives (five were refused), and a
+  confirmed row rebuilt for its grade keeps its stored fidelity, claim
+  type and search scope (the trial listed eight rows changed). Each with
+  a test proven red
+- **fix**: the fresh-eyes review of the Manual Validation apply: the
+  applier keeps a grade the team lead decided ("the team lead's decision
+  at") unless its review records a decision too, so no rerun's date can
+  undo it; a confirmed row that keeps a vendor claim type is never
+  written HIGH. The decisions script is dated the day it ran
+  (2026-11-05): its first run, dated 2026-11-04, was restored from its
+  backup and re-run. Test proven red
+- **fix**: the `--changed` run after the Manual Validation apply (5
+  failed of 1,086). `store.ingest.sync_assertion` refuses a sync dated
+  before a row's latest Manual Validation decision note (new
+  `decided_day`): a rerun of `sprint12_reading.py` moved
+  qng-study-scope-toy-model's context back from `qc`, the team lead's
+  Q6 = 2 (synthetic test and the live second-apply test, both proven
+  red). Three older tests held data that the team lead's decisions and
+  Sprint 15's full reads changed: the learnings balance is compared with
+  a distinct count per grade (proven red), F101's re-quoted record a
+  later full read owns is checked for verbatim quotes only, and the
+  Sprint 12 store test skips a row decided later. The applier's field
+  test builds a dataclass, which the confirmed-row rebuild needs. Its
+  fresh-eyes review found no blocking defect; `decided_day` also reads a
+  decision named in a note's body (Sprint 8 and 9's shape; proven red),
+  the sync test checks the same-day boundary, and the Sprint 12 skip
+  compares with the latest day that script syncs on
+- **fix**: Copilot's review of PR #149. `page_text` stops on a pdftotext
+  failure instead of reading it as an empty page (`check=True`; pdftotext
+  exits 0 on a page range past the end, checked). The audit-marker check
+  in `validate_paper` guards the right side of a marker that ends in a
+  letter, so a title word such as "Correctedness" or "Corrected-error"
+  passes; its fresh-eyes review kept "NOTE:x" and "CORRECTED-2026-09-16"
+  refused. Both tests proven red
+- **process**: Sprint 15 Phase 7 (2026-11-05): the retrospective
+  (`docs/sprints/SPRINT_15_RETROSPECTIVE.md`; team lead "Very Good" in
+  every rated category, "none" for 13, 14 and 16), the summary with its
+  Actuals (`SPRINT_15_SUMMARY.md`), the master plan's Past Sprint Summary
+  row and Last Completed Sprint entry, and the checklist's Sprint 15
+  section. One improvement put to the team lead (Q1, the trial store copy
+  takes its text cache)
+- **docs**: carded F136 (the applier checks the quotes of what it writes,
+  not of every reviewed row; team lead, Q9) and F137 (the two Dunjko
+  records share one PDF; Q5); F57's card says Sprint 16's release follows
+  its ranking (Q7)
+- **docs**: F57's card names one paper for Sprint 16's release to read
+  first (team lead, 2026-11-05): `Quantum_NeuralNetwork.pdf` in
+  `wangy8205165/Quantum-NeuralNetwork-WhitePaper`. Sprint 12 entered the
+  repository only; the PDF has no paper record and no local copy
+- **docs**: F57's card adds arXiv 2108.13346 (QBoost for regression,
+  Goes et al., 2021; the team lead's `QuantumBoost/qboost.pdf`), fetched
+  from arXiv as v2 only and read after the white paper unless already
+  read. F136 is
+  widened (team lead, 2026-11-05): each PDF's text is extracted once,
+  ever, from one fixed cache every store copy reads, and each quote is
+  checked once, ever. This replaces retrospective Q1
+- **process**: retrospective Q1 answered (team lead, 2026-11-05, Q1 =
+  1): F136 is Sprint 16's first task (Priority 10, about 50m); recorded
+  in the retrospective's Improvement Decisions. Phase 7.7 complete; PR
+  #149 marked ready
+
+### 2026-10-29 to 2026-10-31 (Sprint 14, PR #140, merged to develop 2026-10-31 and to main via PR #148 the same day; tagged sprint-14)
 
 - **chore**: Sprint 14 opened (2026-10-29). The team lead merged PR #131
   into develop (bb4cb80) and PR #139 to main (952c9e3); `sprint-13`

@@ -1,0 +1,285 @@
+{
+ "group": "g142",
+ "reviewed_on": "2026-11-04",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "germain-dataset-ulb": [
+   "setup",
+   "Section III, p.7: the paper names the ULB dataset and why it was chosen. Authors are academic (NC A&T, Montgomery College); no vendor."
+  ],
+  "germain-sweep-and-seeds": [
+   "setup",
+   "Section III, p.7: PCA 1 to 20 components, one feature per qubit, 12 seeds per sweep point. Matches Section IV text."
+  ],
+  "germain-gpu-simulation": [
+   "setup",
+   "Section III, p.7: RTX 5080 and 5090 GPU simulation, precomputed kernels to scikit-learn OC-SVM and SVR."
+  ],
+  "germain-test-set-design": [
+   "setup",
+   "Section III-A, p.7: fixed 2,000-sample test set, 5% anomalies, built once; sizes 500/1,000/2,000/4,000."
+  ],
+  "germain-kmeans-downsampling": [
+   "setup",
+   "Section III-A, p.7: K-means clusters, proportional draw, 12 seeds, overlap allowed. All as stated."
+  ],
+  "germain-feature-maps-evaluated": [
+   "setup",
+   "Section III-B (p.7) lists the three maps; Section IV (p.10) states the RBF control. Both read in context."
+  ],
+  "germain-non-variational": [
+   "scope",
+   "Section II-B, p.3: the paper states its feature maps are non-variational, extra parameters fixed before evaluation."
+  ],
+  "germain-fidelity-kernel-definition": [
+   "definition",
+   "Section II-A, p.3, Eq. 4: kernel defined as squared inner product, fidelity in [0,1]."
+  ],
+  "germain-angle-kernel-classical": [
+   "setup",
+   "Section III-B1, p.8: Eq. 26 gives the product-of-cos^2 closed form (derived from Eq. 25); the text states its role as an analytic control, not an advantage claim."
+  ],
+  "germain-zz-modification": [
+   "setup",
+   "Section III-B2, pp.9-10, Eqs. 34-35: phi_ij = x_i x_j and half-angle rotations, stated as the authors' own change to reduce phase wrapping."
+  ],
+  "germain-zzr-fixed-random": [
+   "setup",
+   "Section III-B3, p.10, Eq. 36 and Fig. 5(b,c): three Full ZZ layers with fixed random unitaries, no trainable parameters."
+  ],
+  "germain-thresholds-extrapolated": [
+   "stated limit",
+   "Section IV-A2, p.12: the paper says the N*(0.001) and N*(0.0001) thresholds (79-146, 393-523) lie below the smallest tested size of 500, so they are model-based extrapolations."
+  ],
+  "germain-concentration-on-500": [
+   "setup",
+   "Section IV-B, p.12: concentration analysis uses the 500-sample training sets, with the stated reason."
+  ],
+  "germain-reference-scale-caveat": [
+   "stated limit",
+   "Section IV-B1, p.13: the authors state that the data do not meet the theory's assumptions, so 10^-6 is only a reference scale."
+  ],
+  "germain-mechanism-not-established": [
+   "stated limit",
+   "Section IV-B1, p.13: authors say the Hilbert-space localization mechanism is a hypothesis and the analysis does not establish it."
+  ],
+  "germain-svr-anomaly-scheme": [
+   "definition",
+   "Appendix A3, p.19, Eqs. A7-A9: one SVR per feature, trained on nominal data, summed squared error score, threshold 3x mean nominal error. The paper's own detector."
+  ],
+  "germain-svr-shared-kernel": [
+   "definition",
+   "Appendix A3, p.19: all D regressors share one kernel matrix, so no extra quantum evaluations. A design property of the paper's own method."
+  ],
+  "kernel-noiseless-simulation": [
+   "setup",
+   "Section II-E4, p.7: 'The analysis in this work is performed using exact noiseless statevector simulation.' Stated in context of excluding hardware noise."
+  ],
+  "gharibyan23-hierarchical-method": [
+   "definition",
+   "Section 2.1, pp.4-5 and Fig. 1 caption: staged training on coarse-grained distribution, parameters seed a larger circuit, new parameters set to 0. The paper's own method. Authors are BlueQubit (vendor of the platform) but this is a description, not a result."
+  ],
+  "gharibyan23-tv-resolution-definition": [
+   "definition",
+   "Section 2.1, pp.5-6, Eq. 3: TV and TVn defined; the paper states it tracks TV at the largest qubit resolution. Appendix C gives the illustration."
+  ],
+  "gharibyan23-tv-single-qubit-example": [
+   "definition",
+   "Section 2.1, p.6: the paper's own rationale for its metric choice (one RY can drive TV1 to 0 for one qubit). Simple and stated in context; it explains the definition and is not a measured result."
+  ],
+  "gharibyan23-connectivity-setup": [
+   "setup",
+   "Section 3.1, pp.8-9: Gaussian mu=0.65, sigma^2=0.04, 9 qubits, 512 points, RY plus RZZ layers, 1000 Adam epochs, 50 repeats. All as stated."
+  ],
+  "gharibyan23-3d-target-setup": [
+   "setup",
+   "Section 3.2, p.10 and Eqs. 14-16, Fig. 4: 3D Gaussian on the unit cube, 3 equal partitions, HEA with grid and cross-set links."
+  ],
+  "gharibyan23-27q-setup-stages": [
+   "setup",
+   "Section 3.2, p.11 and Fig. 6 caption, p.12: 5 stages from 9 qubits, 3x3 grid per variable, TV27 tracked."
+  ],
+  "gharibyan23-simulation-hardware": [
+   "setup",
+   "Section 3.3, p.11: V100 and A100 GPUs, PennyLane modules."
+  ],
+  "gharibyan23-ibm-setup": [
+   "setup",
+   "Section 4, p.13: vanilla IBM Sampler (resilience 1, optimization 3), Fire Opal (Q-CTRL), ideal simulator; IBM Lagos 7 qubits and Algiers 27 qubits. Authors are BlueQubit; Fire Opal is Q-CTRL's product, so no vendor claim about own product here."
+  ],
+  "gharibyan23-lagos-setup": [
+   "setup",
+   "Section 4.1, p.13: 4 circuits, 6 to 66 CX, no hierarchical learning, TV4, 5 repeats with the best outcome taken (that best-of-5 choice matters for the result items, not for this setup)."
+  ],
+  "gharibyan23-algiers-setup": [
+   "setup",
+   "Section 4.2, p.14 and Fig. 11 labels (8, 12, 16, 20 qubits): bimodal Gaussian, hierarchical from 4 qubits in steps of 4, TV5. Consistent."
+  ],
+  "gharibyan23-scope-gaussian-only": [
+   "scope",
+   "Section 5, p.16: the paper's examples are multidimensional and bimodal Gaussians, and the authors say they plan financial datasets. The value reports an anticipation, which the paper does not test; it holds only as a statement of scope and plan."
+  ],
+  "gharibyan23-barren-plateau-claim": [
+   "scope",
+   "Section 1, p.3 (and Abstract): the authors state that their loss is not an observable expectation value, so barren plateau arguments do not strictly apply, and that they assume access to the state. It marks the scope of their claim and does not claim that no plateau exists. Elsewhere (Section 5) they say the approach 'appears' to avoid plateaus; that is not in this value."
+  ],
+  "gharibyan25c-dataset-sim": [
+   "setup",
+   "Section 3, p.7: 2,500 images, four classes, no classical feature extraction, linear layer plus softmax. Stated as is."
+  ],
+  "gharibyan25c-hardware-binary": [
+   "setup",
+   "Section 4, p.9: binary clear versus snow, trained on simulators, hardware for inference only."
+  ],
+  "gharibyan25c-not-beyond-classical": [
+   "stated limit",
+   "Section 1, p.3: 'by design, the experiments we perform do not constitute something beyond the reach of classical simulation.'"
+  ],
+  "gharibyan25c-bae-separable": [
+   "stated limit",
+   "Section 5, p.14: the authors state BAE circuits here have entangling gates only within blocks, so they are efficiently classically simulable block by block. A limit on their own circuits."
+  ],
+  "gharibyan25c-training-two-stage": [
+   "setup",
+   "Figure 1 caption, p.4: loading learned by KL, then fixed while processing circuit and classical weights train on cross entropy."
+  ],
+  "gharibyan25c-not-definitive": [
+   "stated limit",
+   "Section 3, p.7: the authors state the loading-method ranking is likely not definitive because loading is approximate and the processing layers are fixed to HEA."
+  ],
+  "gharibyan25c-brisbane-setup": [
+   "setup",
+   "Section 4.2.1, p.12 and Table 3 caption: CNOT, ring, brickwork, PAE 12 and 16 qubits, BAE 6x12=72 qubits, 100 images (50 per class) for Brisbane. Caveat: Table 4 (IBM Fez) gives per-class accuracies that are multiples of 1/30 (for example 0.87, 0.63), so the general sentence 'we will run inference on 100 images' does not fit the Fez runs. The Fez runs are not in this value. Also the text gives 96% for the 12-qubit PAE model accuracy against 0.94 in Table 3, and 240 CNOTs against 276 two-qubit gates for the BAE circuit; neither number is in this value."
+  ],
+  "gharibyan25c-no-advantage-aim": [
+   "scope",
+   "Section 5, p.14: 'Our aim was not to declare any advantage'; the same section says no claims can be made about quantum advantage."
+  ],
+  "gharibyan25c-qctrl-used": [
+   "setup",
+   "Section 4.2, p.12: IBM circuits further optimized with Q-CTRL software. A setup statement only. It is a vendor tool, and no result about it is claimed in this value."
+  ],
+  "gharibyan25c-future-work": [
+   "scope",
+   "Section 5, p.14: the listed directions (other loaders, other classifiers, noise-aware training, training on hardware, kernel methods, hybrids) are in the paper. They mark what this paper does not do."
+  ],
+  "gharibyan25c-sim-stack": [
+   "setup",
+   "Appendix A, p.15: H100 GPUs, cuQuantum for 20+ qubits, BlueQubit SDK for orchestration."
+  ],
+  "gharibyan25c-no-advantage": [
+   "stated limit",
+   "Section 4.3, p.13 and Section 5, p.14: the authors state all training was classical and no advantage is claimed."
+  ],
+  "gharibyan25l-hier-recap": [
+   "definition",
+   "Section 2, p.3: the paper's description of its hierarchical principle and the layerwise staging."
+  ],
+  "gharibyan25l-loss-metrics": [
+   "definition",
+   "Section 2, pp.3-4, Eqs. 3-5: KL loss, TVD and classical fidelity as defined by the authors."
+  ],
+  "gharibyan25l-image-as-distribution": [
+   "scope",
+   "Section 3, p.5: images are pre-processed to a probability vector and loaded as squared amplitudes; the authors state the practical difference from standard amplitude encoding is unknown. Both parts are the paper's own scope."
+  ],
+  "gharibyan25l-mnist-setup": [
+   "setup",
+   "Section 3.1, p.6: 28x28 digits, 784 entries, 10 qubits, 2x5 grid, start with 2 qubits and add 2, new parameters set to 0."
+  ],
+  "gharibyan25l-recon-quality": [
+   "stated limit",
+   "Section 3.2, p.7 and Fig. 5: the authors state the 21-qubit reconstruction (TVD21 6.8%, consistent in Fig. 4, Table 1 and Fig. 5) lacks detail. This is a limit on their own result. The '1100' in the value is the same figure that Fig. 3 gives as 1000; the limit does not depend on it."
+  ],
+  "gharibyan25l-bae-definition": [
+   "definition",
+   "Section 4, pp.7-8: height/b, width/2b, 2b^2 blocks (matches the 8, 32, 128 block rows in Table 1), each block a separate circuit, per-block normalization."
+  ],
+  "gharibyan25l-hw-plan": [
+   "setup",
+   "Section 5, p.10: full 21-qubit state and a 72-qubit BAE run with 6 blocks of 12 qubits, as stated."
+  ],
+  "gharibyan25l-h1-setup": [
+   "setup",
+   "Section 5.1, p.10 and Table 2: 3 runs on the 20-qubit H1, a 1024x1024 road image, RY and RZ plus RZZ gates, classical optimization."
+  ],
+  "gharibyan25l-naive-circuit": [
+   "setup",
+   "Section 5.2.1, p.12: 21 qubits, 229 gates, 80 two-qubit, 149 single-qubit gates, as stated."
+  ],
+  "gharibyan25l-bae-hw-setup": [
+   "setup",
+   "Section 5.2.2, p.13: 128x192 rescale, 6 blocks of 64x64, 12 qubits per block, 72 qubits on IBM Brisbane, Z on qubits 1 and 7 per block. 64x64=2^12 fits."
+  ],
+  "gharibyan25l-learned-observable": [
+   "setup",
+   "Section 5.2.2, pp.13-15: the paper's own procedure: extra trainable layers, cost on Z error, cut off at a 0.4 deviation from the maximally mixed state, at a small extra two-qubit cost."
+  ],
+  "gharibyan25l-future-work": [
+   "scope",
+   "Section 6, p.16: other losses than KL, a measurement distribution in a different basis, and generative models for several images are named as not done here. The 'different basis' item is in the paragraph as 'One could modify this by...'."
+  ],
+  "gharibyan25l-coarse-verification": [
+   "stated limit",
+   "Section 5, p.10: the authors state they probe only coarse-grained statistics because of readout error and sampling cost. Minor note: Section 5.2.1 adds the joint distribution of the top 3 bits, still coarse, so 'namely single Pauli Z values' is slightly narrower than what they later did."
+  ],
+  "gheisarnejad-qubit-representation": [
+   "definition",
+   "Section 4.1, p.5, Eqs. 9-11: the paper defines its qubit and probability-amplitude representation. It does not say whether anything ran on a quantum device or a simulator; this item only defines."
+  ],
+  "gheisarnejad-qdrl-components": [
+   "definition",
+   "Section 4.2, pp.5-6: four parts named; the quantum process generates the actions. The paper's own architecture."
+  ],
+  "gheisarnejad-dbn-predicts-state": [
+   "definition",
+   "Sections 4, 4.2, 4.3, Eqs. 15-18 (read from page 6 image): DBN of RBMs predicts the next state; hidden and visible probabilities by Gibbs sampling as the paper states. Design description, not a performance claim."
+  ],
+  "gheisarnejad-q-update-factors": [
+   "definition",
+   "Section 4.2, p.6, Eqs. 12-13 (page image): learning, discount and updated factors, all in [0,1]."
+  ],
+  "gheisarnejad-reward-function": [
+   "definition",
+   "Section 4.2, p.6, Eq. 14 (page image): reward is c2/|v_o - v_ref| when the error is below 0.05 and -c1|v_o - v_ref| above 0.05, c1 and c2 constants. Values are not given, as the value says."
+  ],
+  "gheisarnejad-ulm-control": [
+   "definition",
+   "Section 3 Eq. 8 (iPI law) and Section 4.4, p.7: QPDRL outputs adjust the controller coefficients. The paper's own controller."
+  ],
+  "gheisarnejad-testbed-hil": [
+   "setup",
+   "Section 5, p.7: OPAL-RT hardware-in-the-loop setup, stated. The abstract calls it PHiL."
+  ],
+  "gheisarnejad-line-resistances": [
+   "setup",
+   "Section 5, p.7: bus line resistances 0.8 and 0.5 ohm, as stated."
+  ],
+  "gheisarnejad-case-i-setup": [
+   "setup",
+   "Section 5.1, p.8, Eq. 19 and Fig. 5 (page image): 500 V sources, 750 V reference, six CPL power steps over 0 to 2.4 s in kW. Consistent with the figure. The conclusion's '20 W' contradicts this and is not in this value."
+  ],
+  "gheisarnejad-proof-of-concept-only": [
+   "stated limit",
+   "Section 6, p.9: the authors call the work a proof of concept and say comparison with many state-of-the-art RL algorithms is needed. The value does not carry the '20 W' wording, which conflicts with the 20-50 kW case studies. The only comparison in the paper is by eye against MPC."
+  ]
+ },
+ "theory_low": {
+  "germain-nystrom-count": "textbook, stated not proved (F129): the counts N(N-1)/2 and m(N-m)+m(m-1)/2 (Eq. 16) are standard combinatorics given with a worked example (124,750 and 2,485; I checked the arithmetic), but no proof or theorem is stated. The O(Nm) scaling is the standard Nystrom cost.",
+  "germain-nystrom-no-circuit-change": "textbook, stated not proved (F129): the first part (Nystrom leaves the kernel and circuit unchanged, entries rebuilt by Eq. 14) is the paper's construction, but 'Its rank is at most m' is a standard linear-algebra fact stated without proof. Value holds both; graded by the weaker.",
+  "germain-quantum-cost-quadratic": "textbook, stated not proved (F129): Section I, p.2 states O(N^2) construction cost with citation [4,5] and a counting example (250,000 entries, 124,750 unique). Cited and counted, not proved here.",
+  "gharibyan23-plus-qubit-splits-bins": "The first half (a |+> qubit as least significant bit splits mass into neighboring bins) follows from the encoding and is explained, not proved. The second half ('generally a good approximation if smooth') is an informal claim by the authors with no proof or test at this point. Graded by the weaker.",
+  "gharibyan23-adjoint-non-observable": "A derivation for the L2 loss (Eqs. 4-13) built on the adjoint method of cited refs [15,24]; the conditional claim 'if the gradient can be recast as an inner product' is not proved as a theorem, and the KL case only gives the initial ket. Not a proved result in this paper.",
+  "gharibyan23-adjoint-linear-gates": "textbook, stated not proved (F129): Section 2.2, p.8 gives an informal counting argument (O(M^2) finite differences, linear adjoint), relying on the cited adjoint method [15]. No theorem or proof. Section 3.3 also says one adjoint evaluation costs 10x a plain one, so 'linear' hides a constant.",
+  "gharibyan25l-marginal-meaning": "textbook, stated not proved (F129): Section 5, p.10 says the most significant qubit's P(0) is the top-half intensity and the second qubit's is the first and third quarters. It follows from binary indexing and a row-major flattening the paper does not spell out. Stated as a consequence, not derived."
+ },
+ "keep_stored": {},
+ "requote": {
+  "gheisarnejad-qdrl-scheme-and-testbed": "regraded LOW at the team lead's decision: The first half ('the quantum principle is incorporated into DRL to address the hardware limitations of conventional computers') is a stated purpose and benefit that the paper does not test. Nothing in the file says anything ran on quantum hardware or a simulator. The second half (compared with MPC in HiL) is a HIGH setup. Graded by the weaker.; team lead, 2026-11-04, Sprint 15 Manual Validation Q1 option 1 (all 36 as proposed)"
+ },
+ "value_replace": {
+  "gheisarnejad-qdrl-scheme-and-testbed": "The authors state that the quantum principle is incorporated into deep reinforcement learning to address the hardware limitations of conventional computers, and that the real-time outcomes of their controller are compared with a model predictive control scheme."
+ }
+}

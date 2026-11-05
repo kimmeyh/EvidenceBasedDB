@@ -66,5 +66,26 @@ def test_the_status_of_a_group_comes_from_its_files(tmp_path, monkeypatch):
     assert status.state("g1", records, set()) == ("read", "")
     (reviews / "g1.json").write_text("{}")
     assert status.state("g1", records, set()) == ("reviewed", "")
-    assert status.state("g1", records, {"r1", "r2"}) == ("reviewed", ""), "one record not yet applied"
-    assert status.state("g1", records, set(records)) == ("applied", "")
+    assert status.state("g1", records, {("g1", "r1"), ("g1", "r2")}) == ("reviewed", ""), "one not yet applied"
+    assert status.state("g1", records, {("g1", r) for r in records}) == ("applied", "")
+    # F125 (Sprint 15 Task C): a read is the group's only when it names the group, and a record its review left
+    # unread does not hold the group back. Proven to fail, 2026-11-01: with the group not compared, g2's read
+    # counted for g1; with the review's unread ignored, g1 stayed "reviewed".
+    assert status.state("g1", records, {("g2", r) for r in records}) == ("reviewed", "")
+    (reviews / "g1.json").write_text(json.dumps({"unread": {"r3": "next release"}}))
+    assert status.state("g1", records, {("g1", "r1"), ("g1", "r2")}) == ("applied", "1 left unread")
+
+
+def test_the_status_reads_the_group_the_applier_writes_into_a_read_row():
+    """Review of 34034bd: the status script finds a read's group in the detail full_read_apply.read_detail writes, and
+    nothing tied the two, so a re-entry name ("g113-r1") could be lost unseen. Proven to fail by injection, 2026-11-01:
+    with GROUP narrowed to g\\d+, the re-entry group was not found."""
+    import importlib.util
+    status = _load("sprint13_g_status")
+    spec = importlib.util.spec_from_file_location("full_read_apply", ROOT / "scripts" / "full_read_apply.py")
+    apply = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(apply)
+    apply.GROUP_TAG["g113-r1"] = "Sprint 15 Task H, F114 (local read)"
+    for g in ("g113", "g113-r1"):
+        detail = apply.read_detail(g, {"record_id": "r", "read_extent": "full", "version_note": "v2"})
+        assert status.GROUP.search(detail)[1] == g

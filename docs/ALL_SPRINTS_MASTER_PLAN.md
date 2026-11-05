@@ -50,12 +50,30 @@ repository exists. No other F# from either source repository applies here.
 | 12 | docs/sprints/SPRINT_12_SUMMARY.md | [OK] Complete | 2026-10-23 to 2026-10-24 |
 | 13 | docs/sprints/SPRINT_13_SUMMARY.md | [OK] Complete | 2026-10-24 to 2026-10-28 |
 | 14 | docs/sprints/SPRINT_14_SUMMARY.md | [OK] Complete | 2026-10-29 to 2026-10-31 |
+| 15 | docs/sprints/SPRINT_15_SUMMARY.md | [OK] Complete | 2026-11-01 to 2026-11-05 |
 
 ## Last Completed Sprint
 
-Sprint 14 is below; Sprint 13 follows it for continuity.
+Sprint 15 is below; Sprint 14 follows it for continuity.
 
-### Sprint 14: Read PHI-OMEGA, Review the 302 Cloud Reads, Then Learn What the Store Says (2026-10-29 to 2026-10-31, PR #140, waiting for the team lead's merge)
+### Sprint 15: Read Every Page, Figures and Images Included, Then Read 100 More Papers (2026-11-01 to 2026-11-05, PR #149, waiting for the team lead's merge)
+
+Thirteen tasks, thirteen issues (#150-#162). **Tooling**: re-entry groups
+for records left unread (F125); page anchors and latent defects (F126,
+F127). **Reading**: OCR of image-only pages by RapidOCR (F115); figures
+and embedded images read (F116); F114's 100 papers and the F57 release's
+100 records read in full (F114, F133); F128's gaps read or put on the
+hand-download list. **Corrections**: Phase 2's F151, F153, F154 re-read
+(F124); 10 textbook LOW grades set HIGH by the team lead (F129).
+**Inbound**: Phase 2's Sprint 30 results at 43bc362 (F130). The F95 and
+F98 releases found nothing new (F131, F132). Store 2,345 -> 2,358 papers
+(1,789 -> 1,805 `read`), 23,653 -> 34,891 assertions (8,167 -> 11,071
+HIGH); suite 1,485 -> 1,543 tests. Manual Validation: 36 certainty
+changes and Q2 to Q9 decided; a team-lead decision is now kept against a
+later review or an older script's rerun. Retrospective: team lead all
+"Very Good". Full detail: `docs/sprints/SPRINT_15_SUMMARY.md`.
+
+### Sprint 14: Read PHI-OMEGA, Review the 302 Cloud Reads, Then Learn What the Store Says (2026-10-29 to 2026-10-31, PR #140, merged to develop and to main via PR #148 on 2026-10-31; tagged sprint-14)
 
 Seven tasks, seven issues (#141-#147). **Papers**: Brighindi's PHI-OMEGA
 paper, posts and code (F119); the F95 and F98 releases (F122, F123).
@@ -327,27 +345,33 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 ## Current sprint
 
-**Sprint 14** (branch `feature/20261029_Sprint_14`, cut 2026-10-29 at the
-Sprint 13 carry-forward, after PR #131 merged to develop and PR #139 merged
+**Sprint 15** (branch `feature/20261031_Sprint_15`, cut 2026-10-31 at the
+Sprint 14 carry-forward, after PR #140 merged to develop and PR #148 merged
 develop to main).
 
-- **Scope** (DEFINED, team lead 2026-10-30): F119, F95, F98, F120, F117,
-  F118 (after F117) and F114 at 50 papers ("Q1 50 papers"). The
-  permanent items are released as copies: F122 (F95) and F123 (F98).
-  F39 was recommended and not selected; it is not in scope. F118's
-  question timing: Q3 = 1 (answered in F118, after F117).
-- **Plan**: `docs/sprints/SPRINT_14_PLAN.md` (approved as amended
-  2026-10-30). Manual Validation complete and the retrospective recorded
-  on 2026-10-31; PR #140 waits for the team lead's merge.
+- **Scope** (DEFINED, team lead 2026-11-01): F114 (next release, 100
+  papers), F125, F126, F127, F128, F115, F95, F98, F124, F129, F116, F57
+  and F130. The permanent items are released as copies: F131 (F95),
+  F132 (F98) and F133 (F57). The team lead marked F128, F95 and F98
+  "always in addition to F114": their reads do not count toward F114's
+  100. F39 was not selected. Priorities renumbered as the slate proposed.
+- **The team lead on F114**: "Hoping this process was updated to ensure
+  the entire paper was read and processed (no time limit per paper),
+  nothing left to be done later. Updated for all the best practices found
+  while reading the last couple of hundred papers (models...)". On F116:
+  "This is adding an ability to read picture files and images withing
+  PDFs".
+- **Plan**: `docs/sprints/SPRINT_15_PLAN.md` (drafted 2026-11-01, waiting
+  for approval).
 
 ## Next Sprint Candidates
 
-Refined 2026-10-29 after Sprint 13 (Sprint 14 Phase 1.2); Sprint 13's shipped
-cards (F107, F108 and the released copies F109 to F112) and F113 (its
-groups g001 to g042 shipped; the rest is F114) pruned BY HAND (Edit tool,
-card by card) the same day. Sprint 13's retrospective carded nothing
-(Categories 13 and 14: none). F120 carded from Phase 2's Sprint 29 work
-after 9cbe5ba.
+Refined 2026-11-01 after Sprint 14 (Sprint 15 Phase 1.2); Sprint 14's shipped
+cards (F117, F118, F119, F120 and the released copies F122 and F123)
+pruned BY HAND (Edit tool, card by card) the same day. F114 stays: its
+first release shipped in Sprint 14 and most of its records are still to
+read. Sprint 14's retrospective Categories 13 and 14 were all done in the
+sprint (Q2 to Q6); Q8 carded F130, Q9 extended F128.
 Shipped and pruned per convention: F1 (Sprint 1); F3, F4, F75, F76 (Sprint
 2); F2 Phase 1, F6, F7-F10, F13, F14 (Sprint 3); F11, F15-F18, F20, F25,
 F26, F27 (Sprint 4); F5, F28, F30, F31 (Sprint 5); F32-F38, F40-F43, F47
@@ -362,7 +386,9 @@ the released copies F88 and F89 (Sprint 10; F89's 8 papers with no free
 copy carried as F90); F91-F94 and the released copies F96, F97 and F99
 (Sprint 11); F100, F101, F102, F106 and the released copies F103, F104
 and F105 (Sprint 12); F107, F108, F113 and the released copies F109 to
-F112 (Sprint 13; F113's unread groups carried as F114). F121 (a spike
+F112 (Sprint 13; F113's unread groups carried as F114); F117, F118, F119,
+F120 and the released copies F122 and F123 (Sprint 14; F114's first
+release shipped there, and the card stays for the rest). F121 (a spike
 carded 2026-10-30) merged into F118 the same day, team lead: "Update
 card F118 and sit this in sprint 14 after F117 completes". F39, F57, F95 and F98 are
 permanent and stay. Closed without
@@ -378,7 +404,7 @@ and in git. Remaining items below.
 
 ### Permanent items
 
-**F39. Evaluate the available models and update the model-assignment heuristics -- PERMANENT (~30m per release) Priority 50** (NEW 2026-09-29; effort re-derived from Sprint 10's release at Sprint 11 Task B, F94)
+**F39. Evaluate the available models and update the model-assignment heuristics -- PERMANENT (~30m per release) Priority 70** (NEW 2026-09-29; effort re-derived from Sprint 10's release at Sprint 11 Task B, F94)
 - Phase: Process (recurring)
 - Value: this prevents agent work being assigned to a retired model or a
   tier whose measured outcomes no longer support it.
@@ -406,7 +432,7 @@ and in git. Remaining items below.
   change names its evidence; its test proven to fail by injection.
 - Depends on: nothing
 
-**F95. Ingest and read the new papers in the Papers folder -- PERMANENT (~90m per release) Priority 20** (NEW 2026-10-21, team lead at Sprint 11 Phase 1.4)
+**F95. Ingest and read the new papers in the Papers folder -- PERMANENT (~90m per release) Priority 40** (NEW 2026-10-21, team lead at Sprint 11 Phase 1.4)
 - Phase: Sourcing / intake, then reading (permanent item, like F39)
 - Value: this enables every paper the team lead saves to reach the store
   and be read within a sprint ("in general new papers are valuable").
@@ -452,6 +478,11 @@ and in git. Remaining items below.
   downloads in ledger groups g295 to g329, linked by the ledger and
   named in `access` when F114 reads their group. The hand-download list
   holds 53 records, none with a local copy.
+- **Snapshot as of 2026-11-01** (Sprint 15 Phase 1.2): 378 PDFs; the 4
+  saved since 2026-10-30 are F123's Roadmap-to-QML papers (2609.19983,
+  2610.32762, 2610.34430, 2610.35126), already entered. No new file from
+  the team lead, so the next release holds nothing unless a file is saved
+  first. The hand-download list holds 53 records.
 - **The hand-download list** (team lead, 2026-10-22, Sprint 11 Manual
   Validation Q2: "Keep an on going list of these in relative priority
   order and will likely download in the future"): computed by
@@ -503,11 +534,13 @@ and in git. Remaining items below.
   FourierWall2 copies still hash to `425358a7b4cec71f...`. Phase 2's
   Sprint 29 (read only, at 22d16c3) adds no re-run of the findings
   document. Stays HOLD.
+- Hold checked 2026-11-01 (Sprint 15 Phase 1.2): the `References\` and
+  FourierWall2 copies still hash to `425358a7b4cec71f...`. Stays HOLD.
 - Depends on: the hsbc repository's re-run of the experiment.
 
 ### Carded at Sprint 6 Manual Validation, 2026-10-05
 
-**F57. Read for claims: the records still at `seen` and `screened`, each read in full (no estimate: as long as the reads take; permanent, no reading budget since 2026-10-25) Priority 70** (NEW 2026-10-05, team lead at Sprint 6 MV)
+**F57. Read for claims: the records still at `seen` and `screened`, each read in full (no estimate: as long as the reads take; permanent, no reading budget since 2026-10-25) Priority 90** (NEW 2026-10-05, team lead at Sprint 6 MV)
 - Phase: Sourcing / extraction (permanent item, like F39)
 - Platform: the store; first-pass readers under the parallel-reading
   pattern (`.claude/model_assignment_heuristics.json`), every quote checked
@@ -540,6 +573,32 @@ and in git. Remaining items below.
     usage-limit pause is waited out, not cut around.
   - `tests/test_reader_prompts.py` fails on a reader prompt from Sprint 13
     Task G onward that names a part-read or an assertion cap.
+- **Sprint 16's release follows F57's relevance ranking** (team lead,
+  2026-11-04, Sprint 15 Manual Validation Q7 = 2). Sprint 15's F133
+  release read the next 100 ledger records with a local file instead,
+  because no unread record outside the ledger had a local copy (Changed
+  Commitment 9). So Sprint 16's release first fetches free copies of the
+  ranking's top records (the paced fetcher; a paywalled one goes on the
+  hand-download list), then reads them in ranking order.
+- **Sprint 16's release reads one named paper first** (team lead,
+  2026-11-05): the white paper `Quantum_NeuralNetwork.pdf` in
+  `github.com/wangy8205165/Quantum-NeuralNetwork-WhitePaper`. Sprint 12
+  (F103) entered that repository as a GitHub repository record only; the
+  PDF in it has no paper record and no local copy (checked 2026-11-05).
+  The release fetches it once into `Papers\`, enters it as a paper record
+  whose access names the repository and file, links the repository
+  record to it, and reads it in full before the ranking's records.
+- **And a second named paper** (team lead, 2026-11-05: "unless already
+  read ... get from arxiv for our purposes"): `qboost.pdf` in
+  `github.com/wangy8205165/QuantumBoost`, which the team lead identified
+  as arXiv 2108.13346 (given as "2108.133346"; 2108.13346 is "QBoost for
+  regression problems: solving partial differential equations", Goes et
+  al., 2021, checked on arXiv 2026-11-05). No local copy in `Papers\` and
+  no manifest names it (checked 2026-11-05). The release confirms in the
+  store that it is not already read, fetches version 2 once from arXiv
+  (`2108.13346v2`; team lead: "only need to read v2 of the paper"), and
+  reads it in full after the white paper. This is not Neven et al.'s
+  2012 QBoost paper, which has a local copy.
 - **Snapshot as of 2026-10-05**: 1,875 papers; 24 at `read`, all with
   yielded assertions; 14 `screened`; 1,837 `seen`. F45 and F46 cover only
   the handoff's pending facts, not these.
@@ -603,6 +662,12 @@ and in git. Remaining items below.
     `screened` (681 and 1), of which 654 have no read row; 10,735
     assertions (4,059 HIGH). F114 holds the full reads still to do, and
     F117 the 302 cloud results waiting for review.
+  - **Snapshot as of 2026-11-01** (Sprint 15 Phase 1.2; store unchanged
+    since Sprint 14's last apply, counts from `SPRINT_14_SUMMARY.md`):
+    2,345 papers; 1,789 at `read`; 524 at `seen` or `screened` with no
+    read row; 23,653 assertions (8,167 HIGH). F114's 1,091 records not
+    yet read in full overlap this count: a record read in part in Sprint
+    13 has a read row and is F114's, not F57's.
   - Known limit (Sprint 10 finding): a record with no free copy, or one
     refused at reading, cannot reach `read`. Each release reports those
     separately, so the count that closes the item is visible.
@@ -684,7 +749,7 @@ and in git. Remaining items below.
 
 ### Carded at Sprint 11 Phase 1.4 (2026-10-21)
 
-**F98. Review Christophe Pere's QML paper repository for new papers, then ingest and read them -- PERMANENT (~60m per release) Priority 22** (NEW 2026-10-21, team lead at Sprint 11 Phase 1.4, for Sprint 12 onward)
+**F98. Review Christophe Pere's QML paper repository for new papers, then ingest and read them -- PERMANENT (~60m per release) Priority 42** (NEW 2026-10-21, team lead at Sprint 11 Phase 1.4, for Sprint 12 onward)
 - Phase: Sourcing / intake, then reading (permanent item, like F39)
 - Value: this enables the store to keep pace with a curated QML paper
   list maintained by an author whose papers it already holds.
@@ -726,42 +791,15 @@ and in git. Remaining items below.
   (2609.19983, 2610.32762, 2610.34430, 2610.35126). The diff adds 7 lines
   that mark a paper withdrawn or retracted; each is compared with the
   store at the release.
+- **Snapshot as of 2026-11-01** (Sprint 15 Phase 1.2; GitHub REST, read
+  only): the list is still at ea6f42a7c0 (2026-10-27), the commit
+  Sprint 14's release (F123) recorded. A release now confirms the commit
+  and enters nothing unless the list changes first.
 - Depends on: none
-
-### Carded at Sprint 14 Phase 1.2 (2026-10-29)
-
-**F120. Enter Phase 2's Sprint 29 results: the ULB comparison, the per-type cascade, IEEE-CIS room check and the Henze-Penrose bound (~90m) Priority 30** (NEW 2026-10-29, read from Phase 2 at Sprint 14 Phase 1.2)
-- Phase: Inbound evidence (F79)
-- Value: this enables the store to hold Phase 2's newest measured results
-  beside the claims they bear on, and prevents it from keeping values
-  Phase 2 has since reworded.
-- Platform: the store; `hsbc-qfraud-phase2` read only, branch
-  `feature/20261025_Sprint_29` at 22d16c3 (2026-10-28, local refs, no
-  fetch): `docs/phase2/`, `experiments/phase2/results/`
-- Changed since this repository's F108 (Sprint 13) read 9cbe5ba
-  (snapshot as of 2026-10-29, read only). The F numbers below are Phase
-  2's own backlog numbers, not this repository's:
-  - F166: best achievable result per algorithm on ULB, eight algorithm
-    documents and a comparison (`docs/phase2/algorithms/`).
-  - F158: the per-type cascade is below one model.
-  - F160: Experiment 3's room check passes on IEEE-CIS.
-  - F156: the Henze-Penrose bound fails on F108's simulator.
-  - F159 (parallel pool build timing) and F167 (a draft PoC plan) are
-    engineering and planning; each is read and entered only if it states
-    a result the store's contexts hold.
-  - F108 and F162 documents: small changes; each compared with the
-    stored value.
-- Acceptance: each document read at the commit current when the work
-  starts (named in provenance); each result entered under its context
-  through the verified write path, with its limits and `SIM` or hardware
-  tag; related by ADR-0004 A8 (b) to the stored claims it bears on; each
-  stored value whose source changed corrected or confirmed by name; a
-  second apply writes nothing.
-- Depends on: none (reads at a named commit)
 
 ### Carded during Sprint 14 (2026-10-30)
 
-**F124. Re-read and repoint Phase 2's F151, F153 and F154 source records at a current commit (~45m) Priority 30** (NEW 2026-10-30, the fresh-eyes review of 1f904ba, Sprint 14 Task D)
+**F124. Re-read and repoint Phase 2's F151, F153 and F154 source records at a current commit (~45m) Priority 50** (NEW 2026-10-30, the fresh-eyes review of 1f904ba, Sprint 14 Task D)
 - Phase: Inbound evidence (F79)
 - Value: prevents three Phase 2 source records from failing the
   local-file check and their assertions from resting on documents Phase
@@ -780,7 +818,7 @@ and in git. Remaining items below.
   unchanged; a second apply writes nothing.
 - Depends on: none
 
-**F125. A way back in for a record left unread in a reviewed group (~30m) Priority 40** (NEW 2026-10-30, the fresh-eyes review of 1cb63bb, Sprint 14 Task F)
+**F125. A way back in for a record left unread in a reviewed group (~30m) Priority 12** (NEW 2026-10-30, the fresh-eyes review of 1cb63bb, Sprint 14 Task F)
 - Phase: Reading (F114's next release)
 - Value: lets F114's next release enter the records Sprint 14 left
   unread inside a group it reviewed, instead of losing them.
@@ -799,7 +837,7 @@ and in git. Remaining items below.
   proven red; the status script reads `work\f114\local\`.
 - Depends on: none
 
-**F126. Page-anchor leftovers from Sprint 14's local reads (~20m) Priority 50** (NEW 2026-10-30, the fresh-eyes reviews of ccaedc2 and 59233c1, and the F117 sign-off, Sprint 14 Task F)
+**F126. Page-anchor leftovers from Sprint 14's local reads (~20m) Priority 14** (NEW 2026-10-30, the fresh-eyes reviews of ccaedc2 and 59233c1, and the F117 sign-off, Sprint 14 Task F)
 - Phase: Reading (F114's next release)
 - Value: closes the anchor defects Sprint 14 found and left, so no
   stored page names the wrong PDF page.
@@ -823,7 +861,7 @@ and in git. Remaining items below.
   muta anchor is corrected through a path a test covers.
 - Depends on: none
 
-**F127. Two latent defects in F114's cloud path and the applier (~20m) Priority 50** (NEW 2026-10-30, the fresh-eyes review of d2fcc8d and cecf20d, Sprint 14 Task E)
+**F127. Two latent defects in F114's cloud path and the applier (~20m) Priority 16** (NEW 2026-10-30, the fresh-eyes review of d2fcc8d and cecf20d, Sprint 14 Task E)
 - Phase: Reading (F114's next release)
 - Value: closes two paths that would mislabel a read or let one id
   stand for two papers; neither is live on 2026-10-30.
@@ -859,7 +897,7 @@ and in git. Remaining items below.
 - Acceptance: each with a test proven red, then green.
 - Depends on: none
 
-**F128. Reading targets for the gaps F118 found (~30m to card, reads per F57) Priority 40** (NEW 2026-10-30, the F118 memo, Sprint 14 Task G)
+**F128. Reading targets for the gaps F118 found (~30m to card, reads per F57) Priority 20** (NEW 2026-10-30, the F118 memo, Sprint 14 Task G)
 - Phase: Sourcing / intake, then reading
 - Value: the store cannot answer these questions from
   `docs/spikes/F118_WHAT_THE_STORE_SAYS.md`; each source below fills
@@ -899,7 +937,7 @@ and in git. Remaining items below.
   F57's path.
 - Depends on: none
 
-**F129. Re-check the LOW grades that rest only on an unproved textbook fact (~30m) Priority 50** (NEW 2026-10-30, F117's sign-off, Sprint 14 Task E)
+**F129. Re-check the LOW grades that rest only on an unproved textbook fact (~30m) Priority 60** (NEW 2026-10-30, F117's sign-off, Sprint 14 Task E)
 - Phase: Reading (F114's next release)
 - Value: makes F117's early groups agree with the cross-group rule the
   later groups used, so one grade means one thing.
@@ -920,7 +958,7 @@ and in git. Remaining items below.
   the keyword cut's misses sampled.
 - Depends on: none
 
-**F130. Phase 2's Sprint 30 results into the store (~60m) Priority 30** (NEW 2026-10-31, Sprint 14 retrospective Q8 = 1)
+**F130. Phase 2's Sprint 30 results into the store (~60m) Priority 52** (NEW 2026-10-31, Sprint 14 retrospective Q8 = 1)
 - Phase: Intake (`docs/INTAKE_WORKFLOW.md`, "Phase 2 results"), as
   F120 did for Sprint 29
 - Value: the store's F118 answers rest on Phase 2's own measurements;
@@ -934,31 +972,150 @@ and in git. Remaining items below.
   IEEE-CIS, once its run completes). Each a measurement of record with
   provenance naming the repository, commit, file and run, linked
   `supports` or `contradicts` to the published LOW claims it bears on.
+- **Snapshot as of 2026-11-01** (Sprint 15 Phase 1.2, read only): Phase
+  2's Sprint 30 PR #74 is open, not merged; its branch is
+  `feature/20261030_Sprint_30`. The card waits on that merge.
 - Acceptance: each result entered from the merged commit, not an
   unmerged branch; links reviewed; a second apply writes nothing.
 - Depends on: Phase 2's Sprint 30 merged to develop.
 
-### Released for Sprint 14 (2026-10-30)
+### Released for Sprint 15 (2026-11-01)
 
-**F122. F95 release for Sprint 14: new papers in `Papers\` (~5m) Priority 20** (NEW 2026-10-30, released copy of F95)
+**F131. F95 release for Sprint 15: new papers in `Papers\` (~5m) Priority 40** (NEW 2026-11-01, released copy of F95)
 - Phase: Sourcing / intake, then reading
 - Value: F95's, for the files in hand when the task starts.
 - Platform: `D:\Data\Harold\EvidenceBasedDB\Papers\`; `scripts/intake.py`
-- F95's steps (1) to (5). On 2026-10-29 the one new file was the
-  PHI-OMEGA paper, which F119 enters; the 165 Task G downloads are store
-  records F114 reads. Any file saved before the task starts is included.
+- F95's steps (1) to (5). On 2026-11-01 no file was new beyond F123's 4
+  papers, already entered. Any file saved before the task starts is
+  included. Its reads are in addition to F114's 100 (team lead,
+  2026-11-01).
+- **Done 2026-11-01 (Sprint 15 Task A; counts a snapshot as of that
+  date)**: before and after, 378 PDFs in `Papers\` and its subfolders;
+  165 named by no record's `access` (file-name match), all Sprint 13 Task
+  G downloads that F114 names as it reads their groups; no file saved
+  since F123's 4 papers of 2026-10-30, which records already name.
+  Nothing to enter or read; no store write.
 - Acceptance: F95's per release.
-- Depends on: F119 (its paper record)
+- Depends on: none
 
-**F123. F98 release for Sprint 14: Roadmap-to-QML from a239747648 to ea6f42a7c0 (~60m) Priority 22** (NEW 2026-10-30, released copy of F98)
+**F132. F98 release for Sprint 15: Roadmap-to-QML from ea6f42a7c0 (~5m) Priority 42** (NEW 2026-11-01, released copy of F98)
 - Phase: Sourcing / intake, then reading
 - Value: F98's, for the list at its commit on the task's day.
 - Platform: github.com/Christophe-pere/Roadmap-to-QML, read only; the intake door
-- The diff from a239747648 (ea6f42a7c0 on 2026-10-29): 4 arXiv ids not in
-  the store (2609.19983, 2610.32762, 2610.34430, 2610.35126), each
-  entered and read in full; 7 withdrawn or retracted marks, each
-  compared with the store.
+- The list was still at ea6f42a7c0 on 2026-11-01. A newer commit's diff
+  is entered and read; its reads are in addition to F114's 100 (team
+  lead, 2026-11-01).
+- **Done 2026-11-01 (Sprint 15 Task B)**: the list's head is still
+  ea6f42a7c0 (2026-10-27, GitHub REST, read only). No new paper; nothing
+  to enter or read; no store write.
 - Acceptance: F98's per release.
+- Depends on: none
+
+**F133. F57 release for Sprint 15: records with no read row, read in full (no estimate: as long as the reads take; size set at plan approval) Priority 90** (NEW 2026-11-01, released copy of F57)
+- Phase: Reading
+- Value: F57's, for the records that have never been read at all.
+- Platform: the store; F57's ranking; local first-pass readers under the
+  Sprint 15 reader prompt
+- On 2026-11-01, 524 records had no read row. The 11 that name only a
+  local file come first (they need no fetch), then F57's relevance
+  ranking. The size is the plan's question. Team lead, 2026-11-01, at
+  plan approval: Q2 = 2, so this release is 100 records (about 240
+  minutes of review).
+- Acceptance: F57's per release.
+- Depends on: the Sprint 15 reader prompt (F114's task)
+
+### Carded during Sprint 15 (2026-11-01)
+
+**F134. Table cells that hold only a number are dropped from the text a quote is checked against (~30m) Priority 30** (NEW 2026-11-01, Sprint 15 Task H, reader g115)
+- Phase: Reading (quote check)
+- Value: a quote or a value number from a table cell is checked against
+  the text the paper holds, not refused or passed by accident.
+- Platform: `store/quotes.py` `plain()`, which drops each line that holds
+  only a number so a quote may cross a page break (line 52 on
+  2026-11-01).
+- The non-layout text puts a table cell on its own line, so cells such
+  as 881 and 160 are dropped with the page numbers. The layout text
+  keeps them inside their row, so most table quotes still pass; a quote
+  that runs across a number-only line in the non-layout text does not.
+  The rule predates Sprint 15.
+- Seen twice in Sprint 15's reads (2026-11-01): reader g115, and reader
+  g120 on cumming-2022, whose Tables XIII, XV and XVI node counts and
+  chain lengths could not be quoted; those values are held only in the
+  figures list's `shows`.
+- Acceptance: a page number is still dropped; a number-only table cell
+  is kept, or the check finds it some other way; each with a test proven
+  red, and the full live suite still green (every stored quote still
+  verbatim).
+- Depends on: none
+
+**F135. A stated limit about a measured result meets the "measured is never HIGH" check (~20m) Priority 32** (NEW 2026-11-01, Sprint 15 Task H, reader g118)
+- Phase: Reading (reader prompt and check)
+- Value: a reader records a stated limit with its true result type
+  instead of changing the type to clear a check.
+- Platform: `scripts/sprint13_g_check.py`;
+  `manifests/sprint15_f114_reads/READER_PROMPT.md`.
+- Reader g118 set `result_type` to "theoretical", "claim" or "setup" on
+  five stated-limit assertions (four in coopmans-2024, one in
+  cortes-2026) because the check refuses a HIGH suggestion on a
+  "measured" result. Each group's review judges these items, but the
+  prompt does not say which type a stated limit on a measured result
+  takes.
+- Acceptance: the prompt names the type of a stated limit; the check
+  and the prompt agree; a test proven red.
+- Depends on: none
+
+**F136. Each PDF's text is extracted once and each quote is checked once, ever (~50m) Priority 10** (NEW 2026-11-04, team lead at Sprint 15 Manual Validation, Q9: "We need to updat the rule as it violates the 'Long-term Effective, while as efficient as reasonalby possible' primary rule"; carded, not done now. Widened 2026-11-05; team lead retrospective Q1 = 1: Sprint 16's first task)
+- Phase: Store tooling (apply)
+- Value: a rerun or a second apply takes seconds, not minutes, and each
+  write still carries a fresh quote check.
+- Platform: `scripts/full_read_apply.py` (`verify`, `commit_apply`);
+  the rule's wording in `docs/INTAKE_WORKFLOW.md`.
+- The applier checks every quote of every assertion in every reviewed
+  group (about 10,000 for Sprint 15's 47 groups) before it writes,
+  although most are stored exactly as their review wants them and
+  nothing is written for them. Sprint 15's apply of its last 24 groups
+  (2026-11-04) re-checked the 23 groups applied that morning. The rule
+  being kept: an assertion is written only after its quotes are checked
+  against the source text (Sprint 10 retrospective I2,
+  `store.ingest.insert_verified_assertion`). An unchanged row is not a
+  write and needs no check.
+- Not chosen (Q9 option 2): reusing a dry run's passing check for a
+  new write through a stored receipt. That weakens the guarantee and is
+  a Class 1 change to ADR-0004's evidence rule.
+- Acceptance: the applier compares each assertion with its stored row
+  first and checks only those it will insert or change; a second apply
+  checks nothing and writes nothing; a changed quote is still checked
+  (a test proven red); the rule's wording in INTAKE says "every write
+  is checked; an unchanged row is not".
+- **Widened 2026-11-05** (team lead): "This reading the PDF should ever
+  be done once per PDF, ever, and once done should never need to read it
+  again. The quotes only need to be verified once per PDF, ever, and
+  should never need to be done again."
+  - Text extraction (pdftotext, and OCR) runs once per file, ever. The
+    text cache is keyed by the file's digest already; the gap is that a
+    trial store copy without the cache extracts every PDF again (894 PDFs,
+    about 25 minutes, Sprint 15). The cache gets one fixed location that
+    every store copy reads, so no copy can miss it. This replaces
+    retrospective improvement Q1 (copy the cache with each trial).
+  - A quote is checked once, when it is first written. A rerun, a second
+    apply or a later sprint never checks it again. A new or changed quote
+    is checked once, against the cached text, in seconds.
+  - Added acceptance: a trial on a store copy extracts no PDF the cache
+    holds (a test proven red); a rerun of an apply checks no quote.
+- Depends on: none
+
+**F137. The two Dunjko records share one PDF: which paper is each (~30m) Priority 34** (NEW 2026-11-04, team lead at Sprint 15 Manual Validation, Q5 = 1)
+- Phase: Reading (record repair)
+- Value: each record points at its own paper, and each assertion sits
+  under the paper that states it.
+- Platform: the store; `D:\Data\Harold\EvidenceBasedDB\Papers\`.
+- The Dunjko 2017 and 2018 records hold one byte-identical PDF. Reader
+  g131 (Sprint 15) entered its new assertions under the 2017 record
+  only (INTAKE_WORKFLOW.md section 64).
+- Acceptance: each record's paper identified from its citation; the
+  missing paper fetched by the paced fetcher if it is free (else on the
+  hand-download list); assertions moved to the record that states them,
+  each move with its note; the local-file check passes for both.
 - Depends on: none
 
 ### Carded during Sprint 13 (2026-10-26 to 2026-10-28)
@@ -1023,210 +1180,18 @@ and in git. Remaining items below.
   g076) holds page images only; pdftotext gives 10 empty pages. Three
   cloud sessions got no text, and none pushed a result. It has no
   `paper_reads` row and keeps none until F115 gives it a text layer.
+- **Snapshot as of 2026-11-01** (Sprint 15 Phase 1.2, after F114's first
+  release shipped in Sprint 14 with F117): of the 1,430 records in groups
+  g043 to g329, 339 have a `full` read row dated 2026-10-26 or later;
+  1,091 do not, in 227 groups. The 1,091 include the 18 papers the team
+  lead kept out at Sprint 14 Manual Validation (Q2 = 1), the 8 records
+  left unread in reviewed groups (F125), udaru-2025-qml-credit-risk (F115)
+  and the records never sent. The cloud credit that ran Sprint 13's 302
+  reads is spent; a release now runs on local readers (up to 5) unless
+  the team lead funds the cloud path again. Sprint 14's local rate: 50
+  papers inside a 744-minute sprint with review and apply.
 
-**F119. Read Brighindi's PHI-OMEGA paper with its post, comment thread, image and code, first in Sprint 14 (~60m [no-history] timebox) Priority 10** (NEW 2026-10-28, team lead: "add the following text and paper to the paper repository and terget read for next sprint - highest priority"; "the paper is ML-related as it is rlated to predictions/solvers"; Sprint 13 Manual Validation Q9 = 1, first, before F117; Q10 = 1, files and card added during Manual Validation)
-- Phase: Sourcing / extraction
-- Value: the paper claims that energy drift is "mathematically impossible"
-  under its "algebraic metric closure"; a claim in the solver and
-  prediction space (context `ml`, the team lead's call) enters the store
-  only with what supports it, and what does not.
-- Platform: everything outside version control (ADR-0005 section 3),
-  described in two references (Sprint 13 Manual Validation Q12 = 1, team
-  lead 2026-10-28): PHI-OMEGA / M-OMNIA in
-  `References\2026-09_Brighindi_PHI-OMEGA_LinkedIn-post-and-comments.md`,
-  and the MB-X.01 structural-coherence code (lon-mirror, OMNIA, the
-  Zenodo archive) in
-  `References\2026-04_Brighindi_MB-X.01-Structural-Coherence_LON-mirror-OMNIA.md`:
-  - the paper, `Papers\2026-09_Brighindi_From-Open-Heuristics-to-Native-Runtime-Invariance.pdf`
-    (3 pages, 2026-09-25, self-published);
-  - the LinkedIn post and its comment thread, as the team lead pasted them;
-  - the image, `ImagesAndVideo\Phi-Omega Invariant Substrate vs. Legacy Solvers.jpeg`
-    (read by eye until F116 exists);
-  - the code: DOI:10.5281/zenodo.19857066 saved in `GitHubRepos\` (the
-    Tuttotorna GitHub account returned 404 on 2026-10-28), and, cloned
-    to `GitHubRepos\` from the `phiomegaruntime-rgb` account,
-    `m-domain-independent-core` (69a65eb), `m-omnia-validation`
-    (d3e45f3) and `phi-infinity-runtime` (4ee4ea3);
-  - two more images and an earlier post (2026-09-23), added the same day.
-- What a first look found, 2026-10-28, before any read: no proof, no
-  theorem and no results data in the paper, which says its "logs,
-  cycle-by-cycle metrics, and comparative visual plots ensure full
-  reproducibility"; the author's own `phi-infinity-runtime` holds the
-  paper's stress test (seed 20260925) and says, in Italian, that the
-  raw files and `simulation.py` are not published, that the counts are
-  not reproducible from the repository, and that no "absolute immunity"
-  follows from one seed; `m-omnia-validation` says "no empirically
-  verified result is claimed"; the comment by Valerie Calveyrac asks for
-  the theorem the paper does not give.
-- Acceptance: the paper read in full (no budget); a paper record with its
-  `access`; every claim entered with its quote and certainty; the absence
-  of the reproducibility material entered as an absence claim with its
-  search scope; the post, comments and image entered as the author's own
-  claims, distinct from the paper; of the 608-file Zenodo archive, only
-  the parts that bear on the paper's claims are read (Sprint 13 Manual
-  Validation Q11 = 1, team lead 2026-10-28).
-- Depends on: none
-
-**F117. Review the 302 cloud results of F114, with each step on the cheapest model its protocol allows, then apply them (~480m [no-history] timebox) Priority 20** (NEW 2026-10-27, team lead: "do the follow-up review of the 302 results (determine which model is needed for this - or can it be split into multiple sections where one or more can be completed by haiku 5.5... sonnet 5.5... opus 5.5")
-- Phase: Sourcing / extraction
-- Value: 302 full reads (snapshot as of 2026-10-27) wait outside the
-  store; until reviewed and applied, none of their verdicts or assertions
-  counts.
-- Platform: the results saved by `scripts/f114_cloud.py fetch` and their
-  branches `cloud/f114/<record>`; the review tooling of Task G (one
-  decision file per group); `scripts/full_read_apply.py` for the apply
-  with its verified backup; `.claude/model_assignment_heuristics.json`
-- Split by protocol, not by tier alone. The heuristics' own evidence
-  (Sprint 3, `learning_log[0]`): a per-record review with no source access
-  confirmed 18 of 18 records at every tier, while the review with
-  primary-source access found the defects. So a cheap tier gets only the
-  steps whose answer is in the file itself:
-  - **No model (script):** the quote check against the PDF (all 302 pass,
-    2026-10-27), the schema, ids, a verdict on every stored assertion,
-    and assertions per page against Task G's local reads.
-  - **Haiku 5.5 (classification and extraction, the models page's stated
-    use):** flag a result whose own words contradict its label: "full"
-    beside "sampled", "selective" or an unread appendix, as Boyd's did;
-    flag a HIGH suggestion whose `certainty_reason` names no settling
-    passage; list each result's figures and tables named but not entered.
-  - **Sonnet 5.5 (per record, with the paper's text):** each corrected,
-    narrowed, widened or contradicted verdict, and each HIGH suggestion,
-    checked against the passage it quotes; THEORY_LOW and NOT_HIGH
-    decisions drafted per group, as Task G's reviews did.
-  - **Opus 5.5 (set level, cross-record):** the same judgment made
-    differently across groups, and every verdict that contradicts a
-    stored assertion; it signs off each group's decision file.
-  - **Team lead:** any certainty level a review changes, as the
-    escalation triggers require.
-- A review at any tier that confirms every record with no rejection is
-  re-run with source access before it is trusted (escalation trigger).
-- Acceptance: each of the 302 has a decision; the flagged results are
-  sent back for a complete read, or kept unread with the reason; the
-  apply's counts before and after; a second apply writes nothing; each
-  tier's outcome logged in the heuristics' `learning_log`.
-- Depends on: F113's groups g001 to g042 applied (Sprint 13)
-
-**F118. Learn what the store says about QC, ML, QML, tensor networks and related physics, for the QML and ML credit card fraud challenge (~360m [no-history] timebox) Priority 22** (NEW 2026-10-27, team lead: "suggest an approach to look at the EvidenceBasedDB and determine what we have been able to learn about QC, ML, QML, Tensors and other quantum physics-related items that apply to QC and that could be related to QML/ML Credit Card Fraud challenge")
-- Phase: Use of the evidence
-- Value: the store exists to serve the fraud submission
-  (`hsbc-qfraud-phase2`); this turns its assertions into answers to the
-  questions that submission must settle, with each answer's certainty.
-- Platform: the store (read only); Phase 2's repository, read for its
-  open questions (reads are free, writes never cross: F79); a generated
-  report, so no value is copied by hand
-- **Updated 2026-10-30 (team lead, Sprint 14 Phase 1.4): F121 merged
-  into this card.** The team lead asked for a spike "to determine what
-  we have learned so far, what it means for our approach to the
-  competition and what experiments we should do", then: "Update card
-  F118 and sit this in sprint 14 after F117 completes". F121 is retired
-  (its number is not reused); its three outputs and its approach are
-  this card's. **Placed in Sprint 14, after F117 completes**, so it
-  reads the 302 reviewed results too.
-- **The team lead's own questions, added 2026-10-30** (pasted under "Not
-  asked yet"; kept verbatim). The memo answers each from the store, or
-  says the store cannot and cards the gap:
-  - "What have we learned about Quantum Computing in general:"
-  - "how gates work, what sets of gates can be used for what purpose
-    (guessing that there are micro algorithms (small set of gates) that
-    can be used to do X that are useful"
-  - "what are the micro algorithms that appear to be useful (math, how
-    to store data, how to read data in, how to get data out)"
-  - "is there anything useful that is not hybrid between QC and
-    Classical?"
-  - "what are the best practices for hybrid algorithms"
-  - "how can the unique properties of QC (entanglement, superposition,
-    interference and ???) be taken advantage of and for what use cases"
-  - "where does quantum advantage show itself": "what use cases are
-    proven/nearly proven (just need more qubits or gates or ???)"; "what
-    use cases are most likely for quantum advantage (all)"; "about how
-    many qubits would it take for each use case to reach advantage";
-    "are the use cases limited to search and optimization (grouping,
-    routing, selection, scheduling,...)"
-  - "how does ML using QC/Classical hybrid fit in": Gradient Boost
-    (XGBoost, CatBoost, LightGBM); Bagging ensembles (Random Forest,
-    Balanced RF, Extra Trees); linear and probabilistic (Logistic
-    Regression, Linear SVM, Naive Bayes); Anomaly detection (One-Class
-    SVM, Local Outlier Factor, Isolation Forest); Neural Networks (MLP,
-    ResNet, Deep Learning); "Any others that might be useful to try?"
-  - "how might QC be applied to GenAI training or Inference and how many
-    qubits would be needed?"
-- **Coverage, by keyword (snapshot as of 2026-10-30; a rough count of
-  assertion values matching each topic, not a classification)**: data
-  encoding and loading 832; hybrid and variational 874; readout and
-  measurement 737; advantage 694 (dequantization 61); neural networks
-  354; optimization (QUBO, annealing, routing, scheduling) 346;
-  entanglement, superposition or interference 344; gate sets 293;
-  primitives (QFT, phase and amplitude estimation, swap test, HHL,
-  block encoding) 179; tensor networks 108; GenAI, LLM or transformer
-  80; fraud 63; qubit resource estimates 37; gradient boosting 37;
-  linear and probabilistic models 38; bagging and random forests 32;
-  anomaly detection 26. The thin topics (qubit counts per use case, the
-  classical model families, GenAI) are likely gaps: a qubit count is
-  given only where a stored assertion states one, never estimated in
-  the memo.
-- **Estimate raised from ~240m to ~360m** for the team lead's questions:
-  about six more themes (gates and primitives, data in and out,
-  non-hybrid uses, hybrid practice, resource estimates, GenAI) and one
-  section per classical model family.
-- Three outputs, in one memo under `docs/spikes/` (each count stated as a
-  snapshot of its date, every finding citing assertion ids):
-  - what the store has taught us so far, per theme;
-  - what it means for the competition approach, per question;
-  - which experiments to run, ranked, before Phase 2's 14 Nov 2026
-    notification date where possible.
-- Approach:
-  1. **Questions first** (15m). The decisions the fraud work faces, read
-     from Phase 2 at the commit current when the work starts:
-     `docs/phase2/PHASE2_POC_PLAN_DRAFT.md` (its six experiments and its
-     assumption register) and its open cards. For example: does any
-     quantum kernel or variational classifier beat a tuned classical
-     model on tabular, imbalanced data; what data encoding scales to the
-     feature count; what noise, barren plateaus, dequantization and
-     sample complexity rule out; what tensor-network and quantum-inspired
-     methods offer classically; what QUBO and Dirac-3 style solvers do
-     for cardinality-constrained feature selection; which
-     anomaly-detection results transfer.
-  2. **Inventory, computed** (10m). Counts by context, certainty, claim
-     type and SIM or hardware tag. Snapshot as of 2026-10-29: 10,735
-     assertions; `qml` 6,626, `qc` 3,151, `ml` 541, `world` 115,
-     `method` 114, `hsbc-2026` 82, the Dirac platforms 106; 4,059 HIGH;
-     36 tagged SIM or HW.
-  3. **Themes, by query** (30m). Keyword and SQL selection into about ten
-     themes: advantage and dequantization on classical data; kernel
-     concentration and bandwidth; trainability (barren plateaus); data
-     loading and encoding cost; noise and error mitigation limits;
-     sample complexity and generalization bounds; tensor networks and
-     quantum-inspired methods; QUBO, annealing and Dirac-style solvers
-     for feature selection; fraud detection and class imbalance in
-     classical ML; benchmarking practice (fair baselines, tuning). A
-     Haiku 5.5 classification pass only where keywords leave a theme
-     unclear, each mapping checked on a sample.
-  4. **Read per theme** (60m). Up to 5 Sonnet 5.5 readers, one per group
-     of themes, each given its assertions with quotes and grades; each
-     returns what is settled (HIGH: a proof or a stated limit), what is
-     only measured or claimed and under what conditions (simulated or
-     hardware, qubit count, data size), where assertions conflict, and
-     what is missing. Opus 5.5 writes the synthesis and checks 10
-     citations against the store.
-  5. **Implications and experiments** (40m). Per competition question,
-     what the evidence implies for the approach; then a ranked list of
-     experiments, each with its hypothesis, the assertion ids behind it,
-     its cost (simulator minutes or device seconds), the Phase 2
-     experiment it extends or the gap it fills, and the result that
-     would change the approach.
-  6. **Gaps to backlog.** A question the store cannot answer becomes a
-     reading target here, or a Phase 2 experiment sent as a pasted prompt
-     (writes never cross).
-- Limits stated in the memo: the share of LOW assertions and of
-  `partial` reads on its date; F114's records not yet read.
-- Acceptance: the memo with the question list and its Phase 2 source;
-  one section per theme citing assertion ids, 10 citations checked
-  against the store; an implication per question; a ranked experiment
-  list of at least 5; the Phase 2 prompt drafted; the gaps carded.
-- Depends on: F117 (the review first, so the synthesis reads reviewed
-  assertions)
-
-**F115. Convert the text in page images to text, mainly in PDFs (~120m [no-history] timebox) Priority 20** (NEW 2026-10-27, team lead: "add a method to convert images in documents (primarly PDF's) that are text to text")
+**F115. Convert the text in page images to text, mainly in PDFs (~120m [no-history] timebox) Priority 30** (NEW 2026-10-27, team lead: "add a method to convert images in documents (primarly PDF's) that are text to text")
 - Phase: Sourcing / extraction
 - Value: a source whose pages are images gives the quote check no text, so
   no assertion from it can be verified, and a reader gets nothing to read.
@@ -1247,7 +1212,7 @@ and in git. Remaining items below.
   when an image-only page is read as empty without being flagged.
 - Depends on: none
 
-**F116. Read the figures in a source: what a graph shows, and where the text confirms it (~180m [no-history] timebox) Priority 40** (NEW 2026-10-27, team lead: "read images that are graphs... and interpret the images (if a graph, what does the graph say and how is it confirmed in text)")
+**F116. Read the figures in a source: what a graph shows, and where the text confirms it (~180m [no-history] timebox) Priority 80** (NEW 2026-10-27, team lead: "read images that are graphs... and interpret the images (if a graph, what does the graph say and how is it confirmed in text)")
 - Phase: Sourcing / extraction
 - Value: readers now skip figures (Task G's prompt counts a plot as read
   when its caption and the text around it are read), so a result shown

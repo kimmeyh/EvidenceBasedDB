@@ -49,13 +49,26 @@ def test_learnings_are_found_by_derivation_not_by_absence_of_a_paper(conn):
 def test_balance_counts_assertions_not_sources_regression(conn):
     """cvqboost-vs-xgboost-auc-under-balancing is yielded by two papers; it
     is ONE piece of evidence. Proven to fail by injection: the first
-    version joined paper_yields per row and reported moderate: 2."""
+    version joined paper_yields per row and reported moderate: 2.
+
+    The balance is compared with a count of distinct assertions per grade,
+    taken from assertion_relations alone (no join to the sources), not with
+    a fixed number: the grades are data, and the team lead's g133 decision
+    at Sprint 15 Manual Validation moved cvqboost from MODERATE to LOW.
+    Proven to fail by injection, 2026-11-05: with each evidence row counted
+    once per source, the balance's LOW count exceeded the distinct count."""
     item = _mod().learning(conn, QML)
     ids = [e["id"] for e in item["evidence"]]
     assert len(ids) == len(set(ids)), "an evidence assertion appears once, whatever its number of sources"
     cvq = next(e for e in item["evidence"] if e["id"] == "cvqboost-vs-xgboost-auc-under-balancing")
     assert "emami-2025" in cvq["sources"] and "qci-2024-profiling" in cvq["sources"]
-    assert item["balance"]["supports"].get("moderate") == 1
+    distinct = {}
+    for level, n in conn.execute(
+            "SELECT COALESCE(r.certainty, 'unrated'), COUNT(DISTINCT r.id) FROM assertion_relations a "
+            "JOIN records r ON r.id = a.from_assertion_id WHERE a.to_assertion_id = ? AND a.relation = 'supports' "
+            "GROUP BY 1", (QML,)):
+        distinct[level] = n
+    assert item["balance"]["supports"] == distinct
 
 
 @pytest.mark.live_store

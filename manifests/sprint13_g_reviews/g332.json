@@ -1,0 +1,442 @@
+{
+ "group": "g332",
+ "reviewed_on": "2026-11-01",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "stoudenmire-mnist-setup-downsampling": [
+   "setup",
+   "Section VI, p.5: the authors state their own preprocessing (28x28 scaled to 14x14 by averaging 2x2 clusters, no other changes) and the ITensor library."
+  ],
+  "stoudenmire-mnist-downsampling-tradeoff": [
+   "stated limit",
+   "Section VI, p.5: the authors state that the smaller images reduced training time at the cost of less information for learning. A caveat on their own MNIST setup."
+  ],
+  "stoudenmire-mnist-pixel-ordering": [
+   "setup",
+   "Section VI, p.5, Fig. 8: the authors state the zig-zag pixel ordering they chose for the MPS path and why."
+  ],
+  "stoudenmire-cost-dominated-by-training-inputs": [
+   "stated limit",
+   "Section V, p.5: the authors state that cost is dominated by N_T and that blending SGD with MPS sweeping did not match the accuracy of the full gradient. Both are limits on their own algorithm. The stated result is a measured one, so its true type is empirical, not claim."
+  ],
+  "stoudenmire-update-two-tensors-at-a-time": [
+   "definition",
+   "Section V, pp.3-4: the quadratic cost Eq. (6) and the two-site update strategy are the paper's own algorithm definition. The adaptive bond dimension remark is the authors' stated reason."
+  ],
+  "stoudenmire-feature-map-definition": [
+   "definition",
+   "Section II, p.2, Eqs. (2) and (3): the tensor-product feature map with unit-norm local vectors and the cos/sin pixel map are the paper's own definitions."
+  ],
+  "stoudenmire-feature-map-product-state": [
+   "definition",
+   "Section II, p.2: the passage states the feature tensor is rank-1 as a product of N order-1 tensors, a product state in physics terms. The quote carries only the vector/tensor sentence, but the passage settles the whole value. It follows from Eq. (2)."
+  ],
+  "stoudenmire-multiclass-one-versus-all": [
+   "definition",
+   "Section III, p.2: the one-versus-all decision function f^l(x)=W^l.Phi(x), with the label of largest |f^l|, is the paper's own classifier definition."
+  ],
+  "stoudenmire-toy-setup-two-dimensional": [
+   "setup",
+   "Section VII, p.5: N=2 inputs on the unit square, labels A and B from P_A and P_B, full weight tensors by gradient descent, Appendix B for d>2. The paper's own setup."
+  ],
+  "stoudenmire-d2-black-white-arbitrary": [
+   "proved result",
+   "Section VIII.A, p.7: with phi(0)=[1,0] and phi(1)=[0,1] (Eqs. 15, 16) the product picks out one weight component, and the components are independent for an unconstrained W. The short argument is complete in the paper and the condition (no further approximation of W) is stated."
+  ],
+  "stoudenmire-eq3-fails-orthogonality": [
+   "stated limit",
+   "Section VIII.C, p.8: the authors state ('Unfortunately') that the Eq. (3) map used for MNIST, and its Appendix B generalizations, do not meet the orthogonality criterion of the generative interpretation. A limit on their own feature map; the true type is theoretical, not a measured result."
+  ],
+  "stoudenmire-generative-experiment-setup": [
+   "setup",
+   "Section VIII.C, pp.8-9: hidden random W, two-step sampling (label with P_A=sum |W^A|^2, then x from |f|^2/P), second model trained on the log-likelihood Eq. (24), KL divergence Eq. (25). The paper's own protocol."
+  ],
+  "stoudenmire-proof-of-principle-scope": [
+   "scope",
+   "Section I, p.1: the authors state they consider only the MPS decomposition as a proof of principle."
+  ],
+  "stoudenmire-discussion-peps-may-be-better": [
+   "stated limit",
+   "Section IX, p.9: the authors state that PEPS may be more suitable and give superior performance for 2D data, and that much work remains. A caveat on their MPS choice, stated as an open problem, not a result."
+  ],
+  "stoudenmire-discussion-optimizer-room-to-improve": [
+   "stated limit",
+   "Section IX, p.9: the authors state there is much room to improve their optimizer, and name mini-batches, momentum, unsupervised initialization and regularization as untried. These are stated gaps in their own work, reported as the authors' words."
+  ],
+  "stoudenmire-appendix-b-spin-coherent": [
+   "definition",
+   "Appendix B, p.10, Eqs. (B2) to (B4): the paper defines the d-component binomial local map, shows by the binomial expansion that it reduces to d=2 and that the squared components sum to 1, and names it a spin coherent state."
+  ],
+  "xgboost-tree-ensemble-model": [
+   "definition",
+   "Section 2.1, p.2, Eq. (1): the K-additive regression-tree model with a continuous leaf score and summed leaf scores is the paper's own definition."
+  ],
+  "xgboost-regularized-objective": [
+   "definition",
+   "Section 2.1, p.2, Eq. (2): loss plus Omega penalty is the paper's own objective. The zero-regularization fallback follows from the definition."
+  ],
+  "xgboost-optimal-leaf-weight-and-score": [
+   "proved result",
+   "Section 2.2, p.3, Eqs. (4) to (6): for a fixed structure q the optimum of the per-leaf quadratic gives w* and the score. The derivation is in the paper. It is optimal for the second-order approximation L~(t) (Eq. 3), which Friedman et al. [12] supply and the paper cites as a standard tool."
+  ],
+  "xgboost-split-gain-formula": [
+   "definition",
+   "Section 2.2, p.3, Eq. (7): the loss-reduction formula follows from Eq. (6) and is the paper's own scoring definition. 'Usually used in practice' is incidental to the formula."
+  ],
+  "xgboost-greedy-structure-search": [
+   "setup",
+   "Section 2.2, p.3: the paper states its own greedy tree-growing strategy and why it is used."
+  ],
+  "xgboost-shrinkage-definition": [
+   "definition",
+   "Section 2.3, p.3: shrinkage defined as scaling new weights by eta. Attributed to Friedman [11], but the paper states the definition and its use."
+  ],
+  "xgboost-exact-greedy-definition": [
+   "definition",
+   "Section 3.1, p.3, Alg. 1: the exact greedy algorithm defined, with its pre-sort."
+  ],
+  "xgboost-approximate-algorithm-global-local": [
+   "definition",
+   "Section 3.2, p.4, Alg. 2: the approximate framework and its global and local variants as the paper defines them."
+  ],
+  "xgboost-weighted-quantile-problem": [
+   "definition",
+   "Section 3.3, p.4, Eqs. (8) and (9): the rank function and the candidate-split goal are the paper's definitions. The weighted squared loss rewrite with labels g/h and weights h is shown in the text."
+  ],
+  "xgboost-appendix-quantile-summary-operations": [
+   "definition",
+   "Appendix A, p.11: the merge and prune operations are defined for a quantile summary. Their error guarantees are proved later (Theorems A.1 and A.2)."
+  ],
+  "xgboost-appendix-definition-quantile-summary": [
+   "definition",
+   "Appendix A.1, p.11, Definition A.1: the weighted quantile summary tuple and its constraints."
+  ],
+  "xgboost-appendix-lemma-extended-constraint": [
+   "proved result",
+   "Appendix A.1, Lemma A.1, p.11: stated with its conditions (Definitions A.1 and A.2) and proved in the paper for the non-trivial case y between summary points."
+  ],
+  "xgboost-appendix-lemma-approximate-iff": [
+   "proved result",
+   "Appendix A.1, Lemma A.2, p.12: the if-and-only-if is stated and proved by considering y between consecutive points. The proof is short but complete."
+  ],
+  "xgboost-appendix-initial-summary-exact": [
+   "definition",
+   "Appendix A.2, p.12, Eq. (24): the initial summary is constructed with the exact rank and weight functions, so it answers all queries exactly and has zero error by Definition A.3. It follows from the construction."
+  ],
+  "xgboost-appendix-theorem-merge": [
+   "proved result",
+   "Appendix A.3, Theorem A.1, p.12: stated with conditions and proved from Lemma A.3 (the paper's own lemma) and Definition A.3. The epsilon glyphs are lost in the text layer, but the page render shows max(eps1,eps2)."
+  ],
+  "xgboost-appendix-theorem-prune": [
+   "proved result",
+   "Appendix A.4, Theorem A.2, pp.12-13: stated with its conditions and proved using Lemma A.4, which the paper proves. The garbled epsilon in the text layer is read as (eps + 1/b) from the proof's last line."
+  ],
+  "xgboost-sparsity-causes-and-default-direction": [
+   "definition",
+   "Section 3.4, p.4, Fig. 4: the paper lists the causes of sparsity and defines its default-direction method."
+  ],
+  "xgboost-sparsity-learn-default-direction": [
+   "definition",
+   "Section 3.4, p.5, Alg. 3: the paper states that default directions are learnt from data and that only non-missing entries are visited."
+  ],
+  "xgboost-column-block-definition": [
+   "definition",
+   "Section 4.1, p.5: the block structure (CSC, pre-sorted columns, computed once, single block for exact greedy, many blocks for approximate) is the paper's own design."
+  ],
+  "xgboost-datasets-setup": [
+   "setup",
+   "Section 6.2, p.8, Table 2: four datasets, the subset suffix convention, and which datasets serve which setting."
+  ],
+  "xgboost-allstate-higgs-split": [
+   "setup",
+   "Section 6.2, p.8: 10M random training instances with the rest as evaluation, and the simplified Allstate claim-likelihood task."
+  ],
+  "xgboost-criteo-preprocessing-and-feature-count": [
+   "setup",
+   "Section 6.2, p.8: 1.7 billion instances, 67 features (13 integer, 26 CTR, 26 counts), ID features replaced by count statistics from the first ten days."
+  ],
+  "xgboost-hardware-and-hyperparameters": [
+   "setup",
+   "Section 6.2, p.8: Dell PowerEdge R420 with two eight-core E5-2470 and 64GB; depth 8, shrinkage 0.1, no column subsampling unless stated."
+  ],
+  "xgboost-higgs-1m-setup-scikit-dense": [
+   "scope",
+   "Section 6.3, p.8: the paper states why it uses the dense Higgs 1M subset for the scikit-learn comparison."
+  ],
+  "xgboost-ltr-setup": [
+   "setup",
+   "Sections 6.2 and 6.4, pp.8-9: official Yahoo LTRC split; comparison against pGBRT, with XGBoost exact greedy and pGBRT approximate. 'Best previously published' is the authors' own label for the baseline, reported as such."
+  ],
+  "xgboost-out-of-core-setup": [
+   "setup",
+   "Section 6.5, p.9: one AWS c3.8xlarge (32 vcores, two 320GB SSD, 60GB RAM) and a dataset large enough to drain the file cache."
+  ],
+  "xgboost-distributed-setup": [
+   "setup",
+   "Section 6.6, p.9: YARN on EC2, m3.2xlarge with 8 vcores, 30GB and two 80GB SSDs, data on S3, 32 machines against Spark MLLib and H2O."
+  ],
+  "xgboost-open-source-implementation": [
+   "setup",
+   "Section 6.1, p.7: the paper's own statement of its implementation: open source, python/R/Julia, rabit-based distributed version, Hadoop, MPI, Flink and Spark."
+  ],
+  "jaques-active-passive-definition": [
+   "definition",
+   "Abstract, p.1: the paper defines active and passive QRAM in its own terms (external intervention per query versus none once initiated)."
+  ],
+  "jaques-obstacles-not-provably-inevitable": [
+   "stated limit",
+   "Abstract, p.1: the authors state that the obstacles to passive QRAM are not provably inevitable. A limit on their own conclusion, not on a surveyed result."
+  ],
+  "jaques-circuit-qram-still-useful": [
+   "scope",
+   "Abstract, p.1: the authors state that the paper adds a survey of circuit-QRAM techniques for algorithm designers. Their own scope."
+  ],
+  "jaques-definition-qracm": [
+   "definition",
+   "Section 2.1, Definition 1, p.5: QRACM defined as a collection of unitaries indexed by a table T in {0,1}^N. The count 2^N of memories follows from the definition."
+  ],
+  "jaques-definition-qraqm": [
+   "definition",
+   "Section 2.1, Definition 2, p.6: QRAQM defined as unitaries U(N) acting on the address, output bit and an N-qubit data register, valid for every data state."
+  ],
+  "jaques-memory-taxonomy": [
+   "definition",
+   "Section 2.1, p.5: the paper adopts Kuperberg's CRACM, CRAQM, QRACM, QRAQM naming (classical or quantum data; classical or quantum access) as its own notation."
+  ],
+  "jaques-routing-harder-than-readout": [
+   "scope",
+   "Section 2.2, p.6: the paper states that it mainly focuses on routing. The reason ('seems more difficult') is the authors' hedged impression, but the scope statement is the paper's own."
+  ],
+  "jaques-circuit-hardware-active-passive-terms": [
+   "definition",
+   "Section 2.3, p.7: circuit-QRAM, hardware-QRAM, active (Omega(N) interventions) and passive (o(N) interventions) hardware-QRAM are defined for use in the paper."
+  ],
+  "jaques-scale-circuit-overhead-small": [
+   "stated limit",
+   "Section 3, p.8: the authors state that at about 2^20 bits of QRAM their own conclusions are less relevant, because circuit QRAM costs O(N) gates (Section 5), so the overhead is modest. A limit on the relevance of their own conclusions."
+  ],
+  "jaques-input-model-oracle": [
+   "setup",
+   "Section 4.1, p.9: the paper's own input model (oracle access, location oracle for sparse H, Hermitian embedding for general matrices)."
+  ],
+  "jaques-problem-1-definition": [
+   "definition",
+   "Section 4.1, p.10, Problem 1: the Polynomial Eigenvalue Transform Problem as the paper formally states it."
+  ],
+  "jaques-wide-qram-assumption": [
+   "setup",
+   "Section 4.1, p.10: the paper's modelling assumption of a wide QRAM with N d registers and O(log(N d)) depth per access."
+  ],
+  "jaques-classical-processors-per-logical-qubit": [
+   "setup",
+   "Section 4.3, p.11: the paper's modelling assumption of O(1) classical processors per logical qubit. The 'seems unlikely' sentence is the authors' own hedge on the assumption."
+  ],
+  "jaques-three-regimes-wire-length-unrealistic": [
+   "scope",
+   "Section 4.3, p.11: the authors state the three scale regimes they analyse and that the wire-length regime is probably the least realistic but is the only one giving potential advantage."
+  ],
+  "jaques-theorem-4-2-classical-parallel": [
+   "proved result",
+   "Section 4.3, Theorem 4.2, pp.11-12: stated with its conditions (degree-k polynomial, d-sparse Hermitian H, normalized v) and proved on the next page from the eigenvector completeness: f(H)=sum a_j H^j."
+  ],
+  "jaques-theorem-4-2-proof": [
+   "proved result",
+   "Section 4.3, p.12, proof of Theorem 4.2: the completeness argument and the running-total computation are given in full. The assumption that mat-vec cost dominates normalization is stated."
+  ],
+  "jaques-table1-medium-scale-oddity": [
+   "stated limit",
+   "Table 1 caption, p.12: the authors state that the medium-scale result looks strange and that they suspect a classical algorithm for sparse matrices with d much greater than 1 could be improved. A limit on their own result."
+  ],
+  "jaques-advantage-vs-d-strange": [
+   "stated limit",
+   "Section 4.3, p.13: the authors state that the d-dependence of the advantage looks strange, give a likely reason, and say they have not considered optimized classical algorithms for large d. A limit on their own analysis."
+  ],
+  "jaques-battle-of-constant-factors": [
+   "stated limit",
+   "Section 4.3, p.13: the authors state that the medium-scale advantage depends on quantum constant-factor overheads against signal latency. A stated condition on their own conclusion."
+  ],
+  "jaques-recommend-noisy-qram-linear-algebra": [
+   "stated limit",
+   "Section 4.4, p.14: the authors state that they do not rule out practical advantage with noisy QRAM and recommend further exploration. A limit on their own negative conclusion. The remark on uncorrected noise is hedged."
+  ],
+  "jaques-approximate-implementation-definition": [
+   "definition",
+   "Section 5.1, p.15: epsilon-approximate implementation defined by the spectral-norm distance."
+  ],
+  "jaques-theorem-5-2-one-table-per-circuit": [
+   "proved result",
+   "Section 5.1, Theorem 5.2 part 1, p.15: proved by the triangle inequality on the two unitaries, which differ by at least sqrt 2 on |j>|0>. It does not use Lemma 5.1. The proof excludes only epsilon strictly below 1/sqrt 2, a boundary slip that does not change the result."
+  ],
+  "jaques-lower-bound-measurement-free-limit": [
+   "stated limit",
+   "Section 5.1, p.16: the authors state that their lower bound applies only to measurement-free circuits, that the counting argument fails with measurement feedback, and when it would hold. A limit on their own bound."
+  ],
+  "jaques-qracm-toffoli-universal": [
+   "proved result",
+   "Section 6, p.21: with Definition 1 and T=[0,0,0,1], the access maps |a1 a2>|b> to |a1 a2>|b xor a1 a2>, a Toffoli. That Clifford plus Toffoli is universal is textbook background, not a reason for LOW."
+  ],
+  "jaques-discount-active-hardware-qram": [
+   "stated limit",
+   "Section 6.1, p.21: the authors state that they discount active hardware-QRAM but cannot rule out a constant-factor advantage, and that passive QRAM needs both stages passive (from their o(N) definition). A limit on their own dismissal."
+  ],
+  "jaques-pessimistic-qram-error-correction": [
+   "stated limit",
+   "Section 7.2, p.24: the authors state that their pessimism about QRAM error correction needs more research, and that codes or more impossibility results would clarify it. A limit on their own conclusion."
+  ],
+  "jaques-gate-teleportation-model": [
+   "definition",
+   "Section 7.3, pp.24-25, Eqs. (14) and (15) and Figure 7: the paper's own model of a physical QRACM gate with table-independent noise channels, d distillation channels and a teleportation channel."
+  ],
+  "jaques-theorem-7-1-limits": [
+   "stated limit",
+   "Section 7.3, p.25: the authors state that the proof assumes one distillation process for all tables, which is somewhat unrealistic, and that the bound is on minimum fidelity so broad-input uses are not forbidden. Limits on their own theorem. The remark that database QAA suffers greatly is their interpretation."
+  ],
+  "jaques-logical-inputs-open": [
+   "stated limit",
+   "Section 7.3, pp.25-26: the authors state that a proof or disproof of the logical-input extension of their theorem is left to future work. A limit on their own result."
+  ],
+  "jaques-other-proposals-intro": [
+   "scope",
+   "Section 10, p.33: the paper states that this section covers proposals that do not follow the bucket-brigade approach."
+  ],
+  "jaques-discussion-no-passive-technology-found": [
+   "stated limit",
+   "Section 11, pp.38-39: the authors state that they found no passive hardware-QRAM technology and cannot prove cheap QRAM impossible. A limit on their own survey's conclusion."
+  ],
+  "jaques-funding-disclosure": [
+   "setup",
+   "Disclaimer and Acknowledgements, p.39: the paper states it was funded in part by JPMorgan Chase and that A.G.R. held a JPMorgan Chase Global Technology Applied Research PhD Fellowship. Not a result; the paper's own disclosure, so the nearest basis is setup."
+  ],
+  "jaques-lemma-a2-shared-memory-matvec": [
+   "proved result",
+   "Appendix A, Lemma A.2, p.47: stated with its conditions (P processors, shared memory of O(1) access, d-sparse A) and proved by row assignment and a subtotal tree. The paper calls it standard and cites [55] but gives the proof in full."
+  ],
+  "jaques-lemma-a4-dense-matvec": [
+   "proved result",
+   "Appendix A, Lemma A.4, p.48: a construction with processor counts, wire lengths per layer and an O(log N) depth, all given in the paper's proof. The proof ends at O(N^2 log N) wire length, which matches the lemma's O-tilde(N^2)."
+  ],
+  "jaques-b-circuit-counting-setup": [
+   "definition",
+   "Appendix B, p.48: the paper defines the circuit set C(W,D,G,g,k) and says the counting overcounts equivalent circuits, which suffices for an upper bound."
+  ],
+  "jaques-b-proposition-fanin-reduction": [
+   "proved result",
+   "Appendix B, Proposition B.1, pp.48-49: an injective map from circuits with fanin up to k to fanin-one circuits is given, with an injectivity argument. The proof is brief but self-contained."
+  ],
+  "jaques-b-proposition-count-slots": [
+   "proved result",
+   "Appendix B, Proposition B.2, p.49: choose G of D W slots and a gate for each. A direct count, stated with its notation."
+  ],
+  "jaques-c-theorem-proof-induction": [
+   "proved result",
+   "Appendix C, p.50, Eqs. (30) to (42): the induction over the d distillation steps using the data-processing inequality, and the triangle-inequality contradiction on a logical input |j>|0>, are given in full. The value states no constants."
+  ],
+  "faryad-amplitude-encoding-qubit-compression": [
+   "definition",
+   "Section II.B, p.2, Eq. (4): n qubits hold 2^n amplitudes by the paper's definition, so a 1024-dimensional vector uses ten qubits."
+  ],
+  "faryad-table1-setup": [
+   "setup",
+   "Section III, p.2 and Table I caption: the sine density p(x)=(pi/2) sin(pi x), two preparation routes, transpiled to {cx, rz, sx, x} at optimization level 1."
+  ],
+  "faryad-quantum-kernel-pair-estimate-definition": [
+   "definition",
+   "Section VI, p.4: the paper describes a quantum kernel as estimating |<phi(xi)|phi(xj)>|^2 for pairs, needing a feature state prepared for each. A standard description given as the paper's own."
+  ],
+  "faryad-scope-not-futility": [
+   "scope",
+   "Section VII, p.4: the paper states that its result does not establish futility, only that one argument pattern does not close."
+  ],
+  "faryad-survives-device-generated-data": [
+   "scope",
+   "Section VII, p.4: the paper states that device-generated distributions were never classical vectors, so its loading bound does not cover them."
+  ],
+  "faryad-survives-amortization": [
+   "scope",
+   "Section VII, p.4: the paper states that amortization over many measurements divides the preparation cost, and that the net effect is an arithmetic question per pipeline."
+  ],
+  "faryad-polynomial-advantages-not-forbidden": [
+   "scope",
+   "Section VII, p.4: the paper states what its result does and does not forbid. This is its own scope statement. Whether the exponential case is truly forbidden depends on the unproved Theta(N) bound."
+  ],
+  "faryad-six-questions-checklist": [
+   "definition",
+   "Section VIII, p.4: the six-question checklist is the paper's own proposal, listed in full."
+  ],
+  "faryad-code-availability": [
+   "setup",
+   "Code Availability, pp.4-5: five Jupyter notebooks, Qiskit 2.5.1 and qiskit-aer 0.17.2, each result checked against a closed-form answer."
+  ]
+ },
+ "theory_low": {
+  "stoudenmire-algorithm-scaling": "Section V, p.5: the cost d^3 m^3 N N_L N_T is asserted in one sentence with no derivation in the paper. An authors' claim, not a proved result.",
+  "stoudenmire-linear-scaling-input-size": "Section V, p.5: a one-sentence claim after the algorithm description. No cost count or proof is given. Authors' claim.",
+  "stoudenmire-svd-truncation-optimal": "textbook, stated not proved (F129): Section V, p.4: optimality of SVD truncation (Eckart-Young) and its global extension for unitary-formed MPS tensors are asserted, with Refs. 26 and 42 for background. No proof in the paper.",
+  "stoudenmire-complete-basis-any-function": "textbook, stated not proved (F129): Section VIII.A, p.7: completeness of the product basis and f(x) being any square-integrable function are stated in one sentence with no proof.",
+  "stoudenmire-grayscale-single-pixel-form": "Section VIII.A, p.7: the a cos + b sin form is shown only for the d=2 map. The value's 'cannot be arbitrary for finite d' is the authors' general claim, illustrated only with d=2 and not argued for larger d. Graded by the weaker part.",
+  "stoudenmire-three-stage-interpretation": "Section VIII.B, p.7: an interpretation the authors read from Eq. (17). No test or proof. Authors' interpretation.",
+  "stoudenmire-reduced-features-subspace": "Section VIII.B, pp.7-8: 'it follows from' the orthogonality conditions, stated with no derivation. Authors' claim.",
+  "stoudenmire-eq23-satisfies-criteria": "Section VIII.C, p.8: that the Eq. (23) map meets Eqs. (20) and (21) with dmu=2dx, and that the cos(pi x), sin(pi x) map is anti-periodic, are asserted with no calculation shown.",
+  "xgboost-appendix-lemma-query-function": "Appendix A.4, Lemma A.4, p.12: the value drops epsilon. The lemma bounds d within (eps/2) times the total weight (Eq. 33, seen on the rendered page), not within half the total weight. The text layer lost the epsilon, so the quotes cannot carry the condition. The value overstates the lemma.",
+  "xgboost-block-complexity-exact": "Section 4.1, p.6, Time Complexity Analysis: the O() bounds are stated with no derivation. An authors' claim.",
+  "xgboost-block-complexity-approximate": "Section 4.1, p.6: the O(Kd||x||0 log q) and O(Kd||x||0 + ||x||0 log B) bounds are stated with no derivation. An authors' claim.",
+  "jaques-linear-algebra-advantage-disappears": "Abstract, p.1: a summary of Section 4. The result rests on Theorem 4.1, whose proof uses results from [49], on a cited classical lemma (A.2, [55]) and on modelling assumptions. The abstract's word 'prove' is the authors' claim.",
+  "jaques-passive-requires-single-hamiltonian": "Section 1.1, p.3: a one-line summary of the argument of Section 6.3. The step that no intervention means a single time-independent Hamiltonian is a physical modelling step, not proved.",
+  "jaques-passive-no-error-correction-noise": "Section 1.1, p.3: a summary of arguments of Section 7, stated in prose with no proof.",
+  "jaques-passive-fault-tolerance-compatibility": "Section 1.1, p.3: a summary of the Section 7.3 argument. The 'cannot be teleported' claim rests on Theorem C.2, whose constants are not fully supported (see jaques-c-theorem-minimal-fidelity), and on prose argument.",
+  "jaques-linear-algebra-conclusion-regime": "Section 4, p.9: a summary of the Section 4.3 analysis. It rests on Theorem 4.1 (proof uses [49]), the cited Lemma A.2 ([55]) and the authors' wire and latency model. The paper itself says the medium-scale case may be improvable.",
+  "jaques-theorem-4-1-quantum-lower-bound": "Section 4.3, Theorem 4.1, p.11 and Appendix A, p.46: the proof uses results of [49] (Gilyen et al.): the sum and product of block-encodings lemmas and the polynomial approximation of the sign function with degree O(log(1/eps)/delta), plus the unstructured-search lower bound. The text cites 'Theorem A.1' but the appendix labels it Lemma A.1, and says [49] almost immediately implies it.",
+  "jaques-theorem-4-1-proof-idea": "Section 4.3, p.11: a proof outline that depends on a block-encoding of a rank-one projector and the sign-function polynomial of [49]. The paper says [49] almost immediately implies the bound.",
+  "jaques-small-scale-no-advantage": "Section 4.3, p.12: the conclusion combines Theorem 4.1 (proof uses [49]), the cited standard Lemma A.2 ([55]) and the assumptions of instant communication and shared memory. It is a conclusion under the authors' model, not a proved result.",
+  "jaques-medium-scale-hypercube-sort": "Section 4.3, p.12: relies on Lemma A.3, which follows the technique of [15] and whose timing is not derived, and on the authors' wire-count model. The paper itself says the wire-length analysis changes the conclusion.",
+  "jaques-table1-values": "Table 1, p.12: a summary of the authors' regime analysis, resting on their model assumptions. The sparse medium-scale entry rests on the wire-length model the paper calls the least realistic.",
+  "jaques-medium-scale-hypercube-wire-length": "Section 4.3, p.13: an argument under the authors' modelling assumptions (wire cost, two-dimensional embedding). Not a theorem.",
+  "jaques-qram-htree-wire-length": "Section 4.3, p.13: the O(N d) wire length of a well-designed QRAM (an H-tree) is a design claim with no construction in the paper.",
+  "jaques-mesh-square-root-advantage": "Section 4.3, p.13: a result under the authors' mesh model that uses Lemma A.3 (technique of [15], timing not derived). The paper suspects the classical algorithm could be improved.",
+  "jaques-dense-matrices-no-advantage": "Section 4.3, p.13: rests on Lemma A.4 (a construction with wire counts) and on the authors' processor-count resource model. The conclusion is the authors' claim under that model.",
+  "jaques-large-scale-advantage-disappears": "Section 4.3, p.13: an argument under the authors' physical model (QRAM width, lightspeed access time). Not a formal theorem.",
+  "jaques-circuit-qram-cost-theta-n": "Section 5, p.14: a summary of cited circuit constructions. The 'essentially optimal' claim rests on the Section 5.1 lower bound, whose Lemma 5.1 is not established as stated (see jaques-lemma-5-1-circuit-count).",
+  "jaques-lower-bound-counting-idea": "Section 5.1, p.14: the paper itself calls this the intuition, analogous to Shannon's counting argument. Not a proof.",
+  "jaques-lemma-5-1-circuit-count": "Section 5.1, Lemma 5.1, p.14 and Appendix B, pp.48-49: the appendix proves only Lemma B.3, and the stated 2^(gamma G) with gamma = k lg(DWg/(G sqrt k)) does not follow from it. For k=1, B.3 gives (e D W^2 g/G)^G, a larger count than the stated one. The conversion step is not shown.",
+  "jaques-theorem-5-2-gate-lower-bound": "Section 5.1, Theorem 5.2 parts 2 and 3, p.15: the explicit bound (log tau + N)/gamma uses gamma from Lemma 5.1, which the appendix does not establish as stated. The paper's text also cites it as Theorem 5.1. The Omega-tilde form is plausible but the stated bound is not proved.",
+  "jaques-theorem-5-2-special-cases": "Section 5.1, p.15: the special cases rest on the Theorem 5.2 bound with the gamma of Lemma 5.1 (not established as stated). For the exponentially small fraction, G in Omega-tilde(1) is only a trivial lower bound, not a statement that a constant number of gates suffices. The claim about efficient circuits is the authors' inference.",
+  "jaques-bucket-brigade-circuit-cost": "Section 5.3, pp.17-18: a cost count for a circuit adopted from cited work, given in the text with no formal derivation.",
+  "jaques-select-swap-cost": "Section 5.4, p.19: a cost analysis for a cited construction, given in the text with no formal theorem.",
+  "jaques-path-independence-argument": "Section 6.2, p.21: a physical argument in prose, not a formal theorem.",
+  "jaques-passive-requires-constant-hamiltonian": "Section 6.3, p.22: that a completely passive gate needs a constant Hamiltonian, so that U = exp(iHt), is the authors' physical modelling step (any Hamiltonian change counts as intervention). It is stated, not proved. The paper's own definition of passive is only 'no external intervention'.",
+  "jaques-lemma-6-1-hamiltonian-size": "Section 6.3, Lemma 6.1, p.22: the proof uses specific results of [48]: Lemma 52 (block-encoding of a sum of Pauli strings) and Theorem 58 (Hamiltonian simulation), together with the paper's Theorem 5.2. It is not self-contained.",
+  "jaques-hamiltonian-cost-scales-like-active": "Section 6.3, p.22: an interpretation of Lemma 6.1 under a cost-per-term assumption. The text calls it 'Theorem 6.1' but only Lemma 6.1 exists.",
+  "jaques-gottesman-knill-transversal": "Section 7.2, p.24: a one-sentence argument from known results, with no proof written out.",
+  "jaques-transversal-qracm-all-or-nothing": "Section 7.2, p.24: an argument in prose with no formal proof.",
+  "jaques-theorem-7-1-teleportation-bound": "Section 7.3, Theorem 7.1, p.25 and Theorem C.2, p.50: the bound 3/4 + d sqrt(2/N) rests on constants the appendix does not support (see jaques-c-theorem-minimal-fidelity). The conclusion that resources must match fault-tolerant circuit QRACM is also the authors' interpretation. The text layer garbles the formula; the rendered page shows 3/4 + d sqrt(2/N).",
+  "jaques-theorem-7-1-proof-idea": "Section 7.3, p.25: the authors' proof idea in prose. The full proof is in Appendix C.",
+  "jaques-classical-memory-log-n-active": "Section 8.2, p.27: an architecture sketch, not a measured or formal result.",
+  "jaques-uniform-superposition-all-routers": "Section 8.2, p.27: a physical argument in prose, not a formal theorem.",
+  "jaques-latency-connections-bound": "Section 8.4, p.29: a geometric statement given with no proof.",
+  "jaques-latency-light-10cm": "Section 8.4, p.29: a physical estimate (a 3 GHz clock cycle at lightspeed), not a result of the paper.",
+  "jaques-bb-reversibility-requirement": "Section 9.2, p.30: an author argument that cites a Hamiltonian analysis [29]. Not proved.",
+  "jaques-bb-node-state-count": "Section 9.2, p.31: a counting statement in the text with no derivation.",
+  "jaques-bb-persistent-errors-q-squared": "Section 9.4, p.33: stated with no derivation.",
+  "jaques-bb-readout-example-1-over-n": "Section 9.4, Figure 8, p.33: a description of a contrasting design and its claimed drawback, with no analysis.",
+  "jaques-phase-fanout-photon-number": "Section 10.3, p.36: an author argument under a Jaynes-Cummings model. Not proved.",
+  "jaques-phase-fanout-cavity-loss": "Section 10.3, pp.36-37: a back-of-the-envelope estimate with one cited quality factor [75].",
+  "jaques-lemma-a1-eigenvalue-transform-lower-bound": "Appendix A, Lemma A.1, p.46: the proof uses results of [49]: the sum and product of block-encodings lemmas and the sign-function polynomial approximation with degree O(log(1/eps)/delta), plus the unstructured-search lower bound. The text of Theorem 4.1 calls it 'Theorem A.1'.",
+  "jaques-lemma-a1-proof-contradiction": "Appendix A, p.47: the contradiction with the unstructured-search bound depends on the sign-function polynomial of [49] and its degree O(log(1/eps)/delta). A proof that uses a specific cited result as a step.",
+  "jaques-lemma-a3-sorting-network-matvec": "Appendix A, Lemma A.3, pp.47-48: the proof follows the techniques of [15] and is an algorithm outline. The terms S, N d/P and lg d are not derived, and the cost of the d copies of v is not counted.",
+  "jaques-b-lemma-circuit-count": "Appendix B, Lemma B.3, p.49: the proof says to combine B.1 and B.2, but that combination gives binom(DW, min{kG,DW}) (Wg)^min{kG,DW}, with the exponent kG, not the stated (Wg)^G. The stated bound does not follow.",
+  "jaques-c-lemma-underrepresented-indices": "Appendix C, Lemma C.1, pp.49-50: the stated bound d sqrt(2 l/N) does not follow from the proof's own steps. Eq. (24) gives overlap at least 1 - 2m, which yields trace distance up to 2 sqrt(m), not the sqrt(2m) of Eq. (25). The constant is unsupported, though the qualitative argument stands.",
+  "jaques-c-theorem-minimal-fidelity": "Appendix C, Theorem C.2, pp.50-51: the constant 3/4 + d sqrt(2/N) depends on Lemma C.1's constant (see jaques-c-lemma-underrepresented-indices). The proof also treats trace distance as 1 for orthogonal outputs, while Eq. (16) uses the unnormalized trace norm. The final step to fidelity ('known relations') is not shown. The qualitative bound is plausible but the stated one is not shown.",
+  "faryad-basis-encoding-depth-lower-bound": "Section II.A, p.2: the Omega(M) depth bound rests on a counting outline of two sentences. The step that a depth-d circuit is specified by O(dt) bits is asserted, not proved.",
+  "faryad-basis-encoding-counting-argument": "Section II.A, p.2: an outline of the counting argument. The claims that M patterns carry Theta(Mt) bits and that a depth-d circuit takes O(dt) bits are stated with no proof. Not a proved result.",
+  "faryad-amplitude-encoding-angle-count": "Section II.B, p.2: the count 2^n-1 magnitude angles is a sum given with no per-level count shown, and rests on a cited construction [2]. Stated, not proved.",
+  "faryad-amplitude-encoding-classical-preprocessing": "Section II.B, p.2: an authors' argument from Eqs. (5) and (6) that angle computation reads every element. It covers this construction only and is not proved for any method.",
+  "faryad-state-prep-lower-bound-parameter-count": "Section III, p.2: a dimension-count outline. That g gates span a manifold of dimension O(g) is asserted without proof, and tightness is by cited work [2, 8, 9].",
+  "faryad-qae-total-cost-classical-scaling": "Section V, p.3, Eq. (9): the O(1/eps^2) total rests on the paper's Theta(N) bound (a sketch) and on N ~ 1/eps bins, stated without proof.",
+  "faryad-linear-systems-input-stage-dominates": "Section VI, p.3: depends on the Theta(N) generic-data bound, which is an outline, and on the cited linear-systems proposals. The authors' argument.",
+  "faryad-state-prep-omega-2n-dimension-count": "textbook, stated not proved (F129): the new value is right, since the paper heads Section III 'a theorem' and never calls its argument a sketch. Section III, p.2: the dimension count is an outline. That g gates span dimension O(g) is asserted, and tightness is by cited work [2, 8, 9]. The paper gives no formal proof."
+ },
+ "keep_stored": {},
+ "requote": {}
+}

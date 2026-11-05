@@ -154,6 +154,39 @@ def test_a_corrected_context_replaces_the_wrong_one(synthetic_store):
         conn.close()
 
 
+def test_a_sync_dated_before_a_team_lead_decision_is_refused(synthetic_store):
+    """Sprint 15 Manual Validation: a rerun of sprint12_reading.py (dated 2026-10-23) moved
+    qng-study-scope-toy-model's context back from qc, the team lead's Q6 = 2, because the date guard held only
+    full-read rows. A sync dated before the row's latest Manual Validation note is now refused; one dated on or
+    after it goes through. Proven to fail by injection, 2026-11-05: with the decided_day check disabled, the older
+    sync here returned ["context"], and sprint12_reading's second-apply test [G] on the live store went red."""
+    conn = connect(synthetic_store)
+    try:
+        conn.execute("UPDATE records SET updated = '2026-11-05', updated_reason = updated_reason || ? "
+                     "WHERE id = 'claim-one'", (" | 2026-11-05 (Sprint 15 Manual Validation, Q6 = 2): context",))
+        assert ingest.decided_day(conn.execute("SELECT updated_reason FROM records WHERE id = 'claim-one'"
+                                               ).fetchone()[0]) == "2026-11-05"
+        assert sync_assertion(conn, replace(_stored(conn), context="ml"), "2026-10-23 (old): x", "2026-10-23") == []
+        assert {r[0] for r in conn.execute("SELECT context_id FROM record_contexts WHERE record_id = 'claim-one'")} \
+            == {"qml"}
+        assert sync_assertion(conn, replace(_stored(conn), context="ml"), "2026-11-05 (same day): x", "2026-11-05") \
+            == ["context"]  # on the decision's own day it goes through (fresh-eyes review, the boundary)
+        assert sync_assertion(conn, replace(_stored(conn), context="qml"), "2026-11-06 (later): x", "2026-11-06") \
+            == ["context"]
+    finally:
+        conn.close()
+
+
+def test_a_decision_named_in_a_note_body_is_found():
+    """Fresh-eyes review, 2026-11-05: Sprint 8 and 9 wrote their grade decisions in the note's body, under a task
+    header. Proven to fail by injection, 2026-11-05: with the body branch removed, decided_day returned ""."""
+    history = ("2026-10-01 (Sprint 6 Task B): entered | 2026-10-13 (Sprint 8 Task C, F65 and F63): certainty "
+               "UPGRADED to HIGH, the team lead's decision at Sprint 8 Manual Validation (Q7) | 2026-10-20 (x): note")
+    assert ingest.decided_day(history) == "2026-10-13"
+    assert ingest.decided_day("2026-10-01 (Sprint 6 Task B): entered") == ""
+    assert ingest.decided_day(None) == ""
+
+
 def test_a_field_with_no_storage_group_is_refused(synthetic_store, monkeypatch):
     """The Task E defect, by construction: a field left out of the groups."""
     monkeypatch.setattr(ingest, "_SYNC_FIELD_COLUMNS",

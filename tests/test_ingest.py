@@ -438,10 +438,28 @@ def test_door_hand_origin_requires_page_marker_and_real_path(tmp_path):
                                   hand_transcribed_from="cover", citation="x (hand-transcribed from cover)"))
 
 
-@pytest.mark.parametrize("marker", ["CORRECTED 2026-09-16: ...", "NOTE: the seed filename truncates", "verified against the PDF", "recorded once", "Two identically-content files"])
+@pytest.mark.parametrize("marker", ["CORRECTED 2026-09-16: ...", "NOTE: the seed filename truncates", "verified against the PDF", "recorded once", "Two identically-content files",
+                                    # fresh-eyes review of the right-side guard (PR #149): proven to fail by injection,
+                                    # 2026-11-05, with the guard (?![\w-]) on every marker these two were let through
+                                    "NOTE:no space after the colon", "CORRECTED-2026-09-16"])
 def test_door_refuses_audit_trail_inside_the_citation(marker):
     with pytest.raises(ValueError, match="audit-trail"):
         validate_paper(_api_paper(citation=f"Cite, 2026. {marker}"))
+
+
+def test_a_title_word_that_holds_a_marker_is_not_audit_text():
+    """Sprint 15 Task J: Babbush et al.'s "Focus beyond quadratic speedups for error-corrected quantum advantage"
+    was refused as a "CORRECTED" note. Proven to fail by injection, 2026-11-01: with the substring match restored,
+    the citation was refused."""
+    validate_paper(_api_paper(citation='Babbush, R., "Focus beyond quadratic speedups for error-corrected quantum '
+                                       'advantage," arXiv:2011.04149v2'))
+
+
+@pytest.mark.parametrize("title", ["Corrected-error codes for qubits", "On the correctedness of decoders"])
+def test_a_marker_at_the_start_of_a_longer_word_is_not_audit_text(title):
+    """Copilot's review of PR #149: the right side of a marker was not guarded, so a title word that starts with
+    one was refused. Proven to fail by injection, 2026-11-05: with the right-side guard removed, both were refused."""
+    validate_paper(_api_paper(citation=f'Doe, J., "{title}," arXiv:2501.00001'))
 
 
 def test_door_refuses_multiline_disposition_and_a_tier_named_in_prose():

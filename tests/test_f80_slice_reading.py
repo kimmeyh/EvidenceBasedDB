@@ -188,10 +188,14 @@ def test_refused_records_stay_seen_with_the_reason(live_conn):
     (cao-2018-quantum-chemistry-age-quantum-computing) added to REFUSE, this
     test named it. From 2026-10-18 the nine Dirac-1 records are Sprint 10
     Task F's (F84, ADR-0004 A10): read and entered under platform:dirac-1,
-    and checked by tests/test_f84_dirac1.py."""
+    and checked by tests/test_f84_dirac1.py. A refused record a later
+    full read took (Sprint 15: F114 read qci-2026's scanned PDF whole by
+    OCR, F115) is that read's, and keeps its refusal note as history."""
     f80 = _script()
     f84 = importlib.util.spec_from_file_location("f84", ROOT / "scripts" / "sprint10_f84_dirac1.py")
     taken = set(_load(f84).NINE)
+    taken |= {r[0] for r in live_conn.execute("SELECT record_id FROM paper_reads WHERE extent = 'full'")}
+    assert set(f80.REFUSE) - taken, "no refused record left to check"  # never pass on an empty loop (fresh-eyes review)
     for rid in set(f80.REFUSE) - taken:
         tier, = live_conn.execute("SELECT tier FROM paper_fields WHERE record_id = ?", (rid,)).fetchone()
         reason, = live_conn.execute("SELECT updated_reason FROM records WHERE id = ?", (rid,)).fetchone()
