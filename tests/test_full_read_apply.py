@@ -40,6 +40,72 @@ def test_an_edit_under_an_id_that_id_fix_moves_is_refused(monkeypatch):
     assert g.edits_under_moved_ids() == ["x"]
 
 
+def test_an_edited_figure_reading_keeps_its_figure_exemption(monkeypatch):
+    """A sign-off's value_replace on a value read from a figure is checked
+    with the same "about N" exemption as the value itself (Sprint 15 Manual
+    Validation apply, 2026-11-04: five edited figure readings were refused).
+    The edit check itself still refuses the numbers when no figure exemption
+    is given (verify's quote check refuses a non-figure value first, so that
+    half calls the edit check directly; fresh-eyes review). Proven to fail,
+    2026-11-04: with read_from_page dropped from the edit check, verify()
+    refused the figure reading."""
+    g = _script()
+    value = "Read from Figure 1: the runtime is about 25 hours at about 200 parameters."
+
+    def paper(from_figure: bool) -> dict:
+        return {"record_id": "src", "file": "src.pdf", "assertions": [{
+            "id_suggestion": "x", "value": "the reader's value", "anchor": "p.1", "quotes": ["Figure 1 shows the runtime grows"],
+            "context": "qml", "claim_type": "positive", "result_type": "measured", "from_figure": from_figure}]}
+
+    monkeypatch.setattr(g, "source_text", lambda _: "Figure 1 shows the runtime grows with the parameters.")
+    monkeypatch.setattr(g, "VALUE_REPLACE", {"x": value})
+    monkeypatch.setattr(g, "load_groups", lambda: [("g1", paper(True))])
+    [(a, _, _, _)] = g.verify()
+    assert a.value == value
+    quotes, text = ["Figure 1 shows the runtime grows"], "Figure 1 shows the runtime grows with the parameters."
+    with pytest.raises(ValueError, match="the edited value states (25, 200|200, 25),"):
+        g.require_edit_basis("x", value, quotes, text)
+    g.require_edit_basis("x", value, quotes, text, read_from_page=g.read_from_figure(value))
+
+
+@pytest.mark.live_store
+def test_a_confirmed_row_rebuilt_for_its_grade_keeps_its_other_fields(monkeypatch, live_copy):
+    """A confirmed stored entry rebuilt to change its grade (REQUOTE) keeps its
+    stored fidelity, claim type and search scope: no review item names them.
+    Sprint 15 Manual Validation trial, 2026-11-04: six regraded rows went from
+    "scoped" to "exact" and three from "absence" to "positive". Proven to
+    fail by injection, 2026-11-04: with the "confirmed" block removed from
+    apply_changes, the fidelity written was "exact"."""
+    from dataclasses import replace
+    from store import connect
+    from store.quotes import Verified
+    g = _script()
+    aid = "gsa-role-of-qpu"
+    conn = connect(live_copy)
+    try:
+        before = conn.execute("SELECT r.fidelity, f.claim_type, f.search_scope FROM records r JOIN assertion_fields f "
+                              "ON f.record_id = r.id WHERE r.id = ?", (aid,)).fetchone()
+        assert before[0] != "exact" and before[1] != "positive"
+        row = conn.execute("SELECT value, provenance, certainty_reasons FROM records WHERE id = ?", (aid,)).fetchone()
+        cc = conn.execute("SELECT citation_context FROM assertion_fields WHERE record_id = ?", (aid,)).fetchone()[0]
+        ctx = conn.execute("SELECT context_id FROM record_contexts WHERE record_id = ?", (aid,)).fetchone()[0]
+        a = g.AssertionRecord(id=aid, value=row[0], provenance=row[1], citation_context=cc, evidence_tag="N/A",
+                              context=ctx, certainty="low", certainty_reasons="regraded LOW in a test",
+                              fidelity="exact", derivation="extracted", claim_type="positive", search_scope=None,
+                              updated="2026-12-01", updated_reason=f"2026-12-01 (a test): {g.FULL_READ_MARK}: regraded")
+        p = {"existing": [{"id": aid, "verdict": "confirmed"}]}
+        monkeypatch.setattr(g, "verify", lambda: [(a, "src", p, Verified(aid, cc, row[0]))])
+        monkeypatch.setattr(g, "load_groups", lambda: [])
+        monkeypatch.setattr(g, "write_anchor_moves", lambda c: [])
+        g.apply_changes(conn)
+        after = conn.execute("SELECT r.certainty, r.fidelity, f.claim_type, f.search_scope FROM records r JOIN "
+                             "assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (aid,)).fetchone()
+        assert tuple(after) == ("low", *before)
+    finally:
+        conn.rollback()
+        conn.close()
+
+
 def test_an_edit_under_the_stored_id_of_a_moved_assertion_is_written(monkeypatch):
     """Review of 9c79048: record() read an edit under the reader's id while the
     guard told the coordinator to name it under the stored id, so the edit was
@@ -489,10 +555,14 @@ def test_a_field_no_review_item_names_is_listed(synthetic_store, monkeypatch):
     trial on a copy did not show it. Every field the sync changes that no review item names is now a line of the
     apply's log. Proven to fail by injection, 2026-10-31: with decided_fields naming every field, no line was
     logged; with CONTEXT_FIX left out of it, the context the sign-off named was listed."""
-    from types import SimpleNamespace
+    from dataclasses import make_dataclass
     from store import connect
     g = _script()
-    a = SimpleNamespace(id="claim-one", context="qml", updated_reason="n", updated="2026-10-31")
+    # A dataclass, not a namespace: the applier rebuilds a confirmed row with dataclasses.replace (Sprint 15 MV)
+    row = make_dataclass("Row", ["id", "context", "updated_reason", "updated", ("fidelity", object, None),
+                                 ("claim_type", object, None), ("search_scope", object, None),
+                                 ("certainty", object, None), ("certainty_reasons", object, None)])
+    a = row(id="claim-one", context="qml", updated_reason="n", updated="2026-10-31")
     paper = {"record_id": "p", "existing": [{"id": "claim-one", "verdict": "confirmed"}]}
     monkeypatch.setattr(g, "load_groups", lambda: [])
     monkeypatch.setattr(g, "verify", lambda: [(a, "p", paper, None)])

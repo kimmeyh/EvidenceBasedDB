@@ -117,6 +117,9 @@ ANCHOR_FIX_ON: dict[str, str] = {}
 DROP: dict[str, str] = {}  # a new assertion not entered, with the reason
 KEEP_STORED: dict[str, str] = {}  # a stored assertion kept against the reader's verdict, with why
 REQUOTE: dict[str, str] = {}  # a confirmed stored assertion rebuilt from the reader's fuller quotes, with why
+# The words a grade the team lead decided at Manual Validation carries in its reasons ("UPGRADED ... the team lead's
+# decision at Sprint 8 Manual Validation (Q7)"; scripts/sprint15_mv_decisions.py); apply_changes keeps such a grade
+TEAM_LEAD_GRADE = "the team lead's decision at"
 NOT_IN_PAPER: dict[str, str] = {}  # the coordinator's decision on a stored claim the paper does not hold
 VENDOR_DESCRIPTIONS: set[str] = set()
 FIELD_STATEMENTS: set[str] = set()
@@ -436,12 +439,12 @@ def verify() -> list[tuple[AssertionRecord, str, dict, object]]:
             quotes = QUOTE.findall(a.citation_context)
             text = texts.setdefault(p["file"], plain(source_text(p["file"])))
             from_figure = a.id in figure_ids(p)
-            verified = require_verbatim(a.id, a.citation_context, text, value=a.value,
-                                        read_from_page=read_from_figure(a.value) if from_figure else ())
+            from_page = read_from_figure(a.value) if from_figure else ()
+            verified = require_verbatim(a.id, a.citation_context, text, value=a.value, read_from_page=from_page)
             if from_figure:
                 figure_check(a)
-            if a.id in VALUE_REPLACE:
-                require_edit_basis(a.id, a.value, quotes, text)
+            if a.id in VALUE_REPLACE:  # a figure reading's edited value keeps its figure exemption (Sprint 15 MV
+                require_edit_basis(a.id, a.value, quotes, text, read_from_page=from_page)  # apply: 5 refused)
             if a.id in QUOTE_EDITS:
                 require_edit_basis(a.id, None, [n for _, n in QUOTE_EDITS[a.id] if n] or quotes, text)
             ocr_check(a, p["file"], text)
@@ -688,9 +691,25 @@ def apply_changes(conn) -> list[str]:
             # The reader's context is its nearest fit; a stored one was set by an earlier intake and is changed only
             # by the sign-off (Sprint 14 suite after the 2026-10-31 apply: platform:dirac-3 was replaced by qc).
             a = replace(a, context=stored[0])
+        verdict = next((e["verdict"] for e in p.get("existing", []) if e["id"] == a.id), None)
+        if verdict == "confirmed":
+            # A confirmed entry rebuilt for its quotes or its grade (REQUOTE) changes only what its review names; the
+            # reader's fidelity and claim type are suggestions no item decides (Sprint 15 Manual Validation trial:
+            # six regraded rows went from "scoped" to "exact", three from "absence" to "positive")
+            fid, ctype, scope = conn.execute(
+                "SELECT r.fidelity, f.claim_type, f.search_scope FROM records r JOIN assertion_fields f "
+                "ON f.record_id = r.id WHERE r.id = ?", (a.id,)).fetchone()
+            a = replace(a, fidelity=fid, claim_type=ctype, search_scope=scope)
+            if ctype == "vendor-self-claim" and a.certainty == "high":  # graded on the reader's claim type (review)
+                raise ValueError(f"{a.id}: a vendor's own claim is LOW (store.grading); its review graded it HIGH")
+        held, held_why = conn.execute("SELECT certainty, certainty_reasons FROM records WHERE id = ?",
+                                      (a.id,)).fetchone()
+        if TEAM_LEAD_GRADE in (held_why or "") and TEAM_LEAD_GRADE not in (a.certainty_reasons or ""):
+            # A grade the team lead decided after the review stands until a review records a decision of its own; a
+            # rerun's date alone must not decide it (fresh-eyes review of the Sprint 15 Manual Validation apply)
+            a = replace(a, certainty=held, certainty_reasons=held_why)
         changed = sync_verified_assertion(conn, a, verified, a.updated_reason, a.updated)
         log.append(f"update {a.id} [{', '.join(changed)}]" if changed else f"exists {a.id}")
-        verdict = next((e["verdict"] for e in p.get("existing", []) if e["id"] == a.id), None)
         undecided = [c for c in changed if c not in decided_fields(a.id, verdict)]
         if undecided:
             log.append(f"undecided {a.id} [{', '.join(undecided)}]")

@@ -3639,3 +3639,106 @@ Phase 2's PR #74 to merge rather than change the local-file check.
   refusal test accepts a refused record a later full read took (qci-2026,
   read whole by OCR); the spelling fixer protects the stored id that
   section 64 names with a British spelling.
+
+## 67. Sprint 15 Manual Validation: the team lead's decisions applied
+
+Written 2026-11-04, before the apply. Every count here is a snapshot as of
+2026-11-04. The team lead answered the hand-over the same day:
+
+- **Q1 = 1: the 36 certainty changes as proposed** (33 HIGH to LOW, 2
+  MODERATE to LOW, 1 LOW to HIGH: derieux-parameters on "setup"). Each is
+  recorded in its group's escalation file
+  (`work\f114\review\escalations\<g>.json`) with the team lead's words,
+  which lets the 24 groups that held them (g115 to g153, about 114
+  records) be finalized and applied by `scripts/full_read_apply.py`.
+  - **Rebuilding a regraded stored row needs its value and quotes.** A
+    stored HIGH lowered to LOW is rebuilt by the applier, and eight
+    readers' confirmed entries carry neither: finalize refused them ("no
+    value"), and the apply refused four ("no quote"). Each got its stored
+    value as a `value_replace` and its stored quotes as `extra_quotes` in
+    its group's sign-off, unchanged from the store, so only the grade
+    moves.
+  - **A sign-off edit on a figure reading keeps its figure exemption.**
+    The applier checked a `value_replace` on a value read from a figure
+    without the "about N" exemption its own quote check gives, so five
+    such edits were refused. Fixed in `verify()` (a test proven red). Two
+    rydberggpt edits named the models M1 to M3, which no quote holds;
+    their values now say "a model" and "each of the three trained
+    models".
+- **Q2 = 1: F129's 10 proposed HIGHs set HIGH**, each on the basis its
+  proposal names (section 65), by `scripts/sprint15_mv_decisions.py`.
+- **Q3 = 2: dees-2023's five parameter-shift LOWs stay LOW.** Nothing is
+  written.
+- **Q4: g144's two absence items are MODERATE** (the team lead: "Make
+  both MEDIUM, as the reviewer graded them, because neither paper states
+  the absence itself"; the store spells MEDIUM `moderate`).
+  gilfuster-no-experiments and giordano-no-hardware-run-scope go back to
+  the reviewer's LOW in g144's decisions (the cross-group pass's HIGH is
+  kept in `g144.before_mv.json.bak`), are entered LOW, and the script
+  raises them to MODERATE.
+- **Q5 = 1: carded as F137** (the two Dunjko records share one PDF).
+- **Q6 = 2: qng-study-scope-toy-model moves from `method` to `qc`**, by
+  the same script.
+- **Q7 = 2: Sprint 16's F57 release follows F57's ranking** (F57's card).
+- **Q8 = 2: dalzell-2025's eight "split recommended" values stay single
+  LOW assertions.** Nothing is written.
+- **Q9 (the applier's quote check): carded as F136.** The applier checks
+  every reviewed row's quotes before each apply, though most are stored
+  as their review wants them: about 23 minutes for Sprint 15's 47 groups,
+  most of it on rows it does not write. The team lead: "We need to updat
+  the rule as it violates the 'Long-term Effective, while as efficient as
+  reasonalby possible' primary rule".
+- **A slip, and its fix.** The first trial copied the store but not its
+  text cache, which sits in the store's folder, so it extracted every
+  source again (894 files in 25 minutes) before it was stopped; the
+  trial copies `text_cache\` with the database from now on.
+- **A rebuilt confirmed row keeps the fields no review names.** The
+  trial (2026-11-04: 6,282 new assertions, 228 read rows, 157 updates)
+  listed 8 rows with an undecided field: six regraded rows had taken the
+  reader's fidelity ("exact" for the stored "scoped") and three the
+  reader's claim type ("positive" for the stored "absence", losing the
+  search scope). The applier wrote a confirmed entry's fidelity, claim
+  type and search scope from the reader's file, although only its quotes
+  or grade were rebuilt. It now keeps the stored ones for a confirmed
+  entry (a test on a store copy, proven red); a corrected or narrowed
+  entry still takes the reader's whole entry.
+- **Checks.** Trial on a store copy first, then live with its verified
+  backup. The fix above changes only the rows the trial listed, so the
+  live apply ran without a second 23-minute trial; its log is compared
+  with the trial's, line for line, and lists no undecided field (it
+  matched: 6,282 new assertions, 228 read rows, 157 updates, 0
+  undecided). The decisions script's second run writes nothing.
+- **A slip in the decisions' date, and its fix.** The script first ran
+  dated 2026-11-04, the review day of g144, just after midnight. A
+  rerun of the applier would then have put g144's two items back to LOW,
+  because `sync_assertion` refuses a sync only when it is dated before a
+  row's last change. The store was restored from the backup the script
+  took (`scripts/restore_store.py`), and the script was run again dated
+  2026-11-05, the day it was applied. A test proves that a rerun of the
+  applier leaves all 12 regraded rows alone (proven red with the date put
+  back).
+- **The fresh-eyes review (2026-11-05)** found no blocking defect, and
+  that the date alone protected the 12 rows: a review of their groups
+  dated later would have written its LOW back. The applier now keeps a
+  stored grade whose reasons carry "the team lead's decision at" unless
+  the review's own reasons carry it too (exactly these 12 rows today; a
+  test proven red). A confirmed row that keeps a stored
+  "vendor-self-claim" type is refused if its review graded it HIGH (no
+  such row today). The figure test's second half now calls the edit
+  check itself, since verify's quote check refused that case first.
+- **The `--changed` run after the apply (2026-11-05)** failed 5 of
+  1,086. One was a real defect: a rerun of `sprint12_reading.py`, dated
+  2026-10-23, would move qng-study-scope-toy-model's context back from
+  `qc` (Q6 = 2), because the sync's date guard held only full-read rows
+  and that row's decision note carries no grade phrase.
+  `store.ingest.sync_assertion` now refuses any sync dated before the
+  row's latest note of the form "YYYY-MM-DD (Sprint N Manual Validation"
+  (`decided_day`), or a note whose body says "the team lead's decision
+  at Sprint N Manual Validation" (Sprint 8 and 9's shape, added at its
+  fresh-eyes review): 24 assertion rows, a snapshot as of 2026-11-05.
+  The tests of every script that syncs those rows pass (100 tests). Three were older tests pinned to data the decisions and
+  the full reads changed (the learnings balance after g133's decision,
+  F101's re-quoted oversampling record, the Sprint 12 store test), and
+  one was the applier's field test, which passed a namespace where the
+  confirmed-row rebuild needs a dataclass. Each fix that guards a rule
+  was proven red by injection.

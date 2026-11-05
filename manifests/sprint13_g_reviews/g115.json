@@ -1,0 +1,307 @@
+{
+ "group": "g115",
+ "reviewed_on": "2026-11-04",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "chernyavskiy-three-modifications": [
+   "setup",
+   "Section III, p.3: the paper states the three modifications of its own protocol (M1, M2, M3), repeated in the abstract and Fig. 1"
+  ],
+  "chernyavskiy-two-stage-procedure": [
+   "setup",
+   "Section II.B, p.3: describes the paper's own training stage (classical statevector) and sampling stage (fixed parameters, no further optimization)"
+  ],
+  "chernyavskiy-success-probability-definition": [
+   "definition",
+   "Section III.A, p.4: defines F(alpha) and P_alpha (Eqs. 6-7), notes P at alpha=1 equals P_min, and states the worst-case P_0.95 training objective"
+  ],
+  "chernyavskiy-depth-schedule": [
+   "setup",
+   "Section III.B, p.4: states q = 1 and p = n, giving the two-parameter schedule of Eq. (10), gamma with a sine and beta with a cosine"
+  ],
+  "chernyavskiy-sts-definition": [
+   "definition",
+   "Section IV, p.5, Eq. (14): STS = 1/P_alpha defined as the average shots to the first feasible bitstring; the paper states how it differs from TTS (target confidence), with Appendix D"
+  ],
+  "chernyavskiy-benchmark-setup": [
+   "setup",
+   "Section IV, p.5: GPU statevector simulator of an ideal processor, N_test = 1000 for n = 4 to 30, N_train = 200 at n = 6"
+  ],
+  "chernyavskiy-statevector-benchmark-only": [
+   "scope",
+   "Section IV, p.5: the paper says statevector use in the sampling stage is for benchmarking only, infeasible on hardware at large n, and the exact optimum is generally unknown. Its own stated scope"
+  ],
+  "chernyavskiy-problem-families": [
+   "scope",
+   "Section IV p.5 and Appendix A p.8: the two main families (rudy weighted MaxCut, SK with normal couplings), Frobenius normalization, integer restriction for stable AR evaluation, zero diagonal are all stated by the paper"
+  ],
+  "chernyavskiy-instance-count": [
+   "scope",
+   "Section V, p.6: the paper states 'more than 150 000 problem instances'. Consistent with 1000 per size, 27 sizes, six families (Section IV and Appendix A). Authors' statement of their own study scale"
+  ],
+  "chernyavskiy-no-rigorous-claim": [
+   "stated limit",
+   "Section V, p.6-7: the paper says the approach is heuristic, claims no rigorous O(1) result, and notes outliers in Fig. 2. A limit on its own measured result; its true type is a measured-result caveat"
+  ],
+  "chernyavskiy-asymptotics-unclear": [
+   "stated limit",
+   "Section V, p.6: states it is unclear whether the behaviour persists beyond n = 30 and that larger processors and analytical tools are likely needed"
+  ],
+  "chernyavskiy-depth-noise-sensitivity": [
+   "stated limit",
+   "Section V, p.7: the paper states that p = n makes the algorithm more sensitive to decoherence and control errors, and that it is unclear whether fpQAOA is NISQ/EFTQC or fault-tolerant. Its own limit and open question"
+  ],
+  "chernyavskiy-adiabatic-not-trotterization": [
+   "stated limit",
+   "Appendix C, p.9-10: the paper states the trained trajectories cannot be read as fine-grained Trotterized adiabatic evolution because the effective steps Delta t_i = beta+ + gamma are not small. A limit on its own interpretation; true type is a limit drawn from the trained parameters, not a theorem"
+  ],
+  "chernyavskiy-sts-tts-bound": [
+   "proved result",
+   "Appendix D, p.9-10: the bound TTS <= -t_shot ln(1-P_target) STS (D3) is derived from TTS (D1) and ln(1-x) <= -x for x in [0,1) (D2); the 4.6 factor for P_target = 0.99 is -ln(0.01). Condition and derivation both in the paper. The text layer here holds D3 intact"
+  ],
+  "chernyavskiy-future-work": [
+   "stated limit",
+   "Section V, p.8: the paper lists analytical investigation, more ensembles and constraints, noise resilience and mitigation, hardware implementation as future work, i.e. what is not yet done. Rest of the list is in the same sentence"
+  ],
+  "chernyavskiy-limits": [
+   "stated limit",
+   "Section V, p.6-7: three explicit limits quoted verbatim in the stored quotes (heuristic, simulations only to n = 30, no noise in the sampling-stage simulations)"
+  ],
+  "chernyavskiy-setup": [
+   "setup",
+   "Abstract, p.1: states the paper studies a modified fpQAOA with parameters trained classically on small instances and transferred"
+  ],
+  "qdh-contribution-scope": [
+   "scope",
+   "Abstract, p.1: states what the paper develops (policy-search and distributional actor-critic with orthogonal and compound QNN layers). Also stated in Sections 1 and 5"
+  ],
+  "qdh-orthogonal-layer-definition": [
+   "definition",
+   "Section 4.1, p.7: defines the quantum orthogonal layer as acting as an element of SO(n) on the unary basis, built by composing RBS gates"
+  ],
+  "qdh-orthogonal-layer-classical-cost": [
+   "stated limit",
+   "Section 4.1, p.8: the paper states the layer can also be applied classically in O(n^2) and that these layers are trained by classical simulation with quantum used for inference. A caveat on its own quantum use"
+  ],
+  "qdh-compound-layer-definition": [
+   "definition",
+   "Section 4.2, p.10: defines U(theta) as a product of FBS gates and states it acts as a block diagonal unitary on each Hamming-weight subspace (the action itself is cited to [53])"
+  ],
+  "qdh-trainability-assumptions": [
+   "setup",
+   "Section 4.4, p.15: assumptions (1) Gaussian init with variance inversely proportional to gate count, (2) computational-basis measurement, (3) uniform or Hamming-weight-k uniform initial state, and 'this is the setting in our numerical experiments'"
+  ],
+  "qdh-trainability-loss-caveat": [
+   "stated limit",
+   "Section 4.4, p.15: the paper states the overall gradient may still decay depending on the loss. A caveat on its own trainability result"
+  ],
+  "qdh-properties-not-guarantees": [
+   "stated limit",
+   "Section 5.2.6, p.28: the paper states the properties it lists indicate but do not guarantee good performance"
+  ],
+  "qdh-quantum-environment-assumptions": [
+   "setup",
+   "Section 5.2.1, p.19-20: states the finite state space for efficiency, that the environment still solves the classical Deep Hedging task, and that transition oracles need no action encoding because actions do not affect the market"
+  ],
+  "qdh-reward-oracle-unclear": [
+   "stated limit",
+   "Section 5.2.1, p.20: the paper says it is unclear how to efficiently encode the Deep Hedging reward function, defined on a continuous action space"
+  ],
+  "qdh-proposition1-existence": [
+   "proved result",
+   "Proposition 1, Section 5.2.2, p.23: existence of the observable on n(t+1)+m qubits and of the unitary, with its conditions, proved on the same page by constructing the Cramer projection state. Only the existence part is graded here; the proof uses 'known properties' of the projection cited from [26]. The proof prints b in {0,1}^n where m is meant, a typo"
+  ],
+  "qdh-proposition2-statement": [
+   "proved result",
+   "Proposition 2, Section 5.2.3, p.24-25: stated with its conditions (support size 2^{n(T-t)+2}, per-Hamming-weight bounds) and proved by a short existence construction in the same section, with the ancilla remarks. The proof is brief but present"
+  ],
+  "qdh-support-size-impractical": [
+   "stated limit",
+   "Section 5.2.2, p.24: the paper states that the naive fixed-support approach faces the Bellman-equation mismatch and an exponentially growing support, making training impractical. A limit it states and designs around"
+  ],
+  "qdh-value-losses": [
+   "definition",
+   "Section 5.2.5, p.27: defines L_D (Hamming-weight aware) and L_E (expected reward at time t) with their formulas"
+  ],
+  "qdh-benchmark-modes": [
+   "setup",
+   "Section 6, p.30: three benchmark modes (perfect simulation, noise emulators, 20-qubit Quantinuum H1-1 and H1-2), all training in exact classical simulation, compound layers simulated only up to 12 qubits"
+  ],
+  "qdh-classical-environment-setup": [
+   "setup",
+   "Section 6.1, p.31: GBM mu = 0, sigma = 0.2, European short call with K = S0, 30 trading days with daily rebalancing, proportional cost 0.01, training 9.6e4 and test 2.4e4 samples"
+  ],
+  "qdh-table1-setup": [
+   "setup",
+   "Section 6.1, p.31-32: feature size 16 and 16 qubits, same architectures, layer sizes and hyperparameters, noiseless simulation with a batch of 256 paths"
+  ],
+  "qdh-emulator-setup": [
+   "setup",
+   "Section 6.1, p.32: H1-1 emulator inference, batch of 32 paths, network downsized to one layer, Butterfly layers, 1000 shots per circuit evaluation for tomography"
+  ],
+  "qdh-quantum-env-setup": [
+   "setup",
+   "Section 6.2, p.33: n = 1 Bernoulli variable per day, mu = 0, sigma = 0.2, maturity 10 days, time step of 30 trading days due to the 12-qubit limit, cost epsilon = 0.002"
+  ],
+  "qdh-compound-training-setup": [
+   "setup",
+   "Section 6.2, p.34: classical simulation, 2000 steps, Adam, 3 seeds, batch of 16 episodes; best parameters selected and inference reported on 16 random paths"
+  ],
+  "qdh-emulator-depth-reduction": [
+   "setup",
+   "Section 6.2, p.34: the paper states it used a fixed depth per block instead of logarithmic depth for the emulator runs"
+  ],
+  "qdh-open-questions": [
+   "stated limit",
+   "Section 7, p.36: the paper lists three open problems (trainability in other settings, other market models such as Heston, new distributional losses with temporal difference). The third is in the same paragraph as the quoted two"
+  ],
+  "qdh-code-availability": [
+   "scope",
+   "Code Availability, p.36: states the code is available upon request"
+  ],
+  "qdh-exponential-utility": [
+   "definition",
+   "Section 3.2, p.6: the paper states its use of the exponential utility E_lambda[X] = -(1/lambda) log E[exp(-lambda X)] and that the value function then no longer solves the standard Bellman equation"
+  ],
+  "qdh-classical-simulatability": [
+   "stated limit",
+   "The widened value matches Introduction p.2-3 (circuits 'may be classically simulatable with only a polynomial overhead, including the setup used in our numerical experiments', and the framework is more general), Section 6 p.30 (orthogonal layers simulated to 64 qubits) and the pruning remark. All are limits or scope statements the paper makes about its own work"
+  ],
+  "qvit-direct-attention-inference-only": [
+   "scope",
+   "Section 3.3, p.7: the paper states Direct Quantum Attention applies at inference with V, W learnt and A stored classically, and compares circuits, qubits and depth against the previous method; Table 2 agrees (n circuits against n + n^2, more qubits, deeper)"
+  ],
+  "qvit-compound-postselection": [
+   "stated limit",
+   "Section 3.4, p.7: the paper states a significant fraction of shots might be discarded in post-selection. The quadratic-size tomography remark is the dimension of the Hamming-weight-two space, C(n+d,2)"
+  ],
+  "qvit-baselines": [
+   "setup",
+   "Section 4.1, p.8 and Appendix A, p.14: baselines are the classical Vision Transformer and OrthoFNN (no attention); the classical attention uses one matrix W instead of two, to simplify the quantum implementation"
+  ],
+  "qvit-training-hyperparameters": [
+   "setup",
+   "Appendix C.2.1, p.16: JAX simulation, cross-entropy with Adam, 100 epochs, batch 32, learning rate 1e-3 decayed by 0.1 after 50 and 75 epochs, replicated from [36]"
+  ],
+  "qvit-parameter-count-scope": [
+   "scope",
+   "Section 4.2, p.9: the paper states the parameter comparison covers the attention layer only, not pre-processing, other transformer parts or the final classification layer"
+  ],
+  "qvit-limited-experiments-limit": [
+   "stated limit",
+   "Section 5, p.9-10: the paper says the results come from a limited set of experiments, offer mostly a theoretical viewpoint, depend on future hardware, and need further empirical validation"
+  ],
+  "qvit-runtime-not-observable-hardware": [
+   "stated limit",
+   "Section 5, p.10-11 (page 11 rendered): the paper states the run-time effect is hard to observe on current devices because of size, noise and cloud latency. The paper's phrase 'theoretically proven' about the advantage is not adopted by the value"
+  ],
+  "qvit-hardware-setup": [
+   "setup",
+   "Appendix C.3 and C.3.2, p.17-18: RetinaMNIST (1080/120/400, 5 classes), ibmq guadalupe (16 qubits) and ibm hanoi (27 qubits), JAX-trained, shots 32.000 for 6 qubits and 10.000 for 4 qubits"
+  ],
+  "qvit-hardware-qubit-limit": [
+   "stated limit",
+   "Appendix C.3.1, p.17: results reported for 4, 5 and 6 qubits; larger experiments 'did not produce meaningful results'"
+  ],
+  "qvit-hardware-error-mitigation": [
+   "setup",
+   "Appendix C.3.2, p.18: discarding shots with a different Hamming weight 'has been used in the results presented in this paper'"
+  ],
+  "qvit-hardware-models-used": [
+   "setup",
+   "Appendix C.3.2, p.18: the four hardware experiments with their circuit counts and gate counts (16 x 9 RBS; 25 x 12 and 15 x 9; 12 x 14 RBS and 2 CNOT on 5 qubits; 2 x 18 RBS and 3 CNOT on 6 qubits)"
+  ],
+  "chicano-qaoa-ansatz-definition": [
+   "definition",
+   "Section 2.3, p.4: defines QAOA as p layers of problem and mixer unitaries, the mixer being a sum of X gates, one per qubit"
+  ],
+  "chicano-linear-ising-model-definition": [
+   "definition",
+   "Section 3, p.5, Eq. (11): defines the linear Ising model with nonzero real coefficients and spins in {-1, 1}; the maximizer takes the sign of each coefficient (Eq. 12)"
+  ],
+  "chicano-theorem2-statement": [
+   "proved result",
+   "Theorem 2, Section 3, p.7-8: stated for a = (1, 2), p = 1, and proved by contradiction (cos gamma_1 must have modulus one, giving gamma_1 = k pi, then |<0|psi>| = 1/sqrt 2 < 1). I followed the steps and they hold"
+  ],
+  "chicano-theorem3-statement": [
+   "proved result",
+   "Theorem 3, Section 3, p.8-9: stated for a = (1, 2, 3), p = 2, proved by contradiction with a case analysis (Eqs. 23-26). The proof is terse but present and the conclusion agrees with Table 1 (0.944816 < 1)"
+  ],
+  "chicano-optimizer-experiment-setup": [
+   "setup",
+   "Section 3.1, p.9: Nelder-Mead, Differential Evolution, Simulated Annealing and Random Search in NMaximize of Wolfram 14.2, p in [5], m in [7], maximum over the four methods"
+  ],
+  "chicano-scope-linear-only": [
+   "stated limit",
+   "Section 4, p.10: the paper states that only linear functions were considered and that it cannot discard a family of NP-hard problems where QAOA does better"
+  ],
+  "chicano-open-questions": [
+   "stated limit",
+   "Section 5, p.11: the paper states proofs only for p = 1 and p = 2, no proof for p > 2, and asks whether the base of the exponential runtime is upper-bounded"
+  ],
+  "chicano-noiseless-oracle-scope": [
+   "scope",
+   "Section 3 p.5 and Section 4 p.10: the paper states it assumes perfect noiseless computers and an oracle for the angles, so the runtime is a lower bound. Its own scope"
+  ],
+  "chicano-proved-p1-p2-only": [
+   "stated limit",
+   "Section 3, p.7: 'We will prove here that this is the case for p = 1 and p = 2. We do not have, at the moment, a proof for p > 2.'"
+  ],
+  "chicano-theorem1-exponential": [
+   "proved result",
+   "The narrowed value is right. Theorem 1, Section 3, p.6-7: conditional on a vector a with P_opt < 1 for all angles, proved by repeating a k times so that P_opt(a^k) = P_opt(a)^k and the expected samples are its inverse. The runtime counts samples with an oracle for the best angles. The proof is in the paper"
+  ],
+  "ppn-time-multiplexing-rate": [
+   "setup",
+   "Section Results, p.3: time-multiplexing with an amplitude modulator at 10 kHz, stated with its reason (statistical independence, cited to [25, 27])"
+  ],
+  "ppn-processor-roles": [
+   "setup",
+   "Section Results, p.3: states the processing unit is an FPGA or a GPU in the experiment and the role split (FPGA real-time bitstream and control, GPU image generation, slower control). A description of the roles the devices play; the paper makes no measured claim here"
+  ],
+  "ppn-sbnn-activation-mapping": [
+   "scope",
+   "Section Results, p.3: states that each SBNN layer node is a PPN, that sampling corresponds to the activation function, and that the matrix-vector product is performed by the FPGA, so which operations are optical and which electronic"
+  ],
+  "ppn-sbnn-input-binarization": [
+   "setup",
+   "Section Results, p.3: pixels normalized to [0, 1] as PPN probabilities and binarized by sampling; 100 test images binarized 10 times, 1,000 inputs"
+  ],
+  "ppn-pixelcnn-setup": [
+   "setup",
+   "Section Results, p.5: pre-trained pixelCNN in the GPU gives p_N, the PPN samples the pixel, repeated for 784 pixels; the 100 examples start from an empty image"
+  ],
+  "ppn-data-availability": [
+   "scope",
+   "Online Methods, p.6: the paper states all data and code are available from the corresponding authors upon request"
+  ],
+  "ppn-demo-speed-limited": [
+   "stated limit",
+   "Discussion, p.5-6: the paper states the demonstration's speed and energy efficiency were limited by the PPN sampling rate and the electronics to PPN data bandwidth. A limit on its own work, stated without a measurement here"
+  ],
+  "ppn-setup-opo": [
+   "setup",
+   "Abstract, p.1: states the PPN is implemented in a bistable OPO with vacuum-level injected bias fields"
+  ]
+ },
+ "theory_low": {
+  "chernyavskiy-frobenius-normalization": "textbook, stated not proved (F129): Section III.C, p.5 gives <C> = 0 and <C^2> = ||S||^2 as Pauli-trace values with no derivation, then states the equivalence. Not a theorem and not proved in the paper. Fine as background once the team lead rules on F129",
+  "chernyavskiy-noise-model": "Section V, p.6-7, Eqs. (15)-(16): a 'simplistic noise model' (maximally mixed noise state) gives P_noisy ~ F P_alpha. Stated as an approximation with no derivation, simulation or hardware data. An authors' model argument, not a proved result",
+  "qdh-theorem2-statement": "coordinator sign-off: the proof rests on Theorem 1, paraphrased from [64, Theorem 4.2] (Zhang et al. 2022), a specific paper's theorem taken by citation, so it is LOW by the cross-group rule (section 58); the reviewer's reason for HIGH was: Theorem 2, Section 4.4, p.15-16: stated with its conditions (Z_m observable, N(0, gamma^2), gamma^2 = O(1/n^2), uniform or Hamming-weight-k state, 1 <= k < n) and proved on p.16. The proof leans on a cited tool (Theorem 1, paraphrased from [64, Thm 4.2]) and the printed per-gate bound is loose, but the theorem is the paper's own and the proof is in the paper",
+  "qdh-theorem2-proof-values": "Proof of Theorem 2, p.16, checked against the rendered page. The proof prints 'For 2 <= k <= n', which includes k = n, where (n-2 choose k-1) = 0 and the gradient is zero, so 'inverse-polynomial lower bound' is false at the end of the range. The Omega(1/n^6) bound and the 'analogous argument' for weight one are only stated. 'As we have shown before' for weight zero is not shown earlier. The value restates these steps as settled",
+  "qdh-trainability-in-framework": "Section 5.2.6, p.30: an application of Theorem 2 stated in prose. It uses variance O(1/T) on O(T) qubits, while Theorem 2 needs O(1/n^2) in the qubit count, so the cited condition is not the theorem's. The nonconvexity remark is a caveat but the guarantee claim is not proved here",
+  "qdh-proposition1-cramer-bound": "Proposition 1, p.23, checked against the rendered page. The printed bound is L Z^{3/2}/3 * 2^m (grows with m). The proof sums 2^m integrals each bounded by L^2 Z^3/3 * 2^{3m}, which as printed also grows. Taking the proof's intent (cell width Z/2^m) gives 2^{-m}, but that is not the text. The theorem as printed is not what the proof supports",
+  "qdh-expressivity-claim": "Section 5.2.6, p.29: summarises Proposition 1 as error 'decaying exponentially in m'. The printed bound in Proposition 1 grows with 2^m, so the summary does not match the stated proposition. See qdh-proposition1-cramer-bound",
+  "qdh-trainability-proof": "coordinator sign-off: the corrected value is right, but the proof it names (Theorem 2) rests on [64, Theorem 4.2] taken by citation, so it is LOW (see qdh-theorem2-statement); the stored HIGH is the team lead's to lower; the reviewer's reason for HIGH was: The corrected value is right. Introduction p.2 claims the proof for Hamming-weight preserving layers; what is proved is Theorem 2 (Section 4.4, p.15-16) for compound layers with its stated conditions, and orthogonal layers are only argued from the linear dimension (Section 4.1 p.8). Graded on Theorem 2, see qdh-theorem2-statement for the caveats; team lead, 2026-11-04, Sprint 15 Manual Validation Q1 option 1 (all 36 as proposed)",
+  "qvit-matrix-loader-gates": "Section 2.1, p.4: the gate count (n-1)+(2n-1)(d-1) is stated for the Fig. 5 construction, with no derivation and no theorem. A resource count, not a proved result",
+  "qvit-orthogonal-layer-table1": "Table 1, Section 2.2, p.4: depth and gate counts for the three circuits are listed with no derivation (only the Pyramid count N(N-1)/2 is also stated in Appendix B.2). Resource counts, not proved results",
+  "qvit-orthogonal-patchwise-cost": "Section 3.1, p.6: complexity O(log d), O(d log d) parameters and d-1 fixed parameters are counts read off Table 1 and Section 2.1, with no separate proof. The tomography-cost remark is the authors' claim. Resource counts",
+  "qvit-table2-resource-counts": "Table 2, Section 3, p.6: depth, parameter and circuit counts for each architecture, with no derivation per entry; sampling cost is not counted. A resource analysis, not a proved result",
+  "qvit-compound-classical-cost": "Section 3.4, p.7-8: the classical O((n+d)^4) cost and the 'polynomial speedup with respect to n' are stated without a derivation of the quantum side",
+  "chicano-theorem2-max-value": "Section 3, p.8, Eq. (22): the exact maximum 0.882385 is derived by Groebner bases and the details are 'in the supplementary material [8]', not in the paper. The cubic and its root are printed, and the value agrees with Table 1, but the derivation is not in the paper"
+ },
+ "keep_stored": {},
+ "requote": {}
+}

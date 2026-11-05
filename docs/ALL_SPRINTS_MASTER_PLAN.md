@@ -555,6 +555,13 @@ and in git. Remaining items below.
     usage-limit pause is waited out, not cut around.
   - `tests/test_reader_prompts.py` fails on a reader prompt from Sprint 13
     Task G onward that names a part-read or an assertion cap.
+- **Sprint 16's release follows F57's relevance ranking** (team lead,
+  2026-11-04, Sprint 15 Manual Validation Q7 = 2). Sprint 15's F133
+  release read the next 100 ledger records with a local file instead,
+  because no unread record outside the ledger had a local copy (Changed
+  Commitment 9). So Sprint 16's release first fetches free copies of the
+  ranking's top records (the paced fetcher; a paywalled one goes on the
+  hand-download list), then reads them in ranking order.
 - **Snapshot as of 2026-10-05**: 1,875 papers; 24 at `read`, all with
   yielded assertions; 14 `screened`; 1,837 `seen`. F45 and F46 cover only
   the handoff's pending facts, not these.
@@ -1018,6 +1025,45 @@ and in git. Remaining items below.
   takes.
 - Acceptance: the prompt names the type of a stated limit; the check
   and the prompt agree; a test proven red.
+- Depends on: none
+
+**F136. The applier checks the quotes of what it writes, not of every reviewed row (~30m) Priority 12** (NEW 2026-11-04, team lead at Sprint 15 Manual Validation, Q9: "We need to updat the rule as it violates the 'Long-term Effective, while as efficient as reasonalby possible' primary rule"; carded, not done now)
+- Phase: Store tooling (apply)
+- Value: a rerun or a second apply takes seconds, not minutes, and each
+  write still carries a fresh quote check.
+- Platform: `scripts/full_read_apply.py` (`verify`, `commit_apply`);
+  the rule's wording in `docs/INTAKE_WORKFLOW.md`.
+- The applier checks every quote of every assertion in every reviewed
+  group (about 10,000 for Sprint 15's 47 groups) before it writes,
+  although most are stored exactly as their review wants them and
+  nothing is written for them. Sprint 15's apply of its last 24 groups
+  (2026-11-04) re-checked the 23 groups applied that morning. The rule
+  being kept: an assertion is written only after its quotes are checked
+  against the source text (Sprint 10 retrospective I2,
+  `store.ingest.insert_verified_assertion`). An unchanged row is not a
+  write and needs no check.
+- Not chosen (Q9 option 2): reusing a dry run's passing check for a
+  new write through a stored receipt. That weakens the guarantee and is
+  a Class 1 change to ADR-0004's evidence rule.
+- Acceptance: the applier compares each assertion with its stored row
+  first and checks only those it will insert or change; a second apply
+  checks nothing and writes nothing; a changed quote is still checked
+  (a test proven red); the rule's wording in INTAKE says "every write
+  is checked; an unchanged row is not".
+- Depends on: none
+
+**F137. The two Dunjko records share one PDF: which paper is each (~30m) Priority 34** (NEW 2026-11-04, team lead at Sprint 15 Manual Validation, Q5 = 1)
+- Phase: Reading (record repair)
+- Value: each record points at its own paper, and each assertion sits
+  under the paper that states it.
+- Platform: the store; `D:\Data\Harold\EvidenceBasedDB\Papers\`.
+- The Dunjko 2017 and 2018 records hold one byte-identical PDF. Reader
+  g131 (Sprint 15) entered its new assertions under the 2017 record
+  only (INTAKE_WORKFLOW.md section 64).
+- Acceptance: each record's paper identified from its citation; the
+  missing paper fetched by the paced fetcher if it is free (else on the
+  hand-download list); assertions moved to the record that states them,
+  each move with its note; the local-file check passes for both.
 - Depends on: none
 
 ### Carded during Sprint 13 (2026-10-26 to 2026-10-28)

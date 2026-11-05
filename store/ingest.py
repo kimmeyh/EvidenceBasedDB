@@ -190,6 +190,25 @@ def last_change(updated_reason: str | None) -> str:
     return ""
 
 
+# The note a team-lead decision writes, in either of two shapes: the decision in the header, e.g. "2026-11-05
+# (Sprint 15 Manual Validation, Q6 = 2): ...", or named in the body, e.g. "2026-10-13 (Sprint 8 Task C, F65 and
+# F63): certainty UPGRADED ... the team lead's decision at Sprint 8 Manual Validation (Q7)" (fresh-eyes review,
+# 2026-11-05). A new decision note uses one of these shapes, or decided_day does not see it.
+_DECISION_NOTE = re.compile(r"(\d{4}-\d{2}-\d{2}) \(Sprint \d+ Manual Validation\b")
+_DECISION_BODY = re.compile(r"the team lead's decision at Sprint \d+ Manual Validation\b")
+
+
+def decided_day(updated_reason: str | None) -> str:
+    """The day of the latest Manual Validation decision note in a record's history; "" when none."""
+    days = []
+    for n in (updated_reason or "").split(" | "):
+        if (m := _DECISION_NOTE.match(n)):
+            days.append(m.group(1))
+        elif _DATE.match(n[:10]) and _DECISION_BODY.search(n):
+            days.append(n[:10])
+    return max(days, default="")
+
+
 def append_updated_reason(conn, record_id: str, note: str, today: str) -> str:
     """Append `note` to a record's `updated_reason`. NEVER replace it.
 
@@ -715,6 +734,12 @@ def sync_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, note: str,
     when = updated or ""
     if last != (reason or "").rsplit(" | ", 1)[-1] and _DATE.match(last[:10]):
         when = last[:10]
+    if today < decided_day(reason):
+        # Sprint 15 Manual Validation: a sync dated before the team lead's decision on this row is a re-apply of
+        # older work and is refused, as a full read's is. Without it, re-running sprint12_reading.py (dated
+        # 2026-10-23) moved qng-study-scope-toy-model's context back from qc, the team lead's Q6 = 2. A sync dated
+        # on or after the decision goes through.
+        return []
     if FULL_READ_MARK in (reason or "") and (today < when or
                                              (FULL_READ_MARK in last and FULL_READ_MARK not in note
                                               and today == when)):

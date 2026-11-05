@@ -1,0 +1,256 @@
+{
+ "group": "g128",
+ "reviewed_on": "2026-11-04",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "pdbbind-2020-set-sizes": [
+   "setup",
+   "Section II.A, p.2: the paper states the 2020 PDBBind version and the three set sizes (14127, 5316, 290) in one passage."
+  ],
+  "domingo-train-validation-split": [
+   "setup",
+   "Section II.B (quintile split, 10% validation) and Section III (training and validation on the refined set; repeat on the general set) state the protocol as the value does."
+  ],
+  "domingo-input-representation": [
+   "setup",
+   "Section II.B, p.2-3: N = 48 with 1 angstrom voxels, C = 19 features, Gaussian blur sigma = 1, all stated by the paper."
+  ],
+  "domingo-classical-cnn-architecture": [
+   "setup",
+   "Section II.C, p.3-4: five 3D conv layers (64,64,64,128,256), two residual connections, two pooling, two fully-connected layers (10 and 1), same architecture as Ref. [1] 'for comparison purposes'."
+  ],
+  "hybrid-cnn-architecture": [
+   "setup",
+   "Section II.D: the processed data go to a classical and a quantum conv layer, outputs joined by a residual connection, the rest is the classical network; the first conv layer is replaced by its quantum counterpart."
+  ],
+  "block-size-4-and-circuit-count": [
+   "setup",
+   "Section II.D.1 p.5 and II.D.2 p.6: the paper states its choice n = 4 and the circuit count 32832. The count checks: 1728 blocks (12^3) times 19 features. It is the paper's own design and count."
+  ],
+  "domingo-no-hardware-training-possible": [
+   "stated limit",
+   "Section II.D.2, p.6 and Section I, p.2: the paper states that the whole model cannot be trained on current hardware and that all circuits were simulated. A limit on its own work."
+  ],
+  "quantum-transformation-random-g3-circuit": [
+   "setup",
+   "Section II.D.2, p.6: random G3 circuit, no training parameters, gate counts 20 to 600. Stated setup."
+  ],
+  "ising-reservoir-setup": [
+   "setup",
+   "Section II.D.2, p.6: Eq. 6 Hamiltonian, h/Js = 0.1 from Ref. [26], T = 10, Jij uniform U(-Js/2, Js/2), hi = h. Stated setup."
+  ],
+  "domingo-2023-noisy-simulation-setup": [
+   "setup",
+   "Section II.E, p.7-8: error probabilities, DRER ridge regression on 1000 samples of 300-gate G3 circuits, test on 500 noisy circuits, blocks n = 8 (9 qubits, 300 gates). All stated; the three channels are named in the same section."
+  ],
+  "tendency-accuracy-definition": [
+   "definition",
+   "Section III, p.10: the paper defines tendency accuracy in words and by |y_mitigated - y_noiseless| < |y_noisy - y_noiseless|."
+  ],
+  "evaluation-setup-pdbbind": [
+   "setup",
+   "Section III, p.8: the paper states the models are evaluated on the core set of the 2020 PDBBind dataset."
+  ],
+  "qrc-lih-task-and-model-setup": [
+   "setup",
+   "Section IV.A, p.5-6: LiH ground state by exact diagonalization, R in [0.5, 3.5] a.u., 8 qubits, test set 30% with R in [1.1, 2.0] a.u. designed to need extrapolation. Stated task."
+  ],
+  "qrc-training-setup-ridge-100-sims": [
+   "setup",
+   "Section IV.C, p.6: ridge alpha = 1e-9, 100 simulations for the four p values, gates 25 to 215 step 10 and 300, 500, 700, 900, Qiskit exact simulation with custom noise models. Stated setup."
+  ],
+  "qrc-reservoir-g3-family": [
+   "setup",
+   "Section IV, p.5: reservoirs are random G3 = {CNOT, H, T} circuits with a fixed gate number. The reason is attributed to the previous work (Ref. 24) as the authors' stated choice."
+  ],
+  "depolarizing-phase-damping-only-mitigate-coefficients": [
+   "proved result",
+   "Section II, p.4, Eq. 4: 'mathematical demonstration' for depolarizing and phase damping. b_i = alpha_i a_i with 0 <= alpha_i <= 1 follows in the paper from the Table III expressions, which are textbook channel actions used as a step."
+  ],
+  "amplitude-damping-extra-coefficient-derivation": [
+   "proved result",
+   "Section II, p.4: explicit derivation with its conditions (channel acts on qubit j, P_i is Z on j, P_k has I on j): b_i = (1-p) a_i + p a_k. The steps check. Non-zero b_i when a_i = 0 and a_k nonzero follows."
+  ],
+  "limitation-error-mitigation-future-work": [
+   "stated limit",
+   "Section III, p.4-5: the paper states that error mitigation applied to QRs with different noise models is left to future studies. A scope limit on its own work."
+  ],
+  "qrc-noise-setup-lih-three-channels": [
+   "setup",
+   "Section II, p.2: the three channels and 'Averages are made over 100 simulations' (Fig. 1 caption); the LiH task sentence is in the same section."
+  ],
+  "qpanda-benchmark-environment": [
+   "setup",
+   "Section 4.1, Table 1, p.17: GCC 7.3.0, Python 3.9.0, CentOS, i9-9900K 3.60GHz, RTX 3090 24GB. The paper's own benchmark environment."
+  ],
+  "qpanda-benchmark-libraries-versions": [
+   "setup",
+   "Section 4.2, Table 2, p.19: eleven names and eleven versions in order give ProjectQ 0.7.3, Qiskit 0.38.0, Aer 0.11.0, Terra 0.21.2, Qulacs 0.5.1, Pyqpanda 3.7.14, Cirq 1.0.0; text says 'the latest October 2022'."
+  ],
+  "qpanda-benchmark-circuit-and-metric": [
+   "setup",
+   "Section 4.2, p.18-19: two-layer random circuit (rotation layer, CNOT layer), full-amplitude backends, whole execution time as the index, optimization time added to the total. Stated method."
+  ],
+  "qpanda-future-work-backend-for-cirq-pennylane": [
+   "stated limit",
+   "Section 5, p.21: the paper states it will provide QPanda as a backend for Cirq and PennyLane in the future, so it does not yet. A scope statement on its own work."
+  ],
+  "qml-model-and-attack-definition": [
+   "definition",
+   "Section II, p.2-3: three-step architecture (encoding, variational unitary, Pauli-Z measurement on first k qubits), prediction as a sign, attack successful when Eq. 7 holds. The paper defines these."
+  ],
+  "three-encodings-studied": [
+   "scope",
+   "Section II, p.2-3: the paper states it explores amplitude, angle and dense encoding (Eqs. 2-4) and that W is a product of local unitaries for angle and dense encoding but 'not generally true' for amplitude encoding."
+  ],
+  "theorem-1-trace-norm-ball": [
+   "proved result",
+   "Theorem 1, Section II.A p.4: stated, and proved in Section IV.A p.10 (Eqs. 23-30) from Z measurement bounds and trace norm. Statement carries its conditions."
+  ],
+  "theorem-1-extends-to-noise-cptp": [
+   "proved result",
+   "Section IV.A, p.10 (Eq. 32): the paper proves the bound for CPTP maps through Kraus form and contractivity of trace distance (textbook tool used as a step, Ref. 82). The 'strengthened by noise' remark follows from the same contractivity."
+  ],
+  "angle-dense-local-attack-orthogonalises": [
+   "stated limit",
+   "Section II.B, p.5: the paper states that for angle and dense encoding one can orthogonalise a pair of encoded states by changing one element, so the weak-attack route does not cover local attacks there ('this will not be true in general')."
+  ],
+  "theorem-2-otoc-probability-bound": [
+   "proved result",
+   "Theorem 2, Section II.B p.5: stated with its 2-design condition and proved in Section IV.B p.14-15 (Chebyshev with a 2-fold Haar average, Eqs. 65-78). The Weingarten formula is a textbook tool."
+  ],
+  "universal-attack-definition-and-product-assumption": [
+   "definition",
+   "Section II.C, p.6, Eqs. 13-15: universal attack, product-unitary assumption for angle and dense encoding, and LOE as Choi-state entanglement by a Renyi entropy are all defined by the paper."
+  ],
+  "strong-universal-attack-definition": [
+   "definition",
+   "Section II.C, p.6, Eq. 16: the paper defines the strong universal attack, says it is sufficient but not necessary for Eq. 13, and says it is assumed to make analytic progress."
+  ],
+  "theorem-3-loe-bounds-distance": [
+   "proved result",
+   "Theorem 3, Section II.C p.6, proof in Section IV.C p.15-17 (Eqs. 87-93). Caveat for the lead: the upper-bound step 'generalised to the closest multipartite state' (Eq. 90, product of cut singular values) is asserted in one sentence; the lower bound follows from a single cut. Applies to strong universal attacks and product unitaries only."
+  ],
+  "theorem-3-extreme-limits-loe": [
+   "proved result",
+   "Section II.C p.7 (Eq. 19) and Section IV.C p.17 (Eq. 94): a direct reading of the Theorem 3 bounds at the two extremes, stated with 'strong sense of Eq. (16)'."
+  ],
+  "lemma-5-corollary-6-epsilon-universal-spoof": [
+   "proved result",
+   "Lemma 5 and Corollary 6, Section IV.C p.17-18 (Eqs. 95-97): both are stated with unitary and spectral-norm conditions and proved in the paper from the triangle inequality. The 2*epsilon misclassification statement follows in Section II.C p.7-8."
+  ],
+  "no-lower-bound-on-spoof-distance": [
+   "stated limit",
+   "Section IV.C, p.18: the paper states that similar methods give no lower bound, gives the commuting-W counterexample, and notes there may be more than one perfect spoof."
+  ],
+  "two-norm-far-not-sufficient-for-robustness": [
+   "stated limit",
+   "Section II.D, p.8: the paper states that 2-norm distance from a universal attack does not guarantee failure, since -W_univ is also a universal attack at large 2-norm distance."
+  ],
+  "mps-simulation-setup": [
+   "setup",
+   "Section IV.D, p.20-21: brickwork random two-qubit unitaries, adversary as bond-dimension-one MPO, ADAM with batch 32 over one epoch, 32,000 training and 10,000 test product states, quimb. Stated setup."
+  ],
+  "noise-guarantee-difficulty-zero-predictions": [
+   "stated limit",
+   "Section III, p.9: the paper states that the key difficulty of noise-strengthened guarantees is separating unperturbed predictions from zero."
+  ],
+  "open-problem-which-classes-provably-robust": [
+   "stated limit",
+   "Section III, p.9: the paper states the open question of which classes of states and circuits give provable guarantees, and that the computational cost of finding attacks is also of interest."
+  ],
+  "qclassifier-robust-threat-model": [
+   "scope",
+   "Section I, p.2: the paper states that its guarantees restrict to a classical adversary whose perturbations are constrained by the data encoding."
+  ],
+  "qclassifier-robust-universal-evidence": [
+   "stated limit",
+   "Abstract p.1, Section II.C p.6 (the conjecture sentence) and Section III p.9: the paper itself says it shows only evidence for universal attacks, rests on a conjecture, proves Theorem 3 only for strong universal attacks by product unitaries, and leaves trainability open. The narrowed value is right and is a stated limit."
+  ],
+  "ibm-fez-t1-fits-1738-layers": [
+   "setup",
+   "Section II, p.2-3 and footnote 1: the paper states the ibm_fez median T1 (146 us), median gate time (84 ns) and median CZ and single-qubit error rates. 146 us / 84 ns = 1738. Stated device parameters."
+  ],
+  "clique-expansion-weights-minimize-l2": [
+   "definition",
+   "Section III.A p.4 (Eq. 7) defines the clique expansion and its weights; Appendix C p.10 (Eqs. C.1-C.2) minimizes the quadratic and gets a weighted mean. The weights are alpha_e = omega_e / sum omega_e weighted, which the value summarises."
+  ],
+  "h2prime-theta-joint-optimization-ansatz": [
+   "definition",
+   "Section III.A, p.4-5 (Eqs. 10-12): the paper defines the second method, with theta optimized jointly with beta and gamma, and says H2'(theta) defines a quadratization of the quartic Hamiltonian."
+  ],
+  "quadratization-loses-p-infinity-convergence": [
+   "stated limit",
+   "Section III.A, p.5: the paper states that the p to infinity convergence guarantee is lost, the approach is heuristic, and convergence may persist for H2'(theta) if it shares the ground state of HC. A limit on its own method."
+  ],
+  "labs12-benchmark-setup": [
+   "setup",
+   "Section III.B, p.5: LABS with 12 variables, depth 1 and 2, 15-point grid in [0, pi/2] then COBYLA, depth-two from the transition state, Qiskit state-vector sampling. Stated setup."
+  ],
+  "noisy-simulation-setup-depolarizing-alpha": [
+   "setup",
+   "Section III.C p.6 and Fig. 5 caption p.7: depolarizing channel lambda after each two-qubit gate, best fractions alpha 0.01, 0.05, 0.1, each point the mean of 10 runs, shot-noise bars over 10 000 samples."
+  ],
+  "swap-strategy-truncated-ansatz-method": [
+   "definition",
+   "Section IV, p.6: the paper defines the truncated Ansatz (k of kmax alternating SWAP layers, full connectivity after n-2 layers, subset HC(k)) and the SAT-solver initial mapping."
+  ],
+  "maxcut-rr3-experiment-setup": [
+   "setup",
+   "Section IV p.7 and Appendix D: three RR3 graphs with 40 nodes (9 SWAP layers each), k in [0, 9], p in {1, 2, 3}, MPS bond dimension 20, ibm_fez with 50 000 samples. Stated setup."
+  ],
+  "alpha-th-over-and-underestimates": [
+   "stated limit",
+   "Section IV, p.8: the paper states where its simple alpha_th estimate overestimates (transpiler removes SWAPs) and underestimates (single-qubit noise ignored, deep circuits). A limit of its own noise model. The causes are the authors' stated reasons."
+  ],
+  "mps-simulator-bond-dimension-approximation": [
+   "setup",
+   "Appendix D, p.10: 40-node instances prevent exact state-vector simulation, an MPS simulator approximates the energy, bond dimension 20. Stated method."
+  ],
+  "transpilation-settings-appendix-b": [
+   "setup",
+   "Appendix B, p.9-10: Qiskit transpile at optimization level 3 with a linear coupling map for the higher-order problems; SAT mapping timeout 20 s and transpiler level 1 for the ibm_fez Max-Cut circuits."
+  ],
+  "quadratization-loses-noiseless-quality": [
+   "stated limit",
+   "coordinator sign-off: the clause 'optimizing the parameters ... partially overcomes this issue' (a reading of Fig. 4) is removed from the value with its quote; what remains is the paper's own stated limit, narrowed to the clique expansion method (Abstract p.1, Section V p.9); the reviewer's reason for LOW was: The narrowed value is right: the ground-state statement is made for the clique expansion only (Section V p.9 and Section III.A p.5), not for quadratization in general as the stored value said. But the added clause 'optimizing the parameters partially overcomes this issue' is an interpretation of simulation results (Fig. 4), so the combined value is not a pure stated limit. Without that clause the first two clauses would be HIGH stated limit. A certainty change on a stored HIGH: the lead decides."
+  ]
+ },
+ "theory_low": {
+  "frqi-encoding-qubit-count": "textbook, stated not proved (F129). Section II.D.1, p.4-5: the log2(n^3)+1 count belongs to the FRQI method of Ref. [22]. The paper states it and shows the state (Eq. 2, Eq. 5) but does not derive the count. 'Avoiding this problem' is also the authors' design argument.",
+  "amplitude-damping-not-unital": "textbook, stated not proved (F129). Section IV.B, p.6: the paper states that amplitude damping is non-unital, with no derivation. Table III (eps(I) = I + pZ) shows it, but the paper gives no step.",
+  "table-iii-pauli-action": "textbook, stated not proved (F129). Section II, p.3-4, Table III: the paper lists how each channel maps the Pauli operators and gives no derivation. A table of results is not a proof in the paper.",
+  "amplitude-damping-adds-nonzero-terms-conclusion": "The first clause follows from the derivation, but the second clause ('for p small enough ... without mitigating too much of the rest') is an informal, unquantified argument in Section II, p.4. Graded by the weaker clause.",
+  "amplitude-damping-equivalent-to-more-gates": "Section II, p.4-5: an authors' explanation supported by a 2-qubit toy model and a UMAP plot (Fig. 3), not a proof.",
+  "encoding-sensitivity-sqrt-n-vs-independent": "Section IV.A, p.11-13 (Eqs. 34-57) is an approximate estimate: it assumes w_j about 1, uses '~' and '≈' steps, and its remainder O(N^2 eps^4) grows with N, which is the regime the claim is about. Amplitude case sets |w|^2 = |x|^2. Informal, not a proof.",
+  "trained-distribution-robustness-argument": "Section II.A, p.4: an argument that rests on a generalization bound cited from Ref. [66], with 'with high probability' and 'say'. Not proved in this paper.",
+  "amplitude-encoding-local-attack-weak": "Section IV.B, p.13 (Eqs. 58-64): 'we will argue' with counting arguments, adjacent-bit and bounded-entry assumptions and '~' steps; the theorem is not numbered. Informal.",
+  "otoc-bound-independent-of-dimension-concentration": "Section II.B, p.5: an interpretation of Theorem 2 for Haar-random states ('typically' about 1/sqrt(d)), stated without separate proof.",
+  "scrambling-needed-for-local-attack": "Section II.B, p.5-6: the exponential OTOC growth in Eq. 12 is a heuristic from the many-body literature ('~ exp[lambda depth]'), and 'attacks are impossible' is an interpretation of the Theorem 2 bound, which is a probability bound, not an impossibility.",
+  "corollary-4-clifford-universal-adversary": "Corollary 4 and its proof (Section IV.C p.19-20) hold for dense angle encoding, where the adversary has arbitrary local unitaries. The corollary says 'a local data encoding map'. For plain angle encoding the paper says only I and Y combinations are realisable and gets existence only with high probability under a 2-design plus approximate-uniformity assumption. The value drops that condition.",
+  "angle-encoding-clifford-probabilistic-spoof": "Section IV.C, p.20: a probabilistic argument that assumes U is a 2-design and Clifford and that U P U-dagger is 'approximately uniformly distributed'. An assumption, not a proof.",
+  "approximate-universal-attack-success-probability": "Section II.D p.8 and Section IV.C p.18-19: the derivation treats <Z> and <[H,Z]> as independent Gaussians (cited Ref. 91), works to first order in epsilon, and ends in an inequality (>= 1 - 2 eps/pi). The value says 'approximately' for a fraction and 'sufficient condition'. An approximation, not a proof.",
+  "clifford-two-design-loe-constant": "Section II.C, p.7: a remark. 'Cliffords generate a 2-design' is a cited fact and 'LOE is constant for any Clifford dynamics' is argued only through the Pauli-string flip operator in Corollary 4.",
+  "noise-open-systems-partial-extension": "Section III, p.9. The limit on the final column of Table I is a stated limit. But 'results in the first two columns readily hold' for noise is shown only for Theorem 1 (Section IV.A); for Theorem 2 the paper cites that the OTOC 'tends to grow fast in noisy systems' (Refs. 84, 85) without proof. Graded by the weaker.",
+  "qclassifier-robust-weak-local": "The narrowed value is more exact than the stored 'prove'. But the weak-perturbation protection for trained-distribution data needs a generalization bound cited from Ref. [66] with 'with high probability', and the local-attack protection rests on Theorem 2 with the 2-design assumption ('will not hold in general') and the heuristic OTOC growth of Eq. 12. Theorem 1 and Theorem 2 are each HIGH alone; this combined statement is not. A certainty change on a stored HIGH: the lead decides.; team lead, 2026-11-04, Sprint 15 Manual Validation Q1 option 1 (all 36 as proposed)",
+  "qubo-gate-count-scaling-and-linear-prefactor": "Section II p.2 and Appendix A p.9: Appendix A calls itself 'some intuition'. It counts RZZ and SWAP gates, assumes the cited n-2 SWAP-layer network and one-in-three cancellation after transpilation. A counting estimate, not a stated and proved theorem.",
+  "depth-reduction-scaling-claims": "Section III.A, p.5: the O(n^2) and O(n) reduction factors are read from Fig. 1 gate counts ('see Fig. 1') and are not derived.",
+  "clique-quadratization-wrong-ground-state-example": "Section III.B, p.5. The Z3Z2Z1Z0 example is a correct, trivially checkable computation (odd Hamming weight against weight 2), but it is stated, not derived. The value also says the clique method 'fails to produce good samples because' of it: the poor samples are a measured result (Fig. 4) and the cause for LABS is the authors' explanation.",
+  "labs-weights-close-to-two-derivation": "Appendix C, p.10: Eq. C.5 is derived, but 'close to 2' rests on N_ij ~ O(n) from an expected-value heuristic (Eq. C.6, Prob ~ O(1/n)), not a proof."
+ },
+ "keep_stored": {},
+ "requote": {},
+ "value_replace": {
+  "quadratization-loses-noiseless-quality": "The authors state that the price paid is a loss in the quality of the noiseless solution, and that the clique expansion method does not guarantee that the quadratized Hamiltonian preserves the ground state of the original problem."
+ },
+ "quote_edits": {
+  "quadratization-loses-noiseless-quality": [
+   [
+    "By contrast, optimizing the parameters of a quadratized Hamiltonian Ansatz partially overcomes this issue.",
+    null
+   ]
+  ]
+ }
+}

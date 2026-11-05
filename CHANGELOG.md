@@ -285,6 +285,45 @@ this project keeps having to replace with a step.
   decides (36 in all), so their reviews are not finalized and the apply
   does not take them; they are applied after Manual Validation.
   Snapshot as of 2026-11-04. Sprint 15 moves to Manual Validation
+- **feat**: Sprint 15 Manual Validation applied (team lead, 2026-11-04;
+  INTAKE section 67): Q1's 36 certainty changes recorded in the
+  escalation files, the 24 waiting groups finalized and applied (trial:
+  6,282 new assertions, 228 read rows, 157 updates);
+  `scripts/sprint15_mv_decisions.py` sets F129's 10 proposals HIGH (Q2),
+  g144's two absence items MODERATE (Q4) and one context from `method`
+  to `qc` (Q6); Q3 and Q8 write nothing. `tests/test_sprint15_mv_decisions.py`
+- **fix**: the applier checks a sign-off's edited figure reading with the
+  figure exemption its own quote check gives (five were refused), and a
+  confirmed row rebuilt for its grade keeps its stored fidelity, claim
+  type and search scope (the trial listed eight rows changed). Each with
+  a test proven red
+- **fix**: the fresh-eyes review of the Manual Validation apply: the
+  applier keeps a grade the team lead decided ("the team lead's decision
+  at") unless its review records a decision too, so no rerun's date can
+  undo it; a confirmed row that keeps a vendor claim type is never
+  written HIGH. The decisions script is dated the day it ran
+  (2026-11-05): its first run, dated 2026-11-04, was restored from its
+  backup and re-run. Test proven red
+- **fix**: the `--changed` run after the Manual Validation apply (5
+  failed of 1,086). `store.ingest.sync_assertion` refuses a sync dated
+  before a row's latest Manual Validation decision note (new
+  `decided_day`): a rerun of `sprint12_reading.py` moved
+  qng-study-scope-toy-model's context back from `qc`, the team lead's
+  Q6 = 2 (synthetic test and the live second-apply test, both proven
+  red). Three older tests held data that the team lead's decisions and
+  Sprint 15's full reads changed: the learnings balance is compared with
+  a distinct count per grade (proven red), F101's re-quoted record a
+  later full read owns is checked for verbatim quotes only, and the
+  Sprint 12 store test skips a row decided later. The applier's field
+  test builds a dataclass, which the confirmed-row rebuild needs. Its
+  fresh-eyes review found no blocking defect; `decided_day` also reads a
+  decision named in a note's body (Sprint 8 and 9's shape; proven red),
+  the sync test checks the same-day boundary, and the Sprint 12 skip
+  compares with the latest day that script syncs on
+- **docs**: carded F136 (the applier checks the quotes of what it writes,
+  not of every reviewed row; team lead, Q9) and F137 (the two Dunjko
+  records share one PDF; Q5); F57's card says Sprint 16's release follows
+  its ranking (Q7)
 
 ### 2026-10-29 to 2026-10-31 (Sprint 14, PR #140, merged to develop 2026-10-31 and to main via PR #148 the same day; tagged sprint-14)
 

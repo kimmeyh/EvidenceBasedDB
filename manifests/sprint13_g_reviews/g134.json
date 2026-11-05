@@ -1,0 +1,451 @@
+{
+ "group": "g134",
+ "reviewed_on": "2026-11-04",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "ewaniuk-architecture-setup": [
+   "setup",
+   "Section II, p.1: the paper states the architecture it simulates (MZI mesh, two phase shifters, single-site nonlinearities between layers). The arbitrary-unitary statement is the standard mesh property, given with citation [12], but it is part of the stated architecture."
+  ],
+  "ewaniuk-loss-model-setup": [
+   "setup",
+   "Section II, p.2: the paper's own loss model, the normal distribution with 6.67% standard deviation. The 0.3 +- 0.02 dB/cm figure is its stated state-of-the-art input, cited to [26]; the value says the authors state it."
+  ],
+  "ewaniuk-in-situ-training-setup": [
+   "definition",
+   "Section II p.2 and Section III p.3: the paper defines in situ training and offline training (a perfect network trained, then losses and DC errors added)."
+  ],
+  "ewaniuk-optimizer-bobyqa": [
+   "setup",
+   "Section VI, pp.7-8: the paper states BOBYQA from NLopt, gradient-free, and its stated reason."
+  ],
+  "ewaniuk-fidelity-definitions": [
+   "definition",
+   "Section II, p.3: the paper defines the conditional fidelity and relates it to the unconditional one by Eq. 6 (F_unc = F_con P_cb)."
+  ],
+  "ewaniuk-training-on-unconditional": [
+   "scope",
+   "Section II, p.3: the paper states the main text trains on the unconditional infidelity and points to Supplementary S2 for the conditional case."
+  ],
+  "ewaniuk-weak-nonlinearity-study-setup": [
+   "setup",
+   "Section IV, p.5: states 0.3 dB/cm, phi from pi to pi/100, and 200 QPNNs trained per network size and nonlinearity (Fig. 3)."
+  ],
+  "ewaniuk-limitation-wavepacket-distortion": [
+   "stated limit",
+   "Section V, p.6: the authors state the desired phase change will likely bring wave-packet distortions [44,45] and that whether a QPNN can learn to overcome them is an open question. A caveat on their own model, which assumes an idealized Kerr phase. Result type is a limit, not a claim."
+  ],
+  "ewaniuk-phase-shifter-calibration-neglected": [
+   "scope",
+   "Section VI, p.7: the paper states imperfect phase shifter calibration is neglected in the model. The reason (in situ training would learn it) is the authors' rationale, not shown."
+  ],
+  "ewaniuk-success-criterion-and-loss-limit": [
+   "definition",
+   "Section VI, p.8: the paper defines its success criterion (at or below offline mean minus one standard deviation), that only successful trials are analysed, and how the loss limit is computed. The selection of successful trials is a stated caveat on later numbers."
+  ],
+  "ewaniuk-simulation-software": [
+   "setup",
+   "Section VI, p.8: the paper states the cluster and software versions (Python 3.10.2, Numpy 1.22.2, NLopt 2.6.1, Cython 0.29.30)."
+  ],
+  "ewaniuk-permanent-cost": [
+   "setup",
+   "Supplementary S1, p.11: the authors state the multi-photon transformation needs N^2 permanents of n x n matrices and is the most demanding step of their simulations. Cost of their own code, cited to [S1]."
+  ],
+  "ewaniuk-coupler-model-setup": [
+   "setup",
+   "Section II, p.2: the paper states each directional coupler transmittance is drawn from a normal distribution, mean 50%, standard deviation 5.08%, matching a cited experimental coupler [19]."
+  ],
+  "fadol-analysis-channel-setup": [
+   "setup",
+   "Section 2.1, p.3: the paper states the H to gamma gamma, Z to jj channel, the two-photon and two-jet requirement, and the main background e+e- to (Z/gamma*) gamma gamma."
+  ],
+  "fadol-event-selection-cuts": [
+   "setup",
+   "Section 2.1, pp.3-4: the paper states the energy and angle cuts on the photons, and the pre-selection (pT above 20 GeV, 110 to 140 GeV window)."
+  ],
+  "fadol-simulated-samples": [
+   "setup",
+   "Section 2.1, pp.3-4: signal and background are generated with WHIZARD-1.95 and fast simulated with the CEPC baseline detector. The data are simulated; the paper says so."
+  ],
+  "fadol-six-features": [
+   "setup",
+   "Section 2.1, p.4: the paper lists the six kinematic features, the scaling to -1..1, and that they were chosen from a pool for separation power."
+  ],
+  "fadol-qsvm-kernel-three-steps": [
+   "definition",
+   "Section 2.2, pp.4-8: the paper describes the algorithm it runs: feature map to N qubits, kernel entry as the |0^N> frequency (Eq. 3), and the hyperplane found on a classical computer as for the classical SVM."
+  ],
+  "fadol-kernel-entry-definition": [
+   "definition",
+   "Section 2.2.2, p.7: Eq. 2 defines k(xi,xj) as |<Phi(xi)|Phi(xj)>|^2. The 'distance' phrase is the authors' gloss, not part of the definition."
+  ],
+  "fadol-feature-map-circuit": [
+   "setup",
+   "Section 2.2.1, pp.5-6: the paper states two identical layers of H, Rz, Ry and alternating CNOTs, kept alternating to avoid long-depth circuits on NISQ machines."
+  ],
+  "fadol-simulator-setup": [
+   "setup",
+   "Section 3.1, pp.8-9: the paper states 6 qubits on the IBM StatevectorSimulator and Origin Tensor Network Simulator, no hardware noise, 50:50 signal and background, half and half train and test, repeated splits."
+  ],
+  "fadol-classical-baseline-setup": [
+   "setup",
+   "Section 3.1, p.9: the paper states the scikit-learn RBF SVM baseline, with regularisation and gamma optimised by cross-validation, and the same cross-validation for the QSVM-Kernel regularisation."
+  ],
+  "fadol-hardware-setup": [
+   "setup",
+   "Section 3.2, p.10: the paper states 6 qubits of IBM Nairobi and Origin Wuyuan, 10000 shots per circuit, and a dataset of 100 training and 100 test events because of the long hardware run time."
+  ],
+  "fadol-noise-estimate-ibm-only": [
+   "stated limit",
+   "Section 3.2, p.11: the authors state the estimated noise of 0.017 is calculated from IBM only, not Origin hardware. A caveat on their own noise estimate. Its type is a limit on a measured estimate, not a claim."
+  ],
+  "fadol-quadratic-scaling-limit": [
+   "stated limit",
+   "Section 4, p.13: the authors state the QSVM-Kernel algorithm scales as O(n^2) because the whole N x N kernel matrix is computed, and call this not ideal. A limit on the algorithm they use, stated by them."
+  ],
+  "falla-donor-acceptor-pipeline": [
+   "definition",
+   "Sections 1 and 4, pp.6-7: the paper defines its method: embed the acceptor, pick the training graph at minimum Euclidean distance (Eq. 12) as donor, inherit its parameters."
+  ],
+  "falla-approx-ratio-definition": [
+   "definition",
+   "Section 4.1.1, p.7, Eq. 13: the paper defines the average transferred approximation ratio over 20 donor parameter sets, with Gurobi for the classical optimum and QTensor for the QAOA energy."
+  ],
+  "falla-classical-optimum-limit": [
+   "scope",
+   "Section 1 p.2 and footnote 2 p.7: the authors state graphs up to 100 nodes are considered and their optimum can be found classically, while for large instances the true approximation ratio is unobtainable. The paper's own scope and metric caveat."
+  ],
+  "falla-experimental-setting-models": [
+   "setup",
+   "Section 5.1 p.8 and footnote 4: Graph2Vec and GL2Vec trained 100 epochs at 0.065, SF, wavelet and FEATHER default, all unsupervised; test graphs random, regular and Watts-Strogatz, so transfers within and across types."
+  ],
+  "falla-parity-definition": [
+   "definition",
+   "Section 4, p.6, Eq. 10: the paper defines graph parity as the fraction of even-degree nodes."
+  ],
+  "falla-depth10-setup": [
+   "setup",
+   "Section 5.3, p.13 and footnote 6: 4,500 20-node training graphs, Cirq state vector, 10 seeds, the stated test sets, and 40-node depth-10 not feasible with the tensor network approach."
+  ],
+  "falla-timing-setup": [
+   "setup",
+   "Section 5.4, pp.14-15: Qiskit state vector simulator, three 20-node graphs, COBYLA, and the five listed cases are as the value says."
+  ],
+  "falla-noise-setup": [
+   "setup",
+   "Section 5.5, p.17: 1000 distinct 14-node graphs on the Guadalupe and Auckland fake backends, scale factors 0.5, 1 and 2, six experiments, parameters from Graph2Vec donors."
+  ],
+  "falla-open-question-rigor": [
+   "stated limit",
+   "Section 7, p.19: the authors state their current work aims to understand rigorously why subgraph composition and parity predict transferability. This admits the explanation is not yet rigorous, which is a limit they state about their own work."
+  ],
+  "fan-survey-aim": [
+   "scope",
+   "Section 1, p.4: the authors state what the paper does (summarize existing contributions and highlight potentials and challenges)."
+  ],
+  "fan-focus-classical-data-quantum-algorithm": [
+   "scope",
+   "Section 3, p.12: the authors state the paper mainly covers the CQ approach (quantum algorithms on classical data)."
+  ],
+  "fan-pqc-training-loop": [
+   "definition",
+   "Section 2.2, p.8: the paper describes the PQC training loop it uses throughout (angles optimized classically, evolution and measurement on the device) and gives the state U(theta)U(x)|0> and the loss. Standard background, stated as its own description."
+  ],
+  "fan-computational-basis-encoding-definition": [
+   "definition",
+   "Section 3.1.1, p.12: the paper defines computational basis encoding (binary string, then basis state, Eq. 10)."
+  ],
+  "fan-amplitude-encoding-definition": [
+   "definition",
+   "Section 3.1.1, p.13: the paper defines amplitude encoding with the normalization condition and Eq. 12."
+  ],
+  "fan-angle-encoding-definition": [
+   "definition",
+   "Section 3.1.1, p.13: the paper defines angle encoding with the Y-rotation example (Eq. 13)."
+  ],
+  "fan-representation-encoding-definition": [
+   "definition",
+   "Section 3.1.2, p.13: the paper defines representation encoding as encodings that do not allow reconstruction of the input. 'Expected to retain essential features' is hedged in the paper and in the value."
+  ],
+  "fan-projected-quantum-kernel-definition": [
+   "definition",
+   "Section 3.2, p.19: the paper describes projected quantum kernels (local observables, project the feature state to classical data to compute the kernel). The approach is cited from others [115,116], but the value is only the description."
+  ],
+  "fan-early-late-hybrid-definition": [
+   "definition",
+   "Section 4.1, pp.27-28: the paper defines its two categories, early and late hybrid integration."
+  ],
+  "fan-input-granularity-groups": [
+   "definition",
+   "Section 4.2, p.29: the paper states the three groups it uses to categorize hybrid QML models."
+  ],
+  "fan-quantum-contribution-groups": [
+   "definition",
+   "Section 4.3, p.30: the paper states the four groups it uses to categorize hybrid approaches."
+  ],
+  "fan-capacity-three-perspectives": [
+   "definition",
+   "Section 5.1, pp.31-32: the paper states the three perspectives (expressivity, learnability, generalizability) and defines each."
+  ],
+  "survey-scope-gate-computing": [
+   "scope",
+   "Section 1, p.3: the authors state the survey focuses on quantum gate computing and its potential and limitations for ML on classical data, not all QC models."
+  ],
+  "farb-model-two-dates": [
+   "setup",
+   "Section 2, p.8: states two dates and the two agent types, borrowers and lenders, as the value says."
+  ],
+  "farb-model-borrower-types": [
+   "setup",
+   "Section 2, p.8: states the two-dimensional type (tau, omega), good repay and bad default, and that omega is read as opacity under nested information."
+  ],
+  "farb-model-loan-demand": [
+   "setup",
+   "Section 2, p.8: any borrower offered rate r borrows D(r) regardless of type."
+  ],
+  "farb-model-lenders": [
+   "setup",
+   "Section 2, p.8: free entry from ex-ante identical lenders with endowment 1, risk neutral, no discounting."
+  ],
+  "farb-model-screening-technology": [
+   "setup",
+   "Section 2, p.8: pass or fail governed by s(tau, omega), independent across lender-borrower pairs given the type."
+  ],
+  "farb-model-cost-of-precision": [
+   "setup",
+   "Section 2, p.8: total entry cost C(alpha), in utility terms, strictly increasing and continuous, with fixed cost C0 and c(alpha) = C(alpha) - C0."
+  ],
+  "farb-nested-information-definition": [
+   "definition",
+   "Section 2, Definition 1, p.9: the thresholds omega_g and omega_b and the pass and fail rule are as the value states."
+  ],
+  "farb-nestedness-property": [
+   "definition",
+   "Section 2, p.10: the paper states the property and names it nestedness. It follows directly from Definition 1."
+  ],
+  "farb-beta-error-balance": [
+   "definition",
+   "Section 2, pp.9-10: beta governs the relative frequency of Type I and II errors; beta = 0 gives only false negatives and beta = 1 only false positives, as stated."
+  ],
+  "farb-zero-skill-normalization": [
+   "setup",
+   "Section 2, p.10, Eq. 1: the paper adopts the normalization that zero skill conveys no information, automatic under uniform priors."
+  ],
+  "farb-independent-information-definition": [
+   "definition",
+   "Section 2, Definition 2, p.10: pass probabilities Omega_g and 1 - Omega_b; the unconditional error probabilities equal the nested case and mistakes are uncorrelated."
+  ],
+  "farb-same-quality-different-correlation": [
+   "scope",
+   "Section 2, p.10 and Section 1, p.4: the two structures have the same unconditional error probabilities by construction, so any difference is due to correlation. A consequence of the paper's own construction."
+  ],
+  "farb-equilibrium-protocol": [
+   "setup",
+   "Section 3, p.11: lenders choose precision first, each rate is a market, borrowers apply from the lowest rate upward."
+  ],
+  "farb-queue-and-short-side": [
+   "setup",
+   "Section 3, p.11: the queue order by increasing alpha is assumed, and the short-side rule closes the protocol."
+  ],
+  "farb-equilibrium-definition": [
+   "definition",
+   "Section 3, Definition 3, pp.12-14: the measure W, the choice functions, the borrower measures, the optimality, free entry with equality on the support, and the accounting equations (8) and (9)."
+  ],
+  "farb-lemma1-cream-skimming": [
+   "proved result",
+   "Section 3.1, Lemma 1, p.14: stated with its conditions (positive measure of selective lenders ahead, option to move ahead). Proved in Appendix A.1, p.47, from the better-than-random selection of the skipped lender."
+  ],
+  "farb-prop1-independent-structure": [
+   "proved result",
+   "Section 3.1, Proposition 1, p.15: properties 1 to 3 hold by construction (A.3.1), and the equilibrium is shown to be an equilibrium (A.3.2) and unique (A.3.3), pp.47-50. Proof uses only first-order conditions and standard calculus."
+  ],
+  "farb-prop1-coverage-and-shape": [
+   "proved result",
+   "Section 3.1, Proposition 1, p.15, properties 5 and 6: coverage holds by construction, and the quasi-convexity under regularity condition (A.6) is proved in A.3.1, pp.47-49. The condition is in the value."
+  ],
+  "farb-lowest-skill-choice": [
+   "proved result",
+   "Section 3, p.14 and Section 3.1 p.16: alpha0 minimizes the break-even rate against the whole pool (Lemma A.4, p.53, for nested; p.61 shows the nested and independent objectives coincide, so alpha0 and r(alpha0) are the same)."
+  ],
+  "farb-independent-ode-construction": [
+   "proved result",
+   "Section 3.1, pp.17-18 and Appendix A.2, pp.46-47: the two first-order conditions are combined step by step into the ODE (23) for q(alpha), with initial condition q(alpha0) = q0 and the recovery of w and r. The derivation is written out."
+  ],
+  "farb-independent-ironing": [
+   "stated limit",
+   "Section 3.1, p.19 and A.7, p.59: the authors state there is no guarantee the ODE gives a decreasing q, so entry density can fail to be positive and the equilibrium has no-entry intervals. A caveat on their own construction."
+  ],
+  "farb-lemma2-cleansing": [
+   "proved result",
+   "Section 3.2, Lemma 2, p.19: stated with its two cases. Proved in Appendix A.5, p.51, by nestedness (the less skilled lender accepts every bad borrower but not the own slice of goods)."
+  ],
+  "farb-prop2-hockey-stick-structure": [
+   "proved result",
+   "Section 3.2, Proposition 2, pp.20-21: the construction of the three regions (pp.22-28) gives existence, and uniqueness is Proposition A.1 (pp.53-55, Lemmas A.4 to A.8). Proofs are in the appendix."
+  ],
+  "farb-prop2-region-I": [
+   "proved result",
+   "Section 3.2, Proposition 2, p.21, Region I: constructed on pp.22-26 and shown unique by Lemmas A.5 and A.6 (pp.54-55)."
+  ],
+  "farb-prop2-region-II": [
+   "proved result",
+   "Section 3.2, Proposition 2, p.21, Region II: constructed by r(alpha) = C(alpha) and market clearing (Eqs. 40 and 41, p.27), unique by Lemma A.7 (p.55)."
+  ],
+  "farb-prop2-region-III": [
+   "proved result",
+   "Section 3.2, Proposition 2, p.21, Region III: constructed with the non-selective break-even rate (Eqs. 42-43, pp.27-28), unique by Lemma A.8 (p.55). The 'if Region III exists' condition is in the value."
+  ],
+  "farb-lemma3-necessity-of-pooling": [
+   "proved result",
+   "Section 3.2, Lemma 3, p.22, stated with its conditions. Formal counterpart is Lemma A.5 (p.54), with the derivation 'Lemma A.5 delivers Lemma 3' on p.55. The proof is a profitable-deviation argument."
+  ],
+  "farb-region-I-zero-profit-boundary": [
+   "definition",
+   "Section 3.2, p.22, Eqs. 29 and 30: zero profit with C increasing forces gamma(rp,1;alpha) to rise with alpha, and alpha1 is defined by C(alpha1) = rp. The deduction is one line."
+  ],
+  "farb-region-II-pricing-rule": [
+   "proved result",
+   "Section 3.2, p.27, Eqs. 40 and 41: with gamma = 1 in Region II, zero profit gives r(alpha) = C(alpha), so r' = C'; market clearing gives the density. Derived from the equilibrium conditions."
+  ],
+  "farb-region-III-definition": [
+   "definition",
+   "Section 3.2, pp.27-28: the paper defines r_NS as the minimum rate where non-selective profit is non-negative, alpha2 as C^-1(r_NS), and the non-selective entry that clears the remaining demand."
+  ],
+  "farb-hockey-stick-uniqueness": [
+   "proved result",
+   "Section 3.2, p.28: the paper states it shows uniqueness in the Appendix. Proposition A.1 with Lemmas A.4 to A.8 (pp.53-55) does so."
+  ],
+  "farb-region-II-caveats": [
+   "stated limit",
+   "Section 3.2, footnote 14, p.28: the authors state two caveats on the fintech and private-credit readings (Region II has no default, and the rate wedge reflects screening cost alone). Limits on how they read their own model."
+  ],
+  "farb-prop3-long-run-fixed-cost": [
+   "proved result",
+   "Section 3.2, Proposition 3, p.30: proved with Proposition A.2 and Lemmas A.9 to A.13 (pp.55-58), including all five parts. Note: Lemma A.12 is stated for alpha1 below 1, and the final step treats Region III as present at both cost levels or absent at both. Mixed cases are not treated in the text."
+  ],
+  "farb-prop4-rates-and-defaults": [
+   "proved result",
+   "Section 3.3, Proposition 4, p.30 and proof A.8, pp.59-62: single-crossing Lemma A.14, then the rate comparison region by region, then the default ordering from break-even. The condition (part 6 of Prop. 1) is in the value."
+  ],
+  "farb-prop5-low-skill-wealth": [
+   "proved result",
+   "Section 3.3, Proposition 5, pp.33-34 and proof A.9, pp.62-63: the density ratio goes to infinity as alpha0 goes to 0, and Lemma A.1 gives the three sufficient conditions."
+  ],
+  "farb-entry-equilibrium-setup": [
+   "definition",
+   "Section 4, Definition 4, pp.34-35: entrants have cost C_E below C for some alpha, incumbents keep alpha but may change rate, and free entry applies only to entrants."
+  ],
+  "farb-spillover-definition": [
+   "definition",
+   "Section 4, Definitions 5 and 6, p.36: the paper defines equilibrium spillover and financial exclusion as the value says."
+  ],
+  "farb-loan-demand-interpretation": [
+   "setup",
+   "Section 2, footnote 3, p.8: the authors state their reading of the equal loan demand (borrowers do not know their type, or face the same collateral constraint, giving D(r) = 1/r under the stated unit-capital assumptions). It is the paper's own rationale for its assumption."
+  ],
+  "farb-entry-example-schematic": [
+   "stated limit",
+   "Section 4, footnote 17, p.35: the authors state the figures are stylized schematics that illustrate the qualitative shape, with numerical realizations in Online Appendix D."
+  ],
+  "farb-lemma1-proof-result": [
+   "proved result",
+   "Appendix A.1, p.47: the proof is written out: the skipped lender selects better than random, so the good share q' exceeds q."
+  ],
+  "farb-lemma2-proof-result": [
+   "proved result",
+   "Appendix A.5, p.51: the proof is written out: removing a less skilled lender's sample leaves a better pool because by nestedness she accepts all bad borrowers but not the own slice of goods, and the case reverses for a more skilled lender."
+  ],
+  "farb-prop1-regularity-condition": [
+   "proved result",
+   "Appendix A.3.1, pp.47-48: condition (A.6) is stated, and the proof shows d2 gamma/d alpha2 is positive at any critical point (u' = u1 + u2 above 0), so quasi-convexity follows."
+  ],
+  "farb-prop1-uniqueness-proof": [
+   "proved result",
+   "Appendix A.3.3, pp.48-49: the proof gives r(alpha0) as the lowest rate, no gaps, substitutability of skill and pool quality, and uniqueness of the pool path from the first-order condition."
+  ],
+  "farb-lemmaA1-lowest-rate-lender": [
+   "proved result",
+   "Appendix A.4, Lemma A.1, pp.49-51: parts (i), (ii) and (iii) are each proved (implicit and envelope theorems, the threshold argument, and the small-beta limit). Textbook tools only."
+  ],
+  "farb-lemmaA2-own-slice-uniform-depletion": [
+   "proved result",
+   "Appendix A.6, Lemma A.2, p.52: stated and proved in four lines from the nested thresholds."
+  ],
+  "farb-lemmaA3-pool-evolution": [
+   "proved result",
+   "Appendix A.6, Lemma A.3, p.52: stated and proved by expanding gamma to first order and equating with the equal-profit condition."
+  ],
+  "farb-propA1-nested-uniqueness": [
+   "proved result",
+   "Appendix A.6, Proposition A.1, pp.53-55: proof through Lemma A.4 (break-even minimizer), Lemma A.5 (no positive remainder of acceptable good assets, which delivers Lemma 3) and Lemmas A.6 to A.8. Each is proved."
+  ],
+  "farb-propA2-wealth-decreasing": [
+   "proved result",
+   "Appendix A.6, Proposition A.2, pp.55-58: proved through Lemmas A.9 to A.13. Same gap as Proposition 3: Lemma A.12 is for alpha1 below 1 and the Region III cases are 'at both cost levels' or 'at neither'."
+  ],
+  "farb-ironing-appendix": [
+   "stated limit",
+   "Appendix A.7, p.59: the authors state a negative density in (39) is a symptom of cheap skill that would violate free entry, so the equilibrium has no-entry intervals, which they then characterize by the set N. A caveat on the construction."
+  ],
+  "farb-lemmaA14-single-crossing": [
+   "proved result",
+   "Appendix A.8, Lemma A.14, pp.59-60: stated with the regularity condition (A.6) and proved by showing every zero of h2 crosses from below (A.23)."
+  ],
+  "farb-prop4-proof-structure": [
+   "proved result",
+   "Appendix A.8, pp.59-62: the proof compares the schedules to C(alpha) (r_iid at least C at least r_nested) and derives the default ordering from break-even. Written out."
+  ],
+  "farb-prop5-proof-structure": [
+   "proved result",
+   "Appendix A.9, pp.62-63: Part 1 (the ratio goes to infinity because w_iid is at least M/alpha0 and w_nested is bounded) and Part 2 (via Lemma A.1) are proved."
+  ],
+  "farb-entry-equilibrium-partial": [
+   "stated limit",
+   "Appendix B, p.64: the authors state they only partially characterize the entry equilibrium, because other patterns may emerge when the conditions fail, and that the conditions hold in the Section 4 examples."
+  ],
+  "farb-entry-uncovered-case": [
+   "stated limit",
+   "Appendix B, p.69: the authors state they do not cover the case where condition 3a fails."
+  ],
+  "farb-online-appendix-C-informal": [
+   "stated limit",
+   "Online Appendix C, p.72: the authors state the section is informal, without formal existence or uniqueness claims, and that the exogenous skill version is less tractable."
+  ],
+  "stylized-model-scope": [
+   "scope",
+   "Section 1, p.3: the authors state they build a parsimonious model in which ex-ante identical lenders choose precision and interest rate."
+  ]
+ },
+ "theory_low": {
+  "fan-gates-must-be-unitary": "textbook, stated not proved (F129). Section 2.1.2, p.7: the paper states that gates must be unitary and gives U^dagger U = I, without proof.",
+  "fan-kernel-theory-convexity": "textbook, stated not proved (F129). Section 3.2, p.17: one sentence, no proof or citation, that kernel theory guarantees optimal solutions through convexity. The conditions (convex loss, a fixed kernel) are not given.",
+  "farb-independent-no-pooling": "Section 3.1, p.14: the no-pooling claim is argued in prose from Lemma 1 and an undercutting deviation to r - epsilon. It is not stated as a numbered result and has no written proof. Only Lemma 1 is proved (A.1). Prop. 1 property 3 is by construction.",
+  "farb-existence-of-II-depends-on-I": "Section 3.2, p.29: this is an interpretive remark. The paper does not state or prove that Region II exists only if Region I does. It reads off the construction, where gamma(rp,1;alpha1) = 1.",
+  "farb-nonassortative-matching": "Section 3.2, pp.29-30: an observation read from the regions of Proposition 2. It is not stated as a numbered result and has no separate proof.",
+  "farb-corollary1-equivalence": "Section 3.2, Corollary 1, p.30: no proof is written. It rests on W(C0) being strictly decreasing (Prop. A.2) so the map from C0 to the lender mass is one-to-one, but the paper does not show the map is onto, so the equivalence is argued, not proved.",
+  "farb-example-fall-in-cost-of-capital": "Section 4, pp.36-38: a stylized example, shown by figures that the paper calls schematics (footnote 17), with numerical realizations in Online Appendix D. Not a proved result.",
+  "farb-example-frontier-innovation": "Section 4, pp.37-40: a stylized example illustrated by schematic figures and numerical realizations. Not a proved result.",
+  "farb-example-access-open-banking": "Section 4, pp.39-40: a stylized example illustrated by schematic figures and numerical realizations. Not a proved result.",
+  "farb-example-analytics-open-banking": "Section 4, pp.41-42: a stylized example illustrated by schematic figures and numerical realizations. Not a proved result.",
+  "farb-limited-vs-broad-data-sharing": "Section 5, p.42: the policy statement follows from the stylized examples of Section 4, which are illustrations (footnote 17), not a proved result.",
+  "farb-entry-equilibrium-verification": "Appendix B, pp.67-69: the construction (steps 1 to 8) leans on a step stated as omitted: footnote 19, p.65, says existence and uniqueness of alpha-tilde_1E in case 6c 'is possible to show' and omits the argument. The verification theorem is therefore not fully proved in the paper.",
+  "farb-fig7-wealth-concentration": "Read from Figure 7, p.31 of the paper (PDF p.32): from_figure, so never HIGH. The reading partly misreads the plot: panel D shows the independent-information bad mass settling at a small positive level, not falling toward zero, and the capital curve in C reaches its plateau about at alpha1, not well before it. The good mass and the nested curves read correctly.",
+  "correlated-errors-segment-the-market": "Abstract p.1, Propositions 1 and 2: the narrowed value is faithful to the passage and fixes 'at most three segments' (Prop. 2). But the value holds two parts the paper settles differently. Props. 1 and 2 are proved (HIGH). The attribution 'potentially from similar AI systems and overlapping financial-sector data' is the authors' motivation, and 'smoothly increasing' and 'single segment' for independent errors are the abstract's description: Prop. 1 allows flat stretches (no-entry intervals) and an atom at alpha = 1. Graded by the weaker part; the stored HIGH would drop to LOW. The team lead decides.; team lead, 2026-11-04, Sprint 15 Manual Validation Q1 option 1 (all 36 as proposed)",
+  "policy-effects-ai-and-data-sharing": "Section 5, p.42: the Conclusion's policy findings come from the stylized examples of Section 4, which the paper calls schematics (footnote 17) with numerical realizations. They are not theorem results. The data-sharing effect is itself called ambiguous. Stored HIGH does not hold; the passage lacks a proof.; team lead, 2026-11-04, Sprint 15 Manual Validation Q1 option 1 (all 36 as proposed)"
+ },
+ "keep_stored": {},
+ "requote": {
+  "policy-effects-ai-and-data-sharing": "regraded LOW at the team lead's decision: Section 5, p.42: the Conclusion's policy findings come from the stylized examples of Section 4, which the paper calls schematics (footnote 17) with numerical realizations. They are not theorem results. The data-sharing effect is itself called ambiguous. Stored HIGH does not hold; the passage lacks a proof.; team lead, 2026-11-04, Sprint 15 Manual Validation Q1 option 1 (all 36 as proposed)"
+ },
+ "value_replace": {
+  "policy-effects-ai-and-data-sharing": "In their model, the authors find that adoption of AI technology benefits borrowers who face high rates and improves financial inclusion, while a mandatory data-sharing policy has ambiguous spillover effects on the financially excluded."
+ },
+ "extra_quotes": {
+  "policy-effects-ai-and-data-sharing": [
+   "We find that adoption of AI technology benefits borrower who face high rates and improves financial inclusion.",
+   "a mandatory data-sharing policy has ambiguous spillovers effects to the financially excluded population"
+  ]
+ }
+}

@@ -1,0 +1,310 @@
+{
+ "group": "g149",
+ "reviewed_on": "2026-11-04",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "quprofs-proposal": [
+   "scope",
+   "Abstract, p.1: the paper states what it proposes (an evolutionary training-free QAS framework with the listed heuristics). Scope of the paper's own work, no result claimed."
+  ],
+  "quprofs-search-space": [
+   "setup",
+   "Search Space Construction, p.3-4: the three sampled categories (HEA-style, covariant feature maps, noise-aware unstructured) are listed as the paper's own search space."
+  ],
+  "quprofs-native-gates-adjacent": [
+   "setup",
+   "Search Space Construction, p.3: all candidate circuits use the native gate set with two-qubit gates on adjacent qubits only. Repeated in Limitations, p.7."
+  ],
+  "quprofs-kta-filter": [
+   "setup",
+   "Circuit Filtering p.4 and Search Procedure p.6: bottom-p% KTA candidates dropped, 80% filtered in the experiments. Appendix p.12 agrees (discard 80%)."
+  ],
+  "quprofs-proxy-ensemble": [
+   "definition",
+   "Proxies and Rank aggregation, p.4: the paper defines its three proxies (Kernel Concentration Indicator, Local Effective Dimension, KL divergence to Haar for expressivity). Table 1 and appendix p.14-16 give the formulas."
+  ],
+  "quprofs-kci-definition": [
+   "definition",
+   "Appendix, Degree of Uniformity, p.15: Frobenius norm of F minus the all-ones matrix, stated as a measure of distance from uniformity. A definition the paper gives (the paper introduces the metric)."
+  ],
+  "quprofs-expressivity-definition": [
+   "definition",
+   "Appendix p.15 and p.17: Expr is the KL divergence to the Haar fidelity distribution; lower is broader. The mid-range selection rule is the paper's own stated design choice. The overfitting reason is the authors' rationale, stated as the motive only."
+  ],
+  "quprofs-rank-aggregation": [
+   "definition",
+   "Proxies and Rank aggregation p.4 and Appendix Eq. 3 and 5: M1 best-ranked, M2 mid-ranked, KTA excluded from the aggregation. Method definition."
+  ],
+  "quprofs-evolutionary-operators": [
+   "definition",
+   "Evolutionary operators, p.4: layer augmentation (exploitation) and randomized gate pruning at a tunable rate (exploration) are defined by the paper."
+  ],
+  "quprofs-pruning-setting": [
+   "setup",
+   "Appendix, Experimental setup, p.17: about 50% of circuits chosen per cycle, 40% pruning probability, called a tunable hyperparameter."
+  ],
+  "quprofs-cost-model": [
+   "setup",
+   "Runtime Analysis, p.5: 'The single forward pass time cost is modeled as O(nD) ... O(nD Theta)'. The paper states this as its modelling assumption, not as a result."
+  ],
+  "quprofs-hardware-robustness-score": [
+   "definition",
+   "Appendix, Proxy Metrics p.13 and Proxies p.15: the paper defines its noise-aware cost (gate and readout errors, CNOT count, fixed layout). The remark that layout optimization is expensive is background and not the claim."
+  ],
+  "quprofs-mapomatic-limit": [
+   "stated limit",
+   "Appendix p.15: the paper states that the mapomatic formula does not cover the whole noise model. A limit on its own proxy. The result_type should be a stated limit, not setup."
+  ],
+  "quprofs-datasets-groups": [
+   "setup",
+   "Experiments, Tasks and Datasets, p.6: the three groups and the named datasets (binary MNIST, FMNIST, Breast Cancer; Coset-10; four synthetic sets) are listed."
+  ],
+  "quprofs-preprocessing": [
+   "setup",
+   "Experiments p.6 and Appendix p.17: standardization, PCA to input size, 80/20 split, 8 datasets on real devices."
+  ],
+  "quprofs-search-iterations": [
+   "setup",
+   "Search Procedure, p.6: 'run for up to 3 iterations per dataset'. The runtime comparison uses two iterations (p.7), a different experiment."
+  ],
+  "quprofs-baselines": [
+   "setup",
+   "Baselines, p.6: the sentence names QuantumSEA, QuantumNAS and Elivagar as the benchmarked public implementations."
+  ],
+  "quprofs-runtime-setup": [
+   "setup",
+   "Empirical Runtime Comparison, p.7: 150 circuits per iteration, two iterations, full dataset (< 1500 samples) for kernels, LED subsample of 60 circuits, as stated. The wording 'subsample to 60 circuits' is the paper's own."
+  ],
+  "quprofs-hardware-used": [
+   "setup",
+   "Appendix, Experimental setup, p.17: IBM Quantum backends (ibmq_brisbane, ibmq_strasbourg, ibm_kyiv, ibm_sherbrooke), chosen by availability and connectivity; top architectures on 8 datasets."
+  ],
+  "quprofs-limit-benchmarks": [
+   "stated limit",
+   "Limitations and Future Work, p.7: the paper states the lack of standardized QAS benchmarks hinders fair comparison. A limit the paper states. Type should be a stated limit, not setup."
+  ],
+  "quprofs-limit-search-and-hardware": [
+   "stated limit",
+   "Limitations and Future Work, p.7: local optima and limited exploration in larger spaces; the simulation to hardware gap. Limits the paper states about its own work."
+  ],
+  "quprofs-limit-adjacency-cost": [
+   "stated limit",
+   "Limitations and Future Work, p.7: the adjacent-qubit restriction often increases depth and CNOT count. Stated as a trade-off by the authors."
+  ],
+  "quprofs-eval-scope": [
+   "scope",
+   "Abstract, p.1: states the evaluation uses QSVM classification on artificial and quantum-generated datasets. It is a statement of scope, not a result. The body also uses MNIST, FMNIST and Breast Cancer, so the abstract covers only part of the datasets; the value says only what the abstract states."
+  ],
+  "quprofs-limitations": [
+   "stated limit",
+   "Limitations and Future Work, p.7: both quotes are present verbatim. Proxy reliability is uncertain, and two-qubit gates are restricted to adjacent qubits. Limits the paper states about its own work."
+  ],
+  "gsa-definition": [
+   "definition",
+   "Abstract p.1 and Section II.A, p.2-3 (Eq. 3 and 4): GSA defined as the map built from the guiding operator U(hL, nL) and the sample-dependent lambda(nMS, theta)."
+  ],
+  "gsa-cvqe-separation": [
+   "setup",
+   "Section II.A, p.2: in the CVQE construction (refs 64-66) the guiding state is sampled on the QPU before the trial state is optimized on the CPU (Fig. 2a). The paper describes its method."
+  ],
+  "gsa-trial-state-minimal": [
+   "definition",
+   "Section II.C, p.3, Eq. 9-13: the minimal GSA is the span of Fock states in NS, a Fock subspace; NS (Eq. 11) contains all states coupled by H to a measured state. 'Works better in practice' is the authors' own stated reason for the choice."
+  ],
+  "gsa-demo-molecule": [
+   "setup",
+   "Section IV.A, p.6: 16 structures, O-H 0.5 to 2.0 A, C3v, STO-3G, frozen core, 14 valence spin orbitals, Q = 14 qubits."
+  ],
+  "gsa-demo-parameters": [
+   "setup",
+   "Figure 3 caption, p.4 and Figure 5 caption: K = 1, epsilon = 0.11 Ha, T = 2 hbar, |S| = 200 shots on IonQ Aria. The 0.11 Ha cutoff is the optimum the paper highlights in Fig. 5."
+  ],
+  "gsa-single-step-approx": [
+   "setup",
+   "Section II.D, p.4: 'chose to use only a single step, K = 1' to limit decoherence, 'an extreme approximation of adiabatic evolution'."
+  ],
+  "gsa-limit-guiding-sensitivity": [
+   "stated limit",
+   "Section II.D, p.4: the sensitivity of the guiding state to magnitude errors 'needs investigation but is outside the scope of this work'."
+  ],
+  "gsa-circuit-optimization": [
+   "setup",
+   "Section IV.B, p.6: two-stage optimization (Pauli term ordering and CNOT decompositions, then IonQ's compiler to MS and single-qubit gates)."
+  ],
+  "gsa-code-data-availability": [
+   "scope",
+   "Sections V and VI, p.6: data on reasonable request; code not approved for public release. Stated availability."
+  ],
+  "gsa-competing-interests": [
+   "scope",
+   "Acknowledgments, p.8 and Competing Interests: three authors are IonQ employees and equity holders; the authors declare no competing interests. Both statements are in the paper."
+  ],
+  "gsa-minimal-measurement-set": [
+   "setup",
+   "Section II.C, p.3 defines the minimal measurement set (standard basis only). The demonstration uses it: Nm = |M||S| = 200 with |S| = 200 (p.5), so |M| = 1."
+  ],
+  "gsa-open-scaling": [
+   "stated limit",
+   "Section III, p.5: 'it remains unclear how the accuracy depends on the system and sample sizes', followed by 'While leaving this for future work'. A limit the paper states. Type should be a stated limit, not measured."
+  ],
+  "guo-proposal": [
+   "scope",
+   "Abstract, p.1 and Introduction p.2: the paper presents a three-part quantum LOF algorithm (amplitude estimation and minimum search; multiply-adder; amplitude estimation). Design the paper states."
+  ],
+  "guo-def-reachability": [
+   "definition",
+   "Section II.A, p.2: Definition 3, reach-dist_k(x,y) = max{k-distance(y), d(x,y)}. The stated purpose is given in the paper."
+  ],
+  "guo-def-lof": [
+   "definition",
+   "Section II.A, p.2: Definition 5 and Eq. 2, the average over neighbors y of lrd(y)/lrd(x). The value's ordering (neighbors over x) matches Eq. 2."
+  ],
+  "guo-decision-rule": [
+   "definition",
+   "Section II.B, p.2, Algorithm 1: a point is marked an anomaly if LOF is at least the threshold delta."
+  ],
+  "guo-qram-access": [
+   "setup",
+   "Section III, p.3, Eq. 3: the data set is assumed stored in a QRAM giving the oracle in time O(log mn). A stated assumption of the algorithm."
+  ],
+  "guo-constant-qubit-assumption": [
+   "setup",
+   "Section III.A.2, p.4: 'we assume that the data points are represented by a constant number of qubits', used to omit the arithmetic gate cost."
+  ],
+  "guo-step1-method": [
+   "setup",
+   "Section III.A.1, p.3-4, steps 1.1 to 1.8: amplitude estimation for distances, minimum search for the k-distance, Grover for the neighborhood, quantum counting for the neighbor count."
+  ],
+  "guo-error-assumption": [
+   "setup",
+   "Section III.C.2, p.8, Eq. 31 (checked on the rendered page): at least half of the distances d(x_t, x_l) over the neighbors exceed sqrt(P), stated as an assumption for the error analysis."
+  ],
+  "guo-param-regime": [
+   "setup",
+   "Section III.D, p.8 (checked on the rendered page): max n_i = O(k), C, E, P = O(1), eps1 = P eps/16, eps2 = eps, eps3 = eps/(2E), T much smaller than m. The paper states this as the regime for its final bound. The value records the regime only; the bound itself is graded separately."
+  ],
+  "guo-paper-scope": [
+   "scope",
+   "Introduction, p.2: Sec. II reviews classical LOF, Sec. III presents the quantum LOF and its complexity, Sec. IV concludes. The paper states its own organization."
+  ],
+  "guo-choice-of-k-out-of-scope": [
+   "scope",
+   "Section III.A, p.3: 'how to choose a suitable k is outside the scope of our discussion', and 'we assume that the parameter k is given in advance'. The scope of the paper as it states it. Type should be a stated scope, not measured."
+  ],
+  "guo-qram-assumption": [
+   "setup",
+   "Section III, p.3, Algorithm 2: 'Input: Data matrix X stored in a QRAM' and 'we assume that the parameter k is given in advance'. Stated input assumptions."
+  ],
+  "guo24-chemical-accuracy-definition": [
+   "definition",
+   "Introduction, p.2: 'chemical accuracy (1.6 milli-Hartree)'. The threshold the paper uses."
+  ],
+  "guo24-ansatz-design": [
+   "setup",
+   "Introduction, p.2: multi-reference initial state and an optimised UCC ansatz built by selecting symmetry-conserving and dominant terms. The paper's stated design."
+  ],
+  "guo24-calibration-cadence": [
+   "setup",
+   "Supplementary I.B, p.14: calibration steps 3, 7, 8 and 9 (single-qubit, readout, CZ, combined) run every three hours. Supplementary IV.A, p.34: the REM matrix step runs before each VQE experiment at a bond length."
+  ],
+  "guo24-parameters-iterations": [
+   "setup",
+   "Supplementary IV.C, p.38-39: H2, LiH and F2 have 1, 3 and 5 parameters; all start at zero; 1, 2 and 3 are chosen at random per iteration; runs last 5 to 15 iterations."
+  ],
+  "guo24-challenges-limits": [
+   "stated limit",
+   "Supplementary IV.E, p.39-40: the sample count scales as 1/eps^2; coherent errors give a large Clifford-fit slope and more samples; unstable TLS change the noise model and make the fit fail. Limits the paper states about its own work. Type should be a stated limit."
+  ],
+  "guo24-active-space": [
+   "setup",
+   "Supplementary II.A, p.18: STO-3G with PySCF; no qubit reduction for H2; LiH freezes the 1a1 and 2a1 orbitals and removes the 1e1 and 2e1 orbitals; F2 freezes the four lowest core orbitals. The value omits the LiH removed orbitals but says nothing false."
+  ],
+  "guo24-multireference-state": [
+   "setup",
+   "Supplementary II.B, p.20, Eq. 6-8: the reference state is the HF state plus one excitation, prepared by one Ry rotation and 3 additional CNOT gates; beta is set by minimising the energy."
+  ],
+  "guo24-grouping-method": [
+   "setup",
+   "Supplementary II.E, p.27-28: overlapped grouping of qubit-wise compatible observables, deletion of low-weight sets with an initial bias eps0, derandomisation by fixing the bases. The paper describes its own method."
+  ],
+  "guo24-data-availability": [
+   "scope",
+   "Data and materials availability, p.7: data on reasonable request; no competing interests declared. Stated availability."
+  ],
+  "zuchongzhi-vqe-processor-insufficient-for-larger-molecules": [
+   "stated limit",
+   "Results, p.6: 'owing to non-negligible hardware errors, the current quantum processor is insufficient for larger molecules'. A limit the paper states about its own work. Type should be a stated limit, not measured."
+  ],
+  "quanbench-sourcing": [
+   "setup",
+   "Section III.A, p.3: creation after 2023, more than 5 stars or 50 views, 127 repositories and 39 questions collected, 44 curated (42 GitHub, 2 Stack Overflow)."
+  ],
+  "quanbench-environment": [
+   "setup",
+   "Section III.B, p.3-4: Qiskit 0.46.0 and Python 3.10, manual translation from Cirq or Classiq, circuit part extracted as the canonical solution."
+  ],
+  "quanbench-docstrings": [
+   "setup",
+   "Section III.C, p.4: docstrings written from the circuit logic, cross-validated by three experts, ChatGPT used to check clarity."
+  ],
+  "quanbench-evaluation-criteria": [
+   "setup",
+   "Section III.D, p.4-5: unit tests pass only if KL divergence is below 0.05; static gate set, measurement result and phase constraints are stated."
+  ],
+  "quanbench-models-settings": [
+   "setup",
+   "Section I p.1 and IV.B p.6, Table II: nine LLMs (general and code-specialized), a HumanEval-style prompt, temperature 0.8. Section V.D varies the temperature in a separate study."
+  ],
+  "quanbench-task-categories": [
+   "scope",
+   "Table I, p.5 and Section III.F: per-category counts for the 44 evaluated tasks (32, 6, 5, 1) and for the current stage of 117 tasks. The value gives no counts and says only what the paper states."
+  ],
+  "quanbench-open-source": [
+   "scope",
+   "Section III.F, p.5 ('scheduled for open source release in the near future') and Data Availability, p.12 (a GitHub link). The paper states both, and they are not reconciled. The value records both."
+  ],
+  "quanbench-limit-scope": [
+   "stated limit",
+   "Section VI, p.10: algorithm-level focus, no hardware calibration, pulse-level control or error mitigation; results may vary with prompting, temperature or decoding. Limits the paper states."
+  ],
+  "quanbench-ref-model-citations": [
+   "scope",
+   "Table II, p.6 and References p.12: 'Llama-4-Maverick17B [10]' where [10] is Touvron et al., Llama 2; GPT-4.1 cites [7], the GPT-4 technical report. What the paper itself cites."
+  ],
+  "quanbench-limits": [
+   "stated limit",
+   "Section VI, p.10: the benchmark is limited to Qiskit, and the number of QML tasks is limited by scarce public implementations (Table I: 1 of 44 evaluated tasks). Limits the paper states. Type should be a stated limit."
+  ],
+  "quanbench-setup": [
+   "setup",
+   "Abstract and Section I, p.1: 44 tasks, Qiskit 0.46.0, four categories, nine LLMs. Table I confirms 44 evaluated tasks (the 117 is the planned current stage). Type should be setup, not measured."
+  ]
+ },
+ "theory_low": {
+  "quprofs-theorem1": "Theorem 1 (Appendix, Results, p.13) states 'near-optimal architecture proxies with high probability' but gives only a cost breakdown (Nystrom, LED and expressibility costs). No proof of near-optimality or of the probability claim. alpha and beta are left unspecified, and the delta-dependence is asserted, not derived. A sketch, not a proof.",
+  "quprofs-runtime-dominated-by-proxies": "Runtime Analysis, p.5: an interpretation of the authors' own cost model (Titeration, Tevolve = o(...)). The model is an informal count with assumed O(nD) forward cost. It is not a proved bound and not measured; Table 4 times are the only measurement and are per architecture.",
+  "guo-step1-complexity": "Section III.A.2, p.4-5: an informal step-by-step operation count that assumes QRAM access in O(log mn), constant qubits per point and the cited amplitude estimation bound from Ref. 32; not a proved theorem. The text gives O[max n_i m^(3/2) log(mn)/eps1], but Table I's total carries eps1 eps2 because step 1.8 has 1/(eps1 eps2). The two are inconsistent.",
+  "guo-step2-complexity": "Section III.B.2, p.6: an informal operation tally. It assumes QRAM oracles U, V, G, W run in polylog(m max n_i) (Eq. 16), which is assumed and not built. Not a proved theorem.",
+  "guo-step3-complexity": "Section III.C.2, p.6-7: an informal count from amplitude estimation and Grover. It rests on the step 2 operator costs and on the QRAM and constant-qubit assumptions. Not proved as a theorem.",
+  "guo-error-bound": "Section III.C.2-D, p.8: an informal error argument. Eq. 29 and 30 use eps3 for the amplitude estimation error, but the conclusion reads E eps2 (eps2 is the counting error). Eq. 32 gives 8 eps1/P, yet the text concludes 4 eps1/P. The final choice eps1 = P eps/16 matches 8 eps1/P, not 4. The error of the neighbor count n_i (eps2) is never propagated. Not a proved result.",
+  "guo-total-runtime": "Section III.D, p.8: an asymptotic analysis, not an experiment. It assumes QRAM, constant qubits per point, max n_i = O(k), C, E, P = O(1), T much smaller than m, and a 1/eps^2 factor that the classical algorithm does not have. Table I (eps1 eps2) and Section III.A (eps1) disagree on the step 1 dependence. The speedup claim is the authors' claim.",
+  "guo-qlof-speedup": "The narrowed value is better than the stored one: it names the QRAM and constant-qubit assumptions the speedup rests on. It is still the authors' asymptotic claim (Abstract; Section III.D, p.8), with no experiment and no formal proof. It also needs max n_i = O(k), T much smaller than m and a 1/eps^2 factor (classical LOF has none). The step 1 dependence on eps2 is inconsistent between the text and Table I. A claim from an informal analysis, so low.; team lead, 2026-11-04, Sprint 15 Manual Validation Q1 option 1 (all 36 as proposed)",
+  "guo24-cmx-method": "Introduction p.3 and Supplementary III.D, p.33: CMX with moments up to third order comes from refs 27 and 28. 'CMX is not a variational method' is a cited property stated here, not proved in this paper.",
+  "guo24-parameter-shift": "Supplementary II.D, p.25-26: the paper derives the shift rule, but the variance comparison drops its conditions. Eq. 36 assumes equal and independent estimator variances. The finite-difference variance L/delta^2 exceeds L/sin^2(s) only for small delta ('can be much larger'), not in general. The step 'minimised at s = pi/2' is called straightforward with no derivation. The quotes carry none of these conditions."
+ },
+ "keep_stored": {},
+ "requote": {
+  "gsa-role-of-qpu": "regraded LOW at the team lead's decision: Section II.D, p.4: 'the primary purpose of the QPU calculations is to identify the most important Fock states' is the authors' interpretation, used to justify K = 1. The paper does not test it (no comparison of the sampled Fock states with the ground-state weights). An authors' claim, not a definition or setup. A certainty change from the stored HIGH.; team lead, 2026-11-04, Sprint 15 Manual Validation Q1 option 1 (all 36 as proposed)"
+ },
+ "value_replace": {
+  "zuchongzhi-vqe-error-mitigation-two-orders": "The authors report, on the 66-qubit superconducting processor Zuchongzhi 2.0 using up to 12 selected qubits, that error mitigation with readout error mitigation, Clifford fitting and connected moment expansion lowers the average absolute energy error from 143.661 mHa to 0.565 mHa for H2, from 233.564 mHa to 1.802 mHa for LiH and from 1.8315 Ha to 0.0174 Ha for F2 (Table I), which they describe as a gain of around two orders of magnitude; they state that symmetry verification combined with Clifford fitting brought large fluctuation and was not shown for LiH and F2, though their own Table I lists a LiH result with symmetry verification, so only F2 is absent.",
+  "gsa-role-of-qpu": "The authors state that the primary purpose of the QPU calculations is to identify the most important Fock states through the obtained measurement samples."
+ },
+ "extra_quotes": {
+  "gsa-role-of-qpu": [
+   "the primary purpose of the QPU calculations is to identify the most important Fock states through the obtained measurement samples"
+  ]
+ }
+}
