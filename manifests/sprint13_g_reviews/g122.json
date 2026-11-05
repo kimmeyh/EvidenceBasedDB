@@ -1,0 +1,245 @@
+{
+ "group": "g122",
+ "reviewed_on": "2026-11-01",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "dangwal-eft-definition": [
+   "definition",
+   "Section 1, p.1: \"We define EFT as the era with ~10000 qubits and physical error rates ~1e-3\"; the paper defines its own term."
+  ],
+  "dangwal-pqec-definition": [
+   "definition",
+   "Section 3.1, p.5: \"we term this approach partial Quantum Error Correction (pQEC)\"; the earlier-work remark is attribution only, the term is the paper own."
+  ],
+  "dangwal-injection-repeat-until-success": [
+   "setup",
+   "Section 3.1, p.5: the paragraph states the consume circuit, the 0/1 outcome and the repeat-until-success correction as the paper execution model."
+  ],
+  "dangwal-injection-failure-50pct": [
+   "setup",
+   "Section 4.2, p.7: the 50% failure of injection plus consumption is the model the paper builds patch shuffling on (outcome 0 or 1, Figure 2(C))."
+  ],
+  "dangwal-benchmark-hamiltonians": [
+   "setup",
+   "Section 5.1.1-5.1.2, p.10: 1D Ising and Heisenberg with J = 0.25, 0.50, 1.00; H2O, H6, LiH limited to six orbitals, 12 qubits. All stated as the paper benchmarks."
+  ],
+  "dangwal-density-matrix-setup": [
+   "setup",
+   "Section 5.2.1, p.10: AerSimulator for 8 and 12 qubits, Cobyla and ImFil, three to five seeds, best result per run."
+  ],
+  "dangwal-reference-energy-metric": [
+   "definition",
+   "Section 5.3.1, p.10-11, Eq. 3 checked on the rendered page: gamma_A/B = (E0-E_B)/(E0-E_A); E0 is the exact lowest eigenvalue for 8 and 12 qubits and the lowest noiseless stabilizer energy for 16+. Value matches."
+  ],
+  "dangwal-error-rates-model": [
+   "setup",
+   "Section 4.4, p.9: the paper noise model for pQEC (Cliffords and CNOT error-corrected at about 1e-7 for d=11, p=1e-3; Rz injected at about 1e-3), stated as its model values."
+  ],
+  "dangwal-layout-packing-efficiency": [
+   "definition",
+   "Section 4.1, p.6-7: \"We define the packing efficiency (PE) as the ratio of data qubit patches to total patches\"; the paper gives PE = 4(k+1)/(6(k+2)), which tends to 2/3, and states about 67% for large k."
+  ],
+  "dangwal-patch-shuffling-method": [
+   "definition",
+   "Section 4.2, p.8: \"we propose a method called patch shuffling, which uses only two magic state patches\"; the 2x, 4x, 8x re-injection sequence is described as stated in the value."
+  ],
+  "dangwal-consumption-time-2d": [
+   "setup",
+   "Appendix, p.13 (Section 9 in the anchor): \"The time taken to consume a state ... is 2d cycles (The time to perform a CNOT gate with lattice surgery)\"; the paper own timing assumption."
+  ],
+  "dangwal-ansatz-optimization-limit": [
+   "stated limit",
+   "Section 4.3-4.4, p.9: the ansatz is \"primarily intended to demonstrate\" the point; optimal ansatz design \"remains a complex and expansive research area beyond the scope of this work\"."
+  ],
+  "dangwal-prequantum-selection-limit": [
+   "stated limit",
+   "Section 2.6, p.4: \"In this work we do not employ these techniques\" and the trade-offs \"are worthy of exploration in future work\"."
+  ],
+  "dangwal-setup-simulation-sizes": [
+   "setup",
+   "Section 6.1, p.11: \"we use density matrix simulations for 8, and 12 qubits and Clifford state simulations for larger number of qubits\"."
+  ],
+  "trojannet-adversary-capability": [
+   "setup",
+   "Section III.B, p.4-5: the adversary assumptions (expertise in QAOA circuits, comprehensive circuit knowledge, significant computational resources) are the paper own threat model."
+  ],
+  "trojannet-scope-qaoa-only": [
+   "scope",
+   "Abstract, p.1 and Section III.A, p.4: \"we focus on the QAOA circuit\"; the user designs a QAOA circuit for Max-Cut."
+  ],
+  "trojannet-ar-definition": [
+   "definition",
+   "Section II.C, p.3: AR is defined as the ratio of the QAOA objective value to the optimal value; closer to 1 is better."
+  ],
+  "trojannet-casestudy-setup": [
+   "setup",
+   "Section IV.B, p.5: 3-node graph, 1 layer, Qiskit, maximum 2500 iterations for both circuits."
+  ],
+  "trojannet-inserted-angles-match": [
+   "setup",
+   "Section IV.B, p.6: Rx 2.52 and Rz 6.91 chosen to match the original gates; the stated purpose is the authors design choice."
+  ],
+  "trojannet-benchmark-setup": [
+   "setup",
+   "Section IV.C, p.6: five benchmark circuits, four and five node graphs, 1 layer, Qiskit on a Ryzen 7 4800U with 16 GB RAM."
+  ],
+  "trojannet-dataset-813-graphs": [
+   "setup",
+   "Section V.A, p.6-7: 813 unique graphs of 3, 4 and 5 nodes; 813 Trojan-free and 813 Trojan-inserted circuits."
+  ],
+  "trojannet-input-representation": [
+   "setup",
+   "Section V.B, p.7: QASM converted to unitary matrices with Qiskit Operator, padded or truncated to a common size."
+  ],
+  "trojannet-architecture": [
+   "setup",
+   "Section V.B, p.7: Conv 32 filters 3x3, MaxPool 2x2, Dense 64, two softmax output units."
+  ],
+  "trojannet-training-setup": [
+   "setup",
+   "Section V.C-V.D, p.7: 80%-20% split, Adam, categorical cross-entropy; Section V.D says the model was trained for 50 epochs on the X-gate qasm dataset."
+  ],
+  "trojannet-threat-model": [
+   "setup",
+   "Section III.A, p.4: \"We assume that the user designs a QAOA circuit to solve the Max-Cut problem and employs untrusted or less-trusted third-party compilers\". The stored quote cites \"Section IV\"; the passage is in Section III.A."
+  ],
+  "vqnn-proposed-framework": [
+   "scope",
+   "Section 6, p.4: the paper says it proposed a framework for quantum optimisation routines in QNN training and designed a QNN pipeline with a QAOA ansatz; this states what the paper contributes, not a result."
+  ],
+  "vqnn-qnn-architecture": [
+   "setup",
+   "Section 3.3, p.3: a network of 2 ConvNN layers and a fully connected layer, whose last neuron feeds theta into the QAOA ansatz."
+  ],
+  "vqnn-mixer-hamiltonian-definition": [
+   "definition",
+   "Section 3.3, p.3: the mixer H_M of Eq. 4 is the sum of Pauli X_j over the qubits (the sum sign is lost in the text layer but the sum limits j=1..n are present); the cost Hamiltonian uses Rz and cx with angle theta, then a computational-basis measurement."
+  ],
+  "vqnn-dataset-setup": [
+   "setup",
+   "Section 4, p.4: MNIST subset of 200 images of digits 0 and 1; crack dataset 1,000 images per class, 2,000 in total."
+  ],
+  "vqnn-limited-datasets": [
+   "stated limit",
+   "Section 6, p.4: \"we have restricted ourselves up to a limited sized sample datasets\" and \"we haven't incorporated any phase oracles in the ansatz circuit\"."
+  ],
+  "eqcnn-datasets-and-classes": [
+   "setup",
+   "Section III, p.5: Fashion MNIST classes 0 and 1, Cifar10 classes 1 and 2, Blood MNIST classes 1 and 6, and 4 and 5."
+  ],
+  "eqcnn-qubit-counts-preprocessing": [
+   "setup",
+   "Section III, p.5: Fashion MNIST downsized to 16x16 on 8 qubits; Cifar10 and Blood MNIST greyscale on 10 qubits."
+  ],
+  "eqcnn-simulation-binary-only": [
+   "scope",
+   "Section IV, p.7: Pennylane simulator, \"we consider only binary classification\"."
+  ],
+  "eqcnn-training-setup": [
+   "setup",
+   "Section IV, p.7-8: MSE loss, Nesterov momentum at 0.01, 2000 or 3000 iterations, 10 parallel random initializations."
+  ],
+  "eqcnn-batch-sizes": [
+   "setup",
+   "Section IV, p.8-9: 32 (Fashion MNIST, 2000), 64 (Cifar10, 3000), 32 and 64 for Blood MNIST classes {4,5} and {1,6} (2000)."
+  ],
+  "eqcnn-ansatz-parameter-counts": [
+   "setup",
+   "Section IV, p.9: the non-equivariant convolutional ansatz has six trainable parameters, the equivariant ones three; the paper own model description."
+  ],
+  "eqcnn-conv-pooling-ansatze-definition": [
+   "definition",
+   "Section III, p.5: the convolutional ansatz is an arbitrary rotation on each qubit plus a CNOT (circuit 3); the pooling ansatz uses controlled Rz and Rx on the target (circuit 9)."
+  ],
+  "eqcnn-hardware-connectivity-assumption": [
+   "setup",
+   "Section III, p.7: \"we implicitly assume that the gate connectivity is exactly the one shown in Fig. 1\", so the layers act on different qubits for the two representations."
+  ],
+  "eqcnn-embedding-definitions": [
+   "definition",
+   "Section III, p.5-6: AE 1 swaps the reflection and rotation representations (Eqs. 9, 11, 12, 13); AE 2 makes both identity and X alternately (Eq. 14)."
+  ],
+  "eqcnn-label-symmetry-definition": [
+   "definition",
+   "Section II.B, p.3: label symmetry is defined, and \"The QCNNs that satisfy this condition are called EQCNNs\" (the quote is cut at a line break; the full sentence is in the passage)."
+  ],
+  "eqcnn-contribution-claim": [
+   "scope",
+   "Abstract, p.1: states what the paper discusses and analyzes (embedding, group representation, expressibility); a statement of scope, not a result."
+  ],
+  "eqcnn-open-problems": [
+   "stated limit",
+   "Section V, p.10: m-qubit ansatz with m>2, other embeddings, real hardware and noise robustness are named as things not done."
+  ],
+  "eqcnn-setup-numerical": [
+   "setup",
+   "Section III, p.5 and Fig. 5 caption, p.6: standard AE plus two basis-permuted AEs, compared with a non-equivariant QCNN, averaged over 10 runs. The reader count is right by the body text; the abstract says \"three different basis-permuted embeddings\", which counts the standard one."
+  ],
+  "jc-reservoir-model-definition": [
+   "definition",
+   "Section II.A, p.3: the JC regime (chi > kappa, rotating wave approximation) and the dispersive regime (delta much larger than chi) are stated where the models are defined."
+  ],
+  "jc-input-readout-encoding": [
+   "setup",
+   "Section II.B, p.4: input in beta(t) as a square pulse of length dt; readouts from real and imaginary parts of higher-order moments, n = 40, ridge regression."
+  ],
+  "jc-numerical-simulation-setup": [
+   "setup",
+   "Appendix B, p.11-12: QuTiP, ridge regression strength 0.05, 15 bosonic levels, kappa = 0.1 for all studies."
+  ],
+  "jc-kappa-truncation-limit": [
+   "stated limit",
+   "Section II.B, p.4 and Appendix B, p.12: for kappa <= 0.01 higher levels stay populated and simulation is demanding; nc > 40 could not be simulated; hence kappa = 0.1."
+  ],
+  "jc-task-sizes": [
+   "setup",
+   "Section III, p.5 and III.C, p.8: 1000 washout, 1500 training, 1000 test for memory tasks (the text writes N_test for the training count); 1000 washout and 1000 training for Mackey-Glass."
+  ],
+  "jc-stm-pc-definitions": [
+   "definition",
+   "Section III.A-B, p.5-6: STM, PC and the squared Pearson capacity C (Eq. 10, maximum 1) are defined in the paper."
+  ],
+  "jc-mg-definition-and-setup": [
+   "setup",
+   "Section III.C, p.8: tau = 17, autonomous generation and one-step forecasting, and the scaled RMSE of Eq. 13 (divided by y_max - y_min)."
+  ],
+  "jc-mg-grid-search-ranges": [
+   "setup",
+   "Section III.C, p.9: the grid-search ranges for the JC and DJC models and dt = 10, kappa = 0.1."
+  ],
+  "jc-comparison-limit": [
+   "stated limit",
+   "Section III.C, p.10: the authors say different studies use different observables and sampling rates, which \"makes direct comparison of different reservoirs inherently difficult\"."
+  ],
+  "jc-future-work-open-problems": [
+   "stated limit",
+   "Discussion, p.10: Kerr effects, parity-measurement strategy and non-Gaussianity, scaling up, and symmetry-breaking input encoding are named as open or future work."
+  ],
+  "jc-two-qubit-reservoir-definition": [
+   "definition",
+   "Appendix E, p.14: the replacements c to sigma-minus and so on, the Lindblad operator sigma_2-, and the readout from sigma_2 expectation values define the baseline."
+  ]
+ },
+ "theory_low": {
+  "dangwal-cnot-rz-threshold": "Section 4.4, p.9: a first-order estimate from the dominant error sources, not a stated theorem with conditions; the paper says \"theoretically\" but gives no proof of the 0.76 threshold.",
+  "dangwal-blocked-ansatz-ratio-13": "Section 4.4, p.9-10: a first-order estimate; the crossover at 13 qubits is compared with one simulation (Figure 11) that shows 12. Not a proved result.",
+  "dangwal-linear-ansatz-not-suited": "Section 4.4, p.10: a first-order estimate of the CNOT to Rz growth ratio (0.25x), no simulation or proof shown; the conclusion rests on the unproved 0.76 threshold.",
+  "dangwal-naive-backup-93-75": "Section 4.2, p.7: \"Based on our analysis\" the figure is 93.75%, given without a derivation in the paper (one minus 0.5^4 follows from the 50% model). The layout-cost claims are the authors statements.",
+  "dangwal-patch-shuffling-proof-result": "Appendix proof, p.13 and Section 4.4: a derivation under a simplified model that relies on the injection procedure of Ref. [46] and a mean-plus-one-standard-deviation trial count. It is not stated as a theorem with conditions. The 0.9391 value is a computed estimate.",
+  "eqcnn-basis-permuting-matrix": "Section II.C, p.4-5: a short derivation from a similarity transformation (Eqs. 7-8), not stated as a theorem; it depends on how the eigenvector matrices M and N are ordered, which the text does not fix.",
+  "jc-djc-wigner-symmetry-explanation": "Section III, p.5: an analytic argument from mean-field solutions with no separate calculation; the authors interpretation of Fig. 2(b).",
+  "jc-dispersive-derivation": "Appendix A, p.11: a perturbative Schrieffer-Wolff expansion that drops O(chi^3/delta^2) and fast-oscillating terms by argument; not a theorem with a bound."
+ },
+ "keep_stored": {
+  "dangwal-limit-other-mitigation-not-evaluated": "Section 7, p.12: the limit (\"implementing and evaluating all of these techniques in the EFT context is beyond the scope\") is the stated limit and is HIGH on stated limit. The reader widened value adds \"we are able to demonstrate the seamless integration of VarSaw\", which is the authors own demonstration (Figure 15), a different kind of claim. Keep the stored limit as it is.",
+  "das-jc-model-limits": "Discussion, p.10: the stored limit (local master equation with only bosonic decay, no induced qubit decay) is HIGH on stated limit. The reader widened value adds that Purcell filters can effectively mitigate the effect, which is a field claim citing [68, 69], not a limit. Keep the stored item."
+ },
+ "requote": {
+  "trojannet-threat-model": "the stored anchor named Section IV; the threat model is Section III.A, p.4 (reader g122); value unchanged"
+ },
+ "value_replace": {
+  "trojannet-threat-model": "The authors state that they assume a user designs a QAOA circuit to solve the Max-Cut problem and employs untrusted or less-trusted third-party compilers."
+ }
+}

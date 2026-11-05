@@ -1,0 +1,357 @@
+{
+ "group": "g124",
+ "reviewed_on": "2026-11-01",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "deleon-methodology-two-advances": [
+   "scope",
+   "Abstract, p.1: the paper states its two advances (ISQR, VQE Constrained) and the 38-asset IBEX 35 size it addresses. The value does not repeat the 'on par with classical' result."
+  ],
+  "deleon-dpo-qubo-objective": [
+   "definition",
+   "Section II A, p.3, Eq. (1) to (7): the paper defines the objective as -F + (gamma/2) R + C + Gamma, with the Lagrange penalty Gamma in Eq. (7)."
+  ],
+  "deleon-transaction-cost-quadratic-approx": [
+   "setup",
+   "Appendix B 2, p.15, Eq. (B3) to (B6): the paper states the quadratic approximation of the absolute value, with lambda chosen to minimize the average error E(lambda) and piecewise in phi (B6)."
+  ],
+  "deleon-restrictions-not-strict": [
+   "setup",
+   "Section II A, p.3: the paper states Eq. (6) is not strict in a QUBO and that a renormalization follows to meet Eq. (6) and the bounds of Eq. (9); procedure in Appendix B 3."
+  ],
+  "deleon-encoding-qubit-count": [
+   "setup",
+   "Section II A, pp.3-4, Eq. (10) and (11): Nq = Na x Nr x Nt, and 'in all cases' Nr = 4 and Nt = 4."
+  ],
+  "deleon-data-period-and-interval": [
+   "setup",
+   "Appendix A, p.15 gives the period 1 Nov 2022 to 20 Feb 2023 and the IBEX-35 stability reason; Section II A, p.3 gives Delta t = 28 days."
+  ],
+  "deleon-hyperparameters-rho-gamma": [
+   "setup",
+   "Appendix A, p.15: rho = 0.05 and 0.5, gamma = 2500 and 1000, for the 9-asset and 38-asset problems, as the value says."
+  ],
+  "deleon-marr-definition": [
+   "definition",
+   "Section II B, p.4, Eq. (15): MARR is twice the 10-year S&P 500 average (11.02 percent), 22.04 percent a year, about 1.68 percent per 28-day interval."
+  ],
+  "deleon-success-criterion-and-rfr": [
+   "definition",
+   "Section II B, pp.4-5: the 'successful' portfolio criterion is defined in the text, and RFR = 1.72 percent (average Euro short-term rate) is stated for the Sharpe ratio, Eq. (12)."
+  ],
+  "deleon-isqr-definition": [
+   "definition",
+   "Section III B, pp.6-7: the paper defines ISQR as its adaptation of the SQD Configuration Recovery stage, a 7-step loop (batches, best string per batch, average occupancy, translation to investment, flip probabilities and priorities, Kt)."
+  ],
+  "deleon-isqr-configuration": [
+   "setup",
+   "Appendix F, p.20: Ns = 10^6, M = 10, Nb = 10^5, M = 5 and Nb = 2x10^5 for t = 2 and 3 of the 38-asset VQEC, and the 2.5 percent convergence rule."
+  ],
+  "deleon-vqec-definition": [
+   "definition",
+   "Section V, p.9: VQEC solves one time step at a time, reuses the optimal investment as the next step's initial condition, Nq = Na x Nr, and 38 x 4 = 152 qubits fit the 156-qubit IBM Fez."
+  ],
+  "deleon-vqec-qubo-fully-connected": [
+   "setup",
+   "Section V, p.10: the paper states the single-time QUBO matrix is fully connected, which raises complexity. This follows from the single-time objective in Eq. (17)."
+  ],
+  "deleon-cplex-benchmark-limit": [
+   "setup",
+   "Appendix C, p.17: CPLEX (DOCPLEX) was limited to 15 minutes even without convergence, and the random benchmark is one million bit strings, called a worst case. The 15 minute cap is the paper's own setup."
+  ],
+  "deleon-offset-benchmark-definition": [
+   "definition",
+   "Section IV p.7, Table I text p.8 and Section V B p.13: the offset is the average of the random sampling, the percent below it is the signal-to-noise indicator, and it is the authors' stated benchmark."
+  ],
+  "deleon-ansatz-design": [
+   "setup",
+   "Appendix D, pp.17-19: Real Amplitudes on 4-qubit blocks; the 9-asset VQE order is intra, inter-asset, intra, inter-time, intra; the VQEC ansatzes use intra, inter-asset, intra (D 2 and D 3)."
+  ],
+  "deleon-38asset-uses-152-qubits": [
+   "setup",
+   "Section V B p.13 and Appendix D 3 p.19: the ansatz uses 152 of the 156 IBM Fez qubits, with 4-qubit blocks as assets."
+  ],
+  "deleon-vqe-limits": [
+   "stated limit",
+   "Section V p.9: 'this approach does not allow for the simultaneous exploration of strategies that reduce transaction costs across the full portfolio'. Section VI p.14: 'there is still room for improvement'. Both are limits the paper states. The stored quote anchor ('Section III and Section VI, pp.6, 12') is wrong; the first quote is in Section V, p.9 and the second in Section VI, p.14."
+  ],
+  "delorenzis25-qelm-definition": [
+   "definition",
+   "Section 1, p.1: QELM is described as an ELM with a fixed-structure quantum reservoir that maps the input into a high-dimensional space, with learning limited to the output layer."
+  ],
+  "delorenzis25-qelm-memoryless-limit": [
+   "stated limit",
+   "Section 1, p.2: the paper states that QELMs, the model it studies, do not retain information from previous inputs and so suit time-series tasks less. It is a property of the studied model, not a measured result."
+  ],
+  "delorenzis25-datasets-mnist-fashion": [
+   "setup",
+   "Section 1, pp.2-3: MNIST (70000 images, 28 x 28) is the main task and Fashion-MNIST is tested to show the findings are not limited to one dataset. The value states the purpose, not a result."
+  ],
+  "delorenzis25-workflow-five-steps": [
+   "definition",
+   "Section 2, p.3: the five workflow stages are listed (feature reduction by PCA or AE, encoding, quantum layer with Hamiltonian time evolution, measurement, one-layer NN classifier); Fig. 1 repeats them."
+  ],
+  "delorenzis25-autoencoders-definition": [
+   "setup",
+   "Section 3, p.3 gives conv and max-pooling in the encoder, conv and up-sampling in the decoder, and AE1 with more parameters than AE2; Appendix A, p.11 gives Adam, 50 epochs and binary cross-entropy."
+  ],
+  "delorenzis25-encodings-defined": [
+   "definition",
+   "Section 4, pp.3-4, Eq. (2) to (6): dense angle, angle (phi = 0), uniform Bloch sphere, general and amplitude encodings are each defined."
+  ],
+  "delorenzis25-amplitude-encoding-hard": [
+   "stated limit",
+   "Section 4, p.4 and Section 8: the paper states a preparation caveat on amplitude encoding, one of the five encodings it simulates. 'Massively entangled state' is the authors' wording, not a proved claim."
+  ],
+  "delorenzis25-hamiltonians-six": [
+   "setup",
+   "Section 5, p.5: six Hamiltonians, H1 time-dependent and five time-independent (two all-to-all, three nearest-neighbour linear), as the value says."
+  ],
+  "delorenzis25-localization-hamiltonians-tested": [
+   "setup",
+   "Section 5, p.5: H5 (integrable, non-ergodic XX) and H6 from Ref. [53] with three parameter sets (localized, between non-ergodic and ergodic, many-body-localized), plus H2 with J2 = 0 as a non-interacting reference."
+  ],
+  "delorenzis25-measurement-and-classifier": [
+   "setup",
+   "Section 6, p.6: computational-basis measurement gives 2^N values per image; the classifier is a single-layer softmax network trained with categorical cross-entropy and Adam in Keras."
+  ],
+  "delorenzis25-baseline-configuration": [
+   "setup",
+   "Section 7, p.6: baseline is AE1, dense angle encoding and H1; each component was varied alone."
+  ],
+  "delorenzis25-other-encodings-need-392-qubits": [
+   "stated limit",
+   "Section 7.3, p.9: the paper states the other encodings would need at least 392 qubits for the whole 784-pixel image, which is why it uses a compressed representation and why only amplitude encoding can take the full image (N >= 10). It follows from the encoding definitions in Section 4."
+  ],
+  "delorenzis25-ae-necessity-not-advantage": [
+   "stated limit",
+   "Section 7.3, p.9: the paper states the autoencoder is not a strategic advantage over the classical model but a necessity of limited qubits, a caveat on its own pipeline."
+  ],
+  "delorenzis25-future-metrics-quantum-advantage": [
+   "stated limit",
+   "Section 8, p.11: the paper states the analysis could be extended with performance metrics to quantify quantum advantage, so it does not define them. The value reports only what the authors say."
+  ],
+  "qelm-hardware-not-tested": [
+   "stated limit",
+   "Section 8, p.11: the paper states that exploring implementability on real hardware is left open. All its results come from QuTiP simulation. The stored anchor page 'page 9' differs from the reader's p.11; the text is the same."
+  ],
+  "qelm-limited-to-12-qubits-simulation": [
+   "stated limit",
+   "Section 7, p.6: the paper states that simulation cost limited the study to up to 12 qubits. The stored anchor 'Section 5 (results)' should read Section 7."
+  ],
+  "delorenzis26-goal-not-new-architecture": [
+   "scope",
+   "Section 1, p.2: the paper states its goal is a controlled setting to study which dynamical features produce useful feature maps, not a new QELM architecture or best benchmark accuracy."
+  ],
+  "delorenzis26-benchmarks-not-competitive": [
+   "stated limit",
+   "Section 3, p.4: the paper states its benchmarks do not compete with highly optimized classical architectures and that absolute accuracy is not its focus. A caveat on its own benchmarks. The 'substantially higher accuracies' aside is uncited, but it is only the reason for the caveat."
+  ],
+  "delorenzis26-architecture-pipeline": [
+   "setup",
+   "Section 2, pp.2-4: PCA or autoencoder gives M = 2N, dense angle encoding on N qubits, evolution under the nearest-neighbor XX Hamiltonian (Eq. 3), computational-basis probabilities, 2N values into a one-layer network."
+  ],
+  "delorenzis26-feature-normalization": [
+   "setup",
+   "Section 2, p.3: feature-wise min-max normalization on the training set to [0, pi]; first N components to the polar angles, the remaining N to the azimuthal angles."
+  ],
+  "delorenzis26-encoding-bias-caveat": [
+   "stated limit",
+   "Section 2, p.3: the paper states that giving the two components different geometric roles may introduce representation-dependent biases outside its focus, and that dense angle encoding was chosen on its earlier study [26]."
+  ],
+  "delorenzis26-xx-hamiltonian-choice": [
+   "setup",
+   "Section 2, pp.3-4: the paper states why it chose the XX Hamiltonian (minimal, controlled, local, integrable). This is its own design rationale."
+  ],
+  "delorenzis26-ideal-sampling-limit": [
+   "stated limit",
+   "Section 2, p.4: probabilities come from the full statevector (infinite-sampling limit), so there is no finite-shot noise, and the paper says finite shots may affect performance in a real implementation."
+  ],
+  "delorenzis26-readout-training": [
+   "setup",
+   "Section 2, p.4: only the classical readout layer is trained (Adam, categorical cross-entropy, Keras); the reservoir is fixed."
+  ],
+  "delorenzis26-datasets-splits": [
+   "setup",
+   "Section 2.1, p.4: MNIST and Fashion-MNIST 70,000 images split 60,000 and 10,000; CIFAR-10 60,000 colour images split 50,000 and 10,000."
+  ],
+  "delorenzis26-qubit-ranges-limited-by-simulation": [
+   "stated limit",
+   "Section 3, p.5: 6 to 10 qubits for MNIST and Fashion-MNIST, 6 to 11 for CIFAR-10, and the study was limited to manageable sizes by simulation cost."
+  ],
+  "delorenzis26-haar-comparison-protocol": [
+   "setup",
+   "Section 4, p.5: a global Haar-random unitary replaces the XX evolution; dashed lines average 10 Haar samples, standard deviation shaded."
+  ],
+  "delorenzis26-conclusion-larger-scale-studies": [
+   "stated limit",
+   "Section 8, p.11: the paper states that larger-scale studies are needed to assess how general its classical-simulability conclusion is. That is a caveat on its own conclusion. The 'suggests compatibility' part is hedged in the same sentence."
+  ],
+  "luca-dataset-ionosphere": [
+   "setup",
+   "Section II A, p.2: 351 points, 33 continuous features, class ratio 1.79:1."
+  ],
+  "luca-dataset-sonar": [
+   "setup",
+   "Section II A, p.2: 208 points, 60 continuous features, class ratio 1.14:1."
+  ],
+  "luca-dataset-sirtuin6": [
+   "setup",
+   "Section II A, p.2: 100 points, 6 continuous features, ratio 1:1, features calculated and selected a priori by the dataset's authors."
+  ],
+  "luca-dataset-wdbc": [
+   "setup",
+   "Section II A, p.2: 569 points, 30 continuous image-derived features, ratio 1.68:1."
+  ],
+  "luca-dataset-criteria": [
+   "scope",
+   "Section II A, p.2: the five selection criteria, quoted whole, and the UCI repository choice that follows."
+  ],
+  "luca-feature-selection-needed": [
+   "setup",
+   "Section II A, p.2 and II B, p.3: three of four datasets were too large for the computation, a quantum-annealing-enhanced feature selection was applied, and only Sirtuin6 used all its columns."
+  ],
+  "luca-qubo-feature-selection-definition": [
+   "definition",
+   "Section II B, p.3: the paper describes the algorithm it applies (from Mucke et al. [11]): features as decision variables, correlation with the target as linear terms, linear terms weighted by a constant in the unit interval and quadratic terms by its complement."
+  ],
+  "luca-qsvc-only-quantum-part-is-encoding": [
+   "scope",
+   "Section I, p.1: the paper restricts its models to QSVC, where the only quantum component is the encoding, to isolate encoding effects from a variational ansatz."
+  ],
+  "luca-experiment-design-50-splits": [
+   "setup",
+   "Section III, p.4: 50 models per dataset and feature map from 50 seeded 70/30 splits, 1024 shots per circuit output, and LightGBM on the same kind of 50 splits."
+  ],
+  "luca-entangled-angle-definition": [
+   "definition",
+   "Section II C, p.3: Hadamard on each wire, then angle encoding by Pauli Y rotations, then CNOT between every adjacent pair; Fig. 2 shows the circuit."
+  ],
+  "luca-amplitude-encoding-method-used": [
+   "setup",
+   "Section II C, p.3: the paper states it used the divide-and-conquer amplitude method of its Ref. [17] and omits the description."
+  ],
+  "luca-iqp-encoding-definition": [
+   "definition",
+   "Section II C, p.4, Eq. (2) and (3): the IQP map is defined, and the paper states IQP derives from [18] and Alternative IQP is the implementation of [2]."
+  ],
+  "luca-expressibility-definition": [
+   "definition",
+   "Section III, p.4: the paper states the definition it uses (Sim, Johnson, Aspuru-Guzik [22]): comparing the fidelity distribution against the Haar measure by KL or Jensen-Shannon divergence."
+  ],
+  "luca-expressibility-method": [
+   "setup",
+   "Section III, pp.5-6: fidelity between all data points, Zyczkowski and Sommers distribution (Eq. 5), 1,000 shots, 100 bins, and random sets of 150 points in [0,1]^6 and [0,1]^10."
+  ],
+  "luca-future-work-entanglement-and-iqp": [
+   "stated limit",
+   "Section IV, p.7: the paper states entanglement was not explored in depth at other circuit points or for other encodings, and lists further entanglement and IQP analysis as future work."
+  ],
+  "luca-not-peer-reviewed-preprint": [
+   "stated limit",
+   "Sections V and VI, p.7: the paper states the results are available on request, and the disclaimer says this preprint has had no peer review or later corrections. The same page notes the Version of Record is in Quantum Machine Intelligence."
+  ],
+  "feature-selection-limits-simulator-scale": [
+   "setup",
+   "Abstract, p.1: the paper states it performs QUBO-based, annealing-enhanced feature selection to support the limited computing power of quantum simulators."
+  ],
+  "demaio-audience-and-prerequisites": [
+   "scope",
+   "Section II A, p.2: master's students at TU Wien, bachelor-level maths and computer science expected, no prior (quantum) physics assumed."
+  ],
+  "demaio-learning-outcomes": [
+   "definition",
+   "Section II A, p.2: LO1 to LO4 are listed as the paper's own learning outcomes, with the wording the value gives."
+  ],
+  "demaio-lo-bloom-taxonomy": [
+   "setup",
+   "Section II A, p.2: the paper states that LO1 to LO4 follow Bloom's taxonomy [17] and a student-centered outcome-based method [18]."
+  ],
+  "demaio-textbook-choice": [
+   "setup",
+   "Section II B, p.2: the paper states it chose Yanofsky and Mannucci and adds Qiskit documentation and IBM Quantum Learning. 'Bridging element' is its stated reason."
+  ],
+  "demaio-syllabus-structure": [
+   "scope",
+   "Section II C, p.2: introduction, two fundamentals lectures, circuits and algorithms, separate VQA, QAOA and QML lectures, two guest contributions (photonic qubits, error correction)."
+  ],
+  "demaio-qml-lecture-content": [
+   "scope",
+   "Section II C, p.3, lectures 8 and 9: the QML lecture content (clustering focus, K-means, K-medians, SVM augmented by QC) and the quantum neural networks lecture (reservoir computing, variational classifiers and regressors)."
+  ],
+  "demaio-execution-models-definition": [
+   "definition",
+   "Section III C, pp.4-5 and Fig. 2: Single, Job and Hybrid Execution are defined by the paper as the value says."
+  ],
+  "demaio-classical-role-single-job": [
+   "definition",
+   "Section III C, p.5: the paper defines the classical computer's role in the Single and Job models (interface and control only) against the Hybrid model (part of the computation)."
+  ],
+  "demaio-vqa-definition": [
+   "definition",
+   "Section III D, p.5: the paper defines VQAs as a hybrid loop in which a classical optimizer trains a parametrized circuit to minimize a cost function C."
+  ],
+  "demaio-hybrid-workflow-decomposition": [
+   "scope",
+   "Section III E, pp.5-6 and the Fig. 4 caption, p.7: the course teaches decomposing an HPC scientific workflow into a hybrid workflow, with interatomic distances and largest eigenvalues as the example candidates."
+  ],
+  "demaio-assignment-structure": [
+   "setup",
+   "Section IV, p.6: three homework assignments, the first two individual and the last a group assignment covering all concepts for hybrid applications."
+  ],
+  "demaio-assignment2-qkmeans-qsvm": [
+   "setup",
+   "Section IV, p.6, Assignment 2: classical K-means baseline, a quantum-augmented version (students may skip the quantum part with justification), and a quantum SVM on a scikit dataset."
+  ],
+  "demaio-assignment3-bin-packing": [
+   "setup",
+   "Section IV, p.6, Assignment 3: bin-packing with QAOA or VQE, groups of at most three, six phases ending in analysis against the classical solution."
+  ],
+  "demaio-infrastructure-qiskit-access": [
+   "setup",
+   "Section V, pp.6-7: university HPC, IBM Qiskit chosen for didactic resources, a laboratory simulator, a RasQberry device from IBM, and open IBM Quantum and Amazon Braket plans."
+  ],
+  "demaio-assessment-only-assignments": [
+   "stated limit",
+   "Section VII, p.7: the paper states that students were assessed on assignments only, that topics (especially guest lectures) were hard to cover, and that a written or oral exam is planned."
+  ],
+  "demaio-limited-theory-left-out": [
+   "stated limit",
+   "Section VII, pp.7-8: the paper states the limited theory in the first edition left out quantum teleportation and limited the discussion of universality, and says it may add material from Nielsen and Chuang."
+  ],
+  "demaio-future-work-peer-instruction": [
+   "stated limit",
+   "Section IX, p.8: the paper lists planned additions (peer instruction, an advanced course, reading tasks, asynchronous learning, an HPC-Quantum program), which the course lacks now. These are the authors' stated intentions, not outcomes."
+  ],
+  "demaio-materials-access": [
+   "setup",
+   "Section III, p.4 and footnote 1: lecture materials sit in a password-protected TU Wien Owncloud folder, and the password is given on request by email. The basis is setup rather than a stated limit."
+  ],
+  "course-design": [
+   "scope",
+   "Abstract, p.1: the paper states it designed a new lecture and exercise series on Hybrid Quantum-Classical Systems. Section II repeats it. It is a statement of what the paper covers."
+  ],
+  "course-not-yet-evaluated": [
+   "stated limit",
+   "The widened value matches the passages. Section VI, p.7: only two students completed the class evaluation and the authors say they cannot draw reliable conclusions from so small a sample. Section IX, p.8: surveys are a future refinement. The widened value is better than the stored one, whose id overstates the gap because Table I scores the learning outcomes from assignments."
+  ]
+ },
+ "theory_low": {
+  "delorenzis26-lr-velocity-xx": "A sketch with an apparent factor-of-two slip, and not a proved bound. Appendix A.1 Eq. (8) writes J(sigma_x sigma_x + sigma_y sigma_y) = J(sigma+ sigma- + h.c.), but sigma_x sigma_x + sigma_y sigma_y = 2(sigma+ sigma- + h.c.). The hopping amplitude is then 2J, not J. For Eq. (3) of the main text the hopping is 1, giving a maximal group velocity of 2, not the 1 the paper states. The Lieb-Robinson inequality (11) is only asserted.",
+  "delorenzis26-measurement-basis-same-eigenbasis": "Appendix B.3, p.15 does derive it from Eq. (20) to (24) for a time-independent Hamiltonian. The quotes and value drop the conditions: time-independent H and the initial state expanded in its eigenbasis (B.1). 'Rendering the QELM ineffective' is also the authors' interpretation. It is a textbook, stated-with-derivation identity (F129). Add the condition to the quotes and it can be HIGH on proved result."
+ },
+ "keep_stored": {},
+ "requote": {
+  "deleon-vqe-limits": "the stored page anchor was wrong (reader g124); rebuilt with the reader's anchor, value unchanged",
+  "qelm-limited-to-12-qubits-simulation": "the stored page anchor was wrong (reader g124); rebuilt with the reader's anchor, value unchanged",
+  "qelm-hardware-not-tested": "the stored page anchor was wrong (reader g124); rebuilt with the reader's anchor, value unchanged"
+ },
+ "value_replace": {
+  "deleon-vqe-limits": "The authors state that the VQEC approach does not allow simultaneous exploration of strategies that reduce transaction costs across the full portfolio, and that they acknowledge there is still room for improvement.",
+  "qelm-limited-to-12-qubits-simulation": "The authors state that the study was limited to systems with up to 12 qubits because of the computational cost of simulating quantum computers.",
+  "qelm-hardware-not-tested": "The authors state that exploring the actual implementability of the models on real hardware remains a possible extension of the analysis.",
+  "delorenzis26-benchmarks-not-competitive": "The authors state that the purpose of the benchmarks is not to compete with highly optimized classical machine-learning architectures."
+ }
+}

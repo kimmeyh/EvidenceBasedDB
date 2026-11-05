@@ -3004,3 +3004,741 @@ Written 2026-10-31, before the apply. Every count here is a snapshot as of
   basis that needs a why, a why of only "." is now refused by
   `low_grade` as no why at all; for any other basis it is dropped. A why
   that ends in two periods still gives two (none is stored).
+
+## 60. A corrected anchor on a confirmed stored assertion (Sprint 15 Task D, F126)
+
+Written 2026-11-01, before the apply. Every count here is a snapshot as of
+2026-11-01.
+
+- **What was wrong.** g104's review (Sprint 14 Task F) found the passage
+  of `muta-hardware-scope-photonic-gkp` ("Here, we focus on photonic GKP
+  computation") on PDF p.8 of Calderon et al. (arXiv 2405.08319); the
+  store says Section V, p.9. The reader confirmed the assertion with no
+  quotes or anchor, so REQUOTE had nothing to rebuild from, and the
+  applier never wrote an ANCHOR_FIX on a confirmed stored assertion. It
+  dropped it without a word.
+- **The path.** `scripts/full_read_apply.py` now rebuilds such an
+  assertion from its stored row with only its anchor changed (provenance
+  and each quote's anchor), checks every stored quote against the source
+  again, and writes it through the verified sync. A grade the review
+  gives it is written as for any graded assertion; otherwise the stored
+  grade stays. A review's `anchor_fix_on` dates the correction and names
+  its task, so it does not take the group's older review day. The dry run
+  lists each such move.
+- **The entry.** g104's review gains `anchor_fix` (Section V, p.8) and
+  `anchor_fix_on` (2026-11-01, Sprint 15 Task D, F126) for this one
+  assertion. pdftotext puts the quote on PDF page 8 and on no other page.
+- **What changes in the store.** One assertion: its provenance and
+  citation_context (p.9 to p.8), and its certainty_reasons, which g104's
+  review already graded HIGH with the basis "scope" and the corrected
+  page. The certainty stays HIGH. Nothing else.
+- **Checks.** Trial on a copy of the store first, then live with its
+  verified backup; a second apply writes nothing; the apply lists no field
+  that no review item names.
+- **Applied 2026-11-01** with backup
+  `evidence-20261101T155312102348-...db` (verified), first twice on a
+  copy: the one assertion changed (provenance, certainty_reasons,
+  citation_context), dated 2026-11-01; the second apply changed nothing;
+  no undecided field.
+
+## 61. Text from page images (Sprint 15 Task F, F115)
+
+Written 2026-11-01. Every count here is a snapshot as of 2026-11-01. This
+section writes nothing to the store: it records how image-only pages are
+read from now on.
+
+- **What was wrong.** A page with no text layer gave a reader nothing.
+  udaru-2025-qml-credit-risk is ten page images, and the team lead marked
+  it unread (2026-10-27).
+- **The engine.** RapidOCR 3.10.0 (Apache-2.0) on ONNX Runtime 1.31.1
+  (MIT), the cross-platform engine the team lead chose at plan approval
+  over Windows' built-in OCR. It runs in its own virtual environment,
+  `D:\Data\Harold\EvidenceBasedDB\ocr-venv` (outside git), installed from
+  `requirements-ocr.txt`, because its dependencies would raise the main
+  interpreter's numpy from 1.26.2 to 2.5.4. `store/ocr.py` calls it through
+  `scripts/ocr_worker.py`. Its three models ship inside the wheel; the
+  worker never downloads one, and reports each model file's SHA-256.
+- **Which pages.** A page of a local PDF whose text layer holds fewer than
+  40 visible characters. `pdftoppm` renders it at 200 dpi and RapidOCR
+  reads it. The page count comes from `pdfinfo`: a text layer may hold a
+  form feed inside a page (Qian et al. 2021: 103 parts for 23 pages), so a
+  split that disagrees with the count is replaced by one extraction per
+  page.
+- **The scan, 2026-11-01.** Of 1,703 local PDFs, 64 have thin pages, 221
+  pages in all (656 s for the whole OCR run, uncached). Most thin pages
+  are figures or blank pages, and OCR finds little or no text on them;
+  those are read as figures under Task G (F116). The sources whose text
+  OCR supplies:
+  - all pages image-only: udaru-2025-qml-credit-risk (10 pages, 38,016
+    characters), mancilla-2026-spectra-datasets-substack (8 pages, 9,250),
+    qci-2026-entropy-computing-trade-magazine (6 pages, 10,562);
+  - some pages image-only:
+    sturm-2023-theory-implementation-quantum-approximate-optimization (4
+    pages, 2,257 characters), perrier-2024-quantum-geometric-machine-learning
+    (9 pages, 948), mahmood-2026-classical-hybrid-quantum-machine-learning
+    (1 page, 650).
+- **The cache.** The OCR text is kept in the store folder's `text_cache\`,
+  keyed by the file's SHA-256, the render resolution, `pdftoppm`'s version
+  and the engine's pinned versions, so a changed file or engine reads
+  again. A source that needs OCR when the engine is missing raises
+  `OcrUnavailable`: an image-only page is never read as empty without a
+  word.
+- **The quote check reads it.** `store.quotes.source_text` gives the text
+  layer, then ` || OCR: ` and the OCR text of the thin pages; an image
+  file given as a source is all OCR text, after `OCR: `. A quote found
+  only in OCR text needs "OCR" in its anchor; `scripts/full_read_apply.py`
+  and the reader check refuse one without it.
+- **Provenance.** `store.ocr.provenance` names the pages, the engine and
+  its version, the ONNX Runtime version, each model's SHA-256 (first 12
+  characters) and the render resolution.
+- **Grading** (team lead, 2026-11-01, plan Q3). OCR text from a page of a
+  stored PDF is graded as text-layer text: HIGH is allowed. OCR text from
+  an image file that is not inside a PDF is HIGH only when another source
+  corroborates the claim, named in its certainty reasons ("corroborated
+  by <record>"); otherwise MEDIUM is the highest. The applier refuses a
+  HIGH from an image file without it.
+- **Readers.** Sprint 15's reader prompt
+  (`manifests/sprint15_f114_reads/READER_PROMPT.md`) tells a reader where
+  the OCR text is, to copy an OCR quote exactly as given (misreadings
+  included, such as "Maçhine"), and to mark it "OCR". udaru is the first
+  of F114's 100 papers (Task H).
+
+## 62. Phase 2's F151, F153 and F154 repointed at develop af03165 (Sprint 15 Task K, F124)
+
+Written 2026-11-01, before the apply. Every count here is a snapshot as of
+2026-11-01.
+
+- **What was wrong.** The three source records point at Phase 2 commit
+  10086da. Phase 2's PR 46 review changed each document after it (last
+  by 28bdbcd), so the local-file check read all three as changed.
+- **The read.** Each document read whole at af03165, Phase 2's develop
+  head (2026-10-30), through `git show` on the team lead's clone, which
+  holds the commit; no fetch (F79). The blob at af03165 equals Phase 2's
+  working copy of each file, so the local-file check reads it unchanged.
+- **What changed, and what it does to the stored values.**
+  - F151: the `l2_regularization=0.1` row now fails on level as well as
+    SD; a note that the range threshold cannot decide at five seeds; the
+    tasks that use the setting. Neither stored value states these: both
+    confirmed by name (`f151-cvqboost-proxy-below-stable-hgb-on-ulb`,
+    `f151-hgb-default-l2-zero-unstable-at-extreme-imbalance`).
+  - F153: the objective's size is "between 0.8 and 1" (was "close to
+    1"), and the data term "is at most 0.33%" of it. Neither stored value
+    states the size: both confirmed by name
+    (`f153-learner-selection-formulation-fails-its-falsifier`,
+    `f153-two-resolution-checks-disagree-in-kind`).
+  - F154: the closest cell names the proxy's `deep` configuration; 16
+    exempt runs remain. The stored value states neither: confirmed by
+    name (`f154-no-stored-model-better-on-a-ulb-subset`).
+- **What changes in the store.** For each record: one `paper_reads` row
+  (full, 2026-11-01), and `access`, `evidence` and
+  `checked_against_source` repointed at af03165. The evidence keeps the
+  first read (2026-10-22, commit 10086da) and its blob SHA-256. No
+  assertion changes. Every stored quote is checked verbatim, with its
+  value, at af03165 before the write (`scripts/sprint15_f124_phase2.py`).
+- **Checks.** Trial on a copy of the store first, then live with its
+  verified backup; a second apply writes nothing; the local-file check
+  reads all three as unchanged.
+- **Applied 2026-11-01** with backup
+  `evidence-20261101T174117632352-...db` (verified), first twice on a
+  copy: three read rows and three repoints; the second apply wrote
+  nothing; the local-file check reads all three as unchanged.
+- **Not in this section: F166.** Its document
+  (`docs/phase2/algorithms/ULB_COMPARISON.md`) is unchanged on Phase 2's
+  develop (af03165 holds the recorded blob). Phase 2's unmerged Sprint 30
+  branch, which the clone has checked out, added confusion-count columns
+  to it, so the local-file check, which hashes the working copy, reads it
+  as changed. That is a question for the team lead.
+
+## 63. Reading targets for the gaps F118 found (Sprint 15 Task J, F128)
+
+Written 2026-11-01, before the apply. Every count here is a snapshot as of
+2026-11-01.
+
+- **What.** F118's memo (`docs/spikes/F118_WHAT_THE_STORE_SAYS.md`)
+  found questions the store could not answer. F128 names a source for
+  each. `scripts/sprint15_f128_targets.py` fetches each target with a
+  free arXiv copy by F104's paced fetcher (18 s apart) into `Papers\`,
+  checks the arXiv stamp on its first page, and enters it through the
+  door at `seen`, naming the gap it fills in its disposition and
+  `found_via` "F118 memo, F128". The manifest
+  (`manifests/sprint15_f128_targets.json`) lists each entry and the
+  hand-download list.
+- **Entered (8).** Gidney and Ekera (1905.09749, RSA-2048), Lee et al.
+  (2011.03494, chemistry), Woerner and Egger (1806.06893, risk),
+  Chakrabarti et al. (2012.03819, derivative pricing), Babbush et al.
+  (2011.04149), Stoudenmire and Schwab (1605.05775), XGBoost
+  (1603.02754) and Jaques and Rattew (2305.10310, QRAM critique).
+- **Held already (1).** Giovannetti, Lloyd and Maccone (0708.1879,
+  QRAM) is `giovannetti-2008-quantum-random-access-memory`, under its PRL
+  DOI, which the arXiv-id match did not see; the script now treats an
+  existing record id as held. It already had a local copy
+  (`2007-08_Giovannetti_Quantum-Random-Access-Memory.pdf`), so the copy
+  fetched on 2026-11-01 was a re-download against the standing rule; it
+  was deleted the same hour. The paper is read in its ledger group,
+  g307, not with Task J's.
+- **The hand-download list (7).** LightGBM (NeurIPS 2017; not on
+  arXiv), Ferrari Dacrema et al. (not in the store), Nielsen and Chuang
+  (a book), vendor native-gate documentation, Dal Pozzolo et al. 2014
+  (stored, unread; a DOI and no local copy), a concept-drift source for
+  card fraud, and tuned anomaly-detection baselines on fraud (no source
+  chosen yet).
+- **Reading.** The 8, with Faryad (stored, read in part), are read in
+  full under Sprint 15's reader prompt, in addition to Task H's 100, as
+  ledger groups g331 (5) and g332 (4).
+- **A door fix.** The door refused Babbush et al.'s citation as audit
+  text, because "error-corrected" in its title holds "CORRECTED". A
+  marker now counts only as a word of its own (`store/ingest.py`, with a
+  test proven red).
+- **Checks.** Trial on a copy of the store first, then live with its
+  verified backup; a second apply enters nothing.
+- **Applied 2026-11-01** with backup
+  `evidence-20261101T182904857546-...db` (verified), first twice on a
+  copy: 8 papers entered at `seen`; Giovannetti et al. found held; the
+  second apply entered nothing.
+
+## 64. F114 at 100 papers, under Sprint 15's prompts (Sprint 15 Task H)
+
+Written 2026-11-01, before the apply; the counts that enter are added
+when it runs. Every count here is a snapshot as of 2026-11-01.
+
+- **What is read.** 100 papers, each in full, figures included
+  (`scripts/sprint15_f114_local.py` writes the briefs):
+  - the records reviewed groups left unread that now have text, each in
+    a re-entry group (F125, Sprint 15 Task C): g062-r1, g064-r1 and
+    g076-r1 (pages that are images, read from OCR text, section 61) and
+    g113-r1 (three chen-2026 papers);
+  - then ledger order from g114 to g133. Four records whose source is a
+    directory (cycorp x3, ds3lab-feebee) are left for a later release:
+    the quote check reads one file per source.
+  - Task J's 9 (section 63) are read the same way in g331 and g332.
+- **The readers.** Local first-pass readers (Sonnet 5.5) under
+  `manifests/sprint15_f114_reads/READER_PROMPT.md`: every figure and
+  table is viewed and entered in a `figures` list; a value read from a
+  figure says so, writes each number read by eye as "about N", and is
+  never HIGH; an OCR quote is copied as the OCR gives it and its anchor
+  says "OCR"; anchors are PDF pages, checked against the page's text;
+  a reader never changes a stored context. The reader check's
+  `--sprint15` option enforces each rule.
+- **The review.** One Sonnet 5.5 reviewer per group under
+  `manifests/sprint15_f114_reads/REVIEW_PROMPT.md` (section 58's, with
+  the textbook rule, the figure rule and the OCR rule added); the
+  coordinator (Opus 5.5) signs each group off, its edits in
+  `work\f114\review\signoff\`; `f117_review.py finalize` writes the
+  review file, naming Sprint 15's tag and prompt. Every certainty change
+  on a stored assertion waits for the team lead.
+- **The apply.** `scripts/full_read_apply.py`, which refuses a figure
+  value that is HIGH or does not say it was read from a figure. A dry
+  run, then a trial on a copy of the store, then live with its verified
+  backup; a second apply enters nothing.
+- **Sign-off so far.** g062-r1 (15 HIGH), g064-r1 (3 HIGH; one value
+  cut back to its quote, since a logo hides the rest of the sentence)
+  and g076-r1 (2 HIGH; a caveat cited to reference [16] set LOW as a
+  cited result). Their dry run: 115 assertions from 3 records. g113-r1
+  (52 HIGH, 6 theoretical LOW): two textbook identities the paper
+  states without proof were set LOW and join F129's list for the team
+  lead; the review prompt gained a dated amendment saying so. g114
+  (63 HIGH, 5 theoretical LOW): two values that said "because" where the
+  paper says "in part because" were cut back to their passages. g115
+  waits for the team lead: its Theorem 2 is proved from a theorem of
+  Zhang et al. [64] taken by citation, so it is LOW, and the stored HIGH
+  that rests on it (qdh-trainability-proof) is the team lead's to lower.
+  g116 waits for the team lead on one change:
+  aam-qaoa-converges-high-depth, stored HIGH, rests on Theorem 12 of
+  reference [14], cited, so the review proposes LOW. Its sign-off kept
+  sisr-far-from-lasso-and-dl LOW as stored (its value also holds a
+  measured speed-up) and set four result types the reader had changed
+  to pass the reader check back to their true types (F135). g117 (97
+  HIGH, 18 theoretical LOW) is finalized. g118 waits for the team lead
+  on three stored HIGHs the review proposes LOW, each resting on a cited
+  result (qbm-poly-gibbs-states, qbm-pretraining-lowers-bound,
+  wdt-speedup-at-most-quadratic); its sign-off set three result types
+  back and requoted mild-imbalance-is-over-experts at its stored HIGH
+  with the paper's word, "complicates", for "do not apply". g119 (97
+  HIGH, 44 theoretical LOW) is finalized; its sign-off requoted
+  cranganore-limit-photonic-circuit-model at its stored HIGH with the
+  authors' caveat alone, without the premise cited to [94]. g120 waits
+  for the team lead: cyc-index-layers-carry-counts is stored MODERATE
+  (vendor documentation of its own product, `store/grading.py`); its
+  narrowed value is right, and the review proposes LOW. Its sign-off set
+  qgrand-fidelity-lower-bound-by-bler LOW (the paper's text and its
+  equation (32) state the bound in opposite directions) and one result
+  type back to measured. g122 (54 HIGH) and g124 (83 HIGH) are
+  finalized; four stored HIGHs whose page or section anchors were wrong
+  were requoted with the reader's anchors, values unchanged
+  (trojannet-threat-model, deleon-vqe-limits,
+  qelm-limited-to-12-qubits-simulation, qelm-hardware-not-tested). A
+  stated future-work gap in the paper's own work is HIGH on "stated
+  limit", as in section 58's groups; a conjecture or wish is LOW. g121
+  waits for the team lead: dalyac-repetition-rate-few-hz, stored HIGH, is
+  a review's statement about hardware in the field (stage durations
+  summed, without measurement or citation), so the review proposes LOW.
+  In a review or survey, only a limit on the review's own work is a
+  stated limit; dalzell-2025 says it gives results without proofs, so
+  none of its 20 proof items is a proved result. Eight dalzell values
+  that join a scope or definition to an opinion are LOW and marked
+  "split recommended" in their review. g126 waits for the team lead:
+  derieux-parameters, stored LOW, is proposed HIGH on "setup" (the
+  central parameter counts, 1 against 25, are the paper's architecture
+  counts in its Table 1, not a measurement). g125 (72 HIGH, 25
+  theoretical LOW) is finalized; its sign-off kept
+  fidelity-kernels-classically-simulable-limit HIGH by removing the
+  clause cited to [9] from the value. For the cross-group pass: dees-2023
+  grades LOW every lemma whose proof uses the parameter-shift rule, which
+  the paper cites to [21] although its own Lemma 2.4.3 implies it;
+  whether the rule is a textbook tool decides those items. g128 waits
+  for the team lead on one change: qclassifier-robust-weak-local, stored
+  HIGH, joins a generalization bound cited from reference [66] to a
+  bound that holds under a 2-design assumption, so the review proposes
+  LOW. Its sign-off kept quadratization-loses-noiseless-quality HIGH on
+  "stated limit" by removing the reader's added clause (a reading of
+  Fig. 4) and its quote; the narrowing to the clique expansion method
+  stands. Three more textbook items carry the F129 prefix
+  (frqi-encoding-qubit-count, amplitude-damping-not-unital,
+  table-iii-pauli-action). g123's review is split in two, because
+  dawid-2025 (a 287-page book) holds 273 of its 365 items: one reviewer
+  takes the book and one the other four papers. The two decision files
+  are joined before sign-off. The book's first review decided about 199
+  items from their quotes alone and did not render its four figure
+  pages; it was sent back, read every passage and rendered the pages,
+  and 13 items went from HIGH to LOW (130 HIGH, 143 LOW). g123 waits for
+  the team lead on two stored HIGHs of de-felice-2024:
+  fusion-network-factorization (Theorem 4.15 takes determinism from
+  reference [10], Theorem 4) and rus-fusion-and-universality-proofs
+  (Theorem 6.10 rests on Propositions 6.8 and 6.9, which use reference
+  [69] and Theorem 4.15). For each, a value limited to the step the
+  paper proves itself (the factorization; Theorem 6.4) could stay HIGH.
+  Its sign-off corrected dawid-fig-ucb-panels, LOW, to the rendered
+  figure. g127 (116 HIGH, 10 theoretical LOW) and g131 (28 HIGH, 6
+  theoretical LOW) are finalized; their dry run enters 504 assertions
+  from 10 records. g127's sign-off replaced a pronoun the reader gave
+  the thesis author with "the author". The two dunjko records (2017 and
+  2018) hold one byte-identical PDF; reader g131 entered the new
+  assertions under the 2017 record only, and whether the two records
+  are one paper is the team lead's question. A group's built file is
+  made from its reader's file as it stands: g130's was first built
+  while its reader was still editing, and was rebuilt (101 items
+  became 108) before its review. g130 (93 HIGH, 8 theoretical LOW) is
+  finalized; the dry run of g127, g130 and g131 enters 740 assertions
+  from 15 records. For the cross-group pass: six stored HIGHs of g130
+  carry the stored result type "measured" on a scope or stated-limit
+  statement (bayes-pqc-limits, qp-methodology-ongoing-experiment,
+  qp-needs-more-evidence, qpic-comparative-groups-pending,
+  qpic-no-long-term-measure, scope-max-clique-simple-graphs); no
+  certainty changes. dundar-coecke-2025 states private-school
+  performance "significantly higher" in its Discussion against a
+  non-significant ANOVA in its Results (reader g130). g133 waits for
+  the team lead on one change: cvqboost-vs-xgboost-auc-under-balancing,
+  stored MODERATE, is a vendor's measured result on its own product
+  (emami-2025: six QCi authors on QCi's Dirac-3), so the review proposes
+  LOW. Its reader corrected cvqboost-vs-xgboost-training-time-dirac3,
+  already LOW: the paper's 117.4 s is single-core XGBoost, not 48 CPUs
+  and four GPUs, and at 150,000 samples 8-core XGBoost takes 4.2 s and
+  GPU XGBoost 3.6 s against CVQBoost's 2.2 s. The reader check now lets
+  a stored assertion keep a stored context outside the five
+  (platform:dirac-3), which no read could otherwise pass. g129 (107
+  HIGH, 62 theoretical LOW) is finalized; the dry run of g127, g129,
+  g130 and g131 enters 1,236 assertions from 19 records. Its review
+  confirmed the errors reader g129 found in du-2025's 260-page tutorial
+  (Eqs. 2.19, 2.42, 3.25, 3.67, 3.68, Theorem 3.13, Lemma 4.12 and
+  Eq. 5.6) and found four more (the depolarizing channel's p against
+  p/4, Theorem 4.16's dropped Tr[O] = 0 condition, Eq. 3.32 against
+  Eq. 3.31, and the ridge derivation's a^T K y); an item that rests on a
+  printed step in error is LOW. About 20 items carry the F129 prefix,
+  and the review grades LOW the field-level open questions in a review
+  or tutorial (not limits on its own work), the class section 64 already
+  names. g132 waits for the team lead on one change:
+  findings-specific-feature-space-size (egginger-2024), stored HIGH,
+  joins a scope clause to a measured result (relabeled datasets show
+  different dependencies), so the review proposes LOW; a value holding
+  the scope clause alone could stay HIGH. Seven ehrlich-2026 items
+  carry the F129 prefix.
+- **Task I (F133, the F57 release), 100 records.** The plan named first
+  the 11 records whose access names only a local file, then F57's
+  relevance ranking over the 524 records with no read row. Snapshot as
+  of 2026-11-02: no unread record outside the read ledger names a local
+  file, and every unread record with a local file is in the ledger past
+  H's groups; the 355 outside it (175 with a DOI, 7 with an arXiv id,
+  173 GitHub repositories) have no local copy. So Task I reads the next
+  100 in ledger order, g134 to g154
+  (`scripts/sprint15_f114_local.py --task-i`), under H's prompts, and
+  one repository (fraud-detection-handbook) is left for a later release.
+  Whether ledger order stands in for F57's context ranking is the team
+  lead's question at Manual Validation. g134 waits for the team lead on
+  two stored HIGHs of farboodi-2026: correlated-errors-segment-the-market
+  (the proved Proposition 1 joined to an AI-systems attribution and a
+  "smoothly increasing" shape the proposition does not require) and
+  policy-effects-ai-and-data-sharing (stylized examples, not a proof).
+  g138 waits on one: gacon-qgt-free-method joins its proposal (scope) to
+  the claim that the QGT method is "infeasible for relevant system
+  sizes", which rests on the authors' own modeled runtimes. Its sign-off
+  corrected gacon-fig1-runtime-read, LOW, to the figure (about 25 hours,
+  and the 1 year line near about 590 parameters).
+  g136 waits on one: ferris-2022's post-selection-limit joins its stated
+  limit (measurements thrown out) to the unmeasured claim that
+  post-selection is "a powerful error mitigation option". g137 waits on
+  two of fontana-2024, each narrowed to carry the paper's own conditions:
+  lasa-gradient-variance-inverse-dla-dim (the inverse scaling is the
+  authors' reading of Theorems 2.8 and 2.9, and they say the DLA
+  dimension may not dominate) and rapid-mixing-polynomial-dla (Theorem
+  H.1 follows Ref. [33] with "one can verify" steps). Its sign-off
+  corrected three rydberggpt values whose text layer prints 10^5 and
+  10^4 flat as 105 and 104, checked on the rendered pages; franco-2024's
+  text and Figure 1 disagree on the screening counts, and only the
+  totals both agree on (4,658 and 27) stand HIGH. g139 is finalized; its
+  sign-off corrected galvis-simulation-shots the same way (10^6), and
+  galvis-florez-2025's Introduction (eps^-3) and Section IV (eps^-5,
+  log(1/delta)) disagree on the cost, so its speedup stays LOW.
+  g141 waits on two of gentinetta-2024: qsvm-primal-pegasos-complexity
+  (its derivation takes T = O(1/delta) from the Pegasos paper as a step,
+  and Assumption 2 is unproved) and qsvm-dual-complexity (its proof uses
+  cited theorems, and it holds only under Assumption 1 and with a fixed
+  probability above one half, which the stored value omitted). The
+  coordinator regraded practical-advantage-open LOW: it is an open
+  question about the field, not a limit on the paper's own work.
+  g140 waits on three: garcia-2023's qml-slr-selection-94-papers (its
+  Section 2.5 reaches 70 studies, its PRISMA diagram 94 as 70 plus 24,
+  Figure 1's bars sum to 9038 against the text's 5497, and its date
+  range is 2017 to 2023 in some places and 2017 to 2022 in others), and
+  two of garcia-martin-2024 (effects of noise):
+  noise-suppresses-qfim-eigenvalues (Theorem 4 takes Theorem 6.1 of
+  Mueller-Hermes, Franca and Wolf as a step) and
+  noise-turns-on-null-eigenvalues (one single-qubit example and
+  simulations; the paper says it does not attempt a proof).
+  g142 waits on one: gheisarnejad-2023's qdrl-scheme-and-testbed joins a
+  HIGH setup (compared with model predictive control on a hardware-in-
+  the-loop testbed) to an untested purpose (quantum principles "to
+  address the hardware limitations of conventional computers"); nothing
+  in the file says anything ran on quantum hardware or a simulator. The
+  gharibyan authors are BlueQubit, which sells the platform; their
+  measured results are LOW.
+  g143 waits on one: gibford-2025's qwgan-bioprocess-setup says "five
+  qubits arranged in three layers", which conflicts with the paper's
+  two repeated layers and 45 parameters; its 2000-epoch half could stand
+  HIGH if split.
+  g144 waits on two: gil-fuster-2025's gilfuster-bp-trainable
+  (Proposition 1's proof takes results of Cerezo et al. 2021 and Liu et
+  al. 2021 as steps, and its training is not gradient based) and
+  gil-vidal-2020's pqc-bounds-logarithmic-tight (an introductory claim
+  of tightness that no theorem or example proves; the bounds cover
+  exact representation only). Its reviewer graded three absence items
+  (no experiments, no hardware run) LOW because the paper never states
+  the absence; the cross-group pass checks that against other groups.
+  g145 waits on two: giuliani-2023's giuliani-poly-resources (it rests
+  on Corollary 1, whose "it is possible to show" step is asserted, not
+  shown) and gomez-2026's spe-evaluation-setup (the text says 20
+  datasets in five places; Table 2 lists 16, counted on the rendered
+  page). gomes-2024's proofs nearly all take results of Gilyen et al.
+  or the GQSP paper as steps, so they are LOW, and the lemmas built on
+  them are LOW in turn. Two stored HIGHs that stay HIGH are typed
+  "measured" though neither is a measurement (autoqml-cloud-architecture
+  is a setup, giuliani-sample-limit a stated limit); they join g130's
+  six in the cross-group pass.
+  g146 waits on two: gong-2026's hamlearn-computational-basis (the
+  reconstruction is proved, but the value adds that it "captures
+  contemporary Rydberg atom platforms", the authors' relevance claim)
+  and gonski-2026's white-paper-scope (half of it is a field statement,
+  "quantum computing remains in early stages"). gong-2026's Theorems 5
+  to 9 rest on determinants computed modulo 1000003 at stated witness
+  points, recorded but not checkable by hand; they stand HIGH, flagged.
+  g147 is finalized; its sign-off wrote two grana-2025 shot counts
+  (10^5 and 10^7, printed flat as 105 and 107) in words.
+  g148 is finalized. Six more stored HIGHs that stay HIGH are typed
+  "measured" though each is a scope, setup or stated limit
+  (grange-tutorial-scope, not-representative-biased,
+  study-basis-interviews, qrc-experiment-setup-limits,
+  qml-survey-excludes-qrl, qml-survey-scope); they join the
+  cross-group pass. Its reviewer graded groppe-2025's four Section IV
+  challenges LOW as field-level statements, not limits on the paper's
+  own experiment. g150 is finalized: gustafson-2024's Outlook says "2 to
+  4" times better than Powell where its body gives about 1.4 for H2O,
+  so the comparison is LOW. For the cross-group pass:
+  qmlhealth-screening-counts is a stored HIGH typed "measured" (a
+  setup), and gustafson-hessian-dependence-limit's quote is on p.6,
+  not the stored p.7.
+  g149 waits on two: gunlycke-2025's gsa-role-of-qpu (an interpretation
+  of the QPU's role the paper does not test) and guo-2023's
+  guo-qlof-speedup (an asymptotic count that assumes QRAM and a constant
+  qubit count per point, with no experiment; its error-bound text says
+  4ε1/P where Eq. 32 gives 8ε1/P). Its sign-off added to guo-2024's
+  zuchongzhi-vqe-error-mitigation-two-orders that the paper's own Table
+  I lists a LiH result with symmetry verification, which its text says
+  was not shown. gunlycke-2025's 99.88% fidelity is IonQ's figure for
+  its own system, with three IonQ authors, so it is LOW.
+  The stored HIGHs typed "measured" though each is a scope, setup or
+  stated limit (six in g130, two in g145, six in g148, one in g150)
+  need no store change: the result type is not a stored column. It is
+  used only while grading, and a confirmed stored row that is not
+  rewritten keeps its stored certainty. Each group's dry run passed
+  with them, so this cross-group item is closed.
+  g154 is finalized: he-2024 runs no experiment of its own, so its
+  limits on other authors' work are LOW. g151 is finalized; its
+  sign-off typed rbm-ducc-not-chemical-accuracy, a stated limit on a
+  measured result, as measured (F135). han-2025 (EnQode)'s abstract
+  claims over 90% fidelity where its body reports 89% in ideal
+  simulation, and han-2025 (MEDQ)'s "consistently exceeds" is
+  contradicted by its own Table 5; both are LOW. g152 waits on one:
+  harvey-2023's harvey-classically-simulable states that the models are
+  classically simulable but never derives it, so it is graded
+  "textbook, stated not proved (F129)". g153 waits on one: haug-2022's
+  rm-experiment-setup (the main text and captions say N = 8 qubits,
+  Appendix D says N = 9). Its sign-off widened
+  haug24-ssvqe-numerics' anchor to pp.23-25, where its quotes sit.
+  Every one of Task I's 100 records is read and reviewed.
+- **The fresh-eyes review (2026-11-02)** of the uncommitted scripts
+  found that g064-r1 re-entered a record refused on 2026-10-15 (its PDF
+  then had no text layer) without naming the reversal, which would have
+  stopped the live apply; its review now names it. The other findings
+  are fixed in the scripts (CHANGELOG). Under the narrowed figure rule
+  every Sprint 15 read passes except one g123 value read off an axis,
+  corrected at the sign-off.
+- **For the hand-download list.** deng-2023-solving-graph-problems-gaussian-boson:
+  the local file is the 7-page Letter only; its Supplemental Material
+  (its reference [26]) is a separate document not held, so it was not
+  read (reader g126's `version_note`).
+  gotting-2023-exploring-quantum-mechanical-advantage-reservoir: the
+  letter's Supplementary Material (its covariance dimension
+  calculation) is not in the local PDF (reader g147).
+  gustafson-2024's supplemental hardware calibration data (reader
+  g150), and the Supplementary Material of halder-2023 and the
+  Supporting Information of halder-2025 (reader g151), are not in the
+  local files.
+- **Context questions for the team lead.** dell-anna-2025's
+  qng-study-scope-toy-model is stored under context "method"; reader
+  g125 reads it as "qc" and left it unchanged, as the prompt requires.
+- **The trial apply (2026-11-04)** on a copy of the store entered every
+  finalized group of Tasks H and I in one apply (the apply takes every
+  reviewed group; `--groups` is for a dry run only): 4,947 new
+  assertions, 190 read rows, 86 stored assertions updated, 11 records
+  set to `read`, 8 applicability rows. A second apply entered nothing.
+  Every count is a snapshot as of 2026-11-04. It listed 3 stored
+  assertions with a field no review item names, each read by the
+  coordinator before the live apply and accepted:
+  trojannet-threat-model (claim type "absence" to "positive": the
+  quote is the paper's threat model, a positive statement, so the
+  stored type was wrong); cranganore-limit-photonic-circuit-model and
+  qelm-hardware-not-tested (fidelity "scoped" to "exact": each value
+  restates its quoted passage, and its reviewer confirmed it).
+  The live apply (2026-11-04, after its verified backup) wrote the same
+  lines as the trial; a second apply entered nothing.
+- **The cross-group pass (2026-11-04).** Absence items: of the stored
+  absence items on "no experiment" or "no hardware run", 9 of 10 are
+  HIGH on the paper's own scope after a full read (an absence claim
+  stands on its search, ADR-0004 decision Q5). Only g144's reviewer
+  graded such items LOW for want of a sentence stating the absence. Its
+  sign-off sets gilfuster-no-experiments and
+  giordano-no-hardware-run-scope HIGH on scope, and keeps
+  pqc-no-experiments LOW (the paper cites "a recent set of limited
+  experiments [18]", so the absence is not clean). dees-2023: its
+  Lemma 2.4.3 (p.8, proved) gives g(x) = A + B cos x + C sin x, from
+  which rule (2.4) follows in one line the paper does not write. If the
+  parameter-shift rule is a textbook tool, five stored LOWs could be
+  HIGH: theorem-2-4-4-dth-derivative-parameter-shift,
+  lemma-3-3-1-complexity-prototypical-loss-p-laplace,
+  lemma-3-3-2-complexity-variational-loss,
+  lemma-3-3-5-complexity-poisson and
+  optimised-parameter-shift-two-versus-three-evaluations (the paper
+  derives (2.5) and (2.6) from (2.4) on p.9). Lemmas 3.4.1 and 3.5.1
+  (an estimator from [14]) and the two Section 3.6 items (counts
+  stated, not derived; "clearly better scaling" not shown) stay LOW
+  either way. These are stored certainties, so the team lead decides
+  at Manual Validation.
+
+## 65. Textbook-only LOW grades, proposed for the team lead (Sprint 15 Task L, F129)
+
+`manifests/sprint15_f129_proposals.json` lists the stored LOW assertions
+whose only stated cause is a textbook fact. F117's cross-group rule
+(2026-10-30) says a textbook-standard result is background and does not
+by itself make an item LOW; a specific paper's lemma taken by citation
+does. Every count below is a snapshot as of 2026-11-01.
+
+- **The cut.** 29 of 15,386 LOW assertions name a standard, textbook,
+  background, well-known or classical fact in their certainty reasons
+  (vendor and GRADE reasons excluded). The manifest proposes 10 for
+  HIGH, keeps 6 LOW, and finds 13 that do not rest on a textbook fact.
+  Each of the 10 was read against its passage in the source.
+- **The misses.** 30 of the 2,693 theoretical-result LOW assertions
+  outside the cut, drawn at random (seed 15): none rests only on a
+  textbook fact.
+- **Nothing is written to the store** before the team lead decides at
+  Manual Validation. A decided change enters through F117's sign-off
+  and escalation path, with its own verified backup.
+- **Items added since.** Sprint 15's Task H and Task I readers set
+  textbook statements given without proof LOW with the prefix
+  "textbook, stated not proved (F129)" (section 64). They join this
+  list at Manual Validation; the manifest itself is not changed.
+
+## 66. Phase 2's Sprint 30 results, and F166 repointed (Sprint 15 Task M, F130)
+
+Written 2026-11-04, before the apply. Every count here is a snapshot as of
+2026-11-04. The team lead chose on 2026-11-04 (Question 1 = 3) to wait for
+Phase 2's PR #74 to merge rather than change the local-file check.
+
+- **The read.** Every document read whole at Phase 2 commit 366cf37, PR
+  #74's head, through `git show` on the team lead's clone; no fetch
+  (F79). The script (`scripts/sprint15_f130_phase2.py`) checks each blob's
+  SHA-256 before it reads, so a document that changes before the merge
+  stops it. If the merge changes a blob, the script is re-read at the
+  merge commit before the apply.
+- **Five new records, nine assertions.** F174's IEEE-CIS comparison and
+  its seven algorithm documents (one record, three assertions: the
+  ranking and its paired tests, recall at the alert budget against its
+  capacity, and the proxy's tied scores and train-test gap); F176 (two:
+  below greedy on 3 of 6 instances by under 2e-05, and the swap search's
+  misses on exact instances); F169 (one: the LightGBM-bins plug-in
+  passes F108's rule, with its stated limits); F170 (one: ULB frauds
+  every model misses sit among legitimate rows); F171 (two: the
+  missed-by-all share on IEEE-CIS against ULB, not shown smaller, and
+  its raw-field profile). Every one is HIGH, the project's own
+  measurement, evidence tag SIM. Context by section 43's rule: `ml` for
+  F169, `hsbc-2026` for the rest.
+- **No links.** The plan named `supports` or `contradicts` links to the
+  LOW claims each result bears on. No stored claim states the same fact
+  whole (ADR-0004 A8 (b)'s rule for a link), so each reason names the
+  stored claims it bears on instead: F152's IEEE-CIS lanes and Han et
+  al.'s random-split scores (LOW), F166's ULB gap, F160's room check,
+  F108's and F114's ceiling failures, and F154's ULB subsets.
+- **F166 repointed.** Sprint 30 added TP, FP, TN and FN to F166's eight
+  ULB documents (72182b2), so the local-file check read
+  ULB_COMPARISON.md as changed: the block behind Question 1. The four
+  stored F166 values are verbatim at 366cf37 and confirmed by name; its
+  access, evidence and checked_against_source move to 366cf37, with the
+  first read (2026-10-30, 6242b8a) kept in the evidence, and a read row
+  is added. Sprint 14's F120 apply would have put the old evidence back,
+  so it now leaves a record re-read at a later commit alone (proven red).
+- **Checks.** Trial on a copy of the store first (5 records, 9
+  assertions, one read and one repoint; a second apply wrote nothing;
+  F120's apply wrote nothing; all six records pass the local-file
+  check), then live with its verified backup.
+- **The fresh-eyes review (2026-11-04)** found no blocking defect and
+  every figure right. Fixed before the apply: five values that dropped a
+  limit their document states (F170's "in every seed in which they are
+  test rows" and its 12 mixed frauds; F174's tied scores flagged past
+  the 427-row budget; F171's 1,708-alert step to 42%; F171's profile,
+  which borrowed a sentence about the cross-data-set comparison and
+  missed its 5,264 rows); one reason that overstated F152 (XGBoost
+  against logistic regression is months 4 and 5 only); a rerun now
+  syncs a corrected value instead of skipping it, and never moves F166
+  back from a later repoint (proven red); the run-file test checks all
+  seven gaps, since the quote check reads the eight documents joined.
+  F166's stored recall value is kept as it stands: Sprint 30's matching
+  tie note (the proxy up to 297 rows against 284) is named in the
+  repointed evidence, and the recall range it states is unchanged.
+- **The merge and the apply (2026-11-04).** PR #74 merged as 43bc362,
+  a merge commit whose parents are develop (af03165) and the PR's last
+  head (a428b92); 366cf37 is its ancestor, and none of the 27 files the
+  script reads changed after 366cf37, so the script names 366cf37
+  unchanged. Trial on a fresh store copy (5 records, 9 assertions, one
+  read, one repoint; a second apply wrote nothing), then live with its
+  verified backup; a second live apply wrote nothing. The first live run
+  of the store test failed on its own comparison (a sqlite3.Row against
+  a tuple, never equal); fixed and proven red by injection.
+- **Older checks the Sprint 15 full reads broke**, found by the full
+  suite while the merge was pending (2026-11-04): Sprint 9's F46 apply
+  now leaves a record a later full read owns alone (it would have undone
+  F114's correction of faryad-state-prep-omega-2n-dimension-count); F80's
+  refusal test accepts a refused record a later full read took (qci-2026,
+  read whole by OCR); the spelling fixer protects the stored id that
+  section 64 names with a British spelling.
+
+## 67. Sprint 15 Manual Validation: the team lead's decisions applied
+
+Written 2026-11-04, before the apply. Every count here is a snapshot as of
+2026-11-04. The team lead answered the hand-over the same day:
+
+- **Q1 = 1: the 36 certainty changes as proposed** (33 HIGH to LOW, 2
+  MODERATE to LOW, 1 LOW to HIGH: derieux-parameters on "setup"). Each is
+  recorded in its group's escalation file
+  (`work\f114\review\escalations\<g>.json`) with the team lead's words,
+  which lets the 24 groups that held them (g115 to g153, about 114
+  records) be finalized and applied by `scripts/full_read_apply.py`.
+  - **Rebuilding a regraded stored row needs its value and quotes.** A
+    stored HIGH lowered to LOW is rebuilt by the applier, and eight
+    readers' confirmed entries carry neither: finalize refused them ("no
+    value"), and the apply refused four ("no quote"). Each got its stored
+    value as a `value_replace` and its stored quotes as `extra_quotes` in
+    its group's sign-off, unchanged from the store, so only the grade
+    moves.
+  - **A sign-off edit on a figure reading keeps its figure exemption.**
+    The applier checked a `value_replace` on a value read from a figure
+    without the "about N" exemption its own quote check gives, so five
+    such edits were refused. Fixed in `verify()` (a test proven red). Two
+    rydberggpt edits named the models M1 to M3, which no quote holds;
+    their values now say "a model" and "each of the three trained
+    models".
+- **Q2 = 1: F129's 10 proposed HIGHs set HIGH**, each on the basis its
+  proposal names (section 65), by `scripts/sprint15_mv_decisions.py`.
+- **Q3 = 2: dees-2023's five parameter-shift LOWs stay LOW.** Nothing is
+  written.
+- **Q4: g144's two absence items are MODERATE** (the team lead: "Make
+  both MEDIUM, as the reviewer graded them, because neither paper states
+  the absence itself"; the store spells MEDIUM `moderate`).
+  gilfuster-no-experiments and giordano-no-hardware-run-scope go back to
+  the reviewer's LOW in g144's decisions (the cross-group pass's HIGH is
+  kept in `g144.before_mv.json.bak`), are entered LOW, and the script
+  raises them to MODERATE.
+- **Q5 = 1: carded as F137** (the two Dunjko records share one PDF).
+- **Q6 = 2: qng-study-scope-toy-model moves from `method` to `qc`**, by
+  the same script.
+- **Q7 = 2: Sprint 16's F57 release follows F57's ranking** (F57's card).
+- **Q8 = 2: dalzell-2025's eight "split recommended" values stay single
+  LOW assertions.** Nothing is written.
+- **Q9 (the applier's quote check): carded as F136.** The applier checks
+  every reviewed row's quotes before each apply, though most are stored
+  as their review wants them: about 23 minutes for Sprint 15's 47 groups,
+  most of it on rows it does not write. The team lead: "We need to updat
+  the rule as it violates the 'Long-term Effective, while as efficient as
+  reasonalby possible' primary rule".
+- **A slip, and its fix.** The first trial copied the store but not its
+  text cache, which sits in the store's folder, so it extracted every
+  source again (894 files in 25 minutes) before it was stopped; the
+  trial copies `text_cache\` with the database from now on.
+- **A rebuilt confirmed row keeps the fields no review names.** The
+  trial (2026-11-04: 6,282 new assertions, 228 read rows, 157 updates)
+  listed 8 rows with an undecided field: six regraded rows had taken the
+  reader's fidelity ("exact" for the stored "scoped") and three the
+  reader's claim type ("positive" for the stored "absence", losing the
+  search scope). The applier wrote a confirmed entry's fidelity, claim
+  type and search scope from the reader's file, although only its quotes
+  or grade were rebuilt. It now keeps the stored ones for a confirmed
+  entry (a test on a store copy, proven red); a corrected or narrowed
+  entry still takes the reader's whole entry.
+- **Checks.** Trial on a store copy first, then live with its verified
+  backup. The fix above changes only the rows the trial listed, so the
+  live apply ran without a second 23-minute trial; its log is compared
+  with the trial's, line for line, and lists no undecided field (it
+  matched: 6,282 new assertions, 228 read rows, 157 updates, 0
+  undecided). The decisions script's second run writes nothing.
+- **A slip in the decisions' date, and its fix.** The script first ran
+  dated 2026-11-04, the review day of g144, just after midnight. A
+  rerun of the applier would then have put g144's two items back to LOW,
+  because `sync_assertion` refuses a sync only when it is dated before a
+  row's last change. The store was restored from the backup the script
+  took (`scripts/restore_store.py`), and the script was run again dated
+  2026-11-05, the day it was applied. A test proves that a rerun of the
+  applier leaves all 12 regraded rows alone (proven red with the date put
+  back).
+- **The fresh-eyes review (2026-11-05)** found no blocking defect, and
+  that the date alone protected the 12 rows: a review of their groups
+  dated later would have written its LOW back. The applier now keeps a
+  stored grade whose reasons carry "the team lead's decision at" unless
+  the review's own reasons carry it too (exactly these 12 rows today; a
+  test proven red). A confirmed row that keeps a stored
+  "vendor-self-claim" type is refused if its review graded it HIGH (no
+  such row today). The figure test's second half now calls the edit
+  check itself, since verify's quote check refused that case first.
+- **The `--changed` run after the apply (2026-11-05)** failed 5 of
+  1,086. One was a real defect: a rerun of `sprint12_reading.py`, dated
+  2026-10-23, would move qng-study-scope-toy-model's context back from
+  `qc` (Q6 = 2), because the sync's date guard held only full-read rows
+  and that row's decision note carries no grade phrase.
+  `store.ingest.sync_assertion` now refuses any sync dated before the
+  row's latest note of the form "YYYY-MM-DD (Sprint N Manual Validation"
+  (`decided_day`), or a note whose body says "the team lead's decision
+  at Sprint N Manual Validation" (Sprint 8 and 9's shape, added at its
+  fresh-eyes review): 24 assertion rows, a snapshot as of 2026-11-05.
+  The tests of every script that syncs those rows pass (100 tests). Three were older tests pinned to data the decisions and
+  the full reads changed (the learnings balance after g133's decision,
+  F101's re-quoted oversampling record, the Sprint 12 store test), and
+  one was the applier's field test, which passed a namespace where the
+  confirmed-row rebuild needs a dataclass. Each fix that guards a rule
+  was proven red by injection.

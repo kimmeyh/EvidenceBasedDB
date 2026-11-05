@@ -1,0 +1,3477 @@
+{
+ "papers": [
+  {
+   "record_id": "chen-2026-quantum-adaptive-self-attention-quantum",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Chen-Kuo_2025_Quantum-Adaptive-Self-Attention-for-Quantum-Transformer-Models__2504.05336.pdf",
+   "title_in_file": "Quantum Adaptive Self-Attention for Quantum Transformer Models",
+   "version_note": "arXiv 2504.05336v4, dated 23 Jun 2026 (the file is the revised v4 with referee-response additions); the record id carries 2026 while the file name carries 2025.",
+   "pages": 33,
+   "read_extent": "full",
+   "not_read": "",
+   "sections_read": [
+    "Abstract",
+    "1 Introduction",
+    "1.1 Contributions",
+    "2 Related work",
+    "3 Methodology (3.1 to 3.6)",
+    "4 Results and Discussions",
+    "4.1 Experiment Details",
+    "4.2 Dataset Construction",
+    "4.3 Results",
+    "4.4 Representation Analysis: A Compression Mechanism",
+    "4.5 Encoding Scheme: An Encoding or an Expressivity Limitation?",
+    "Quantum layer position and count ablation",
+    "Trainability analysis: barren plateaus",
+    "Scalability with qubit count",
+    "Qubit-count choice: a performance ablation",
+    "4.6 Comparison with Quantum Time-Series Baselines",
+    "4.7 Scalability to Longer Sequences",
+    "4.8 Noise Robustness under NISQ Conditions",
+    "4.9 Validation on Real Quantum Hardware",
+    "4.10 Discussion: Complexity Considerations",
+    "4.11 Limitations",
+    "4.12 Reproducibility and Data Availability",
+    "5 Conclusion",
+    "Acknowledgments",
+    "Appendix A Exact Synthetic-Benchmark Generator Specifications",
+    "References"
+   ],
+   "figure_count": 9,
+   "figures": [
+    {
+     "figure": "Figure 1",
+     "page": 3,
+     "kind": "block diagram",
+     "shows": "Block diagram of the QASA architecture: tokenization of temporal tokens, positional encoding, (n_layer - N) standard Transformer encoder layers (multi-head attention, layer normalization, feed forward network), then N quantum encoder layers in which a VQC block sits beside the attention and feed forward blocks, then a prediction or downstream head.",
+     "confirmed_by": "The model consists of N −1 standard Transformer encoder layers followed by one Quantum Encoder Layer.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 2",
+     "page": 4,
+     "kind": "circuit diagram",
+     "shows": "Circuit diagram of the deployed PQC on 8 data qubits plus one ancilla: an encoding column of RX and RZ rotations on each qubit, then three blocks of single-qubit rotations followed by a ring of CNOTs with an ancilla coupling and an RY on the ancilla; Pauli-Z measurement on all data qubits at the end.",
+     "confirmed_by": "The deployed circuit has 36 trainable angles and 27 CNOTs in total (exact counting convention in Table 3).",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 3",
+     "page": 8,
+     "kind": "line plot",
+     "shows": "Nine small panels (rows: Traditional Transformer, QASA_classical, QASA; columns: epoch 1, 15, 30) of prediction (red) against true signal (blue) on the damped oscillator task. At epoch 1 all three predictions are near flat. At epoch 15 the QASA prediction follows the oscillation while the other two stay near flat. At epoch 30 QASA follows the true signal closely, QASA_classical follows it partly, and the Traditional Transformer follows only the late small oscillations.",
+     "confirmed_by": "At epoch 30, QASA achieves near-perfect predictions, indicating much faster convergence compared to both the classical and transformer baselines.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 4",
+     "page": 12,
+     "kind": "line plot",
+     "shows": "Training and validation loss (y, 0 to 1.2) against epoch (x, 0 to 45) for the quantum model (blue) and the classical QASA_classical model (red), train solid and validation dashed. Both stay near 1.0 for the first 15 to 18 epochs, then fall steeply; the red classical curves fall about 2 epochs before the blue quantum curves; both end near 0.02. An embedded table marks minimum validation loss 0.0085 (quantum) and 0.0122 (classical), and minimum training loss 0.0106 (quantum) and 0.0219 (classical).",
+     "confirmed_by": "The quantum model reaches a lower minimum validation loss (0.0085) than the classical model (0.0122) with smoother convergence.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 5",
+     "page": 19,
+     "kind": "line plot",
+     "shows": "Two panels on the chaotic logistic task, mean of 3 seeds. (a) Normalised singular value (y, log scale, 1e-4 to 1) against singular value index (x, 1 to 20) for four series: QASA before quantum, QASA after quantum, classical bottleneck after, classical full final layer; all fall by about 3 orders of magnitude; the classical bottleneck lies lowest. (b) Cumulative spectral energy fraction (y, 0.5 to 1.0) against number of components (x, 1 to 20); at one component the classical bottleneck is at about 0.98, QASA after about 0.87, classical full about 0.66, QASA before about 0.51; all reach about 1.0 by about 8 components.",
+     "confirmed_by": "both bottleneck realisations (QASA and the classical bottleneck) reach near-unity variance in far fewer components than the full classical model.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 6",
+     "page": 20,
+     "kind": "scatter plot",
+     "shows": "Chaotic logistic task, seed 42. Top row: PCA projections (PC1 against PC2, points coloured by time step 0 to 19) before the quantum layer (PC1 66.4 percent, PC2 15.9 percent), after the quantum layer (PC1 71.2 percent, PC2 15.7 percent) and from the classical final layer (PC1 62.8 percent, PC2 18.3 percent). Bottom left: cumulative explained variance (y, 0.65 to 1.0) against PCA components (x, 1 to 20). Bottom centre and right: 20 by 20 pairwise cosine similarity heat maps; the QASA after-quantum map is almost uniformly dark red (about 1.0 for all time-step pairs); the classical final-layer map is a checkerboard of values from about -0.25 to 1.0.",
+     "confirmed_by": "Bottom center/right: pairwise cosine similarity matrices reveal that the quantum layer produces more structured temporal correlations than the classical model.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 7",
+     "page": 20,
+     "kind": "bar chart",
+     "shows": "Seed 42. Left: effective rank (y, 0 to 8) for chaotic logistic, damped oscillator and square wave; before quantum layer about 8.1, 2.3 and 1.9; after quantum layer about 2.6, 1.7 and 1.5; classical about 5.7, 2.4 and 2.0. Right: mean L2 norm of the quantum correction (y, 0 to 9): about 7.7 for chaotic logistic, about 8.9 for damped oscillator, about 8.4 for square wave.",
+     "confirmed_by": "The quantum layer’s dimensionality reduction is largest on the chaotic logistic task (here ∆ = −5.5 for this seed; −4.1 on the 3-seed average of Table 9)",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 8",
+     "page": 22,
+     "kind": "line plot",
+     "shows": "Mean gradient variance Var(dC/dtheta) (y, log scale, 1e-4 to about 3e-1) against number of qubits (x, 4, 6, 8, 10, 12) with error bars, for QASA 1 layer (red, solid) and QASA 4 layers (blue, dashed), with a dotted barren plateau threshold at 1e-4. The 1-layer series falls from about 0.06 at 4 qubits to about 0.02 at 12 qubits. The 4-layer series falls from about 0.02 at 4 qubits to about 0.0001 at 12 qubits, about on the threshold. The error bars are wide on both series, spanning about an order of magnitude or more, and the lower bars of the 4-layer series reach below the 1e-4 threshold at 8 to 12 qubits.",
+     "confirmed_by": "QASA’s single-layer design (red) maintains trainable gradients across all qubit counts, while the 4-layer design (blue) exhibits exponential decay characteristic of barren plateaus.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 9",
+     "page": 26,
+     "kind": "line plot",
+     "shows": "Test MAE (y) against input sequence length L (x, 20, 48, 96) in two panels, 1 seed, 80 epochs, for the full classical Transformer (blue), the classical bottleneck (green) and QASA (red). Chaotic logistic (y about 0.29 to 0.34): classical full about 0.335, 0.336, 0.329; the two bottleneck series both flat at about 0.294. Seasonal trend (y about 0.55 to 1.1): classical full about 0.60, 1.08, 0.84; the two bottleneck series nearly overlap, about 0.77, 0.74, 0.57.",
+     "confirmed_by": "The two bottleneck models (classical bottleneck, green; QASA, red) track each other near-identically across L",
+     "no_text_confirms": false
+    }
+   ],
+   "what_it_is": "A case study of a hybrid quantum Transformer (QASA) that puts a 36-parameter circuit in the final encoder layer, used to argue that a capacity-matched classical bottleneck explains the gain over a full-capacity classical Transformer.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qasa-benchmark-scope",
+     "verdict": "narrowed",
+     "note": "The abstract sentence is stated, but Section 4.3 limits it: lower MAE on four of nine synthetic tasks, lower MSE on two, no individual task significant in paired t-tests, and Table 7 attributes the gain to the bottleneck. The ETTh1 gain is in MAE only and one seed.",
+     "value": "The authors report that QASA has lower MAE than the full-capacity classical Transformer on four of the nine synthetic tasks and lower MSE on two, and that paired t-tests (5 seeds) did not reach statistical significance at alpha = 0.05 for any individual task.",
+     "anchor": "Section 4.3, p.16",
+     "quotes": [
+      "Overall, by MAE, QASA outperforms the classical baseline in four out of nine tasks (ARMA, Chaotic Logistic, Square Wave, and Seasonal Trend), while the classical model prevails in the remaining five.",
+      "By MSE, QASA wins two tasks (Chaotic Logistic and Seasonal Trend).",
+      "Paired t-tests (5 seeds) did not reach statistical significance at α = 0.05 for any individual task"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The abstract reads as a clear gain. The body shows a mixed, non-significant picture."
+    },
+    {
+     "id": "qasa-classical-bottleneck-matches",
+     "verdict": "confirmed",
+     "note": "",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qasa-ibm-hardware-inference",
+     "verdict": "confirmed",
+     "note": "Right as stored. The damped oscillator control run (25 percent rise) is entered as a new assertion.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qasa-limits-simulated-training-few-seeds",
+     "verdict": "confirmed",
+     "note": "Right as stored. The main benchmark uses 5 seeds; the 3-seed statement applies to the quantum baseline comparisons.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 4.11 states it as a limit.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "qasa-design-36-param-pqc",
+     "value": "The authors state that QASA is a hybrid Transformer that replaces the value projection of a single encoder layer with a 36-parameter parameterized quantum circuit, keeping all other layers classical.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "a hybrid Transformer that replaces the value projection of a single encoder layer with a 36-parameter parameterized quantum circuit (PQC), keeping all other layers classical"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own architecture (Abstract and Section 3.4).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Section 3.4 and Eq. 19 add the circuit output to the token as a residual after attention (z = h' + Wo QC), so the circuit sits beside the standard attention rather than literally replacing a value projection."
+    },
+    {
+     "id_suggestion": "qasa-deployed-circuit-counts",
+     "value": "The authors state that the deployed circuit has 9 wires (8 data qubits and 1 ancilla), a trainable weight tensor of 36 angles and 27 CNOTs, made of 3 entangling layers of 8 ring gates and 1 ancilla gate.",
+     "anchor": "Table 3 caption, p.11",
+     "quotes": [
+      "Counting convention for the deployed QASA circuit (9 wires = 8 data + 1 ancilla)",
+      "the trainable weight tensor is 4 × 9 = 36 angles (one RX /RZ rotation layer followed by 3 entangling layers)",
+      "the 27 CNOTs are the 3 entangling layers × (8 ring + 1 ancilla) gates"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's own statement of its circuit (Table 3 caption, Table 2).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-trained-by-parameter-shift",
+     "value": "The authors state that gradients of the circuit output with respect to its variational parameters are computed with the parameter-shift rule, through PennyLane and PyTorch autograd.",
+     "anchor": "Section 3.4, p.7",
+     "quotes": [
+      "Gradients of the PQC output with respect to its variational parameters are computed using the parameter-shift rule [31].",
+      "is compatible with PyTorch’s autograd via PennyLane, enabling end-to-end training of the full hybrid model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its training method.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-length-conditioning-constant",
+     "value": "The authors state that with a fixed context length of 20 the sequence-length scalar added to the circuit input is a constant offset, so its value in this setting is limited.",
+     "anchor": "Section 3.4, p.6",
+     "quotes": [
+      "We note that with a fixed context length (L=20 throughout the main benchmarks) t is a constant shared by all tokens and all sequences, so it reduces to a fixed global offset on the encoding angles and its value in this setting is limited"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit in Section 3.4.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-entanglement-entropy",
+     "value": "The authors report a mean bipartite entanglement entropy of 2.26 ± 0.12 bits out of a maximum of 4.0 bits (normalized 0.57) for the QASA circuit, averaged over 200 random parameter samples, across a 4 versus 5 qubit cut.",
+     "anchor": "Section 3.5, p.10",
+     "quotes": [
+      "averaged over 200 random parameter samples",
+      "The QASA circuit achieves a mean entanglement entropy of 2.26 ± 0.12 bits out of a maximum of 4.0 bits (normalized: 0.57)",
+      "i.e. 4 vs. 5 qubits"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A computed circuit property reported by one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-meyer-wallach-q",
+     "value": "The authors report a Meyer-Wallach entangling capability of Q = 0.981 for QASA, averaged over 1,000 random parameterizations, against Q = 0.710 for QLSTM and Q = 0.883 for QnnFormer.",
+     "anchor": "Section 3.5, p.10",
+     "quotes": [
+      "Averaged over 1,000 random parameterizations, QASA achieves Q = 0.981, substantially higher than QLSTM (Q = 0.710) and QnnFormer (Q = 0.883)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A computed circuit property reported by one study; the baseline circuits are the authors' re-implementations.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Q is a property of the circuit on random parameters, not of the trained model or its accuracy."
+    },
+    {
+     "id_suggestion": "qasa-fewer-cnots-than-qlstm",
+     "value": "The authors report that QASA reaches the higher entangling capability with 27 CNOTs against 56 for QLSTM.",
+     "anchor": "Section 3.5, p.10",
+     "quotes": [
+      "despite using fewer two-qubit gates than QLSTM (27 vs. 56 CNOTs)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A circuit property from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-expressibility-kl",
+     "value": "The authors report an expressibility KL divergence of 0.029 for QASA from 5,000 random parameter pairs, against 0.026 for QnnFormer and 0.125 for QLSTM.",
+     "anchor": "Section 3.5, p.10",
+     "quotes": [
+      "We sample 5,000 random parameter pairs (θ1, θ2) and estimate PPQC via a 75-bin histogram.",
+      "QASA yields DKL = 0.029, comparable to QnnFormer (DKL = 0.026) and substantially better than QLSTM (DKL = 0.125)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A computed circuit property from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-expressibility-explains-performance-claim",
+     "value": "The authors state that these circuit-level results provide a circuit-level explanation for QASA's strong empirical performance.",
+     "anchor": "Section 3.5, p.10",
+     "quotes": [
+      "These results provide a circuit-level explanation for QASA’s strong empirical performance"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim without a test in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Section 4.3 and Table 7 later attribute the gain over the full-capacity baseline to the bottleneck, not to quantumness, which weakens this statement."
+    },
+    {
+     "id_suggestion": "qasa-benchmark-setup-synthetic",
+     "value": "The authors state that the nine synthetic benchmarks each have 500 points, are split chronologically into 80 percent training and 20 percent testing, and use a sliding context window of length 20 to predict the next value.",
+     "anchor": "Section 4.2, p.14",
+     "quotes": [
+      "All sequences contain T = 500 points and are split chronologically into 80% training and 20% testing.",
+      "the model is trained to predict xt+1 from a sliding context window of length L = 20."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own benchmark setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-main-benchmark-config",
+     "value": "The authors state that the broad benchmark used a hidden dimension of 64 and 200 epochs with five random seeds, and that QASA has 201,405 parameters against 200,257 for the classical Transformer baseline.",
+     "anchor": "Section 4.1, p.13",
+     "quotes": [
+      "we use a reduced hidden dimension of 64 (with 4 attention heads and 4 encoder layers)",
+      "Each configuration is evaluated over five random seeds to assess consistency.",
+      "the QASA model has 201,405 total parameters and the classical Transformer baseline has 200,257 parameters"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own configuration.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-evaluation-free-running-rollout",
+     "value": "The authors state that the error-metric tables report free-running autoregressive rollout over the test horizon, which compounds error, and that this is why absolute MAEs on chaotic data are far larger than the one-step teacher-forced MAEs of the hardware run.",
+     "anchor": "Section 4.1, p.13",
+     "quotes": [
+      "All error-metric tables (Tables 6, 7, 14, 15) report free-running autoregressive rollout over the test horizon (each prediction is fed back as input), which compounds error"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own evaluation protocol.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-simulation-cost-29x",
+     "value": "The authors report that the classical Transformer trains in about 4.5 minutes per task (1.4 s per epoch) and QASA in about 2 hours 7 minutes per task (40 s per epoch), roughly a 29 times slowdown, on a single CPU with the lightning.qubit simulator.",
+     "anchor": "Section 4.1, p.13",
+     "quotes": [
+      "The classical Transformer completes training in approximately 4.5 minutes per task (1.4 s/epoch), while QASA requires approximately 2 hours and 7 minutes per task (40 s/epoch)—roughly a 29× slowdown."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A timing measured once on one machine.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-hardware-overhead-claim",
+     "value": "The authors state that on actual quantum hardware the simulation overhead would be substantially reduced.",
+     "anchor": "Section 4.1, p.13",
+     "quotes": [
+      "On actual quantum hardware, circuit execution time scales with circuit depth (Lq× gate time) rather than with the exponential cost of classical state-vector simulation, and the overhead would be substantially reduced."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim without a measurement in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Section 4.9 reports 248 s of QPU time per 320-circuit task (0.68 s per circuit), which is not a like-for-like training comparison."
+    },
+    {
+     "id_suggestion": "qasa-chaotic-logistic-gain",
+     "value": "The authors report that on the chaotic logistic task QASA has MAE 0.3406 against 0.3729 and MSE 0.1824 against 0.2044 for the classical baseline, a small effect (Cohen's d = 0.40), over five random seeds.",
+     "anchor": "Section 4.3, p.15",
+     "quotes": [
+      "QASA outperformed its classical counterpart (MAE: 0.3406 vs. 0.3729; MSE: 0.1824 vs. 0.2044), with a small but consistent effect size (Cohen’s d = 0.40)",
+      "Each experiment was repeated over five random seeds and we report mean and standard deviation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 6 gives MAE std 0.0373 (classical) and 0.0519 (QASA), larger than the 0.032 gap in means."
+    },
+    {
+     "id_suggestion": "qasa-seasonal-trend-gain",
+     "value": "The authors report that on the seasonal trend task QASA has MAE 0.6676±0.0104 against 0.6739±0.0490 and MSE 0.5542±0.0122 against 0.5705±0.0647 for the classical baseline.",
+     "anchor": "Section 4.3, p.15",
+     "quotes": [
+      "QASA achieved lower error with remarkably consistent performance across seeds (MAE: 0.6676±0.0104 vs. 0.6739±0.0490; MSE: 0.5542±0.0122 vs. 0.5705±0.0647)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The mean gap (0.0063 MAE) is far smaller than the classical standard deviation (0.0490)."
+    },
+    {
+     "id_suggestion": "qasa-square-wave-mixed",
+     "value": "The authors report that on the square wave task QASA has lower MAE (0.7946 against 0.8685, d = 0.56) but higher MSE (1.1185 against 0.9866) than the classical baseline.",
+     "anchor": "Section 4.3, p.15",
+     "quotes": [
+      "In the square wave task, QASA achieved a lower MAE (0.7946 vs. 0.8685) with a medium effect size (d = 0.56), though its MSE was higher (1.1185 vs. 0.9866)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-damped-oscillator-deficit",
+     "value": "The authors report that on the damped oscillator task the classical model has MAE 0.0375 against 0.1170 for QASA (d = -1.18, p = 0.058), the largest effect size in the benchmark.",
+     "anchor": "Section 4.3, p.16",
+     "quotes": [
+      "the classical model significantly outperformed QASA (MAE: 0.0375 vs. 0.1170; d = −1.18, p = 0.058), the largest effect size observed in our benchmark"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The text says significantly, yet the same section says no task reached significance at 0.05 and p = 0.058 is above it."
+    },
+    {
+     "id_suggestion": "qasa-classical-wins-periodic-discontinuous",
+     "value": "The authors report that the classical model has large advantages on the piecewise regime task (d = -1.01) and the sawtooth task (d = -0.99), a medium advantage on the waveform task (d = -0.52), and that the noisy damped oscillator shows identical MAE (0.0434 for both).",
+     "anchor": "Section 4.3, p.16",
+     "quotes": [
+      "in the piecewise regime task, the classical model showed a large advantage (d = −1.01)",
+      "The sawtooth and waveform tasks also favored the classical model with large and medium effect sizes (Sawtooth d = −0.99; Waveform d = −0.52).",
+      "The noisy damped oscillator task showed essentially identical performance between both models (MAE: 0.0434 vs. 0.0434; d = −0.01)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Several claims in one value; the review may split them by task."
+    },
+    {
+     "id_suggestion": "qasa-arma-tie",
+     "value": "The authors report that on the ARMA task QASA and the classical model reach nearly identical MAE (2.1517 against 2.1522, d = 0.002).",
+     "anchor": "Section 4.3, p.16",
+     "quotes": [
+      "In the ARMA task, QASA and the classical model achieved nearly identical MAE (2.1517 vs. 2.1522; d = 0.002)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-no-task-significant-ttest",
+     "value": "The authors report that paired t-tests with 5 seeds did not reach significance at alpha = 0.05 for any individual task, the closest being the damped oscillator at p = 0.058, and that the classical model has large advantages on clean periodic and discontinuous signals (|d| above 0.8).",
+     "anchor": "Section 4.3, p.16",
+     "quotes": [
+      "Paired t-tests (5 seeds) did not reach statistical significance at α = 0.05 for any individual task, with the closest being the damped oscillator (p = 0.058)",
+      "the classical model achieves large advantages on clean periodic and discontinuous signals (|d| > 0.8)"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "With 5 seeds the tests have little power; the paper's effect-size reading is descriptive."
+    },
+    {
+     "id_suggestion": "qasa-bottleneck-control-design",
+     "value": "The authors state that the classical bottleneck control is identical to QASA except that the circuit value map is replaced by a rank-2 bilinear layer with a bounded tanh nonlinearity, 40 trainable parameters against the circuit's 36, with total model 201,409 against 201,405.",
+     "anchor": "Section 4.3, p.16",
+     "quotes": [
+      "rank-2 bilinear layer with a bounded tanh nonlinearity, 40 trainable parameters vs. the PQC’s 36; total model 201,409 vs. QASA’s 201,405",
+      "The only difference is quantum vs. classical at the value bottleneck."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own control design.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-bottleneck-matches-on-favourable-tasks",
+     "value": "The authors report that on the chaotic logistic, seasonal trend and square wave tasks the classical bottleneck matches QASA to within seed variance, and on the clean-periodic damped oscillator control it is markedly better (MAE 0.064 against 0.117).",
+     "anchor": "Section 4.3, p.16",
+     "quotes": [
+      "the classical bottleneck matches QASA to within seed variance, and on the clean-periodic control it is markedly better (0.064 vs. 0.117 MAE)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (5 seeds).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 7: square wave MSE is 1.127 for the bottleneck against 1.119 for QASA, and MAE 0.802 against 0.795; both are close."
+    },
+    {
+     "id_suggestion": "qasa-no-advantage-over-matched-bottleneck",
+     "value": "The authors state that they do not claim the quantum layer provides a task-level MAE or MSE advantage over a capacity-matched classical bottleneck, and that they reproduced the pattern on a second independent 5-seed set (seeds 47 to 51).",
+     "anchor": "Table 7 caption, p.16; Section 4.3, p.17",
+     "quotes": [
+      "We reproduced the qualitative pattern on a second, independent 5-seed set (seeds 47–51).",
+      "so we do not claim that the quantum layer provides a task-level MAE/MSE advantage over a capacity-matched classical bottleneck"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-etth1-setup",
+     "value": "The authors state that for ETTh1 oil temperature forecasting they use a subsampled training set of 500 windows (length 20) and a held-out test set of 500 windows, with the synthetic-benchmark configuration and no dataset-specific tuning.",
+     "anchor": "Section 4.2, p.15",
+     "quotes": [
+      "We use a subsampled training set of 500 windows (sequence length L = 20)",
+      "and evaluate on a held-out test set of 500 windows. No dataset-specific hyperparameter tuning is performed"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-etth1-results-single-seed",
+     "value": "The authors report on ETTh1 (one seed, 42) an MAE of 0.0675 for QASA against 0.0718 for the full classical Transformer (6.0 percent lower), essentially tied MSE, and that the classical bottleneck is best on both metrics (MAE 0.0621, MSE 0.0068).",
+     "anchor": "Section 4.3, Table 8, p.17",
+     "quotes": [
+      "All models use identical configurations (hidden dim=64, 200 epochs, seq. len. 20, seed 42).",
+      "QASA achieves a 6.0% lower MAE (0.0675 vs. 0.0718) than the full-capacity classical Transformer, while the two are essentially tied on MSE.",
+      "it is the best model on both metrics (MAE 0.0621, MSE 0.0068)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A single-seed empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Single seed and no variance, so the 6.0 percent difference cannot be judged against seed noise."
+    },
+    {
+     "id_suggestion": "qasa-etth1-no-win-over-bottleneck",
+     "value": "The authors state that QASA does not outperform the capacity-matched classical control on ETTh1, and that they retain ETTh1 as evidence the parsimony principle transfers, not as a claim of quantum advantage.",
+     "anchor": "Section 4.3, p.17",
+     "quotes": [
+      "QASA does not outperform the capacity-matched classical control on this dataset.",
+      "We retain ETTh1 as evidence that the parsimony principle transfers from synthetic to real-world data, not as a claim of quantum advantage."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (single seed).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-effective-rank-chaotic",
+     "value": "The authors report that on the chaotic logistic task the effective rank falls from 8.3 ± 0.1 before the quantum layer to 4.2 ± 1.1 after it (a 49 percent reduction, three seeds), while the full classical model's final layer has rank 5.7 ± 0.0.",
+     "anchor": "Section 4.4, p.18",
+     "quotes": [
+      "the quantum layer compresses the effective dimensionality from 8.3 ± 0.1 to 4.2 ± 1.1—a 49% reduction confirmed across three seeds—while the classical model’s final-layer representations retain a rank of 5.7 ± 0.0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (3 seeds).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-bottleneck-compresses-more",
+     "value": "The authors report that the trained classical bottleneck compresses the chaotic representation comparably to, and more strongly than, the quantum layer: post-bottleneck effective rank about 2.6 against about 4.2 for QASA.",
+     "anchor": "Section 4.4, p.17",
+     "quotes": [
+      "post-bottleneck effective rank ≈ 2.6 versus QASA’s ≈ 4.2 (Table 9, “Cl. bottleneck” column)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (3 seeds).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-stable-rank-and-probe",
+     "value": "The authors report on the chaotic logistic task a stable rank falling from 1.97±0.06 to 1.17±0.11, and a ridge-probe R2 of 0.9998±0.0001 after the quantum layer against 0.9997 before, which they read as compression, not rank collapse.",
+     "anchor": "Section 4.4, p.18",
+     "quotes": [
+      "falls from 1.97±0.06 (before) to 1.17±0.11 (after)",
+      "attains R2 = 0.9998±0.0001 after the quantum layer—identical to before (0.9997)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (3 seeds).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The R2 probe is on the one-step target of a deterministic map, which an almost one-dimensional feature can decode."
+    },
+    {
+     "id_suggestion": "qasa-effective-rank-nonchaotic",
+     "value": "The authors report that on the non-chaotic tasks (damped oscillator, square wave) the features are already low-dimensional before the quantum layer and the quantum transformation produces only minor changes.",
+     "anchor": "Section 4.4, p.18",
+     "quotes": [
+      "On the non-chaotic tasks (damped oscillator, square wave), the features are already low-dimensional before the quantum layer (rank ∼2), and the quantum transformation produces only minor changes (∼20% reduction)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 9 gives a 25 percent reduction on damped and 0 percent on square wave, so the 20 percent figure is an approximate pooled one."
+    },
+    {
+     "id_suggestion": "qasa-compression-is-bottleneck-not-quantum",
+     "value": "The authors state that the nonlinear-compression effect is a property of the low-rank bottleneck and not specific to the quantum substrate, and that the quantum layer's distinct contribution is physical (entanglement, NISQ deployability).",
+     "anchor": "Section 4.4, p.17",
+     "quotes": [
+      "The nonlinear-compression effect documented in this section is therefore a property of the low-rank bottleneck, not specific to the quantum substrate"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-encoding-reuploading",
+     "value": "The authors report on the damped oscillator (2 seeds, 80 epochs) that data re-uploading lowers MAE by about 31 percent (0.054 against 0.078) and amplitude encoding helps modestly, while on the waveform task re-uploading slightly hurts and amplitude encoding marginally helps.",
+     "anchor": "Section 4.5, p.19",
+     "quotes": [
+      "data re-uploading reduces the MAE by ∼31% (0.054 vs. 0.078), and amplitude encoding also helps modestly.",
+      "on the waveform task re-uploading slightly hurts while amplitude encoding marginally helps",
+      "mean of 2 seeds, 80 epochs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (2 seeds).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-ablation-position-last-best",
+     "value": "The authors report from the 3-seed ablation that a single quantum layer at the last position (Q@3) is the best single position on the chaotic logistic task (MAE 0.337±.012) and on the damped oscillator (0.086±.051).",
+     "anchor": "Section 4.5 ablation, p.21",
+     "quotes": [
+      "Q@3—the deployed last-layer position—is the best single quantum position on both quantum-favourable tasks: chaotic logistic (0.337±.012, a clean margin with small variance) and the damped oscillator (0.086±.051)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (3 seeds).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-ablation-damped-high-variance",
+     "value": "The authors state that the damped task is high-variance across seeds, the all-classical baseline alone spanning 0.243±.115, so damped position differences are read cautiously, and that the earlier single-seed claim that the third position was best does not survive averaging (0.106±.051 over 3 seeds).",
+     "anchor": "Section 4.5 ablation, p.21",
+     "quotes": [
+      "We caution that the damped task is high-variance across seeds (the 0Q baseline alone spans 0.243±.115)",
+      "its lucky seed-42 value (0.039) does not survive averaging (0.106±.051 over 3 seeds), so we no longer claim a task-dependent optimal position"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (3 seeds).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Section 5 (p.30) still says the optimal position is task-dependent, which contradicts this."
+    },
+    {
+     "id_suggestion": "qasa-ablation-more-layers-no-help",
+     "value": "The authors report that more quantum layers do not beat a single one on the quantum-favourable tasks, and that on the square wave the fully classical model stays best (MAE 0.705 against 0.731 for two quantum layers and 0.794 for four).",
+     "anchor": "Section 4.5 ablation, p.21",
+     "quotes": [
+      "increasing quantum layer count does not reliably improve performance: adding more quantum layers does not beat a single one on the quantum-favourable tasks",
+      "on the discontinuous square wave the fully classical 0Q remains best (0.705 vs. 2Q 0.731 and 4Q 0.794)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (3 seeds).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 11 chaotic logistic: four quantum layers (0.373) and zero (0.366) differ little; the abstract's wording that more layers only degrade performance is stronger than this."
+    },
+    {
+     "id_suggestion": "qasa-barren-plateau-depth-sweep",
+     "value": "The authors report gradient variance 2.62 × 10^-2 for one entangling layer (18 parameters) and about a 30 times drop (to 8.87 × 10^-4) for two or four entangling layers.",
+     "anchor": "Section 4.5 trainability, p.21",
+     "quotes": [
+      "the shallowest configuration (1 entangling layer, 18 parameters) maintains a gradient variance of 2.62 × 10−2",
+      "Increasing to 2 or 4 entangling layers causes a ∼30× drop in gradient variance (8.87 × 10−4), approaching the onset of a barren plateau."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The text says 2 or 4 layers at 8.87e-4; Table 12 lists 8.87e-4 for 2 layers and 8.34e-4 for 4 layers."
+    },
+    {
+     "id_suggestion": "qasa-deployed-circuit-gradient-variance",
+     "value": "The authors state that the deployed circuit has a measured gradient variance of about 1.1 × 10^-3 over 200 random initialisations and trains successfully, and that it should not be read as having only one entangling layer.",
+     "anchor": "Section 4.5 trainability, p.21",
+     "quotes": [
+      "its measured gradient variance is Var(∂C/∂θ) ≈ 1.1 × 10−3 over 200 random initialisations",
+      "and it trains successfully throughout our experiments"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The deployed circuit is in the reduced-gradient regime that the paper's own depth sweep calls approaching a barren plateau."
+    },
+    {
+     "id_suggestion": "qasa-gradient-variance-scaling-qubits",
+     "value": "The authors report that the single-layer design's gradient variance falls only 3 times from 5.8 × 10^-2 at 4 qubits to 2.0 × 10^-2 at 12 qubits, while the 4-layer design falls 170 times from 2.3 × 10^-2 to 1.3 × 10^-4.",
+     "anchor": "Section 4.5 scalability with qubit count, p.22",
+     "quotes": [
+      "The single-layer design exhibits only mild gradient decay (5.8 × 10−2 at 4 qubits to 2.0 × 10−2 at 12 qubits, a 3× reduction)",
+      "while the 4-layer design decays exponentially (2.3 × 10−2 to 1.3 × 10−4, a 170× reduction)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Five qubit counts (4 to 12) are few for an exponential fit, and the error bars in Figure 8 are wide."
+    },
+    {
+     "id_suggestion": "qasa-gradient-variance-146x",
+     "value": "The authors report that at 12 qubits the single-layer gradient variance is 146 times larger than the 4-layer variant.",
+     "anchor": "Section 4.5 scalability with qubit count, p.22",
+     "quotes": [
+      "At 12 qubits, the single-layer gradient variance is 146× larger than the 4-layer variant."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The single-layer design has fewer parameters and no expressivity, trainability or accuracy measure is given for it; the 1-layer design is not the one deployed."
+    },
+    {
+     "id_suggestion": "qasa-fig8-read-gradient-variance",
+     "value": "Read from Figure 8: the single-layer gradient variance falls from about 0.06 at the lowest qubit count to about 0.02 at the highest, and the 4-layer variance falls from about 0.02 to about 0.0001; the error bars span about an order of magnitude or more, and the lower ends of the 4-layer bars reach below the plotted barren plateau threshold at the larger qubit counts.",
+     "anchor": "Figure 8, p.22",
+     "quotes": [
+      "QASA’s single-layer design (red) maintains trainable gradients across all qubit counts, while the 4-layer design (blue) exhibits exponential decay characteristic of barren plateaus."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read by eye from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "Wide error bars mean the 1-layer and 4-layer ranges overlap at 4 and 6 qubits."
+    },
+    {
+     "id_suggestion": "qasa-qubit-count-ablation",
+     "value": "The authors report on the chaotic logistic task (120 epochs, 2 seeds) MAE 0.371, 0.360 and 0.369 for 4, 6 and 8 data qubits, statistically indistinguishable, and 0.324 for 10 qubits at higher seed variance.",
+     "anchor": "Section 4.5 qubit-count choice, p.23",
+     "quotes": [
+      "MAE 0.371, 0.360, 0.369 for n = 4, 6, 8 are statistically indistinguishable, with n = 10 slightly lower (0.324) but at higher seed variance",
+      "(reduced 120-epoch budget, 2 seeds; Table 13)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (2 seeds).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-baselines-reimplemented",
+     "value": "The authors state that QLSTM and QnnFormer were re-implemented following their reference implementations and evaluated under the same training conditions (hidden dimension 64, 200 epochs, AdamW).",
+     "anchor": "Section 4.6, p.23",
+     "quotes": [
+      "Both baselines are re-implemented following their respective reference implementations and evaluated under identical training conditions (hidden dim=64, 200 epochs, AdamW optimizer)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own baseline setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Baselines are the authors' re-implementations, not the original code."
+    },
+    {
+     "id_suggestion": "qasa-qlstm-total-parameters",
+     "value": "The authors state that QLSTM has 3,929 total parameters because it has no classical Transformer backbone, so the relevant comparison is the quantum parameter count of 36 for QASA against 128 for QLSTM and 90 for QnnFormer.",
+     "anchor": "Section 4.6, p.23",
+     "quotes": [
+      "QLSTM uses only 3,929 total parameters because it lacks a classical Transformer backbone",
+      "QASA uses only 36 quantum parameters versus QLSTM’s 128 and QnnFormer’s 90"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own baseline sizes.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "QASA has 201,405 total parameters, about 50 times QLSTM's 3,929, so comparisons of accuracy per quantum parameter ignore the classical capacity."
+    },
+    {
+     "id_suggestion": "qasa-vs-qlstm-mse-7-of-9",
+     "value": "The authors report that QASA achieves equal or better MSE than QLSTM on 7 of 9 tasks despite QLSTM's 3.6 times larger quantum parameter count.",
+     "anchor": "Section 4.6, p.23",
+     "quotes": [
+      "Despite this 3.6× quantum parameter advantage for QLSTM, QASA achieves equal or better MSE on 7 of 9 tasks"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (3 seeds).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Reading Table 15 at its printed precision gives equal-or-lower QASA MSE on 6 tasks (chaotic logistic, damped, noisy damped, square wave, seasonal, waveform); ARMA (6.370 against 6.366) is a near tie, piecewise and sawtooth favor QLSTM."
+    },
+    {
+     "id_suggestion": "qasa-win-counts-quantum-baselines",
+     "value": "The authors report that the classical model leads on 3 tasks by MAE and 4 by MSE, while QASA wins 2 by MAE and, by MSE, 2 clear wins plus 2 statistical ties.",
+     "anchor": "Section 4.6, p.23",
+     "quotes": [
+      "Classical leads in 3 tasks by MAE and 4 by MSE, while QASA wins 2 by MAE and, by MSE, 2 clear plus 2 statistical ties"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (3 seeds).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-seasonal-trend-qlstm-significance",
+     "value": "The authors report that QASA outperforms QLSTM on the seasonal trend task with p = 0.009 for both MAE and MSE (Cohen's d above 6), and caution that QLSTM (0.941) is a clear outlier that largely fails to converge, so the large d is not a robust QASA advantage.",
+     "anchor": "Section 4.6, p.23",
+     "quotes": [
+      "QASA outperforms QLSTM on the seasonal trend task with p = 0.009 for both MAE and MSE (Cohen’s d > 6)",
+      "QLSTM (0.941) is the clear outlier—it largely fails to converge on the seasonal-trend signal"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (3 seeds).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-friedman-sawtooth-waveform",
+     "value": "The authors report that the Friedman test across the four models finds significant differences on sawtooth (MAE: chi-square = 8.2, p = 0.042) and waveform (MAE and MSE: p = 0.042) and that other pairwise comparisons do not reach significance at alpha = 0.05.",
+     "anchor": "Section 4.6, p.23",
+     "quotes": [
+      "The Friedman test across all four models identifies significant differences on the sawtooth task (MAE: χ2 = 8.2, p = 0.042) and waveform task (MAE and MSE: p = 0.042).",
+      "Other pairwise comparisons do not reach significance at α = 0.05"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (3 seeds).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "On sawtooth, Table 14 shows QASA MAE 0.438 against 0.083 for the classical model, so QASA is the worst of the four there."
+    },
+    {
+     "id_suggestion": "qasa-directional-accuracy-chance",
+     "value": "The authors report that on chaotic and noisy signals every model collapses to near chance directional accuracy (about 0.5 on chaotic logistic, below chance on the noisy damped oscillator), and that no single model dominates the directional metric.",
+     "anchor": "Section 4.6, p.24",
+     "quotes": [
+      "on chaotic and noisy signals every model collapses to near chance (≈ 0.5 on chaotic logistic; below chance on the noisy damped oscillator)",
+      "No single model dominates the directional metric"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (3 seeds).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-overfitting-ratio-arma",
+     "value": "The authors report teacher-forced test-to-train MSE ratios of 0.4 to 3.7 on eight of nine tasks for the classical model, with the sole large value on ARMA (about 19 times).",
+     "anchor": "Section 4.6, p.25",
+     "quotes": [
+      "for the classical model, 0.4–3.7 on eight of nine tasks",
+      "The sole large value is ARMA (∼19×)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-sequence-length-sweep",
+     "value": "The authors report from a single-seed 80-epoch sweep over three sequence lengths that no model's error degrades as L grows, and that the classical bottleneck and QASA track each other near-identically (chaotic both about 0.294, seasonal both about 0.77 to 0.57).",
+     "anchor": "Section 4.7, p.25",
+     "quotes": [
+      "The observation relevant to the referee’s concern is simply that no model’s error degrades as L grows—the fixed 8-qubit register is not a performance ceiling.",
+      "reduced 80-epoch budget, 1 seed",
+      "chaotic: both ≈0.294 and flat; seasonal: both ∼0.77 → 0.57"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A single-seed empirical result.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 17 shows the full classical model on seasonal trend at 0.600 MAE for L = 20 and 0.842 for L = 96, which is a rise; the authors call it single-seed noise. The largest L tested is 96, not 720."
+    },
+    {
+     "id_suggestion": "qasa-register-width-independent-of-L",
+     "value": "The authors state that the circuit width is independent of the sequence length because the quantum layer acts on the per-token hidden representation projected to 8 values, so increasing L enlarges only the classical quadratic self-attention.",
+     "anchor": "Section 4.7, p.25",
+     "quotes": [
+      "the PQC width is independent of L. The quantum layer acts on the per-token hidden representation through the input projection Rd → R8"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "A statement of the architecture's design by the authors.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The circuit runs once per token, so the number of circuit evaluations grows with L."
+    },
+    {
+     "id_suggestion": "qasa-fig9-read-seasonal",
+     "value": "Read from Figure 9: on the seasonal trend task the full classical Transformer's test MAE is about 0.60 at the shortest sequence length, rises to about 1.08 at the middle length and falls to about 0.84 at the longest, while the classical bottleneck and QASA curves nearly overlap, falling from about 0.77 to about 0.57.",
+     "anchor": "Figure 9, p.26",
+     "quotes": [
+      "The two bottleneck models (classical bottleneck, green; QASA, red) track each other near-identically across L",
+      "the full classical Transformer (blue) is shown for context"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read by eye from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-depolarizing-noise-nonmonotonic",
+     "value": "The authors report that with depolarizing noise at p = 0.01 QASA's chaotic logistic MAE is 0.342 ± 0.007, a 10.8% improvement over the noiseless baseline, and that at p = 0.1 performance remains 7.5% better than baseline.",
+     "anchor": "Section 4.8, p.26",
+     "quotes": [
+      "the model achieves its best performance (MAE: 0.342 ± 0.007, a 10.8% improvement over the noiseless baseline)",
+      "Even at p = 0.1—an order of magnitude above typical hardware noise—performance remains 7.5% better than baseline.",
+      "inject depolarizing channels (error probability p) after each variational layer in the PQC and retrain the full model from scratch at each noise level.",
+      "At p = 0.01—comparable to typical gate error rates on current IBM hardware (∼10−3)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (3 seeds).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The text calls p = 0.01 comparable to a hardware gate error of about 10^-3, which is one order of magnitude apart. Table 18 gives the noiseless MAE as 0.384 and the p = 0.05 value as 0.384, so the sweep is not monotone."
+    },
+    {
+     "id_suggestion": "qasa-noise-improvement-within-seed-std",
+     "value": "The authors caution that the noise analysis uses only 3 seeds on a reduced 4-qubit/2-layer circuit, and that the p = 0.1 error bar overlaps the noiseless baseline.",
+     "anchor": "Section 4.8, p.26",
+     "quotes": [
+      "the analysis uses only 3 seeds on a reduced 4-qubit/2-layer circuit",
+      "the p = 0.1 error bar overlaps the noiseless baseline"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated caveat in Section 4.8.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-other-noise-channels",
+     "value": "The authors report that under amplitude damping and bit-flip noise degradation is at most +15.7% and +21.5% across the entire sweep up to p = 0.1, and that the improvement at moderate noise is channel-specific.",
+     "anchor": "Section 4.8, p.27",
+     "quotes": [
+      "at most +15.7% (amplitude damping) and +21.5% (bit-flip) across the entire sweep up to p = 0.1",
+      "the noise-as-regulariser effect (improvement at moderate noise) is channel-specific",
+      "(2 seeds; Table 19)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (2 seeds).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 19's noiseless baseline (0.333) differs from Table 18's (0.384), as the paper notes; the bit-flip +21.5 percent is larger than any amplitude-damping value, so bounded degradation is a loose statement."
+    },
+    {
+     "id_suggestion": "qasa-noise-study-scope-limit",
+     "value": "The authors state that the noise study omits phase damping and correlated or crosstalk errors, covers only the chaotic logistic task, and uses a reduced circuit of 4 qubits and 2 layers instead of the full 8+1 qubit architecture.",
+     "anchor": "Section 4.8 caveats, p.27; Section 4.11, p.29",
+     "quotes": [
+      "the noise experiments use a reduced circuit (4 qubits, 2 variational layers) rather than the full 8+1 qubit architecture",
+      "but still omits phase damping and correlated/crosstalk errors, and evaluates a single task (chaotic logistic)"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limits.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-hardware-setup",
+     "value": "The authors state that hardware runs were inference only on a frozen trained model, on the 156-qubit Heron-r2 device ibm fez at 2048 shots with no error mitigation, with 320 token circuits per task (16 test windows of 20 tokens).",
+     "anchor": "Section 4.9, p.27-28",
+     "quotes": [
+      "this is an inference-on-hardware validation of an already-trained model (training on hardware is infeasible at this circuit count)",
+      "All runs use the 156-qubit Heron-r2 device ibm fez at 2048 shots, with no error mitigation.",
+      "the 320 token circuits per task (16 test windows × 20 tokens)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own hardware setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-hardware-calibration",
+     "value": "The authors report the device calibration at run time (median over qubits) as readout error 1.1 × 10^-2, single-qubit gate error 3.1 × 10^-4, two-qubit gate error 2.6 × 10^-3, T1 = 136 µs and T2 = 99 µs.",
+     "anchor": "Section 4.9, p.28",
+     "quotes": [
+      "readout error 1.1 × 10−2, single-qubit gate error 3.1 × 10−4, two-qubit gate error 2.6 × 10−3, T1 = 136 µs, T2 = 99 µs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of the run conditions.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-hardware-damped-control",
+     "value": "The authors report that on the damped oscillator control the hardware one-step MAE rises from 0.0092±0.0049 in noiseless simulation to 0.0115±0.0057 on the physical device (25 percent), with overlapping error bars over 16 windows.",
+     "anchor": "Section 4.9, Table 20, p.28",
+     "quotes": [
+      "On the damped oscillator the MAE rises from 0.0092±0.0049 to 0.0115±0.0057 (25%), with overlapping error bars across the 16 windows."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-hardware-vs-noise-model",
+     "value": "The authors report that on chaotic logistic the expectation-value deviation on hardware (0.027) closely matches the offline FakeBrisbane noise-model prediction (0.025), and that the physical device slightly outperforms the older-generation noise model.",
+     "anchor": "Section 4.9, Table 20, p.28",
+     "quotes": [
+      "the expectation-value deviation (|∆⟨Z⟩| = 0.027) closely matches the offline FakeBrisbane noise-model prediction (0.025)",
+      "the physical device slightly outperforms the older-generation noise model"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "Table 20 lists one-step MAE 0.0121 for the noise model and 0.0100 on the physical device."
+    },
+    {
+     "id_suggestion": "qasa-hardware-qpu-time",
+     "value": "The authors report that each hardware run used 248 s of quantum processing time (0.68 s per circuit), within the free-tier monthly budget.",
+     "anchor": "Section 4.9, p.28",
+     "quotes": [
+      "Each run consumed 248 s of quantum processing time (0.68 s/circuit), within the free-tier monthly budget"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measurement from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-hardware-metric-not-comparable",
+     "value": "The authors state that the hardware one-step MAE is not comparable to the main-benchmark MAE of Table 6 because the benchmark evaluates a free-running autoregressive rollout, and that the comparison of interest is solely the within-protocol noiseless to hardware ratio of +7.5%.",
+     "anchor": "Section 4.9, p.28",
+     "quotes": [
+      "the comparison of interest here is solely the within-protocol noiseless→hardware ratio (+7.5%), not the cross-protocol absolute value",
+      "We stress that the absolute one-step MAE reported here (∼0.01) is not directly comparable to the main-benchmark MAE of Table 6 (∼0.34)"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the scope of the hardware result (Section 4.9).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The chaotic hardware MAE row has no standard deviation in Table 20."
+    },
+    {
+     "id_suggestion": "qasa-complexity-conjectural",
+     "value": "The authors state that their argument that the gradient complexity of quantum adaptive self-attention may be lower bounded by Omega(T) is conjectural, with no rigorous reduction from quantum attention gradient computation to k-SAT established, and a motivated hypothesis rather than a proven result.",
+     "anchor": "Section 4.10, p.28-29",
+     "quotes": [
+      "We emphasize that this argument is conjectural. A rigorous reduction from quantum attention gradient computation to k-SAT has not been established",
+      "We present this discussion as a motivated hypothesis that warrants formal investigation in future work, rather than a proven result."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit in Section 4.10.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-limit-dataset-coverage",
+     "value": "The authors state that the empirical claims are based on nine synthetic time series and one real-world dataset (ETTh1), and that the ablation damped-task position differences are interpreted only as broad trends.",
+     "anchor": "Section 4.11, p.29",
+     "quotes": [
+      "The empirical claims are based on nine synthetic time series and one real-world dataset (ETTh1).",
+      "so its position differences are interpreted only as broad trends, not fine rankings"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper's own stated limits.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-software-hardware-stack",
+     "value": "The authors state that experiments run on a single Apple M-series CPU with PyTorch 2.8 and PennyLane 0.42, using lightning.qubit for noiseless experiments and default.mixed for noise experiments.",
+     "anchor": "Section 4.12, p.29",
+     "quotes": [
+      "Experiments run on a single Apple M-series CPU with PyTorch 2.8, PennyLane 0.42 (lightning.qubit for noiseless experiments, default.mixed for noise experiments)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own software stack.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-conclusion-parsimony",
+     "value": "The authors state that their findings converge on one insight: the optimal strategy for quantum integration is to place minimal quantum computation where it matters most, not to maximize quantum resources.",
+     "anchor": "Section 5, p.30",
+     "quotes": [
+      "the optimal strategy for quantum integration is not to maximize quantum resources, but to place minimal quantum computation where it matters most"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The control in Table 7 shows a classical 40-parameter map does as well, so the finding is about a low-rank bottleneck rather than about quantum resources."
+    },
+    {
+     "id_suggestion": "qasa-conclusion-position-task-dependent",
+     "value": "The authors state in the conclusion that the optimal quantum layer position is task-dependent (last layer for chaotic dynamics, penultimate for smooth oscillations).",
+     "anchor": "Section 5, p.30",
+     "quotes": [
+      "the optimal position is task-dependent (last layer for chaotic dynamics, penultimate for smooth oscillations)"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim that Section 4.5 retracts.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Section 4.5 (p.21) says: we no longer claim a task-dependent optimal position. The conclusion was not updated."
+    },
+    {
+     "id_suggestion": "qasa-conclusion-taxonomy",
+     "value": "The authors state that on clean periodic waveforms the bottleneck hurts (damped oscillator, d = -1.18; sawtooth, d = -0.99) and that the classical and quantum value maps are statistically indistinguishable on the favoured tasks.",
+     "anchor": "Section 5, p.30",
+     "quotes": [
+      "on clean periodic waveforms the bottleneck hurts (damped oscillator, d = −1.18; sawtooth, d = −0.99)",
+      "the classical and quantum value maps are statistically indistinguishable on the favoured tasks"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author summary of results.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-conclusion-future-work",
+     "value": "The authors list future work: adaptive hybrid strategies that engage quantum layers by signal characteristics, validation on more real-world datasets at larger scale, study of noise-induced regularization across channels and depths, and formal analysis of the conjectured speedup in attention gradient computation.",
+     "anchor": "Section 5, p.30",
+     "quotes": [
+      "adaptive hybrid strategies that selectively engage quantum layers based on detected signal characteristics",
+      "formal theoretical analysis of the conjectured quantum speedup in attention gradient computation"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper lists these as open problems.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-cited-vqc-benchmarking",
+     "value": "The authors cite benchmarking studies as finding that classical GRU and LSTM models often lead VQC regression in raw accuracy, while VQCs show higher robustness to noise and better generalization on small-scale datasets.",
+     "anchor": "Section 2.2, p.4",
+     "quotes": [
+      "finding that while classical models often lead in raw accuracy, VQCs exhibit higher robustness to noise and better generalization on small-scale datasets"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work [16, 17].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-motivating-single-run",
+     "value": "The authors report from a single run a lower minimum validation loss for the quantum model (0.0085) than the classical model (0.0122), and stress that this is not evidence of a quantum advantage.",
+     "anchor": "Figure 4 caption, p.12",
+     "quotes": [
+      "The quantum model reaches a lower minimum validation loss (0.0085) than the classical model (0.0122) with smoother convergence.",
+      "we stress it is not evidence of a quantum advantage",
+      "Preliminary, single-run motivating observation (larger hidden dimension 256, 45 epochs)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A single-run empirical result.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-fig4-read-loss-curves",
+     "value": "Read from Figure 4: both models' training and validation loss stay near about 1.0 until about 15 epochs (classical) and about 18 epochs (quantum), then fall steeply, with the classical curves falling earlier than the quantum curves, and both end near about 0.02 at the last epoch shown.",
+     "anchor": "Figure 4, p.12",
+     "quotes": [
+      "Comparison of training and validation loss between the classical model QASAclassical and the quantum model QASA."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read by eye from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "Figure 3's caption says QASA converges much faster than the classical models; Figure 4's curves show the classical model dropping first."
+    },
+    {
+     "id_suggestion": "qasa-fig3-read-epoch-snapshots",
+     "value": "Read from Figure 3: on the damped oscillator task, in the middle epoch snapshot the QASA prediction follows the true oscillation while the Traditional Transformer and QASA_classical predictions stay close to flat, and in the last snapshot QASA follows the true signal closely while QASA_classical follows it only partly.",
+     "anchor": "Figure 3, p.8",
+     "quotes": [
+      "By epoch 15, QASA already demonstrates significantly improved alignment with the true signal, while the other models lag behind."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A qualitative reading of a single run.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "A single run on a clean periodic signal, the task on which Table 6 shows QASA to be worst."
+    },
+    {
+     "id_suggestion": "qasa-fig5-read-cumulative-energy",
+     "value": "Read from Figure 5(b): on the chaotic logistic task the first singular component holds a cumulative energy fraction of about 0.98 for the classical bottleneck, about 0.87 for QASA after the quantum layer, about 0.66 for the full classical model and about 0.51 for QASA before it.",
+     "anchor": "Figure 5, p.19",
+     "quotes": [
+      "both bottleneck realisations (QASA and the classical bottleneck) reach near-unity variance in far fewer components than the full classical model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read by eye from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qasa-fig6-read-cosine-similarity",
+     "value": "Read from Figure 6: the after-quantum-layer pairwise cosine similarity matrix of QASA on the chaotic logistic task is almost uniformly dark red, about 1.0 for all pairs of time steps, while the classical final-layer matrix is a checkerboard with values from about -0.25 to 1.0.",
+     "anchor": "Figure 6, p.20",
+     "quotes": [
+      "Bottom center/right: pairwise cosine similarity matrices reveal that the quantum layer produces more structured temporal correlations than the classical model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read by eye from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "A near-uniform similarity of about 1 means the post-quantum token representations are almost parallel, which the caption describes as structure but could also be read as collapse."
+    },
+    {
+     "id_suggestion": "qasa-fig7-read-effective-rank",
+     "value": "Read from Figure 7 (single seed): the effective rank on the chaotic logistic task is about 8.1 before the quantum layer, about 2.6 after it and about 5.7 for the classical model, and the quantum-layer correction magnitude is about 7.7 on chaotic logistic, about 8.9 on damped oscillator and about 8.4 on square wave.",
+     "anchor": "Figure 7, p.20",
+     "quotes": [
+      "Right: mean quantum correction magnitude (L2 norm of the residual added by the quantum layer)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read by eye from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "The correction norm is largest on the damped oscillator, where QASA is weakest, and smallest on the chaotic task."
+    }
+   ]
+  },
+  {
+   "record_id": "chen-2026-safe-quantum-machine-learning-variational",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2026\\Chen-et-al_2026_SAFE-Quantum-Machine-Learning-with-Variational-Quantum-Classifiers__2605.16067.pdf",
+   "title_in_file": "SAFE Quantum Machine Learning with Variational Quantum Classifiers",
+   "version_note": "arXiv 2605.16067v1, dated 15 May 2026 (document date May 18, 2026); the file is the paper the record names.",
+   "pages": 31,
+   "read_extent": "full",
+   "not_read": "",
+   "sections_read": [
+    "Abstract",
+    "1 Introduction",
+    "2 Literature Review (2.1, 2.2, 2.3)",
+    "3 Methodology (3.1 Quantum Machine Learning Model, 3.2 SAFE-AI metrics, 3.3 Implicit Stability and SAFE Learning in Hybrid Quantum Models)",
+    "4 Application (4.1 Data and Preprocessing, 4.2 Models and Evaluation Protocol)",
+    "4.3 Results and Analysis (4.3.1 Predictive Performance, 4.3.2 RGA, 4.3.3 RGR, 4.3.4 RGE, 4.3.5 Overall SAFE-AI Comparison)",
+    "5 Conclusions",
+    "6 Impact statement",
+    "Software and Data",
+    "References",
+    "A Appendix: Additional Experimental Details (A.1 Data and Pre-processing, A.2 Models and Evaluation Protocol)"
+   ],
+   "figure_count": 8,
+   "figures": [
+    {
+     "figure": "Figure 1",
+     "page": 6,
+     "kind": "block diagram",
+     "shows": "Pipeline diagram: a 512-unit ResNet feature vector enters a pre-VQC fully connected layer with GELU, then a 9-qubit amplitude encoding and a strongly entangling PQC (a rotation R(alpha, beta, gamma) on each qubit followed by CNOTs), then Pauli-Z measurements on each qubit, then a 3-class output layer.",
+     "confirmed_by": "In Figure 1, the proposed quantum machine learning pipeline is depicted.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 2",
+     "page": 14,
+     "kind": "photograph",
+     "shows": "Six example MRI scans from the test set, each with the true label, predicted class and softmax probabilities. Four are classified correctly (brain_tumor, brain_glioma, brain_glioma, brain_glioma). Two true meningioma scans are misclassified: one as brain_glioma with probabilities about 0.64, 0.35, 0.01 and one as brain_tumor with probabilities about 0.01, 0.24, 0.76.",
+     "confirmed_by": "Figure 2 presents a qualitative view of the predictions produced by the QML on the given MRI scans from the test set.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 3",
+     "page": 14,
+     "kind": "line plot",
+     "shows": "RGA score (y, 0 to 1) against fraction of data removed (x, 0 to 1), mean across 5 folds, one line per model (Linear, RF, SVM, MLP, QML). All curves are near 1.0 up to about 0.6 removed. Linear and MLP bend down from about 0.6 to 0.8 removed (about 0.96 at 0.8); RF, SVM and QML stay near 1.0 to about 0.9. All five curves fall steeply to 0.0 at 1.0 removed.",
+     "confirmed_by": "All models maintain a nearly perfect ranking accuracy when less than 40% of the data are removed.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 4",
+     "page": 17,
+     "kind": "line plot",
+     "shows": "RGR score (y, about 0.69 to 1.0) against noise standard deviation in percent (x, 0 to 300), mean across 5 folds, per model. Linear falls fastest, to about 0.69 at 300 percent; RF falls to about 0.75. SVM stays near 1.0 to about 120 percent then falls to about 0.83 at 300 percent. MLP and QML begin to fall earlier, track each other, lie above SVM from about 160 to about 280 percent, and end at about 0.82 at 300 percent.",
+     "confirmed_by": "The QML achieves the highest overall robustness, as reflected by the largest AURGR value, indicating a slower and more controlled degradation under increasing noise.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 5",
+     "page": 18,
+     "kind": "line plot",
+     "shows": "Two panels of RGR score against attack strength, mean across 5 folds. Top, FGSM feature perturbation (x, epsilon 0 to 0.30; Linear, MLP, QML only): Linear drops to about 0.39 at 0.10 and about 0.30 at 0.30; MLP and QML stay near 1.0 to 0.05, QML above MLP, ending at about 0.38 (QML) and about 0.35 (MLP) at 0.30. Bottom, spatial image perturbation (x, strength 0 to 40; all five models): SVM is highest from about 10 to 30; at strength 40 RF is highest at about 0.845, SVM and MLP about 0.82, Linear about 0.79 and QML lowest at about 0.775.",
+     "confirmed_by": "Under FGSM perturbations, QML achieves the highest robustness among the evaluated models.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 6",
+     "page": 20,
+     "kind": "photograph",
+     "shows": "Six versions of one MRI slice at 0, 20, 40, 60, 80 and 100 percent occluded area, with the most Grad-CAM-relevant square patches replaced by a Gaussian-blurred baseline; the image is progressively blurred until it is fully blurred at 100 percent.",
+     "confirmed_by": "Figure 6 shows an example of an input image under progressive occlusion.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 7",
+     "page": 20,
+     "kind": "line plot",
+     "shows": "RGE score (y, about 0.5 to 1.0) against occluded image area in percent (x, 0 to 100), mean across 5 folds, per model. All curves fall from 1.0 to about 0.5 at 100 percent. Linear is lowest through about 70 percent (about 0.585 at 50 percent). RF and SVM are highest at about 20 to 40 percent (about 0.88 at 20 percent). QML lies between Linear and the other models at about 30 to 50 percent and close to MLP at about 60 to 100 percent. SVM is non-monotonic near 90 percent.",
+     "confirmed_by": "Random Forest achieves the highest overall RGE, indicating strong stability of predictions when visual information is systematically removed.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 8",
+     "page": 22,
+     "kind": "other",
+     "shows": "Radar plot with six axes (F1, RGA, AURGA, AURGR, AURGR Spatial, AURGE, plus AURGR FGSM) of min-max normalized metrics per model. SVM (orange) has the largest polygon on F1, RGA, AURGA and AURGR Spatial; QML (purple) is close to SVM on F1, RGA and AURGA, equal to the largest on AURGR and highest on AURGR FGSM, but about 0.4 on AURGR Spatial and AURGE; RF is highest on AURGE; Linear is near 0 on most axes; RF and SVM are set to zero on the FGSM axis for display.",
+     "confirmed_by": "The QML remains highly competitive, achieving the strongest robustness to Gaussian feature noise and the highest FGSM robustness among the models for which this attack is evaluated",
+     "no_text_confirms": false
+    }
+   ],
+   "what_it_is": "A hybrid classifier (ResNet-18 features, a classical pre-layer, a 9-qubit amplitude-encoded strongly entangling circuit simulated noiselessly) compared with four classical models on a three-class brain MRI dataset using accuracy and Cramer-von Mises based SAFE-AI robustness and explainability metrics.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "safe-qml-f1-competitive",
+     "verdict": "confirmed",
+     "note": "Right as stored (Table 1: QML 0.978 ± 0.004, SVM 0.983 ± 0.005, 5-fold cross-validation). The MLP baseline scores 0.959 ± 0.015, and no significance test is given.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "safe-qml-robustness-profile",
+     "verdict": "confirmed",
+     "note": "Right as stored. The margin is small: Table 3 AURGR is 0.9409 ± 0.0013 for QML against 0.9393 ± 0.0052 for SVM. The statement covers Gaussian feature noise only; under spatial perturbation SVM has the highest AURGR (0.9389) and QML is below RF, SVM and MLP.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "safe-qml-simulator-scope",
+     "verdict": "confirmed",
+     "note": "Right as stored (Section 3.1 p.5-6 and Section 6 p.23).",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "Section 6 states it as a limit.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "safe-qml-value-not-accuracy",
+     "verdict": "confirmed",
+     "note": "Right as stored (Section 5, p.23).",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "safe-architecture-resnet-amplitude-9q",
+     "value": "The authors state that the model uses a pretrained ResNet-18 as a feature extractor giving a 512-dimensional embedding, a trainable linear plus GELU pre-VQC layer, a normalized 9-qubit amplitude encoding, and a single Strongly Entangling Layer on 9 qubits, with Pauli-Z expectation values on each qubit passed to a linear layer.",
+     "anchor": "Section 3.1, p.5-6",
+     "quotes": [
+      "A pre-trained ResNet-18 model is utilized as a feature extractor.",
+      "embedded into a quantum state using a 9-qubit amplitude encoding Schuld & Killoran (2019b)",
+      "This layer consists of a linear transformation followed by a GELU nonlinearity",
+      "measuring the expectation values of the Pauli-Z operator on each qubit",
+      "the proposed QML employs the complete 512-dimensional feature representation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own architecture (Section 3.1, Figure 1).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The 9-qubit encoding holds 512 amplitudes, which is 2 to the 9th power."
+    },
+    {
+     "id_suggestion": "safe-no-dimensionality-reduction",
+     "value": "The authors state that, unlike dimensionality reduction methods such as principal component analysis, the proposed QML model employs the complete 512-dimensional feature representation.",
+     "anchor": "Section 3.1, p.5",
+     "quotes": [
+      "Unlike dimensionality reduction methods, such as principal component analysis, the proposed QML employs the complete 512-dimensional feature representation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own design.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "safe-parameter-count-262k",
+     "value": "The authors state that the hybrid model has a total of 262k trainable parameters, carried by the pre-VQC linear transformation, the variational parameters and the final linear layer.",
+     "anchor": "Section 3.1, p.6",
+     "quotes": [
+      "the proposed hybrid quantum–classical model comprises a total of 262k trainable parameters"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own model size.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Nearly all of the parameters are in the classical 512-unit pre-layer, not the circuit, which has 27 rotation angles for 9 qubits with 3 angles each."
+    },
+    {
+     "id_suggestion": "safe-prelayer-ablation-unquantified",
+     "value": "The authors state that an ablation in which the pre-VQC layer was removed resulted in substantially degraded performance and unstable training behavior.",
+     "anchor": "Section 3.1, p.5",
+     "quotes": [
+      "An ablation study in which this pre-VQC layer was removed resulted in substantially degraded performance and unstable training behavior"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no numbers for this ablation.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "No table or figure reports the ablation."
+    },
+    {
+     "id_suggestion": "safe-training-simulator-autodiff",
+     "value": "The authors state that the QML model is trained on a classical simulator with gradients from automatic differentiation, without parameter-shift, using Adam with learning rate 3 × 10^-3, batch size 32 and 20 training epochs, the same for the MLP and QML.",
+     "anchor": "Appendix A.2, p.29-30",
+     "quotes": [
+      "Both the MLP and the QML models are trained using the same optimization",
+      "strategy and hyperparameters to ensure consistency.",
+      "Since the QML is trained on a classical simulator, gradient evaluation is carried out through automatic differentiation within the classical computational graph,",
+      "without requiring parameter-shift techniques Mitarai et al. (2018) (necessary in real hardware).",
+      "Adam optimizer with learning rate η = 3 × 10−3, batch",
+      "size 32, and 20 training epochs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own training setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "safe-dataset-6056-mri",
+     "value": "The authors state that the Brain Cancer MRI dataset has 6,056 clinically verified MRI images from hospitals in Bangladesh in three classes: glioma (2,004), meningioma (2,004) and brain tumor (2,048), all 512 × 512 pixels.",
+     "anchor": "Section 4.1, p.11",
+     "quotes": [
+      "contains 6,056 clinically verified MRI images collected from multiple hospitals in Bangladesh",
+      "brain glioma (2,004 images), brain meningioma (2,004 images), and brain tumor (2,048 images)",
+      "All images are provided at a uniform resolution of 512 × 512 pixels"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own dataset.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "safe-preprocessing-resize-224",
+     "value": "The authors state that images are automatically cropped by contour-based thresholding, resized to 224 × 224 pixels and normalized channel-wise before a pretrained ResNet-18 yields a 512-dimensional vector per image.",
+     "anchor": "Section 4.1, p.11",
+     "quotes": [
+      "Cropped images are resized to 224 × 224 pixels to match the input requirements of ResNet18 and normalized channel-wise.",
+      "yielding a fixed 512-dimensional feature vector for each image"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own preprocessing.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "safe-baselines-and-mlp-ablation",
+     "value": "The authors state that the classical baselines are an L2 logistic regression, an RBF-kernel SVM, a random forest with 300 trees and an MLP with a single hidden layer of 512 units and GELU, the MLP having approximately 264k trainable parameters and standing in as an ablation that replaces the circuit with a classical hidden layer.",
+     "anchor": "Section 4.2, p.11",
+     "quotes": [
+      "a random forest with 300 trees (RF)",
+      "a shallow multilayer perceptron (MLP) with a single hidden layer of 512 units and GELU activation",
+      "We underline that the MLP has approximately 264k trainable parameters",
+      "the quantum circuit in the hybrid architecture is removed and replaced by a purely classical hidden layer"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own baselines.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The baselines other than the MLP have hyperparameters chosen by grid search (Appendix A.2); the QML and MLP share fixed settings, so the QML was not tuned."
+    },
+    {
+     "id_suggestion": "safe-evaluation-5fold-cv",
+     "value": "The authors state that all models are evaluated with 5-fold cross-validation (an 80 percent and 20 percent split in each fold) using macro F1, mean squared error and the SAFE-AI metrics RGA, RGR and RGE with their areas under the curves.",
+     "anchor": "Section 4.2, p.11; Appendix A.2, p.30",
+     "quotes": [
+      "All models are evaluated using 5-fold cross-validation.",
+      "following an 80%/20% split"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own evaluation protocol.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "safe-table1-predictive-performance",
+     "value": "The authors report in Table 1 mean F1-macro and MSE over folds of 0.983 ± 0.005 and 0.008 ± 0.002 for the SVM, 0.978 ± 0.004 and 0.013 ± 0.003 for QML, 0.938 ± 0.002 and 0.034 ± 0.002 for the Linear model and 0.934 ± 0.004 and 0.067 ± 0.001 for the random forest.",
+     "anchor": "Section 4.3.1, p.12",
+     "quotes": [
+      "SVM achieved the highest mean F1-macro score (0.983 ± 0.005), while also exhibiting the lowest mean squared error (MSE) (0.008 ± 0.002)",
+      "The proposed QML model achieved a mean F1-macro score of 0.978 ± 0.004",
+      "The Linear model achieved a mean F1-macro score of 0.938 ± 0.002 with a higher MSE (0.034 ± 0.002)",
+      "F1-macro 0.934 ± 0.004, but the largest MSE (0.067 ± 0.001)",
+      "QML also attained a low MSE (0.013 ± 0.003), comparable to the strongest classical models"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The QML-to-SVM gap (0.005 F1) is about one fold standard deviation; no significance test is reported."
+    },
+    {
+     "id_suggestion": "safe-qml-vs-mlp-f1",
+     "value": "The authors report that QML (F1-macro 0.978 ± 0.004, MSE 0.013 ± 0.003) outperforms the Linear, RF and MLP baselines, the MLP scoring 0.959 ± 0.015 F1-macro and 0.022 ± 0.007 MSE.",
+     "anchor": "Section 4.3.1, p.12",
+     "quotes": [
+      "closely approaching the performance of the SVM while outperforming the Linear, RF, and MLP baselines",
+      "MLP 0.959 ± 0.015 0.022 ± 0.007",
+      "QML also attained a low MSE (0.013 ± 0.003), comparable to the strongest classical models",
+      "The proposed QML model achieved a mean F1-macro score of 0.978 ± 0.004"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The MLP is the matched ablation. Its F1 standard deviation (0.015) is about the size of the 0.019 gap to QML. The QML and MLP share fixed hyperparameters, so a gap may reflect tuning."
+    },
+    {
+     "id_suggestion": "safe-fold-variability-claim",
+     "value": "The authors state that the observed fold-level variability supports the stability of the QML model, and that the sensitivity to fold-level variations remains limited.",
+     "anchor": "Section 4.3.1, p.12-13",
+     "quotes": [
+      "The observed fold-level variability supports the stability of the QML model.",
+      "In the present experiment, however, this sensitivity remains limited"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 1 shows the QML F1 fold standard deviation (0.004) equal to the RF's and SVM's (0.004 to 0.005) and lower than the MLP's (0.015)."
+    },
+    {
+     "id_suggestion": "safe-qualitative-errors-meningioma",
+     "value": "The authors state that some meningiomas are misclassified as gliomas, with the predicted probability spread more evenly across classes, and that a small number of examples show high confidence for an incorrect class.",
+     "anchor": "Section 4.3.1, p.13",
+     "quotes": [
+      "some meningiomas are misclassified as gliomas, which can be attributed to overlapping visual characteristics",
+      "A small number of examples exhibit high confidence for an incorrect class"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A qualitative observation on a few examples.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Figure 2 shows one meningioma predicted as glioma and one as brain tumor (probability about 0.76), so the figure also contains a confident error of the second kind. How the six shown scans were chosen is not stated."
+    },
+    {
+     "id_suggestion": "safe-rga-definition",
+     "value": "The authors define RGA with Y as the ground truth and the model prediction as Y prime, state that for a binary ground truth the rank graduation metric reduces to the area under the ROC curve, and compute the multiclass RG by a one-vs-rest strategy with a convex combination of per-class scores weighted by class frequencies.",
+     "anchor": "Section 3.2, p.7",
+     "quotes": [
+      "Set Y as the ground truth and Y ′ = Yˆ as the model prediction.",
+      "the rank graduation metric reduces to the well-known Area Under the ROC Curve RG = AU C",
+      "The overall multiclass RG is then obtained as a convex combination of the per-class RG scores, weighted by the empirical class frequencies in the evaluated split."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition of the metric it uses (Section 3.2).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "safe-rgr-rge-definition",
+     "value": "The authors define RGR by comparing the prediction on the original data with the prediction on perturbed data, and RGE by comparing the prediction on the full dataset with the prediction after removing the j-th feature or a group of features.",
+     "anchor": "Section 3.2, p.7-8",
+     "quotes": [
+      "Set Y = Yˆ as the prediction on the original data and Y ′ = Yˆ (p) as the prediction on perturbed data.",
+      "Set Y = Yˆ as the prediction on the full dataset and Y ′ = Yˆ (−j) as the prediction obtained after removing the j-th feature(s) (or a group of features)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition of the metrics it uses (Section 3.2).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "RGR and RGE measure how much predictions change, not whether they are correct, so a model that ignores its input scores 1.0."
+    },
+    {
+     "id_suggestion": "safe-aurg-areas-and-noise-setup",
+     "value": "The authors define AURGA, AURGR and AURGE as areas under the RGA, RGR and RGE curves for data removal, data perturbation and feature removal, with Gaussian noise raised from 0% to 300% of the signal range, the standard deviation of the test feature values within each fold.",
+     "anchor": "Section 4.3.3, p.15; Appendix A.2, p.30",
+     "quotes": [
+      "The noise level increases from 0% to 300% of the signal range, where the signal range is defined as the standard deviation of the test feature values within each cross-validation fold.",
+      "data removal (AURGA), data perturbation (AURGR) and feature removal (AURGE)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own metric and noise setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "safe-rge-image-occlusion-setup",
+     "value": "The authors state that explainability (RGE) is evaluated at the image level by blurring the most Grad-CAM-relevant patches of the input, with relevance from a frozen ResNet-18 plus linear probe shared across all models and a Gaussian blur of kernel size 31 and sigma 7.0.",
+     "anchor": "Section 4.3.4, p.18-19",
+     "quotes": [
+      "explainability is evaluated directly at the input image level through a structured occlusion process",
+      "Occluded patches are replaced with a Gaussian-blurred baseline",
+      "(kernel size 31, σ = 7.0)",
+      "the relevance ordering is shared across all models, ensuring that the occlusion strategy is model-agnostic"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own RGE protocol.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "The relevance map comes from a linear probe, not from the evaluated model, so RGE here measures stability under removal of regions that a different model found relevant."
+    },
+    {
+     "id_suggestion": "safe-rga-text-claim",
+     "value": "The authors report that all models keep a nearly perfect ranking accuracy when less than 40% of the data are removed, and that QML and SVM show a sharper drop once highly informative samples are taken out.",
+     "anchor": "Section 4.3.2, p.13",
+     "quotes": [
+      "All models maintain a nearly perfect ranking accuracy when less than 40% of the data are removed.",
+      "QML and SVM presented a sharper drop once highly informative samples were taken out"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Figure 3 shows QML and SVM staying near the top until about 90 percent removal, above Linear and MLP, so the sharper drop is a late and steep fall to 0 at full removal, and their AURGA values (0.9469, 0.9488) are the highest in Table 3."
+    },
+    {
+     "id_suggestion": "safe-rgr-gaussian-qml-highest",
+     "value": "The authors report that all models degrade monotonically with Gaussian noise and that QML achieves the highest overall robustness, as reflected by the largest AURGR value.",
+     "anchor": "Section 4.3.3, p.15",
+     "quotes": [
+      "All models exhibit a monotonic degradation as noise intensity increases",
+      "The QML achieves the highest overall robustness, as reflected by the largest AURGR value"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Figure 4 shows SVM above QML below about 150 percent noise."
+    },
+    {
+     "id_suggestion": "safe-table3-rows",
+     "value": "The authors report in the SAFE-AI comparison table (RGA, AURGA, AURGR, AURGE) 0.9996 ± 0.0002, 0.9469 ± 0.0014, 0.9409 ± 0.0013 and 0.6880 ± 0.0033 for QML, 0.9999 ± 0.0001, 0.9488 ± 0.0006, 0.9393 ± 0.0052 and 0.7090 ± 0.0074 for SVM, and 0.9994 ± 0.0001, 0.9404 ± 0.0017, 0.8891 ± 0.0006 and 0.7132 ± 0.0048 for RF.",
+     "anchor": "Section 4.3.5, Table 3, p.21",
+     "quotes": [
+      "QML 0.9996 ± 0.0002 0.9469 ± 0.0014 0.9409 ± 0.0013 0.6880 ± 0.0033",
+      "SVM 0.9999 ± 0.0001 0.9488 ± 0.0006 0.9393 ± 0.0052 0.7090 ± 0.0074",
+      "RF 0.9994 ± 0.0001 0.9404 ± 0.0017 0.8891 ± 0.0006 0.7132 ± 0.0048"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "QML has the lowest AURGE of the four non-linear models in the table and ranks second on AURGA, so the abstract's claim of stability under structured feature removal is not supported by Table 3."
+    },
+    {
+     "id_suggestion": "safe-table3-mlp-linear-rows",
+     "value": "The authors report in the SAFE-AI comparison table (RGA, AURGA, AURGR, AURGE) 0.9979 ± 0.0017, 0.9283 ± 0.0182, 0.9360 ± 0.0056 and 0.7004 ± 0.0163 for the MLP, and 0.9976 ± 0.0003, 0.9289 ± 0.0022, 0.8326 ± 0.0027 and 0.6477 ± 0.0171 for the Linear model.",
+     "anchor": "Section 4.3.5, Table 3, p.21",
+     "quotes": [
+      "MLP 0.9979 ± 0.0017 0.9283 ± 0.0182 0.9360 ± 0.0056 0.7004 ± 0.0163",
+      "Linear 0.9976 ± 0.0003 0.9289 ± 0.0022 0.8326 ± 0.0027 0.6477 ± 0.0171"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "safe-complementary-strengths",
+     "value": "The authors state that the SVM achieves the highest ranking accuracy (RGA) and the strongest robustness to data removal (AURGA), and that these differences illustrate the complementary strengths of classical and quantum models across the SAFE-AI dimensions.",
+     "anchor": "Section 4.3.5, p.21",
+     "quotes": [
+      "The SVM achieves the highest ranking accuracy (RGA) and the strongest robustness to data removal (AURGA)",
+      "These differences illustrate the complementary strengths of classical and quantum models across the SAFE-AI dimensions."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "safe-fgsm-robustness-subset",
+     "value": "The authors report AURGR under FGSM feature perturbation of 0.4508 ± 0.0057 for Linear, 0.6683 ± 0.0224 for MLP and 0.6961 ± 0.0062 for QML, evaluated only for models with supported input gradients, and that QML achieves the highest robustness among the evaluated models.",
+     "anchor": "Section 4.3.3, Table 2, p.15-16",
+     "quotes": [
+      "AURGR-FGSM 0.4508 ± 0.0057 – – 0.6683 ± 0.0224 0.6961 ± 0.0062",
+      "In our main comparison, FGSM is reported for the Linear model, MLP, and QML",
+      "Under FGSM perturbations, QML achieves the highest robustness among the evaluated models."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "RF and SVM were not attacked, so the comparison is among three models. The QML and MLP gap (0.028) is about one MLP fold standard deviation."
+    },
+    {
+     "id_suggestion": "safe-spatial-robustness-svm-mlp",
+     "value": "The authors report that under spatial image perturbations all models remain relatively stable across moderate transformation strengths, with SVM and MLP achieving the highest AURGR-Spatial values, and give AURGR-Spatial of 0.9163 ± 0.0163 for QML and 0.9389 ± 0.0130 for SVM.",
+     "anchor": "Section 4.3.3, Table 2, p.16",
+     "quotes": [
+      "with SVM and MLP achieving the highest AURGRSpatial values",
+      "AURGR-Spatial 0.8938 ± 0.0095 0.9240 ± 0.0130 0.9389 ± 0.0130 0.9248 ± 0.0091 0.9163 ± 0.0163"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "By Table 2, the columns are Linear, RF, SVM, MLP, QML, so QML (0.9163) is below RF, SVM and MLP; RF (0.9240) is within 0.0008 of MLP (0.9248)."
+    },
+    {
+     "id_suggestion": "safe-rge-rf-highest",
+     "value": "The authors report that Random Forest achieves the highest overall RGE, that QML improves upon the Linear baseline and remains competitive particularly at moderate occlusion levels, and that the Linear baseline shows the fastest decline.",
+     "anchor": "Section 4.3.4-4.3.5, p.21",
+     "quotes": [
+      "Random Forest achieves the highest overall RGE",
+      "The QML improves upon the Linear baseline and remains competitive, particularly at moderate occlusion levels.",
+      "the Linear baseline shows the fastest decline"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 3: QML AURGE 0.6880 is below RF (0.7132), SVM (0.7090) and MLP (0.7004)."
+    },
+    {
+     "id_suggestion": "safe-qml-vs-mlp-balanced",
+     "value": "The authors state that, despite the MLP having more trainable parameters, QML consistently demonstrates stronger and more balanced performance across almost all evaluation metrics, except AURGE and spatial AURGR, which may suggest a stability-oriented inductive bias from the variational quantum layer.",
+     "anchor": "Section 4.3.5, p.21",
+     "quotes": [
+      "the QML consistently demonstrates stronger and more balanced performance across almost all considered evaluation metrics, except AURGE and spatial AURGR",
+      "the inclusion of the variational quantum layer may provide a useful stability-oriented inductive bias"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with an author interpretation.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Single dataset, 5 folds, no significance tests; several QML-over-MLP gaps (F1, AURGR, FGSM) are within about one MLP standard deviation."
+    },
+    {
+     "id_suggestion": "safe-qml-advantage-feature-level-only",
+     "value": "The authors state that the QML advantage is more pronounced for perturbations applied directly to the extracted feature representation, such as Gaussian noise and FGSM, than for perturbations applied to the original images before feature extraction.",
+     "anchor": "Section 4.3.5, p.22",
+     "quotes": [
+      "the QML advantage is more pronounced for perturbations applied directly to the extracted feature representation, such as Gaussian noise and FGSM, than for perturbations applied to the original images before feature extraction"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Gaussian noise and FGSM act on the classifier's input features after the shared ResNet, so the comparison tests the downstream classifier only."
+    },
+    {
+     "id_suggestion": "safe-abstract-claims-balanced-profile",
+     "value": "The authors state in the abstract that the quantum model provides competitive predictive performance with a more balanced SAFE reliability profile, with improved robustness to noise and stability under structured feature removal.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "exhibiting a more balanced SAFE reliability profile, with improved robustness to noise and stability under structured feature removal"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author summary claim.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Section 4.3 and Table 3 show QML at 0.6880 AURGE, below RF, SVM and MLP, and SVM above QML on AURGA, so structured-feature-removal stability is not an advantage in the reported data; the body states the advantage is for Gaussian and FGSM feature noise."
+    },
+    {
+     "id_suggestion": "safe-theory-unitary-isometry",
+     "value": "The authors state that for any unitary U and any two quantum states the norm of the difference is preserved, so the quantum feature map is 1-Lipschitz with respect to its quantum state inputs.",
+     "anchor": "Section 3.3, Eq. 4, p.8",
+     "quotes": [
+      "For any unitary U and any two quantum states |ψ⟩ and |ϕ⟩, one has",
+      "Thus, the quantum feature map is 1-Lipschitz with respect to its quantum state inputs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement and its condition (any unitary, any two states) are quoted in Section 3.3; it is a standard identity that the paper asserts rather than proves.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "This holds for the circuit acting on a state; it does not bound sensitivity to the classical input, as the paper itself says."
+    },
+    {
+     "id_suggestion": "safe-theory-bounded-output-and-spectral-norm",
+     "value": "The authors state that Pauli-Z expectation values lie in the interval [-1, 1], and that since each quantum layer is unitary the product of the spectral norms of the quantum transformations equals one.",
+     "anchor": "Section 3.3, p.9",
+     "quotes": [
+      "for Pauli-Z measurements, the corresponding expectation values lie in the interval [−1, 1]",
+      "Since each quantum layer is unitary, the product of the spectral norms of the quantum transformations is equal to one."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statements are given with their conditions (Pauli-Z measurement, unitary layers) in Section 3.3; both are standard facts the paper asserts.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "safe-theory-gradient-norm-preserved",
+     "value": "The authors state that since every unitary satisfies the norm identity for its adjoint, the quantum layer cannot amplify the norm of the backpropagated gradient, and that this does not eliminate all potential sources of optimization difficulty.",
+     "anchor": "Section 3.3, Eq. 7-8, p.9-10",
+     "quotes": [
+      "the quantum layer cannot amplify the norm of the backprop-",
+      "Although this does not eliminate all potential sources of optimization difficulty in hybrid quantum-classical training"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A norm identity for unitaries, stated with its condition in Section 3.3, with the stated caveat.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The identity holds for the state-level adjoint; gradients with respect to classical weights also pass through the amplitude-encoding normalization."
+    },
+    {
+     "id_suggestion": "safe-theory-limit-lipschitz-hybrid",
+     "value": "The authors state that the norm-preserving constraints act on the internal quantum state representation and not necessarily on the original classical input, and that the Lipschitz behavior of the complete hybrid model also depends on the encoding map, the feature scaling and the final classical head.",
+     "anchor": "Section 3.3, p.10",
+     "quotes": [
+      "the constraints in Equations (4) and (8) act directly on the internal quantum state representation, not necessarily on the original classical input vector before encoding.",
+      "The overall Lipschitz behavior of the complete hybrid model also depends on the chosen encoding map, the scaling of the classical features, and the final classical output head."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit in Section 3.3.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The classical pre-layer (512 units, GELU) and the normalization are unconstrained, so no stability guarantee for the whole classifier follows from unitarity."
+    },
+    {
+     "id_suggestion": "safe-claim-implicit-regularizer",
+     "value": "The authors state that normalized input embeddings, unitary feature transformations and bounded readout reduce the model's effective freedom and may act as an implicit regularizer, limiting sensitivity to small perturbations and discouraging overfitting.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "These constraints reduce the model’s effective freedom and may act as an implicit regularizer, limiting sensitivity to small perturbations and discouraging overfitting."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper does not test the mechanism.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The MLP ablation changes more than unitarity (a classical hidden layer), so it does not isolate this mechanism."
+    },
+    {
+     "id_suggestion": "safe-cited-hybrid-amplitude-generalization",
+     "value": "The authors cite recent empirical evidence that hybrid quantum neural networks leveraging amplitude encoding can achieve improved generalization and enhanced stability in high-dimensional, low-sample regimes.",
+     "anchor": "Section 2.2, p.3-4",
+     "quotes": [
+      "Recent empirical evidence indicates that hybrid quantum neural networks lever-",
+      "can achieve improved generalization and enhanced stability in high-dimensional, low-sample regimes Chen et al. (2025)"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work (Chen et al. 2025, by overlapping authors).",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "safe-limit-no-timing-noiseless-future-work",
+     "value": "The authors state that future work will extend the framework to hardware-efficient circuits, multimodal MRI inputs and larger clinical datasets, and will assess errors from noisy hardware execution including gate noise, finite sampling and device imperfections.",
+     "anchor": "Section 6, p.23",
+     "quotes": [
+      "Future work will extend this framework to hardware-efficient quantum circuits, multimodal MRI inputs, and larger clinical datasets",
+      "the impact of gate noise, finite sampling, and device-specific imperfections on both predictive performance and SAFE-AI robustness metrics"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states these as open work in Section 6.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The study uses one dataset, a noiseless simulator and no hardware run, so no claim about noisy hardware follows."
+    },
+    {
+     "id_suggestion": "safe-conclusion-complementary-strengths",
+     "value": "The authors state in the conclusions that the SVM achieves the strongest overall predictive performance and ranking stability, that Random Forests provide the highest robustness to explainability, and that the QML has the strongest robustness to Gaussian perturbations together with the highest adversarial robustness among differentiable models.",
+     "anchor": "Section 5, p.23",
+     "quotes": [
+      "the SVM achieves the strongest overall predictive performance and ranking stability, while Random Forests provide the highest robustness to explainability",
+      "exhibits the strongest robustness to Gaussian perturbations, together with the highest adversarial robustness among differentiable models"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A summary of results from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The SVM with an RBF kernel is also differentiable but was not attacked with FGSM, so among differentiable models is a subset."
+    },
+    {
+     "id_suggestion": "safe-fig3-read-rga-curves",
+     "value": "Read from Figure 3: the RGA curves of all five models are near about 1.0 up to about 0.6 of the data removed, the Linear and MLP curves bend down first (about 0.96 at about 0.8 removed), RF, SVM and QML stay near about 1.0 until about 0.9, and all curves fall steeply to about 0.0 at full removal.",
+     "anchor": "Figure 3, p.14",
+     "quotes": [
+      "Degradation of ranking accuracy as a function of the fraction of removed samples."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read by eye from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "The text says that beyond 40 percent removal the decline varies by model, but the plotted curves differ little before about 70 percent removal."
+    },
+    {
+     "id_suggestion": "safe-fig4-read-noise-curves",
+     "value": "Read from Figure 4: the RGR score of the SVM stays near about 1.0 until about 120 percent noise and ends at about 0.83 at about 300 percent, while the QML and MLP curves begin falling earlier, lie above the SVM from about 160 to about 280 percent and end near about 0.82, the RF ends at about 0.75 and the Linear at about 0.69.",
+     "anchor": "Figure 4, p.17",
+     "quotes": [
+      "Robustness to additive Gaussian noise under increasing noise standard deviation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read by eye from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "QML's top AURGR therefore comes from mid-range noise; the SVM is more robust at low noise and about equal at 300 percent."
+    },
+    {
+     "id_suggestion": "safe-fig5-read-fgsm-spatial",
+     "value": "Read from Figure 5: under FGSM at the largest attack strength the QML RGR is about 0.38, the MLP about 0.35 and the Linear about 0.30, and under spatial perturbation at the strongest setting the QML RGR is about 0.775, the lowest of the five models, while the RF is about 0.845.",
+     "anchor": "Figure 5, p.18",
+     "quotes": [
+      "Robustness curves under FGSM feature perturbations (top) and spatial image perturbations (bottom)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read by eye from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "safe-fig7-read-rge-curves",
+     "value": "Read from Figure 7: all RGE curves fall from about 1.0 to about 0.5 at full occlusion, the Linear curve is lowest through about 70 percent occlusion (about 0.585 at about 50 percent), and the RF and SVM curves are highest at about 20 percent occlusion (about 0.88).",
+     "anchor": "Figure 7, p.20",
+     "quotes": [
+      "RGE explainability robustness curves on the MRI dataset under progressive occlusion."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read by eye from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "A value near 0.5 at full occlusion for every model means the RGE scale bottoms out at about 0.5 for this metric."
+    },
+    {
+     "id_suggestion": "safe-fig8-read-radar-min-max",
+     "value": "Read from Figure 8: the radar plot shows QML close to the largest polygon on the F1, RGA, AURGA, AURGR and FGSM axes but at about 0.4 on the AURGE axis, below RF, SVM and MLP, and about 0.35 on the spatial axis, after min-max normalization across models.",
+     "anchor": "Figure 8, p.22",
+     "quotes": [
+      "All metrics are min–max normalized across models.",
+      "FGSM robustness is evaluated only for the Linear, MLP, and QML models."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read by eye from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "Min-max normalization stretches small raw differences (such as AURGR 0.9409 against 0.9393) to the full 0 to 1 range, so the plot overstates differences."
+    },
+    {
+     "id_suggestion": "safe-fig2-read-examples",
+     "value": "Read from Figure 2: of the six example test scans, four are classified correctly and two true meningioma scans are misclassified, one as glioma with probabilities of about 0.64, about 0.35 and about 0.01, and one as brain tumor with about 0.01, about 0.24 and about 0.76.",
+     "anchor": "Figure 2, p.14",
+     "quotes": [
+      "Quantum-based tumor classification on unseen MRI scans. Each image shows the true label, predicted class, and the model’s softmax probabilities"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read by eye from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "Six images are an illustration, not a sample; the text does not say how they were chosen."
+    }
+   ]
+  },
+  {
+   "record_id": "chen-2026-stochastic-quantum-spiking-neural-networks",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2025\\Chen-Rajendran-Simeone_2025_Stochastic-Quantum-Spiking-Neural-Networks-with-Quantum-Memory__2506.21324.pdf",
+   "title_in_file": "Stochastic Quantum Spiking Neural Networks with Quantum Memory and Local Learning",
+   "version_note": "arXiv 2506.21324v3, dated 14 Jul 2026, marked Published in IEEE Journal on Selected Areas in Communications; the file name carries 2025, the record id 2026. It is the paper the record names.",
+   "pages": 16,
+   "read_extent": "full",
+   "not_read": "",
+   "sections_read": [
+    "Abstract",
+    "I. Introduction (A. Context and Motivation, B. Main Contributions)",
+    "II. Prior Work: Quantum Leaky Integrate-and-Fire Neuron",
+    "III. Stochastic Quantum Spiking Neuron Model (A to D)",
+    "IV. Local Training of SQS-based Neural Networks (A to F)",
+    "V. Experiments (A. Tasks, B. Benchmarks, C. Architecture, D. Evaluating the Local Learning Rule, E. Natural Image Tasks, F. Neuromorphic Vision Task, G. Effect of Multiple Qubits in SQS neurons, H. Neuromorphic Integrated Sensing and Communications)",
+    "VI. Conclusions",
+    "Appendix A: Surrogate Gradient Learning",
+    "References"
+   ],
+   "figure_count": 11,
+   "figures": [
+    {
+     "figure": "Figure 1",
+     "page": 2,
+     "kind": "circuit diagram",
+     "shows": "Schematic of an SQS neuron with N = 3 input-output qubits and Nmem = 3 memory qubits: classical logic turns incoming spikes x_1 to x_T into input currents; at each time step a block U(z_t, theta) acts on the six-qubit register, the three input-output qubits are measured to give spikes s_t and reset to |0>, and the three memory qubits (orange) are not measured and carry over. Below, each U is shown as RX rotations on the input qubits followed by an ansatz V(theta).",
+     "confirmed_by": "In this work, we address the limitations of the QLIF neuron discussed above by proposing the Stochastic Quantum Spiking (SQS) neuron model illustrated in Fig. 1, along with the corresponding SQS neural networks (SQSNNs).",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 2",
+     "page": 4,
+     "kind": "block diagram",
+     "shows": "Schematic of the QLIF neuron of prior work: presynaptic spikes are weighted and summed into z_s and z_o, encoded as an RX rotation on a single qubit, measured over multiple shots and averaged into a spike probability alpha_t, with a recovery step for the next time step; shown for times t = 1 and t = 2.",
+     "confirmed_by": "A single qubit (green) serves as the neuron’s internal state, evolving in discrete time steps via a measure-and-prepare scheme.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 3",
+     "page": 5,
+     "kind": "block diagram",
+     "shows": "Presynaptic neurons SQS 1 to SQS P connected by weights w to one SQS neuron through summing nodes giving N input currents z^1 to z^N and N output spikes s^1 to s^N.",
+     "confirmed_by": "Illustration of the connection between a set of P presynaptic neurons and the SQS neuron of interest.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 4",
+     "page": 6,
+     "kind": "block diagram",
+     "shows": "Directed graph of an SQSNN with six neurons: neurons 1 and 2 feed 4, neuron 3 feeds 5, neurons 4 and 5 feed 6; neurons 1 to 5 form the hidden set H and neuron 6 is the only output neuron O; every node has a self-loop; parent sets P4, P5 and P6 are marked.",
+     "confirmed_by": "Neurons {1, 2, 3, 4, 5} are hidden, and neuron 6 is the only output neuron (O = {6}).",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 5",
+     "page": 8,
+     "kind": "block diagram",
+     "shows": "Three-step schematic of the local zeroth-order learning rule: (1) run M global forward passes producing hidden spikes h^T(m) and losses l(m); (2) global feedback of l(1) to l(M) to the hidden neurons; (3) local perturbation-based gradient estimates inside each neuron.",
+     "confirmed_by": "the evaluation of M global feedback signals at the output SQS neurons",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 6",
+     "page": 10,
+     "kind": "circuit diagram",
+     "shows": "Two-qubit circuit of one SQS neuron with N = 1 and Nmem = 1: an RX(phi) rotation on the input-output qubit, then an ansatz of a controlled-RX gate (control on the input-output qubit, angle theta_i,1 on the memory qubit) and single-qubit RX gates with angles theta_i,2 and theta_i,3.",
+     "confirmed_by": "Illustration of the quantum circuit for a SQS neuron with N = 1 and Nmem = 1",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 7",
+     "page": 11,
+     "kind": "line plot",
+     "shows": "USPS test accuracy (y) against training iterations (x) on ibm_brisbane. (a) Without error mitigation, 1 to 40 iterations, y 60 to 100: M=1, Msyn=5 (red solid) rises to about 95; M=5, Msyn=5 (red dashed) stays at about 70 to 72; M=5, Msyn=2 (blue dashed) levels at about 76 after about 6 iterations; M=1, Msyn=2 (blue solid) levels at about 65. (b) With zero noise extrapolation, 1 to 80 iterations, y 80 to 100: ideal local learning (M=1 and M=5, red) near about 99; M=5, Msyn=5 (green solid) reaches about 98 by about 40 iterations; M=1, Msyn=2 (blue dashed) reaches about 97 at 80 iterations; M=1, Msyn=5 (green dashed) is about 90 to 93 at 80 iterations; the surrogate gradient (black) rises later and reaches about 98 at 80 iterations.",
+     "confirmed_by": "With M = 1 and Msyn = 5, the SQSNN model is seen to achieve a peak test accuracy of nearly 95%, even in the absence of QEM.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 8",
+     "page": 12,
+     "kind": "bar chart",
+     "shows": "Box plots on MNIST, FMNIST and KMNIST for QLIF-SNN, SNN, QNN and SQSNN. (a) Test accuracy (y, 40 to 100): MNIST about 59, 89, 91, 96; FMNIST about 57, 73, 79, 83; KMNIST about 42, 82, 68, 86. (b) Average per-time number of spikes (y, 0 to 500): QLIF-SNN about 15 to 30; SNN about 490 (MNIST), 405 (FMNIST), 400 (KMNIST); SQSNN about 220, 167, 180.",
+     "confirmed_by": "As shown in Fig. 8(a), the SQSNN model consistently achieves the highest test accuracy across all three datasets",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 9",
+     "page": 12,
+     "kind": "line plot",
+     "shows": "MNIST-DVS test accuracy (y, 55 to 100) against average per-time number of spikes (x, 0 to 100) under varying regularization strength lambda, with shaded bands: SQSNN rises from about 92.5 at about 22 spikes to about 95 at about 80 spikes; SNN rises from about 84 at about 3 spikes to about 90 at about 10 and about 91 at about 75 to 97; QLIF-SNN lies at about 59 to 65 at about 40 to 62 spikes.",
+     "confirmed_by": "In Fig. 9, we compare the test accuracy versus the average number of spikes per time step for the SNN, QLIF-SNN, and SQSNN models",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 10",
+     "page": 13,
+     "kind": "bar chart",
+     "shows": "FMNIST box plots for QLIF-SNN, SNN and SQSNN with (N, Nmem) = (1,1), (2,1), (2,2). Top, test accuracy (y, 50 to about 83): about 52, 74, 79 (box about 77 to 80), 82, 82.5. Bottom, average per-time per-neuron number of spikes (y, 0 to 0.3): about 0.03, 0.295, 0.19, 0.2, 0.195.",
+     "confirmed_by": "Fig. 10 shows that enlarging the quantum neuron dimension consistently improves classiﬁcation accuracy while maintaining sparse spike activity.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 11",
+     "page": 14,
+     "kind": "line plot",
+     "shows": "N-ISAC receiver, SQSNN (blue) against SNN (orange) versus number of training batches of 128 samples (x, about 5 to 150), with shaded bands. (a) Decoding accuracy: SQSNN about 60 at about 5 batches to about 78 at 150; SNN about 51 to about 76.5. (b) Sensing accuracy: SQSNN about 86 at about 5 batches, SNN about 55; both about 99 from about 90 batches. (c) Average spikes per time step: SQSNN about 3.5 rising to about 4.4; SNN about 4.0 rising to about 6.1.",
+     "confirmed_by": "Test decoding accuracy, sensing accuracy, and average number of spikes per time step of the N-ISAC system using SNN and SQSNN",
+     "no_text_confirms": false
+    }
+   ],
+   "what_it_is": "A proposal of a multi-qubit stochastic quantum spiking neuron with unmeasured memory qubits and single-shot spikes, a local perturbation-based training rule run on ibm_brisbane for a small task, and surrogate-gradient simulations on image, neuromorphic and sensing benchmarks.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "sqsnn-benchmarks-by-classical-simulation",
+     "verdict": "confirmed",
+     "note": "Right as stored (Section V-D, p.11-12). The classical-simulation surrogate-gradient method also applies to the neuromorphic and sensing experiments, and the surrogate-gradient method is described in Appendix A.",
+     "value": "",
+     "anchor": "",
+     "quotes": [],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "Section V states its scope.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "sqsnn-highest-accuracy-matched-params",
+     "verdict": "narrowed",
+     "note": "The statement holds for the figure-based result but is limited: the inputs are rate-encoded (spike-encoded), the models are trained by classical simulation with a surrogate gradient, and Section V-B says the models have approximately the same number of trainable parameters (the introduction says the same number). Figure 8(a) shows the QNN above the SNN on MNIST and FMNIST.",
+     "value": "The authors report that, on rate-encoded inputs and with models configured to have approximately the same number of trainable parameters, the SQSNN consistently achieves the highest test accuracy across the MNIST, FMNIST and KMNIST datasets in classical simulation with a surrogate gradient.",
+     "anchor": "Section V-C and V-E, p.10-12",
+     "quotes": [
+      "we encode the inputs for the MNIST, FMNIST and KMNIST datasets using rate encoding",
+      "All models are conﬁgured to have approximately the same number of trainable parameters.",
+      "the SQSNN model consistently achieves the highest test accuracy across all three datasets",
+      "we henceforth employ classical simulations using a surrogate gradient-based approach to approximate the learning dynamics of the proposed rule"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The paper does not state the number of seeds behind the box plots in Figure 8, and gives no table of values."
+    },
+    {
+     "id": "sqsnn-ibm-brisbane-usps",
+     "verdict": "widened",
+     "note": "Right as stored. The fuller result adds the settings (Mp = 5, Msom = 1, the USPS 1 versus 7 task), that fewer shots (Msyn = 2) or more global passes (M = 5) reduced accuracy without mitigation, that mitigation is zero noise extrapolation, and that about 98 percent at about 40 iterations matches the ideal local rule. Figure 7(b) also shows that at M = 1 the Msyn = 2 curve (about 97 at 80 iterations) is above the Msyn = 5 curve (about 92), against the text.",
+     "value": "The authors report that local training of the SQSNN on the USPS digit 1 versus 7 task on ibm_brisbane (Msom = 1, Mp = 5) reached a peak test accuracy of nearly 95% with M = 1 and Msyn = 5 without error mitigation, while lower shot counts (Msyn = 2) or more global forward passes (M = 5) exhibited reduced accuracy, and with zero noise extrapolation M = 5 and Msyn = 5 reached around 98% at around 40 iterations, matching the ideal local learning rule.",
+     "anchor": "Section V-A, p.9; Section V-D, p.11",
+     "quotes": [
+      "focusing on distinguishing between the digits “1” and “7”",
+      "while varying the parameters M and Msyn with Msom = 1 and Mp = 5.",
+      "With M = 1 and Msyn = 5, the SQSNN model is seen to achieve a peak test accuracy of nearly 95%, even in the absence of QEM.",
+      "exhibit reduced accuracy.",
+      "with M = 5 and Msyn = 5, SQSNN obtains a test accuracy around 98% at around 40 iterations, which matches that of the corresponding ideal local learning rule",
+      "shot counts for the synaptic weights, e.g., Msyn = 2, or a higher numbers of global forward passes, e.g., M = 5,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "A two-qubit-per-neuron network on a binary task; no error bars or repeat count are given for the hardware curves."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "sqsnn-neuron-architecture",
+     "value": "The authors state that the SQS neuron has N input-output qubits and Nmem memory qubits for Ntot = N + Nmem qubits, that the memory qubits are not measured and retain information across time steps, and that the neuron is run once per time step with a single-shot measurement.",
+     "anchor": "Section III, p.4-5",
+     "quotes": [
+      "the SQS neuron encompasses two groups of qubits: N input-output qubits and Nmem memory qubits for a total of Ntot = N +Nmem qubits",
+      "the memory qubits are not measured, retaining",
+      "producing a random N -dimensional spiking output on the basis of a single-shot measurement"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition of its neuron model in Section III.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sqsnn-spike-by-born-rule",
+     "value": "The authors state that, by Born's rule, the probability of the output spikes is given by the reduced density matrix of the input-output qubits, and that the measured input-output qubits collapse and the memory qubits keep the post-measurement state as memory.",
+     "anchor": "Section III-D, p.5",
+     "quotes": [
+      "By Born’s rule, the probability of producing the output",
+      "the post-measurement state of the memory qubits is described by the density matrix"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition of the neuron dynamics (Eq. 15 to 17).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sqsnn-embedding-no-rotation-nonpositive",
+     "value": "The authors state that when the input current is not positive the corresponding qubit applies no rotation, and that sparsity in the spiking signals therefore reduces the complexity of the classical logic and of the quantum operations on the neuron's qubit.",
+     "anchor": "Section III-B, p.5",
+     "quotes": [
+      "does not apply any rotation, reducing the number of internal",
+      "Therefore, sparsity in the spiking signals xtn reduces the complexity of both the classical logic evaluating (12) and the quantum operations applied to the"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A consequence of the paper's own encoding rule (Eq. 12).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sqsnn-network-structure",
+     "value": "The authors state that an SQSNN is a directed graph of SQS neurons split into hidden and output neurons, that the output neurons have no outgoing edges, and that SQSNN models can be obtained by replacing classical LIF neurons with SQS neurons while preserving the topology.",
+     "anchor": "Section IV-A, p.6",
+     "quotes": [
+      "the output neurons do not have any outgoing edges, representing the last layer of the network",
+      "SQSNN models can be obtained by replacing classical LIF neurons with SQS neurons, while preserving the original network topology"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition of its network model.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sqsnn-fixed-pqc-is-reservoir",
+     "value": "The authors state that when the circuits of all neurons are fixed and not trained, the SQSNN can be interpreted as a form of quantum reservoir computing with mid-circuit measurements.",
+     "anchor": "Section IV-A, p.6",
+     "quotes": [
+      "when the PQCs of all neurons are ﬁxed and not trained, the SQSNN architecture introduced here can be interpreted as a form of quantum reservoir computing (QRC) with mid-circuit measurements"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "A statement of the model's relation to reservoir computing, given with its condition.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sqsnn-local-rule-meaning",
+     "value": "The authors state that the training rule is local in the sense that parameter updates are evaluated at each neuron from locally available information along with a scalar global feedback signal, and that it builds on standard zeroth-order perturbation-based gradient estimates within each neuron.",
+     "anchor": "Section IV, p.6",
+     "quotes": [
+      "updates to the parameters can be evaluated at each neuron based on information available locally, along with a scalar global feedback signal",
+      "The local training rule builds on standard zero-th order perturbation-based gradient estimates [36] within each neuron, while enforcing cooperation across all neurons via global feedback signals."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition of what local means in its rule.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The rule needs a global scalar feedback broadcast to the hidden neurons and M global forward passes, so it is local only in the stated sense."
+    },
+    {
+     "id_suggestion": "sqsnn-likelihood-upper-bound",
+     "value": "The authors derive an upper bound on the negative log-likelihood of the output spikes by applying Jensen's inequality over the hidden neurons' spiking, and state that the bound can be approximated by a Monte-Carlo estimate from forward passes.",
+     "anchor": "Section IV-D, p.7",
+     "quotes": [
+      "where the second line follows from Jensen’s inequality [19].",
+      "is that it can be approximated via a Monte-Carlo estimate"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The statement of the bound (Eq. 25) could not be quoted cleanly from the text layer.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The bound is minimized instead of the exact log-loss, so the learned parameters need not minimize the marginal likelihood."
+    },
+    {
+     "id_suggestion": "sqsnn-global-passes-constant",
+     "value": "The authors state that the local rule reduces the number of global forward executions from a quantity proportional to the number of parameters to the constant M, with a single set of M forward runs after which local updates are computed independently for each neuron.",
+     "anchor": "Section IV-E, p.8",
+     "quotes": [
+      "the number of global forward executions is reduced from a quantity proportional to the number of parameters |Θ| to the constant M",
+      "our method performs just one set of M forward runs, after which local updates are computed independently for each neuron"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement of a cost count without a worked proof; Section IV-F gives the pass counts.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The local forward passes still scale with the number of PQC parameters and synaptic weights per neuron, as the counts in Section IV-F show."
+    },
+    {
+     "id_suggestion": "sqsnn-local-gradient-estimators",
+     "value": "The authors state that synaptic-weight gradients are estimated by simultaneous perturbation stochastic approximation (SPSA) and PQC-parameter gradients by the parameter-shift rule, with 2MpMsyn local shots per neuron for the synaptic weights and 2MpMsom per PQC angle.",
+     "anchor": "Section IV-F, p.9",
+     "quotes": [
+      "with respect to synaptic weight wi, we apply SPSA.",
+      "we apply the PSR to each individual",
+      "Therefore, the number of local shots for each neuron i for the synaptic weights is 2MpMsyn."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition of its estimators.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The per-angle shot count 2MpMsom is in the text layer but outside the quotes."
+    },
+    {
+     "id_suggestion": "sqsnn-local-vs-global-pass-count",
+     "value": "The authors state that the method needs M global forward passes followed by 2T Mp|S|(MsomG+Msyn) local passes, contrasted with 2T M Mp|S|(MsomG + Msyn) global forward passes for conventional zeroth-order training.",
+     "anchor": "Section IV-F, p.9",
+     "quotes": [
+      "followed by 2T Mp|S|(MsomG+Msyn) local passes, with G denoting the number of PQC parameters per neuron and |S| being the number of neurons.",
+      "This is contrasted with the 2T M Mp|S|(MsomG + Msyn) global forward passes"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author-stated cost count; the text layer prints the formula flat.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The total number of circuit executions is the same order in both cases; the saving is that most of them are local rather than whole-network passes."
+    },
+    {
+     "id_suggestion": "sqsnn-tasks-and-datasets",
+     "value": "The authors state that the tasks are USPS digits 1 versus 7 with 16 × 16 images and T = 10 time steps, MNIST, FMNIST and KMNIST of 28 × 28 images with T = 5, and MNIST-DVS with 676 spike trains per sample, 900 training and 100 test examples per class, using the first T = 20 time steps.",
+     "anchor": "Section V-A, p.9-10",
+     "quotes": [
+      "Each input image is a 16 × 16 grayscale representation of a digit",
+      "a spike train of T = 10 time steps is generated by sampling from a Bernoulli distribution",
+      "Each dataset consists of grayscale images of size 28 × 28.",
+      "We set T = 5 discrete time steps.",
+      "Each data point contains 26 × 26 = 676 spike trains",
+      "The dataset provides 900 training examples and 100 testing examples per class.",
+      "only the ﬁrst T = 20 time steps are used for classiﬁcation",
+      "focusing on distinguishing between the digits “1” and “7”"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own experimental setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The MNIST-family tasks use rate-encoded spikes with T = 5, not the dense image inputs of the prior QLIF work."
+    },
+    {
+     "id_suggestion": "sqsnn-experiment-purpose-competitive",
+     "value": "The authors state that the purpose of the MNIST, FMNIST and KMNIST experiments is primarily to validate that the SQSNN remains competitive with existing spiking and quantum-spiking models under comparable parameter budgets on spike-encoded temporal data.",
+     "anchor": "Section V-A, p.10",
+     "quotes": [
+      "The purpose of the experiments on MNIST, FMNIST, and KMNIST is primarily to validate that the proposed SQSNN remains competitive relative to existing spiking and quantum-spiking models under comparable parameter budgets when operating on spike-encoded temporal data."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own statement of the scope of these experiments.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sqsnn-baselines-and-param-matching",
+     "value": "The authors state that the SQSNN is benchmarked against a classical LIF SNN trained by surrogate gradient, a QLIF-SNN and a quantum variational classifier QNN, all configured to have approximately the same number of trainable parameters, with 1000 hidden SQSNN neurons for MNIST, FMNIST and KMNIST and 256 for MNIST-DVS.",
+     "anchor": "Section V-B and V-C, p.10",
+     "quotes": [
+      "Classical feedforward SNN model based on LIF neurons, trained using surrogate gradient descent with backpropagation.",
+      "QNN [47]: A quantum variational classiﬁer with classical intput and read-out layers.",
+      "All models are conﬁgured to have approximately the same number of trainable parameters.",
+      "1000 hidden neurons for the MNIST, FMNIST and KMNIST datasets, and 256 neurons for the MNIST-DVS dataset"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own benchmark setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Equal parameter counts do not equalize circuit evaluations or classical operations; the SQSNN runs one small circuit per neuron per time step in simulation."
+    },
+    {
+     "id_suggestion": "sqsnn-circuit-config-small",
+     "value": "The authors state that each SQS neuron in the experiments has N = 1 input-output qubit and Nmem = 1 memory qubit with an ansatz of a controlled-RX gate and single-qubit RX rotations, three trainable parameters per neuron, and a learning rate of 5 × 10^-4 for all models.",
+     "anchor": "Section V-C, p.10",
+     "quotes": [
+      "we conﬁgure the quantum circuit with N = 1 input-output qubit and Nmem = 1 memory qubit",
+      "consists of a controlled-RX (CRX) gate followed by single-qubit RX rotations applied independently to",
+      "each SQS neuron i has three parameters in vector θi to be learned",
+      "The learning rate is set to 5 × 10−4 for all models."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own configuration.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Two qubits per neuron is a small circuit that is easily simulated classically."
+    },
+    {
+     "id_suggestion": "sqsnn-scaling-limit-qubits",
+     "value": "The authors state that scaling to larger N or Nmem would increase the capacity of each neuron but is currently limited mainly by the exponential cost of classical simulation and the limited availability of qubits on cloud quantum platforms, and that larger values also raise the likelihood of overfitting.",
+     "anchor": "Section V-C, p.10",
+     "quotes": [
+      "scaling to larger N or Nmem would increase the capacity of each SQS neuron, but is currently limited mainly by the exponential cost of classical simulation",
+      "but also increasing the likelihood of overﬁtting [49, 50]"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states this as a limit in Section V-C.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sqsnn-hardware-setup-qem",
+     "value": "The authors state that they implement the local training rule on ibm_brisbane using Qiskit, with and without quantum error mitigation using the zero noise extrapolation algorithm of the Mitiq library, varying M and Msyn with Msom = 1 and Mp = 5.",
+     "anchor": "Section V-D, p.11",
+     "quotes": [
+      "we implement the local training rule on the IBM quantum computer ibm brisbane using Qiskit [51]",
+      "Fig. 7(b) implements QEM using the zero noise extrapolation algorithm provided by the Mitiq library[51].",
+      "while varying the parameters M and Msyn with Msom = 1 and Mp = 5."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own hardware setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sqsnn-hardware-more-shots-hurt",
+     "value": "The authors report that without error mitigation raising the shots from Msyn = 2 to Msyn = 5 at M = 5 leads to a performance drop, which they attribute to the non-stationarity of NISQ hardware.",
+     "anchor": "Section V-D, p.11",
+     "quotes": [
+      "of measurement shots from Msyn = 2 to Msyn = 5 at ﬁxed",
+      "M = 5 leads to a performance drop. We attribute this behavior to the non-stationarity of NISQ hardware."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study with an untested explanation.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The drift explanation is not tested; the paper shows no calibration data for these runs."
+    },
+    {
+     "id_suggestion": "sqsnn-qem-improves-stabilizes",
+     "value": "The authors state that with error mitigation increasing either the global passes M or the shots Msyn improves test accuracy, that both generally must be increased for the best performance, and that the use of QEM further improves and stabilizes SQSNN performance.",
+     "anchor": "Section V-D, p.11",
+     "quotes": [
+      "increasing either the number of global forward passes M or the number of measurement shots Msyn leads to improved test accuracy",
+      "it is generally necessary to increase both numbers in order to obtain the best performance",
+      "the use of QEM is concluded to further improve the performance of SQSNNs, while also stablizing its performance as a function of the number of global forward passes and shots"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "In Figure 7(b) the M = 1, Msyn = 2 curve (about 97 at 80 iterations) lies above the M = 1, Msyn = 5 curve (about 92), so more shots did not help at M = 1."
+    },
+    {
+     "id_suggestion": "sqsnn-surrogate-close-to-ideal",
+     "value": "The authors state that the surrogate gradient strategy, which relies on an efficient classical simulation, provides a close approximation of the performance of the ideal local learning rule at convergence.",
+     "anchor": "Section V-D, p.11",
+     "quotes": [
+      "provides a close approximation of the performance of the ideal local learning rule at convergence"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (one binary task).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "This is the justification for using the surrogate gradient on all larger benchmarks, and it was checked only on the USPS binary task."
+    },
+    {
+     "id_suggestion": "sqsnn-fig7-read-curves",
+     "value": "Read from Figure 7: without mitigation the configuration with a single global pass and five weight shots reaches about 95 at about 40 iterations, while the configuration with five global passes and five weight shots stays at about 70 to about 72 and the one with a single global pass and two weight shots at about 65; with zero noise extrapolation the single-pass two-shot curve reaches about 97 at about 80 iterations, above the single-pass five-shot curve at about 92.",
+     "anchor": "Figure 7, p.11",
+     "quotes": [
+      "Test accuracy versus training iterations on a NISQ device without QEM"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read by eye from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "The M = 1, Msyn = 5 configuration is the best without mitigation and worse than Msyn = 2 with mitigation, so the best setting depends on mitigation."
+    },
+    {
+     "id_suggestion": "sqsnn-natural-image-spikes",
+     "value": "The authors report that the QLIF-SNN has the lowest number of spikes but substantially lower accuracy, and that the SQSNN achieves the most favorable performance tradeoff, maintaining both high accuracy and moderate spiking activity.",
+     "anchor": "Section V-E, p.12",
+     "quotes": [
+      "the QLIF-SNN model exhibits the lowest number of spikes, but at the cost of a substantially lower accuracy",
+      "the SQSNN model achieves the most favorable performance tradeoff, maintaining both high accuracy and moderate spiking activity"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sqsnn-fig8-read-accuracy-spikes",
+     "value": "Read from Figure 8: test accuracy on MNIST is about 59 for QLIF-SNN, about 89 for SNN, about 91 for QNN and about 96 for SQSNN; on FMNIST about 57, about 73, about 79 and about 83; on KMNIST about 42, about 82, about 68 and about 86; and the average per-time number of spikes is about 220 (MNIST), about 167 (FMNIST) and about 180 (KMNIST) for SQSNN against about 490, about 405 and about 400 for SNN.",
+     "anchor": "Figure 8, p.12",
+     "quotes": [
+      "Test accuracy and average number of spike per time of SNN, QNN, QLIF-SNN and SQSNN models on the MNIST, FMNIST, and KMNIST datasets"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read by eye from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "The QNN is above the SNN on MNIST and FMNIST in Figure 8(a), and the SNN is above the QNN on KMNIST. The figure does not state the seed count behind the boxes."
+    },
+    {
+     "id_suggestion": "sqsnn-mnist-dvs-accuracy-vs-spikes",
+     "value": "The authors report that on MNIST-DVS under varying regularization strengths the SQSNN consistently outperforms both baselines and achieves the highest accuracy across a broad range of spiking sparsity levels, and that the QLIF-SNN has significantly lower accuracy at similar or higher spike counts.",
+     "anchor": "Section V-F, p.12",
+     "quotes": [
+      "The results demonstrate that the SQSNN consistently outperforms both baseline models, achieving the highest accuracy across a broad range of spiking sparsity levels.",
+      "In contrast, QLIF-SNN exhibits signiﬁcantly lower accuracy at similar or higher spike counts."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sqsnn-fig9-read-mnist-dvs",
+     "value": "Read from Figure 9: on MNIST-DVS the SQSNN test accuracy rises from about 92.5 at about 22 spikes to about 95 at about 80 spikes, the SNN from about 84 at about 3 spikes to about 91 at about 75 to about 97 spikes, and the QLIF-SNN lies at about 59 to about 65 at about 40 to about 62 spikes.",
+     "anchor": "Figure 9, p.12",
+     "quotes": [
+      "Accuracy versus average number of spikes per time step for SNN, QLIF-SNN and SQSNN on the MNIST-DVS dataset under varying regularization strengths"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read by eye from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "The SQSNN points start at about 22 spikes and do not cover the low-spike range where the SNN is evaluated."
+    },
+    {
+     "id_suggestion": "sqsnn-multi-qubit-fmnist",
+     "value": "The authors report on FMNIST that enlarging the quantum neuron dimension consistently improves accuracy while maintaining sparse spike activity, that the minimal configuration (N = 1, Nmem = 1) outperforms both QLIF-SNN and the classical SNN with a lower spike rate, and that N = 2 with Nmem = 2 gives the best performance.",
+     "anchor": "Section V-G, p.13",
+     "quotes": [
+      "Fig. 10 shows that enlarging the quantum neuron dimension consistently improves classiﬁcation accuracy while maintaining sparse spike activity.",
+      "The minimal SQS conﬁguration (N = 1, Nmem = 1) already outperforms both QLIF-SNN and classical SNN baselines with a lower spike rate.",
+      "adding an additional memory qubit (Nmem = 2) achieves the best overall performance"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study (one dataset).",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Figure 10 shows the default (1,1) configuration at about 79 on FMNIST, while Figure 8(a) shows the SQSNN at about 83 on FMNIST and QLIF-SNN at about 57 against about 52 in Figure 10; the paper does not explain the differences between the two figures."
+    },
+    {
+     "id_suggestion": "sqsnn-fig10-read-multi-qubit",
+     "value": "Read from Figure 10: FMNIST test accuracy is about 52 for QLIF-SNN, about 74 for SNN, about 79 for the smallest SQSNN configuration, about 82 for the middle one and about 82.5 for the largest, and the average per-time per-neuron spikes are about 0.19 to about 0.2 for the SQSNN configurations against about 0.295 for SNN.",
+     "anchor": "Figure 10, p.13",
+     "quotes": [
+      "Test accuracy and average per-time per-neuron number of spikes for QLIF-SNN, SNN and SQSNN models with conﬁgurations"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read by eye from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "The gain from (2,1) to (2,2) is within about 1 point, near the box spread."
+    },
+    {
+     "id_suggestion": "sqsnn-nisac-setup",
+     "value": "The authors state that the N-ISAC scenario uses impulse-radio pulse-position modulation over a multipath fading channel with an optional radar target, a neuromorphic receiver with two readout heads, a weighting coefficient set to 0.3, and training batches of 128 samples.",
+     "anchor": "Section V-H, p.13",
+     "quotes": [
+      "an impulse-radio transmitter employs pulse-",
+      "In the exper-",
+      "where each training batch contains 128 samples",
+      "iments, we set α = 0.3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sqsnn-nisac-results",
+     "value": "The authors report that in the N-ISAC receiver the SQSNN consistently achieves higher decoding accuracy than the SNN across all training regimes, more pronounced for few training batches, maintains a sensing advantage in low training regimes, and operates with fewer spikes per time step.",
+     "anchor": "Section V-H, p.13",
+     "quotes": [
+      "SQSNN consistently achieves higher decoding accuracy across all training regimes, with the advantage being more pronounced when the number of training batches is small",
+      "while SQSNN maintains a performance advantage in the low training regimes",
+      "While SNN maintains a relatively high spike rate, SQSNN consistently operates with fewer spikes per time step."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "world",
+     "reader_inference": "The QLIF-SNN is omitted from Figure 11 for visual clarity, and no seed count is given for the shaded bands."
+    },
+    {
+     "id_suggestion": "sqsnn-fig11-read-nisac",
+     "value": "Read from Figure 11: the N-ISAC decoding accuracy is about 60 for the SQSNN and about 51 for the SNN at about 5 training batches, and about 78 against about 76.5 at about 150 batches; the sensing accuracy of both is about 99 from about 90 batches; and the average spikes per time step is about 4.4 for the SQSNN against about 6.1 for the SNN at about 150 batches.",
+     "anchor": "Figure 11, p.14",
+     "quotes": [
+      "Test decoding accuracy, sensing accuracy, and average number of spikes per time step of the N-ISAC system using SNN and SQSNN, where each"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read by eye from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "world",
+     "reader_inference": "The accuracy gap shrinks with more training data (about 9 points at about 5 batches, about 1.5 points at about 150)."
+    },
+    {
+     "id_suggestion": "sqsnn-appendix-surrogate-method",
+     "value": "The authors state that the surrogate gradient method replaces the random binary spike signal in the backward pass with a deterministic vector in the interval [0, 1] given by a sigmoid of the spiking probability, and that it needs a classical simulator.",
+     "anchor": "Appendix A, p.14; Section V-D, p.11",
+     "quotes": [
+      "we replace the N -dimensional binary random signal si,t with a deterministic N -dimensional vector taking values in the interval [0, 1]",
+      "This scheme requires a classical simulator"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition of its surrogate method.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The forward pass samples the spikes; only the backward pass uses the surrogate, so the gradient is biased."
+    },
+    {
+     "id_suggestion": "sqsnn-claim-expressive-quantum-memory",
+     "value": "The authors state that the multi-qubit design increases the expressive capacity of each neuron and ensures that the model truly leverages the unique features of quantum hardware, and that the neuron's trainable unitary potentially enables a richer class of temporal state transitions.",
+     "anchor": "Section I-B, p.2; Section III-A, p.4",
+     "quotes": [
+      "This design increases the expressive capacity of each neuron and ensures that the model truly leverages the unique features of quantum hardware.",
+      "potentially enabling a richer class of temporal state transitions"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no expressivity proof or ablation separating quantum from classical memory.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "At N = 1 and Nmem = 1 the neuron is a two-qubit circuit that classical simulation handles trivially; no classical state-space-model neuron of equal size is benchmarked."
+    },
+    {
+     "id_suggestion": "sqsnn-claim-hardware-platforms-fit",
+     "value": "The authors state that the architecture is suited to platforms with low repetition rate favoring single-shot measurements and with mid-circuit measurement support, and that both properties apply to trapped ions and neutral atoms.",
+     "anchor": "Section I-B, p.3",
+     "quotes": [
+      "Both properties apply to leading candidate platforms for scalable quantum computing, namely trapped ions and neutral atoms [23–26]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement the paper supports by citation to other work, and no experiment on those platforms.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The hardware experiments used a superconducting device (ibm_brisbane), not these platforms."
+    },
+    {
+     "id_suggestion": "sqsnn-cited-qlif-limitations",
+     "value": "The authors describe the prior QLIF neuron as needing repeated quantum measurements at each time step to estimate its excitation probability and as being trained by classical backpropagation on a simulation.",
+     "anchor": "Section I-A, p.2",
+     "quotes": [
+      "determining whether the neuron should ﬁre requires estimating this excitation probability at each time step via repeated quantum measurements (multiple shots)",
+      "the QLIF network training process remains classical, leveraging backpropagation through time on a classical simulation of the network"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' characterization of other work [11].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sqsnn-cited-dynamic-pqc-advantages",
+     "value": "The authors state that SQSNNs can be viewed as examples of dynamic PQCs, which have recently been shown to have significant advantages in terms of expressivity and trainability.",
+     "anchor": "Section I-B, p.3",
+     "quotes": [
+      "SQSNNs can be viewed as examples of dynamic PQCs, which have been recently shown to have signiﬁcant advantages in terms of expressivity and trainability [20]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work [20].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sqsnn-abstract-claim-improves-over-classical",
+     "value": "The authors state in the abstract that the SQSNN is shown via experiments with conventional and neuromorphic datasets to improve over previous quantum spiking neural networks and over classical counterparts when fixing the overall number of trainable parameters.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "The proposed SQSNN model is shown via experiments with both conventional and neuromorphic datasets to improve over previous quantum spiking neural networks, as well as over classical counterparts"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author summary claim.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The classical counterpart is a LIF SNN trained by surrogate gradient. The quantum parts of the experiments run in noiseless classical simulation with N = 1 and Nmem = 1, so the improvement is for a simulated two-qubit neuron model."
+    },
+    {
+     "id_suggestion": "sqsnn-future-work",
+     "value": "The authors list future work: implementation on suitable quantum computers such as neutral-atom platforms, integration with quantum error mitigation, and implementation on modular multi-core architectures with constraints on the bandwidth between cores.",
+     "anchor": "Section VI, p.14",
+     "quotes": [
+      "the integration with quantum error mitigation, and the implementation on modular multi-core architectures with constraints on the bandwidth between cores"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper lists these as open work in Section VI.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

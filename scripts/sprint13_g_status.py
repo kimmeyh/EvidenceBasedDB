@@ -9,8 +9,13 @@ and its notes on a long paper in its scratch folder (the reader prompt's
 the reviews, and the store's reads, and stores nothing of its own (CLAUDE.md:
 determinate facts are computed).
 
+F125 (Sprint 15 Task C): the readers' scratch folders and group files are F114's local ones,
+`work\\f114\\local\\` (Sprint 13's Temp folder was cleared after Sprint 13), and a group counts as applied
+when each record has a read row naming its group, whatever the sprint's tag. A re-entry group ("g113-r1",
+from a local brief) is listed after the ledger's groups.
+
 A group is, by the last step it has reached:
-- applied: every record has its Task G read in the store;
+- applied: every record has a read in the store that names the group;
 - reviewed: the coordinator's review is in manifests/sprint13_g_reviews;
 - read: the reader's group file is written;
 - reading: the scratch folder holds saved papers or notes (k of n done, and the page reached);
@@ -25,6 +30,7 @@ Read-only. Usage:
 from __future__ import annotations
 
 import json
+import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -37,16 +43,17 @@ from store import connect, script_paths  # noqa: E402
 _, DB_PATH, _ = script_paths(__file__)
 LEDGER = ROOT / "manifests" / "sprint13_g_ledger.json"
 REVIEWS = ROOT / "manifests" / "sprint13_g_reviews"
-WORK = Path(r"C:\Users\kimme\AppData\Local\Temp\claude\D--Data-Harold-github-EvidenceBasedDB\s13g")
-TAG = "Sprint 13 Task G, F113"
+WORK = Path(r"D:\Data\Harold\EvidenceBasedDB\work\f114\local")
+GROUP = re.compile(r", group (g\d+(?:-r\d+)?)\)")  # full_read_apply.read_detail ends its tag with the group
 
 
-def applied_records() -> set[str]:
-    """Records whose Task G first-pass read is in the store (full_read_apply.read_detail names the tag)."""
+def applied_records() -> set[tuple[str, str]]:
+    """(group, record) for each first-pass read in the store that names its group (full_read_apply.read_detail)."""
     if not DB_PATH.exists():
-        return set()
+        raise SystemExit(f"{DB_PATH}: no store, so no group can be called applied")
     with connect(DB_PATH) as conn:
-        return {r[0] for r in conn.execute("SELECT record_id FROM paper_reads WHERE detail LIKE ?", (f"%{TAG}, group %",))}
+        return {(m[1], r[0]) for r in conn.execute("SELECT record_id, detail FROM paper_reads WHERE detail LIKE "
+                                                   "'%, group g%'") if (m := GROUP.search(r[1]))}
 
 
 def reading(tmp: Path, records: list[str]) -> str:
@@ -64,10 +71,14 @@ def reading(tmp: Path, records: list[str]) -> str:
     return f"{len([r for r in done if r in records])} of {len(records)} papers saved{where}"
 
 
-def state(g: str, records: list[str], applied: set[str]) -> tuple[str, str]:
-    if records and set(records) <= applied:
+def state(g: str, records: list[str], applied: set[tuple[str, str]]) -> tuple[str, str]:
+    if records and all((g, r) in applied for r in records):
         return "applied", ""
     if (REVIEWS / f"{g}.json").exists():
+        unread = json.loads((REVIEWS / f"{g}.json").read_text(encoding="utf-8")).get("unread") or {}
+        rest = [r for r in records if (g, r) not in applied]
+        if len(rest) < len(records) and set(rest) <= set(unread):
+            return "applied", f"{len(rest)} left unread"
         return "reviewed", ""
     if (WORK / "reads" / f"group_{g}.json").exists():
         return "read", ""
@@ -80,11 +91,14 @@ def state(g: str, records: list[str], applied: set[str]) -> tuple[str, str]:
 
 def main(argv: list[str] | None = None) -> int:
     args = list(sys.argv[1:] if argv is None else argv)
-    groups = json.loads(LEDGER.read_text(encoding="utf-8"))["groups"]
+    groups = {g: [r["record_id"] for r in body["records"]]
+              for g, body in json.loads(LEDGER.read_text(encoding="utf-8"))["groups"].items()}
+    for brief in sorted((WORK / "briefs").glob("g*-r*.json")):
+        groups[brief.stem] = [r["record_id"] for r in json.loads(brief.read_text(encoding="utf-8"))["records"]]
     applied = applied_records()
     counts = Counter()
-    for g, body in groups.items():
-        name, detail = state(g, [r["record_id"] for r in body["records"]], applied)
+    for g, records in groups.items():
+        name, detail = state(g, records, applied)
         counts[name] += 1
         if "--all" in args or name not in ("applied", "not started"):
             print(f"{g}  {name}" + (f"  ({detail})" if detail else ""))

@@ -87,3 +87,32 @@ def test_every_reader_prompt_from_task_g_on_saves_its_progress_and_starts_from_i
     missing = {p: [w for w in RESTART if w.lower() not in instructions(p).lower().replace("\\", "/")]
                for p in prompts()}
     assert {p: m for p, m in missing.items() if m} == {}
+
+
+# Sprint 15 Task H (F114, F115, F116, F126, F129): what a reader prompt from Sprint 15 on carries.
+SPRINT15 = ("every figure", "its caption alone is not a read of it", '"figures"', '"from_figure"',
+            "never suggested \"high\"", "ocr text", "has \"ocr\" in its assertion's `anchor`",
+            "never change a stored assertion's context", "anchors are pdf pages", "one claim per assertion",
+            "a textbook-standard result is background", "is still read in", "--sprint15")
+CAPTION_ONLY = re.compile(r"not `not_read` when its caption", re.IGNORECASE)
+
+
+def sprint15_on() -> list[Path]:
+    return [p for p in prompts() if (m := re.match(r"sprint(\d+)_", p.parent.name)) and int(m[1]) >= 15]
+
+
+def sprint15_problems(text: str) -> list[str]:
+    flat = " ".join(text.lower().split())
+    return [w for w in SPRINT15 if w not in flat] + [m.group(0) for m in CAPTION_ONLY.finditer(text)]
+
+
+def test_every_reader_prompt_from_sprint_15_on_reads_figures_and_ocr_text():
+    """Sprint 15 Task H step 1: figures are read (the caption-only exemption is gone), image-only pages are read from
+    their OCR text and marked "OCR", and Sprint 14's lessons are in the prompt. Proven to fail by injection,
+    2026-11-01: with "One claim per assertion" cut from Sprint 15's prompt, the test went red naming it; on Sprint
+    14's instructions (the last assertion) the check names the figure and OCR rules and the caption-only exemption."""
+    found = sprint15_on()
+    assert found, "no reader prompt from Sprint 15 on: manifests/sprint15_f114_reads/READER_PROMPT.md is gone"
+    assert {p: sprint15_problems(instructions(p)) for p in found if sprint15_problems(instructions(p))} == {}
+    old = sprint15_problems(instructions(ROOT / "manifests" / "sprint14_f114_reads" / "READER_PROMPT.md"))
+    assert "every figure" in old and "ocr text" in old and "not `not_read` when its caption" in old, old

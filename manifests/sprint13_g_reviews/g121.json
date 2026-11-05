@@ -1,0 +1,289 @@
+{
+ "group": "g121",
+ "reviewed_on": "2026-11-04",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "q3drism-ansatz-gaussian-mixture": [
+   "setup",
+   "Section 2, p.2: the paper states the assumption (water molecule oscillates about a stable position, density read as a sum of Gaussians) as the ansatz of its own formulation."
+  ],
+  "q3drism-minimal-distance-constraint": [
+   "definition",
+   "Section 2, p.3: the paper defines the water placement problem as needing a minimal pairwise distance R, added as a constraint on the Ising model."
+  ],
+  "q3drism-qae-needs-local-addressing": [
+   "stated limit",
+   "Section 2, p.5: the paper states that its QAE algorithm cannot run on current neutral-atom QPUs for lack of local addressing, and is tested only with the Pulser emulator. Limit on its own work."
+  ],
+  "q3drism-local-emulation-setup": [
+   "setup",
+   "Section 2, p.5: six slices at 0.5 A spacing of the MUP-I pocket 3D-RISM density, 4 to 14 qubits. Own setup."
+  ],
+  "q3drism-slicing-2d-limit": [
+   "stated limit",
+   "Section 2, p.5: the paper states that current neutral-atom QPUs take only 2D registers and that it therefore slices the 3D density and runs the algorithm per slice. Limit and workaround of its own method."
+  ],
+  "q3drism-detuning-heuristic-mapping": [
+   "definition",
+   "Eq. (15) and the text after it, p.5-6: the paper defines its heuristic detuning mapping (shift to the neighbour mean, then rescale to a fixed maximum)."
+  ],
+  "q3drism-qpu-protocol": [
+   "setup",
+   "Experimental measurement on QPU, p.6: register reproduced in the QPU, constant global pulse, projector expectation over a detuning/duration plane, about 500 measurements per point. Own experimental protocol."
+  ],
+  "q3drism-vqa-global-hamiltonian": [
+   "definition",
+   "Eqs (16)-(17), p.7: the paper defines the VQA with a global Rydberg Hamiltonian and the cost function; it states it is in the VQA family."
+  ],
+  "q3drism-qubit-limit-reasons": [
+   "stated limit",
+   "Conclusion, p.8: the paper states the 14-qubit limit and its three reasons (machine layout, state-vector emulation, Pulser/QPU coupling). Limit on its own work."
+  ],
+  "q3drism-no-classical-comparison-yet": [
+   "stated limit",
+   "Conclusion, p.8: the paper says a classical-versus-quantum comparison is future work and a careful machine-noise study is needed. Soft case: a caveat plus a future-work statement about its own work, no result claimed."
+  ],
+  "q3drism-si-vqa-setup": [
+   "setup",
+   "SI Section 2, p.21: four Bayesian minimizers, m from 3 to 25, 200 optimization cycles per emulated system, each ideally 200 QPU measures. Own SI setup (the 3D-RISM slice test uses 50 cycles; the value does not claim otherwise)."
+  ],
+  "q3drism-si-emulation-size-limit": [
+   "stated limit",
+   "SI Section 2, p.21: the paper states that emulation must stay under 15-18 qubits to keep the Schroedinger-equation cost low. Limit on its own emulation."
+  ],
+  "q3drism-hardware-limits-local-hamiltonian": [
+   "stated limit",
+   "Beyond a Local Algorithm, p.7: 'technical limitations of the present hardware prevent us from using a local Hamiltonian as in equation (13)'. Limit on its own algorithm."
+  ],
+  "q3drism-qubit-count-limit": [
+   "stated limit",
+   "Conclusion, p.8: 'we limited ourselves to a qubit count of 14'; 'roughly 16 qubits can be emulated easily with Pulser'. The paper's own stated limit."
+  ],
+  "dasilva-dataset-choice-nasa-power": [
+   "setup",
+   "Section II A, p.2: the paper states the three candidate datasets and its choice of NASA POWER with its reason (Table I). Own choice. The 'minimal missing data' reason is the authors' assertion; Table I shows only parameter coverage."
+  ],
+  "dasilva-feature-selection-threshold": [
+   "setup",
+   "Section II B, p.2: |rho| < 0.3 features excluded to cut training cost. Own preprocessing rule."
+  ],
+  "dasilva-lag-selection": [
+   "setup",
+   "Section II B, p.2: lags from Pearson correlations (Figs 2, 3); 28 days for temperature, 6 for wind speed. Own preprocessing."
+  ],
+  "dasilva-target-statistics": [
+   "setup",
+   "Table II, p.2: mean, std, min, max for temperature and wind speed match the value exactly. Own dataset statistics."
+  ],
+  "dasilva-standardization": [
+   "setup",
+   "Section II B, p.2: z-score standardization (Eq. 1) after feature reduction; the paper states it assumes an approximately normal distribution."
+  ],
+  "dasilva-qnn-design": [
+   "setup",
+   "Section II C 1, p.3: Ogur-style Ry encoding, 1, 3 and 5 variational layers, EntanglingLayer (Exp 1) and StronglyEntanglingLayer (Exp 2), six configurations (Fig. 5). Own model design."
+  ],
+  "dasilva-circuit-depth-only-varied": [
+   "scope",
+   "Section I, p.2: 'we varied the circuit depth exclusively by adjusting the variational layers'. Own scope."
+  ],
+  "dasilva-temperature-qnn-setup": [
+   "setup",
+   "Section III A, p.4: 28-day lag split, 14-day horizon, six qubits (five variables plus lagged target), 10 runs per layer configuration. Own setup."
+  ],
+  "dasilva-temperature-training-config": [
+   "setup",
+   "Table III, p.4: training 352, test 14, learning rate 0.1, batch 10, Nvidia Tesla V100 (Kuatomu). Own training setup."
+  ],
+  "dasilva-rnn-config": [
+   "setup",
+   "Section III A 2, p.5: 256 neurons, learning rate 0.001, 500 epochs, other settings as the QNN (Table III). Own RNN configuration."
+  ],
+  "dasilva-wind-setup": [
+   "setup",
+   "Section III B, p.6-7 and Table V: 6-day lag, 5-day horizon, eight qubits (seven variables plus lagged target), 361 training and 5 test points, 10 runs. Own setup. The value does not repeat the paper's 'one year' wording for the 16-month wind dataset."
+  ],
+  "dasilva-future-work": [
+   "stated limit",
+   "Section IV, p.14: the paper says high-variance values hurt stability and that why wind accuracy exceeded temperature accuracy is not understood. Soft case: future work that admits an unexplained result of its own work."
+  ],
+  "dasilva-limit-dataset-resolution": [
+   "stated limit",
+   "Section IV, p.14: the paper states that NASA POWER's daily resolution and non-geostationary satellite sources may impact forecasting precision. Limit on its own data."
+  ],
+  "dasilva-setup-site-simulator-split": [
+   "setup",
+   "Section II A, III A, III B and Acknowledgements: Barreiras; temperature data 1 May 2023 to 30 Apr 2024 split 96.2/3.8; wind data 5 Jan 2023 to 30 Apr 2024 split 98.7/1.3; KUATOMU simulator. All verified in the text. The paper calls the wind span 'one year' although the dates span 16 months; the value does not repeat that."
+  ],
+  "dalyac-ising-hamiltonian-definition": [
+   "definition",
+   "Section 2, p.2: Eq. (1) is the Ising Hamiltonian the survey uses, with Rabi, detuning and pairwise C6/r^6 terms. Background physics stated as the survey's model; graded on how it is stated."
+  ],
+  "dalyac-xy-hamiltonian-definition": [
+   "definition",
+   "Section 2, p.3: Eq. (2) defines the XY Hamiltonian with C3/r^3 exchange and the survey defines the threshold r_e = (C3/hbar Omega)^(1/3)."
+  ],
+  "dalyac-ud-graph-encoding": [
+   "definition",
+   "Section 2, p.3: the survey defines the unit-disk encoding (qubits as vertices, edge when distance is below r_b or r_e)."
+  ],
+  "dalyac-hybrid-two-categories": [
+   "definition",
+   "Section 5.1, p.13: the survey defines its own two-category grouping of hybrid quantum-classical algorithms."
+  ],
+  "dz-intro-aim": [
+   "scope",
+   "Introduction, p.4: the survey states its own aim."
+  ],
+  "dz-end-to-end-definition": [
+   "definition",
+   "Introduction, p.5: 'By this, we mean the cost of solving the full problem of interest to the user...'. The survey defines its central term."
+  ],
+  "dz-scope-circuit-model-nonclifford": [
+   "scope",
+   "Introduction, p.5: the survey states its own model (quantum circuit), oracle rule, QEC assumption and non-Clifford cost convention."
+  ],
+  "dz-no-proofs-quoted-estimates": [
+   "scope",
+   "Introduction, p.5: 'technical results are typically presented without explicit derivation or proofs'. Own method statement. It also means the survey itself does not carry proofs of cited results."
+  ],
+  "dz-excluded-topics": [
+   "scope",
+   "Introduction, p.5-6: the survey lists the topics its primary scope excludes."
+  ],
+  "dz-fh-end-to-end-task": [
+   "definition",
+   "Section 1.1, p.11: the survey describes its end-to-end task for the Fermi-Hubbard model (thermal or ground state, observables to error epsilon)."
+  ],
+  "dz-fh-table1-not-comparable": [
+   "stated limit",
+   "Table 1 caption, p.16: limit on the survey's own table (rows not directly comparable; run counts depend on overlap and failure probability)."
+  ],
+  "dz-spin-model-definition": [
+   "definition",
+   "Section 1.2, p.22-23, Eq. (2) and the model list: the survey defines the 2-local spin Hamiltonians it studies (classical Ising, TFIM Eq. 4, Heisenberg Eq. 5)."
+  ],
+  "dz-syk-definition": [
+   "definition",
+   "Section 1.3, p.31, Eq. (6): the survey defines the SYK variant it considers, with Gaussian coefficients and the stated variance."
+  ],
+  "dz-syk-task-definition": [
+   "definition",
+   "Section 1.3, p.31-32: the survey states the end-to-end task it considers for SYK. The text says it 'often reduces to' this task; the value is faithful."
+  ],
+  "dz-chem-table4-comparability": [
+   "stated limit",
+   "Table 4 caption, p.44: limit on the survey's own table (single-run counts, differing parameters, not directly comparable even within a row; 0.1 failure probability, one entry uses 0.01 per footnote). The 8/pi^2 success probability is cited [70], used as table setup."
+  ],
+  "dz-chem-table5-materials": [
+   "stated limit",
+   "Table 5 caption, p.45: limit on the survey's own table (the five material rows verified; 7 samples; not directly comparable)."
+  ],
+  "dz-opt42-problem-definition": [
+   "definition",
+   "Section 4.2, p.81-82: the survey defines the binary optimization problem it considers (unique minimizer, E* known) and the QUBO, MAX-CUT and MAX-3-SAT cases."
+  ],
+  "dz-zsg-problem-definition": [
+   "definition",
+   "Section 5.1, p.91: the survey states the end-to-end zero-sum game problem with entries in [-1,1]."
+  ],
+  "dz-conic-lp-problem": [
+   "definition",
+   "Section 5.2, p.95: the survey states the end-to-end LP problem."
+  ],
+  "dz-nonconvex-problem": [
+   "definition",
+   "Section 5.4, p.106: the survey states the nonconvex optimization problem (l-smooth, rho-Hessian-Lipschitz, epsilon-SOSP)."
+  ],
+  "dz-weak-bits-of-security": [
+   "definition",
+   "Section 6.2, p.120: the survey defines bits of security, breaking and weakening."
+  ],
+  "dz-de-end-to-end-problem": [
+   "definition",
+   "Section 7, p.126: the survey defines the end-to-end differential-equation problem as estimating a linear functional P[u]."
+  ],
+  "dz-po-markowitz-definition": [
+   "definition",
+   "Section 8.1, p.143: the survey states the Markowitz formulation (Eqs 22-25) and the risk definition."
+  ],
+  "dz-opt-pricing-problem": [
+   "definition",
+   "Section 8.2, p.151: the survey states the end-to-end option pricing problem and its fair-price convention."
+  ],
+  "dz-ml-scope-pipeline": [
+   "scope",
+   "Section 9, p.158: the survey states it mostly considers quantum algorithms on classical data and names the approaches covered."
+  ],
+  "dz-centroid-problem": [
+   "definition",
+   "Section 9.1, Example 3, p.166: the survey states the nearest-centroid task and the naive O(NM) classical cost."
+  ],
+  "dz-ebm-training-problem": [
+   "definition",
+   "Section 9.2, p.172-173: the survey states the end-to-end tasks for classical energy-based models (train, then sample). The gradient formula (Eq. 34) is written out in the text."
+  ],
+  "dz-qnn-definition": [
+   "definition",
+   "Section 9.5, p.189, Eq. (39): the survey defines the QNN model h_theta(x)."
+  ],
+  "dz-be-definition": [
+   "definition",
+   "Section 10.1, p.200, Eq. (43): 'we say that the unitary U_A is an (alpha, a, eps)-block-encoding of A if ...'. The survey defines the term."
+  ],
+  "dz-qlss-problem": [
+   "definition",
+   "Section 18, p.287, Eq. (60): the survey states the QLSS problem with block-encoding and state-preparation oracles, and the kappa dependence."
+  ],
+  "dz-vqa-definition": [
+   "definition",
+   "Section 20, p.298: the survey defines the VQA cost function and classical optimization."
+  ],
+  "dz-tomo-definition": [
+   "definition",
+   "Section 21, p.306: the survey defines quantum state tomography and its figures of merit."
+  ],
+  "dalzell-survey-scope-provable": [
+   "scope",
+   "Introduction, p.5: 'does not attempt to advance the state of the art; rather ... collect, synthesize, and contextualize' and the provable-speedup focus with NISQ in passing. The stored value is faithful. Keep HIGH."
+  ]
+ },
+ "theory_low": {
+  "q3drism-ising-form": "Eqs (1)-(7), p.3: the expansion to an Ising energy (Eq. 3) is derived in the paper. The 'exponentially decaying' form (Eq. 7) holds only as an approximation when the Gaussians lie far from the boundary of C ('Vij ~ exp'), and it uses the known Gaussian-convolution identity. The value and quotes drop that condition. Graded by the weaker claim.",
+  "dalyac-blockade-radius-definition": "The definition r_b = (C6/hbar Omega)^(1/6) is the survey's. The claim that atoms closer than r_b 'cannot be both excited' is the standard blockade effect, cited to [19-21], stated not proved. Textbook, stated not proved (F129). Graded by the weaker part.",
+  "dalyac-ud-mis-blockade-mapping": "Section 3.1, p.5: the blockade-restricts-to-independent-sets claim and the Omega=0, delta>0 mapping to UD-MIS are literature results (cited [30]-[34]), stated not proved here. Textbook, stated not proved (F129).",
+  "dalyac-box4-defect-free-scaling": "Box 4, p.11: eta^N and 1/0.99^100 about 3 (0.99^100 = 0.366, so 2.7) are right as arithmetic, but the survey gives an informal argument, assumes independent moves without saying so, and proves nothing. An informal argument is not a proof.",
+  "dz-chem-lcu-blockencoding": "Section 2.1, p.40: the LCU block-encoding (PREPARE-dagger, SELECT, PREPARE) is stated, not proved; the construction is textbook-standard. Textbook, stated not proved (F129).",
+  "dz-be-lcu-definition": "Section 10.1, p.201: the LCU block-encoding (sum of |c_i|, ceil(log2 L), PREPARE-dagger SELECT PREPARE) is a cited construction [7], 'only give a brief outline here'; the prevalence claim is cited. Textbook, stated not proved (F129).",
+  "dz-qsp-cost": "Section 10.3, p.210: the QSP circuit cost (d uses of W, d+1 Z rotations) is stated, not proved; it follows the cited QSP papers. The survey carries no proof (Introduction, p.5).",
+  "dz-qsp-polynomial-conditions": "Section 10.3 Caveats, p.210: the three conditions on achievable (P, Q) are the cited QSP characterization, stated with no proof in the survey.",
+  "dz-qsp-real-polynomials": "Section 10.3, p.210-211: the survey cites [4, Lemma 6] and [4, Corollary 10] for the existence of the complementary polynomial; the result is proved elsewhere (reference [4]).",
+  "dz-qsvt-cost": "Section 10.5, p.218: the QSVT resource count is stated from the cited QSVT results [3, 5, 10]; no proof in the survey.",
+  "dz-hs-product-formula-error": "Section 11.1, p.225: the first-order and (2k)th-order product formula error bounds are the cited result [7], stated without proof.",
+  "dz-hs-qsp-optimal": "Section 11.4, p.237: the optimality of QSP/QSVT Hamiltonian simulation is asserted with citations ([5], [3], [2]); no proof in the survey.",
+  "dz-hs-qsvt-query-optimal": "Section 11.4, p.238: the query bound is [3, Corollary 60] and optimality is cited [5, 3]; proved elsewhere.",
+  "dz-qpe-heisenberg": "Section 13, p.245: the QPE call count O(1/eps) and its optimality (Heisenberg limit) are stated without proof or citation. Textbook, stated not proved (F129).",
+  "dz-aa-definition-cost": "Section 14.1, p.252: amplitude amplification is the textbook analysis, sketched ('The standard analysis [2] proceeds by ...'), not carried through. Textbook, stated not proved (F129).",
+  "dz-ae-quadratic": "Section 14.2, p.256: amplitude estimation's quadratic speedup and the boosting overhead are textbook ('standard methods'), stated not proved. Textbook, stated not proved (F129).",
+  "dz-qaa-gap-linear": "Section 16, p.267: 'it was shown in [3] that any rigorous bound must scale at least linearly in the inverse gap' is a cited result, proved in reference [3].",
+  "dz-qram-definition": "Section 17.1, p.272: the QRAM definition is cited to [3]; the Omega(dN) bound is argued only by a short counting sketch ('simple gate counting arguments imply'), and the polylog(N) assumption claim is about the field. An informal argument is not a proof.",
+  "dz-stateprep-limits": "Section 17.2, p.276: the O(N)-gate and Omega(N)-preparation bounds are 'simple information-theoretic bounds [1]', cited, not proved here.",
+  "dz-stateprep-optimal-costs": "Section 17.2, p.277-278: size and depth lower bounds are cited ([1], [3]); the constructions in Table 7 are cited results, proved elsewhere.",
+  "dz-qlss-lower-bound-optimal": "Section 18, p.288: the Omega(kappa) lower bound is cited ('see [4, 5]'); proved elsewhere. 'Optimal' and 'near-optimal' are terminology, and the joint-optimality claim is cited.",
+  "dz-tomo-caveat-exponential": "Section 21 Caveats, p.308: the exponential sample complexity follows from 'the presented information-theoretic lower bounds', which are cited results; the survey carries no proof.",
+  "dz-ft-threshold-theorem": "Section 25, p.330: the threshold theorem is stated with its conditions but proved in the cited works [11, 12, 13, 7]; the survey gives only 'the basic idea behind the proof'.",
+  "dz-ft-eastin-knill": "Section 25, p.331: the Eastin-Knill theorem is stated and cited ([22]-[25]), not proved here. Textbook, stated not proved (F129)."
+ },
+ "keep_stored": {},
+ "requote": {
+  "dalyac-repetition-rate-few-hz": "regraded LOW at the team lead's decision: Stored HIGH, certainty change for the team lead. Box 4, p.11 and Section 4.2, p.10: 'few Hz' comes from summing typical stage durations (about 100 + 100 + 50 ms) that the survey states without measurement or citation. The survey is a review, so this is a statement about hardware in the field, not a limit on the survey's own work; the defect-free-register probability is also given without derivation. Judgment call: if the coordinator reads 'own work' to cover a survey's subject, this and the other dalyac limit items would flip to HIGH stated limit.; team lead, 2026-11-04, Sprint 15 Manual Validation Q1 option 1 (all 36 as proposed)"
+ },
+ "unread": {
+  "cycorp-2012-opencyc-4-0-release": "left for F114's next release: Sprint 14 Task F read 50 papers (Q1 = 2), and this group's other records were among them"
+ },
+ "value_replace": {
+  "dalyac-repetition-rate-few-hz": "The authors state that the full processing cycle reduces the repetition rate of the useful computation to few Hz, and that the effective rate is reduced further by the finite probability of assembling a defect-free register."
+ }
+}

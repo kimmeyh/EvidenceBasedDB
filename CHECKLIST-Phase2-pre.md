@@ -292,3 +292,16 @@ Evidence for each row is the commit named, on the sprint branch
 - [x] **H+C**: Manual Validation Q1 = 1 and Q2 = 1; the last 19 groups applied (0eddd23); review fixes (bb82d0a, 25d3985)
 - [x] **H+C**: Retrospective, 16 x 4 (b665ee3, 25d3985); all nine improvements option 1: Q1 to Q7 applied, Q8 carded as F130, Q9 added to F128 (this commit)
 - [x] **C**: Summary, master plan roll and this section (this commit); PR #140 ready after CI
+
+## Sprint 15: Read Every Page, Figures and Images Included, Then Read 100 More Papers (reconciled 2026-11-05 at Phase 7.7)
+
+Evidence for each row is the commit named, on the sprint branch
+(`feature/20261031_Sprint_15`, PR #149).
+
+- [x] **C**: Tasks A and B (F131, F132) -- the F95 and F98 releases find nothing new (53ad17d)
+- [x] **C**: Task C (F125) -- re-entry groups (34034bd); review fix (4e75c07)
+- [x] **C**: Tasks D to L (F126, F127, F115, F116, F114, F133, F128, F124, F129) -- OCR, the Sprint 15 prompts, the reads and the first apply (d485069); title corrected (ca13887)
+- [x] **C**: Task M (F130) -- Phase 2's Sprint 30 results, F166 repointed (84e6aaa)
+- [x] **H+C**: Manual Validation Q1 to Q9; the last 24 groups and the decisions applied; team-lead decisions guarded (8c10247)
+- [x] **H+C**: Retrospective, 16 x 4 (this commit); improvement Q1 per the team lead's answer
+- [x] **C**: Summary, master plan roll and this section (this commit); PR #149 ready after CI

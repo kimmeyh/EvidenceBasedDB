@@ -1,0 +1,506 @@
+{
+ "group": "g129",
+ "reviewed_on": "2026-11-01",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "scope-quantum-inspired-classical": [
+   "scope",
+   "Sec 2.3 p.4: the authors state their primary focus is adapting tensor networks for many-body systems in ML, drawing on quantum principles; their own scope statement"
+  ],
+  "def-mps-ansatz": [
+   "definition",
+   "Sec 2.2 p.4, Eq. 7-8: the paper defines the MPS it employs (a specialized tree tensor network state) and says chi is set as a hyperparameter"
+  ],
+  "curse-of-dimensionality-tensor": [
+   "definition",
+   "Sec 2.2 p.4: the paper defines the exponential wall / curse of dimensionality for its N-index coefficient tensor (dimension d^N); the cost remark is the paper's own framing of the problem"
+  ],
+  "setup-spatial-kernel": [
+   "setup",
+   "Sec 3.2 p.8, Eq. 12: the paper's own parameterization of the spatial kernel (MPO with one virtual leg, four physical legs, small virtual dimension, Hypernet for the edge tensor)"
+  ],
+  "setup-neighbor-ordering": [
+   "setup",
+   "Sec 3.2 p.8: the paper states it orders neighbors by Euclidean distance for the sequential contraction; its own method design"
+  ],
+  "setup-two-architectures": [
+   "setup",
+   "Sec 3.4 p.10: the paper's own description of the two architectures (SpaTea Clofnet and SpaTea DeepH-E3) and what each replaces and leaves unchanged"
+  ],
+  "setup-newton-experiment": [
+   "setup",
+   "Sec 4.1 p.11: dataset and metric setup as stated (20-body charged system, three force fields, 7,000 trajectories per dataset, MSE after 1,000 timesteps)"
+  ],
+  "setup-hamiltonian-dataset": [
+   "setup",
+   "Sec 4.2 p.12: dataset setup as stated (MoS2 DFT, 500 structures of 5x5 supercells, AIMD by VASP, PAW, PBE)"
+  ],
+  "setup-deeph-e3-rerun": [
+   "setup",
+   "Sec 4.2 p.12: the rerun protocol as stated (same hyper-parameters as Gong et al. 2023, 1000 epochs, Adam, ReduceLROnPlateau)"
+  ],
+  "limit-finite-virtual-index-expressiveness": [
+   "stated limit",
+   "Sec 5 p.13: the authors state the virtual index stays finite and that expressiveness in that setting is a challenging open problem"
+  ],
+  "scope-survey-since-2022": [
+   "scope",
+   "Sec I p.2: the review states its own coverage (AI for representing and characterizing quantum systems since 2022, theory and algorithms)"
+  ],
+  "du-2025-scope-three-tasks": [
+   "scope",
+   "Sec I p.2: the review states the three tasks it deliberately focuses on"
+  ],
+  "scope-method-hierarchy": [
+   "scope",
+   "Sec I p.2: the review states how it organizes the literature (ML, DL as subfield, LMs as class of DL)"
+  ],
+  "scope-exclusions-nqs-small-scale": [
+   "scope",
+   "Sec I p.2-3: the review states what is not its primary focus (variational neural quantum states) and that AI tailored to small-scale systems is beyond the main focus"
+  ],
+  "scope-exclusions-control-experiments": [
+   "scope",
+   "Sec I p.3: the review states that adaptive control is beyond scope and experimental work is not the emphasis"
+  ],
+  "def-linear-nonlinear-property-prediction": [
+   "definition",
+   "Box 1 p.4: the review defines linear property prediction (expectation values Tr(rho O)) and nonlinear property prediction (Tr f(rho,O) with f nonlinear in rho), with the examples named"
+  ],
+  "def-measurement-agnostic-vs-based": [
+   "definition",
+   "Sec II.C p.6: the review defines measurement-agnostic and measurement-based protocols"
+  ],
+  "def-autoregressive-factorization": [
+   "definition",
+   "Box 7 p.15: the review describes the autoregressive model class by its chain-rule factorization of the joint distribution"
+  ],
+  "def-implicit-state-reconstruction": [
+   "definition",
+   "Box 6 p.14: the review defines implicit state reconstruction (learn Q(s;theta) approximating P(s)=Tr(rho M_s) without reconstructing the density matrix)"
+  ],
+  "def-efficient-reconstruction-model": [
+   "definition",
+   "Sec IV.A p.14: the review defines when a reconstruction model counts as efficient (polynomial in N for examples, queries and computation, to reach epsilon accuracy)"
+  ],
+  "scope-three-paradigms": [
+   "scope",
+   "Abstract p.1: the review states the three paradigms it categorizes the integration of AI into"
+  ],
+  "review-scope-property-prediction-surrogates": [
+   "scope",
+   "Abstract p.1: the review states the two core tasks it covers (quantum property prediction and construction of surrogates for quantum states)"
+  ],
+  "scope-tutorial-audience": [
+   "scope",
+   "Preface p.9-10 (text page 9): the tutorial states it is a comprehensive introduction designed for readers with ML expertise"
+  ],
+  "scope-tutorial-contents-abstract": [
+   "scope",
+   "Abstract: the tutorial states what it covers and that code demonstrations are online"
+  ],
+  "def-qml-informal": [
+   "definition",
+   "Sec 1.1 p.13: the tutorial gives its own informal definition of QML"
+  ],
+  "scope-circuit-based-quantum-computing": [
+   "scope",
+   "Sec 1.1.1 p.13: the tutorial states it focuses primarily on the circuit model"
+  ],
+  "def-quantum-volume": [
+   "definition",
+   "Sec 1.1.1 p.16, Eq. 1.1: the tutorial defines quantum volume as it uses it (cited to Cross et al. 2019, but defined here with the 2/3 heavy-output threshold)"
+  ],
+  "def-quantum-advantage-efficiency": [
+   "definition",
+   "Sec 1.1.2 p.17: the tutorial states what it means by quantum advantage and that efficiency is not uniquely defined"
+  ],
+  "def-quantum-advantage-runtime": [
+   "definition",
+   "Sec 1.1.2 p.17-18: the tutorial defines quantum advantage in terms of runtime complexity"
+  ],
+  "def-quantum-advantage-sample-complexity": [
+   "definition",
+   "Sec 1.1.2 p.18: the tutorial defines sample complexity and quantum advantage in sample complexity"
+  ],
+  "remark-sample-complexity-meanings": [
+   "definition",
+   "Sec 1.1.2 Remark p.18: the tutorial clarifies the meanings of sample complexity in quantum ML (tomography, generalization of QNNs, quantum system learning)"
+  ],
+  "def-quantum-utility": [
+   "definition",
+   "Sec 1.1.2 p.19: the tutorial defines quantum utility (taken from Kim et al. 2023 but stated as its definition)"
+  ],
+  "def-qml-four-sectors": [
+   "definition",
+   "Sec 1.1.3 p.19-20: the tutorial defines its four-sector taxonomy (CC, CQ, QC, QQ) by device and data type"
+  ],
+  "scope-qc-qq-sectors": [
+   "scope",
+   "Sec 1.1.3 Remark p.21: the tutorial states its primary focus is the QC and QQ sectors"
+  ],
+  "def-qnn-informal": [
+   "definition",
+   "Sec 1.2.3 p.25: the tutorial gives its own informal definition of a QNN"
+  ],
+  "def-learnability-three-dimensions": [
+   "definition",
+   "Sec 1.2.3 p.27: the tutorial states its framing of learnability along expressivity, trainability and generalization, and describes each"
+  ],
+  "remark-qnn-kernels-ftqc-too": [
+   "scope",
+   "Sec 1.2.3 Remark p.28: the tutorial states why QNNs and kernel methods are discussed in the NISQ context"
+  ],
+  "scope-theorems-lemmas-facts": [
+   "scope",
+   "Sec 1.3 p.30: the tutorial states that Theorems and Lemmas carry proofs and Facts carry references"
+  ],
+  "setup-pennylane-code": [
+   "setup",
+   "Sec 1.3 p.30: the tutorial states it uses PennyLane for its code and that the choice does not imply a preference"
+  ],
+  "def-qubit-single-state": [
+   "definition",
+   "Sec 2.1.2 p.32, Eq. 2.1-2.2: the tutorial defines the single-qubit state and its normalization"
+  ],
+  "def-qubit-measurement-probability": [
+   "definition",
+   "Sec 2.1.2 p.32: the tutorial states the amplitude-squared probability rule for qubit measurement outcomes as its interpretation of amplitudes"
+  ],
+  "def-two-qubit-tensor-product": [
+   "definition",
+   "Sec 2.1.2 p.33, Eq. 2.4: the tutorial defines the two-qubit state by the tensor product rule"
+  ],
+  "def-bell-states": [
+   "definition",
+   "Sec 2.1.2 Example 2.1 p.33-34, Eq. 2.6: the tutorial gives the four Bell states explicitly as examples of maximally entangled two-qubit states"
+  ],
+  "def-nqubit-state": [
+   "definition",
+   "Sec 2.1.2 p.34, Eq. 2.7: the tutorial defines the N-qubit state, its amplitudes and the superposition condition"
+  ],
+  "def-entanglement-pure-states": [
+   "definition",
+   "Def 2.2 p.35, Eq. 2.9: the tutorial defines entangled and separable pure states"
+  ],
+  "def-ghz-state": [
+   "definition",
+   "Example 2.3 p.35, Eq. 2.10: the tutorial defines the N-qubit GHZ state"
+  ],
+  "def-density-operator": [
+   "definition",
+   "Sec 2.1.3 p.36, Eq. 2.12: the tutorial defines the N-qubit density operator as a mixture of m pure states with weights summing to 1, and says it is PSD with trace 1"
+  ],
+  "def-psd-matrix": [
+   "definition",
+   "Def 2.4 p.37: the tutorial defines a positive semi-definite matrix (Hermitian and nonnegative quadratic form)"
+  ],
+  "def-entanglement-mixed-states": [
+   "definition",
+   "Def 2.5 p.37, Eq. 2.14: the tutorial defines entangled and separable mixed states"
+  ],
+  "remark-quantum-gates-unitary-fixed-forms": [
+   "definition",
+   "Sec 2.2.2 Remark p.42: the tutorial describes the gate set of its Figure 2.1 (unitary, fixed 2x2 and 4x4 forms, R gates controlled by one angle)"
+  ],
+  "def-cptp-map": [
+   "definition",
+   "Def 2.9 p.44-45: the tutorial defines the CPTP map (linearity, complete positivity, trace preservation)"
+  ],
+  "def-depolarizing-channel": [
+   "definition",
+   "Def 2.10 and Example 2.11 p.45-46, Eq. 2.23-2.26: the tutorial defines the depolarizing channel; the example is checked: diag(1-p/2, p/2) has purity 1-p+p^2/2"
+  ],
+  "def-projective-measurement-born": [
+   "definition",
+   "Sec 2.2.2 p.50, Eq. 2.38-2.39: the tutorial states its projective measurement and Born-rule probabilities; Eq. 2.38 and 2.39 are correct as printed"
+  ],
+  "def-povm": [
+   "definition",
+   "Sec 2.2.2 p.50-51, Eq. 2.43: the tutorial defines a POVM, its density-operator outcome probability Tr(rho E_i) and the relation to projective measurement. Eq. 2.42 as printed has an error (Pr(i)=|<psi|E_i|psi>|^2, which squares the probability); the value does not use Eq. 2.42, so the grade stands for Eq. 2.43 only"
+  ],
+  "def-basis-encoding": [
+   "definition",
+   "Sec 2.3.1 p.52, Eq. 2.44: the tutorial defines basis encoding and its preparation by X gates"
+  ],
+  "def-amplitude-encoding": [
+   "definition",
+   "Sec 2.3.1 p.53-54, Eq. 2.45-2.46: the tutorial defines amplitude encoding with L2 normalization and the N-qubit count"
+  ],
+  "def-angle-encoding": [
+   "definition",
+   "Sec 2.3.1 p.54, Eq. 2.47: the tutorial defines angle encoding and its scaling to [0,pi)"
+  ],
+  "def-full-partial-readout": [
+   "definition",
+   "Sec 2.3.2 p.56-58: the tutorial states its categorization of read-out protocols into full and partial information protocols and the three partial classes"
+  ],
+  "def-shadow-tomography-aaronson": [
+   "definition",
+   "Def 2.19 p.61: the tutorial states the shadow tomography problem (Aaronson 2018) as a definition"
+  ],
+  "def-classical-shadow-steps": [
+   "definition",
+   "Sec 2.3.2 p.61-62: the tutorial describes the classical shadow procedure of Huang et al. (2020b) in three steps"
+  ],
+  "def-block-encoding": [
+   "definition",
+   "Def 2.20 p.63, Eq. 2.64: the tutorial defines block encoding (Gilyen et al. 2019) and states alpha>=||A|| and that any unitary is a (1,0,0)-block-encoding of itself"
+  ],
+  "def-kernel-function-trick": [
+   "definition",
+   "Sec 3.1.1 p.79-80, Eq. 3.3: the tutorial defines the kernel function, the kernel trick and the kernel matrix"
+  ],
+  "def-quantum-feature-map-kernel": [
+   "definition",
+   "Defs 3.6 and 3.7 p.87, Eq. 3.22-3.23: the tutorial defines the quantum feature map and the quantum kernel"
+  ],
+  "theory-quantum-kernel-is-valid-kernel": [
+   "proved result",
+   "Sec 3.2.2 p.87-88, Eq. 3.24: the tutorial shows the quantum kernel is the product of the complex kernel <phi(x)|phi(x')> and its conjugate, shows positive definiteness by sum c_i c_j^* <phi_i|phi_j> = ||sum c_i^* |phi_i>||^2 >= 0 (checked, correct), and uses the textbook fact that a product of kernels is a kernel"
+  ],
+  "setup-quantum-kernel-three-steps": [
+   "setup",
+   "Sec 3.2.2 p.78-79: the tutorial states its own three-step recipe for constructing a quantum kernel"
+  ],
+  "def-frequency-set-omega": [
+   "definition",
+   "Proof sketch of Thm 3.12 p.85: the tutorial defines the frequency set Omega as all differences Lambda_j - Lambda_l of eigenvalue vectors"
+  ],
+  "scope-qk-theory-expressivity-generalization": [
+   "scope",
+   "Sec 3.3 p.86-87: the tutorial states the two aspects it examines (expressivity and generalization) and that it emphasizes fundamental concepts over an exhaustive review"
+  ],
+  "def-expressivity-quantum-kernel": [
+   "definition",
+   "Sec 3.3.1 p.87: the tutorial defines expressivity of quantum kernel machines"
+  ],
+  "def-algorithm1-c2qe": [
+   "definition",
+   "Algorithm 1 p.88 (Sec 3.3.1): the tutorial defines Algorithm 1 (C2QE) as the value says; the output is a random pure Pauli eigenstate whose mixture is rho_r"
+  ],
+  "theory-lemma-euclidean-inner-products": [
+   "proved result",
+   "Lemma 3.15 p.89-90, Eq. 3.44-3.47: stated for unit 1-norm vectors and proved by linearity of trace and tracelessness of non-identity Pauli words; the expansion is correct (Tr rho_r rho_r' = (1+<r,r'>)/2^N). Applies to the mixed states rho_r"
+  ],
+  "setup-prediction-error-decomposition": [
+   "definition",
+   "Sec 3.3.2 p.93, Eq. 3.56: the tutorial states its decomposition of expected prediction error into training and generalization error, and why (distribution inaccessible)"
+  ],
+  "setup-mnist-qkernel-experiment": [
+   "setup",
+   "Sec 3.4.1 p.99-103: the tutorial's own setup (digits 3 and 6 of MNIST, PCA to n_qubit=8, StandardScaler, test_size 0.2, AngleEmbedding kernel, SVC with precomputed kernel); checked against the printed code"
+  ],
+  "def-perceptron-model": [
+   "definition",
+   "Sec 4.1.1 p.114-116, Eq. 4.1-4.3: the tutorial defines the single-layer perceptron, its sign activation and its update rule"
+  ],
+  "theory-perceptron-convergence-novikoff": [
+   "proved result",
+   "Thm 4.1 p.116-117, Eq. 4.4-4.13: stated with conditions (unit vectors, margin gamma, labels +-1) and proved in full in the paper (lower bound 2 gamma t on ||w||, upper bound 2 sqrt t, so t <= 1/gamma^2); each step checked and correct. The proof does not use another paper's theorem"
+  ],
+  "def-mlp-forward-and-loss": [
+   "definition",
+   "Sec 4.1.2 p.118-120, Eq. 4.14: the tutorial defines the MLP forward pass, softmax output, l2 loss and gradient descent"
+  ],
+  "def-grover-oracles-algorithm": [
+   "definition",
+   "Sec 4.2.1 p.122-123, Algorithm 2: the tutorial defines the two Grover oracles and the iteration"
+  ],
+  "setup-online-quantum-perceptron": [
+   "setup",
+   "Sec 4.2.2 p.124-125, Eq. 4.15-4.18: the tutorial's own setup of the data representation (B+1 qubits per sample) and the oracles U, F_w' and F_w"
+  ],
+  "def-qnn-three-components": [
+   "definition",
+   "Sec 4.3.1 p.129-130, Fig 4.4: the tutorial defines a basic QNN by its three components (input, model circuit/VQC, measurement)"
+  ],
+  "def-qnn-observable-output-function": [
+   "definition",
+   "Sec 4.3.1 p.132, Eq. 4.20-4.21: the tutorial states the observable choice and defines the QNN output function f"
+  ],
+  "theory-parameter-shift-rule": [
+   "proved result",
+   "Thm 4.9 p.132-134, Eq. 4.22: stated with its condition (gate exp(-i H_j theta_j/2) with unitary, i.e. involutory Hermitian, H_j) and proved in the paper: the output expansion, the two shifted evaluations and the derivative are given and each checked correct. Some algebra is marked \"it can be shown\", but it is routine and correct; the proof uses no other paper's theorem (Crooks 2019 is the source, not a step)"
+  ],
+  "def-qnn-discriminative-learning": [
+   "setup",
+   "Sec 4.3.2 p.134-135, Eq. 4.23-4.27: the tutorial's own description of the QNN discriminative-learning example"
+  ],
+  "def-quantum-patch-gan": [
+   "definition",
+   "Sec 4.3.3 p.136-137, Eq. 4.28-4.33: the tutorial describes the quantum patch GAN structure as the value says"
+  ],
+  "def-quantum-batch-gan": [
+   "definition",
+   "Sec 4.3.3 p.137-139, Fig 4.8, Eq. 4.34-4.37: the tutorial describes the quantum batch GAN structure as the value says"
+  ],
+  "scope-qnn-theory-three-factors": [
+   "scope",
+   "Sec 4.4 p.140: the tutorial states the three factors it examines for QNNs and that it emphasizes concepts over an exhaustive review"
+  ],
+  "def-trainability-barren-plateau-intro": [
+   "definition",
+   "Sec 4.4 p.141: the tutorial defines trainability and introduces the barren plateau problem"
+  ],
+  "def-erm-expected-risk": [
+   "definition",
+   "Sec 4.4.1 p.142, Eq. 4.38-4.39: the tutorial states the ERM framework and expected risk"
+  ],
+  "def-risk-decomposition-qnn": [
+   "definition",
+   "Sec 4.4.1 p.142, Eq. 4.40-4.41: the tutorial states its decomposition of the expected risk into training and generalization error (an identity by definition)"
+  ],
+  "def-qnn-hypothesis-space": [
+   "definition",
+   "Sec 4.4.1 p.144, Eq. 4.42-4.43: the tutorial defines the ideal QNN output and the hypothesis space"
+  ],
+  "def-covering-number": [
+   "definition",
+   "Def 4.10 p.145: the tutorial defines the covering number"
+  ],
+  "setup-wine-qnn-classifier": [
+   "setup",
+   "Sec 4.5.1 p.155-159: the tutorial's own Wine QNN setup (first two classes, 13 attributes rescaled to [0,pi], labels to -1/+1, angle encoding then CNOT chain, Rot layers with CNOT, Pauli-Z on qubit 0, MSE); checked against the printed code"
+  ],
+  "setup-wine-training-hyperparameters": [
+   "setup",
+   "Sec 4.5.1 p.161: the tutorial's own training setup (Adam, lr 0.01, batch size 4, 50 epochs, sign-match accuracy); checked against the printed code"
+  ],
+  "setup-patch-gan-optdigits": [
+   "setup",
+   "Sec 4.5.2 p.163-167: the tutorial's own patch GAN setup (optdigits digit 5, 8x8 images, classical FC discriminator with ReLU, dropout, sigmoid, quantum patch generator with RY encoding, Rot and CZ, partial measurement); checked against the printed code"
+  ],
+  "setup-patch-gan-hyperparameters": [
+   "setup",
+   "Sec 4.5.2 p.167-169: the tutorial's own hyper-parameters (4 sub-generators, 6 layers, 1 ancilla, SGD with lr 0.3 and 0.01, BCE loss, 10 epochs); checked against the printed code"
+  ],
+  "scope-quantum-transformer-inference-only": [
+   "scope",
+   "Sec 5.2 p.186: the tutorial states it focuses on inference with a trained classical Transformer predicting one next token, with sequence length a power of two; and (Sec 5.1.4) that the quantum implementations primarily support single-head attention"
+  ],
+  "assumption-block-encoded-inputs": [
+   "setup",
+   "Assumption 5.1 p.186-187, Eq. 5.7: the tutorial states its own input-oracle assumption (block encodings of S, W_q, W_k, W_v, M_1, M_2) and its choice of eps = 0"
+  ],
+  "theory-markov-chebyshev-inequalities": [
+   "proved result",
+   "App B p.209-211, Lemmas B.1 and B.2: Markov's and Chebyshev's inequalities are stated with their conditions and proved in full in the paper (the printed B.3 uses dt for dx, a typo)"
+  ],
+  "def-haar-measure": [
+   "definition",
+   "Def C.1 p.213: the tutorial defines the Haar measure on U(d)"
+  ],
+  "note-llm-parameters-source": [
+   "setup",
+   "Note 1 p.217, used in Sec 5.3.2 p.199: the tutorial states the LLM parameters (open-source LLMs studied) came from Hugging Face"
+  ],
+  "qml-tutorial-advantage-definition": [
+   "definition",
+   "Sec 1.1.2 p.17: the tutorial states what it means by quantum advantage and that efficiency is not uniquely defined"
+  ],
+  "qml-tutorial-scope": [
+   "scope",
+   "Abstract: the tutorial states its intended readers and what it covers"
+  ],
+  "def-geodesic-distance": [
+   "definition",
+   "Sec II.B p.2, Eq. 4: the paper defines the geodesic distance 2 arccos |<psi1|psi2>| between normalized states (cited to [33])"
+  ],
+  "setup-entropy-measure": [
+   "setup",
+   "Sec II.A p.2: the paper's own measurement setup (bipartite von Neumann entropy with balanced bipartition |A| = floor(N/2); MPS simulation)"
+  ],
+  "setup-hva-circuit": [
+   "setup",
+   "Sec II.D p.3-4, Eq. 13-14: the paper's own HVA circuit (RZZ cost layer, RX mixer layer after Hadamards, 2L parameters)"
+  ],
+  "setup-hea-circuit": [
+   "setup",
+   "Sec II.D p.4: the paper's own HEA circuit (X, Y, Z rotations per qubit, CNOT brickwall entangling layer, 3nL parameters)"
+  ],
+  "setup-optimizer": [
+   "setup",
+   "Sec III p.4: the paper's own optimization setup (200 iterations, TFIM with J = h = 1, Adam lr 0.5, PennyLane)"
+  ],
+  "scope-hea-hva-differ-sizes": [
+   "scope",
+   "Sec III p.4: the paper states HVA is run at N = 10 and HEA at N = 6 in both regimes"
+  ],
+  "du-setup-sim": [
+   "setup",
+   "Sec III p.4: the new value is right: the paper states MPS simulation, both regimes (L = 20 and the practical regime with L = 10 for HVA and L = 9 for HEA) and 1000 trials; it is the paper's own setup (basis: setup)"
+  ]
+ },
+ "theory_low": {
+  "mps-parameter-count": "textbook, stated not proved (F129): Sec 2.2 p.4 Eq. 8 gives O(N chi^2 d) with no derivation",
+  "mps-compression-claim": "textbook, stated not proved (F129): Sec 2.2 p.4 states the compression with no argument; the optimal low-rank claim after it is cited to Oseledets 2011",
+  "challenge-tensorized-gnn-dimension": "Sec 3 p.5: the O(d^N x d^N) scaling of tensorized GNNs is stated as a challenge, not derived here, and rests on cited work (Maron et al. 2018)",
+  "permutation-symmetry-sufficient-condition": "Sec 3.2 p.8, Eq. 16: a sufficient condition is stated with no proof; a text search finds no proof in the body or appendix",
+  "permutation-symmetry-necessary-normal": "Sec 3.2 p.8: necessity for normal matrices and the transposition argument are stated with no proof in the paper",
+  "invariance-output-claim": "Sec 3.2 p.7 Remark on the output: an invariance claim that follows from the construction, with no formal proof",
+  "expressiveness-many-body-polynomials": "Sec 3.5 p.10: stated as an easy conclusion with no proof, for infinite chi only",
+  "claim-svd-cost-reduction": "App A.2 p.20: the complexity reduction is asserted in a remark with a rough comparison of matrix sizes, no derivation",
+  "claim-circuit-to-tensor-network": "Sec 6 p.14: a field statement made with no proof or citation at this point",
+  "open-q1-provably-efficient-ml-beyond-linear": "Sec VI Q1 p.22: an open question about the field, authors' statement about the field and not a limit of the review's own work; the Huang et al. attempt is a cited result",
+  "open-q2-measurement-based-protocols-unexplored": "Sec VI Q2 p.22: an open problem in the field, not a limit the review states about its own work",
+  "claim-dl-outperform-claims-lack-benchmarking": "Sec VI Q3 p.22-23: the authors' assessment of the literature (comparisons claimed in cited studies lack rigorous benchmarking), an interpretation and not a limit of the review",
+  "open-q4-advanced-dl-unexplored": "Sec VI Q4 p.23-24: an open problem in the field as the authors see it, not a limit of the review's own work",
+  "claim-q5-approaches-mostly-data-driven": "Sec VI Q5 p.24: the authors' assessment of the state of the field, not a limit of the review's own work",
+  "def-purity-criterion": "textbook, stated not proved (F129): Sec 2.1.3 p.37 states the Tr(rho^n) purity criterion with no derivation",
+  "theory-unitary-iff-normalization": "textbook, stated not proved (F129): Sec 2.2.2 p.40 shows one line, <a|U^dag U|a> = 1 iff U unitary; the quantifier is dropped (for one fixed state the equality does not force U unitary), no theorem or proof",
+  "example-ghz-circuit-h-cnot-cnot": "Example 2.7 p.43, Eq. 2.19: the printed U = (H x I4)(CNOT x I2)(I2 x CNOT) applies the CNOT on qubits 2,3 first, then CNOT on 1,2, then H; on |000> this gives (|0>+|1>)|00>/sqrt2 and not the GHZ state. The correct product is (I2 x CNOT)(CNOT x I2)(H x I4). The value repeats the printed unitary as correct",
+  "theory-qst-linear-inversion": "textbook, stated not proved (F129): Sec 2.3.2 p.57, Eq. 2.52 is stated for tomographically complete measurements with no derivation",
+  "theory-pauli-expansion-4n-bases": "textbook, stated not proved (F129): Sec 2.3.2 p.57, Eq. 2.53-2.54 and the 4^N-1 bases remark are stated with no derivation",
+  "theory-expectation-value-pauli-estimation": "textbook, stated not proved (F129): Sec 2.3.2 p.59-60, Eq. 2.58-2.61 give the Pauli expansion, a one-line linearity step and the sample average, with no theorem or proof of the estimator",
+  "example-polynomial-kernel-cost": "textbook, stated not proved (F129): Sec 3.1.1 p.80-81 states O(d) against O(D) with D up to O(d^2) by a counting remark, no proof",
+  "theory-dual-representation-ridge": "Sec 3.1.2 p.81-82: the result (Eq. 3.13-3.14) is the standard kernel ridge solution, but the printed derivation has an error. Eq. 3.10 and 3.12 end with lambda/2 a^T K y where lambda/2 a^T K a is needed (render of p.72 checked); with the printed term the gradient does not give (K+lambda I)^-1 y, and dropping a factor K in Eq. 3.12 to 3.13 is not shown. A derivation with an error is not settled by the passage",
+  "example-single-qubit-kernel": "Example 3.8 p.79, Eq. 3.25: the printed state uses cos(x), sin(x) where the rotation exp(-i x sigma_x/2) gives cos(x/2), sin(x/2); the kernel line then uses x/2. The end result cos^2((x-x')/2) is right but the printed derivation is inconsistent, and it is a worked example with no theorem",
+  "example-quantum-kernel-basis-encoding": "Example 3.9 p.81-82, Eq. 3.26-3.27: the delta kernel is a direct computation, but the value adds the authors' opinion that this is a very strict similarity measure and arguably not the best encoding; a worked example, not a theorem",
+  "example-quantum-kernel-amplitude-encoding": "Example 3.10 p.82: stated with no derivation; the O(d) worst-case state preparation and the remark that the kernel adds little power to a linear model are the authors' claims",
+  "example-quantum-kernel-angle-encoding": "Example 3.11 p.82-83, Eq. 3.31-3.32: Eq. 3.31 uses x_i/2 in the rotation but Eq. 3.32 gives cos^2(x_i - x_i'), which is inconsistent; the classical-simulability remark is the authors' claim",
+  "theory-fourier-representation-quantum-kernel": "Theorem 3.12 p.83-84: the paper gives only a \"proof sketch\" (Eq. 3.35-3.37). The sketch uses e^{-isx} where the statement has e^{isx}, shows no proof of the symmetry c_st = c*_{-s,-t} or that -s,-t lie in Omega, and the diagonalization step is written loosely. Not proved in full",
+  "theory-quantum-kernel-dual-prediction": "textbook, stated not proved (F129): Sec 3.2.4 Eq. 3.39 substitutes the quantum feature map into the dual form of Eq. 3.14; no separate derivation, and the derivation of Eq. 3.14 printed in Sec 3.1.2 has an error (Eq. 3.10 and 3.12)",
+  "theory-approximate-universality-quantum-feature-maps": "Theorem 3.13 p.87-91: the theorem is taken from Gil-Fuster et al. 2024, and the printed proof has gaps. (1) The statement drops the conditions of the Mercer corollary (Fact 3.1) it relies on, and says \"for any epsilon >= 0\" where epsilon > 0 is needed. (2) The proof says \"without loss of generality ||Phi_m(x)|| = 1\", but Lemma 3.15 needs unit 1-norm, and normalizing changes the kernel when k(x,x) is not constant, so this is not without loss of generality. (3) The SWAP-test remark is not a step of the proof. A proved result whose proof has an error is not settled by the passage",
+  "theory-lemma-c2qe-correctness-runtime": "Lemma 3.14 p.88-89: the correctness part is proved (Eq. 3.42-3.43, convex combination, checked). The runtime bound t <= O(poly(d)) is argued in one informal sentence (\"efficiently prepared by mixing when the number of terms is polynomial\") with no gate or sampling cost, so the value as a whole is not proved",
+  "remark-factor-2n-harmless-injective": "Sec 3.3.1 p.90: the authors' remark that the 2^N factor is unproblematic and that the map is injective but not surjective is stated with no proof",
+  "theory-proof-theorem-313-mercer-swap": "Proof of Thm 3.13 p.90-91: a proof relying on a corollary of Mercer's theorem (Fact 3.1, cited) and with the normalization gap and SWAP-test remark noted under item 113; not a complete proof",
+  "remark-theorem313-limits": "Sec 3.3.1 p.91: the three limits it names (no quantum advantage shown, qubit growth not addressed, possibly inefficient kernels) are stated limits, but the value also says the theorem establishes the ultimate expressivity of quantum kernels, which rests on Theorem 3.13 whose printed proof is not sound (see item 113)",
+  "theory-optimal-kernel-regression-weights": "textbook, stated not proved (F129): Sec 3.3.2 p.92, Eq. 3.53-3.54 restates the kernel ridge solution and the lambda -> 0 norm without derivation; the derivation it points to (Sec 3.1.2) has an error in Eq. 3.10 and 3.12",
+  "theory-training-error-bound-kernel": "Sec 3.3.2 p.93, Eq. 3.57-3.58: the authors call it a \"rough derivation\" with details omitted (to Huang et al. 2021a)",
+  "theory-kernel-generalization-bound-lambda": "Sec 3.3.2 p.93-95, Eq. 3.60-3.62: a rough derivation using Fact 3.16 (Mohri), Talagrand's contraction lemma and Lemma 1 of Huang et al. 2021a, with details omitted",
+  "theory-prediction-error-bound-kernel-machines": "Sec 3.3.2 p.95, Eq. 3.63-3.64: follows from the rough derivation of Eq. 3.57-3.62; stated with O(.) and no full proof",
+  "theory-inverse-embedding-kernel-estimation": "Sec 3.4 p.98-99, Eq. 3.68: the compute-uncompute estimate is standard, but the printed chain has the operator order wrong (U(x')U(x)^dag where U(x')^dag U(x) is needed), and the value's comparison that the SWAP test is more resource-intensive is an unmeasured authors' claim",
+  "claim-qkernel-advantage-artificial-tasks": "Sec 3.5.2 p.110-111: the authors' assessment of the literature (many quantum-kernel advantage tasks are artificial), not a limit stated about this tutorial's own work",
+  "claim-qkernel-applications-practical-advantage-open": "Sec 3.5.3 p.111: the authors' statement about the state of the field (practical quantum advantage remains an open area of research), not a limit of this tutorial's own work",
+  "theory-grover-time-complexity": "Thm 4.3 p.122-124: the proof is an outline. The recurrence for alpha_k, beta_k is derived, but \"by induction it can be shown that alpha_k = sin[(2k+1) theta]\" is not shown, \"alpha_m = O(1)\" is argued loosely, and the per-iteration cost log d + T_f in the stated time bound is never derived. A bound argued informally",
+  "remark-grover-advantage-needs-fast-oracle": "textbook, stated not proved (F129): Sec 4.2.1 Remark p.123 states the quadratic query speed-up and that runtime advantage needs T_f < sqrt d with no derivation; it is a condition on the algorithm, not a limit of a measured result",
+  "theory-online-quantum-perceptron-queries": "Thm 4.5 p.125-127: the theorem is taken from Kapoor et al. 2016 and its quantum bound rests on Lemma 4.7, whose proof is only sketched (see item 140); the classical Omega(d) lower bound is argued by \"the model needs to go through the entire dataset in the worst case\", informal",
+  "theory-lemma-classical-perceptron-queries": "Lemmas 4.6 and 4.7 p.126-128: Lemma 4.6 is proved (a simple exponential bound, correct). Lemma 4.7 is proved only by a sketch (\"it can be shown ... average probability at least 1/4\"); the value holds both, so graded by the weaker",
+  "theory-proof-lemma47-success-probability-quarter": "Proof of Lemma 4.7 p.127-128: the 1/4 average success probability is shown by a one-line sum with the key step (\"it can be shown\") and the choice of d1 for the worst case not justified in detail",
+  "theory-covering-number-circuit-operators": "Lemma 4.12 p.146-147: the proof uses Lemma 1 of Barthel and Lu 2018 (the bound |S| <= (7/eps)^{2^{2k}...} on the cover of the gate set) as a step, a cited result. The printed Eq. 4.49 also drops a factor 2 (U^dag O U - V^dag O V is bounded by 2||U-V|| ||O||, not ||U-V|| ||O||), an error in the proof",
+  "theory-covering-number-qnn-hypothesis-space": "Thm 4.13 p.147-148: the proof rests on Lemma 4.12 (which uses Barthel and Lu 2018) and on Fact 4.11, a cited bi-Lipschitz covering relation, so it is not self-contained",
+  "claim-gate-count-controls-qnn-complexity": "Sec 4.4.1 p.149: the authors' interpretation of Thm 4.13 (gates are the decisive factor), an upper bound read as a claim about the true complexity",
+  "theory-qnn-generalization-bound-covering": "Thm 4.14 p.149-150: the calculation is omitted (\"direct but tedious calculations, which is omitted here\") and refers to Du et al. 2022c; it also uses Fact 3.16 style bounds from other work",
+  "claim-qnn-generalization-implications": "Sec 4.4.1 p.150: the implications are the authors' reading of an upper bound (Occam's razor, overparameterization, Larocca et al. 2023 cited)",
+  "theory-barren-plateau-2-design": "Thm 4.16 p.150-153: adapted from McClean et al. 2018. The printed statement drops a condition the proof uses (Tr[O] = 0 is invoked at Eq. 4.69 but is not in the theorem), writes Tr[H_j^2] for the generator at index k, and the variance is reached by \"ignoring minor terms\" (Eq. 4.71) and a chain of approximations, so the stated \"approximately\" result is not a clean proof from the stated conditions",
+  "theory-quantum-transformer-informal": "Thm 5.2 p.187: labeled informal and not proved in one place; the bound is assembled from Thms 5.3, 5.6, Lemma 5.5 and a runtime analysis referred to Guo et al. 2024a",
+  "theory-quantum-self-attention": "Thm 5.3 p.189: the proof (p.193) combines Fact 2.23 and Thm 5.6 (itself informal, with a sketch), so it is not settled in the paper; the scaling-factor remark is the authors' choice",
+  "theory-elementwise-polynomial-block-encoding": "Lemma 5.5 p.190-192: the proof uses Lemma 2.25 (Hadamard product of block encodings, Guo et al. 2024a, itself only sketched) and Fact 2.21 (LCU, Gilyen et al. 2019) as steps, so it relies on cited results; the O(r^2) count is not derived, and the statement C' = r c_0 + C does not match the proof, which encodes 2^N c_0",
+  "theory-quantum-softmax-attention-row": "Thm 5.6 p.192: labeled informal with a proof sketch that relies on Lemma 5.5 and Fact 5.4 (\"by Lemma 5.5 and some additional calculation, one can show\")",
+  "theory-proof-quantum-self-attention-steps": "Proof of Thm 5.3 p.193: a three-step construction at sketch level that relies on Thm 5.6 (informal) and Fact 2.23",
+  "theory-quantum-masked-self-attention": "Cor 5.7 p.194: a short modification of earlier sketched steps; the multi-head remark is stated without proof",
+  "theory-quantum-residual-layer-norm": "Thm 5.8 p.195: stated with a sketch only",
+  "theory-quantum-ffn-gelu": "Thm 5.11 p.197: labeled informal with a sketch only",
+  "theory-runtime-classical-vs-quantum-transformer": "Sec 5.3.1 p.198: a complexity comparison of query counts against a naive classical O(ld+d^2) count; the authors' interpretation (that alpha_s and alpha_w dominate the potential speed-up), not a proved runtime analysis; the detailed runtime is referred to Guo et al. 2024a",
+  "claim-quantum-transformer-constant-layers-open": "Sec 5.5 p.204: the authors' statement about what existing quantum algorithms (cited) can do, a field statement and not a limit of the tutorial's own work",
+  "theory-hoeffding-lemma-and-inequality": "App B p.212: Hoeffding's lemma (Lemma B.3) is stated with no proof and is cited to Hoeffding; the tail bound follows from it plus Eq. B.11, but the choice of s is not shown. Textbook, stated not proved (F129). The remark about variance is the authors' comment"
+ },
+ "keep_stored": {},
+ "requote": {},
+ "unread": {
+  "ds3lab-feebee-github-repo": "left for F114's next release: Sprint 14 Task F read 50 papers (Q1 = 2), and this group's other records were among them"
+ }
+}

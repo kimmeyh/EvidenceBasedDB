@@ -104,7 +104,31 @@ def test_each_read_has_a_coordinator_row_beside_the_subagent_row(live_conn):
 
 
 @pytest.mark.live_store
+def test_a_full_read_keeps_its_correction_after_a_later_note(live_copy):
+    """A note after the full read that is not one (a Manual Validation
+    certainty change, say) does not hand the row back to this script
+    (fresh-eyes review, 2026-11-04). Proven to fail by injection,
+    2026-11-04: with the history-and-date clause disabled, the apply
+    logged "update faryad-state-prep-omega-2n-dimension-count"."""
+    from store import connect
+    from store.ingest import append_updated_reason
+    f46 = _script()
+    rid = "faryad-state-prep-omega-2n-dimension-count"
+    conn = connect(live_copy)
+    try:
+        append_updated_reason(conn, rid, "2026-12-01 (a later note): certainty changed", "2026-12-01")
+        assert [x for x in f46.apply_changes(conn) if rid in x] == [f"exists {rid} (owned by a later full read)"]
+    finally:
+        conn.rollback()
+        conn.close()
+
+
+@pytest.mark.live_store
 def test_a_second_apply_writes_nothing(live_copy):
+    """Proven to fail, 2026-11-04: before the apply kept off a record a
+    later full read owns, the full suite named "update
+    faryad-state-prep-omega-2n-dimension-count", which F114's Sprint 15
+    full read had corrected and this script would have undone."""
     from store import connect
     f46 = _script()
     conn = connect(live_copy)

@@ -1,0 +1,227 @@
+{
+ "group": "g113-r1",
+ "reviewed_on": "2026-11-01",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "qasa-design-36-param-pqc": [
+   "setup",
+   "Abstract p.1 and Introduction p.2 both state the value projection of the final encoder layer is replaced by the 36-parameter PQC. Fig 1 caption says the same. Reader's note on the residual form (Eq. 19) is a wording point; the value says only what the authors state."
+  ],
+  "qasa-deployed-circuit-counts": [
+   "setup",
+   "Table 3 caption, p.11, states the counting convention: 9 wires, 4 x 9 = 36 angles, 27 CNOTs from 3 entangling layers of 8 ring plus 1 ancilla gates. The paper's own circuit description."
+  ],
+  "qasa-trained-by-parameter-shift": [
+   "setup",
+   "Section 3.4, p.7, 'Training via the parameter-shift rule', states the gradient method (Eq. 20) and PennyLane/PyTorch autograd compatibility. The paper's stated training method."
+  ],
+  "qasa-length-conditioning-constant": [
+   "stated limit",
+   "Section 3.4, p.6: the authors note t is a constant at L=20 so it is a fixed global offset and its value is limited. A caveat about their own design."
+  ],
+  "qasa-benchmark-setup-synthetic": [
+   "setup",
+   "Section 4.2, p.14: T = 500, chronological 80/20 split, sliding window L = 20, next-value prediction. Stated setup."
+  ],
+  "qasa-main-benchmark-config": [
+   "setup",
+   "Section 4.1, p.13: hidden dim 64, 4 heads, 4 layers, 200 epochs, five seeds, 201,405 vs 200,257 parameters. Stated setup. Table 14 caption agrees."
+  ],
+  "qasa-evaluation-free-running-rollout": [
+   "setup",
+   "Section 4.1, p.13, 'Experimental protocol', item (i): the error tables use free-running rollout, which compounds error, and this is why chaotic MAEs exceed the one-step hardware MAEs. The authors' own evaluation protocol."
+  ],
+  "qasa-bottleneck-control-design": [
+   "setup",
+   "Section 4.3, p.16: control is identical except a rank-2 bilinear tanh map, 40 vs 36 parameters, 201,409 vs 201,405 total. Stated design of the control."
+  ],
+  "qasa-etth1-setup": [
+   "setup",
+   "Section 4.2, p.15 and Section 4.3, p.17: 500 training windows, L = 20, held-out 500 test windows, no dataset-specific tuning, same configuration as synthetic benchmarks."
+  ],
+  "qasa-baselines-reimplemented": [
+   "setup",
+   "Section 4.6, p.23: both baselines re-implemented per their reference implementations under identical conditions (hidden 64, 200 epochs, AdamW). Stated setup."
+  ],
+  "qasa-qlstm-total-parameters": [
+   "setup",
+   "Section 4.6, p.23: QLSTM 3,929 total parameters without a Transformer backbone; quantum parameters 36 vs 128 vs 90. Table 14 caption gives the same counts."
+  ],
+  "qasa-register-width-independent-of-L": [
+   "setup",
+   "Section 4.7, p.25: the PQC width is independent of L because the circuit acts on the per-token representation through Rd to R8. An architectural fact the authors state about their design."
+  ],
+  "qasa-noise-improvement-within-seed-std": [
+   "stated limit",
+   "Section 4.8, p.26: the authors caution the analysis uses 3 seeds on a reduced 4-qubit/2-layer circuit and the p = 0.1 error bar overlaps the noiseless baseline. A caveat on their own result."
+  ],
+  "qasa-noise-study-scope-limit": [
+   "stated limit",
+   "Section 4.11, p.29, 'Noise study scope', and Section 4.8: reduced 4-qubit 2-layer circuit, three channels, omits phase damping and correlated/crosstalk errors, one task. Stated scope limits."
+  ],
+  "qasa-hardware-setup": [
+   "setup",
+   "Section 4.9, p.27-28: inference-only on a frozen trained model, 156-qubit Heron r2 ibm fez, 2048 shots, no mitigation, 320 token circuits per task (16 windows x 20 tokens)."
+  ],
+  "qasa-hardware-calibration": [
+   "setup",
+   "Section 4.9, p.28: the run-time calibration (median over qubits) is stated by the paper as the conditions of its own runs, with the exact figures quoted. Run conditions, not a result."
+  ],
+  "qasa-hardware-metric-not-comparable": [
+   "scope",
+   "Section 4.9, p.28: the authors state the one-step MAE (~0.01) is not comparable to Table 6 (~0.34), and the comparison of interest is the within-protocol +7.5% ratio. A statement of what the hardware result covers."
+  ],
+  "qasa-complexity-conjectural": [
+   "stated limit",
+   "Section 4.10, p.28-29 Caveat, and Section 4.11: the authors state the Omega(T) argument is conjectural, no rigorous reduction to k-SAT, a hypothesis not a proven result."
+  ],
+  "qasa-limit-dataset-coverage": [
+   "stated limit",
+   "Section 4.11, p.29: 'Dataset coverage' and 'Ablation seed count' bullets state the limits as quoted."
+  ],
+  "qasa-software-hardware-stack": [
+   "setup",
+   "Section 4.12, p.29, 'Hardware and software': single Apple M-series CPU, PyTorch 2.8, PennyLane 0.42, lightning.qubit and default.mixed. Stated setup."
+  ],
+  "qasa-conclusion-future-work": [
+   "stated limit",
+   "Section 5, p.30: 'Future work should focus on' lists the four items as open work. The authors state what remains undone; value matches the four items."
+  ],
+  "qasa-limits-simulated-training-few-seeds": [
+   "stated limit",
+   "Section 4.11, p.29, bullets 'Simulated quantum training' and 'Limited statistical power' state both parts verbatim as limits: training on a classical state-vector simulator, n = 3 seeds for quantum baseline comparisons."
+  ],
+  "safe-architecture-resnet-amplitude-9q": [
+   "setup",
+   "Section 3.1, p.5-6: pretrained ResNet-18 gives a 512-dim embedding, pre-VQC linear plus GELU, 9-qubit amplitude encoding, single Strongly Entangling Layer, Pauli-Z expectations to a linear layer. Stated architecture."
+  ],
+  "safe-no-dimensionality-reduction": [
+   "setup",
+   "Section 3.1, p.5: the authors state the model uses the complete 512-dimensional representation unlike PCA-style reduction. Stated design."
+  ],
+  "safe-parameter-count-262k": [
+   "setup",
+   "Section 3.1, p.6: 'a total of 262k trainable parameters (carried by the pre-VQC linear transformation ... the VQC, and the final linear layer)'. Stated model size."
+  ],
+  "safe-training-simulator-autodiff": [
+   "setup",
+   "Appendix A.2, p.29-30: same optimisation for MLP and QML, Adam lr 3e-3, batch 32, 20 epochs, autodiff on a classical simulator without parameter-shift. Stated training setup."
+  ],
+  "safe-dataset-6056-mri": [
+   "setup",
+   "Section 4.1, p.11: 6,056 images, three classes with 2,004/2,004/2,048, 512 x 512 pixels. Stated dataset."
+  ],
+  "safe-preprocessing-resize-224": [
+   "setup",
+   "Section 4.1, p.11: contour-based cropping, resize to 224 x 224, channel-wise normalisation, pretrained ResNet-18 to a 512-dim vector."
+  ],
+  "safe-baselines-and-mlp-ablation": [
+   "setup",
+   "Section 4.2, p.11: Linear (L2), RBF SVM, RF with 300 trees, MLP with one 512-unit GELU layer (~264k parameters) used as an ablation replacing the circuit. Stated baselines."
+  ],
+  "safe-evaluation-5fold-cv": [
+   "setup",
+   "Section 4.2, p.11 and Appendix A.2, p.30: 5-fold cross-validation with 80/20 splits, macro F1, MSE and RGA/RGR/RGE with areas under the curves. Stated protocol."
+  ],
+  "safe-rga-definition": [
+   "definition",
+   "Section 3.2, p.6-7: RGA defined with Y ground truth and Y' the prediction; RG reduces to AUC for binary truth; multiclass by one-vs-rest weighted by class frequencies. The paper's own definitions (taken from its cited metric family)."
+  ],
+  "safe-rgr-rge-definition": [
+   "definition",
+   "Section 3.2, p.7: RGR compares original-data and perturbed-data predictions; RGE compares full-data and feature-removed predictions. Defined as quoted."
+  ],
+  "safe-aurg-areas-and-noise-setup": [
+   "setup",
+   "Section 4.3.3, p.15 gives the noise range 0% to 300% of signal range (std of test features per fold); Appendix A.2, p.30 names AURGA, AURGR, AURGE as areas under the curves for data removal, perturbation and feature removal."
+  ],
+  "safe-rge-image-occlusion-setup": [
+   "setup",
+   "Section 4.3.4, p.18-19: image-level occlusion guided by Grad-CAM from a frozen ResNet-18 with linear probe, Gaussian blur kernel 31, sigma 7.0, relevance ordering shared across models."
+  ],
+  "safe-theory-limit-lipschitz-hybrid": [
+   "stated limit",
+   "Section 3.3, p.10: the authors state Eq. 4 and 8 act on the internal state, not the original input, and the hybrid model's Lipschitz behaviour also depends on the encoding, feature scaling and output head. A caveat on their own analysis."
+  ],
+  "safe-limit-no-timing-noiseless-future-work": [
+   "stated limit",
+   "Section 6, p.23: future work on hardware-efficient circuits, multimodal MRI, larger clinical datasets, and noisy-hardware errors, stated as open work. Value covers only the future-work sentence."
+  ],
+  "safe-qml-simulator-scope": [
+   "stated limit",
+   "Section 6 Impact statement, p.23, and Section 3.1, p.5-6: noiseless simulator, deliberately no computational time comparisons, single Strongly Entangling Layer on 9 qubits, all stated by the authors."
+  ],
+  "sqsnn-neuron-architecture": [
+   "definition",
+   "Section III-A, p.4-5: N input-output and Nmem memory qubits, memory qubits not measured and retained across steps, single-shot measurement giving the spike output. The paper's definition of its neuron."
+  ],
+  "sqsnn-spike-by-born-rule": [
+   "definition",
+   "Section III-D, p.5, Eq. 14-16: Born's rule gives the spike probability from the reduced density matrix, and the memory qubits keep the post-measurement state. Defines the neuron dynamics."
+  ],
+  "sqsnn-embedding-no-rotation-nonpositive": [
+   "definition",
+   "Section III-B, p.5, Eq. 12: angle is zero when z <= 0 so no rotation is applied, and the paper states the resulting complexity reduction with sparse spikes. Follows directly from the encoding it defines."
+  ],
+  "sqsnn-network-structure": [
+   "definition",
+   "Section IV-A, p.6, Eq. 18: hidden/output partition, output neurons have no outgoing edges, and LIF neurons can be replaced by SQS neurons keeping the topology. The paper's network model."
+  ],
+  "sqsnn-local-rule-meaning": [
+   "definition",
+   "Section IV intro, p.6: states what 'local' means for the training rule (per-neuron updates from local information plus a scalar global feedback) and that it builds on zeroth-order perturbation estimates."
+  ],
+  "sqsnn-local-gradient-estimators": [
+   "definition",
+   "Section IV-F, p.9: SPSA for synaptic weights, parameter-shift for PQC angles, local shot counts 2MpMsyn per neuron and 2MpMsom per angle. Defines the estimators and their shot counts."
+  ],
+  "sqsnn-tasks-and-datasets": [
+   "setup",
+   "Section V-A, p.9-10: USPS 1 vs 7 at 16 x 16 with T = 10; MNIST/FMNIST/KMNIST 28 x 28 with T = 5; MNIST-DVS 26 x 26 = 676 trains, 900/100 per class, first T = 20 steps. Stated setup."
+  ],
+  "sqsnn-experiment-purpose-competitive": [
+   "scope",
+   "Section V-A, p.10: the authors state the purpose of the MNIST/FMNIST/KMNIST experiments is to validate competitiveness under comparable parameter budgets on spike-encoded data. A statement of what the experiments cover."
+  ],
+  "sqsnn-baselines-and-param-matching": [
+   "setup",
+   "Section V-B and V-C, p.10: classical LIF SNN with surrogate gradient, QLIF-SNN, QNN, approximately equal trainable parameters, 1000 hidden SQSNN neurons (256 for MNIST-DVS). Stated benchmark setup."
+  ],
+  "sqsnn-circuit-config-small": [
+   "setup",
+   "Section V-C, p.10 and Fig. 6: N = 1, Nmem = 1, CRX plus RX ansatz, three parameters per neuron, learning rate 5e-4 for all models."
+  ],
+  "sqsnn-hardware-setup-qem": [
+   "setup",
+   "Section V-D, p.11: local rule run on ibm brisbane with Qiskit, Fig 7(a) without and 7(b) with zero noise extrapolation from Mitiq, M and Msyn varied with Msom = 1 and Mp = 5."
+  ],
+  "sqsnn-nisac-setup": [
+   "setup",
+   "Section V-H, p.13: impulse-radio PPM over a multipath fading channel with optional radar target, neuromorphic receiver with two readout heads, alpha = 0.3, 128 samples per training batch. Stated setup."
+  ],
+  "sqsnn-appendix-surrogate-method": [
+   "definition",
+   "Appendix A, p.14 and Section V-D, p.11: the binary spike is replaced in the backward pass by a deterministic sigmoid surrogate in [0,1] (Eq. 39), and the scheme needs a classical simulator. The paper's own method."
+  ],
+  "sqsnn-future-work": [
+   "stated limit",
+   "Section VI, p.14: 'Future work may investigate' neutral-atom implementations, error mitigation integration and modular multi-core architectures. Stated open work."
+  ],
+  "sqsnn-benchmarks-by-classical-simulation": [
+   "scope",
+   "Section V-D, p.11-12: direct evaluation needs a quantum processor of sufficient scale, so the authors 'henceforth employ classical simulations using a surrogate gradient-based approach'. Stated scope of the benchmarks."
+  ]
+ },
+ "theory_low": {
+  "safe-theory-unitary-isometry": "coordinator sign-off: a textbook identity the paper states without proving it, so the proved-result basis does not apply; held LOW as an F129 candidate for the team lead's decision; the reviewer's reason for HIGH was: Section 3.3, Eq. 4, p.8: stated for any unitary and any two states, with the 1-Lipschitz consequence read off directly. A textbook identity restated with its conditions, graded on how the paper states it. Not a formal theorem with a proof; the identity is asserted and the consequence is immediate.",
+  "safe-theory-bounded-output-and-spectral-norm": "coordinator sign-off: a textbook identity the paper states without proving it, so the proved-result basis does not apply; held LOW as an F129 candidate for the team lead's decision; the reviewer's reason for HIGH was: Section 3.3, p.9: Pauli-Z expectation in [-1,1] and unitary layers having spectral norm one, each stated with its condition. Textbook facts restated, graded on the statement. Asserted, not proved in the paper.",
+  "safe-theory-gradient-norm-preserved": "Section 3.3, Eq. 6-8, p.9-10: the argument applies the unitary norm identity to g, the gradient arriving from the classical layers, but g lives on the measured outputs and the step from the Hilbert-space adjoint to the backpropagated gradient (through the measurement Jacobian and the amplitude-encoding normalisation) is not shown. Informal argument, and the authors themselves hedge that it does not remove all optimisation difficulty.",
+  "sqsnn-fixed-pqc-is-reservoir": "Section IV-A, p.6: 'As a final note, we observe that ... can be interpreted as a form of quantum reservoir computing'. This is the authors' interpretation, offered in passing without a definition or derivation. Not a defined object or a proved result.",
+  "sqsnn-likelihood-upper-bound": "Section IV-D, p.7, Eq. 24-25: the bound is derived in the paper with Jensen, but the quotes carry only 'follows from Jensen's inequality' and the Monte-Carlo remark, not the bound or the hidden-trajectory factorisation (Eq. 21, 24) it needs. The quotes drop the statement and its conditions. Re-enter with Eq. 25 quoted to reconsider.",
+  "sqsnn-local-vs-global-pass-count": "Section IV-F, p.9: the pass counts are stated in one sentence of the authors' own cost accounting; the conventional zeroth-order count is asserted by comparison, with no derivation of either formula. An informal complexity claim, not a proved result."
+ },
+ "keep_stored": {},
+ "requote": {}
+}

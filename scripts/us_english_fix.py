@@ -170,7 +170,9 @@ PAIRS = [
 # exclusion). Extend this list as real quotations are found; a paper
 # title or abstract snippet containing British spelling is exactly the
 # case this list exists for.
-PROTECTED: tuple[str, ...] = ()
+# A stored record id is a key, never reworded in a document that names it: Sprint 15's full read of dees-2023
+# entered this one with a British spelling (INTAKE_WORKFLOW.md section 64).
+PROTECTED: tuple[str, ...] = ("optimised-parameter-shift-two-versus-three-evaluations",)
 
 # An empty string in PROTECTED would silently disable the whole sweep:
 # `"" in text` is always True, `text.replace("", token)` inserts a token

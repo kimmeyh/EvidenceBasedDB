@@ -1,0 +1,213 @@
+{
+ "group": "g151",
+ "reviewed_on": "2026-11-01",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "rbm-ducc-step1-mp2-threshold": [
+   "setup",
+   "Section II.C Step-1, p.4: the method's own first step, MP2 threshold 10^-05 for doubles, all singles kept; value matches the paragraph."
+  ],
+  "rbm-ducc-step2-ordering": [
+   "setup",
+   "Section II.C Step-2, p.4: probabilities sorted descending, operators below 10^-05 excluded, rank two first then rank one; quotes span a line break but the passage says exactly this."
+  ],
+  "rbm-ducc-scatterer-definition": [
+   "definition",
+   "Section II.C Step-5, p.5: the paper defines scatterers (Eq. 25 and text) as effective rank-one two-body operators with occ-occ or unocc-unocc transitions that raise a manifold by one rank."
+  ],
+  "rbm-ducc-step6-threshold-iteration": [
+   "setup",
+   "Section II.C Step-6, p.5: largest product of scatterer MP2 measures if above 10^-06; steps 4 to 6 iterate until RBM makes no new high-rank configurations."
+  ],
+  "rbm-ducc-noiseless-setup": [
+   "setup",
+   "Section III.A, p.6: RHF from PySCF, STO-3G, H2O/BH/CH2 frozen core, JW from qiskit-nature, qiskit statevector simulator; all in the passage."
+  ],
+  "rbm-ducc-optimizer-setup": [
+   "setup",
+   "Section III.A, pp.6-7: CG optimizer, initial point zero, RBM by sklearn, hyper-parameters in Supplementary Material point S1 (not in the file); value says only this."
+  ],
+  "rbm-ducc-noisy-setup": [
+   "setup",
+   "Section III.B, pp.7-8: shot-based estimator, FakeMelbourne noise model (three error kinds listed), SPSA max 500 iterations from zero, 10,000 shots, normal approximation, linear BH at 2.25 A; all stated."
+  ],
+  "rbm-ducc-not-chemical-accuracy": [
+   "stated limit",
+   "Section III.B, p.8: the authors say Fig. 5 does not show absolute accuracy and that error mitigation layers are needed for chemical accuracy. True result_type is measured (a limit on their own noisy result), not setup (F135)."
+  ],
+  "rbm-ducc-fig5-20-runs": [
+   "setup",
+   "Figure 5 caption, p.9 (stored anchor p.8 is one page off): 'Each curve represents the average of data from 20 runs.'"
+  ],
+  "rbm1s-step1-mp2-threshold": [
+   "setup",
+   "Section II.B Step-1, p.3: only doubles with absolute MP2 above 10^-05, no pruning of singles, descending order of absolute MP2; value matches."
+  ],
+  "rbm1s-step2-training-data": [
+   "setup",
+   "Section II.B Step-2, p.3: measurement in the computational basis, binary-vector dataset with frequency by probability, HF state not used in training; value matches."
+  ],
+  "rbm1s-step3-triples-filter": [
+   "setup",
+   "Section II.B Step-3, p.3: new higher-rank determinants filtered 'given they appear at least more than once', their operators added to the sequence; value matches."
+  ],
+  "rbm1s-scatterer-decomposition": [
+   "setup",
+   "Section II.B Step-4, p.4: each high-rank operator is decomposed into a scatterer and a low-rank operator already in the ansatz; only those with scatterer absolute MP2 above 10^-5 are included. Scatterer detail is in SI S2 (not in file), but the value claims only the method step."
+  ],
+  "rbm1s-scatterer-selection": [
+   "setup",
+   "Section II.B Step-4, p.4: the scatterer with the largest absolute MP2 value is selected when several give the same operator."
+  ],
+  "rbm1s-recursive-rank": [
+   "setup",
+   "Section II.B, pp.4-5: steps 1-4 raise the explicit rank by one; a k-body excitation is included only if it subsumes a dominant (k-1)-body excitation already parametrized. The paper's own protocol rule."
+  ],
+  "rbm1s-hyperparameters-optuna": [
+   "setup",
+   "Section III.A, p.7 (TPE named in the opening line of p.7): Optuna on CH2 at r=1.75 req, values (23, 20, 0.00198459, 90), reused for all other systems."
+  ],
+  "rbm1s-training-sample-size": [
+   "setup",
+   "Section III.A, p.7: trained with 10000 determinants, 10000 sampled by Gibbs sampling, against 500000 in Ref. 17 as the authors state."
+  ],
+  "rbm1s-computational-setup": [
+   "setup",
+   "Section III.A, p.7: PySCF, Qiskit with JW mapping, Scikit-learn RBM, frozen core for all systems, CG optimizer."
+  ],
+  "rbm1s-random-start-setup": [
+   "setup",
+   "Section III.B, p.7: fifty random parameter sets per ansatz, uniform on [2pi, 2pi) as printed (a degenerate interval in the paper; the value says 'as printed'), CG with max iterations 100."
+  ],
+  "halder-rbm-limits": [
+   "stated limit",
+   "Section II.B, p.6 ('RBM's capacity ... may be limited if the primary excitation subspace fails to capture sufficient correlation patterns') and Section IV, p.10 ('accuracy ... is highly dependent on the starting parameters'): both are the authors' limits on their own method. Stored anchor pp.6-9 should read pp.6 and 10."
+  ],
+  "halder-rbm-setup": [
+   "setup",
+   "Section III.A, p.7: STO-3G basis and 10000 training determinants; Figure 3 caption, p.9: panels BH, H2O, CH2. Stored anchor p.7 for the caption is off; it is on p.9."
+  ],
+  "enqode-ansatz-design": [
+   "setup",
+   "Section III.A, p.3: the paper's own ansatz design (IBM native gates, virtual Rz with no added error as the authors state, CY gates in an alternating compact layout, no extra SWAPs on the linear section of heavy-hex). The Rz point is a hardware fact the authors state, not tested here."
+  ],
+  "enqode-transfer-learning-inference": [
+   "setup",
+   "Section III.D, p.4: nearest cluster by Euclidean distance to centroids, initialize with that cluster mean's optimized parameters, fine-tune with the Section III.B algorithm."
+  ],
+  "enqode-compute-setup": [
+   "setup",
+   "Section IV.A, p.5: qiskit, qiskit_aer ideal and noisy density-matrix simulation 'given the characteristics of' ibm_brisbane, scipy L-BFGS, qiskit state preparation as Baseline, transpilation optimization level 0."
+  ],
+  "enqode-cluster-count-rule": [
+   "setup",
+   "Section IV.A, p.5: clusters chosen so fidelity between any datapoint and its nearest cluster is at least 0.95."
+  ],
+  "enqode-datasets-preprocessing": [
+   "setup",
+   "Section IV.B, p.5: MNIST, Fashion-MNIST and CIFAR10, PCA, then normalization for amplitude embedding."
+  ],
+  "enqode-metrics-definition": [
+   "definition",
+   "Section IV.C, p.5 (rendered page checked): Rz gate counts are excluded from circuit metrics, and the paper uses a 'common metric for mixed states' F = (tr sqrt(sqrt(rho) sigma sqrt(rho)))^2 between a desired and a measured state. The words 'common metric' fall in a garbled line of the text layer but are on the page."
+  ],
+  "enqode-eval-setup": [
+   "setup",
+   "Section IV.A p.5: 8-qubit circuits with an 8-layer ansatz for all experiments; Section IV.B p.5: 5 randomly sampled classes per dataset and 500 images per class. Stored anchor 'Section V, p.4' is off: it is Sections IV.A and IV.B, p.5."
+  ],
+  "medq-reuploading-process-definition": [
+   "definition",
+   "Section 4.2, Eq. (5), p.4 (rendered page checked): state is the product over layers of L(i)=R_i(theta_i)R_i(omega_i o x) applied to |0>, with theta and omega trainable; the same data is uploaded repeatedly through different embeddings. The paper defines its own model."
+  ],
+  "medq-embeddings-definition": [
+   "definition",
+   "Section 4.1, p.4: Rot = RZ(omega)RY(theta)RZ(phi) (Eq. 2), QAOA Embedding (feature encoding plus ZZ ansatz, Eq. 3) and Angle Embedding (Eq. 4), with the feature-count limits quoted. Eq. 3 as printed is odd, but the value claims only what the text says."
+  ],
+  "medq-linear-separable-dataset-definition": [
+   "setup",
+   "Section 5.1, p.6: the dataset construction, quoted verbatim (hypercube inputs, hyperplane orthogonal to (1,...,1), small margin). The paper takes it from earlier benchmarks but states it as its own setup."
+  ],
+  "medq-hyperparameter-search": [
+   "setup",
+   "Section 5.1, p.6: for each number of layers a grid search over the remaining hyperparameters minimizes training error, for MEDQ and data reuploading."
+  ],
+  "medq-mnist-setup": [
+   "setup",
+   "Section 5.2, pp.6-7: MNIST reduced by PCA, experiments at 3 and 5 dimensions. The 'outstanding performance' clause is in the quote but not in the value."
+  ],
+  "medq-open-problems": [
+   "stated limit",
+   "Section 6.1, p.7: the choice and arrangement of embeddings and learning-rate tuning are open problems, regularization or Early Stopping are future work against overfitting, and reliability and security need later theoretical study. All stated by the authors about their own work."
+  ],
+  "medq-setup": [
+   "setup",
+   "Section 5.1, p.6: datasets of 10, 12 and 14 dimensions, each configuration tested five times and the average reported; verbatim in the paper."
+  ],
+  "medq-theory-gap": [
+   "stated limit",
+   "Section 6.1, p.7: 'further theoretical validation is required to establish its advantage over the data reuploading model', the authors' own limit. The same sentence calls the generalization 'theoretically supported', which this value does not claim."
+  ],
+  "hanseroth-model-and-data-setup": [
+   "setup",
+   "Method, p.2 (and Computational Details, p.8): MACE-MP-0 pre-trained on the Materials Project, every 200th frame of 200 ps AIMD at 333 K gives 2000 frames per concentration, and 200 frames from 20 ps runs for the secondary set. The paper also says (p.8) the extra-temperature AIMD runs were 50 ps; it does not say the 20 ps is the first part of those, so that point is unreconciled, but the 20 ps is stated twice and is all this value claims."
+  ],
+  "hanseroth-concentrations-temperatures": [
+   "setup",
+   "Method, p.2: the 2000-frame models at six concentrations and 333 K; the 200-frame models at four concentrations and five temperatures, used only for Figure S3 force errors. All stated."
+  ],
+  "hanseroth-fine-tuning-parameters": [
+   "setup",
+   "Computational Details p.8 (MACE v0.3.6) and Table IV p.9 (rendered page checked): small foundation model, force weight 10, energy weight 0.1, validation fraction 0.1, batch size 5, 200 epochs, learning rate 0.01."
+  ],
+  "hanseroth-aimd-cell-composition": [
+   "setup",
+   "Table III, p.8 (rendered page checked): 1/98, 2/96, 4/92, 10/80, 18/64, 25/50 KOH to H2O at 0.56, 1.13, 2.32, 6.26, 12.25, 17.89 mol per liter. The table's atom count for 4 KOH in 92 H2O reads 270 (288 by arithmetic), but this value does not claim atom counts."
+  ],
+  "hanseroth-aimd-sim-times": [
+   "setup",
+   "Table III, p.8 (rendered page checked): simulation times 300, 500, 250 ps for the three most dilute and 250, 300, 400 ps for the three most concentrated, 0.5 fs, 333 K. The text 'extended beyond 250 ps' sits loosely with two cells at exactly 250 ps, but the table settles the value."
+  ],
+  "hanseroth-aimd-method": [
+   "setup",
+   "Computational Details, p.8: CP2K, BLYP, DZVP-MOLOPT-GTH, GTH-BLYP, Grimme D3, Nose-Hoover chain thermostat in NVT, 333 K, 0.5 fs."
+  ],
+  "hanseroth-mace-md-method": [
+   "setup",
+   "Computational Details p.9: ASE calculator, 0.5 fs, 3 ns, Langevin thermostat at 303, 323, 333, 343 or 363 K; Results p.4: 20 ns extended runs for the two most dilute systems."
+  ],
+  "hanseroth-diffusion-definition": [
+   "definition",
+   "Method, pp.3-4, Eq. (2): D is one sixth of the MSD slope, fitted over tau in [10 ps, 30 ps]; a hydroxide ion is an oxygen with one bonded proton, the bond assigned to the nearest oxygen neighbor of the hydrogen."
+  ],
+  "hanseroth-proton-jump-definition": [
+   "definition",
+   "Results, p.4: a proton jump is a change of nearest oxygen neighbor between consecutive time steps; the jump probability at an O-O distance is jumps at that distance over total occurrences between hydroxide and water oxygens."
+  ],
+  "hanseroth-aimd-diffusion-not-converged": [
+   "stated limit",
+   "Results, p.4: the authors say AIMD runs are too short for converged proton transport and diffusion coefficients, so only qualitative comparison with fine-tuned MD is possible. True result_type is a limit on their own measured comparison."
+  ],
+  "hanseroth-multi-model-definitions": [
+   "definition",
+   "Figure 4 legend, p.6 (text layer checked against the page's legend line): A1 2x1000 frames at 0.56 and 17.89; A2 multihead of the same; B1 6x333 frames; B2 6x1000; B3 multihead 6x1000; MP0 the foundation model."
+  ]
+ },
+ "theory_low": {
+  "rbm-ducc-scatterer-commutator": "Eqs. (26)-(27), p.5: stated without proof; the paper defers the derivation to S2 of the Supplementary Material, which is not in the file. Not a proved result.",
+  "rbm-ducc-dUCCSDT-triples-scaling": "textbook, stated not proved (F129): Section III.A, p.6 gives the triples count no^3 nv^3 in a parenthesis with no derivation; it is a standard counting statement, not a definition or proved result.",
+  "rbm1s-why-triples-appear": "Eqs. (12)-(13), pp.3-4: an authors' argument from the form of the RBM energy, with no bound or proof, and the Supporting Information is not in the file. Not a proved result.",
+  "rbm1s-pauli-string-count": "textbook, stated not proved (F129): Section II.B Step-4, p.4 gives O(2^(2K-1)) Pauli terms and the 32 against 2x8=16 example without derivation; the scatterer details are in SI S2, not in the file.",
+  "rbm1s-cost-generation-bottleneck": "Section II.C, p.6: the O(Ndet^2) bottleneck is taken from Herzog et al. (ref 55) and the Ncyc=1 conclusion is the authors' own count; no proof and no run time measured. A cited result.",
+  "enqode-symbolic-state-form": "Section III.B, Eq. (6), p.3: the form of the state (phase factors with p in {-1,0,1}, k in {-1,-i,i,1}) is asserted for the ansatz with no derivation, so it is neither a definition nor a proved result. The change of basis back to real amplitudes is only described in one sentence.",
+  "medq-rotation-nonlinear-claim": "Section 4, p.3: an authors' argument in words that rotation orthogonality makes the embedding non-linear; no derivation or proof.",
+  "medq-few-layers-uat-claim": "Section 4, pp.3-4: an authors' argument that few layers fail the conditions of the universal approximation theorem; no derivation, and the conditions are not stated or checked.",
+  "medq-reuploading-nocloning-claim": "Section 4, p.4: the authors argue from the no-cloning theorem that combining embeddings needs more qubits at unacceptable cost; the inference and the cost claim are the authors' own, with no derivation and no cost computed."
+ },
+ "keep_stored": {},
+ "requote": {},
+ "result_type_fix": {
+  "rbm-ducc-not-chemical-accuracy": "measured"
+ }
+}

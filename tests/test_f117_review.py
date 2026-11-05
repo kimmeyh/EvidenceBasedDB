@@ -78,6 +78,24 @@ def test_finalize_writes_the_applier_tables(review):
     assert (out["tag"], out["reader"]) == (review.TAG, review.READER)
 
 
+def test_a_re_entry_group_is_finalized_without_a_ledger_entry(review, monkeypatch):
+    """F125 (Sprint 15 Task C): g050-r1 re-enters a record g050 left for the next release; it has no ledger entry,
+    and the builder's NEXT_RELEASE mark on its record is its parent's, not its own. Proven to fail by injection,
+    2026-11-01: with the re-entry branch removed, finalize raised KeyError on the ledger; with the parent's marks
+    used for a re-entry group, its read record was listed unread."""
+    group = (review.READS_DIR / "group_g050.json").read_text(encoding="utf-8")
+    (review.READS_DIR / "group_g050-r1.json").write_text(group, encoding="utf-8")
+    (review.REVIEW / "decisions" / "g050-r1.json").write_text(json.dumps(GOOD), encoding="utf-8")
+    monkeypatch.setattr(review.build, "UNREAD", {"u": "no text", "p1": review.build.NEXT_RELEASE})
+    monkeypatch.setattr(review.build, "reentry_briefs", lambda: {"g050-r1": (["p1"], {})})
+    out = review.finalize("g050-r1", "2026-11-01", review.STORED)
+    assert "unread" not in out
+    # review of 34034bd: a record the re-entry brief leaves unread is named unread in its review
+    monkeypatch.setattr(review.build, "reentry_briefs", lambda: {"g050-r1": (["p1", "u"], {"u": "no text, still"})})
+    assert review.finalize("g050-r1", "2026-11-01", review.STORED)["unread"] == {"u": "no text, still"}
+    assert out["graded_high"]["thm"] == ["proved result", "Theorem 1, proved in Appendix A"]
+
+
 def test_a_local_read_names_task_fs_reader(review, monkeypatch):
     """Sprint 14 Task F: a group read wholly by local readers takes F's tag and reader; in a group that mixes cloud and
     local reads, each local record names the local reader and F's tag (review of 1cb63bb: the group's cloud tag went
@@ -97,6 +115,28 @@ def test_a_local_read_names_task_fs_reader(review, monkeypatch):
     assert (out["tag"], out["reader"]) == (review.TAG, review.READER)
     assert out["readers"] == {"p1": review.LOCAL_READER}
     assert out["tags"] == {"p1": review.LOCAL_TAG}
+
+
+def test_a_sprint15_read_names_sprint15s_prompt(review, monkeypatch):
+    """Sprint 15 Task H: g062-r1 was first finalized naming Sprint 14's tag and prompt. A read that carries
+    figure_count (Sprint 15's prompt requires it) names Sprint 15's. Proven to fail by injection, 2026-11-01: with
+    every local read given Sprint 14's tag, the Sprint 15 group named Sprint 14's prompt."""
+    _decide(review, GOOD)
+    monkeypatch.setattr(review.build, "local_file", lambda rid: Path(f"{rid}.json"))
+    path = review.READS_DIR / "group_g050.json"
+    group = json.loads(path.read_text(encoding="utf-8"))
+    for p in group["papers"]:
+        p["figure_count"] = 0
+    path.write_text(json.dumps(group), encoding="utf-8")
+    out = review.finalize("g050", "2026-11-01", review.STORED)
+    assert (out["tag"], out["reader"]) == (review.S15_TAG, review.S15_READER)
+    assert "sprint15_f114_reads" in out["reader"]
+    # a group mixing a Sprint 14 and a Sprint 15 local read names each read's own
+    group["papers"].append({"record_id": "p2", "assertions": [], "existing": []})
+    path.write_text(json.dumps(group), encoding="utf-8")
+    out = review.finalize("g050", "2026-11-01", review.STORED)
+    assert out["tags"]["p2"] == review.LOCAL_TAG and out["readers"]["p2"] == review.LOCAL_READER
+    assert {out["tags"][r] for r in out["tags"] if r != "p2"} == {review.S15_TAG}
 
 
 def test_a_missing_or_malformed_decision_is_refused(review):

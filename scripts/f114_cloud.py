@@ -168,6 +168,17 @@ def fetch(remote: bool = True) -> dict:
         # A rebuilt entry has no launch time: it is never called stale until its branch gives one.
         last = datetime.fromisoformat(info["launched"]).astimezone() if info.get("launched") else None
         if git("branch", "-r", "--list", ref).strip():
+            # F127 (Sprint 15 Task E), the review of d2fcc8d: a merged branch is refused here, for every record, not
+            # only by rebuild for a record not yet launched; one already in launches.json was checked from its old
+            # base and saved. A record with no launch base (an unread mark) is refused too, never a KeyError.
+            # A branch pushed before its first commit sits at its launch base, which is also "in" LAUNCH_BRANCH: it is
+            # pending, not merged (fresh-eyes review, 2026-11-02)
+            if merged(ref) and not (info.get("base") and git("rev-parse", ref).strip() == info["base"]):
+                tally["refused"].append(f"{rid}: already in {LAUNCH_BRANCH}, so its commits cannot be checked")
+                continue
+            if not info.get("base"):
+                tally["refused"].append(f"{rid}: no launch base, so its commits cannot be checked")
+                continue
             folder = f"manifests/f114_cloud/results/{rid}/"
             # Every commit, not only the final tree: a file committed and then deleted was still pushed.
             touched = set(git("log", "--name-only", "--format=", f"{info['base']}..{ref}").split())
@@ -188,6 +199,12 @@ def fetch(remote: bool = True) -> dict:
             tally["stale"].append(rid)
     tally["done"] = len(done())
     return tally
+
+
+def merged(ref: str) -> bool:
+    """The branch is already in LAUNCH_BRANCH: its merge-base is its own tip, so base..ref would be empty and the
+    stray-file check would see nothing (review of 92d7634)."""
+    return git("merge-base", ref, LAUNCH_BRANCH).strip() == git("rev-parse", ref).strip()
 
 
 def logged_launches() -> dict[str, dict]:
@@ -213,21 +230,21 @@ def rebuild(remote: bool = True) -> dict:
               for r in v["records"]}
     logged = logged_launches()
     d = launches()
-    merged = []
+    unlaunched_merged = []
     for ref in git("for-each-ref", "--format=%(refname:short)", "refs/remotes/origin/cloud/f114/").split():
         rid = ref.rsplit("/", 1)[1]
-        base = git("merge-base", ref, LAUNCH_BRANCH).strip()
-        if base == git("rev-parse", ref).strip():
-            merged.append(f"{rid}: already in {LAUNCH_BRANCH}, so its commits cannot be checked")
+        if merged(ref):  # fetch refuses it for a launched record; one never launched is named here
+            if rid not in d and rid not in UNREAD:
+                unlaunched_merged.append(f"{rid}: already in {LAUNCH_BRANCH}, so its commits cannot be checked")
             continue
-        d.setdefault(rid, {"group": groups[rid], "base": base, **logged.get(rid, {}), "launched": None,
-                           "rebuilt": datetime.now().date().isoformat()})
+        d.setdefault(rid, {"group": groups[rid], "base": git("merge-base", ref, LAUNCH_BRANCH).strip(),
+                           **logged.get(rid, {}), "launched": None, "rebuilt": datetime.now().date().isoformat()})
     for rid, why in UNREAD.items():
         d.setdefault(rid, {"group": groups[rid], **logged.get(rid, {}), "launched": None,
                            "rebuilt": datetime.now().date().isoformat()})["unread"] = why
     save_launches(d)
     tally = fetch(remote)
-    tally["refused"] += merged
+    tally["refused"] = sorted(tally["refused"] + unlaunched_merged)
     return tally
 
 

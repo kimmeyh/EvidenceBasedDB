@@ -190,6 +190,25 @@ def last_change(updated_reason: str | None) -> str:
     return ""
 
 
+# The note a team-lead decision writes, in either of two shapes: the decision in the header, e.g. "2026-11-05
+# (Sprint 15 Manual Validation, Q6 = 2): ...", or named in the body, e.g. "2026-10-13 (Sprint 8 Task C, F65 and
+# F63): certainty UPGRADED ... the team lead's decision at Sprint 8 Manual Validation (Q7)" (fresh-eyes review,
+# 2026-11-05). A new decision note uses one of these shapes, or decided_day does not see it.
+_DECISION_NOTE = re.compile(r"(\d{4}-\d{2}-\d{2}) \(Sprint \d+ Manual Validation\b")
+_DECISION_BODY = re.compile(r"the team lead's decision at Sprint \d+ Manual Validation\b")
+
+
+def decided_day(updated_reason: str | None) -> str:
+    """The day of the latest Manual Validation decision note in a record's history; "" when none."""
+    days = []
+    for n in (updated_reason or "").split(" | "):
+        if (m := _DECISION_NOTE.match(n)):
+            days.append(m.group(1))
+        elif _DATE.match(n[:10]) and _DECISION_BODY.search(n):
+            days.append(n[:10])
+    return max(days, default="")
+
+
 def append_updated_reason(conn, record_id: str, note: str, today: str) -> str:
     """Append `note` to a record's `updated_reason`. NEVER replace it.
 
@@ -338,9 +357,15 @@ def validate_paper(paper: PaperRecord, check_local_paths: bool = True) -> None:
                     f"paper {pid!r}: the saved page {local!r} has {words} visible words, fewer than "
                     f"{MIN_VISIBLE_WORDS}: a bot challenge, a JavaScript-only shell or a redirect stub, "
                     "not the content. Save the real page (print to PDF, or the text) and point access at it.")
-    if paper.citation and any(marker.lower() in paper.citation.lower() for marker in _AUDIT_MARKERS):
+    # A marker counts only as a word of its own: "error-corrected" in a title is not one (Babbush et al. 2021,
+    # Sprint 15 Task J), and neither is "Corrected-error" or "Correctedness" (Copilot's review of PR #149: the
+    # right side is guarded too). The right guard applies only to a marker that ends in a letter, and refuses a
+    # hyphen only before a letter, so "NOTE:x" and "CORRECTED-2026-09-16" are still refused (fresh-eyes review).
+    audit = [m for m in _AUDIT_MARKERS if paper.citation and re.search(
+        rf"(?<![\w-]){re.escape(m)}{r'(?!\w|-[A-Za-z])' if m[-1].isalnum() else ''}", paper.citation, re.I)]
+    if audit:
         raise ValueError(
-            f"paper {pid!r}: citation carries audit-trail text ({', '.join(m for m in _AUDIT_MARKERS if m.lower() in paper.citation.lower())}). "
+            f"paper {pid!r}: citation carries audit-trail text ({', '.join(audit)}). "
             "Corrections and notes belong in updated_reason or evidence, not in the citation."
         )
     # An api-origin record must let the door derive its citation, unless it
@@ -712,6 +737,12 @@ def sync_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, note: str,
     when = updated or ""
     if last != (reason or "").rsplit(" | ", 1)[-1] and _DATE.match(last[:10]):
         when = last[:10]
+    if today < decided_day(reason):
+        # Sprint 15 Manual Validation: a sync dated before the team lead's decision on this row is a re-apply of
+        # older work and is refused, as a full read's is. Without it, re-running sprint12_reading.py (dated
+        # 2026-10-23) moved qng-study-scope-toy-model's context back from qc, the team lead's Q6 = 2. A sync dated
+        # on or after the decision goes through.
+        return []
     if FULL_READ_MARK in (reason or "") and (today < when or
                                              (FULL_READ_MARK in last and FULL_READ_MARK not in note
                                               and today == when)):

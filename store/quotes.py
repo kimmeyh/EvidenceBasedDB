@@ -68,9 +68,31 @@ def pdf_text(path: str) -> str:
     return _pdf_text(path)
 
 
+OCR_MARK = " || OCR: "
+
+
 @lru_cache(maxsize=None)
 def _pdf_text(path: str) -> str:
-    return " || ".join(plain(_pdftotext(path, layout)) for layout in (False, True))
+    """Both text layers; then, after OCR_MARK, the OCR text of the pages whose text layer is empty or nearly empty
+    (F115, Sprint 15 Task F), so a quote a reader took from such a page is checked against what the engine read."""
+    from store.ocr import ocr_pages
+    text = " || ".join(plain(_pdftotext(path, layout)) for layout in (False, True))
+    ocr = ocr_pages(path)
+    return text + (OCR_MARK + plain(" ".join(ocr.pages[n] for n in sorted(ocr.pages))) if ocr.pages else "")
+
+
+def ocr_only_quotes(citation_context: str | None, text: str) -> list[str]:
+    """The quotes found only in the OCR part of a source's text, not in its text layer: each must say "OCR" in its
+    anchor (F115). An image file's text is all OCR."""
+    layer, _, ocr = text.partition(OCR_MARK)
+    if text.startswith("OCR: "):
+        layer, ocr = "", text
+    out = []
+    for quote in QUOTE.findall(citation_context or ""):
+        q = plain(quote)
+        if q not in layer and q in ocr:
+            out.append(quote)
+    return out
 
 
 @lru_cache(maxsize=1)
@@ -133,6 +155,11 @@ def source_text(path: str) -> str:
         return pdf_text(path)
     if suffix in (".html", ".htm"):
         return html_text(path)
+    from store.ocr import IMAGE_SUFFIXES, image_text
+    if suffix in IMAGE_SUFFIXES:  # F115: a picture file is all OCR text
+        if READ_GUARD is not None:
+            READ_GUARD(path)
+        return "OCR: " + plain(image_text(path).pages[1])
     raw = p.read_text(encoding="utf-8", errors="replace")
     if suffix == ".ipynb":
         raw = "\n".join("".join(c.get("source", [])) for c in json.loads(raw)["cells"])
@@ -174,6 +201,12 @@ def stray_quote_marks(citation_context: str) -> list[int]:
     return [i for i, ch in enumerate(citation_context) if ch == '"' and i not in covered]
 
 
+# A number joined to a label ("Figures 3 and 4", "Figure 7C and 7D") is part of it only when no word follows it: in
+# "Figure 3, 4 qubits" the 4 is a count, not a label (fresh-eyes review, 2026-11-04)
+FIGURE_LABEL = (r"(?:Figures?|Figs?\.|Tables?) ?\d+[A-Za-z]?"
+                r"(?:\s*(?:,|and|to|[-–])\s*\d+[A-Za-z]?(?![A-Za-z\d]|\s*[A-Za-z]))*")
+
+
 def unquoted_figures(value: str, citation_context: str, read_from_page: tuple[str, ...] = ()) -> list[str]:
     """The figures in `value` that none of its own quotes holds. Moved from
     Sprint 11's reading script, whose 649 values passed it. Lighter than
@@ -183,8 +216,19 @@ def unquoted_figures(value: str, citation_context: str, read_from_page: tuple[st
     ("Phase 2's simulator", in F92's and F93's values)."""
     quoted = " ".join(plain(q) for q in QUOTE.findall(citation_context))
     value = re.sub(r"\bPhase \d+\b", "Phase", plain(value))
+    # a figure or table label ("Read from Figure 3: ...", "than in Figure 4(a)") is a name, while the same number
+    # elsewhere in the value still needs its quote (fresh-eyes review, 2026-11-02: excusing "3" everywhere let
+    # "at depth 3" stand unquoted)
+    value = re.sub(rf"\b{FIGURE_LABEL}", "Figure", value)
     return [n for n in re.findall(r"(?<![\w.,])(?<![A-Za-z]-)\d+(?:[.,]\d+)?", value)
             if not re.search(rf"(?<![\d.]){re.escape(n)}(?!\d)", quoted) and n not in read_from_page]
+
+
+def read_from_figure(value: str) -> tuple[str, ...]:
+    """The numbers a value read by eye from a plot (F116, Sprint 15 Task G): each one written "about N", the only
+    form in which a figure-read number may stand without a quote that holds it. A figure's label is a name, which
+    unquoted_figures leaves out."""
+    return tuple(re.findall(r"\babout [-−]?(\d+(?:[.,]\d+)?)", plain(value)))
 
 
 def require_verbatim(record_id: str, citation_context: str | None, text: str, value: str | None = None,

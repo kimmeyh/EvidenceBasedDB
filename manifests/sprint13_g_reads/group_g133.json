@@ -1,0 +1,2985 @@
+{
+ "papers": [
+  {
+   "record_id": "elhag-2025-quantum-convolutional-neural-networks-jet",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2024\\Elhag-et-al._2024_Quantum-convolutional-neural-networks-for-jet-images-classification__2408.08701.pdf",
+   "title_in_file": "Quantum Convolutional Neural Networks for Jet Images Classification (arXiv:2408.08701v3, 8 Sep 2025)",
+   "version_note": "The file is arXiv v3 (dated 8 Sep 2025), 14 pages. The Conclusion quotes the store holds as p.13 are on PDF p.12 in this file (the classical-simulability sentence starts on p.12 and runs onto p.13).",
+   "pages": 14,
+   "read_extent": "full",
+   "not_read": "",
+   "sections_read": [
+    "Abstract",
+    "I. INTRODUCTION",
+    "II. HIGH-ENERGY PHYSICS BACKGROUND",
+    "III. METHODOLOGY",
+    "A. CNN",
+    "B. Loss functions",
+    "C. QCNNs",
+    "1. Encodings",
+    "2. Convolutional and Pooling circuits",
+    "D. DEA",
+    "E. Dataset Preparation",
+    "1. JetNet Dataset",
+    "2. Jet images",
+    "3. PCA",
+    "IV. RESULTS",
+    "A. Dependence on Encodings",
+    "B. Dependence on Batch-sizes",
+    "C. DEA circuit",
+    "V. CONCLUSION AND OUTLOOK",
+    "CODE AVAILABILITY",
+    "ACKNOWLEDGMENTS",
+    "References"
+   ],
+   "figure_count": 16,
+   "figures": [
+    {
+     "figure": "Figure 1",
+     "page": 3,
+     "kind": "other",
+     "shows": "Feynman diagram of the W' boson decaying to a top and a bottom quark (W' to tb), with the top decaying through a W boson to a lepton and neutrino, quark-antiquark initial state on the left.",
+     "confirmed_by": "Figure 1 depicts the leptonic decay of the W ′ via this mode.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 2",
+     "page": 3,
+     "kind": "other",
+     "shows": "Sketch of jets before and after a boost: separated subjets at low pT on the left, merged inside one jet cone after the boost on the right.",
+     "confirmed_by": "shows how boosted top jets, with high pT , have closely aligned subjets",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 3",
+     "page": 4,
+     "kind": "block diagram",
+     "shows": "General CNN structure: input image, convolution layers, pooling layers, fully connected layer, output.",
+     "confirmed_by": "The general structure of CNN architectures can be viewed in Fig. 3.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 4",
+     "page": 4,
+     "kind": "block diagram",
+     "shows": "The CNN used in the study: input 1@2x2, Conv2d (4 feature maps, 2x2 kernel), MaxPool (2x2 kernel), flatten, hidden units 4 and 8 (fully connected), output 2.",
+     "confirmed_by": "A detailed structure of the CNN model used in this study, consisting of 33 trainable parameters, is presented in Fig. 4.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 5",
+     "page": 6,
+     "kind": "circuit diagram",
+     "shows": "Four-qubit QCNN: an encoding block, then Conv blocks on neighbouring qubit pairs, Pool blocks that halve the register, then a final Conv, Pool and a single-qubit measurement.",
+     "confirmed_by": "The overall structure for the QCNN with classical inputs is shown in Fig 5.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 6",
+     "page": 6,
+     "kind": "circuit diagram",
+     "shows": "Four encodings on four qubits with inputs x0 to x3: (a) TPE, one RX(x_i) per qubit; (b) HEE, RX(x_i) layers followed by a CNOT chain, repeated Nlayer times; (c) CHE, Hadamards, RZ(x_i) and RZZ(x_i x_j) gates.",
+     "confirmed_by": "The quantum circuit structure of the different encodings can be seen in",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 7",
+     "page": 6,
+     "kind": "circuit diagram",
+     "shows": "Gate structure of (a) the SO(4) convolutional circuit, (b) the SU(4) convolutional circuit and (c) the pooling circuit, with R(a,b,g) = RZ(g)RY(b)RZ(a) and R'(a,b,g) = RZ(g)RX(b)RZ(a).",
+     "confirmed_by": "The pooling circuit, shown in Fig. 7c, comprises a CNOT gate",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 8",
+     "page": 7,
+     "kind": "scatter plot",
+     "shows": "Three single-jet images for gluon (top row) and three for top (bottom row) jets in the eta-phi plane (axes about -0.4 to 0.4); sparse pixels, colour bar about 0.01 to 0.05.",
+     "confirmed_by": "Some of these examples are shown in Fig. 8.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 9",
+     "page": 8,
+     "kind": "heat map",
+     "shows": "Three summed 50x50 jet images of top-quark jets (top row) and three of QCD jets (bottom row), axes about -0.04 to 0.04; a bright central spot with a horizontal band, QCD colour bars reach about 30 to 40, top about 10 to 24.",
+     "confirmed_by": "Examples of top-quark and QCD jets summed over 10,000 images are shown in Fig. 9.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 10",
+     "page": 9,
+     "kind": "heat map",
+     "shows": "Five jets, top row 28x28 originals labelled Class 1 (top quark) or Class 0 (QCD), bottom row the 2x2 PCA-reduced images of the same jets.",
+     "confirmed_by": "Representative examples of such projected images for both top and QCD jet classes are shown in Fig. 10.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 11",
+     "page": 11,
+     "kind": "line plot",
+     "shows": "Six panels, accuracy (y, about 0.5 to 1.0) against epoch (x, 1 to 30): SO(4) (left) and SU(4) (right) with Hinge (a,b), MSE (c,d) and cross-entropy (e,f) loss; train and test curves with error bars for QCNN TPE, HEE1, HEE2, CHE and for the CNN. In every panel the CNN curve lies below the QCNN curves for most epochs; HEE1 is highest.",
+     "confirmed_by": "The accuracy curves corresponding to these settings are also summarized in Fig. 11",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 12",
+     "page": 12,
+     "kind": "line plot",
+     "shows": "Accuracy (y, about 0.5 to 1.0) against epoch (x, 1 to 30) for batch sizes 16, 32, 64 and 128, train and test: top panel the 51-parameter CNN with Hinge loss, bottom panel the SU(4) QCNN with Hinge loss. Larger batches converge more slowly in both.",
+     "confirmed_by": "This observation is also depicted in Fig. 12 for SU (4) and the corresponding CNN model with 51 parameters for Hinge loss as an example.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 13",
+     "page": 12,
+     "kind": "line plot",
+     "shows": "Test accuracy (y, about 0.55 to 1.0) against epoch (x, 1 to 30) with MSE loss: QCNN SU(4) with and without DEA, QCNN SO(4) with and without DEA, and the CNN; the four QCNN curves approach about 1.0 within about 10 epochs, the CNN rises slowly to about 0.93.",
+     "confirmed_by": "The curves in Fig. 13 also depict this result between all QCNN circuits (with and without DEA) compared to the CNN accuracy.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table I",
+     "page": 9,
+     "kind": "table",
+     "shows": "Test accuracy (percent, mean and standard deviation over 50 runs, 30 epochs, batch size 32) for SO(4) (30 parameters) and SU(4) (48 parameters) QCNNs with TPE, HEE1, HEE2 and CHE encodings under Hinge, MSE and cross-entropy loss, next to CNNs with 33 and 51 parameters.",
+     "confirmed_by": "Accuracy results after 30 epochs averaged over 50 runs for QCNN with SO(4) and SU (4) with varying (quantum) encoding types compared to CNN for the three loss functions are presented in Table I.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table II",
+     "page": 10,
+     "kind": "table",
+     "shows": "Test accuracy (percent, mean and standard deviation over 50 runs) for batch sizes 16, 32, 64 and 128 with HEE1 encoding, for SO(4) and SU(4) QCNNs and their CNNs under Hinge, MSE and cross-entropy loss.",
+     "confirmed_by": "The results averaged over 50 runs are displayed in Table II.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table III",
+     "page": 10,
+     "kind": "table",
+     "shows": "Test accuracy (percent, epoch 30, mean over 1000 runs, MSE loss, HEE1) for SU(4) and SO(4) QCNN circuits with and without DEA (parameter counts 48, 31, 30, 25) and a 33-parameter CNN.",
+     "confirmed_by": "Test accuracy results of the MSE loss averaged over 1000 runs for SU (4) and SO(4) QCNN circuits before and after applying DEA",
+     "no_text_confirms": false
+    }
+   ],
+   "what_it_is": "A simulation study that compares small quantum convolutional neural networks (SO(4) and SU(4) blocks, four qubits) with parameter-matched classical CNNs for top-quark versus QCD jet-image classification, with a dimensional expressivity analysis that removes redundant circuit parameters.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "noiseless-simulation-only",
+     "verdict": "confirmed",
+     "note": "Confirmed. In this file (arXiv v3) the sentence is on PDF p.12, not p.13; the Abstract and Section IV also name a classical noiseless simulator.",
+     "value": "The authors state that they only performed noiseless simulation and that noise would spoil the quantum network performance unless it can be tamed.",
+     "anchor": "V. Conclusion and Outlook, p.12",
+     "quotes": [
+      "Besides, we only performed the noiseless simulation and the effects from noise would spoil the QCNN performance unless we can tame them."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of their limit in the Conclusion (p.12).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qcnn-classically-simulable",
+     "verdict": "confirmed",
+     "note": "Confirmed as a cited statement; the paper cites arXiv:2408.12739 (reference [21]) and does not test it. The sentence starts on PDF p.12 and runs to p.13.",
+     "value": "The authors state that the quantum convolutional network has been indicated to be classically simulable for the classification of classical data.",
+     "anchor": "V. Conclusion and Outlook, p.12",
+     "quotes": [
+      "As QCNN has been indicated to be classically simulable [21] for the classification of classical data"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper cites from other work (reference [21]) and does not test.",
+     "result_type": "cited",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qcnn-outperforms-cnn-noiseless",
+     "verdict": "narrowed",
+     "note": "The stored value is the authors' summary and is right as a quote, but the paper limits it: the CNN has only 33 or 51 parameters, matched to the QCNN; the inputs are 2x2 PCA images from 2,000 jet images; Section IV calls it a qualitative comparison; and the text says the SU(4) setups are 'similar or worse' (Section IV A), although Table I lists SU(4) QCNN means above the CNN means. The conclusion calls the results 'preliminary'.",
+     "value": "The authors report, as preliminary results from a noiseless simulation, that the quantum convolutional network performs better than the corresponding classical CNN for most choices of data encoding, batch size, loss function and convolutional block, where the CNN is a small model matched in parameter count (33 parameters against 30 for SO(4), 51 against 48 for SU(4)), and they call the comparison qualitative.",
+     "anchor": "IV. Results, p.8; V. Conclusion and Outlook, p.12",
+     "quotes": [
+      "The results presented here are based on a qualitative level comparison.",
+      "for an SO(4) QCNN with 30 parameters, the corresponding number of CNN parameters is 33.",
+      "for an SU (4) QCNN with 48 parameters, the corresponding number for CNN is 51.",
+      "From the preliminary results we got for our quantum and classical models, we found that the QCNN, in the absence of noise, performs better than the corresponding CNN model for most choices of data encoding, batch-size, loss function, and convolutional block involved."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study with small, parameter-matched models.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "The advantage is shown only against a CNN limited to about 30 to 50 parameters on four PCA pixels. The paper says that usual CNNs have far more parameters, so the result does not show a quantum advantage over a tuned classical model."
+    },
+    {
+     "id": "simple-system-not-general-claim",
+     "verdict": "confirmed",
+     "note": "Confirmed. Both quotes are on PDF p.12 in this file.",
+     "value": "The authors state that the system was relatively simple, and that they do not claim their model outperforms all the existing models.",
+     "anchor": "V. Conclusion and Outlook, p.12",
+     "quotes": [
+      "it is important to emphasize that the system we studied here was relatively simple, both in QCNN and CNN.",
+      "we are not claiming that our model outperforms all the existing models"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of their scope in the Conclusion (p.12).",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "elhag-dataset-toptagging-2000-images",
+     "value": "The authors report that they used the TopTagging dataset of the JetNet library (hadronic top jets as signal and QCD jets as background, from Monte Carlo simulation), and that 2,000 jet images resized to 28 x 28 pixels were used for training the QCNN and the CNN, split 80% for training and 20% for testing.",
+     "anchor": "III.E.1 JetNet Dataset, p.7; III.E.2 Jet images, p.8",
+     "quotes": [
+      "features hadronic top jets as signal and QCD jets as background. All datasets are based on Monte Carlo simulations",
+      "We use 2,000 of these images, resized to 28 × 28 pixels, for our training task in QCNN and CNN. The dataset is split into 80% for training and 20% for testing."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own data setup (Section III E, pp.7-8).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "value": "The authors report that principal component analysis reduces each jet image from 28 x 28 to 2 x 2, so that only 4 pixels are the inputs of the QCNN and the CNN, one pixel per qubit.",
+     "anchor": "III.E.3 PCA, p.8; III.E Dataset Preparation, p.6",
+     "quotes": [
+      "PCA is used to reduce the dimensionality of the jet images from 28 × 28 to 2 × 2, so that we end up with only 4 pixels that are the inputs of our QCNN and CNN models.",
+      "where each qubit takes a single pixel value from the image as an input."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own input setup (pp.6, 8).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "A four-qubit circuit on four PCA values is a very small problem, so the results do not test scale.",
+     "id_suggestion": "elhag-pca-28x28-to-2x2"
+    },
+    {
+     "value": "The authors report that the quantum models were run on the default.qubit simulator from PennyLane and the classical CNNs were built with TensorFlow, and that no quantum hardware was used.",
+     "anchor": "I. Introduction, p.2; IV. Results, p.8",
+     "quotes": [
+      "The quantum model is implemented on a classical noiseless simulator (PennyLane [25]), while the classical counterpart is built using the TensorFlow framework [26].",
+      "using the default.qubit simulator from PennyLane for quantum computing calculations, and the TensorFlow library for CNNs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup (pp.2, 8).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The paper names no hardware run; this is an inference from the two quotes only.",
+     "id_suggestion": "elhag-simulator-and-frameworks"
+    },
+    {
+     "value": "The authors state that the current stage of the study is a proof of principle that the quantum neural network can be used in high-energy-physics analysis such as top tagging, using the hadronic decay channel of the TopTagging dataset.",
+     "anchor": "I. Introduction, p.2",
+     "quotes": [
+      "The current stage of this study is to have a proof of principle that our quantum neural network can be utilized in HEP analysis such as in top-tagging."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors' own statement of scope (p.2).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-proof-of-principle-stage"
+    },
+    {
+     "value": "The authors report that, for fairness, each QCNN is matched with a CNN of similar parameter count: 33 CNN parameters against 30 for the SO(4) QCNN and 51 against 48 for the SU(4) QCNN, and that every run starts from a random parameter set optimized with a learning rate of 0.001 and the Adam optimizer.",
+     "anchor": "IV. Results, p.8; III.B Loss functions, p.4",
+     "quotes": [
+      "for an SO(4) QCNN with 30 parameters, the corresponding number of CNN parameters is 33.",
+      "Similarly, for an SU (4) QCNN with 48 parameters, the corresponding number for CNN is 51.",
+      "For every run, we initialize a random set of parameters that are optimized after each epoch with a learning rate of 0.001.",
+      "these loss functions are optimized via the Adam optimizer [33] in this work."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own training setup (pp.4, 8).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-parameter-matching-lr"
+    },
+    {
+     "value": "The authors report that the CNN used has one Conv2d layer with four feature-map kernels, one MaxPooling layer, a flatten layer and two dense layers, and 33 trainable parameters.",
+     "anchor": "III.A CNN, p.4",
+     "quotes": [
+      "In this project, we use only one Conv2d layer, followed by a MaxPooling layer, a flatten layer, and two dense layers at the end.",
+      "A detailed structure of the CNN model used in this study, consisting of 33 trainable parameters, is presented in Fig. 4.",
+      "contains four feature map kernels"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own classical baseline (p.4).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-cnn-architecture-33-params"
+    },
+    {
+     "value": "The authors report that the SO(4) convolutional circuit has 2 CNOTs and 12 single-qubit gates of which 6 carry trainable parameters, the SU(4) circuit has 3 CNOTs and 15 single-qubit gates all with trainable parameters, and the pooling circuit has a CNOT gate and 9 single-qubit gates all with trainable parameters.",
+     "anchor": "III.C.2 Convolutional and Pooling circuits, p.5",
+     "quotes": [
+      "it contains 2 CNOTs and 12 single-qubit gates of which only 6 of them contain trainable parameters (θ).",
+      "It consists of 3 CNOTs and 15 single-qubit gates all containing trainable parameters",
+      "The SO(4) circuit corresponds to real transformation [35] and it contains 2 CNOTs",
+      "SU (4) is more general and considered a universal two-qubit circuit",
+      "The pooling circuit, shown in Fig. 7c, comprises a CNOT gate and 9 singlequbit gates all containing trainable parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own circuit blocks (p.5).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-conv-pool-circuit-gate-counts"
+    },
+    {
+     "value": "The authors report that they test four encodings of the classical data: tensor product embedding (angle encoding, TPE), hardware efficient embedding with one layer (HEE1) and two layers (HEE2), and classically hard embedding (CHE) with one layer.",
+     "anchor": "III.C.1 Encodings, p.5",
+     "quotes": [
+      "In this paper, we use one layer and two layers of HEE, denoted by HEE1 and HEE2, respectively. On the other hand, only one layer of CHE is used in this work."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own encodings (p.5).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-four-encodings-defined"
+    },
+    {
+     "value": "The authors state that the accuracy is the number of correct classifications divided by the total number of samples, and that the results are based on a qualitative-level comparison.",
+     "anchor": "IV. Results, pp.8-9",
+     "quotes": [
+      "The results presented here are based on a qualitative level comparison.",
+      "(accuracy) := (correct classifications) (the number of total samples)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's definition of its own metric and scope (pp.8-9).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "",
+     "id_suggestion": "elhag-accuracy-definition-qualitative"
+    },
+    {
+     "value": "The authors report in Table I (30 epochs, batch size 32, mean over 50 runs) test accuracies for the SO(4) QCNN with HEE1 encoding of 99.84 +/- 0.07 percent with Hinge loss, 99.87 +/- 0.06 with MSE loss and 99.88 +/- 0.06 with cross-entropy loss, against CNN test accuracies of 95.47 +/- 1.42, 96.26 +/- 1.09 and 94.16 +/- 1.68 respectively.",
+     "anchor": "IV.A Dependence on Encodings, Table I, p.9",
+     "quotes": [
+      "99.84 ± 0.07",
+      "95.47 ± 1.42",
+      "99.87 ± 0.06",
+      "96.26 ± 1.09",
+      "99.88 ± 0.06",
+      "94.16 ± 1.68",
+      "averaged over 50 runs for SO(4) with 30 parameters and CNN results with 33 parameters",
+      "The batch-size is fixed to 32.",
+      "Accuracy results after 30 epochs averaged over 50 runs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The CNN here has 33 parameters on four PCA pixels, so the gap is against a very small classical model.",
+     "id_suggestion": "elhag-table1-so4-hee1-vs-cnn"
+    },
+    {
+     "value": "The authors report in Table I (30 epochs, batch size 32, mean over 50 runs) test accuracies for the SU(4) QCNN with HEE1 encoding of 99.88 +/- 0.09 percent with Hinge loss, 99.94 +/- 0.05 with MSE loss and 99.90 +/- 0.07 with cross-entropy loss, against CNN test accuracies of 97.38 +/- 0.45, 98.70 +/- 0.23 and 98.12 +/- 0.38 respectively.",
+     "anchor": "IV.A Dependence on Encodings, Table I, p.9",
+     "quotes": [
+      "99.88 ± 0.09",
+      "97.38 ± 0.45",
+      "99.94 ± 0.05",
+      "98.70 ± 0.23",
+      "99.90 ± 0.07",
+      "98.12 ± 0.38",
+      "and SU (4) with 48 parameters and the comparable",
+      "The batch-size is fixed to 32.",
+      "Accuracy results after 30 epochs averaged over 50 runs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The text of Section IV A says the SU(4) QCNN is 'similar or worse', yet these table values place it 0.6 to 2.5 points above the CNN, within a gap that is small beside the fraction of one point shown for the errors.",
+     "id_suggestion": "elhag-table1-su4-hee1-vs-cnn"
+    },
+    {
+     "value": "The authors report that with the SO(4) circuit and Hinge loss the CHE encoding gave a QCNN test accuracy of 94.58 +/- 0.34 percent, below the CNN's 95.47 +/- 1.42, and the text excepts this case from the statement that SO(4) QCNN accuracies are better than the CNN's.",
+     "anchor": "IV.A Dependence on Encodings, Table I, p.9",
+     "quotes": [
+      "94.58 ± 0.34",
+      "95.47 ± 1.42",
+      "We can notice that accuracy results for QCNN are better than those of CNN when we use SO(4) along with Hinge (except for CHE encoding), MSE, or cross-entropy."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-table1-so4-cheweak"
+    },
+    {
+     "value": "The authors state that the performance of the QCNN for the SU(4) setups is similar or worse.",
+     "anchor": "IV.A Dependence on Encodings, p.9",
+     "quotes": [
+      "The performance of QCNN for SU (4) setups is similar or worse."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement about one study that the paper's own Table I does not clearly support.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The sentence does not say what it is compared with. In Table I every SU(4) QCNN mean with TPE, HEE1 and HEE2 is above the CNN mean for the same loss. The sentence may compare SU(4) with SO(4) or may be loose wording.",
+     "id_suggestion": "elhag-su4-similar-or-worse-statement"
+    },
+    {
+     "value": "The authors report that among the QCNN setups HEE1 encoding gave the best accuracy, then TPE, with HEE2 and CHE worse, and they suggest this may reflect dataset-induced barren plateaus that make HEE2 and CHE too complex for this task, but state that a more concrete connection needs a study with more qubits, left for the future.",
+     "anchor": "IV.A Dependence on Encodings, p.9",
+     "quotes": [
+      "HEE1 encoding (values given in bold in Table I), and then TPE showed better results compared to HEE2 or CHE. This could be possibly understood from dataset induced barren plateau investigated in [34].",
+      "However, we have to study performance by increasing the number of qubits to make this connection more concrete, which we leave for the future direction."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical ranking from one study with an explanation the authors mark as possible and untested.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-encoding-ranking-barren-plateau"
+    },
+    {
+     "value": "The authors report faster convergence at early epochs for all QCNN setups, for both SO(4) and SU(4), compared with the CNN.",
+     "anchor": "IV.A Dependence on Encodings, p.9-10",
+     "quotes": [
+      "We can notice the faster convergence at",
+      "early epochs for all setups of QCNN for both SO(4) and SU (4) compared to CNN."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-faster-early-convergence"
+    },
+    {
+     "value": "The authors report in Table II (HEE1 encoding, mean over 50 runs) that with the SO(4) circuit and Hinge loss the QCNN test accuracy falls from 99.93 +/- 0.07 percent at batch size 16 to 97.48 +/- 0.82 at batch size 128, while the CNN falls from 94.70 +/- 1.74 to 69.30 +/- 2.90.",
+     "anchor": "IV. Results, p.8; IV.B Dependence on Batch-sizes, Table II, p.10",
+     "quotes": [
+      "99.93 ± 0.07 94.70 ± 1.74",
+      "97.48 ± 0.82 69.30 ± 2.90",
+      "TABLE II: Test accuracy batch-sizes results averaged over 50 runs for SO(4) with 30 parameters",
+      "change the batch-sizes (16, 32, 64, and 128)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-table2-so4-hinge-batch"
+    },
+    {
+     "value": "The authors report that the QCNN tends to perform better than the CNN at all batch sizes for SO(4), that results for SU(4) and the CNN are comparable, that accuracy tends to decrease as the batch size increases, that batch size 16 converges faster than the others and batch size 128 slowest, and that batch sizes 16 and 32 perform similarly and better than 64 and 128.",
+     "anchor": "IV.B Dependence on Batch-sizes, p.10",
+     "quotes": [
+      "results are comparable for SU (4) and CNN.",
+      "as the batch size increases, the accuracy tends to decrease.",
+      "Batch sizes of 16 and 32 demonstrate similar performance (values shown in bold in Table II), which is superior to both 64 and 128."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-batch-size-trend"
+    },
+    {
+     "value": "The authors state that slower or faster convergence in epochs does not necessarily mean slower or faster training time, because the time to train each epoch differs between the quantum and the classical model.",
+     "anchor": "IV.B Dependence on Batch-sizes, p.10",
+     "quotes": [
+      "It is essential to note that slower or faster convergence does not necessarily equate to slower or faster training times, since the time it takes to train each epoch is different from quantum to classical."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own caveat on how their convergence results are to be read (p.10).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The paper reports no wall-clock training time for either model.",
+     "id_suggestion": "elhag-convergence-not-training-time"
+    },
+    {
+     "value": "The authors report that a dimensional expressivity analysis of the SU(4) QCNN circuit, originally with 48 parameters, found 17 redundant, leaving 31 parameters, and that they state this is compatible with the dimension of the state space, so the circuit is minimal in trainable parameters and maximally expressive.",
+     "anchor": "IV.C DEA circuit, p.10",
+     "quotes": [
+      "After performing a DEA check on the SU (4) QCNN circuit with originally 48 parameters, 17 of them were found to be redundant, leaving a total of 31 parameters in the optimized circuit.",
+      "Therefore, the circuit is minimal in the set of trainable parameters and maximally expressive."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result computed for one circuit in one study; the claim of minimality rests on the authors' comparison with the state-space dimension.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-dea-17-redundant-of-48"
+    },
+    {
+     "value": "The authors report in Table III (epoch 30, mean over 1000 runs, MSE loss, HEE1 encoding) test accuracies of 99.95 +/- 0.01 percent for the SU(4) circuit without DEA (48 parameters), 99.89 +/- 0.01 with DEA (31 parameters), 99.95 +/- 0.01 for the SO(4) circuit without DEA (30 parameters), 99.93 +/- 0.01 with DEA (25 parameters), and 93.08 +/- 0.44 for a CNN with 33 parameters.",
+     "anchor": "IV.C DEA circuit, Table III, p.10",
+     "quotes": [
+      "SU (4) without DEA 48 99.95 ± 0.01",
+      "SU (4) with DEA 31 99.89 ± 0.01",
+      "SO(4) without DEA 30 99.95 ± 0.01",
+      "SO(4) with DEA 25 99.93 ± 0.01",
+      "33 93.08 ± 0.44",
+      "TABLE III: Test accuracy results at epoch 30 averaged over 1000 runs using MSE loss function and HEE1 embedding"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table III averages 1000 runs while Tables I and II average 50 runs.",
+     "id_suggestion": "elhag-table3-dea-vs-cnn"
+    },
+    {
+     "value": "The authors report that the SU(4) circuit with DEA has much fewer parameters than the original circuit and yet comparable accuracy, and that the DEA circuit (31 parameters) has a higher accuracy at epoch 30 than the CNN (33 parameters); they state this suggests DEA can reduce the number of trainable parameters while maintaining strong performance.",
+     "anchor": "IV.C DEA circuit, p.10-12",
+     "quotes": [
+      "The accuracy values at epoch 30 in Table III indicate a clear difference between the case when we have comparable number of parameters (31) of the DEA circuit with the CNN model (33 parameters) where the DEA circuit has higher accuracy value.",
+      "gesting that DEA can reduce the number of trainable parameters while maintaining strong performance.",
+      "However, the SU (4) circuit with DEA, has much less parameters compared to its original circuit and yet it shows comparable accuracy values."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-dea-keeps-accuracy"
+    },
+    {
+     "value": "The authors report that the SU(4) circuit without DEA, with more parameters (48), converges in fewer training epochs than the DEA circuit (31), and that both SO(4) circuits, with and without DEA, perform similarly with slightly higher accuracy at early epochs for the circuit with more parameters.",
+     "anchor": "IV.C DEA circuit, p.10",
+     "quotes": [
+      "The SU (4) circuit without DEA has more parameters (48) which help it converge to the solution after fewer training epochs compared to the case with less parameters in the circuit with DEA (31).",
+      "Both SO(4) circuits, with and without DEA have a similar performance"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulation study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-dea-early-epoch-trade"
+    },
+    {
+     "value": "Read from Figure 11: in the SO(4) panels the CNN test accuracy at the last epoch is about 0.93 with Hinge loss (a), about 0.88 with MSE loss (c) and about 0.95 with cross-entropy loss (e), while the QCNN HEE1 curves are above about 0.99; the CNN curve has the widest error bars and rises slowly from about 0.5 at the first epoch.",
+     "anchor": "IV.A Dependence on Encodings, p.9; Figure 11, p.11",
+     "quotes": [
+      "FIG. 11: SO(4) and SU (4) QCNN accuracy encoding results compared to CNN for Hinge (a) and (b), MSE (c) and (d), and Cross-entropy (e) and (f).",
+      "The accuracy curves corresponding to these settings are also summarized in Fig. 11"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "The values are read by eye and are approximate.",
+     "id_suggestion": "elhag-fig11-cnn-below-qcnn"
+    },
+    {
+     "value": "Read from Figure 12: with Hinge loss and batch size 128 the CNN (51 parameters) reaches only about 0.85 test accuracy at the last epoch, while the SU(4) QCNN with batch size 128 reaches about 1.0; for the QCNN, batch size 128 starts at about 0.6 at the first epoch against about 0.95 for batch size 16.",
+     "anchor": "IV.B Dependence on Batch-sizes, p.10; Figure 12, p.12",
+     "quotes": [
+      "FIG. 12: Accuracy results of the different batch-sizes in CNN (top) and SU (4) QCNN (bottom) for Hinge loss.",
+      "This observation is also depicted in Fig. 12 for SU (4) and the corresponding CNN model with 51 parameters for Hinge loss as an example.",
+      "a batch size of 16 has faster convergence compared to the other batch sizes, while a batch size of 128 exhibits the slowest convergence"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "The values are read by eye and are approximate.",
+     "id_suggestion": "elhag-fig12-batch-size-curves"
+    },
+    {
+     "value": "Read from Figure 13: with MSE loss the four QCNN test-accuracy curves (SO(4) and SU(4) circuits, with and without DEA) reach about 0.99 within about 6 epochs and stay near about 1.0 to the last epoch, while the CNN test accuracy rises from about 0.57 at the first epoch to about 0.93 at the last.",
+     "anchor": "IV.C DEA circuit, p.10; Figure 13, p.12",
+     "quotes": [
+      "FIG. 13: Test accuracy results of the different circuits",
+      "The curves in Fig. 13 also depict this result between all QCNN circuits (with and without DEA) compared to the CNN accuracy.",
+      "Both SO(4) circuits, with and without DEA have a similar performance",
+      "However, the SU (4) circuit with DEA, has much less parameters"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "The values are read by eye and are approximate.",
+     "id_suggestion": "elhag-fig13-dea-curves"
+    },
+    {
+     "value": "The authors cite a benchmark from earlier work in which modern machine-learning models, including a CNN, reached accuracies of 90% to 94% on top tagging with 1000 to 1.46 millions trainable parameters, the latter count corresponding to the ResNeXt architecture.",
+     "anchor": "I. Introduction, p.2",
+     "quotes": [
+      "These models demonstrated comparative performance, with accuracies ranging from 90% to 94%, but required intensive trainable parameter counts ranging from 1000 to 1.46 millions."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work (reference [17]).",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-cnn-benchmark-cited"
+    },
+    {
+     "value": "The authors state that, to date, there is no established method to determine which type of data can be efficiently used in QML and how it must be embedded into a quantum circuit to surpass classical machine learning, and no systematic approach to constructing a QNN suited to a given problem.",
+     "anchor": "I. Introduction, p.1-2",
+     "quotes": [
+      "However, to date, there is no established method to determine which type of data can be efficiently utilized in QML and how they have to be embedded into a quantum circuit to surpass classical machine learning.",
+      "Additionally, there is a lack of a systematic approach to constructing a specific QNN model suitable for a given problem."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement about the state of the field, without evidence in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-no-established-qml-data-method"
+    },
+    {
+     "value": "The authors state that the shallow circuit depth of the QCNN gives robustness against barren plateau issues and so ensures trainability, and that while this might make the QCNN classically simulable, its classical simulation can still be regarded as a quantum-inspired machine learning architecture.",
+     "anchor": "I. Introduction, p.2",
+     "quotes": [
+      "shallowness also provides robustness against barren plateau issues, ensuring the trainability of the model [20].",
+      "the classical simulation of QCNN can still be regarded as a quantum-inspired machine learning architecture."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement the paper attributes to earlier work (references [20] and [21]).",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-shallow-circuit-trainability-claim"
+    },
+    {
+     "value": "The authors state that the accuracy results depend heavily on the specific dataset and the details of its preprocessing, and that a direct one-to-one comparison with other models is not possible unless fair training conditions with the same dataset are used.",
+     "anchor": "V. Conclusion and Outlook, p.12",
+     "quotes": [
+      "This is because the accuracy results depend heavily on the specific dataset used and the details of its preprocessing.",
+      "Hence, a direct, one-to-one comparison is not possible unless fair training conditions with the same dataset was performed."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of the limit of their comparison (p.12).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-comparison-not-one-to-one"
+    },
+    {
+     "value": "The authors state that, because the system was simple, the classical model could be trained with a very small number of parameters, whereas the usual case of training CNN models uses a high number of parameters that may reach up to millions.",
+     "anchor": "V. Conclusion and Outlook, p.12",
+     "quotes": [
+      "As a result, it was possible to train the classical model with a very small number of parameters, whereas the usual case of training CNN models is to use a high number of parameters that may reach up to millions."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of a limit of their comparison (p.12).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-classical-cnn-small-params-caveat"
+    },
+    {
+     "value": "The authors state that they believe their model holds promising potential for jet image classification in a more general manner, in particular if the dataset is pre-processed so that the principal components after PCA still capture most of the important features of the image.",
+     "anchor": "V. Conclusion and Outlook, p.12",
+     "quotes": [
+      "That said, we believe our model holds promising potential for jet image classification tasks in a more general manner.",
+      "In particular, if the dataset was pre-processed such that when PCA is applied, the principal components can still capture most of the important features existed in the image."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author belief stated without evidence in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-promising-potential-claim"
+    },
+    {
+     "value": "The authors state that, because the QCNN is classically simulable, a much higher number of qubits can be used via classical simulation without real quantum hardware, so they can study how performance and resources scale with dataset complexity or qubit number and use higher-dimensional images without PCA.",
+     "anchor": "V. Conclusion and Outlook, p.12-13",
+     "quotes": [
+      "The classical simulability helps in avoiding using real quantum hardware, which makes it possible to use a much higher number of qubits via classical simulation"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement of a plan, without evidence in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "",
+     "id_suggestion": "elhag-future-scaling-simulability-plan"
+    },
+    {
+     "value": "The authors state that the code for data preprocessing, model implementation and training that produced the reported results is available in a public GitHub repository, with scripts and documentation to allow reproduction.",
+     "anchor": "Code Availability, p.13",
+     "quotes": [
+      "The code used for data preprocessing, model implementation, and training, which produced the results reported in this work, is available at"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own code availability (p.13).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "No replication of the results by others is reported.",
+     "id_suggestion": "elhag-code-public"
+    }
+   ]
+  },
+  {
+   "record_id": "elor-2022-smote-or-not-smote",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2022-01_Elor_To-SMOTE-or-not-to-SMOTE.pdf",
+   "title_in_file": "To SMOTE, or not to SMOTE? (arXiv:2201.08528v3, 11 May 2022)",
+   "version_note": "The file is arXiv v3 (11 May 2022), 10 pages; pages 1 to 6 hold the text, 7 to 9 the figures and Table 4, page 10 the references. The text layer prints the italic F1 as replacement characters followed by the digit.",
+   "pages": 10,
+   "read_extent": "full",
+   "not_read": "",
+   "sections_read": [
+    "Abstract",
+    "1 Introduction",
+    "2 Proper metrics and consistent algorithms",
+    "2.1 ROC-AUC",
+    "3 Experimental setup",
+    "3.1 Data",
+    "3.2 Preprocessing",
+    "3.3 Oversamplers",
+    "3.4 Classifiers",
+    "3.5 Metrics & Consistency",
+    "3.6 Hyper-parameters (HPs)",
+    "3.7 Method",
+    "4 Experimental results",
+    "4.1 A-priori vs. validation HPs",
+    "4.2 The effects of balancing on AUC and logloss",
+    "4.3 Balancing vs. threshold optimization",
+    "4.4 Additional experiments",
+    "5 Discussion and recommendations",
+    "5.1 General recommendation",
+    "5.2 Scenarios where balancing is recommended",
+    "5.3 Other difficulty factors",
+    "6 Related work",
+    "7 Conclusion",
+    "Acknowledgments",
+    "References"
+   ],
+   "figure_count": 6,
+   "figures": [
+    {
+     "figure": "Figure 1",
+     "page": 7,
+     "kind": "other",
+     "shows": "Two dot-and-triangle panels, (a) a-priori HPs and (b) validation HPs, in seven blocks (MLP, SVM, DT, Ada, LGBM, XGB, Cat), each with Default, baseline and five oversampler rows (Random, SMOTE, SVM-SM, ADASYN, Poly). Purple dots give mean AUC (bottom axis, about 0.45 to 0.9), orange triangles give mean rank (top axis, lower is better, about 10 to 45), error bars are one standard deviation over seeds.",
+     "confirmed_by": "The purple dots represent mean AUC and the orange triangles correspond to mean rank (lower is better), both aggregated over all datasets and random seeds.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 2",
+     "page": 9,
+     "kind": "other",
+     "shows": "Two panels of mean F1 (bottom axis, purple dots) and mean rank (top axis, orange triangles) for the same seven classifiers with Default, baseline and five oversamplers: (a) fixed decision threshold of 0.5 (F1 axis about 0.1 to 0.5), (b) threshold optimized on the validation set (F1 axis about 0.2 to 0.55).",
+     "confirmed_by": "See Figure 2 for average",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 1",
+     "page": 3,
+     "kind": "table",
+     "shows": "The four hyper-parameter configurations per classifier: LGBM and XGBoost (learning rate 0.1 or 0.025, number of trees 100 or 1000, subsample 1 or 0.66), Catboost (default, 500 iterations, ordered boosting), SVM (C 1 or 10, hinge or squared hinge), MLP (hidden layer 10%, 50%, 100%, relu or logistic), decision tree (min_samples_leaf 0.5%, 1%, 2%, 4% of samples), Adaboost (10, 20, 40, 80 estimators).",
+     "confirmed_by": "For each classifier, four HP configurations were considered, see Table 1.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 2",
+     "page": 3,
+     "kind": "table",
+     "shows": "Oversampler hyper-parameter configurations: SMOTE and ADASYN nearest neighbours 3, 5, 7, 9; SVM-SMOTE four pairs of neighbour counts (4 and 8, 4 and 12, 6 and 8, 6 and 12); Poly topology star, bus or mesh.",
+     "confirmed_by": "The oversampler HPs used in our experiments are detailed in Table 2.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 3",
+     "page": 5,
+     "kind": "table",
+     "shows": "Mean F1 (with standard deviation) for each of seven classifiers under baseline, Random, SMOTE, SVM-SM, ADASYN and Poly oversampling at a fixed threshold of 0.5, and the baseline with an optimized threshold. For SVM the optimized-threshold value equals the baseline value.",
+     "confirmed_by": "To compare balancing to optimizing the decision threshold, we compare the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 4",
+     "page": 8,
+     "kind": "table",
+     "shows": "With validation HPs, mean logloss (overall, minority class, majority class) and mean AUC and rank for each classifier under Default, baseline and five oversamplers, in units of one thousandth, with the percentage difference from the baseline in brackets.",
+     "confirmed_by": "see Table 4 which details the logloss and AUC achieved on the test set with validation HPs.",
+     "no_text_confirms": false
+    }
+   ],
+   "what_it_is": "An empirical study on 73 imbalanced tabular datasets of whether oversampling (random duplication and SMOTE variants) improves binary classification for weak and for strong boosted-tree classifiers, with a proof that AUC is proper under i.i.d. sampling.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "oversampling-helps-weak-not-strong-boosters",
+     "verdict": "narrowed",
+     "note": "The AUC half is right (Section 4.1, Figure 1(b), Table 4). Three limits from the paper: (1) the text of Section 4.3 says the F1 comparison used validation HPs, but the Figure 2 caption says a-priori HPs, and Table 3 does not say which; (2) with validation HPs the LGBM AUC gain is small (Table 4: about 0.3% to 1.4%) and the paper's own Introduction lists LightGBM among its three SOTA classifiers; (3) for the F1 result, the very weak MLP and SVM only. The stored text also says oversampling 'improved' all five weak classifiers; Section 4.1 says 'significantly improved'. The stored context (ml) is unchanged.",
+     "value": "Across the 73 datasets that remained after filtering, with hyper-parameters chosen on a validation fold, the authors report that oversampling (random oversampling, SMOTE, SVM-SMOTE, ADASYN and Polynomfit SMOTE) significantly improved the AUC of the weak classifiers (MLP, SVM, decision tree, AdaBoost and LGBM) but not of the stronger XGBoost and CatBoost; for the F1 metric, the text of the threshold-comparison section states that with an optimized decision threshold balancing was beneficial only for the weak MLP and SVM, and the SVM threshold could not be optimized because it outputs only class predictions; the caption of the F1 figure names a-priori HPs for the F1 comparison where the text names validation HPs.",
+     "anchor": "3.1 Data, p.2; 4.1, p.4; 4.3, p.4-5; Figure 2, p.9",
+     "quotes": [
+      "Finally, we experimented with the remaining 73 datasets.",
+      "Considering validation HPs, presented in Figure 1(b), balancing significantly improved prediction for the weak classifiers: MLP, SVM, decision tree, Adaboost and LGBM. However, for the stronger classifiers, XGBoost and Catboost, it did not.",
+      "On the other hand, when optimizing the threshold, balancing was beneficial only for the weak MLP and SVM5 classifiers.",
+      "The decision threshold could not be optimized for SVM as it outputs only class predictions",
+      "with a-priori HPs (a) using a fixed decision threshold of 0.5 and (b) optimizing the decision threshold on the validation set."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the paper's own statements of the HP regime for the F1 comparison disagree.",
+     "result_type": "measured",
+     "context": "ml",
+     "reader_inference": "The text of 4.3 says 'both with validation HPs'; the Figure 2 caption says a-priori HPs. The reader cannot tell which regime Figure 2 and Table 3 use."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "elor-theorem1-auc-is-proper",
+     "value": "The paper proves, as Theorem 1 (AUC is proper), that the model that predicts the true probabilities optimizes the expected AUC for a set of n observations sampled i.i.d. from a distribution.",
+     "anchor": "Theorem 1, Section 2.1, p.2",
+     "quotes": [
+      "Theorem 1 (AUC is proper).",
+      "optimizes the expected AUC for a set of",
+      "sampled i.i.d. from a distribution."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated with its condition (i.i.d. sampling) and proved in Section 2.1 as a corollary of Lemma 2 (p.2).",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "The paper calls the result 'a straightforward corollary of previous work' (Section 1, p.2)."
+    },
+    {
+     "id_suggestion": "elor-proof-theorem1-two-phase-corollary",
+     "value": "The paper proves Theorem 1 by splitting the sampling of an i.i.d. dataset into two phases, sampling the feature vectors i.i.d. and then sampling each label independently from its conditional distribution, which makes Theorem 1 a direct corollary of Theorem 7 of reference [5], restated as Lemma 2.",
+     "anchor": "Proof of Theorem 1, Section 2.1, p.2",
+     "quotes": [
+      "The process of obtaining a dataset of size",
+      "Theorem 1 is a direct corollary of Theorem 7 of [5], restated below as Lemma 2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The proof is given in full in Section 2.1 (p.2) and rests on the cited Lemma 2.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-lemma2-byrne-theorem7",
+     "value": "The paper states, as Lemma 2 (Theorem 7 of reference [5]), that the model that predicts the true probabilities optimizes the expected AUC for any set of n feature vectors where the labels are sampled i.i.d.",
+     "anchor": "Lemma 2, Section 2.1, p.2",
+     "quotes": [
+      "Lemma 2 (Theorem 7 of [5]).",
+      "optimizes the expected AUC for any set of",
+      "where the labels"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work (reference [5]) and does not prove.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-auc-generally-not-proper",
+     "value": "The authors state that AUC is generally not proper, citing reference [5], and that under the assumption that observations are sampled i.i.d. it is.",
+     "anchor": "Section 2.1, p.2",
+     "quotes": [
+      "While AUC is generally not proper [5], Theorem 1 below states that under that assumption it is."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The general non-properness is a result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-definition-proper-metric",
+     "value": "The paper defines a probability metric as proper when it is optimized by a classifier predicting the true class probabilities, states that properness is not defined for label metrics, and uses the notion of consistency for them.",
+     "anchor": "Section 2, p.2",
+     "quotes": [
+      "A probability metric is proper when it is optimized by a classifier predicting the true class probabilities.",
+      "Properness is not defined in respect to label metrics."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition (Section 2, p.2).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-definition-consistency",
+     "value": "The paper describes a learning algorithm as consistent in respect to a metric when, given enough training data, the algorithm converges to a solution that optimizes the metric.",
+     "anchor": "Section 2, p.2",
+     "quotes": [
+      "Roughly speaking, a learning algorithm is consistent in respect to a metric when, given enough training data, the algorithm converges to a solution that optimizes the metric."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own working definition (Section 2, p.2).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-logloss-consistent-with-threshold",
+     "value": "The authors state, citing references [22, 29], that optimizing logloss is consistent in respect to a large class of label metrics (including balanced accuracy, F1, AM and the Jaccard similarity coefficient) when the decision threshold is optimized on held-out data, and generally not consistent with a fixed decision threshold.",
+     "anchor": "Section 2, p.2",
+     "quotes": [
+      "was proved in [22, 29] where consistency is achieved by optimizing the decision threshold on held-out data.",
+      "On the other hand, logloss optimization is generally not consistent when using a fixed decision threshold."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-dataset-sources",
+     "value": "The authors report that they considered the 104 datasets of reference [21] and 24 further datasets of the imbalanced-learn package not in [21].",
+     "anchor": "3.1 Data, p.2",
+     "quotes": [
+      "We considered the 104 datasets of [21] and 24 dataset of imbalancedlearn2 but not in [21]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own data setup (p.2).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The paper does not report the imbalance ratios of the datasets, so it does not show that fraud-level imbalance is covered."
+    },
+    {
+     "id_suggestion": "elor-removed-48-saturated-datasets",
+     "value": "The authors report that they removed 48 datasets for which the baseline AUC of Catboost was very high (19 with baseline score 1 and 29 with score higher than 0.99), because it is unreasonable to expect balancing to improve datasets whose baseline score is almost perfect.",
+     "anchor": "3.1 Data, p.2",
+     "quotes": [
+      "We removed 48 datasets for which the baseline AUC score Catboost achieved was very high. For 19 datasets the baseline score was 1 and for 29 datasets the score was higher than 0.99.",
+      "it is unreasonable to expect such improvements for datasets where the baseline score is almost perfect."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of how its data were selected (p.2).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The filter uses the Catboost baseline score on the data, so datasets where a strong classifier already does well are absent from the study."
+    },
+    {
+     "id_suggestion": "elor-removed-7-datasets-technical",
+     "value": "The authors report that an additional 7 datasets were removed for technical reasons: three had fewer than 8 minority samples, which made SMOTE fail; one was not found in the keel repository; one had a baseline score of 0; and SVM-SMOTE failed on two.",
+     "anchor": "3.1 Data, p.2",
+     "quotes": [
+      "An additional 7 datasets were removed due to various technical reasons",
+      "had less than 8 minority samples which caused SMOTE to fail.",
+      "for winequality-red-3_vs_5 the baseline score was 0. SVM-SMOTE failed for winequality-red-8_vs_6-7 and poker-9_vs_7 so they were also removed."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's statement of how its data were selected (p.2).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Datasets with fewer than 8 minority samples are excluded, so the study does not cover the most extreme imbalance."
+    },
+    {
+     "id_suggestion": "elor-oversamplers-list",
+     "value": "The authors report that they used five oversamplers: random oversampling, SMOTE, SVM-SMOTE, ADASYN and Polynomfit SMOTE, the last selected for its superior performance in the experiments of reference [21].",
+     "anchor": "3.3 Oversamplers, p.3",
+     "quotes": [
+      "Random Oversampling (Random), where minority samples are randomly duplicated. SMOTE [6]. SVM-SMOTE (SVM-SM) [30]",
+      "Polynomfit SMOTE (Poly) [12], a variant of SMOTE that was selected due to its superior performance in the experiments of [21]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup (p.3).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-classifiers-list-sota",
+     "value": "The authors report that they used seven classifiers (decision tree, SVM, MLP, Adaboost, XGBoost, Catboost and lightGBM), with four hyper-parameter configurations for each, and that they call XGBoost, Catboost and lightGBM three SOTA boosted forest algorithms.",
+     "anchor": "3.4 Classifiers, p.3",
+     "quotes": [
+      "We experimented with seven classifiers4.",
+      "Finally, three SOTA boosted forest algorithms were used: XGBoost [7], Catboost [32] and lightGBM [20]. For each classifier, four HP configurations were considered, see Table 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup (p.3).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Section 4.1 then groups LGBM with the weak classifiers, so the paper uses 'SOTA' for lightGBM in Sections 1 and 3.4 and 'weak' for it in Section 4.1."
+    },
+    {
+     "id_suggestion": "elor-lgbm-weak-in-results",
+     "value": "The authors list LGBM among the weak classifiers (MLP, SVM, decision tree, Adaboost and LGBM) for which balancing improved AUC, and among the three SOTA classifiers they include as baselines (lightGBM, XGBoost and Catboost).",
+     "anchor": "Section 1, p.2; 4.2, p.4",
+     "quotes": [
+      "Specifically, we use lightGBM[20], XGBoost[7] and Catboost[32].",
+      "However, while for the weaker classifiers (MLP, SVM, decision tree, Adaboost and LGBM) this shift is correlated with better AUC performance"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Two statements by the authors that classify the same classifier differently.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The paper does not define 'weak' or 'strong'. The weak and strong labels appear to follow the observed AUC effect, not an a-priori criterion."
+    },
+    {
+     "id_suggestion": "elor-metrics-and-thresholds",
+     "value": "The authors report that they used the proper probability metrics AUC, logloss and Brier score, and the label metrics F1, F2, Jaccard similarity coefficient and balanced accuracy, with non-consistent classifiers (fixed decision threshold of 0.5) and consistent ones (threshold optimized on the validation fold).",
+     "anchor": "3.5 Metrics & Consistency, p.3",
+     "quotes": [
+      "We experimented with the following proper probability metrics: AUC, logloss and Brier score;",
+      "For the label metrics, we experimented with non-consistent classifiers by using a fixed decision threshold of 0.5 and with consistent ones by optimizing the decision threshold on the validation fold"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup (p.3).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "The value names F1 and F2 as the paper's metrics; the text layer prints them as garbled characters followed by the digits."
+    },
+    {
+     "id_suggestion": "elor-hp-definitions-apriori-validation",
+     "value": "The authors define a-priori HPs as the oversampler hyper-parameter set that yields the best results on the testing data, and validation HPs as hyper-parameters optimized on a validation fold; desired minority ratios of 0.1, 0.2, 0.3, 0.4 and 0.5 were considered for all oversamplers.",
+     "anchor": "3.6 Hyper-parameters, p.3",
+     "quotes": [
+      "A common HP selection practice is to use the HP set that yields the best results on the testing data.",
+      "it is common to optimize the HPs on a validation fold. We will denote the former practice a-priori HPs and the latter validation HPs.",
+      "desired ratios of 0.1, 0.2, 0.3, 0.4 and 0.5 were considered for all oversamplers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions (p.3).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "A-priori HPs selected on the test data are test-set tuned, so any gain with them is optimistic."
+    },
+    {
+     "id_suggestion": "elor-experiment-protocol-60-20-20-seven-seeds",
+     "value": "The authors report that each dataset was randomly split, stratified, into training, validation and testing folds of 60%, 20% and 20%, that only the training fold was oversampled, and that each experiment was repeated seven times with different random seeds and data splits.",
+     "anchor": "3.7 Method, p.3-4",
+     "quotes": [
+      "Each dataset was randomly stratified split into training, validation and testing folds with ratios 60%, 20% and 20% respectively.",
+      "the training fold was oversampled using each of the oversamplers.",
+      "the experiment was repeated seven times using different random seeds and different data splits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own protocol (pp.3-4).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-apriori-hps-oversampling-better",
+     "value": "The authors report that with a-priori HPs (Figure 1(a)) all four SMOTE variants achieved considerably better prediction quality than their baselines and were better than the simple random oversampler, with Poly slightly better, and they caution that the benefit could be attributed to overfitting the HPs.",
+     "anchor": "4.1, p.4",
+     "quotes": [
+      "With a-priori HPs, presented in Figure 1(a), all four SMOTE variants achieved considerably better prediction quality than their respective baselines. They were also better than the simple random oversampler.",
+      "the benefits of oversampling with a-priori HPs observed in our experiments could be attributed to overfitting the HPs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study that the authors say may reflect overfitting of HPs.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-xgboost-no-gain-catboost-best",
+     "value": "The authors report that for XGBoost no oversampler achieved a mean or rank improvement of more than one standard deviation, and that the Catboost baseline yielded the best average AUC overall and the second best rank, after Catboost oversampled with SVM-SMOTE.",
+     "anchor": "4.1, p.4",
+     "quotes": [
+      "For XGBoost, no oversampler achieved either mean or rank improvement of more than one standard deviation.",
+      "best average AUC overall and had the second best rank — after Catboost oversampled with SVM-SMOTE."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The paper applies no formal test; 'one standard deviation' is over the random seeds."
+    },
+    {
+     "id_suggestion": "elor-common-scenario-no-benefit",
+     "value": "The authors conclude that in the common scenario, when interested in a proper metric and good oversampler HPs are not known a-priori, best prediction is achieved by using a strong classifier and balancing is not beneficial, while balancing is effective with a weak classifier or when exceptionally good HPs are available a-priori.",
+     "anchor": "4.1, p.4",
+     "quotes": [
+      "Thus, in the common scenario, when interested in a proper metric and good oversampler HPs are not a-priori known, best prediction is achieved by using a strong classifier and balancing is not beneficial.",
+      "However, balancing is effective when using a weak classifier or when exceptionally good HPs are a-priori available."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical conclusion from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-table4-mlp-auc-gain",
+     "value": "The authors report in Table 4 (validation HPs, values multiplied by one thousand) a mean AUC for MLP of 673 +/- 48 at baseline, 797 +/- 48 (+18%) with random oversampling and 804 +/- 41 (+19%) with SMOTE.",
+     "anchor": "4.2, p.4; Table 4, p.8",
+     "quotes": [
+      "673 ± 48 797 ± 48 (+18%) 804 ± 41 (+19%)",
+      "The logloss and AUC scores are multiplied by 103.",
+      "see Table 4 which details the logloss and AUC achieved on the test set with validation HPs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-table4-lgbm-auc-gain",
+     "value": "The authors report in Table 4 (validation HPs, values multiplied by one thousand) a mean AUC for LGBM of 868 +/- 8 at baseline, rising to 871 +/- 6 (+0.3%) with random oversampling, 879 +/- 4 (+1.3%) with SMOTE and 881 +/- 6 (+1.4%) with SVM-SMOTE.",
+     "anchor": "4.2, Table 4, p.8",
+     "quotes": [
+      "864 ± 9 (-0.5%) 868 ± 8 871 ± 6 (+0.3%) 879 ± 4 (+1.3%) 881 ± 6 (+1.4%)",
+      "The logloss and AUC scores are multiplied by 103."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The LGBM gain is under 1.5% of AUC, far smaller than the MLP gain, yet the paper counts LGBM among the weak classifiers that balancing 'significantly improved'."
+    },
+    {
+     "id_suggestion": "elor-table4-xgb-auc-gain",
+     "value": "The authors report in Table 4 (validation HPs, values multiplied by one thousand) a mean AUC for XGBoost of 876 +/- 10 at baseline, 875 +/- 6 (-0.1%) with random oversampling, 880 +/- 6 (+0.5%) with SMOTE and 882 +/- 6 (+0.7%) with SVM-SMOTE.",
+     "anchor": "4.2, p.4; Table 4, p.8",
+     "quotes": [
+      "876 ± 10 875 ± 6 (-0.1%) 880 ± 6 (+0.5%) 882 ± 6 (+0.7%)",
+      "The logloss and AUC scores are multiplied by 103.",
+      "see Table 4 which details the logloss and AUC achieved on the test set with validation HPs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-table4-catboost-auc-no-gain",
+     "value": "The authors report in Table 4 (validation HPs, values multiplied by one thousand) a mean AUC for Catboost of 889 +/- 9 at baseline, 885 +/- 9 (-0.5%) with random oversampling, 887 +/- 10 (-0.3%) with SMOTE and 889 +/- 7 (-0.1%) with SVM-SMOTE.",
+     "anchor": "4.2, p.4; Table 4, p.8",
+     "quotes": [
+      "889 ± 9 885 ± 9 (-0.5%) 887 ± 10 (-0.3%) 889 ± 7 (-0.1%)",
+      "The logloss and AUC scores are multiplied by 103.",
+      "see Table 4 which details the logloss and AUC achieved on the test set with validation HPs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-catboost-better-via-logloss",
+     "value": "The authors state that, from the logloss scores, the superior AUC of Catboost appears to have been achieved simply by predicting the underlying probabilities better, that is with lower logloss, so that a superior model for the proper non-symmetric objective (AUC) was achieved by optimizing the symmetric loss (logloss) better.",
+     "anchor": "4.2, p.4",
+     "quotes": [
+      "From the logloss scores, it appears that the superior AUC performance of Catboost was achieved simply by predicting the underlying probabilities better, i.e. lower logloss.",
+      "a superior model for the proper non-symmetric objective (AUC) was achieved by optimizing the symmetric loss (logloss) better."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation of one study's table, hedged with 'it appears'.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-balancing-shifts-logloss-to-minority",
+     "value": "The authors state that, in all cases, balancing the data results in better logloss for the minority samples, worse logloss for the majority samples and worse logloss overall, so that balancing shifted the focus of the classifiers toward the minority class, and that for the weaker classifiers this shift is correlated with better AUC while for the stronger classifiers it is not.",
+     "anchor": "4.2, p.4",
+     "quotes": [
+      "In all cases, balancing the data results in better logloss for the minority samples, worse logloss for the majority samples and worse logloss overall.",
+      "However, while for the weaker classifiers (MLP, SVM, decision tree, Adaboost and LGBM) this shift is correlated with better AUC performance, for the stronger classifiers, it is not."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Table 4 does not fully support 'in all cases': for MLP the overall logloss is lower with every oversampler than at baseline (1760 at baseline against 1639, 1494, 1556, 1603 and 1533), and the MLP majority logloss falls with SMOTE and SVM-SMOTE."
+    },
+    {
+     "id_suggestion": "elor-fixed-threshold-balancing-helps-all",
+     "value": "The authors report that with a fixed decision threshold of 0.5 balancing considerably improved F1 prediction performance for all classifiers, that the SMOTE-like methods were not significantly better than the simple random oversampler, and that with an optimized threshold balancing was beneficial only for the weak MLP and SVM.",
+     "anchor": "4.3, p.4",
+     "quotes": [
+      "When using a fixed threshold, balancing considerably improved prediction performance for all classifiers. Note, however, that the SMOTE-like methods were not significantly better than the simple random oversampler.",
+      "On the other hand, when optimizing the threshold, balancing was beneficial only for the weak MLP and SVM5 classifiers.",
+      "using (a) a fixed decision threshold of 0.5 and (b) an optimized decision threshold"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-hp-regime-contradiction-figure2",
+     "value": "The authors state in the text of the threshold-comparison section that the F1 scores of the F1 figure use a fixed decision threshold of 0.5 and an optimized one 'both with validation HPs', while the caption of that figure states that the scores are 'with a-priori HPs'.",
+     "anchor": "4.3, p.4; Figure 2, p.9",
+     "quotes": [
+      "using (a) a fixed decision threshold of 0.5 and (b) an optimized decision threshold, both with validation HPs.",
+      "with a-priori HPs (a) using a fixed decision threshold of 0.5"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Two statements of the same setup in one paper that disagree.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "One of the two is an error. Which HP regime the F1 results (Figure 2, Table 3) use is not settled by the paper."
+    },
+    {
+     "id_suggestion": "elor-table3-mlp-f1",
+     "value": "The authors report in Table 3 for MLP a mean F1 of 0.188 +/- 0.044 at baseline with a fixed threshold of 0.5, 0.398 +/- 0.077 with random oversampling and 0.411 +/- 0.080 with SMOTE, against 0.303 +/- 0.055 for the baseline with an optimized threshold.",
+     "anchor": "4.3, p.4; Table 3, p.5",
+     "quotes": [
+      "0.188 ± 0.044 0.398 ± 0.077 0.411 ± 0.080",
+      "Optimized threshold 0.303 ± 0.055",
+      "Table 3: Mean",
+      "using (a) a fixed decision threshold of 0.5 and (b) an optimized decision threshold"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The HP regime of Table 3 is not stated; see the Figure 2 contradiction."
+    },
+    {
+     "id_suggestion": "elor-table3-svm-f1",
+     "value": "The authors report in Table 3 for SVM a mean F1 of 0.366 +/- 0.021 at baseline with a fixed threshold of 0.5, 0.475 +/- 0.013 with random oversampling and 0.483 +/- 0.012 with SMOTE, and the same 0.366 +/- 0.021 for the optimized-threshold column, because the SVM threshold could not be optimized.",
+     "anchor": "4.3, p.4; Table 3, p.5; footnote 5, p.4",
+     "quotes": [
+      "0.366 ± 0.021 0.475 ± 0.013 0.483 ± 0.012",
+      "The decision threshold could not be optimized for SVM as it outputs only class predictions",
+      "Table 3: Mean",
+      "using (a) a fixed decision threshold of 0.5 and (b) an optimized decision threshold"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "For SVM the comparison of balancing with threshold optimization is therefore not available; the paper nevertheless counts SVM among the classifiers for which balancing did better than threshold tuning."
+    },
+    {
+     "id_suggestion": "elor-table3-xgb-f1",
+     "value": "The authors report in Table 3 for XGBoost a mean F1 of 0.436 +/- 0.013 at baseline with a fixed threshold of 0.5, 0.513 +/- 0.023 with SMOTE, and 0.515 +/- 0.018 for the baseline with an optimized threshold.",
+     "anchor": "4.3, p.4; Table 3, p.5",
+     "quotes": [
+      "0.436 ± 0.013 0.508 ± 0.022 0.513 ± 0.023",
+      "0.482 ± 0.015 0.504 ± 0.015 0.515 ± 0.018",
+      "Table 3: Mean",
+      "using (a) a fixed decision threshold of 0.5 and (b) an optimized decision threshold"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "In the text layer the XGBoost optimized-threshold value is the last of three values in one line, read against the page image."
+    },
+    {
+     "id_suggestion": "elor-table3-catboost-f1",
+     "value": "The authors report in Table 3 for Catboost a mean F1 of 0.444 +/- 0.016 at baseline with a fixed threshold of 0.5, 0.529 +/- 0.022 with SMOTE, and 0.532 +/- 0.020 for the baseline with an optimized threshold.",
+     "anchor": "4.3, p.4; Table 3, p.5",
+     "quotes": [
+      "0.444 ± 0.016 0.525 ± 0.019 0.529 ± 0.022",
+      "0.532 ± 0.020",
+      "Table 3: Mean",
+      "using (a) a fixed decision threshold of 0.5 and (b) an optimized decision threshold"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-strongest-best-threshold-no-balancing",
+     "value": "The authors state that for the strongest classifiers, XGBoost and Catboost, best F1 prediction was achieved by optimizing the threshold without balancing, but that this score was not significantly better than the score achieved by balancing, and that except for the very weak MLP and SVM balancing and threshold optimization yield comparable prediction performance.",
+     "anchor": "4.3, p.5",
+     "quotes": [
+      "For the strongest classifiers, best prediction was achieved by optimizing the threshold (and without balancing).",
+      "Nevertheless, the score was not significantly better than the score achieved by balancing.",
+      "To summarize, except for very weak classifiers (MLP and SVM), balancing the data and optimizing the decision threshold yield comparable prediction performance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study; the paper reports no formal test.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-mlp-svm-balancing-beats-threshold",
+     "value": "The authors state that for the weak MLP and SVM best prediction was achieved by oversampling with SMOTE, and that prediction quality was considerably better compared to optimizing the decision threshold.",
+     "anchor": "4.3, p.4",
+     "quotes": [
+      "For the weak MLP and SVM, best prediction was achieved by oversampling with SMOTE. Furthermore, prediction quality was considerably better compared to optimizing the decision threshold."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "For SVM the optimized-threshold value is the baseline value (see footnote 5), so the SVM half of this comparison is against an unoptimized threshold."
+    },
+    {
+     "id_suggestion": "elor-additional-experiments-robustness",
+     "value": "The authors report that additional experiments, applying normalization before oversampling, using two validation folds (one for early stopping and one for HP selection) and using 5-fold cross validation, all yield results similar to the ones reported, with full results for all metrics in the code repository.",
+     "anchor": "4.4 Additional experiments, p.5",
+     "quotes": [
+      "These include applying normalization to the data before oversampling it, using two validation folds (one for early stopping and one for HP selection) and using 5-fold cross validation. All additional experiments yield results similar to the ones reported here."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement about robustness checks whose numbers are not in the paper.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-general-recommendation-no-balancing",
+     "value": "The authors recommend that balancing is normally not recommended: with a proper metric a strong classifier suffices and balancing is neither required nor beneficial, and with a label metric optimizing the decision threshold on validation data gives similar prediction quality and is recommended because it is more compute efficient than refitting the classifier for each oversampler HP.",
+     "anchor": "5.1, p.5",
+     "quotes": [
+      "Normally, balancing is not recommended.",
+      "Our experiments show that optimizing the decision threshold yield similar prediction quality to balancing the data. However, optimizing the decision threshold is recommended because it’s more compute efficient"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author recommendation drawn from one study.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-scenario-fixed-threshold-random-oversampler",
+     "value": "The authors recommend that when a label metric is used and the decision threshold cannot be optimized (for example with legacy classifiers or system constraints), a strong but non-consistent classifier should be augmented with the simple random oversampler, since the sophisticated SMOTE variants were not more effective than it.",
+     "anchor": "5.2, p.5-6",
+     "quotes": [
+      "However, for strong classifiers, the sophisticated SMOTE variants were not more effective than the simple random oversampler.",
+      "when using a strong but nonconsistent classifier, it is recommended to augment the data using the simple random oversampler."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author recommendation drawn from one study.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-scenario-weak-classifiers-smote",
+     "value": "The authors recommend that when strong classifiers cannot be used, data be augmented with SMOTE-like techniques, and state that the resulting prediction quality will be significantly worse than using a strong classifier without oversampling.",
+     "anchor": "5.2, p.6",
+     "quotes": [
+      "Thus, when strong classifiers can’t be used, it is recommended to augment the data using the SMOTE-like techniques. Nevertheless, the resulting prediction quality will be significantly worse compared to using a strong classifier (without oversampling)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author recommendation drawn from one study.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-scenario-apriori-hps-and-overfitting",
+     "value": "The authors state that when exceptionally good HPs are known a-priori, from previous experience with similar data, oversampling with the SMOTE variants improves prediction for all classifiers, that this could not be achieved by tuning the HPs on a validation set, and that it is unclear how much of the gain with test-data-selected HPs is overfitting of them.",
+     "anchor": "5.2, p.6",
+     "quotes": [
+      "When exceptionally good HPs are known, oversampling with the SMOTE variants improves prediction performance for all classifiers. Note that this could not be achieved by tuning the HPs on a validation set.",
+      "it’s unclear how much of the gains demonstrated using the HPs that yield best results on the test data could be attributed to overfitting them."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement from one study that includes its own caveat.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-findings-hold-regardless-of-difficulty-factor",
+     "value": "The authors state that their experimental results were obtained on a large collection of real-life imbalanced datasets that probably exhibit many other difficulty factors, so that their findings hold for real imbalanced data whether the source of difficulty is the skewed class distribution itself or other phenomena.",
+     "anchor": "5.3, p.6",
+     "quotes": [
+      "Thus, our findings hold for real imbalanced data whether the source of difficulty is the skewed class distribution itself or other phenomenons."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper does not measure the difficulty factors of its datasets.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The datasets are filtered for non-saturated baselines and a minimum of 8 minority samples, so 'real imbalanced data' is limited to that selection."
+    },
+    {
+     "id_suggestion": "elor-first-large-scale-with-sota",
+     "value": "The authors state that, to the best of their knowledge, theirs is the first large-scale study of balancing that includes SOTA classifiers (lightGBM, XGBoost and Catboost) as baselines.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "To the best of our knowledge, this is the first large scale study of",
+      "balancing that includes SOTA classifiers as baselines."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim of priority.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-related-work-kovacs-weak-classifiers",
+     "value": "The authors state that the study of reference [21], which compared 85 balancing methods using 104 datasets, found balancing beneficial because of the use of weak classifiers and a-priori HPs, and that their own results are in accord with most previous studies once the scenarios under investigation are considered.",
+     "anchor": "6 Related work, p.6",
+     "quotes": [
+      "[21] compared 85 balancing methods using 104 datasets. In that study, balancing was beneficial due to the use of weak classifiers and a-priori HPs.",
+      "A closer look reveals that our results are, in fact, in accord with most previous study when carefully considering the scenarios under investigation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation of another study.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-related-work-threshold-as-good-as-random",
+     "value": "The authors state that the experiments of reference [28] showed that optimizing the decision threshold is as effective as random oversampling, but that this study did not consider SMOTE and considered a single dataset only.",
+     "anchor": "6 Related work, p.6",
+     "quotes": [
+      "The experiments of [28] showed that optimizing the decision threshold is as effective as random oversampling.",
+      "Moreover, the study considered a single dataset only."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-related-work-synthetic-samples-majority",
+     "value": "The authors state that it was demonstrated in reference [40] that some of the synthetic minority samples generated by several SMOTE variants should truly belong to the majority class, potentially hindering the performance of a classifier trained on such data.",
+     "anchor": "6 Related work, p.6",
+     "quotes": [
+      "it was demonstrated in [40] that some of the synthetic minority samples generated by several SMOTE variants should truly belong to the majority class"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-conclusion-weak-not-strong-no-balancing-best",
+     "value": "The authors conclude that balancing could be beneficial for weak classifiers but not for strong ones, and that the best prediction performance was achieved using the strong Catboost classifier and without balancing.",
+     "anchor": "7 Conclusion, p.6",
+     "quotes": [
+      "We have empirically demonstrated that balancing could be beneficial for weak classifiers but not for strong ones. Furthermore, best prediction performance was achieved using the strong Catboost classifier and without balancing."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical conclusion from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The result is for 73 non-saturated, public benchmark datasets of unreported imbalance ratios; it is not shown for fraud-level imbalance."
+    },
+    {
+     "id_suggestion": "elor-open-problem-weak-strong-disparity",
+     "value": "The authors state that they leave explaining why balancing correlates with better AUC for weak but not for strong classifiers to future work, and name evaluating specialized imbalanced-classifier schemes and post-processing techniques with SOTA classifiers as another research direction.",
+     "anchor": "4.2, p.4; 7 Conclusion, p.6",
+     "quotes": [
+      "We leave explaining this disparity between weak and strong classifiers for future work.",
+      "Another interesting research direction is evaluating the utility of specialized imbalanced classifier schemes and post-processing techniques using SOTA classifiers."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of open problems (pp.4, 6).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "elor-fig1-aucs-from-figure",
+     "value": "Read from Figure 1(b): with validation HPs the Catboost AUC markers (baseline and all five oversamplers) sit together at about 0.89, the XGB markers at about 0.88, and the MLP markers at about 0.78 to about 0.80 with error bars much wider than any boosted-forest row; in panel (a), with a-priori HPs, the oversampled Cat markers sit at about 0.92 against about 0.90 for the Cat baseline.",
+     "anchor": "4.1, Figure 1, p.7",
+     "quotes": [
+      "Figure 1: Mean AUC and rank (a) using a-priori HPs and (b) using validation HPs.",
+      "oversampling the data does not yield significant improvements for the strong classifiers when considering validation HPs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": "The values are read by eye and are approximate."
+    },
+    {
+     "id_suggestion": "elor-fig2-f1-from-figure",
+     "value": "Read from Figure 2: for Cat the F1 markers at a fixed threshold sit at about 0.44 for the baseline and about 0.52 for the oversampled rows, while with an optimized threshold the baseline and oversampled rows all sit together at about 0.52.",
+     "anchor": "4.3, Figure 2, p.9",
+     "quotes": [
+      "while oversampling the data is beneficial when using a fixed threshold, it does not improve prediction quality when the threshold is optimized, see further discussion in Section 4.3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": "The values are read by eye and are approximate."
+    }
+   ]
+  },
+  {
+   "record_id": "emami-2025-financial-fraud-entropy-computing-qci",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\QCI - Financial Fraud Detection with Entropy Computing 2503.11273v1.pdf",
+   "title_in_file": "Financial Fraud Detection with Entropy Computing (arXiv:2503.11273v1, 14 Mar 2025)",
+   "version_note": "The file is arXiv v1 (14 Mar 2025), 15 pages: text on pp.1-11, acknowledgments and references pp.12-13, Appendix A tables pp.14-15.",
+   "pages": 15,
+   "read_extent": "full",
+   "not_read": "",
+   "sections_read": [
+    "Abstract",
+    "1 Introduction",
+    "2 Implementation",
+    "2.1 Dirac-3 optimization Machine",
+    "2.2 Formulation",
+    "2.3 Choices of Weak Classifiers",
+    "2.4 Dataset",
+    "3 Results",
+    "3.1 Accuracy",
+    "3.2 Runtime versus single core XGBoost",
+    "3.2.1 Impact of Training Data Count on Runtimes",
+    "3.2.2 Number of Features",
+    "3.3 Comparison with GPU and multicore implementations",
+    "3.3.1 XGBoost on Multiple Cores",
+    "3.3.2 XGBoost on GPU",
+    "3.4 Scalability on Synthetic Data",
+    "3.5 Training CVQBoost with Other Solvers",
+    "4 Conclusions and outlook",
+    "Acknowledgments and Disclosure of Funding",
+    "References",
+    "Appendix A. Data in tabular form"
+   ],
+   "figure_count": 13,
+   "figures": [
+    {
+     "figure": "Figure 1",
+     "page": 6,
+     "kind": "line plot",
+     "shows": "Four panels, AUC score (y, about 0.7 to 0.9) against minority-to-majority class ratio (x, 0 to 1.0) for CVQBoost (Dirac3, blue circles) and XGBoost (red squares) with (a) ADASYN, (b) SMOTE, (c) SMOTE-SVM, (d) majority class downsampling. XGBoost is nearly flat at about 0.88 to about 0.91; CVQBoost rises with the ratio and stays below XGBoost except at ratio 1.0 in panel (a), where the two coincide.",
+     "confirmed_by": "Figure 1 illustrates the trends for each balancing strategy.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 2",
+     "page": 7,
+     "kind": "line plot",
+     "shows": "(a) Training runtime (y, 0 to about 120 s) against training data count (x, 0 to 150 thousand) for CVQBoost (Dirac3) and XGBoost on 1 core; (b) stacked bars of CVQBoost total time and Dirac-3 time (0 to about 2.3 s) against training count; (c) runtime (0 to about 40 s) against number of features (5 to 38); (d) stacked bars of CVQBoost total and Dirac-3 time against features. CVQBoost stays near 2 s while XGBoost on 1 core rises to about 117 s at 150 thousand samples and about 41 s at 38 features.",
+     "confirmed_by": "Figure 2 presents the runtimes of CVQBoost and XGBoost across varying training dataset sizes",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 3",
+     "page": 8,
+     "kind": "line plot",
+     "shows": "Training runtime of XGBoost (y, about 4 to 25 s) against number of cores (x, 1 to 16) on a 16-core machine, 150, 000 training samples, 38 features: about 25 s at 1 core, about 14 s at 2, about 4 s at 8 cores, a rise to about 6 s at 9 cores, then a slow fall to about 4 s at 16.",
+     "confirmed_by": "Figure 3 illustrates the training runtimes of XGBoost as a function of the number of cores utilized on a high-performance machine with 16 cores.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 4",
+     "page": 9,
+     "kind": "line plot",
+     "shows": "Training runtime (y, 0 to about 6 s) against training data count (x, 0 to 150 thousand): (a) CVQBoost (Dirac3) against XGBoost on 8 CPU cores, (b) CVQBoost against XGBoost on one GPU. CVQBoost is about 1.5 to 2.3 s with wide error bars; XGBoost on 8 cores rises from about 0.4 s to about 4.2 s, on the GPU from about 1.3 s to about 3.6 s.",
+     "confirmed_by": "As shown in Figure 4a, XGBoost achieves shorter training runtimes for smaller datasets due to its efficient parallelization",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 5",
+     "page": 10,
+     "kind": "line plot",
+     "shows": "Training runtime (y, seconds) against training data count (x, millions) for CVQBoost (Dirac3), XGBoost parallel (48 cores) and XGBoost GPU (4 NVIDIA L4): (a) 100 features, x to about 65 million, y to about 8000 s; (b) 500 features, x to about 8 million, y to about 15000 s. The GPU series stops earlier than the others.",
+     "confirmed_by": "The results of these experiments can be seen in figure 5 with a comparison of scaling with training data count for 100 features in figure 5a",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 6",
+     "page": 10,
+     "kind": "line plot",
+     "shows": "Training runtime (y, 0 to about 12000 s) against number of features (x, 100 to 900) for CVQBoost (Dirac3), XGBoost parallel (48 cores) and XGBoost GPU (4 NVIDIA L4). XGBoost on 48 cores rises to about 12000 s at 900 features, the GPU series ends at about 2100 s at 700 features, CVQBoost stays below about 400 s.",
+     "confirmed_by": "Figure 6 further demonstrates that CVQBoost maintains linear scalability with increasing feature dimensions, whereas XGBoost exhibits quadratic runtime growth.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 7",
+     "page": 11,
+     "kind": "other",
+     "shows": "(a) Runtime (y, 0 to about 400 s) against number of variables (x, 100 to 900) for Dirac3, Hexaly and Scipy SLSQP; (b) solution energy (bars, about -3.5 to -5.5) for the three solvers at 100, 300, 500, 700 and 900 variables.",
+     "confirmed_by": "Figure 7 presents a detailed comparison of Dirac-3 and the other solvers in terms of runtime and solution quality.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 1",
+     "page": 14,
+     "kind": "table",
+     "shows": "AUC (mean +/- bar) of CVQBoost and XGBoost for four balancing strategies (ADASYN, SMOTE, SVMSMOTE, Downsampling) at six minority-to-majority class ratios (0.01, 0.02, 0.05, 0.1, 0.5, 1.0): 24 rows.",
+     "confirmed_by": "These data can be found in tabular form in table 1 of the appendix.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 2",
+     "page": 14,
+     "kind": "table",
+     "shows": "Training time in seconds (mean +/- bar) of CVQBoost, XGBoost and the Dirac-3 part of CVQBoost for 1000 to 150000 training samples, 38 features.",
+     "confirmed_by": "These data can be found in tabular form in tables 2 (training counts) and 3 (feature counts) of the appendix.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 3",
+     "page": 14,
+     "kind": "table",
+     "shows": "Training time in seconds of CVQBoost, XGBoost and the Dirac-3 part for 5, 10, 20, 30 and 38 features, 50000 training samples.",
+     "confirmed_by": "These data can be found in tabular form in tables 2 (training counts) and 3 (feature counts) of the appendix.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 4",
+     "page": 15,
+     "kind": "table",
+     "shows": "XGBoost total training time in seconds on 8 cores for 1000 to 150000 training samples, 38 features: 0.4 +/- 0.1 rising to 4.2 +/- 0.1.",
+     "confirmed_by": "Table 4: Parallelized XGBoost runtimes on 8 cores for different training data counts; number of features: 38.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 5",
+     "page": 15,
+     "kind": "table",
+     "shows": "XGBoost total training time in seconds on GPU for 1000 to 150000 training samples, 38 features: 1.3 +/- 0.1 rising to 3.6 +/- 0.0.",
+     "confirmed_by": "Table 5: XGBoost runtimes on GPU for different training data counts; number of features: 38.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 6",
+     "page": 15,
+     "kind": "table",
+     "shows": "For 100, 300, 500, 700 and 900 variables: convex (False in every case), dynamic range (45.9, 41.7, 64.3, 65.2, 57.6) and runtimes in seconds of Dirac 3, Hexaly and Scipy SLSQP.",
+     "confirmed_by": "Table 6: Comparison of runtimes for Dirac 3, Hexaly, and Scipy (SLSQP) solvers across different Hamiltonian sizes.",
+     "no_text_confirms": false
+    }
+   ],
+   "what_it_is": "A Quantum Computing Inc paper that introduces CVQBoost, a boosting algorithm solved on its Dirac-3 entropy-computing machine, and benchmarks AUC and training time against XGBoost on the Kaggle credit card fraud dataset and on large synthetic datasets.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "cvqboost-vs-xgboost-auc-under-balancing",
+     "verdict": "narrowed",
+     "note": "The 'below XGBoost in 23 of 24 rows, above in one' count is right against Table 1 (p.14): the single row where CVQBoost leads is ADASYN at ratio 1.0 (0.8855 vs 0.8826); at ADASYN ratio 0.5 CVQBoost is still below (0.8555 vs 0.8843). Narrowed on one point: the 'about 0.19 AUC' gap at ratio 0.01 is the ADASYN row only; for the other three strategies the gap at 0.01 is smaller (SMOTE 0.7493 vs 0.9037, SVMSMOTE 0.7674 vs 0.9058, Downsampling 0.7415 vs 0.9105, a gap of about 0.14 to 0.17). The Conclusion's sentence that CVQBoost 'can even exceed' XGBoost with ADASYN, and the Section 3.1 text that CVQBoost 'surpasses XGBoost ... at higher class ratios' with 'consistent improvement', rest on that one row.",
+     "value": "With class balancing applied to the training data, CVQBoost's AUC on the Kaggle fraud dataset is below XGBoost's in every Table 1 row but one: ADASYN at ratio 1.0, where CVQBoost has 0.8855 and XGBoost 0.8826. At minimal balancing (ratio 0.01) XGBoost leads with every strategy: with ADASYN 0.9003 against 0.7105, with SMOTE 0.9037 against 0.7493, with SVMSMOTE 0.9058 against 0.7674 and with downsampling 0.9105 against 0.7415.",
+     "anchor": "Table 1, p.14; 4 Conclusions and outlook, p.11",
+     "quotes": [
+      "0.7105 +/- 0.0",
+      "0.9003 +/- 0.0",
+      "0.8855 +/- 0.0019",
+      "0.8826 +/- 0.0",
+      "0.7493 +/- 0.0",
+      "0.9037 +/- 0.0",
+      "0.7674 +/- 0.0",
+      "0.9058 +/- 0.0",
+      "0.7415 +/- 0.0",
+      "0.9105 +/- 0.0",
+      "Table 1: AUC scores for CVQBoost and XGBoost using different balancing strategies and minority to majority class ratios.",
+      "0.01 0.02 0.05 0.1 0.5 1.0 0.01 0.02 0.05 0.1 0.5 1.0"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "Read off the authors' own table, which shows the comparator ahead in nearly every row: a result costly for a vendor to publish. One dataset, and a vendor benchmark (all authors supported by QCi).",
+     "result_type": "vendor",
+     "context": "qml",
+     "reader_inference": "Gaps at ratio 0.01: ADASYN 0.1898, SMOTE 0.1544, SVMSMOTE 0.1384, Downsampling 0.1690 (computed from Table 1). CVQBoost never beats XGBoost at any ratio below 1.0 and at 1.0 only for ADASYN."
+    },
+    {
+     "id": "cvqboost-vs-xgboost-training-time-dirac3",
+     "verdict": "corrected",
+     "note": "The stored value gives 117.4 +/- 4.0 s as XGBoost 'on up to 48 CPUs and four NVIDIA L4 GPUs'. In the paper that figure is single-core XGBoost (Section 3.2 is titled 'Runtime versus single core XGBoost'; the Figure 2a legend says 'XGBoost on 1 Core'; Table 2, p.14). The 48-CPU and four-GPU configurations appear only in Section 3.4 on synthetic data of 1M to 70M samples. At 150, 000 samples the parallel XGBoost times are 4.2 +/- 0.1 s on 8 cores (Table 4) and 3.6 +/- 0.0 s on one GPU (Table 5). The crossover claim 'XGBoost is faster below about 20,000 samples' is the text of Section 3.2.1 for single-core XGBoost; Table 2 shows CVQBoost ahead from 5000 samples (1.4 +/- 0.5 against 3.7 +/- 0.1), see the new assertion on this. Figure 3 shows 1-core XGBoost at about 25 s on a 16-core machine, against 117.4 s in Table 2.",
+     "value": "Training CVQBoost on Dirac-3 took 2.2 +/- 0.5 s at 150, 000 training samples with 38 features, against 117.4 +/- 4.0 s for single-core XGBoost (Table 2), 4.2 +/- 0.1 s for XGBoost on 8 cores (Table 4) and 3.6 +/- 0.0 s for XGBoost on a GPU (Table 5).",
+     "anchor": "Tables 2, 4 and 5, pp.14-15; 3.2, p.5-6",
+     "quotes": [
+      "1.8 +/- 0.4 2.2 +/- 0.5",
+      "78.0 +/- 2.9 117.4 +/- 4.0",
+      "3.0 +/- 0.0 4.2 +/- 0.1",
+      "3.0 +/- 0.0 3.6 +/- 0.0",
+      "Table 2: Breakdown of CVQBoost and XGBoost runtimes for different training data counts; number of features: 38.",
+      "Table 4: Parallelized XGBoost runtimes on 8 cores for different training data counts; number of features: 38.",
+      "Table 5: XGBoost runtimes on GPU for different training data counts; number of features: 38.",
+      "3.2 Runtime versus single core XGBoost",
+      "ranging from 1, 000 to 150, 000 samples"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A vendor self-benchmark; all authors were 'completely supported by Quantum Computing Inc.' (p.12). The XGBoost configuration and tuning are not described.",
+     "result_type": "vendor",
+     "context": "platform:dirac-3",
+     "reader_inference": "At 150, 000 samples CVQBoost is about 1.6 times faster than GPU XGBoost and about 1.9 times faster than 8-core XGBoost; the 53-fold figure applies to the single-core run only. The paper's own Figure 3 and Table 2 disagree on single-core time (about 25 s against 117.4 s) with no machine difference stated."
+    },
+    {
+     "id": "favorable-dirac3-papers-are-qci-authored",
+     "verdict": "narrowed",
+     "note": "This paper settles only its own part of the stored value: all six authors are at Quantum Computing Inc, and the acknowledgments state all authors were completely supported by QCi. The Communications Physics paper's share-and-option statement and the protein paper's competing-interests and 0.16 to 2.47% claims are not in this paper (they belong to other records); the quoted 'All authors hold shares or options in QCi' is not in this file and no share or option disclosure appears in it.",
+     "value": "The paper lists all six of its authors at Quantum Computing Inc (QCi) and states that all authors were completely supported by Quantum Computing Inc. in writing the paper; it contains no statement of share or option holdings.",
+     "anchor": "Title page, p.1; Acknowledgments and Disclosure of Funding, p.12",
+     "quotes": [
+      "Babak Emami Quantum Computing Inc (QCi) 5 Marine View Plaza Hoboken NJ 07030 USA",
+      "Nicholas Chancellor Quantum Computing Inc (QCi) 5 Marine View Plaza Hoboken NJ 07030 USA",
+      "All authors were completely supported by Quantum Computing Inc. in writing this paper."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper's own byline and funding statement (pp.1, 12).",
+     "result_type": "setup",
+     "context": "platform:dirac-3",
+     "reader_inference": "The absence of a share or option statement is read from the whole text; the paper has a funding statement only."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "emami-cvqboost-formulation-quadratic",
+     "value": "The authors state that CVQBoost finds the weights of the weak classifiers by minimizing a regularized squared error, the sum over training samples of the squared difference between the weighted sum of the weak classifiers and the label, plus a regularization term with coefficient lambda on the squared weights, and that the objective can be cast, up to a constant offset, in the form required by Dirac-3 with J and C given by sums over the training samples.",
+     "anchor": "2.2 Formulation, p.3-4",
+     "quotes": [
+      "We can determine optimal weights wi ≥ 0 by minimizing,",
+      "where the regularization term λ iN=1(wi)2 penalizes non-zero weights",
+      "We now observe that the objective function in equation 4 can be cast (up to an irrelevant constant offset) in the form of equation 1 required by Dirac-3 by setting"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own formulation (Section 2.2, pp.3-4).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Equation 1 as used on Dirac-3 includes an overall sum constraint on the weights (equation 2); equation 4 has no such constraint, and the paper does not say how this is reconciled. The paper also does not state the number of weak classifiers or the value of lambda."
+    },
+    {
+     "id_suggestion": "emami-dirac3-continuous-quadratic-mode",
+     "value": "The authors state that the mode of Dirac-3 used in this work is a continuous quadratic solver that minimizes the sum over i and j of J_ij w_i w_j plus the sum over i of C_i w_i, where J and C are user-specified, the w_i are continuous variables with w_i > 0, and the weights obey an overall sum constraint; they state that other capabilities, such as higher order coupling, are not used.",
+     "anchor": "2.1 Dirac-3 optimization Machine, p.3",
+     "quotes": [
+      "The relevant computational mode for this work is when it is used as a continuous quadratic solver, where it solves a problem of the form",
+      "where J and C are a user specified problem definition and wi ∈ R+ are continuous variables subject to wi > 0 and an overall sum constraint",
+      "Dirac-3 has a number of other capabilities such as higher order coupling, which are not used in this study."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of the device mode it used (p.3).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emami-eqc-photonic-description-vendor",
+     "value": "The authors, all at the vendor, describe entropy quantum computing as using artificial dissipation to find the optimal solutions of a Hamiltonian, with qudits as superpositions of photon number states in time bins that evolve in an optical fiber loop whose target Hamiltonian acts as a dissipative operator that effectively simulates imaginary time evolution, and describe Dirac-3 as a hybrid photonic and electronic architecture.",
+     "anchor": "2.1 Dirac-3 optimization Machine, p.3",
+     "quotes": [
+      "Entropy quantum computing (EQC) has emerged as a promising optimization technique, using artificial dissipation to find the optimal solutions of a Hamiltonian",
+      "This loop incorporates a target Hamiltonian as a dissipative operator, effectively simulating imaginary time evolution.",
+      "the Dirac-3 system, is a hybrid architecture that combines the high-speed parallel processing capabilities of photonic systems with the precise control and programmability of electronic circuits."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor's description of its own product.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emami-weak-classifiers-logistic-regression",
+     "value": "The authors report that each weak classifier is built from one or two of the features, that they tested logistic regression, decision tree, naive Bayesian and Gaussian process weak classifiers, and that the present study used logistic regression weak classifiers.",
+     "anchor": "2.3 Choices of Weak Classifiers, p.4",
+     "quotes": [
+      "We have tested CVQBoost using logistic regression, decision tree, naive Bayesian, and Gaussian process classifiers. Each weak classifier is constructed using one or two of the features chosen from all features.",
+      "In the present study, we have used logistic regression weak classifiers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup (p.4).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The paper reports results only for logistic regression weak classifiers."
+    },
+    {
+     "id_suggestion": "emami-explainability-not-examined",
+     "value": "The authors state that, in principle, the highly weighted features within the most highly weighted regression classifiers could be used to explain the automated decisions of the method, but they elected not to examine this because the main focus of the study is to judge performance, not to verify explainability.",
+     "anchor": "2.3 Choices of Weak Classifiers, p.4",
+     "quotes": [
+      "In principle the highly weighted features within the most highly weighted regression classifiers could be used to explain the automated decisions made by our method,",
+      "but we have elected not to examine this further as the main focus of the present work is to judge performance, not verify explainability."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of a limit of the study (p.4).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The introduction presents explainability as an advantage of the method; the paper does not test it."
+    },
+    {
+     "id_suggestion": "emami-dataset-kaggle-size-and-fraud-rate",
+     "value": "The authors report that the dataset is the Kaggle Credit Card Fraud Detection dataset of European credit cardholders' transactions over a two-day period in September 2013, with approximately 200, 000 transactions of which approximately 0.1% are labeled fraudulent.",
+     "anchor": "2.4 Dataset, p.4",
+     "quotes": [
+      "This dataset comprises transactions made by European credit cardholders over a two-day period in September 2013. It contains approximately 200, 000 transactions, of which approximately 0.1% are labeled as fraudulent."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own data setup (p.4).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "world",
+     "reader_inference": "The paper gives round numbers. The count and fraud fraction of the public dataset are not checked here against the source."
+    },
+    {
+     "id_suggestion": "emami-dataset-38-features",
+     "value": "The authors report that a total of 38 features are included in the dataset.",
+     "anchor": "2.4 Dataset, p.4",
+     "quotes": [
+      "A total of 38 features are included in the dataset."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own data setup (p.4).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "world",
+     "reader_inference": "The paper does not say whether some of the 38 are constructed, nor how the weak classifiers pair them."
+    },
+    {
+     "id_suggestion": "emami-balancing-protocol-ratios-auc",
+     "value": "The authors report that four balancing strategies (ADASYN, SMOTE, SMOTE-SVM and majority class downsampling) were applied to the training data only, that the test data remained unchanged, that six minority-to-majority class ratios were used (0.01, 0.02, 0.05, 0.1, 0.5 and 1.0), and that accuracy was the AUC calculated on the test data.",
+     "anchor": "3.1 Accuracy, p.5",
+     "quotes": [
+      "four widely-used data balancing strategies-ADASYN (He et al., 2008), SMOTE (Chawla et al., 2002), SMOTE-SVM (Nguyen et al., 2011), and majority class downsampling-were applied to the training data",
+      "The test data remained unchanged to ensure an unbiased evaluation of model performance.",
+      "minority-to-majority class ratios of 0.01, 0.02, 0.05, 0.1, 0.5, and 1.0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own protocol (p.5).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "The paper does not report any result without balancing, does not describe how the test set was drawn, and does not state how XGBoost was configured or tuned."
+    },
+    {
+     "id_suggestion": "emami-statistics-10-runs-two-sd",
+     "value": "The authors state that, unless stated otherwise, data are averaged over 10 runs and error bars are two standard deviations, so that 95% of data should lie within the bars assuming normally distributed results.",
+     "anchor": "3 Results, p.4-5",
+     "quotes": [
+      "Unless stated otherwise, data are averaged over 10 runs and error bars are two standard deviations, so 95% of data should lie within the bars assuming normally"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own statistics (pp.4-5).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "Table 1 reports XGBoost AUC bars of 0.0 and CVQBoost bars of 0.0 at most ratios, so the AUC differences are treated as exact."
+    },
+    {
+     "id_suggestion": "emami-xgboost-ahead-at-low-ratios",
+     "value": "The authors report that when balancing is minimal, that is when the minority-to-majority class ratio is 0.01 or 0.02, XGBoost achieves higher AUC than CVQBoost, and that as the ratio increases CVQBoost improves steadily and catches up to XGBoost, eventually achieving comparable AUC.",
+     "anchor": "3.1 Accuracy, p.5",
+     "quotes": [
+      "XGBoost achieves higher AUC scores compared to CVQBoost.",
+      "However, as the class ratio increases and the training data becomes more balanced, CVQBoost’s performance improves steadily and catches up to that of XGBoost, eventually achieving comparable AUC scores.",
+      "ratio remains small (0.01 or 0.02)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one vendor benchmark on one dataset.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "In Table 1 the gap at ratio 0.5 remains 0.0288 (ADASYN), 0.0286 (SMOTE), 0.0451 (SVMSMOTE) and 0.0226 (downsampling); 'comparable' covers gaps of several AUC points except for ADASYN at ratio 1.0."
+    },
+    {
+     "id_suggestion": "emami-adasyn-surpasses-claim-text",
+     "value": "The authors state that, with ADASYN, as the minority-to-majority class ratio increases CVQBoost not only matches but eventually surpasses XGBoost in AUC, and that Figure 1(a) shows a slight but consistent improvement over XGBoost at higher class ratios.",
+     "anchor": "3.1 Accuracy, p.5",
+     "quotes": [
+      "As the minority-tomajority class ratio increases, CVQBoost not only matches but eventually surpasses XGBoost in terms of AUC. This can be seen clearly in Figure 1(a), where CVQBoost achieves a slight but consistent improvement over XGBoost at higher class ratios."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement about one vendor benchmark; the paper's Table 1 supports it for one ratio only.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 1 shows CVQBoost above XGBoost with ADASYN only at ratio 1.0 (0.8855 against 0.8826); at ratio 0.5 it is below (0.8555 against 0.8843). 'Consistent improvement at higher class ratios' is one point."
+    },
+    {
+     "id_suggestion": "emami-table1-adasyn-rows",
+     "value": "The authors report in Table 1 for ADASYN, at minority-to-majority class ratios 0.01, 0.5 and 1.0, a CVQBoost AUC of 0.7105 +/- 0.0, 0.8555 +/- 0.0002 and 0.8855 +/- 0.0019, against an XGBoost AUC of 0.9003 +/- 0.0, 0.8843 +/- 0.0 and 0.8826 +/- 0.0.",
+     "anchor": "Table 1, p.14",
+     "quotes": [
+      "0.7105 +/- 0.0",
+      "0.8555 +/- 0.0002",
+      "0.8855 +/- 0.0019",
+      "0.9003 +/- 0.0",
+      "0.8843 +/- 0.0",
+      "0.8826 +/- 0.0",
+      "ADASYN ADASYN ADASYN ADASYN ADASYN ADASYN",
+      "0.01 0.02 0.05 0.1 0.5 1.0 0.01 0.02 0.05 0.1 0.5 1.0",
+      "Table 1: AUC scores for CVQBoost and XGBoost using different balancing strategies and minority to majority class ratios."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one vendor benchmark on one dataset.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emami-table1-smote-rows",
+     "value": "The authors report in Table 1 for SMOTE, at minority-to-majority class ratios 0.01, 0.5 and 1.0, a CVQBoost AUC of 0.7493 +/- 0.0, 0.855 +/- 0.0004 and 0.8498 +/- 0.0021, against an XGBoost AUC of 0.9037 +/- 0.0, 0.8836 +/- 0.0 and 0.8824 +/- 0.0.",
+     "anchor": "Table 1, p.14",
+     "quotes": [
+      "0.7493 +/- 0.0",
+      "0.855 +/- 0.0004",
+      "0.8498 +/- 0.0021",
+      "0.9037 +/- 0.0",
+      "0.8836 +/- 0.0",
+      "0.8824 +/- 0.0",
+      "0.01 0.02 0.05 0.1 0.5 1.0 0.01 0.02 0.05 0.1 0.5 1.0",
+      "Table 1: AUC scores for CVQBoost and XGBoost using different balancing strategies and minority to majority class ratios."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one vendor benchmark on one dataset.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emami-table1-svmsmote-rows",
+     "value": "The authors report in Table 1 for SVMSMOTE, at minority-to-majority class ratios 0.01, 0.5 and 1.0, a CVQBoost AUC of 0.7674 +/- 0.0, 0.8582 +/- 0.0014 and 0.8569 +/- 0.001, against an XGBoost AUC of 0.9058 +/- 0.0, 0.9033 +/- 0.0 and 0.902 +/- 0.0.",
+     "anchor": "Table 1, p.14",
+     "quotes": [
+      "0.7674 +/- 0.0",
+      "0.8582 +/- 0.0014",
+      "0.8569 +/- 0.001",
+      "0.9058 +/- 0.0",
+      "0.9033 +/- 0.0",
+      "0.902 +/- 0.0",
+      "0.01 0.02 0.05 0.1 0.5 1.0 0.01 0.02 0.05 0.1 0.5 1.0",
+      "Table 1: AUC scores for CVQBoost and XGBoost using different balancing strategies and minority to majority class ratios."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one vendor benchmark on one dataset.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emami-table1-downsampling-rows",
+     "value": "The authors report in Table 1 for majority class downsampling, at minority-to-majority class ratios 0.01, 0.5 and 1.0, a CVQBoost AUC of 0.7415 +/- 0.0, 0.8689 +/- 0.0004 and 0.8508 +/- 0.0016, against an XGBoost AUC of 0.9105 +/- 0.0, 0.8915 +/- 0.0 and 0.8872 +/- 0.0.",
+     "anchor": "Table 1, p.14",
+     "quotes": [
+      "0.7415 +/- 0.0",
+      "0.8689 +/- 0.0004",
+      "0.8508 +/- 0.0016",
+      "0.9105 +/- 0.0",
+      "0.8915 +/- 0.0",
+      "0.8872 +/- 0.0",
+      "0.01 0.02 0.05 0.1 0.5 1.0 0.01 0.02 0.05 0.1 0.5 1.0",
+      "Table 1: AUC scores for CVQBoost and XGBoost using different balancing strategies and minority to majority class ratios."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one vendor benchmark on one dataset.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emami-downsampling-gradual-improvement",
+     "value": "The authors state that with majority class downsampling, where no synthetic data is introduced, CVQBoost shows gradual improvement in AUC as the class ratio increases, but that the rate of improvement is less pronounced than with the oversampling methods.",
+     "anchor": "3.1 Accuracy, p.5",
+     "quotes": [
+      "CVQBoost algorithms demonstrate gradual improvement in AUC as the class ratio increases. However, the rate of improvement is less pronounced compared to the oversampling methods."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one vendor benchmark on one dataset.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emami-fig1-auc-curves-from-figure",
+     "value": "Read from Figure 1: in panels (b) SMOTE, (c) SMOTE-SVM and (d) downsampling the CVQBoost AUC stays below the XGBoost AUC of about 0.9 at every ratio, peaking at about 0.86 in (b), about 0.86 in (c) and about 0.87 in (d) near ratio about 0.5; in panel (a) ADASYN the CVQBoost curve rises from about 0.74 at the smallest ratio to meet the XGBoost curve at about 0.88 at ratio about 1.0.",
+     "anchor": "3.1 Accuracy, Figure 1, p.6",
+     "quotes": [
+      "Figure 1: AUC score of CVQBoost vs. minority-to-majority class ratio in training datasets using different balancing strategies: (a) ADASYN, (b) SMOTE, (c) SMOTE-SVM, and (d) majority class downsampling."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "vendor",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "The values are read by eye and are approximate; Table 1 holds the exact numbers."
+    },
+    {
+     "id_suggestion": "emami-table2-single-core-runtime-crossover",
+     "value": "The authors report in Table 2 (single-core XGBoost, 38 features) training times for CVQBoost of 1.3 +/- 0.5 s at 1000 samples and 1.4 +/- 0.5 s at 5000 samples against XGBoost at 0.9 +/- 0.1 s and 3.7 +/- 0.1 s, and at 20000 samples 1.8 +/- 0.9 s against 14.6 +/- 0.3 s.",
+     "anchor": "Table 2, p.14; 3.2.1, p.5",
+     "quotes": [
+      "1.3 +/- 0.5 1.7 +/- 0.5 1.4 +/- 0.5 1.2 +/- 0.3 1.8 +/- 0.9 2.6 +/- 3.1 1.8 +/- 0.4 2.2 +/- 0.5",
+      "0.9 +/- 0.1 1.8 +/- 0.1 3.7 +/- 0.1 7.2 +/- 0.2 14.6 +/- 0.3 37.4 +/- 1.2 78.0 +/- 2.9 117.4 +/- 4.0",
+      "Table 2: Breakdown of CVQBoost and XGBoost runtimes for different training data counts; number of features: 38.",
+      "1000 2000 5000 10000 20000 50000 100000 150000"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A vendor self-benchmark; all authors were supported by QCi (p.12).",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 2 shows CVQBoost ahead from 5000 samples, but Section 3.2.1 says CVQBoost begins to outperform XGBoost 'when the training sample size approaches 20,000'."
+    },
+    {
+     "id_suggestion": "emami-text-crossover-20000-single-core",
+     "value": "The authors state that XGBoost achieves shorter runtimes on smaller datasets, that as the training dataset size increases XGBoost's runtime grows significantly faster than CVQBoost's, and that CVQBoost begins to outperform XGBoost when the training sample size approaches 20, 000 samples.",
+     "anchor": "3.2.1, p.6",
+     "quotes": [
+      "A comparison between CVQBoost and XGBoost reveals that XGBoost achieves shorter runtimes on smaller datasets.",
+      "Specifically, CVQBoost begins to outperform XGBoost when the training sample size approaches 20, 000 samples"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement of a vendor benchmark whose own table gives a different crossover.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 2 shows the two equal at 2000 samples (1.7 against 1.8 s) and CVQBoost ahead at 5000 (1.4 against 3.7 s), so the table puts the single-core crossover near 2000, not 20, 000."
+    },
+    {
+     "id_suggestion": "emami-table3-feature-count-runtime",
+     "value": "The authors report in Table 3 (single-core XGBoost, 50, 000 training samples) training times for CVQBoost of 1.2 +/- 0.4 s at 5 features and 1.9 +/- 0.5 s at 38 features, against XGBoost at 13.7 +/- 0.3 s and 41.1 +/- 6.6 s.",
+     "anchor": "Table 3, p.14",
+     "quotes": [
+      "1.2 +/- 0.4 1.3 +/- 0.4 1.6 +/- 0.5 1.5 +/- 0.4 1.9 +/- 0.5",
+      "13.7 +/- 0.3 18.2 +/- 0.8 26.3 +/- 0.5 34.4 +/- 3.8 41.1 +/- 6.6",
+      "Table 3: Breakdown of CVQBoost and XGBoost runtimes for different counts of features; training data count: 50, 000.",
+      "5 10 20 30 38"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A vendor self-benchmark; all authors were supported by QCi (p.12).",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 3 gives 41.1 +/- 6.6 s for XGBoost at 38 features and 50000 samples, Table 2 gives 37.4 +/- 1.2 s for the same setting."
+    },
+    {
+     "id_suggestion": "emami-dirac3-time-near-constant",
+     "value": "The authors state that the time CVQBoost spends in pre- and post-processing scales modestly with both training data count and number of features, while the Dirac-3 time remains almost constant, and that the Dirac-3 component accounts for a substantial portion of the total CVQBoost runtime.",
+     "anchor": "3 Results, p.4; 3.2.1, p.5",
+     "quotes": [
+      "We find that the time spent in the former scales modestly with both training data count and number of features, while the Dirac-3 time remains almost constant.",
+      "Notably, the Dirac-3 component accounts for a substantial portion of the total runtime for CVQBoost."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one vendor benchmark.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 2 gives the Dirac-3 time as 1.3 +/- 0.5 s at both 1000 and 150000 samples."
+    },
+    {
+     "id_suggestion": "emami-cvqboost-runtime-variable",
+     "value": "The authors state that CVQBoost runtimes are highly variable, and Table 2 gives a CVQBoost training time of 2.6 +/- 3.1 s at 50000 training samples.",
+     "anchor": "3.3.1, p.8; Table 2, p.14",
+     "quotes": [
+      "It is also worth noting that CVQBoost runtimes are highly variable.",
+      "1.3 +/- 0.5 1.7 +/- 0.5 1.4 +/- 0.5 1.2 +/- 0.3 1.8 +/- 0.9 2.6 +/- 3.1 1.8 +/- 0.4 2.2 +/- 0.5",
+      "1000 2000 5000 10000 20000 50000 100000 150000"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of a limit of their runtime results (p.8).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emami-xgboost-multicore-saturation",
+     "value": "The authors report that XGBoost training runtime falls as cores are added but the rate of improvement diminishes significantly beyond 8 cores, with a degradation in runtime beyond 8 cores that they say is likely due to communication inefficiencies, and that 8 cores appear optimal for minimizing training runtime.",
+     "anchor": "3.3.1 XGBoost on Multiple Cores, p.8",
+     "quotes": [
+      "while the runtime reduces with the addition of cores, the rate of improvement diminishes significantly beyond 8 cores",
+      "There is also a degradation in runtime as the number of cores is increased beyond 8, this is likely due to inefficiencies caused by communication.",
+      "As shown in Figure 3, using 8 cores for XGBoost appears to be optimal for minimizing training runtime."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one vendor benchmark.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The Figure 3 machine has 16 cores; the Section 3.4 comparison uses XGBoost on 48 cores, beyond the point the authors call optimal for the 150, 000-sample case."
+    },
+    {
+     "id_suggestion": "emami-fig3-one-core-time-from-figure",
+     "value": "Read from Figure 3: XGBoost with 150, 000 training samples and 38 features takes about 25 s with one core and about 4 s with eight cores on the 16-core machine, with a rise to about 6 s with nine cores.",
+     "anchor": "3.3.1, Figure 3, p.8",
+     "quotes": [
+      "Figure 3: Training runtime of XGBoost vs. number of cores on a high-performance machine with 16 cores.",
+      "training data count: 150, 000, number of features: 38."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "vendor",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "Table 2 gives 117.4 +/- 4.0 s for single-core XGBoost at the same sample and feature counts (Figure 2a legend: 'XGBoost on 1 Core'). The two single-core times differ by a factor of about 4.7 and the paper states no machine difference, so the single-core baseline of Section 3.2 may be a slower machine than the one in Figure 3."
+    },
+    {
+     "id_suggestion": "emami-table4-eight-core-xgboost",
+     "value": "The authors report in Table 4 that XGBoost on 8 cores takes 0.4 +/- 0.1 s at 1000 training samples, 1.8 +/- 0.0 s at 50000, 3.0 +/- 0.0 s at 100000 and 4.2 +/- 0.1 s at 150000, with 38 features; Table 2 gives CVQBoost 2.6 +/- 3.1 s at 50000 and 2.2 +/- 0.5 s at 150000.",
+     "anchor": "Table 4, p.15; Table 2, p.14",
+     "quotes": [
+      "0.4 +/- 0.1 0.5 +/- 0.0 0.6 +/- 0.0 0.8 +/- 0.0 1.0 +/- 0.0 1.8 +/- 0.0 3.0 +/- 0.0 4.2 +/- 0.1",
+      "Table 4: Parallelized XGBoost runtimes on 8 cores for different training data counts; number of features: 38.",
+      "1.3 +/- 0.5 1.7 +/- 0.5 1.4 +/- 0.5 1.2 +/- 0.3 1.8 +/- 0.9 2.6 +/- 3.1 1.8 +/- 0.4 2.2 +/- 0.5",
+      "1000 2000 5000 10000 20000 50000 100000 150000"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A vendor self-benchmark; all authors were supported by QCi (p.12).",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "At 50000 samples the 8-core XGBoost time (1.8 s) is below the CVQBoost time (2.6 +/- 3.1 s); the CVQBoost lead appears from 100000 samples."
+    },
+    {
+     "id_suggestion": "emami-gpu-xgboost-similar-small-scale",
+     "value": "The authors state that XGBoost on an NVIDIA L4 GPU has reduced runtimes compared with CVQBoost for smaller datasets, that CVQBoost shows slightly better scalability as data size grows, and that the two exhibit similar runtimes for the relatively small dataset sizes of 1, 000 to 150, 000 samples.",
+     "anchor": "3.3.2 XGBoost on GPU, p.9",
+     "quotes": [
+      "The GPU implementation demonstrates reduced runtimes compared to CVQBoost for smaller datasets.",
+      "As the data size grows, CVQBoost shows slightly better scalability than XGBoost trained on GPU.",
+      "While CVQBoost and XGBoost on GPU exhibit similar runtimes for the relatively small dataset sizes used here (ranging from 1, 000 to 150, 000 samples)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one vendor benchmark.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 5 gives GPU XGBoost 1.3 +/- 0.1 s to 3.6 +/- 0.0 s over 1000 to 150000 samples, against CVQBoost 1.3 to 2.2 s: a gap of 1.4 s at the largest size."
+    },
+    {
+     "id_suggestion": "emami-synthetic-scaling-setup",
+     "value": "The authors report that large synthetic datasets of 1M to 70M samples with 100 to 900 features were generated with the make_classification function of Scikit-Learn, 80% allocated for training, and that XGBoost was run on 48 CPU cores (2.64 GHz) and on four NVIDIA L4 GPUs with 24GB of memory each, using the NVIDIA RAPIDS AI framework.",
+     "anchor": "3.4 Scalability on Synthetic Data, p.9",
+     "quotes": [
+      "The dataset sizes range from 1M to 70M samples, with 80% allocated for training. Each dataset consists of 100 to 900 features.",
+      "Experiments were conducted on a high-performance computing system equipped with 48 CPU cores (2.64 GHz) and four NVIDIA L4 GPUs. Each GPU unit has 24GB of memory, totaling 96GB across all four units."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own setup (p.9).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The paper reports no AUC for the synthetic data, so the large-scale comparison measures training time only, not the quality of the classifier from each solver."
+    },
+    {
+     "id_suggestion": "emami-synthetic-substantial-advantage-text",
+     "value": "The authors state that Figure 5 shows a substantial advantage from CVQBoost over XGBoost on 48 CPU cores and on four GPUs, for 100 features and for 500 features, and that Figure 6 demonstrates that CVQBoost maintains linear scalability with increasing feature dimensions whereas XGBoost exhibits quadratic runtime growth.",
+     "anchor": "3.4 Scalability on Synthetic Data, p.9",
+     "quotes": [
+      "Both show a substantial advantage from CVQBoost. This is even true in the 500 feature case",
+      "Figure 6 further demonstrates that CVQBoost maintains linear scalability with increasing feature dimensions, whereas XGBoost exhibits quadratic runtime growth.",
+      "comparison of scaling with training data count for 100 features in figure 5a and the analogous plot for 500 features in figure 5b.",
+      "XGBoost was tested under two configurations: (1) using 48 CPU cores"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement of one vendor benchmark; no fit of the claimed linear and quadratic forms is reported.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The text gives no fitted exponents."
+    },
+    {
+     "id_suggestion": "emami-fig5-large-scale-from-figure",
+     "value": "Read from Figure 5: with 100 features XGBoost on 48 cores reaches about 3500 s at about 48 million training samples and the four-GPU XGBoost series ends at about 25 million samples near about 1600 s, while CVQBoost is about 400 s at about 65 million samples; with 500 features XGBoost on 48 cores is about 8000 s at about 8 million samples, the GPU series ends at about 4 million samples near about 1500 s, and CVQBoost is below about 1000 s at about 8 million samples.",
+     "anchor": "3.4, p.9; Figure 5, p.10",
+     "quotes": [
+      "Figure 5: Training runtime of CVQBoost vs. XGBoost on 48 CPUs and four NVIDIA L4 GPUs.",
+      "CVQBoost exhibits superior scalability for large datasets.",
+      "comparison of scaling with training data count for 100 features in figure 5a and the analogous plot for 500 features in figure 5b."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "vendor",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "The values are read by eye and are approximate. The paper does not say why the GPU series stops at a smaller size than the others (memory is a possible reason, not stated)."
+    },
+    {
+     "id_suggestion": "emami-fig6-feature-scaling-from-figure",
+     "value": "Read from Figure 6: at the largest feature count XGBoost on its parallel cores takes about 12000 s, the four-GPU XGBoost series ends at about 2100 s at about 700 features, and CVQBoost stays below about 400 s across the range of 100 to 900 features.",
+     "anchor": "3.4, p.9; Figure 6, p.10",
+     "quotes": [
+      "Figure 6: Training runtime of CVQBoost and XGBoost vs. number of features.",
+      "Each dataset consists of 100 to 900 features."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "vendor",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "The values are read by eye and are approximate; the training sample count for this figure is not stated in the text."
+    },
+    {
+     "id_suggestion": "emami-other-solvers-setup-23db",
+     "value": "The authors report that they tested CVQBoost with two other solvers, Hexaly and Scipy SLSQP, on Hamiltonians built from the synthetic datasets with 100 to 900 dimensions and dynamic ranges of 40 to 70 dB, and that Dirac-3 has a known performance limitation at 23 dB, which these Hamiltonians exceed.",
+     "anchor": "3.5 Training CVQBoost with Other Solvers, p.9-11",
+     "quotes": [
+      "We tested CVQBoost using two additional solvers: Hexaly",
+      "range from 100 to 900 dimensions, with dynamic ranges spanning 40 to 70 dB.",
+      "Notably, Dirac-3 has a known performance limitation at 23 dB",
+      "which exceed the 23 dB operational limit of Dirac-3"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors' own statement of a device limit and of the setup (pp.10-11).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The Hamiltonians are built from the same synthetic datasets as the Section 3.4 runtime comparison, so the Dirac-3 runs in Figures 5 and 6 appear to be outside the stated 23 dB operating limit. The paper does not report the dynamic range of the fraud-data Hamiltonian."
+    },
+    {
+     "id_suggestion": "emami-other-solvers-runtime-linear-claim",
+     "value": "The authors state that the other solvers achieve shorter runtimes for small Hamiltonian sizes but exhibit quadratic or worse runtime growth with the number of variables, whereas Dirac-3 maintains a more favorable linear scaling, and that at a Hamiltonian size of 900 Dirac-3 outperforms the other solvers in runtime efficiency.",
+     "anchor": "3.5, p.11",
+     "quotes": [
+      "They exhibit quadratic or worse runtime growth with the number of variables, whereas Dirac-3 maintains a more favorable linear scaling. At a Hamiltonian size of 900, Dirac-3 outperforms the other solvers in runtime efficiency."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement of one vendor benchmark of five problem sizes and five trials.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 6 has only five sizes. Scipy is faster than Dirac-3 at 500 variables (30.6 +/- 0.6 s against 62.0 +/- 12.4 s) and about equal at 700 (100.3 +/- 2.4 s against 96.8 +/- 3.5 s)."
+    },
+    {
+     "id_suggestion": "emami-table6-solver-runtimes",
+     "value": "The authors report in Table 6, for 100, 500, 700 and 900 variables, Dirac 3 runtimes of 9.4 +/- 1.5 s, 62.0 +/- 12.4 s, 96.8 +/- 3.5 s and 106.2 +/- 12.5 s, Hexaly runtimes of 0.2 +/- 0.0 s, 221.7 +/- 10.0 s, 149.6 +/- 7.1 s and 322.1 +/- 9.1 s, and Scipy runtimes of 0.2 +/- 0.0 s, 30.6 +/- 0.6 s, 100.3 +/- 2.4 s and 274.8 +/- 3.2 s, and that the problems are not convex.",
+     "anchor": "Table 6, p.15",
+     "quotes": [
+      "9.4 +/- 1.5 22.6 +/- 2.1 62.0 +/- 12.4 96.8 +/- 3.5 106.2 +/- 12.5",
+      "0.2 +/- 0.0 15.7 +/- 1.7 221.7 +/- 10.0 149.6 +/- 7.1 322.1 +/- 9.1",
+      "0.2 +/- 0.0 5.7 +/- 1.1 30.6 +/- 0.6 100.3 +/- 2.4 274.8 +/- 3.2",
+      "False False False False False",
+      "Table 6: Comparison of runtimes for Dirac 3, Hexaly, and Scipy (SLSQP) solvers across different Hamiltonian sizes.",
+      "100 300 500 700 900"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one vendor benchmark.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emami-other-solvers-energy-gap-explained",
+     "value": "The authors state that for larger problem instances a slight energy gap emerges in favor of the other solvers, that the solutions found by Dirac-3 are good enough quality to provide competitive performance with more traditional boosting methods, and that the discrepancy is likely due to the large dynamic ranges of these Hamiltonians, which exceed the 23 dB operational limit of Dirac-3.",
+     "anchor": "3.5, p.11",
+     "quotes": [
+      "for larger problem instances, a slight energy gap emerges in favor of the other methods.",
+      "This discrepancy is likely due to the large dynamic ranges of these Hamiltonians, which exceed the 23 dB operational limit of Dirac-3, potentially impacting its optimization performance."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author interpretation of a figure; the cause is stated as likely, not tested.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The text calls the gap slight; Figure 7b has no numeric axis labels for the bars beyond the energy scale."
+    },
+    {
+     "id_suggestion": "emami-fig7-solution-energy-from-figure",
+     "value": "Read from Figure 7: the Dirac3 runtime is about 100 s at about 700 variables and about 110 s at about 900 variables, against Hexaly about 320 s and Scipy SLSQP about 275 s at about 900 variables; in panel (b) the Dirac3 solution-energy bars lie slightly above (less negative than) the Hexaly and Scipy bars at the larger problem sizes.",
+     "anchor": "3.5, Figure 7, p.11",
+     "quotes": [
+      "Figure 7: Comparison of Dirac-3, Hexaly, and Scipy (SLSQP) solvers in terms of (a) runtime scaling and (b) solution energy performance across different problem sizes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "vendor",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "The values are read by eye and are approximate."
+    },
+    {
+     "id_suggestion": "emami-speed-and-power-efficiency-claim",
+     "value": "The authors state that, applied on Dirac-3, CVQBoost achieves superior speed and power efficiency compared to XGBoost while maintaining comparable accuracy, and that they explore whether Dirac-3 provides advantages in accelerating training time while maintaining low power consumption.",
+     "anchor": "1 Introduction, p.2; 2.1, p.3",
+     "quotes": [
+      "CVQBoost to achieve superior speed and power efficiency compared to a state-ofthe-art conventional approach, XGBoost",
+      "we explore if Dirac-3 provides advantages in accelerating training time while maintain low power consumption."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor's description of its own product.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The paper reports no power or energy measurement for Dirac-3 or for the XGBoost hardware, so the power-efficiency claim has no data in this paper."
+    },
+    {
+     "id_suggestion": "emami-abstract-competitive-accuracy-claim",
+     "value": "The authors state in the abstract that CVQBoost maintains competitive accuracy (measured by AUC) while significantly reducing training time, particularly as dataset size and feature complexity increase, and that CVQBoost on Dirac-3 is well suited for large-scale classification tasks.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "Our results show that CVQBoost maintains competitive accuracy (measured by AUC) while significantly reducing training time, particularly as dataset size and feature complexity increase.",
+      "demonstrating that CVQBoost on Dirac-3 is well-suited for large-scale classification tasks."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "exact",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor's description of its own product.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "In Table 1 CVQBoost AUC is below XGBoost in 23 of 24 rows; at 150, 000 samples the run-time gap to 8-core and GPU XGBoost is under 2 s."
+    },
+    {
+     "id_suggestion": "emami-conclusion-faster-training-claim",
+     "value": "The authors conclude that the results show comparable accuracy with XGBoost when balancing techniques have been applied, that CVQBoost can even exceed XGBoost when ADASYN balancing is used, and that CVQBoost can be trained much faster, even when compared to state-of-the-art implementations on GPUs and multicore systems.",
+     "anchor": "4 Conclusions and outlook, p.11",
+     "quotes": [
+      "The results show that comparable accuracy with traditional boosting methods (XGBoost) when balancing techniques have been applied.",
+      "We also find that CVQBoost can be trained much faster, even when compared to state-of-the-art implementations on GPU’s and multicore systems."
+     ],
+     "kind": "claimed",
+     "claim_type": "vendor-self-claim",
+     "fidelity": "scoped",
+     "certainty_suggestion": "moderate",
+     "high_basis": "",
+     "certainty_reason": "A vendor's description of its own product.",
+     "result_type": "vendor",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The 'much faster' result is shown for single-core XGBoost and for synthetic data of millions of samples; at the fraud dataset's size (up to 150, 000 samples) the lead over GPU and multicore XGBoost is about 1.4 to 2.0 s."
+    },
+    {
+     "id_suggestion": "emami-future-science-explainability-claim",
+     "value": "The authors state that, while the demonstration was fraud detection, a particularly appealing future direction is in science, for example computational bioscience or chemistry, because of the potential for explainability of boosting techniques by examining the weak classifiers used.",
+     "anchor": "4 Conclusions and outlook, p.11",
+     "quotes": [
+      "A particularly appealing future direction is in science, for example computational bioscience or chemistry.",
+      "This is due to the potential for explainability of boosting techniques by examining the weak classifiers"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement of a future direction without evidence in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emami-boosting-explainability-claim",
+     "value": "The authors state that one advantage of boosting, and in particular of QBoost and CVQBoost, is that examining the highly weighted classifiers can allow researchers to understand how the algorithm is working, in contrast to deep neural networks, and that more explainable techniques are likely to be important in highly regulated sectors such as finance.",
+     "anchor": "1 Introduction, p.2",
+     "quotes": [
+      "One advantage of boosting and in particular methods like QBoost and CVQBoost is that examining the highly weighted classifiers can allow researchers to understand how the algorithm is working.",
+      "are likely to be particularly important in highly regulated sectors such as finance, where compliance is highly important."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim without evidence in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "world",
+     "reader_inference": "The paper does not examine the weighted classifiers (Section 2.3)."
+    },
+    {
+     "id_suggestion": "emami-qboost-qubo-cited",
+     "value": "The authors state that the QBoost algorithm (Neven et al., 2012) converts the problem of weighting the weak classifiers into a quadratic unconstrained binary optimization (QUBO) problem, and that CVQBoost extends this concept to continuous variables on the Dirac hardware.",
+     "anchor": "1 Introduction, p.2",
+     "quotes": [
+      "The QBoost algorithm (Neven et al., 2012), converts the problem of weighting the weak classifiers into a quadratic unconstrained binary optimization (QUBO) problem",
+      "In this work we further extend this concept to CVQBoost"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work (Neven et al., 2012).",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emami-code-public-vendor-repo",
+     "value": "The authors state that, for transparency and reproducibility, they created a code repository with the code associated with these studies, in a public GitHub repository of the QCi organization.",
+     "anchor": "Acknowledgments and Disclosure of Funding, p.12",
+     "quotes": [
+      "For transparency and reproducibility, we have created a code repository with code associated with these studies at"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper's statement of its own code availability (p.12).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "Running the code needs Dirac-3 hardware access, which only the vendor provides."
+    }
+   ]
+  }
+ ]
+}

@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from store.citations import parse_crossref, parse_datacite  # noqa: E402
+from store.ingest import FULL_READ_MARK  # noqa: E402
 from store.quotes import QUOTE, require_verbatim, stray_quote_marks  # noqa: E402
 
 ENTITY = re.compile(r"&(?:[A-Za-z]+|#\d+|#x[0-9A-Fa-f]+);")
@@ -98,11 +99,21 @@ F101 = _script()
 def test_each_corrected_quote_is_whole_and_holds_its_value(live_conn, rid):
     """Each re-quoted assertion as stored: one quote per passage, all
     verbatim in its source, the value's figures held, and a corrected
-    value (VALUE_FIXES) is the one stored."""
-    ctx, value = live_conn.execute(
-        "SELECT f.citation_context, r.value FROM assertion_fields f JOIN records r ON r.id = f.record_id "
-        "WHERE f.record_id = ?", (rid,)).fetchone()
+    value (VALUE_FIXES) is the one stored.
+
+    A record a later full read re-quoted (FULL_READ_MARK, dated after this
+    script's 2026-10-23) is held to that read's text, not this script's:
+    sync_assertion keeps this script off it, and the full read's own tests
+    check it. Its stored quotes must still be verbatim in the source.
+    oversampling-helps-weak-not-strong-boosters is one (Sprint 15, g133,
+    2026-11-04)."""
+    ctx, value, updated, history = live_conn.execute(
+        "SELECT f.citation_context, r.value, r.updated, r.updated_reason FROM assertion_fields f "
+        "JOIN records r ON r.id = f.record_id WHERE f.record_id = ?", (rid,)).fetchone()
     source, passages = F101.QUOTE_FIXES[rid]
+    if FULL_READ_MARK in history and updated > "2026-10-23":
+        require_verbatim(rid, ctx, F101.text_of(source), value=value)
+        return
     assert ctx == F101.context_of(passages)
     assert len(QUOTE.findall(ctx)) == len(passages)
     assert value == F101.VALUE_FIXES.get(rid, value)
