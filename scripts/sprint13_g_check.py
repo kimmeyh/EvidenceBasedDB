@@ -107,7 +107,7 @@ def page_text(path: str, first: int, last: int) -> str:
     layer = page_texts(path)
     out = [layer[n - 1] for n in range(first, min(last, len(layer)) + 1)]
     out.append(subprocess.run(["pdftotext", "-enc", "UTF-8", "-layout", "-f", str(first), "-l", str(last), path, "-"],
-                              capture_output=True).stdout.decode("utf-8", "replace"))
+                              capture_output=True, check=True).stdout.decode("utf-8", "replace"))  # Copilot, PR #149
     ocr = ocr_pages(path).pages
     out += [ocr[n] for n in range(first, last + 1) if n in ocr]
     return plain(" ".join(out))

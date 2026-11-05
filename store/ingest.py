@@ -358,8 +358,11 @@ def validate_paper(paper: PaperRecord, check_local_paths: bool = True) -> None:
                     f"{MIN_VISIBLE_WORDS}: a bot challenge, a JavaScript-only shell or a redirect stub, "
                     "not the content. Save the real page (print to PDF, or the text) and point access at it.")
     # A marker counts only as a word of its own: "error-corrected" in a title is not one (Babbush et al. 2021,
-    # Sprint 15 Task J).
-    audit = [m for m in _AUDIT_MARKERS if paper.citation and re.search(rf"(?<![\w-]){re.escape(m)}", paper.citation, re.I)]
+    # Sprint 15 Task J), and neither is "Corrected-error" or "Correctedness" (Copilot's review of PR #149: the
+    # right side is guarded too). The right guard applies only to a marker that ends in a letter, and refuses a
+    # hyphen only before a letter, so "NOTE:x" and "CORRECTED-2026-09-16" are still refused (fresh-eyes review).
+    audit = [m for m in _AUDIT_MARKERS if paper.citation and re.search(
+        rf"(?<![\w-]){re.escape(m)}{r'(?!\w|-[A-Za-z])' if m[-1].isalnum() else ''}", paper.citation, re.I)]
     if audit:
         raise ValueError(
             f"paper {pid!r}: citation carries audit-trail text ({', '.join(audit)}). "

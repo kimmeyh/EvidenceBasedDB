@@ -320,6 +320,13 @@ this project keeps having to replace with a step.
   decision named in a note's body (Sprint 8 and 9's shape; proven red),
   the sync test checks the same-day boundary, and the Sprint 12 skip
   compares with the latest day that script syncs on
+- **fix**: Copilot's review of PR #149. `page_text` stops on a pdftotext
+  failure instead of reading it as an empty page (`check=True`; pdftotext
+  exits 0 on a page range past the end, checked). The audit-marker check
+  in `validate_paper` guards the right side of a marker that ends in a
+  letter, so a title word such as "Correctedness" or "Corrected-error"
+  passes; its fresh-eyes review kept "NOTE:x" and "CORRECTED-2026-09-16"
+  refused. Both tests proven red
 - **process**: Sprint 15 Phase 7 (2026-11-05): the retrospective
   (`docs/sprints/SPRINT_15_RETROSPECTIVE.md`; team lead "Very Good" in
   every rated category, "none" for 13, 14 and 16), the summary with its
