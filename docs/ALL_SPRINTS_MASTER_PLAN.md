@@ -50,10 +50,28 @@ repository exists. No other F# from either source repository applies here.
 | 12 | docs/sprints/SPRINT_12_SUMMARY.md | [OK] Complete | 2026-10-23 to 2026-10-24 |
 | 13 | docs/sprints/SPRINT_13_SUMMARY.md | [OK] Complete | 2026-10-24 to 2026-10-28 |
 | 14 | docs/sprints/SPRINT_14_SUMMARY.md | [OK] Complete | 2026-10-29 to 2026-10-31 |
+| 15 | docs/sprints/SPRINT_15_SUMMARY.md | [OK] Complete | 2026-11-01 to 2026-11-05 |
 
 ## Last Completed Sprint
 
-Sprint 14 is below; Sprint 13 follows it for continuity.
+Sprint 15 is below; Sprint 14 follows it for continuity.
+
+### Sprint 15: Read Every Page, Figures and Images Included, Then Read 100 More Papers (2026-11-01 to 2026-11-05, PR #149, waiting for the team lead's merge)
+
+Thirteen tasks, thirteen issues (#150-#162). **Tooling**: re-entry groups
+for records left unread (F125); page anchors and latent defects (F126,
+F127). **Reading**: OCR of image-only pages by RapidOCR (F115); figures
+and embedded images read (F116); F114's 100 papers and the F57 release's
+100 records read in full (F114, F133); F128's gaps read or put on the
+hand-download list. **Corrections**: Phase 2's F151, F153, F154 re-read
+(F124); 10 textbook LOW grades set HIGH by the team lead (F129).
+**Inbound**: Phase 2's Sprint 30 results at 43bc362 (F130). The F95 and
+F98 releases found nothing new (F131, F132). Store 2,345 -> 2,358 papers
+(1,789 -> 1,805 `read`), 23,653 -> 34,891 assertions (8,167 -> 11,071
+HIGH); suite 1,485 -> 1,543 tests. Manual Validation: 36 certainty
+changes and Q2 to Q9 decided; a team-lead decision is now kept against a
+later review or an older script's rerun. Retrospective: team lead all
+"Very Good". Full detail: `docs/sprints/SPRINT_15_SUMMARY.md`.
 
 ### Sprint 14: Read PHI-OMEGA, Review the 302 Cloud Reads, Then Learn What the Store Says (2026-10-29 to 2026-10-31, PR #140, merged to develop and to main via PR #148 on 2026-10-31; tagged sprint-14)
 

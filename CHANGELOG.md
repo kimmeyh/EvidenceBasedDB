@@ -320,6 +320,13 @@ this project keeps having to replace with a step.
   decision named in a note's body (Sprint 8 and 9's shape; proven red),
   the sync test checks the same-day boundary, and the Sprint 12 skip
   compares with the latest day that script syncs on
+- **process**: Sprint 15 Phase 7 (2026-11-05): the retrospective
+  (`docs/sprints/SPRINT_15_RETROSPECTIVE.md`; team lead "Very Good" in
+  every rated category, "none" for 13, 14 and 16), the summary with its
+  Actuals (`SPRINT_15_SUMMARY.md`), the master plan's Past Sprint Summary
+  row and Last Completed Sprint entry, and the checklist's Sprint 15
+  section. One improvement put to the team lead (Q1, the trial store copy
+  takes its text cache)
 - **docs**: carded F136 (the applier checks the quotes of what it writes,
   not of every reviewed row; team lead, Q9) and F137 (the two Dunjko
   records share one PDF; Q5); F57's card says Sprint 16's release follows
