@@ -580,6 +580,14 @@ and in git. Remaining items below.
   Commitment 9). So Sprint 16's release first fetches free copies of the
   ranking's top records (the paced fetcher; a paywalled one goes on the
   hand-download list), then reads them in ranking order.
+- **Sprint 16's release reads one named paper first** (team lead,
+  2026-11-05): the white paper `Quantum_NeuralNetwork.pdf` in
+  `github.com/wangy8205165/Quantum-NeuralNetwork-WhitePaper`. Sprint 12
+  (F103) entered that repository as a GitHub repository record only; the
+  PDF in it has no paper record and no local copy (checked 2026-11-05).
+  The release fetches it once into `Papers\`, enters it as a paper record
+  whose access names the repository and file, links the repository
+  record to it, and reads it in full before the ranking's records.
 - **Snapshot as of 2026-10-05**: 1,875 papers; 24 at `read`, all with
   yielded assertions; 14 `screened`; 1,837 `seen`. F45 and F46 cover only
   the handoff's pending facts, not these.

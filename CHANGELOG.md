@@ -338,6 +338,10 @@ this project keeps having to replace with a step.
   not of every reviewed row; team lead, Q9) and F137 (the two Dunjko
   records share one PDF; Q5); F57's card says Sprint 16's release follows
   its ranking (Q7)
+- **docs**: F57's card names one paper for Sprint 16's release to read
+  first (team lead, 2026-11-05): `Quantum_NeuralNetwork.pdf` in
+  `wangy8205165/Quantum-NeuralNetwork-WhitePaper`. Sprint 12 entered the
+  repository only; the PDF has no paper record and no local copy
 
 ### 2026-10-29 to 2026-10-31 (Sprint 14, PR #140, merged to develop 2026-10-31 and to main via PR #148 the same day; tagged sprint-14)
 
