@@ -13,7 +13,26 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-10-31 onward (Sprint 15, in progress)
+### 2026-11-05 onward (Sprint 16, in progress)
+
+- **chore**: Sprint 16 opened (2026-11-05). The team lead merged PR #149
+  into develop (7dca2c9) and PR #163 to main (dff5c49); `sprint-15`
+  tagged on dff5c49; branch `feature/20261105_Sprint_16` cut from the
+  Sprint 15 branch (6.6 carry-forward). Phase 1.1 reconciliation: every
+  commit since 2026-10-31 changed this file; 2026-11-02 and 2026-11-03
+  have no commits (the reads ran in the store and in uncommitted work
+  files, committed on 2026-11-04)
+- **docs**: Sprint 16 Phase 1.2 and 1.3 (2026-11-05). Sprint 15's
+  issues #150 to #162 all closed; its triad present with Actuals; master
+  plan rolled (Sprint 15 merged and tagged). Shipped cards F115, F116,
+  F124 to F130 and the released copies F131 to F133 pruned by hand.
+  Snapshots: F114 (892 of 1,430 records not read in full, 190 groups),
+  F57 (522 papers with no read row; arXiv 2108.13346 not in the store),
+  F95 (386 PDFs, no unnamed file saved since 2026-11-01), F98 (the list
+  moved to 399b022651 with 6 new papers), F51 and F90 hold checks.
+  Phase 1.3: 0 re-checks due; no ADR or schema change in Sprint 15
+
+### 2026-10-31 to 2026-11-05 (Sprint 15, PR #149, merged to develop 2026-11-05 and to main via PR #163 the same day; tagged sprint-15)
 
 - **chore**: Sprint 15 opened (2026-10-31). The team lead merged PR #140
   into develop (9059061) and PR #148 to main (934a416); `sprint-14`
