@@ -588,6 +588,17 @@ and in git. Remaining items below.
   The release fetches it once into `Papers\`, enters it as a paper record
   whose access names the repository and file, links the repository
   record to it, and reads it in full before the ranking's records.
+- **And a second named paper** (team lead, 2026-11-05: "unless already
+  read ... get from arxiv for our purposes"): `qboost.pdf` in
+  `github.com/wangy8205165/QuantumBoost`, which the team lead identified
+  as arXiv 2108.13346 (given as "2108.133346"; 2108.13346 is "QBoost for
+  regression problems: solving partial differential equations", Goes et
+  al., 2021, checked on arXiv 2026-11-05). No local copy in `Papers\` and
+  no manifest names it (checked 2026-11-05). The release confirms in the
+  store that it is not already read, fetches version 2 once from arXiv
+  (`2108.13346v2`; team lead: "only need to read v2 of the paper"), and
+  reads it in full after the white paper. This is not Neven et al.'s
+  2012 QBoost paper, which has a local copy.
 - **Snapshot as of 2026-10-05**: 1,875 papers; 24 at `read`, all with
   yielded assertions; 14 `screened`; 1,837 `seen`. F45 and F46 cover only
   the handoff's pending facts, not these.
@@ -1076,6 +1087,21 @@ and in git. Remaining items below.
   checks nothing and writes nothing; a changed quote is still checked
   (a test proven red); the rule's wording in INTAKE says "every write
   is checked; an unchanged row is not".
+- **Widened 2026-11-05** (team lead): "This reading the PDF should ever
+  be done once per PDF, ever, and once done should never need to read it
+  again. The quotes only need to be verified once per PDF, ever, and
+  should never need to be done again."
+  - Text extraction (pdftotext, and OCR) runs once per file, ever. The
+    text cache is keyed by the file's digest already; the gap is that a
+    trial store copy without the cache extracts every PDF again (894 PDFs,
+    about 25 minutes, Sprint 15). The cache gets one fixed location that
+    every store copy reads, so no copy can miss it. This replaces
+    retrospective improvement Q1 (copy the cache with each trial).
+  - A quote is checked once, when it is first written. A rerun, a second
+    apply or a later sprint never checks it again. A new or changed quote
+    is checked once, against the cached text, in seconds.
+  - Added acceptance: a trial on a store copy extracts no PDF the cache
+    holds (a test proven red); a rerun of an apply checks no quote.
 - Depends on: none
 
 **F137. The two Dunjko records share one PDF: which paper is each (~30m) Priority 34** (NEW 2026-11-04, team lead at Sprint 15 Manual Validation, Q5 = 1)

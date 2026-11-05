@@ -342,6 +342,13 @@ this project keeps having to replace with a step.
   first (team lead, 2026-11-05): `Quantum_NeuralNetwork.pdf` in
   `wangy8205165/Quantum-NeuralNetwork-WhitePaper`. Sprint 12 entered the
   repository only; the PDF has no paper record and no local copy
+- **docs**: F57's card adds arXiv 2108.13346 (QBoost for regression,
+  Goes et al., 2021; the team lead's `QuantumBoost/qboost.pdf`), fetched
+  from arXiv as v2 only and read after the white paper unless already
+  read. F136 is
+  widened (team lead, 2026-11-05): each PDF's text is extracted once,
+  ever, from one fixed cache every store copy reads, and each quote is
+  checked once, ever. This replaces retrospective Q1
 
 ### 2026-10-29 to 2026-10-31 (Sprint 14, PR #140, merged to develop 2026-10-31 and to main via PR #148 the same day; tagged sprint-14)
 
