@@ -123,4 +123,4 @@ as of 2026-11-05.
 
 | # | Title | Source | Type | Effort | Decision (now/backlog/skip) |
 |---|---|---|---|---|---|
-| 1 | A trial store copy always takes the text cache with it, or refuses (Q1) | Dev Team, categories 1 and 9 | Tooling | 20m | PENDING |
+| 1 | A trial store copy always takes the text cache with it, or refuses (Q1) | Dev Team, categories 1 and 9 | Tooling | 20m | Replaced 2026-11-05 by the team lead's rule (each PDF's text extracted once, ever; each quote checked once, ever), carded in F136 (one fixed text cache every store copy reads); team lead Q1 = 1: backlog, Sprint 16's first task (about 50m) |

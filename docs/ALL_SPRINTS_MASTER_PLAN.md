@@ -1064,7 +1064,7 @@ and in git. Remaining items below.
   and the prompt agree; a test proven red.
 - Depends on: none
 
-**F136. The applier checks the quotes of what it writes, not of every reviewed row (~30m) Priority 12** (NEW 2026-11-04, team lead at Sprint 15 Manual Validation, Q9: "We need to updat the rule as it violates the 'Long-term Effective, while as efficient as reasonalby possible' primary rule"; carded, not done now)
+**F136. Each PDF's text is extracted once and each quote is checked once, ever (~50m) Priority 10** (NEW 2026-11-04, team lead at Sprint 15 Manual Validation, Q9: "We need to updat the rule as it violates the 'Long-term Effective, while as efficient as reasonalby possible' primary rule"; carded, not done now. Widened 2026-11-05; team lead retrospective Q1 = 1: Sprint 16's first task)
 - Phase: Store tooling (apply)
 - Value: a rerun or a second apply takes seconds, not minutes, and each
   write still carries a fresh quote check.

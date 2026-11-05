@@ -349,6 +349,10 @@ this project keeps having to replace with a step.
   widened (team lead, 2026-11-05): each PDF's text is extracted once,
   ever, from one fixed cache every store copy reads, and each quote is
   checked once, ever. This replaces retrospective Q1
+- **process**: retrospective Q1 answered (team lead, 2026-11-05, Q1 =
+  1): F136 is Sprint 16's first task (Priority 10, about 50m); recorded
+  in the retrospective's Improvement Decisions. Phase 7.7 complete; PR
+  #149 marked ready
 
 ### 2026-10-29 to 2026-10-31 (Sprint 14, PR #140, merged to develop 2026-10-31 and to main via PR #148 the same day; tagged sprint-14)
 
