@@ -45,17 +45,18 @@ fix cycle. Runtime is separate, with its dominant term.
 | C | **F134, number-only table cells.** A page number is still dropped; a number-only table cell is kept or found another way; each with a test proven red; every stored quote still matches word for word (the live quote tests) | 30m | the live quote tests over 34,891 assertions, from the shared cache | Claude, top tier |
 | D | **F135, a stated limit's type.** The reader prompt names the type of a stated limit on a measured result; the check and the prompt agree; a test proven red | 20m | none | Claude, top tier |
 | E | **F137, the Dunjko records**, per Q6. They are one paper: the arXiv preprint (1709.02779) and its journal version (Reports on Progress in Physics 81(7), 2018). Each assertion ends under the record Q6 names, each move with its note; the local-file check passes | 20m | one store write, with its verified backup | Claude, top tier (certainty) |
-| F | **F114, 20 papers under the new pipeline.** Order per Q1: the 6 papers new on Christophe Pere's list at 399b022651 (none in the store), any unnamed PDF in `Papers\` (none on 2026-11-05), then the ledger from the first group not yet read in full. Books excluded per Q7. The Sprint 15 reader prompt with B's, C's and D's changes; up to 5 local readers; review per Q5; the coordinator's sign-off and the team lead's certainty decisions; one apply. Also: `scripts/hand_download_list.py` and the `hand-download-list` skill name F114 instead of F95 | 30m (prompt) + 50m (review and sign-off, at Sprint 15's 2.4m per record) | no estimate as a limit (no reading budget). The dominant term is the whole-paper reads with their figures; B's telemetry on the first group sizes the rest | Claude, top tier (sign-off, certainty); Sonnet 5.5 readers and reviewers |
-| G | **F57, the two named papers** (size per Q2): the wangy8205165 white paper `Quantum_NeuralNetwork.pdf` (2,082,720 bytes on GitHub), entered as a paper record linked to its repository record, and the QBoost paper per Q3; each fetched once into `Papers\` and read in full under F's pipeline, after F's readers | 15m + 10m (review) | two downloads, one GitHub request and one arXiv request | as F |
-| H | **F51, per Q4.** If released: the CVQBoost findings record and its six assertions entered from the 2026-08-04 document (SHA-256 `425358a7b4cec71f...`), each graded by what the document shows (single runs are measured results), with Phase 2's F162 result (no in-pocket win repeats over ten seeds) linked as contradicting where it bears | 45m (only if Q4 = 1) | one store write, with its verified backup | Claude, top tier (certainty) |
+| F | **F114, 20 papers under the new pipeline.** Order (Q1 = 1, Q2 = 2): the 6 papers new on Christophe Pere's list at 399b022651 (none in the store); the 2 papers the team lead named (Task G's); any unnamed PDF in `Papers\` (none on 2026-11-05); then 12 from the ledger, from the first group not yet read in full. Books excluded per Q7. The Sprint 15 reader prompt with B's, C's and D's changes; up to 5 local readers; each group's reviewer reads the paper in full (Q5 = 2); the coordinator's sign-off and the team lead's certainty decisions; one apply. Also: `scripts/hand_download_list.py` and the `hand-download-list` skill name F114 instead of F95 | 30m (prompt) + 50m (review and sign-off, at Sprint 15's 2.4m per record) | no estimate as a limit (no reading budget). The dominant term is the whole-paper reads with their figures; B's telemetry on the first group sizes the rest | Claude, top tier (sign-off, certainty); Sonnet 5.5 readers and reviewers |
+| G | **F57's two named papers, read inside F (Q2 = 2)**: the wangy8205165 white paper `Quantum_NeuralNetwork.pdf` (2,082,720 bytes on GitHub), entered as a paper record linked to its repository record, and the QBoost paper from arXiv v1 (Q3 = 1); each fetched once into `Papers\` and read in full as two of F's 20. F57 reads nothing else this sprint | 15m (entry) | two downloads: one GitHub request and one arXiv request | as F |
+| H | **F51, released from HOLD (Q4 = 1).** The CVQBoost findings record and its six assertions entered from the 2026-08-04 document (SHA-256 `425358a7b4cec71f...`), each graded by what the document shows (single runs are measured results), with Phase 2's F162 result (no in-pocket win repeats over ten seeds) linked as contradicting where it bears | 45m | one store write, with its verified backup | Claude, top tier (certainty) |
 
 **Sequence**: A first (the team lead's Sprint 15 retrospective Q1). B next,
 because it changes the pipeline F uses. C and D then, because they change
 the reader's check and prompt. E and H while F's readers run. F's first
 group is B's step 3; F's other groups start only after its measures are
-reported in the status note. G after F's readers, in the same slots. One
-apply at a time. Total about 345 minutes at the cards' estimates (390 if
-Q4 = 1), plus the reader time in the background. No findings allowance:
+reported in the status note. G's two entries before F's readers start,
+so they are read as two of F's 20. One apply at a time. Total about 380
+minutes at the cards' estimates (with Q4 = 1 and G's review inside F's),
+plus the reader time in the background. No findings allowance:
 the scope is not dominated by verification.
 
 **If a Criterion 3 stop becomes necessary, the cut line is inside F**: F
@@ -108,7 +109,26 @@ runs `python scripts/run_suite.py --changed` and CI's set on the PR.
 
 ## Decisions for the team lead
 
-Each is answered by a digit; each ends with a recommendation.
+Team lead, 2026-11-05: "q1. 1 (next sprint the will be included in F114)
+q2 2 (next sprint the will be included in F114) q3. 1 q4 1 q5. 2". Q6 and
+Q7 are not yet answered.
+
+- **Q1 = 1**: F114's 20 start with the 6 new papers on Christophe Pere's
+  list. From Sprint 17 on, new list papers are part of F114's 30 as a
+  matter of course.
+- **Q2 = 2**: the two named papers are read inside F114's 20, so F114
+  reads 6 new list papers, the 2 named papers and 12 ledger papers. F57
+  reads nothing else this sprint (Task G folds into Task F). From Sprint
+  17 on, a paper the team lead names is part of F114's 30.
+- **Q3 = 1**: the QBoost paper is read from arXiv v1 (2108.13346v1), the
+  only arXiv version.
+- **Q4 = 1**: F51 is released from HOLD into Sprint 16 (Task H, about 45
+  minutes).
+- **Q5 = 2**: the reviewer keeps the full second read of each paper. F139
+  still measures it, and its "read once" item is named as not done, with
+  this decision as the reason.
+
+The questions as asked:
 
 - **Q1. Which papers make up F114's 20?** (1) The 6 new on Christophe
   Pere's list first, then 14 from the ledger: the new papers are read in

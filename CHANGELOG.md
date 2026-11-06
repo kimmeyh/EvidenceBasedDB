@@ -40,6 +40,12 @@ this project keeps having to replace with a step.
   Dunjko records are one paper (preprint and journal version). Sprint 16
   plan drafted (`docs/sprints/SPRINT_16_PLAN.md`), with 7 questions;
   draft PR #164 opened
+- **docs**: Sprint 16 plan questions answered (team lead, 2026-11-05):
+  Q1 = 1 (the 6 new list papers first), Q2 = 2 (the two named papers
+  inside F114's 20; from Sprint 17, named and new list papers are part
+  of F114's 30), Q3 = 1 (arXiv v1), Q4 = 1 (F51 released from HOLD into
+  Sprint 16), Q5 = 2 (the reviewer keeps the full second read). The plan
+  absorbs them; Q6 and Q7 are still open
 
 ### 2026-10-31 to 2026-11-05 (Sprint 15, PR #149, merged to develop 2026-11-05 and to main via PR #163 the same day; tagged sprint-15)
 

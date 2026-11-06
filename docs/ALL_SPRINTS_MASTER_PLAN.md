@@ -438,7 +438,7 @@ and in git. Remaining items below.
 
 ### HOLD Items (waiting on an external event)
 
-**F51. The CVQBoost findings record and its six assertions (~45m) Priority HOLD** (NEW 2026-10-03)
+**F51. The CVQBoost findings record and its six assertions (~45m) Priority 50** (NEW 2026-10-03; released from HOLD 2026-11-05)
 - Phase: Sourcing / intake
 - Value: this enables the store to cite the CVQBoost findings by record
   once the re-run settles them, instead of by a document that may change.
@@ -479,6 +479,12 @@ and in git. Remaining items below.
   FourierWall2 copies still hash to `425358a7b4cec71f...`. Stays HOLD.
 - Hold checked 2026-11-05 (Sprint 16 Phase 1.2): both copies still hash
   to `425358a7b4cec71f...`. Stays HOLD.
+- **Released from HOLD into Sprint 16** (team lead, 2026-11-05, Sprint 16
+  plan Q4 = 1, after asking "Does this still have to be on hold?"). Phase
+  2 cites the document as a planning reference only and holds no re-run
+  of it, so the hold would not release. The record and its six
+  assertions enter from the 2026-08-04 document, with Phase 2's F162
+  result linked where it contradicts.
 - Depends on: the hsbc repository's re-run of the experiment.
 
 **F138. Read in full the books in the store and in the Books folder, with no reading budget (no estimate: as long as the reads take) Priority HOLD** (NEW 2026-11-05, team lead at Sprint 16 scope selection: "split out the reading of any books into a similar backlog items to F114 but for books and put it on HOLD")
@@ -909,6 +915,12 @@ and in git. Remaining items below.
     recorded, matched the same way, with the new commit recorded (was F98);
     (3) the Task G ledger in ledger order. A paper that cannot be entered
     or read keeps its reason.
+  - **Named papers and new list papers count inside the 30** (team lead,
+    2026-11-05, Sprint 16 plan Q1 = 1 and Q2 = 2: "next sprint the will be
+    included in F114"). A paper the team lead names for reading is read
+    in F114's next release, after the list's new papers and before the
+    ledger, not in F57's. Sprint 16's 20: the 6 new list papers, the 2
+    named papers, then 12 from the ledger.
   - **The team lead's files** in `Papers\` are never renamed or moved.
   - **The hand-download list** (team lead, 2026-10-22: "Keep an on going
     list of these in relative priority order"): computed by
