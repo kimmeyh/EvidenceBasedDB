@@ -76,7 +76,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from store import connect, recheck, script_paths  # noqa: E402
+from store import DEFAULT_STORE_DIR, connect, recheck, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
 from store.grading import grade, high_grades, low_grade  # noqa: E402
 from store.ingest import (FULL_READ_MARK, AssertionRecord, add_read, append_updated_reason,  # noqa: E402
@@ -431,6 +431,22 @@ def figure_check(a) -> None:
 LAST_VERIFY: Counter = Counter()  # F136: what the last verify() checked, and what it found stored as written
 
 
+CHECKED_BY_GROUP: Counter = Counter()  # F139: per group, the assertions the last verify() checked (new or changed)
+
+
+def record_telemetry(step: str) -> list[str]:
+    """F139: the last verify's quote checks per group, as one step in each group's telemetry file
+    (`scripts/read_telemetry.py`); a group without a file is not measured. At an apply the checked assertions are
+    the ones it entered or whose quote or value it changed, so they are its assertions written too (its other rows,
+    such as read rows and access notes, are not counted)."""
+    spec = importlib.util.spec_from_file_location("read_telemetry", Path(__file__).with_name("read_telemetry.py"))
+    t = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(t)
+    writes = step in ("trial", "apply")
+    return [g for g, n in sorted(CHECKED_BY_GROUP.items())
+            if t.step(g, step, quote_checks=n, **({"assertions_written": n} if writes else {})) is not None]
+
+
 def verify_counts() -> str:
     return (f"quote checks: {LAST_VERIFY['checked']} checked, {LAST_VERIFY['stored as written']} stored as written "
             f"(checked when written, not again); {LAST_VERIFY['sources read']} sources read")
@@ -455,15 +471,18 @@ def verify(conn=None) -> list[tuple[AssertionRecord, str, dict, object]]:
     out = []
     problems: list[str] = []
     LAST_VERIFY.clear()
-    for _, a, rid, p in assertions(problems):
+    CHECKED_BY_GROUP.clear()
+    for g, a, rid, p in assertions(problems):
         try:
             from_figure = a.id in figure_ids(p)
             verified = checked_when_stored(conn, a, rid) if conn is not None else None
+            CHECKED_BY_GROUP[g] += 0  # every group present, a group with nothing new as 0
             if verified is not None:
                 LAST_VERIFY["stored as written"] += 1
                 ocr_check(a, p["file"], None)
             else:
                 LAST_VERIFY["checked"] += 1
+                CHECKED_BY_GROUP[g] += 1
                 quotes = QUOTE.findall(a.citation_context)
                 text = _text(texts, p["file"])
                 from_page = read_from_figure(a.value) if from_figure else ()
@@ -800,6 +819,8 @@ def main(argv: list[str] | None = None) -> int:
         print(Counter(a.certainty for _, a, _, _ in kept), Counter(a.context for _, a, _, _ in kept))
         print(f"anchor fixes on confirmed stored assertions: {moves}")
         print(verify_counts())
+        if "--telemetry" in args:
+            print(f"telemetry: dry run recorded for {record_telemetry('dry run')}")
         print(f"{len(kept)} assertions entered or changed from {len(papers)} records. Every quote verbatim, every "
               "edit on named passages, every figure in its quotes. DRY RUN: nothing written. Re-run with --apply.")
         return 0
@@ -819,6 +840,9 @@ def main(argv: list[str] | None = None) -> int:
     print(f"{len(undecided)} stored assertions with a field changed that no review item names"
           f"{'; read each before the live apply' if undecided else ''}")
     print(verify_counts())
+    if "--telemetry" in args:  # a store other than the live one is a trial on a copy
+        step = "apply" if Path(DB_PATH).resolve() == (Path(DEFAULT_STORE_DIR) / "evidence.db").resolve() else "trial"
+        print(f"telemetry: {step} recorded for {record_telemetry(step)}")
     print("APPLIED")
     return 0
 

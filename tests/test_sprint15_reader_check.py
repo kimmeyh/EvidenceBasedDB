@@ -212,3 +212,33 @@ def test_the_applier_reads_an_ocr_anchor_that_holds_parentheses():
     A.citation_context = '"a sentence read from a page image" (Section 2 (Methods), p.3); "the layer" (p.1, OCR)'
     with pytest.raises(ValueError, match="OCR"):
         apply.ocr_check(A, "x.pdf", text)
+
+
+def test_the_page_check_runs_no_extraction_per_anchor(monkeypatch):
+    """F139 (Sprint 16 Task B): the page check ran one uncached `pdftotext -layout -f -l` per anchor, 58 of 62 seconds
+    on a 494-assertion group. Each page's two layouts now come from the cached whole-file extractions, and the OCR
+    pages are looked up once per file. Proven to fail by injection, 2026-11-06: with the per-anchor pdftotext call
+    restored the subprocess guard fired; with `_ocr` uncached the OCR lookup ran once per anchor; with
+    `_page_texts` splitting the plain extraction for the layout too, the layout page was missing."""
+    import subprocess
+
+    from store import ocr
+    check = _load("sprint13_g_check")
+    calls = []
+    monkeypatch.setattr(quotes, "_pdftotext", lambda path, layout: calls.append(layout) or (
+        "layout one\fLAYOUT TWO\f" if layout else "plain one\fplain two\f"))
+    monkeypatch.setattr(ocr, "page_count", lambda path: 2)
+    monkeypatch.setattr(ocr, "ocr_pages", lambda path: calls.append("ocr") or ocr.OcrText({2: "ocr two"}, {}))
+    monkeypatch.setattr(check, "ocr_pages", ocr.ocr_pages)
+
+    def no_run(*args, **kwargs):
+        raise AssertionError(f"an extraction per anchor: {args[0]}")
+
+    monkeypatch.setattr(subprocess, "run", no_run)
+    ocr._page_texts.cache_clear()
+    try:
+        assert check.page_text("x.pdf", 2, 3) == quotes.plain("plain two LAYOUT TWO ocr two")
+        assert check.page_text("x.pdf", 1, 2) == quotes.plain("plain one plain two layout one LAYOUT TWO ocr two")
+        assert sorted(map(str, calls)) == ["False", "True", "ocr"]  # each extraction and the OCR lookup once
+    finally:
+        ocr._page_texts.cache_clear()

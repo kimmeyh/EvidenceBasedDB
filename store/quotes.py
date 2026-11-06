@@ -30,6 +30,7 @@ import re
 import subprocess
 import tempfile
 import unicodedata
+from collections import Counter
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
@@ -95,6 +96,9 @@ def ocr_only_quotes(citation_context: str | None, text: str) -> list[str]:
     return out
 
 
+CACHE_MISSES: Counter = Counter()  # F139: extractions this process ran because the text cache lacked them
+
+
 @lru_cache(maxsize=1)
 def _pdftotext_version() -> str:
     out = subprocess.run(["pdftotext", "-v"], capture_output=True)
@@ -121,6 +125,7 @@ def _pdftotext(path: str, layout: bool) -> str:
         return (text_cache_dir() / name).read_bytes().decode("utf-8")
     except (OSError, RuntimeError, UnicodeDecodeError):  # RuntimeError: no store folder off Windows
         pass
+    CACHE_MISSES["pdftotext"] += 1
     text = subprocess.run(cmd, capture_output=True, check=True).stdout.decode("utf-8", "replace")
     try:
         cached = text_cache_dir() / name

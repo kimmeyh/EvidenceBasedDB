@@ -82,15 +82,23 @@ def page_texts(path: str) -> list[str]:
     return list(_page_texts(path))
 
 
+def page_layouts(path: str) -> list[str]:
+    """Each page's text in pdftotext's -layout mode, split from the cached whole-file extraction the same way
+    (F139, Sprint 16 Task B): the reader's check ran one uncached `pdftotext -layout -f -l` per anchor, 58 of its 62
+    seconds on a 494-assertion group."""
+    return list(_page_texts(path, True))
+
+
 @lru_cache(maxsize=None)
-def _page_texts(path: str) -> tuple[str, ...]:
+def _page_texts(path: str, layout: bool = False) -> tuple[str, ...]:
     from store.quotes import _pdftotext
-    pages = _pdftotext(path, False).split("\f")
+    pages = _pdftotext(path, layout).split("\f")
     if pages and not pages[-1].strip():
         pages = pages[:-1]
     n = page_count(path)
     if len(pages) != n:
-        pages = [subprocess.run(["pdftotext", "-enc", "UTF-8", "-f", str(i), "-l", str(i), path, "-"],
+        pages = [subprocess.run(["pdftotext", "-enc", "UTF-8", *(["-layout"] if layout else []), "-f", str(i),
+                                 "-l", str(i), path, "-"],
                                 capture_output=True, check=True).stdout.decode("utf-8", "replace")
                  for i in range(1, n + 1)]
     return tuple(pages)
@@ -152,6 +160,8 @@ def _read(path: str, kind: str, pages: list[int]) -> OcrText:
                 return text
         except (OSError, ValueError, KeyError):
             pass
+    from store.quotes import CACHE_MISSES
+    CACHE_MISSES["ocr"] += 1  # F139
     with tempfile.TemporaryDirectory() as tmp:
         if kind == "image":
             images = [path]

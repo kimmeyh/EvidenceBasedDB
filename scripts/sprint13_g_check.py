@@ -19,20 +19,21 @@ With --partial the file need not hold every record of the brief.
                                  read lists its sections and figures, each figure is described, a value read from a
                                  figure is never high, a stored context is never changed, and each quote is on a page
                                  its anchor names
+  ... --telemetry                F139: add this run's quote checks and text-cache misses to the group's telemetry
+                                 file (scripts/read_telemetry.py; the group is the brief's file name), when it has one
 """
 from __future__ import annotations
 
 import functools
 import json
 import re
-import subprocess
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from store.ocr import ocr_pages, page_texts  # noqa: E402
+from store.ocr import ocr_pages, page_layouts, page_texts  # noqa: E402
 from store.quotes import ocr_only_quotes, plain, read_from_figure, require_verbatim, source_text  # noqa: E402
 
 VERDICTS = {"confirmed", "corrected", "narrowed", "widened", "contradicted", "not in the paper"}
@@ -41,6 +42,7 @@ BASES = {"setup", "scope", "definition", "proved result", "stated limit"}
 KINDS = {"shown", "claimed", "cited"}
 CLAIM_TYPES = {"positive", "absence", "vendor-self-claim"}
 CONTEXTS = {"qml", "qc", "ml", "world", "method"}
+QUOTE_CHECKS: list[str] = []  # F139: each assertion whose quotes this run checked against the source
 
 
 def assertion_problems(tag: str, a: dict, text: str, stored_context: str = "") -> list[str]:
@@ -52,6 +54,7 @@ def assertion_problems(tag: str, a: dict, text: str, stored_context: str = "") -
         return [f"{tag}: no quotes"]
     cc = "; ".join(f'"{q}" ({a.get("anchor") or "anchor"})' for q in quotes)
     value = a.get("value") or ""
+    QUOTE_CHECKS.append(tag)
     try:
         require_verbatim(tag, cc, text, value=value,
                          read_from_page=read_from_figure(value) if a.get("from_figure") else ())
@@ -102,13 +105,19 @@ def spans(anchor: str) -> list[tuple[int, int]]:
 
 
 @functools.lru_cache(maxsize=None)
+def _ocr(path: str) -> dict[int, str]:
+    return ocr_pages(path).pages  # once per file: each call hashed the whole PDF again (F139)
+
+
+@functools.lru_cache(maxsize=None)
 def page_text(path: str, first: int, last: int) -> str:
-    """Pages first to last of a PDF: the text layer in both layouts, and the OCR text of any thin page."""
-    layer = page_texts(path)
-    out = [layer[n - 1] for n in range(first, min(last, len(layer)) + 1)]
-    out.append(subprocess.run(["pdftotext", "-enc", "UTF-8", "-layout", "-f", str(first), "-l", str(last), path, "-"],
-                              capture_output=True, check=True).stdout.decode("utf-8", "replace"))  # Copilot, PR #149
-    ocr = ocr_pages(path).pages
+    """Pages first to last of a PDF: the text layer in both layouts (Copilot, PR #149), and the OCR text of any thin
+    page. Both layouts come from the cached whole-file extractions, split by page (F139, Sprint 16 Task B): no
+    pdftotext runs per anchor."""
+    out = []
+    for layer in (page_texts(path), page_layouts(path)):
+        out += [layer[n - 1] for n in range(first, min(last, len(layer)) + 1)]
+    ocr = _ocr(path)
     out += [ocr[n] for n in range(first, last + 1) if n in ocr]
     return plain(" ".join(out))
 
@@ -245,6 +254,13 @@ def main(argv: list[str] | None = None) -> int:
     for x in problems:
         print(x)
     print(f"{len(problems)} problems")
+    if "--telemetry" in args:  # F139: this run's checks against the group's telemetry file, named by its brief
+        from store.quotes import CACHE_MISSES
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import read_telemetry
+        recorded = read_telemetry.step(Path(args[1]).stem, "check", quote_checks=len(QUOTE_CHECKS),
+                                       cache_misses=sum(CACHE_MISSES.values()))
+        print(f"telemetry: {'recorded' if recorded else 'not recorded (no file)'} for {Path(args[1]).stem}")
     return 0 if not problems else 1
 
 

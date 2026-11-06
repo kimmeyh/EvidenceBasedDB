@@ -61,6 +61,21 @@ this project keeps having to replace with a step.
   section 68 states the rule: every write is checked; an unchanged row
   is not. Three tests, each proven red. Also (Task F): the hand-download
   list and its skill name F114 instead of F95
+- **feat**: Sprint 16 Task B (F139, #166), steps 1 and 2: each read
+  measured, and each "once" in place or named with its reason.
+  `scripts/read_telemetry.py` keeps one telemetry file per group (papers
+  and pages, each agent's tokens and minutes, each step's quote checks,
+  cache misses, renders and assertions written; totals computed,
+  "unknown" where not measured) and built the Sprint 15 baseline from the
+  session's completion notices (47 groups, 209 papers, 6,108 pages; 3,645
+  reader and 1,676 reviewer tokens per page). The reader's check no longer runs
+  `pdftotext` per anchor: g129 checks in 6 seconds instead of 75 to 95,
+  with the same results. `scripts/render_page.py` renders each figure
+  page once for the reader and the reviewer. The checker and the applier
+  record their steps with `--telemetry`. Sprint 16 reader and review
+  prompts in `manifests/sprint16_f114_reads/`. INTAKE section 69. Six
+  tests, each proven red. Step 3 (the first group's measures) runs with
+  F114's first group
 
 ### 2026-10-31 to 2026-11-05 (Sprint 15, PR #149, merged to develop 2026-11-05 and to main via PR #163 the same day; tagged sprint-15)
 

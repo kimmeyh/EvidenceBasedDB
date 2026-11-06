@@ -3789,3 +3789,104 @@ done again." Counts are a snapshot as of 2026-11-06.
   PDF whose form feeds disagree with its page count) and `pdfinfo`'s page
   count still run once per process, not once ever. F139 measures them
   before anything is changed.
+
+## 69. Read once, check once, write once: the read measured (Sprint 16 Task B, F139)
+
+Team lead, 2026-11-05: "be as efficient as reasonably possible (total
+time per page, per paper), total token usage per paper, only test what
+must be tested, only test once, only read once, only write once, only
+update the database once, only red test once". Every count below is a
+snapshot as of 2026-11-06.
+
+- **Telemetry, one file per group.** `scripts/read_telemetry.py` keeps
+  `manifests/sprint16_f114_reads/telemetry/<group>.json`: the group's
+  papers and their pages (`start`, from the brief), each reader and
+  reviewer by task id with the tokens and minutes its completion notice
+  reports (`agent`, entered by the coordinator), and each step that
+  touched the group (the reader check, a render, the dry run, the trial,
+  the apply) with the quote checks it ran, the text-cache misses it
+  caused, the pages it rendered and the assertions it wrote (entered, or
+  with a changed quote or value; an apply's read rows and access notes
+  are not counted). The checker and
+  the applier record a step only with `--telemetry`, so a test run never
+  writes into a group's file. `report` computes the totals and the
+  per-page figures each time; nothing is stored as a total. A field no
+  step measured is "unknown", never 0. Tokens and minutes belong to an
+  agent, which reads a whole group, so they are per group and per page,
+  and per paper only where a group holds one paper.
+- **The Sprint 15 baseline** (`read_telemetry.py baseline`, in
+  `telemetry/baseline_sprint15.json`): 47 groups (g062-r1, g064-r1,
+  g076-r1, g113-r1, g114 to g154, g331, g332; 13 folders in the same work
+  folder were Sprint 14's and are left out), 209 papers, 6,108 PDF pages
+  (2 papers are web pages, with no page count), 2,190 page images
+  rendered. Readers: 22,265,688 tokens and 2,705 minutes; reviewers:
+  10,239,461 tokens and 856 minutes. Per page: 3,645 reader tokens and
+  1,676 reviewer tokens; 0.44 reader minutes and 0.14 reviewer minutes.
+  Per paper: about 106,500 reader tokens and 49,000 reviewer tokens. One
+  g122 reader failed, and a failed agent's notice carries no usage, so
+  the reader sums are a lower bound by that agent's use
+  (`reader_agents_without_usage`).
+  Sources: the session's completion notices for tokens and minutes; the
+  briefs and pdfinfo for pages; each group's work folder for images and
+  for a second minutes figure (the span of its file times). A resumed
+  agent's notice repeats its total tokens, so the last is kept; its
+  duration can cover only the last leg or include the wait, so the
+  minutes are approximate. One reviewer read two groups and is split
+  evenly between them. Each notice is parsed on its own: the first
+  version read a whole transcript line, and a background command's notice
+  before an agent's on the same line counted g134's reviewer twice
+  (fresh-eyes review; corrected before commit). Quote checks, cache
+  misses and assertions written were not counted in Sprint 15:
+  "unknown".
+- **Each "once", where it stands:**
+  - *Extract once*: in place (section 68), and now in the reader's check
+    too. Its page check ran one uncached `pdftotext -layout` per anchor:
+    58 of 62 seconds on g129 (494 assertions). Each page's two layouts
+    now come from the cached whole-file extractions
+    (`store.ocr.page_layouts`), and the OCR pages are looked up once per
+    file. g129 now checks in 6 seconds (75 to 95 before), g120 in 4 (16
+    before). Every Sprint 15 group still reports 0 problems except g123,
+    whose 1 problem is the same line as before the change; g330 (a Sprint
+    14 group) also prints the same 9 lines as before.
+  - *Check each quote once*: in the applier, in place (section 68). In
+    the reader's check, named and not built: a whole group now checks in
+    3 to 22 seconds (all 60 groups in Sprint 15's work folder: 479
+    seconds together), so a record
+    of passed quotes would save seconds a run, and it would add a new
+    maker of `Verified` fed by a reader's own files. The remaining fixed
+    cost is pdfinfo's page count, about 0.6 seconds per PDF per run.
+  - *Read once*: named and not done. The reviewer keeps the full second
+    read (Sprint 16 plan, Q5 = 2).
+  - *Render once*: in place. `scripts/render_page.py` renders a page once
+    per file, page and resolution into the text cache's `pages` folder,
+    and the reader and the reviewer prompts both use it at 100 dpi (the
+    reviewer used 110, so no image could be shared). The saving is
+    pdftoppm's time; an image costs the reviewer's tokens either way. A
+    crop of one panel is not cached.
+  - *Write once*: one apply per sprint. The trial on a store copy still
+    runs before every apply, not only when the applier changed: the
+    "undecided" lines (a stored field changed that no review item names)
+    are computed only from an apply's log, so the trial is where they are
+    read before the live apply. Since section 68 a trial re-checks no
+    stored row (a re-apply of every applied group took about 15 seconds
+    on a copy); only the new rows' quotes are checked.
+  - *Test once*: `scripts/run_suite.py --changed` runs the tests a change
+    touches and adds the 61 store test files only when the store changed.
+    Narrowing those to "the tests that read the rows written" is named
+    and not done: a store test checks a rule over every row, so no test
+    can be left out by the rows a write touched. They run once after the
+    one apply.
+  - *Red-test once*: in place. Each new guard is proven red once at the
+    commit that adds it and says how in its docstring
+    (`tests/test_guard_discipline.py`).
+- **Checks.** Five tests, each proven red by injection: an unmeasured
+  field is "unknown", never 0; a repeated notice replaces the first and
+  steps add up; the reader check and the applier record their steps; the
+  Sprint 15 baseline counts each agent once; a page is rendered once. One
+  more on the reader check: its page check runs no extraction per
+  anchor. Not tested: the applier's trial-or-apply label, which compares
+  the store path with the default; a live store moved with
+  `EBDB_STORE_DIR` would be labeled a trial.
+- **Still to come (Task B step 3).** The measures on F114's first Sprint
+  16 group, set beside this baseline in the status note before the other
+  groups start.
