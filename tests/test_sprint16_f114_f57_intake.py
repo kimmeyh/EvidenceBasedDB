@@ -71,7 +71,8 @@ def test_the_six_list_papers_and_two_named_papers_are_held(live_conn):
     for rid in rids:
         tier, access, evidence = live_conn.execute("SELECT tier, access, evidence FROM paper_fields WHERE "
                                                    "record_id = ?", (rid,)).fetchone()
-        assert tier == "seen", rid
+        # Entered "seen"; Task F's reads then move a list paper to "read" (full suite, 2026-11-06: bhalgami)
+        assert tier in ("seen", "read"), rid
         local = Path([p.strip() for p in access.split("|") if p.strip().lower().endswith(".pdf")][0])
         assert hashlib.sha256(local.read_bytes()).hexdigest() in evidence, rid
     for rid in rids[:6]:

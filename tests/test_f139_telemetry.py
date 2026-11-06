@@ -64,6 +64,21 @@ def test_a_repeated_notice_replaces_and_steps_add_up(tmp_path):
         t.step("g9", "check", tmp_path, tokens=5)
 
 
+def test_only_live_writes_count_as_written(tmp_path):
+    """A trial writes to a copy, and a second apply (or another group's) writes nothing to this group: neither is
+    written or an apply. Sprint 16 Task F, g333: the report showed 1030 written for 515 and 2 applies for 1. Proven
+    to fail by injection, 2026-11-06: with totals summing every step's assertions_written and counting every apply
+    step, it gave 1030 and 2."""
+    t = _load("read_telemetry")
+    t.start("g9", {"records": [{"record_id": "a", "file": "a.pdf"}]}, tmp_path, pages=lambda f: 10)
+    t.step("g9", "trial", tmp_path, quote_checks=515, assertions_written=515)
+    t.step("g9", "apply", tmp_path, quote_checks=515, assertions_written=515)
+    t.step("g9", "trial", tmp_path, quote_checks=0, assertions_written=0)
+    t.step("g9", "apply", tmp_path, quote_checks=0, assertions_written=0)
+    total = t.totals(t.load("g9", tmp_path))
+    assert (total["quote_checks"], total["assertions_written"], total["applies"]) == (1030, 515, 1)
+
+
 def test_the_check_and_the_apply_record_their_steps(tmp_path, monkeypatch):
     """The reader check with --telemetry adds its quote checks and cache misses to the group named by its brief; the
     applier adds each group's checked assertions, as assertions written at a trial or an apply. Proven to fail by

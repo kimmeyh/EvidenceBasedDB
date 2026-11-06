@@ -4081,6 +4081,45 @@ when it runs. Every count here is a snapshot as of 2026-11-06.
   a trial on a copy of the store, then live with its verified backup; a
   second apply enters nothing. Every certainty change on a stored
   assertion waits for the team lead.
+- **What ran (2026-11-06).** All 20 papers (531 pages) were read in full,
+  and each group's check printed 0 problems. Five of the six groups are
+  applied, each with its trial, its live apply after a verified backup,
+  and a second apply that wrote nothing: g333 (515 assertions), g334
+  (198), g133-r1 (125 changes), g155 (257 changes) and g156 (61 changes).
+  g154-r1 (4 papers, 76 items decided) waits for one certainty change
+  (`he-simulation-scope`, stored HIGH, proposed LOW) that the team lead
+  decides; it applies after that answer. Counts, before the first apply
+  (backup at 11:56) and after g155's: assertions 34,897 to 36,041
+  (HIGH 11,071 to 11,431; LOW 23,726 to 24,510); papers at `read` 1,805
+  to 1,813 and at `seen` 562 to 554 (the 8 new papers; the 12 ledger
+  papers were already at `read`).
+- **What the review found.**
+  - g333's first reviewer graded Monaco's 70-page supplement from its
+    statements and a citation search, not line by line. Two fresh
+    reviewers then read every proof (49 and 45 items); 13 of the 94
+    decisions changed (14%). A long proof appendix is split across
+    reviewers by page from the start.
+  - The dependence rule, as applied: a result whose proof reaches a
+    specific other paper's theorem, even through the paper's own lemmas,
+    is LOW, and its `why` names the cited result.
+  - The coordinator's sign-off changed two grades: Monaco's
+    `supp-e2a-tight-frames-coefficients` (the value drops the condition
+    kappa < 1) and Henke's `henke-dwave-parameters` (the value says 100
+    microsecond anneals for the D-Wave runs, but the Figure 3 run used
+    20). Both are LOW.
+- **The telemetry** (`python scripts/read_telemetry.py report <group>`).
+  Per page over the 20 papers: readers 4,633 tokens and 0.75 minutes,
+  reviewers 3,224 tokens and 0.24 minutes. Sprint 15's baseline is
+  3,645 and 0.44 for readers, and 1,676 and 0.14 for reviewers. Every
+  group had 0 text-cache misses, and every second apply checked no quote,
+  so the repeated script work is gone. The agents' own reading is the
+  cost, and it did not fall. The report first counted a trial's writes
+  and the empty re-applies too; `totals` now counts only live writes
+  (`tests/test_f139_telemetry.py`).
+- **A table the text layer flattens.** Heimann's Tables IV and V are in
+  the text layer as rows of numbers with no row labels. Their numbers are
+  in the read's figure entries, not in assertions: a cell can be matched
+  to its ansatz only on the rendered page.
 
 ## 74. The CVQBoost findings record and its six assertions (Sprint 16 Task H, F51)
 

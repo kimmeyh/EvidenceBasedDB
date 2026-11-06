@@ -1,0 +1,850 @@
+{
+ "group": "g333",
+ "reviewed_on": "2026-11-06",
+ "tag": "Sprint 16 Task F, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint16_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "tier-a-factorial-design": [
+   "setup",
+   "Section IV A, p.3 states the Tier A design and 3 seeds per cell; Section I and the abstract give the 324 cells."
+  ],
+  "three-controls": [
+   "setup",
+   "Abstract and Section I state the three controls as the protocol."
+  ],
+  "tiers-b-c-d-overview": [
+   "setup",
+   "Section I, pp.1-2 states the four-tier design."
+  ],
+  "positive-control-adhoc": [
+   "setup",
+   "Section I (third control) and IV A state the ad-hoc positive control as part of the protocol."
+  ],
+  "bayes-error-set-by-flipping": [
+   "setup",
+   "Section IV A, p.3 states how the generator sets Bayes error."
+  ],
+  "tier-b-datasets": [
+   "setup",
+   "Section IV A, p.3 states the Tier B datasets, subsampling and fold-wise PCA."
+  ],
+  "tier-c-grid": [
+   "setup",
+   "Section IV A, p.3 states the Tier C grid and the one Tier A cell."
+  ],
+  "negative-control-z-map": [
+   "definition",
+   "Section IV B, p.3 defines the z map as a deliberate negative control and states why."
+  ],
+  "minmax-angle-range": [
+   "setup",
+   "Section IV B, p.4 states the preprocessing pipeline (MinMax to [0, pi]) and the authors' reason for it."
+  ],
+  "classical-baselines-grid-sizes": [
+   "setup",
+   "Table I and Section IV C, p.4 state the grid sizes and the comparable-budget design."
+  ],
+  "nested-cv-protocol": [
+   "setup",
+   "Section IV D, p.4 states the nested CV protocol."
+  ],
+  "discussion-no-proof-specific-artifact": [
+   "scope",
+   "Section VI, p.7 states what the result does and does not prove."
+  ],
+  "tier-c-single-cell-limit": [
+   "setup",
+   "Section V H, p.7 states the Tier C design: one cell (xor, d=4, n=100), bandwidth tuned once on the exact noiseless kernel. It is a setup statement, not a limitation sentence."
+  ],
+  "limit-simulation-not-hardware": [
+   "stated limit",
+   "Section VII, p.8 lists it as a limitation."
+  ],
+  "limit-n-d-range": [
+   "stated limit",
+   "Section VII lists n<=300 and d<=8 as a limitation; the asymptotic-regime remark is in the same bullet."
+  ],
+  "limit-binary-only": [
+   "stated limit",
+   "Section VII lists it as a limitation."
+  ],
+  "limit-feature-map-space": [
+   "stated limit",
+   "Section VII lists it as a limitation."
+  ],
+  "limit-pca-interaction": [
+   "stated limit",
+   "Section VII lists it as a limitation."
+  ],
+  "limit-generators-and-datasets": [
+   "stated limit",
+   "Section VII lists it as a limitation."
+  ],
+  "conclusion-scope-regime": [
+   "stated limit",
+   "Section VIII states the conclusions are bounded by regime (n<=300, d<=8) and that H4 is only partially confirmed for that reason."
+  ],
+  "qlr-model-class": [
+   "definition",
+   "Section I, p.1 defines the QLR model class as the paper uses it."
+  ],
+  "scope-fixed-measurement-features": [
+   "scope",
+   "Section I, p.2 states which features the paper studies."
+  ],
+  "classical-quantum-peak-definition": [
+   "definition",
+   "Section I, p.2 defines classical and quantum peaks."
+  ],
+  "setup-labels-exact-features-noisy": [
+   "scope",
+   "Section II A, p.4 states the assumption that labels are exact and only features are noisy."
+  ],
+  "rank-constraint-probability-matrix": [
+   "proved result",
+   "Section II A, pp.4-5: P = M_mu^T M_rho lies in a d^2-dimensional real space, so rank P <= d^2; the saturation and inaccessible-component statements follow by linear algebra shown in the text."
+  ],
+  "least-squares-pseudoinverse-estimator": [
+   "definition",
+   "Section II A, p.5 defines the estimator."
+  ],
+  "mse-decomposition-ideal-test-variance": [
+   "definition",
+   "Section II B, p.5 defines the decomposition into ideal-test error and test variance."
+  ],
+  "ideal-test-error-hs-formula": [
+   "proved result",
+   "Section II B, p.5, from Lemma A1, which is proved in the paper from the Haar second-moment formula (a textbook tool)."
+  ],
+  "target-averaging-delta-squared": [
+   "definition",
+   "Section II B, p.6 defines Delta^2_O and the target average."
+  ],
+  "exact-training-features-minimum-norm": [
+   "definition",
+   "Section III A, p.6 defines w_ex as the minimum-norm least-squares solution; exact reconstruction follows by linear algebra."
+  ],
+  "proportional-regime-ratios": [
+   "setup",
+   "Section IV B, p.12 defines the proportional limit and the ratios used."
+  ],
+  "peak-not-for-every-target": [
+   "scope",
+   "Section V, p.17 states that a target with negligible projection on the small singular directions need not show the peak."
+  ],
+  "open-question-estimator-measurement-design": [
+   "stated limit",
+   "Section VI, pp.19-20 states these as open questions."
+  ],
+  "open-beyond-linear-regression": [
+   "stated limit",
+   "Section VI, p.20 states these as open problems."
+  ],
+  "supp-a-ratios-and-hat-matrix": [
+   "definition",
+   "Appendix A 1, p.22: the paper defines hat P_N = P + N^(-1/2) hat Xi (N training shots, M test shots) and the ratios gamma_out = d^2/n_out, gamma_tr = d^2/n_tr, gamma_Q = n_out/n_tr as notation."
+  ],
+  "supp-lemma-a1-haar-squared-expectation": [
+   "proved result",
+   "Lemma A1, Appendix A 2, p.23: the proof is in the paper. It writes Tr(D sigma) = v_D^T v_sigma and applies the Haar second moment (A3) to get (Tr(D^2) + (Tr D)^2)/(d(d+1)), then splits D into its traceless part. The Haar integration formula is a textbook tool used as a step. No cited paper result is used."
+  ],
+  "supp-definition-1-target-ensembles": [
+   "definition",
+   "Definition 1, Appendix A 2, p.23: the paper defines the admissible targets O = c_O I + O_0 with Tr(O_0^2) = d Delta^2 > 0 and |c_O|/sqrt(d Delta^2) <= C, drawn independently of apparatus, states and counts, with the three direction laws. The shared isotropic moments (A8) follow from eq. (A2) for law (iii) and by direct computation for (i) and (ii); the computation is elementary and not shown."
+  ],
+  "supp-lemma-b1-gaussian-lift": [
+   "proved result",
+   "Lemma B1, Appendix B 1, p.24: stated with its conditions (n_out >= d) and proved there. The proof uses the Wishart estimate (Lemma G3, Gaussian singular-value concentration, textbook, Vershynin [24]), Wick's identity, and a nonzero-polynomial-minor argument for the almost-sure rank. No specific other paper's theorem is a step."
+  ],
+  "supp-lemma-b2-effect-traces": [
+   "proved result",
+   "Lemma B2, Appendix B 1, p.25: proved in the paper. omega_a = X/(X+Y) with X ~ Gamma(d), Y ~ Gamma(n_out - d) gives the Beta law. The Chernoff bound for Gamma variables (eq. B6) and a union bound give (B4). Taking epsilon proportional to sqrt(log n_out / d) gives (B5). I checked the constants (4 epsilon, 4 n_out exp(-epsilon^2 d/3)). Only textbook tools are used."
+  ],
+  "supp-mp-law-definition": [
+   "definition",
+   "Appendix B 2, p.25, eq. (B7): the paper defines mu_MP,gamma with the (1 - 1/gamma)_+ atom at zero and the bulk density on [lambda_-, lambda_+], lambda_pm = (1 pm sqrt(gamma))^2. It states that the atom counts inaccessible directions and the lower edge reaches zero at gamma = 1 (lambda_- = 0 there)."
+  ],
+  "supp-theorem-b1-rank-and-zero-modes": [
+   "proved result",
+   "Theorem B1, Appendix B 2, p.24 (printed p.26): the rank assertion 'follows from Lemma B1' (almost-sure rank X = min(d^2, n_out), T invertible). The zero-eigenvalue counts (d^2 - n_out)_+ and (n_out - d^2)_+ follow directly. This part of the theorem does not use the Marchenko-Pastur step."
+  ],
+  "supp-outlier-gram-row-sums": [
+   "proved result",
+   "Proof of Theorem B1, Appendix B 2, p.26, eqs. (B11), (B12): G_mu has nonnegative entries and row sums omega_a (since sum_b Tr(mu_a mu_b) = Tr(mu_a)). The Rayleigh quotient on the uniform vector is (1/n_out) sum omega_a = d/n_out, and the norm is at most the largest row sum, which gives (B11). M_mu 1 = v_Id and M_mu^T v_Id = omega give (B12). The event of Lemma B2 bounds both. I checked each step; only Lemma B2 (textbook tools) is used."
+  ],
+  "supp-lemma-b3-no-extremal-edge-claim": [
+   "scope",
+   "Appendix B 4, p.29: the paper states that the upper-frame bounds used in the fixed-rank peak examples do not rely on weak spectral convergence and do not assert an extremal-edge limit. This is a statement of what the paper claims and does not claim. (The bounds themselves rest on Lemmas G7 and G8, which cite Tikhomirov [47]; this item does not grade those bounds.)"
+  ],
+  "supp-theorem-c1-proof-reduction": [
+   "proved result",
+   "Proof of Theorem C1, Appendix C 2, p.31, eqs. (C9) to (C12): the exact average (C9), the bounds (C10), (C11) and the identity-target estimate are shown line by line. They use Haar moments (A2), (A3), the trace concentration of Lemma B2, and projector contractions. I checked that the removed identity contribution is at most 1/[d(d^2 - 1)]. This reduction step uses no cited paper result."
+  ],
+  "supp-lemma-c2-shot-averaged-ls": [
+   "proved result",
+   "Lemma C2, Appendix C 4, p.33: proved by direct expectation of the multinomial counts (E n = N p, Cov = N Sigma). I checked item 4 line by line: n Sigma(p-bar) - Pi = diag delta - (1 delta^T + delta 1^T + delta delta^T)/n has norm at most epsilon + 2 epsilon + epsilon^2, and the between-state term is at most K^2/[d(d+1)]. No cited result is used."
+  ],
+  "supp-lemma-c2-scope-not-concentration": [
+   "stated limit",
+   "Appendix C 4, p.33: the paper states that Lemma C2 concerns averages at fixed training states, and that identifying eta = 1 with a single record needs the realized matrices of eq. (C22) to concentrate, 'which we do not prove; near n_out = n_tr they do not (section E 3 b)'. This is a limit the paper states on its own result."
+  ],
+  "supp-d-physical-ridge-readout": [
+   "definition",
+   "Appendix D 1 a, p.34, eq. (D1): the paper defines the physical ridge readout, eta = n_out N tau, and states that at tau = 0 it is the minimum-Euclidean-norm least-squares solution (hat w_N,0 = (hat P_N^T)^+ y)."
+  ],
+  "supp-d-signal-in-shot-noise-units": [
+   "definition",
+   "Appendix D 1 b, p.35, eq. (D5): the paper defines the rescaled traceless measurement matrix and states that a direction with rescaled frame eigenvalue x has squared singular value alpha_d x, alpha_d = N/[d(d+1)]. The Lemma D1 interpretation is the paper's own reading of that definition; the scaling itself is exact (checked against (D5))."
+  ],
+  "supp-d-proportional-limit-ratios": [
+   "setup",
+   "Appendix D 1 c, p.36, eq. (D10) and the text after it: the paper sets the proportional-limit ratios kappa_d, gamma_d, alpha_d, and states that kappa < 1 or > 1 places n_out above or below informational completeness, that outcome count alone does not assert full rank, that the peak asymptotics take kappa != 1 while the fixed-ridge comparison holds for every kappa > 0, and that the centered matrix is square at n_out = n_tr."
+  ],
+  "supp-d-empirical-bounds-assumptions": [
+   "setup",
+   "Appendix D 1 c, p.36, eqs. (D11) to (D13): the paper states these as its assumptions (frame bounds by K, covariance bounds between c and K, liminf of the normalized trace positive for a nonzero variance amplitude), with the sentence that for random states or apparatuses they are imposed on events of probability tending to one."
+  ],
+  "supp-d-uniform-weight-elimination": [
+   "proved result",
+   "Appendix D 2 a, p.37, eqs. (D14), (D15): exact algebra in the paper. P-hat^T 1 = 1 splits the loss into a centered part plus (w0 + p-hat^T w_perp - y-bar)^2 + n_out tau w0^2, and minimizing over w0 gives the penalty n_out tau/(1 + n_out tau) times the squared mean residual. That the correction vanishes from normalized traces at fixed ridge is shown later: Z_eta - K-hat has rank one and bounded norm (Lemma D6), giving the O((d^2-1)^(-1)) difference (D63). I checked the algebra."
+  ],
+  "supp-d-centered-costs-definition": [
+   "definition",
+   "Appendix D 2 b, p.38, eqs. (D22), (D23): the paper defines F_eta,d (normalized centered test variance) and G_eta,d (normalized traceless reconstruction cost), and states that at strong ridge the centered prediction vanishes, so F tends to 0 and G tends to 1 (the weights go to zero, which gives that directly)."
+  ],
+  "supp-lemma-d2-balanced-probabilities": [
+   "proved result",
+   "Lemma D2, Appendix D 2 b, p.39: proved from the covariance bounds. The diagonal bounds give c/2 <= n_out p_a(1 - p_a) <= K, so p_a >= c/(2 n_out); summing the other entries bounds 1 - p_a below; rho_i <= I gives p_ai <= Tr(mu_a) = d p_I/d,a <= K d/n_out. I checked each step."
+  ],
+  "supp-lemma-d3-multinomial-gaussian": [
+   "proved result",
+   "Lemma D3, Appendix D 2 b, pp.38 to 40: proved in the paper by shot-wise Lindeberg replacement with a block-inverse bound, the Efron-Stein variance inequality, Gaussian integration by parts, a rank-one bridge to a common covariance, and concavity for the derivatives. All are textbook tools; no specific other paper's theorem is a step. The proof is condensed (several o(1) bounds are stated, not expanded). The limit that the replacement does not control the smallest singular values is stated in the lemma's text."
+  ],
+  "supp-lemma-d5-exact-restoration": [
+   "proved result",
+   "Lemma D5, Appendix D 3, pp.42, 43: proved in the paper. Eliminating w0 in (D14) adds beta_eta b_N b_N^T to the centered normal matrix, and Sherman-Morrison gives (D45) to (D47); substitution gives (D48) to (D50). At zero ridge the minimum-norm criterion fixes the nullspace correction by minimizing (D53), giving (D51), (D52). Only algebra is used; no cited paper result."
+  ],
+  "supp-lemma-d6-mean-correction-size": [
+   "proved result",
+   "Lemma D6, Appendix D 3, p.43: proved from the empirical bounds, the ridge-filter bounds ||Q-hat P-hat^c|| <= 1/(2 sqrt(eta)), ||Q-hat|| <= 1/eta, J_eta >= 1, and the mean-size estimates (D55), (D56). No cited paper result is used. The proof is short but each bound is derived."
+  ],
+  "supp-lemma-d7-diffuse-mean": [
+   "proved result",
+   "Lemma D7, Appendix D 3, p.43: proved by purity. For an eigenvector of rho-bar with eigenvalue lambda, the mean squared length of (rho_i - rho-bar) applied to it is lambda - lambda^2. Summing d matrix-entry variances against the upper frame bound gives lambda(1 - lambda) <= K d/[d(d+1)]. The positive average-trace condition (D13) keeps Tr(rho-bar^2), hence lambda_max, away from one, so every eigenvalue is O(1/d). I checked the steps."
+  ],
+  "supp-lemma-d8-identity-label-readout": [
+   "proved result",
+   "Lemma D8, Appendix D 3, p.44: proved in the paper. The coefficient bounds follow from Lemma D5 (the readout is the orthogonal-complement part beta_eta Q-hat b_N / J_eta with J_eta >= 1 and ||Q-hat|| <= 1/eta); the zero-ridge case uses the same bound with the nullspace projector; the variance and ideal-test bounds use (D55), the covariance upper bound and the Haar split (D2). No cited paper result is used."
+  ],
+  "supp-proposition-e1-block-form": [
+   "proved result",
+   "Proposition E1, Appendix E 1, p.46: proved by block elimination. The interpolation conditions are multiplied by [V1 V2]^T, V2^T y = (M_rho V2)^T v_O = 0 since M_mu^T is injective for an informationally complete POVM, which gives eq. (16) and then eq. (E1). U2 spans ker P^T and M_rho is injective, so M_mu U2 = 0 and the observable depends only on w1. Conditions (IC POVM, spanning states, n_out = n_tr, invertible blocks) are carried in the quotes. No cited paper result is used."
+  ],
+  "supp-e1-critical-equation-existence": [
+   "proved result",
+   "Appendix E 1 a, p.47, eqs. (E2) to (E7): the proof is in the paper and uses only elementary steps. Each term 1/(zeta + lambda_j) decreases strictly in zeta. At zeta = 1 the average is at most one. S has rank at most d^2 - 1 on the (n_out - 1)-dimensional space, so at least n_out - d^2 eigenvalues vanish, and the average at zeta = 1 - kappa_d is at least (n_out - d^2)/((n_out - 1)(1 - kappa_d)) = 1. No cited result is used. The below-completeness remark is a scope statement."
+  ],
+  "supp-remark-e1-trace-regularity": [
+   "stated limit",
+   "Remark E1, Appendix E 1 a, p.47: the paper states the extra assumptions its rounded-profile results need (limits of the fixed-ridge normalized traces and first derivatives, and local convergence at the critical point with limits continuous as gamma tends to 1) and that 'mere existence of fixed-ridge limits does not supply this additional critical regularity'. That is a stated limit on what its results cover."
+  ],
+  "supp-e2-flat-noise-assumption": [
+   "scope",
+   "Appendix E 2, p.51, eq. (E25): the paper states that all examples assume flat categorical covariances. It states h = zeta_* and C_V = alpha H_*, which agree with the flat-noise note after (E10). It states that the coefficients describe the centered singularity and that the physical error follows (D62)."
+  ],
+  "supp-e3a-limiting-law-no-smallest-eigenvalue": [
+   "stated limit",
+   "Appendix E 3 a, p.54: the paper says the hard-edge statements concern the limiting law and 'do not control the smallest empirical eigenvalues'. It says the law alone does not control finite-dimensional pseudoinverses. It says small singular directions give a peak only when their labels carry weight, matching (E40), (E41). All three are caveats on its own results."
+  ],
+  "supp-e3a-label-strength-and-lower-bound": [
+   "scope",
+   "Appendix E 3 a, p.54: the sentence states what the below-completeness result does not cover, namely that a square matrix alone does not force a peak for every target. The paper states it directly after (E41)."
+  ],
+  "supp-e3c-positive-critical-root-condition": [
+   "proved result",
+   "Appendix E 3 c, p.56, (E50)-(E52): f_d(zeta) = avg 1/(zeta + lambda_j) is strictly decreasing with f_d(1) <= 1. A positive root of f_d = 1 therefore exists iff the limit of f_d at 0 exceeds 1, with equality a boundary case. I checked that d_eff = (n_out-1)(1-zeta) is equivalent for zeta > 0. The proportional theorem's extra requirements are stated separately. No cited result is used."
+  ],
+  "supp-e3c-geometry-mean-assumptions": [
+   "setup",
+   "Appendix E 3 c, pp.55-56, eq. (E49) and the text after it: the paper states the hypotheses kappa > 1, kappa gamma > 1 (both n_out, n_tr < d^2), the liminf trace condition (positive ideal-test amplitude) and q_d going to 0 (removes the mean contribution). It says random states or apparatuses need these to hold with probability tending to one."
+  ],
+  "supp-theorem-e3-proof-physical-costs-scope": [
+   "stated limit",
+   "Proof of Thm E3, p.57: for a traceless isotropic target the constant-prediction term is ||t_eta||^2/(d^2-1) by (D50). Lemma D6 (proved on p.43 from Lemma D5 with no cited theorem) bounds it by O_P(q_d + 1/(d^2-1)), so it goes to zero when q_d goes to 0. The paper then states 'We do not claim this replacement' for a general target with an identity component or an empirical-mean correction."
+  ],
+  "supp-e3c-order-of-limits-scope": [
+   "stated limit",
+   "Appendix E 3 c, p.57, 'Order of limits and physical scope': the paper states that dimensions must grow at fixed ridge before (gamma, eta) goes to (1, 0). It states that a full zero-penalty profile at gamma != 1 needs weighted inverse-tail control (E22) and that minimum-norm divergence at interpolation needs none. It states that without q_d going to 0 the centered profiles hold but the physical error keeps its mean term."
+  ],
+  "supp-e3d-targets-outside-peak-regime": [
+   "stated limit",
+   "Appendix E 3 d, p.60, 'Targets and geometries outside the peak regime': the paper lists cases its peak result does not cover. These are well-represented labels (no peak despite a hard edge), a zero traceless Born map (C_G = 0, which follows from (E9)), collapsed training fluctuations that violate noncollapse, and the region outside the positive-root regime, which needs separate spectral analysis."
+  ],
+  "supp-f1-proof-gaussian-pairs-lemma-g10": [
+   "stated limit",
+   "Proof of Prop F1, p.62: the paper states what the proof does (evaluates the three traces with Gaussian pairs of the same joint covariance via Lemma G10). It states that the original Haar regression residual is not assumed independent. It states that this does not remove the separate inverse-tail requirement at zero penalty. These are statements of method and limit, not a claim to be proved."
+  ],
+  "supp-f2-exact-haar-absence": [
+   "proved result",
+   "Proof of Prop F2, p.63: a row of a normalized Haar isometry has squared norm W ~ Beta(d, n_out-d). A Haar pure state has overlap U ~ Beta(1, d-1) with it, independently of W. So the outcome probability is WU, a record misses the row with probability E_U (1-WU)^N, and the n_tr records are independent given W. Exchangeability of the rows gives (F13)."
+  ],
+  "supp-f2-absence-rate-expansion": [
+   "proved result",
+   "Appendix F 2, p.63: (F14) is proved from X = n_out W/d going to Gamma(d, rate d), E U = 1/d and the Gamma Laplace transform. The rate -N^-1 log u = (d/N) log(1 + N/(d gamma)) expands to 1/gamma - N/(2 d gamma^2) + O(N^2/(d^2 gamma^3)), which I checked. The remarks on (F13) and (F14) follow."
+  ],
+  "supp-lemma-g1-spectral-comparisons": [
+   "proved result",
+   "Lemma G1, p.64: stated with conditions and proved by singular-value inequalities, Cauchy interlacing and Courant-Fischer with rank-k intersection. These are textbook tools. The dimension shift gives (G2) and the k/p bound on the distribution functions."
+  ],
+  "supp-lemma-g2-negative-second-moment": [
+   "proved result",
+   "Lemma G2, p.64: the Schur complement of the Gram matrix gives (G^-1)_aa = dist(y_a, H_a)^-2, and summing over a gives the trace. The proof is complete and elementary."
+  ],
+  "supp-lemma-g4-quadratic-form-gaussian-lifts": [
+   "proved result",
+   "Lemma G4, p.65: Wick's identity gives E F = Tr(H) and the Gaussian Poincare inequality gives Var F <= C E[||g||^2 ||gg^dagger - I||_F^2] = O(d^3). Chebyshev then gives d^-2(m^dagger H m - Tr H) going to 0 in probability. The Gaussian Poincare inequality is a textbook tool."
+  ],
+  "supp-lemma-g5-lifted-distances": [
+   "proved result",
+   "Lemma G5, pp.65-66: the conditional mean comes from the Gamma/uniform decomposition and the Haar moment (A3). The tail combines Levy concentration on the sphere (textbook), a Chernoff bound (B6) and a union bound. The constants are universal as stated."
+  ],
+  "supp-lemma-g9-population-covariance-integrals": [
+   "proved result",
+   "Lemma G9, p.67 (rendered): stated with its conditions, including the uniform quadratic-form concentration (G12). It is proved by the leave-one-column and Sherman-Morrison reduction, the traced normal equation on spectral projectors, and existence and uniqueness from the strictly increasing right side of 1 = w + y integral wt/(xi + wt) dH. It cites no external theorem. The proof is compressed but covers every claim, derivatives included."
+  ],
+  "abstract-task-16-params-8-gpus": [
+   "setup",
+   "Abstract states the task; Section 6 confirms N_I = 16 inputs and N_O = 8 outputs."
+  ],
+  "simulator-no-noise-limit": [
+   "stated limit",
+   "Section 1, p.2 states the circuits were simulated without noise."
+  ],
+  "unnoised-fidelity-one": [
+   "setup",
+   "Section 5, p.7 states the test-function simulations used no noise (fidelity = 1)."
+  ],
+  "dataset-dgx-a100-description": [
+   "setup",
+   "Section 3, p.3 states the servers and the BMC telemetry source."
+  ],
+  "dataset-size-over-10m-six-months": [
+   "setup",
+   "Section 3, p.4 states the dataset size and period."
+  ],
+  "dataset-270000-measurements-10pct": [
+   "setup",
+   "Section 6, p.14 states the 270,000 measurements, the 10% training sample and the 70/15/15 split."
+  ],
+  "server-automation-80c-threshold": [
+   "setup",
+   "Section 3, p.3 describes the system the paper models, as the paper states it, including that the algorithms are unknown."
+  ],
+  "problem-as-regression-threshold-metric": [
+   "setup",
+   "Section 3, p.4 states the problem formulation and the metric."
+  ],
+  "qml-architecture-from-jerbi": [
+   "setup",
+   "Section 4, p.5 states the architecture, its basis in [24] and its layers."
+  ],
+  "reuploading-definition": [
+   "definition",
+   "Section 4, p.5 defines re-uploading and the simple quantum circuit."
+  ],
+  "linear-layers-scaling": [
+   "setup",
+   "Section 4, pp.5-6 states the linear input and output layers (Eq. 2 and 3) and the reason."
+  ],
+  "test-function-definitions": [
+   "setup",
+   "Section 5, p.7 and Eq. 7 and 8 define the polynomial and linear-theta functions, the interval [0;10] and N_I = N_O = 1."
+  ],
+  "comparison-grid-qubits-layers": [
+   "setup",
+   "Section 5, p.7 states the grid of qubits/neurons and layers, the metric and the three models."
+  ],
+  "gpu-input-output-sizes": [
+   "setup",
+   "Section 6, p.14 states the inputs (power telemetry and utilisation per GPU, N_I = 16) and outputs (N_O = 8)."
+  ],
+  "mad-definition-validation-mse": [
+   "definition",
+   "Section 6, p.14 and Eq. 9 define the MAD metric and the MSE validation loss."
+  ],
+  "future-work-noise-dataset-size-overfitting": [
+   "scope",
+   "Section 7, p.18 states what the study does not yet cover (noise, dataset size, overfitting)."
+  ],
+  "intro-qml-aim": [
+   "scope",
+   "Section 1, p.2 states the aim and the two-step plan (model functions, then the real problem)."
+  ],
+  "setup-vqc-ry-encoding": [
+   "definition",
+   "Section 2.2, p.2 defines the model class as the paper uses it."
+  ],
+  "product-ansatz-factorisation": [
+   "proved result",
+   "Section 2.3, p.3 derives Eq. 5 to 7: single-qubit gates on |0> give a product state, so the Pauli-Z product expectation factorises."
+  ],
+  "theorem-1-rank-one": [
+   "proved result",
+   "Theorem 1 (Section 2.4, p.3) is stated with its conditions (|S|>=2, rank over C) and proved in the paper. The proof cites [6] only for the elementary coefficient of a product of Fourier series in disjoint variables; the trigonometric form is the setup from [5]."
+  ],
+  "theorem-1-proof-step": [
+   "proved result",
+   "The proof in Section 2.4, p.3 is in the paper: product of univariate series in disjoint variables, support condition, one outer product. [6] is cited for the elementary product-coefficient identity only."
+  ],
+  "corollary-1-unreachability": [
+   "proved result",
+   "Corollary 1 is the contrapositive of Theorem 1, stated with its condition in Section 2.4, p.3."
+  ],
+  "cos-x0-plus-x1-rank-two": [
+   "proved result",
+   "Direct check in Section 2.4, p.3: the complex Fourier matrix has two non-zero entries at (1,1) and (-1,-1), rank two, so Corollary 1 applies."
+  ],
+  "proposition-1-mse-lower-bound": [
+   "proved result",
+   "Proposition 1 (Section 2.4, p.4) is stated for any target in L2 and any product-ansatz f, and proved by Parseval and Theorem 1."
+  ],
+  "proposition-1-proof": [
+   "proved result",
+   "The proof is in Section 2.4, p.4: Parseval, grouping by support, Theorem 1 makes each group at least the best rank-one error."
+  ],
+  "mse-bound-not-tight": [
+   "stated limit",
+   "Section 2.4, p.4 states the bound is not tight in general and gives the reason (shared per-qubit Fourier vectors)."
+  ],
+  "definition-qfim": [
+   "definition",
+   "Definition 1, Section 3, p.4."
+  ],
+  "definition-dla": [
+   "definition",
+   "Definition 2, Section 3, p.4."
+  ],
+  "rank-law-eq-14-proposition-3": [
+   "proved result",
+   "Proposition 3 (Appendix A, p.12) is stated with its conditions and proved there: d0 is defined by the first-layer rank, each further layer adds at most p0 directions, and the orbit bounds the total. The proof takes Crank as the Section 3.1 ceiling."
+  ],
+  "exact-ranks-random-rational-angles": [
+   "setup",
+   "Section 3.2, p.6 states how the exact ranks of Table 1 were computed (the printed '103' is 10^3, as the value notes). The statement that every sine and cosine is then rational is standard and is only the stated reason."
+  ],
+  "extraction-dim-m": [
+   "proved result",
+   "Section 4, p.7 derives dim M = 2(2^N - 1) by parameter counting (2*2^N real numbers, minus norm, minus global phase); Crank <= dim M follows because the orbit lies in the manifold."
+  ],
+  "definition-3-extraction-ratio": [
+   "definition",
+   "Definition 3, Section 4, p.7, with the single-basis readout definition."
+  ],
+  "single-qubit-readout-ratio": [
+   "proved result",
+   "Section 4.1, p.7: N/(2(2^N - 1)) evaluated from Definition 3 on a fully expressive ansatz; 3/14, 5/62 and 10/2046 (< 0.5%) check."
+  ],
+  "scope-pure-states-only": [
+   "scope",
+   "Section 4, p.7 states the restriction to pure states and that noisy circuits are out of scope."
+  ],
+  "hyperparameters-block-classifier": [
+   "setup",
+   "Section 6.1, p.9 states the hyperparameters; 7*(27+7)+1 = 239, K = ceil(20/3) = 7 and 7*14 = 98 check."
+  ],
+  "reuploading-per-layer-design": [
+   "setup",
+   "Sections 6.1 and 6.2, p.9 state the per-layer re-uploading and the merge of the encoding and variational Ry, so p0 = 2s."
+  ],
+  "madelon-dataset-description": [
+   "setup",
+   "Section 7.1, p.9 states the dataset as used (counts add to 500 features)."
+  ],
+  "madelon-feature-selection-split-training": [
+   "setup",
+   "Section 7.1, p.9 states the feature selection, split, optimiser, epochs and seeds."
+  ],
+  "open-problems-pure-states-noise-midcircuit": [
+   "stated limit",
+   "Section 8, p.10 lists these as open problems and as assumptions of the rules."
+  ],
+  "llm-use-disclosure": [
+   "setup",
+   "Author contributions statement, p.10 discloses the tools used and that the authors checked results."
+  ],
+  "abstract-question": [
+   "scope",
+   "Abstract, p.1 states the question the paper asks."
+  ],
+  "definition-many-vs-one": [
+   "definition",
+   "Definition 1, Section 1.1, p.4."
+  ],
+  "definition-agnostic-learning": [
+   "definition",
+   "Definition 2, Section 1.1, p.5."
+  ],
+  "definition-solving-task": [
+   "definition",
+   "Definition 3, Section 1.1, p.5."
+  ],
+  "definition-interactive-proof": [
+   "definition",
+   "Definition 4, Section 1.1, p.6."
+  ],
+  "one-sided-completeness-soundness-suffice": [
+   "scope",
+   "Section 1.1, p.7 states the scope. It matches the proof of Theorem 1 (p.19), which uses completeness only for x = xA and soundness only for x in XR."
+  ],
+  "definition-randomized-many-vs-one": [
+   "definition",
+   "Definition 5, Section 2.1, p.17."
+  ],
+  "definition-realizable-learning": [
+   "definition",
+   "Definition 6, Section 2.1, p.18."
+  ],
+  "definition-deciding-valid-solutions": [
+   "definition",
+   "Definition 7, Section 2.2, p.18."
+  ],
+  "caro-2026-definition-quantum-memory": [
+   "definition",
+   "Section 2.3, p.21 defines k-copy memory and the single-copy (incoherent) algorithm."
+  ],
+  "theorem-1-no-go": [
+   "proved result",
+   "Theorem 1, Section 3, p.19: stated with its conditions (class A, many-vs-one task, simulability of the honest prover with the accept-instance oracle) and proved in full on pp.19-20 by simulation."
+  ],
+  "theorem-1-proof": [
+   "proved result",
+   "The proof on pp.19-20 is complete: the distinguisher D simulates (V, P), and completeness and soundness give success probability at least 1 - delta in both cases."
+  ],
+  "theorem-1-simulation-only-accept-instance": [
+   "scope",
+   "Section 3, p.19 states exactly which simulation Theorem 1 needs (P with the accept-instance oracle only)."
+  ],
+  "corollary-1-proof-cases": [
+   "proved result",
+   "Section 3.1.1, pp.21-22: a case analysis showing a single-copy unbounded-time algorithm can classically simulate the honest prover when V-to-P communication is classical. It is in the paper and needs no cited result."
+  ],
+  "observation-3-quantum-prover-to-verifier": [
+   "proved result",
+   "Section 3.1.1, p.22 gives the argument just before the observation: state-vector simulation of P's processing, then preparing the resulting state for V. It is short but complete for the stated claim."
+  ],
+  "corollary-1-fails-with-quantum-v-to-p": [
+   "scope",
+   "Section 3.1.1, p.23 states where Corollary 1 does not apply and why the simulation fails; Section 4 gives the protocols."
+  ],
+  "observation-2-trivial-ip": [
+   "proved result",
+   "Observation 2, Section 2.2, p.19: the two-step protocol follows directly from Definition 7 and Definition 4 (completeness from the honest prover, soundness from the decision step)."
+  ],
+  "vbqc-drawbacks": [
+   "stated limit",
+   "Section 1.3.2, p.12 states two drawbacks of the generic VBQC approach (V must know the circuit; the prover oracle is not used, so multi-copy lower bounds cannot be surpassed)."
+  ],
+  "black-box-protocol-definition": [
+   "definition",
+   "Section 1.3.2 and Section 4.2 define a black-box protocol."
+  ],
+  "vbqc-not-needed-blindness-open": [
+   "stated limit",
+   "Section 1.3.2, p.12 states the open question about lighter protocols than VBQC."
+  ],
+  "future-work-1-5": [
+   "stated limit",
+   "Section 1.5, pp.15-16 lists these as open directions, including one conjecture stated as such."
+  ],
+  "corollary-2-proof": [
+   "proved result",
+   "Section 3.2.1, p.24: for a known accept instance xA, an unbounded algorithm can simulate OP(xA), so Theorem 1 applies, and constrained verifiers cannot do better. The argument is complete; the cited lower bounds enter only in the corollary's examples."
+  ],
+  "corollary-5-proof-reduction": [
+   "proved result",
+   "Section 3.2.2, pp.24-25: the reduction is in full. If D is a parity distribution the learner's s equals s' (loss at most 1/4 forces s = s'), so the estimate is at most 1/8; if D is uniform every s has loss 1/2, so the estimate lies in [3/8, 5/8]. One extra statistical query, m_{l-to-d} = 1."
+  ],
+  "nisq-observation-noisy-oracle": [
+   "proved result",
+   "Section 3.3, p.27: follows from the definition of the NISQ-lambda model as an algorithm with a noisy copy oracle, as the proof of Corollary 6 shows."
+  ],
+  "theorem-6-protocol-rounds": [
+   "definition",
+   "Section 4.2, pp.30-31 defines the protocol's compute, pure test and mixed test rounds."
+  ],
+  "theorem-6-algorithm-1-parameters": [
+   "definition",
+   "Algorithm 1, p.32 gives N, delta-tilde and m and the verifier's decision rule."
+  ],
+  "theorem-6-completeness": [
+   "proved result",
+   "Section 4.2, p.31: per-round success at least 1 - delta-tilde, union bound N*delta-tilde = delta/2. The SWAP-test copy count is textbook ([Buh+01])."
+  ],
+  "theorem-6-soundness-concentration": [
+   "proved result",
+   "Section 4.2, p.31, Eq. 6: union bound plus Hoeffding, 3exp(-N/72) <= delta/2 by the choice of N (checked). The text writes the event as 's_i not equal s', which is a typo for 's_i = s'; the computation is for the count of rounds of type s."
+  ],
+  "theorem-6-soundness-indistinguishability": [
+   "proved result",
+   "Section 4.2, pp.32-33: indistinguishability of computation and test rounds (a maximally mixed state, or a state randomised by an m-design), then a guessing bound 2^(-N/4) <= delta/2, using C(N/2, N/4) >= 2^(N/4). It is in the paper."
+  ],
+  "section-4-3-goal-delegate-full-algorithm": [
+   "scope",
+   "Section 4.3, p.34 states the design aim of the protocols that follow."
+  ],
+  "lemma-3-protocol-parameters": [
+   "definition",
+   "Algorithm 3, p.35 gives the protocol and its parameters."
+  ],
+  "agnostic-stabilizer-problem-definition": [
+   "definition",
+   "Section 4.3.3, p.44 defines the problem, the loss and alpha = 8."
+  ],
+  "algorithm-4-stabilizer-protocol": [
+   "definition",
+   "Algorithm 4, pp.35 and 45 states the protocol."
+  ],
+  "ai-tools-statement": [
+   "setup",
+   "Author contribution statement, p.48."
+  ],
+  "problem-uniformity-testing-def": [
+   "definition",
+   "Problem 1, Appendix A.1."
+  ],
+  "problem-parity-distribution-testing-def": [
+   "definition",
+   "Problem 2, Appendix A.1."
+  ],
+  "problem-purity-testing-def": [
+   "definition",
+   "Problem 3, Appendix A.1."
+  ],
+  "problem-unitarity-testing-def": [
+   "definition",
+   "Problem 4, Appendix A.1."
+  ],
+  "problem-quantum-state-certification-def": [
+   "definition",
+   "Problem 5, Appendix A.1."
+  ],
+  "problem-stabilizer-testing-def": [
+   "definition",
+   "Problems 6 and 7, Appendix A.1."
+  ],
+  "problem-pauli-spike-detection-def": [
+   "definition",
+   "Problem 8, Appendix A.1."
+  ],
+  "problem-agnostic-parity-learning-def": [
+   "definition",
+   "Problem 9, Appendix A.2."
+  ],
+  "problem-tomography-family-defs": [
+   "definition",
+   "Problems 10 to 13, Appendix A.2."
+  ],
+  "problem-pauli-shadow-tomography-def": [
+   "definition",
+   "Problems 14 and 16, Appendix A.2."
+  ],
+  "appendix-c-vbqc-protocol": [
+   "definition",
+   "Appendix C describes the delegation protocol, as the paper states it."
+  ],
+  "appendix-d-protocol": [
+   "definition",
+   "Appendix D describes the protocol: the tester of [Can22] with the delegation of [CTY11], the sample size and the threshold."
+  ]
+ },
+ "theory_low": {
+  "fidelity-kernel-hardware-circuit-count": "textbook, stated not proved (F129): n(n-1)/2 circuits is a counting fact stated in Section IV E, p.4 without derivation.",
+  "abstract-triple-descent": "Abstract summary. The triple-descent profile rests on Theorems 1 to 5 and on numerics; see the supplement (cited RMT results).",
+  "abstract-classical-peak": "Abstract summary of Theorem 2 (Theorem C1), which rests on the MP law (Theorem G1, cited [45]) in Theorem B1.",
+  "abstract-quantum-peak": "Abstract summary of Theorems 3 to 5, which rest on Proposition D1 (Hachem et al. [43], cited) and numerics.",
+  "abstract-rmt-derivation-ridge": "Abstract summary. The analytic shapes rest on cited random-matrix results ([43], [45]); the claim that treating features as exactly known 'overestimates' instabilities is an authors' comparison.",
+  "triple-descent-new-peak-stochastic": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "figure-1-claim-regimes": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "shot-noise-regularises-classical-peak": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "label-noise-classical-peak": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "interpolation-peak-classical-vs-quantum": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "finite-size-order-of-limits": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "analytical-approach-claim": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "finite-shot-feature-matrix-full-rank": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "frame-operator-small-eigenvalue-large-weights": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "test-variance-formula-equal-traces": "The equal-trace formula is derived from the Haar average, but the extension to random POVMs 'up to relative corrections that vanish' is Theorem C1, which rests on the cited MP law (Theorem G1 [45]).",
+  "theorem-1-random-povm-spectrum": "Theorem 1 (informal) is Theorem B1, whose bulk law uses the MP law under quadratic-form concentration (Theorem G1, cited [45]).",
+  "identity-outlier-no-role": "The authors' remark based on Figure 4 and the reconstruction of the identity component; not proved separately.",
+  "theorem-2-classical-variance-peak": "Theorem 2 (informal) is Theorem C1, which uses the bulk spectrum of Theorem B1 (cited MP route, [45]).",
+  "classical-double-descent-profile-reading": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "finite-dimensional-peak-distribution": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "exact-feature-regression-orthogonal-projection": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "shot-averaged-loss-identity-effective-ridge": "The identity (Lemma C2) is proved, but the value adds the effective-ridge reading 'tau_N = 1/(N n_out)', which the paper calls a heuristic resting on a concentration it does not quantify. Graded by the weaker part.",
+  "resolution-floor-alpha": "The authors' heuristic crossover (Section III D, p.10), not a stated theorem.",
+  "why-quantum-peak-survives": "The authors' explanation of why noise-induced ridge fails; a heuristic argument in Section III D, p.10.",
+  "noise-only-block-xi22": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "noise-only-weights-order-one": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "two-contributions-quantum-peak": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "theorem-3-ridgeless-divergence": "Theorem 3 (informal) is proved in the supplement from Propositions D1, D2 and E1, which use Hachem et al. [43] (cited).",
+  "generality-interpolation-divergence": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "theorem-4-quantum-peak-ridge": "Theorem 4 (informal) is Theorem E1, which rests on Propositions D1 and D2 and Hachem et al. [43] (cited), plus an assumed trace regularity (Remark E1).",
+  "pole-and-ridge-rounding": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "amplitudes-frame-spectrum-eq-20": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "both-amplitudes-vanish-phi-one": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "closed-form-haar-phi": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "contrasting-dependence-training-shots": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "more-shots-strengthen-variance-pole": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "sparse-records-fixed-shot-number": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "saturation-fixed-dimension-noncommuting": "The authors call the argument heuristic and say they do not prove the convergence in distribution (Section IV C, p.15). The claim itself (saturation, non-commuting limits) is therefore not proved here; it is the authors' heuristic.",
+  "ridge-scaling-at-interpolation": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "explicit-ridge-vs-noise-induced": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "ridge-trade-off-prediction-accuracy": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "classical-interpolation-peak-below-ic": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "residual-inaccessible-part-eq-25": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "amplification-of-inaccessible-residuals": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "small-singular-values-without-shot-noise": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "finite-shots-lower-peak-below-ic": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "condition-singular-profile-eq-28-29": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "condition-holds-above-ic-conditional-below": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "theorem-5-incomplete-interpolation-peak": "Theorem 5 (informal) is Theorem E3, which rests on Proposition D1 (Hachem et al. [43]) and on assumed conditions (positive root, trace regularity).",
+  "haar-amplitudes-kappa-greater-than-one": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "interpolation-peaks-differ-mechanism-scaling": "The authors' claim, interpretation or informal statement in the main text (read in context, Sections I to VI). Where it rests on a theorem, that theorem's proof uses cited results: Theorem B1 via Yaskov [45], Lemma D4 via Hachem et al. [43], Lemma C1 via Carbery-Wright [46]; the rest is numerics or the authors' reading.",
+  "conclusion-classical-peak": "A conclusion: the authors' interpretation of their results (Section VI), resting on theorems that use cited random-matrix results and on numerics.",
+  "conclusion-quantum-peak-noncommuting": "A conclusion: the authors' interpretation of their results (Section VI), resting on theorems that use cited random-matrix results and on numerics.",
+  "conclusion-below-ic-classical": "A conclusion: the authors' interpretation of their results (Section VI), resting on theorems that use cited random-matrix results and on numerics.",
+  "conclusion-shots-and-ridge": "A conclusion: the authors' interpretation of their results (Section VI), resting on theorems that use cited random-matrix results and on numerics.",
+  "conclusion-classical-peak-tied-to-measurement": "A conclusion: the authors' interpretation of their results (Section VI), resting on theorems that use cited random-matrix results and on numerics.",
+  "supp-a-haar-test-state-moments": "textbook, stated not proved (F129). The Haar moment formulas E v_rho = v_Id/d and E[v v^T] = (I + v_Id v_Id^T)/(d(d+1)) (eq. A3) are stated with no proof. The consequences E p_a, E[p_a p_b] and Sigma_te 1 = 0 follow in one line from them, but the base identity is not proved in the paper.",
+  "supp-theorem-b1-random-povm-spectrum": "Theorem B1, Appendix B 2, pp.25, 26: the Marchenko-Pastur convergence rests on 'the Marchenko-Pastur theorem under quadratic-form concentration' via Lemma G4 and Theorem G1, which is taken from Yaskov, A short proof of the Marchenko-Pastur theorem [45]. Path: Theorem B1 via Lemma G4 and Theorem G1 (Yaskov [45]). The largest-eigenvalue part is proved from Lemma B2, but the item holds both claims, so it is graded by the cited step.",
+  "supp-corollary-b1-additive-outlier": "Corollary B1, Appendix B 3, pp.26, 27: the variance bound uses the logarithmic Sobolev inequality on U(n_out) from Meckes and Meckes [41, Theorem 15], and the coupling bound uses a matrix Chernoff bound [42]. Path: Corollary B1 via the log-Sobolev step (Meckes and Meckes [41, Theorem 15]); it also builds on Theorem B1 (Yaskov [45]).",
+  "supp-lemma-b3-fixed-rank-bulk": "Lemma B3, Appendix B 4, pp.27, 28: the proof uses a Poincare inequality from Meckes and Meckes [41, Theorem 15] for the fixed-rank states, and the Marchenko-Pastur theorem under quadratic-form concentration (Theorem G1, Yaskov [45]) to reach the limit law. Path: Lemma B3 via [41, Theorem 15] and via Theorem G1 (Yaskov [45]).",
+  "supp-c-positive-spectral-measure-inverse-weight": "textbook, stated not proved (F129). Appendix C 1, p.29: 'A vanishing fraction of exceptionally small positive eigenvalues can dominate S_d without affecting the MP limit' is a one-sentence remark that follows from 1/x being unbounded at zero. It is not a statement of the paper's scope and has no proof or example in the paper.",
+  "supp-lemma-c1-inverse-moments": "Lemma C1, Appendix C 1, pp.29, 30: the proof depends on the small-ball bound Lemma G6 (P(x^dagger B x <= epsilon Tr B) <= C epsilon^(1/4)), whose proof invokes the Carbery-Wright inequality [46]. Path: Lemma C1 via Lemma G6 (Carbery-Wright [46]). The Sherman-Morrison sum rules in the rest of the proof are elementary.",
+  "supp-theorem-c1-classical-variance-peak": "Theorem C1, Appendix C 2, pp.30 to 32: the gamma < 1 branch uses Lemma C1 via Lemma G6 (Carbery-Wright [46]), and the bulk limit uses Theorem B1 via Theorem G1 (Yaskov [45]). The gamma = 1 branch also uses the Marchenko-Pastur law (Yaskov [45]).",
+  "supp-theorem-c1-proof-three-regimes": "Proof of Theorem C1, Appendix C 2, pp.31, 32: the gamma = 1 and gamma < 1 regimes use the Marchenko-Pastur limit (Theorem B1 via Yaskov [45]), and gamma < 1 also uses Lemma C1 via Lemma G6 (Carbery-Wright [46]). Only the gamma > 1 regime (Lemmas G2, G5) avoids cited results.",
+  "supp-corollary-c1-relation-exact-training": "Corollary C1, Appendix C 3, pp.32, 33: the claim that Theorem C1 'applies to its test variance' for rank-d^2 designs and the step 'By theorem C1 and eq. (C10)' use Theorem C1, which rests on Lemma C1 via Lemma G6 (Carbery-Wright [46]) and on Theorem B1 (Yaskov [45]). Matrix Bernstein [42] is a textbook step and is not the reason.",
+  "supp-lemma-d1-signal-to-noise": "Lemma D1, Appendix D 1 b, p.36, eq. (D9) (checked on the rendered page): the ratio is R_A = alpha x / (1 + delta - x/[d(d+1)]) with |delta| <= epsilon. The value says it equals alpha x 'up to a factor 1 + delta'. It drops the -x/[d(d+1)] term in the denominator, which is not a factor of the form 1 + delta when x is not bounded. The lemma is proved in the paper (from Lemma A1 and (A4)), but the value overstates it.",
+  "supp-lemma-d4-gaussian-resolvent": "Lemma D4, Appendix D 2 b, pp.40, 41: the proof applies 'the weighted Gaussian inverse-trace theorem [43]' (Hachem, Loubaton, Najim, Vallet, On bilinear forms based on the resolvent of large random matrices) to get the deterministic equivalents, and uniqueness and parameter convergence of the resolvent branch are 'supplied by' it. Path: Lemma D4 via Hachem et al. [43].",
+  "supp-proposition-d1-fixed-ridge-costs": "Proposition D1, Appendix D 2 b, p.41: the proof applies Lemma D3 (textbook tools) and Lemma D4, and Lemma D4 uses the weighted Gaussian inverse-trace theorem of Hachem et al. [43]. Path: Prop D1 via Lemma D4 (Hachem et al. [43]).",
+  "supp-lemma-d9-d10-target-concentration": "Lemma D10 (unitary-orbit target), p.44: its variance bound uses 'the unitary Poincare inequality with constant K/d [41]', Meckes and Meckes [41]. Path: Lemma D10 via Meckes and Meckes [41]. Lemma D9 alone (sphere and sign laws) is proved by fourth-moment calculations and would be HIGH; the item holds both.",
+  "supp-proposition-d2-physical-costs": "Proposition D2, p.45, is proved from Proposition D1 (the fixed-ridge centered costs), whose proof rests on Lemma D4. Lemma D4 uses the weighted Gaussian inverse-trace theorem of Hachem, Loubaton, Najim, Vallet [43] as a step. Path: Prop D2 via Prop D1 via Lemma D4 (Hachem et al. [43]). The concentration step also uses Lemma D10, which uses the unitary Poincare inequality of Meckes and Meckes [41].",
+  "supp-d2-one-directional-error-chi-squared": "Appendix D 3, p.45: the chi-squared limit is argued in a few sentences, and only for the sphere law ('The other direction laws share the second moment but need not share the projection distribution'); the value states it for the target class without that restriction. It also uses the centered cost G_eta,d of Proposition D2 and Proposition D1 (Lemma D4 via Hachem et al. [43]). A sketch, not a proof.",
+  "supp-d2-mean-term-vanishes-pure-states": "Appendix D 3, p.45: the first part (pure training states, bounded noncollapsed frame: ||rho-bar|| = O(1/d) by Lemma D7, and eq. (D54) from Lemma D6 makes the mean term vanish; a second-moment bound suffices) is supported. The value also holds two unproved remarks: 'mixed-state lists can retain it' and a full profile 'requires limits of the explicit mean terms'. These are cautions, not results, with no example or proof. Graded by the weaker.",
+  "supp-e1-signal-to-noise-eigenvalues": "textbook, stated not proved (F129). Appendix E 1 a, p.47, eqs. (E3) to (E6): the identification of lambda_j with the stationary values of the signal-to-noise ratio (E6) follows from (E5) and is shown. The last claim, that when n_out Sigma_tr approaches Pi in operator norm the eigenvalues approach those of (n_out N/n_tr) times the training Gram matrix 'apart from zero multiplicities', is an eigenvalue-perturbation statement given with no proof.",
+  "supp-e1-peak-amplitudes-bounds": "Appendix E 1 a, pp.47, 48 (and the 'Positive amplitudes' paragraph, p.50): 0 <= H_* <= Tr(F)/(d^2 - 1) is immediate from (E8), and positivity of C_V and C_G is argued in a few lines from (E17). The covariance-bound range (1 - kappa)/K <= h <= 1/c is stated with no derivation in the paper (only 'they also bound h above and below by positive constants'). The amplitudes themselves rest on Theorem E1. A bound argued informally is not a proved result.",
+  "supp-theorem-e1-quantum-peak": "Theorem E1, Appendix E 1 a, pp.47 to 50: the proof starts from 'the deterministic equations from proposition D1', so it rests on Proposition D1 via Lemma D4 (Hachem et al. [43]). The result also assumes the critical trace regularity of Remark E1, and the critical-root expansion is condensed. Path: Theorem E1 via Prop D1 via Lemma D4 (Hachem et al. [43]).",
+  "supp-theorem-e1-proof-critical-root": "The scalar argument on p.48 is in the paper, but it starts from the deterministic equations of Prop D1, whose Lemma D4 takes them from the weighted Gaussian inverse-trace theorem of Hachem et al. [43] (path: Thm E1 -> Prop D1 -> Lemma D4 -> [43]). The value also drops the critical trace regularity of Remark E1 and the bounds (D11), (D12) that the limit-point step uses.",
+  "supp-e1-proof-singular-denominator": "Same path: Thm E1 -> Prop D1 -> Lemma D4 -> [43]. The derivative step (E15), (E16) is also compressed (O(Delta) errors asserted), and the value adds that it gives the amplitudes and profile of Thm E1, which needs Prop D1 (eqs. D40, D41).",
+  "supp-e1-width-and-height": "A short remark, not a proof. It rests on Thm E1 and on Prop D2 and Lemma D8, which depend on Prop D1 -> Lemma D4 -> [43]. The physical-variance claim has no argument here.",
+  "supp-theorem-e2-minimum-norm-divergence": "Stated with conditions (p.49), but the proof (pp.49-50) uses the fixed-ridge equivalent rescaled equations (E12), (E13), the concavity and envelope derivative of the loss (Lemma D4) and the count comparison of Lemma D3. Path: Thm E2 -> Prop D1/Lemma D4 -> weighted Gaussian inverse-trace theorem [43].",
+  "supp-theorem-e2-proof-square-root-bound": "Same path as Thm E2: the sqrt(eta) loss bound and the concavity argument use the Prop D1 deterministic equivalent and Lemma D3/D4 (Hachem et al. [43]). The value also leaves out the conditions of the lower bound (E19).",
+  "supp-e22-inverse-tail-condition": "The requirement (E22) is a stated hypothesis of Cor E1. But the value also says a bounded weighted inverse moment of order 1+epsilon is sufficient, and the paper asserts this without proof. Graded by the weaker part.",
+  "supp-corollary-e1-centered-zero-penalty": "The proof (pp.50-51) transfers ridge to pseudoinverse through Thm E1's fixed-ridge limits, so it rests on Prop D1 -> Lemma D4 -> [43]. The transfer step is also compressed.",
+  "supp-e2a-tight-frames-coefficients": "Coordinator sign-off 2026-11-06: the derivation is the paper's own algebra on the critical equation, but the value drops the section's condition kappa < 1, and a value that drops its conditions is LOW. Reviewer: Appendix E 2 a, p.51: the paper gives the derivation. Multiplying (1-kappa)/z + kappa/(z+x) = 1 by the two denominators gives z^2 + (x-1)z - x(1-kappa) = 0, whose positive root is (E26). I checked the limits (1 as x goes to 0, 1-kappa as x goes to infinity) and 1/sqrt(2) at kappa = 1/2, x = 1. The section is for kappa < 1. The step uses only the critical equation, which is the section's definition of zeta_*.",
+  "supp-e2b-haar-apparatus-empirical-training": "Appendix E 2 b gives only a sketch: the covariance resolvent (E31) is cited to Lemma G9 and a Haar-normalization step is asserted, and 'the two weighted metrics give (E29)' is not shown. The amplitudes C_V, C_G are those of Thm E1 (Prop D1, [43]). The Haar-apparatus frame bound rests on Lemma G8 -> G7 -> Tikhomirov [47, Thm 1]. The Jensen step for the tight frame is correct but only a small part of the value.",
+  "supp-e2b-tight-training-specialization": "Direct substitution of mu_1 = delta_beta into (E29) gives (E30), and I checked the algebra (C_V = q/(1+q), C_G = kappa q/(1+q)^2, maximum at q = 1). But (E29) itself is only sketched (see supp-e2b-haar-apparatus-empirical-training), so the item inherits that gap.",
+  "supp-e2c-haar-training-fixed-apparatus": "Appendix E 2 c, p.52, gets the coefficients C_V and C_G from the amplitudes of Theorem E1, which rests on Proposition D1 and Lemma D4 (Hachem et al. [43]). The Haar-training step is a short sketch ('differentiating this balance ... gives the amplitudes') that points to eq. (F2) in Appendix F. The reading of phi as a limiting minimum reconstruction error is stated with no derivation.",
+  "supp-e2d-fixed-rank-coefficients": "The closed form (E34), (E35) uses the bulk laws of Lemma B3, whose proof applies Theorem G1 (Marchenko-Pastur under quadratic-form concentration, Yaskov [45]). Path: E2 d -> Lemma B3 -> Thm G1 -> [45]. The evaluation of the spectral integral is stated, not shown.",
+  "supp-e2d-training-shots-vs-exact-features": "The contrast follows from (E36), which comes from (E34) and Lemma B3 -> Thm G1 (Yaskov [45]). The explanation (a ker M_mu component carries variance but reconstructs nothing) and the claim that exact-feature minimum norm removes those directions are the authors' interpretation, not proved there.",
+  "supp-lemma-e1-exact-feature-hard-edge": "The proof (p.54) says 'Theorem G1 therefore gives the stated Marchenko-Pastur limit', and Thm G1 is Yaskov's theorem [45], taken by citation. It also takes the inverse moment of the MP law from [26] with the function J_cl of (C8). Path: Lemma E1 -> Thm G1 (Yaskov [45]) and [26].",
+  "supp-lemma-e2-accessible-frame-lower-bound": "The value misstates the lemma. Rendered p.54, (E43) is [sqrt((a/K) V/(d Delta^2)) - 1]_+^2. The value reads it as (a/K) times [sqrt(V/(d Delta^2)) - 1]_+^2, which is a different and stronger bound because a/K <= 1. The one-line proof does support (E43) as printed. A corrected value would be HIGH (proved result).",
+  "supp-e3b-gaussian-surrogate-no-gap": "The value mixes a stated limit (the surrogate result is not a multinomial statement) with derived claims: the MP edges and the inverse-moment asymptotic (E47). The paper states these without derivation. Rendered p.55 shows (E47) as the value reads it, 1/(2 sqrt((1+alpha x0) eta)). Graded by the weaker part.",
+  "supp-e3b-residual-amplification-identity": "The identity (E48) follows from the zero-penalty normal equations and the SVD, and I checked it. The paper only says 'the normal equations give' it. The value adds claims the paper does not prove here: small singular values amplify slowly decaying residuals, and finite shots preserve the nearly square geometry.",
+  "supp-theorem-e3-interpolation-below-ic": "The proof (pp.56-57) applies the derivative calculation of Thm E1 'unchanged' (Prop D1 -> Lemma D4 -> [43]). It also uses Lemmas D5 and D6 and the fixed-ridge comparison for the minimum-norm part. It assumes the critical trace regularity of Remark E1.",
+  "supp-theorem-e3-proof-noncritical-excluded": "The proof reuses the scalar balances (E12), (E13) from Prop D1 (Lemma D4, [43]) and applies the derivative calculation of Thm E1 'unchanged'. The uniformity step (positive gap preserved by assumed local trace convergence) is only asserted.",
+  "supp-e3d-small-shot-expansion": "The expansion (E54) is argued in two lines (S = O(alpha), zeta_* = 1 + O(alpha)), with no uniform error control. Positivity at fixed alpha rests on Thm E3 (Prop D1 -> Lemma D4 -> [43]). The 'do not describe fixed N' sentence is a caveat, but it does not settle the rest.",
+  "supp-e3d-haar-apparatus-general-training": "Rests on the transform (E31)/(E55), which is only sketched (see supp-e2b-haar-apparatus-empirical-training), and on the Thm E1/E3 amplitudes (Prop D1, [43]). The zero-mass bound, h >= 1/(1+alpha K) and the large-alpha limits are correct on my check, but the paper states them without derivation.",
+  "supp-e3d-equal-strength-apparatus": "I checked (E59) and C_G = x0 C_V, and the monotonicity claim (d/ds of the numerator is kappa + (kappa-2)s). The paper does not derive them. They depend on (E58), which uses the sketched Haar-training coefficient derivation and the Haar-state frame bound (Lemma G7, Tikhomirov [47, Thm 1]).",
+  "supp-e3d-haar-states-and-apparatus-below-ic": "Takes nu = mu_MP,kappa for the Haar rank-one POVM (Thm B1, which rests on Thm G1, Yaskov [45]) and the E55 transform. The monotonicity and the nonmonotonic C_G for 1 < kappa < 2 are not derived in the paper beyond the maximizer and value, and 'need not hold for every geometry' is a remark.",
+  "supp-proposition-e2-bounded-costs-root-failure": "The proof (pp.59-60) works on the deterministic variables e, u, v, f, j, R# of Prop D1 and uses Lemma D4 for the loss being nondecreasing and concave, plus the envelope identity (D29). Path: Prop E2 -> Prop D1/Lemma D4 -> Hachem et al. [43].",
+  "supp-proposition-f1-complete-haar-profiles": "The proof (pp.61-62) checks the hypotheses with the sample upper bound Lemma G7, which applies Tikhomirov [47, Thm 1], and the frame bound Lemma G8, which rests on G7. It then uses Lemma G10, whose proof is an outline. Path: Prop F1 -> Lemma G7/G8 -> [47]. The (F2)-(F6) formulas are derived in compressed form.",
+  "supp-f1-minimum-norm-limits-with-inverse-tail": "Closed forms (F5), (F6) come from Prop F1 (Tikhomirov [47] via G7/G8). The step from positive-ridge limits to the actual minimum-norm costs is Cor E1, which rests on Thm E1 (Prop D1 -> Lemma D4 -> [43]). 'Direct substitution' for (F6) is not shown.",
+  "supp-f1-singular-coefficients-agree": "The paper asserts that the singular coefficients of the complete profile agree with Thm E1 (kappa < 1) and Thm E3 (kappa > 1). It shows no comparison, and both theorems rest on Prop D1 -> Lemma D4 -> [43].",
+  "supp-proposition-f2-finite-resources": "The proof on p.63 is sound and uses no cited result. But the value drops the stated conditions of the Z_0 limit: the frame bounds, n_out^-1 sum |n_out p-bar_a - 1|^2 going to 0, and n_out/n_tr going to gamma. A value with those conditions would be HIGH (proved result).",
+  "supp-lemma-g6-anticoncentration": "Lemma G6, p.66: the proof applies the Carbery-Wright inequality [46] (Carbery and Wright 2001) to the degree-4 polynomial. Path: Lemma G6 -> Carbery-Wright [46]. A specific paper's theorem is a step.",
+  "supp-lemma-g8-upper-frame-random-povm": "Lemma G8, pp.66, 67: the proof builds on Lemma G7 (upper sample covariance from fourth moments), whose proof is 'Apply [47, Theorem 1] with moment exponent four', Tikhomirov, Sample covariance matrices of heavy-tailed distributions. Path: Lemma G8 via Lemma G7 (Tikhomirov [47], Theorem 1). It also uses Gaussian hypercontractivity (textbook) and the Wishart estimate Lemma G3 (textbook).",
+  "supp-lemma-g10-joint-feature-response": "Lemma G10, p.68 (rendered): the proof is an outline that says the leave-one-column argument of Lemma G9 'also gives' the weighted joint resolvent equality. It does not carry the argument out. The value also drops conditions of the statement: p/n and s/n bounded above and below, the joint sample norm O_P(1) and eta I <= Lambda <= K I.",
+  "parameter-count-quantum": "Eq. 4 disagrees with the paper's own derivation in the preceding text. The text counts 3N*N_L + (N*N_I + N) + (N*N_O + N_O), which is (3N_L+N_I+N_O)N + N + N_O. Eq. 4 prints + N_I + N_O. The reported counts (180 for 4 qubits and 6 layers, 496 for 8 qubits and 12 layers) match the derivation, not Eq. 4 (which gives 192).",
+  "parameter-count-classical": "Eq. 5 does not reproduce the reported counts. It has no bias terms for hidden-to-hidden layers, and the N_L convention is unclear: the 8-neuron network quoted as having three hidden layers has 280 parameters, which fits two hidden layers of 8 neurons (16*8+8 + 8*8+8 + 8*8+8 = 280), not Eq. 5 with a whole N_L. Not a settled count.",
+  "rank-one-error-svd-tail": "textbook, stated not proved (F129): that the best rank-one approximation is the leading SVD term (Eckart-Young, cited [8]) and that a mode unfolding of a rank-one tensor is rank one are stated by citation, not proved.",
+  "rank-ceiling-crank": "The bound is argued in two sentences. The orbit-dimension bound on the QFIM rank is credited to Larocca et al. [10], and the orbit-stabiliser dimension formula is taken from [12]. The claim that every derivative lies in g|psi> is asserted (Appendix A says 'every H-hat lies in g' without proof). Cited result: Larocca et al. [10], orbit-dimension bound.",
+  "proposition-4-one-point-suffices": "The proof uses the zero-set result for real-analytic functions (Mityagin [21], cited) as a step, and does not state that the QFIM entries are analytic in theta. Cited result: [21], the zero set of a non-trivial real-analytic function has measure zero.",
+  "rank-law-rate-statement": "The upper bound (Eq. 14) is proved (Proposition 3). The growth 'by p0 per layer' until the ceiling is stated as 'we take the rate to be p0' and is checked against measured ranks (Table 1, Section 3.2), not proved. Graded by the weaker part.",
+  "d0-two-sources": "The sources are what the authors 'observe' (Section 3, pp.4-5), with two one-line examples. The paper does not show that they are the only sources of the deficit or derive d0 in general.",
+  "hea-n3-example": "The arithmetic is right (63, 49, 14, ceil(14/6) = 3), but the DLA being the full su(8) is asserted, not proved (single-qubit rotations plus a CX chain 'span' it). The saturation depth also rests on the rank law holding with equality, which is measured.",
+  "bounds-hva-n4": "The three numbers check (2^(N+1)-2 = 30, dim so(8) = 28, N^2+N-1 = 19), but g = so(8) is taken from Wiersema et al. [13], and 'the measured rank 4 at L = 1' is a measured result.",
+  "rank-grows-p0-per-layer-argument": "Section 3.2 calls the pi/2 count 'illustrative'. The Gram-matrix form relies on [10]. It gives a lower bound at one point, not a proof that the rank grows by p0 per layer for generic theta; that is checked numerically.",
+  "frozen-expectations-eq-19": "Eq. 19 (rank <= Crank - kappa) is argued informally ('each frozen expectation whose differential is independent removes one direction') and kappa is defined through that independence, which the paper does not prove in general.",
+  "hva-chain-rank-eq-20": "Appendix B shows the strings S_a with a>=2L are frozen at zero. It does not prove that the 4(N-L) differentials are independent or that the rank equals Crank - 4(N-L), nor that the rank equals Crank for L>N. Eq. 20 is stated as an equality that Table 1 and the validation check numerically.",
+  "table-1-hea-row": "Table 1 entries are listed, not derived. The DLA su(2^N) is asserted, and the caption says the table predicts the measured ranks, so the support is numerical (measured).",
+  "table-1-product-row": "The row is listed without a derivation in the paper (Table 1, p.8); the entries are plausible by counting but the paper does not show them. Caption support is the measured ranks.",
+  "table-1-nlocal-row": "Listed without derivation. DLA su(2^N) is asserted, the deficit d0 = N is observed, and the caption support is the measured ranks.",
+  "table-1-hva-chain-row": "Listed, not derived. The DLA so(2N) is taken from Wiersema et al. [13]; kappa = 4(N-L) is argued in Appendix B only as a frozen-value count.",
+  "table-1-brickwork-row": "Listed. The p0 and d0 entries are worked only at N = 5 (Appendix C); the general N form and the DLA su(2^N) are asserted, with the caption support being the measured ranks.",
+  "table-1-other-rows": "Listed without derivation. The DLAs are taken from Wiersema et al. [13], and the caption support is the measured ranks.",
+  "d0-formula-brickwork": "Appendix C works the N = 5 case (the exact rank 14 is measured); the general N odd and N even formulas of Eq. 31 follow from the counting argument but the exact first-layer rank is not proved in general.",
+  "proposition-2-maximal-extraction": "The value 1/2 for the Pauli-Z products is arithmetic from Definition 3, but 'no single-basis readout achieves rho > 1/2' is argued only by counting. The argument takes n_obs <= 2^N - 1 although Definition 3 counts linearly independent operators, which could include the identity, and uses [16] for the parameter count.",
+  "pauli-z-products-one-batch": "textbook, stated not proved (F129): that the Walsh-Hadamard rows are orthogonal and the matrix without its first row has rank 2^N - 1 is stated in Section 4.2, p.7 without proof.",
+  "proposition-2-counting-argument": "An informal counting argument (Section 4.2, pp.7-8), not a proof: it takes n_obs <= 2^N - 1 without handling the identity operator, relies on [16], and the 'missing half is the relative phases' is interpretation.",
+  "depth-rule-lrank-star": "The prescription L = L*rank(s) is the authors' design choice, and the arithmetic (3 at s = 3, 7 at s = 5) checks. But 'the depth at which the rank saturates' needs the rank law with equality, which is measured, not proved (Eq. 14 is an upper bound).",
+  "block-splitting-removes-n-dependence": "An informal argument that rests on the variance formulas of [17] and [18] (2-design assumption, which the paper says fails for s>=4 at L = 3) and on the independence of blocks; no derivation is given.",
+  "abstract-no-advantage-classical-interaction": "An abstract summary. 'A wide variety of scenarios' and 'the vast majority of testing and learning problems' are the authors' framing. The proved result is Theorem 1; the problem instances rest on cited lower bounds (Section 3.1).",
+  "abstract-quantum-communication-advantage": "An abstract summary of Section 4. 'Significant advantages' is the authors' framing; the specific protocols rest on cited results (see Theorems 7 to 9).",
+  "theorem-1-computational-extension": "Stated informally ('informally, let us assume') in Section 3, p.20 as a remark, with no formal statement or proof.",
+  "theorem-1-learning-extension-eq-4": "Stated informally ('informally, this is the case if') in Section 3, p.20 with conditions that the paper does not define precisely; no formal proof. Eq. 4 is used later in the proof of Corollary 4.",
+  "corollary-1-memory-constrained-classical": "The general statement follows from Theorem 1 and the proof by cases. But the value also lists purity testing, Pauli spike detection, certification and mixedness testing, and unitarity testing, and 'no advantage' for these rests on cited single-copy lower bounds: [Che+22b], [Che+22c], [Che+23a], [CGY24], [Hua+22], [Car24].",
+  "corollary-3-stabilizer-testing": "The Omega(sqrt n) lower bound uses the single-copy stabilizer-testing lower bound of [HH25] (cited result), and the proof is 'entirely analogous ... and hence omitted' (Section 3.1.1, p.23). Not proved in the paper.",
+  "corollary-2-stronger-oracle": "The general statement follows from Theorem 1 (proof in Section 3.2.1), but the listed tasks rest on cited lower bounds: [Kea98] for parity testing and [AHS23] and [Nie23] for the quantum SQ cases.",
+  "theorem-1-nisq-statement": "Stated in the overview (Section 1.3.1, p.11) as a consequence of Theorem 1. The Pauli spike lower bound for NISQ verifiers is a cited result ([Che+23b]); the item is a summary, not a proof.",
+  "example-5-realizable-boolean-trivial": "An example in Section 2.2 with a one-line argument ('can easily use O(1/eps^2) queries') that rests on Hoeffding-type estimation and on [Gol+21]. Not proved in the paper.",
+  "example-6-realizable-state-learning-fidelity": "An example whose fidelity-estimation step is taken from [FL11] by citation, and whose extension to Clifford plus O(log n) T gates is asserted (Section 2.2, p.20).",
+  "observation-1-vbqc-generic": "Observation 1 (Section 1.3.2 and Appendix C) is proved only by uses Fitzsimons-Kashefi [FK17] (Theorems 10 and 12) through Observation 1: completeness from [FK17] Theorem 10 and soundness from [FK17] Theorem 12. A proof that uses another paper's theorems as steps.",
+  "classical-verification-no-go-from-theorem-1": "An inference in Section 1.3.2, p.12 that Theorem 1 rules out advantage for the classical-verifier protocols of [RUV13], [Col+24] and [Mah22]. It needs a lower bound for each learning or testing problem and the paper does not carry it out.",
+  "theorem-2-purity-testing": "An overview restatement (Section 1.3.2, p.13) of Theorem 6 at delta = 1/3. The 'computationally efficient' part rests on approximate m-design depth from [SHH25] (see Theorem 6).",
+  "theorem-3-informal-tomography": "Stated informally; the formal version (Theorem 7) is proved from [BOW19] Theorem 1.6, [OW16], [Haa+16] and Observation 1 (FK17).",
+  "theorem-4-informal-rank-k": "Stated informally; the formal version (Theorem 8) rests on Lemma 3, which uses [OW16] and Observation 1 (FK17).",
+  "theorem-5-informal-stabilizer": "Stated informally; the formal version (Theorem 9) rests on [Che+25] Corollary 6.3, [HLK24] Eq. 11 and Bell sampling [GNW21].",
+  "table-1-interactive-quantum-comm": "Table 1 summarises Theorems 2 to 5, which are informal statements whose formal proofs rest on cited results.",
+  "corollary-4-tomography-limited": "The Omega(d^(3/2)/eps^2) bound is a reduction to qudit mixedness testing and uses the single-copy lower bound of [Che+22c] (cited result).",
+  "corollary-4-quadratic-improvement-at-most": "Rests on the cited single-copy tomography complexity Theta(d^3/eps^2) from [KRT17] and [Che+23c].",
+  "corollary-4-proof-reduction": "The reduction (tomography with accuracy eps/3 solves mixedness testing, m_{l-to-d} = 0) is in the paper, but the conclusion uses [Che+22c]'s single-copy lower bound and Theorem 1's extension (Eq. 4), which is stated informally.",
+  "learning-tasks-no-advantage-list": "A list stated by 'analogous arguments and reductions', not carried out, and each item rests on a cited lower bound ([Che+22b], [CGY24], [Che+23a], [ACQ22], [Hua+22], [Car24]).",
+  "corollary-5-agnostic-parity-learning": "The 2^Omega(n) bound uses Corollary 2 for parity testing, whose SQ lower bound is a cited result ([Kea98]); the reduction itself is in the paper (see the proof item).",
+  "restricted-oracle-learning-list": "A list stated by 'the same logic', not carried out, with each item resting on cited results ([WD25], [AHS23], [KWM24]).",
+  "corollary-6-nisq-pauli-shadow": "The bound uses the lower bound of [Che+23b, Lemma F.3] (cited result) together with Corollary 2.",
+  "corollary-6-proof": "The proof uses [Che+23b, Lemma F.3] (any BQP algorithm needs Omega((1-lambda)^-n) queries to a noisy copy oracle) as its key step.",
+  "theorem-1-assumption-violated-examples": "Examples 7 and 8 (Section 4, pp.27-28) are informal illustrations ('Assume that ... imagine ...'). They do not prove that the simulation fails.",
+  "theorem-6-purity-testing-formal": "Theorem 6 (Section 4.2, p.30). The soundness and completeness are proved, but the computational-efficiency bounds rest on approximate m-design depth from [SHH25]. The statement also gives O(log(1/delta)) copies for V, while the proof has N = Theta(log(1/delta)) rounds of m = Theta(log(1/delta)) copies, so the copy count is only O-tilde(log(1/delta)); it is O(1) at delta = 1/3.",
+  "theorem-6-surpasses-lower-bound": "The comparison rests on the cited single-copy purity-testing lower bound Omega(2^(n/2)) from [Che+22b].",
+  "theorem-6-complexity-analysis": "The quantum-time bound uses the depth of approximate m-designs from [SHH25] (cited result), and the claim that the soundness proof 'goes through' for approximate designs is asserted. The copy count N*m is Theta(log^2(1/delta)).",
+  "theorem-7-state-tomography-formal": "Theorem 7 (Section 4.3.1, p.34) is proved from [BOW19, Theorem 1.6], [Haa+16] and [OW16] and from Observation 1 (FK17). The proof gives the complexity as 'already given ... relying on' these results.",
+  "theorem-7-improves-lower-bounds": "Compares against the cited lower bounds Omega(d^3/eps^2) [Che+23c] and Omega(d^2/eps^2) [Haa+16; OW16].",
+  "theorem-7-proof-protocol": "The proof uses [BOW19, Theorem 1.6] and the prover's tomography result of [Haa+16; OW16] as steps (cited results).",
+  "theorem-7-completeness-soundness": "Completeness and soundness are inherited from the VBQC-based interactive version of [BOW19, Theorem 1.6] (Observation 1 with FK17); the paper says 'completeness is easy to see' and gives a one-line soundness.",
+  "rank-k-tomography-variant": "Stated in a sentence, with the prover's rank-k tomography taken from [OW16] and the verifier's from [BOW19, Corollary 1.5]; no proof.",
+  "theorem-8-agnostic-rank-k": "Theorem 8 rests on Lemma 3, which uses [OW16] and Observation 1 (FK17). The prover's copy count printed in the theorem (d^2 k^2 eps^-2) disagrees with the complexity analysis (d^2 k^2 eps^-4) and with Lemma 3 as printed (d^2 k^4 eps^-2).",
+  "lemma-2-rank-k-truncation": "Lemma 2 is proved from Lemma 1, which is Mirsky's theorem [Mir60, Theorem 5] (a cited result).",
+  "lemma-3-agnostic-rank-k-psd": "Lemma 3 uses [OW16] (Corollary 1.8, Schur sampling) and Observation 1 (FK17). Its printed prover count d^2 k^4 eps^-2 disagrees with the paper's own complexity analysis, d^2 k^2 eps^-4.",
+  "lemma-3-completeness": "Completeness uses Observation 1 (FK17) for the estimation steps and the Schur-sampling tomography of [OW16] for the honest prover.",
+  "lemma-3-soundness": "Soundness repeats the derivation of [OW16] ('we now repeat the reasoning in [OW16, Proof of Theorem 1.5]') and uses Observation 1; steps rest on cited results.",
+  "lemma-3-complexity-analysis": "The verifier bound uses the query counts of [OW16, Corollary 1.8] and Observation 1. The stated prover bound is d^2 k^2 eps^-4, which disagrees with the printed Lemma 3 and Theorem 8.",
+  "theorem-4-proof-normalisation": "The normalisation step is short, but it depends on Lemma 3 (which rests on [OW16] and FK17) and on Lemma 1, which is Mirsky's theorem [Mir60].",
+  "open-question-prover-full-tomography": "The open question is a stated limit, but the value also claims an alpha-agnostic variant with O(d k^5 eps^-2 log delta^-1) prover copies, which the paper only sketches ('we argue ... not difficult to see') using [OW16, Corollary 1.6]. Graded by the weaker part.",
+  "theorem-9-stabilizer-formal": "Theorem 9 uses [Che+25, Corollary 6.3] for the honest prover, [HLK24, Eq. 11] for the loss bounds and Bell sampling [GNW21], with Observation 1 (FK17).",
+  "theorem-9-vs-known-stabilizer-bounds": "Rests on the cited known complexities Theta(n^2) and Theta(n) from [Mon17], [Aru+23] and [AS26].",
+  "stabilizer-ub-lb-definitions": "The definitions of UB and LB are the paper's, but the value says they bound the optimal loss, LB <= l* <= UB, which comes from [HLK24, Eq. 11] (cited).",
+  "stabilizer-ub-over-lb-at-most-8": "The ratio limit (4/3)*6 = 8 checks, but monotonicity of UB/LB on [0, 1] is asserted without proof (Section 4.3.3).",
+  "stabilizer-completeness": "Completeness uses the prover algorithm of [Che+25, Corollary 6.3] (with the promise), the loss bounds of [HLK24] and Bell-sampling estimates ([GNW21]) delegated through Observation 1 (FK17).",
+  "stabilizer-soundness": "Soundness uses the bounds LB <= l* <= UB from [HLK24, Eq. 11] and Observation 1 (FK17) for the delegated A3 estimate.",
+  "stabilizer-complexity-analysis": "The counts follow from [Che+25, Corollary 6.3] and Observation 1 (cited results).",
+  "appendix-c-observation-1-algorithm-form": "textbook, stated not proved (F129): the normal form of a coherent multi-copy algorithm (prepare rho^{x m} and ancillas, apply a unitary, measure) is stated 'without loss of generality' (deferred measurement), not proved.",
+  "appendix-c-completeness-soundness": "Completeness is taken from [FK17, Theorem 10] and soundness from [FK17, Theorem 12], cited results used as the steps of the proof.",
+  "appendix-d-theorem-10-uniformity-testing": "Theorem 10 (Appendix D) is proved from the unique-elements tester of [Can20; Can22] and the streaming interactive proof of [CTY11] (cited results).",
+  "appendix-d-memory-lower-bound-surpassed": "Rests on the cited memory-constrained uniformity-testing lower bound Omega(k/(m eps^2)).",
+  "appendix-d-completeness-soundness": "Uses [CTY11] (perfect completeness, soundness of the streaming proof) and [Can20, Theorem 2.4] (correctness of the unique-elements tester) as steps.",
+  "appendix-d-complexity": "The space and communication counts come from the cited streaming interactive proof [CTY11] and the tester [Can22]."
+ },
+ "keep_stored": {},
+ "requote": {}
+}

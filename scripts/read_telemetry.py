@@ -131,7 +131,12 @@ def totals(data: dict) -> dict:
         out[f"{role}_tokens"] = _sum([a["tokens"] for a in mine])
     for k in COUNTS:
         out[k] = _sum([s[k] for s in steps if k in s])
-    out["applies"] = sum(1 for s in steps if s["step"] == "apply") if steps else UNKNOWN
+    # Written means written to the live store: a trial writes to a copy, and an apply run that wrote nothing to this
+    # group (the second apply, or another group's apply) is not one of its applies (Sprint 16 Task F, g333: 1030 shown
+    # for 515 written, 2 applies for 1)
+    live = [s for s in steps if s["step"] == "apply" and "assertions_written" in s]
+    out["assertions_written"] = _sum([s["assertions_written"] for s in live])
+    out["applies"] = sum(1 for s in live if s["assertions_written"]) if steps else UNKNOWN
     return out
 
 

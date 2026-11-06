@@ -1,0 +1,2773 @@
+{
+ "papers": [
+  {
+   "record_id": "emmanoulopoulos-2022-quantum-machine-learning-finance-time",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\2022\\Emmanoulopoulos-Dimoska_2022_Quantum-Machine-Learning-in-Finance-Time-Series-Forecasting__2202.00599.pdf",
+   "title_in_file": "Quantum Machine Learning in Finance: Time Series Forecasting",
+   "version_note": "arXiv:2202.00599v1, 1 Feb 2022. The file is the paper its record names.",
+   "pages": 20,
+   "read_extent": "full",
+   "not_read": "",
+   "sections_read": [
+    "Abstract",
+    "1 Introduction",
+    "2 Overview and background information",
+    "2.1 Quantum computing",
+    "2.1.1 PQCs",
+    "3 Simulation Design",
+    "3.1 Time series signals",
+    "3.1.1 Simplified temporal signals",
+    "3.1.2 Realistic temporal signals",
+    "3.2 Data pre-processing",
+    "3.3 Quantum encoding and PQC design",
+    "3.4 BiLSTM neural network",
+    "4 Comparison: QNNs vs. BiLSTM neural network",
+    "5 Summary and Discussion",
+    "Acknowledgements",
+    "References"
+   ],
+   "figure_count": 11,
+   "figures": [
+    {
+     "figure": "Figure 1",
+     "page": 4,
+     "kind": "other",
+     "shows": "Four Bloch-sphere panels in a row (Start Position, H-gate application, Z-gate application, H-gate application). A state vector arrow starts pointing up toward |1> and ends pointing down toward |0> after the three gates. Axes x and y are marked; |1> at the top and |0> at the bottom.",
+     "confirmed_by": "Figure 1 shows that the application of these transformation to a qubit q can be modelled as a rotation of the vector that represents the qubit’s state around diﬀerent",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 2",
+     "page": 5,
+     "kind": "circuit diagram",
+     "shows": "Reduced PQC diagram with three qubit rows labelled (-1, -1), (0, 0) and (1, 0). Twelve gate columns in the order XX, XX, ZZ, ZZ, YY, YY, XX, XX, ZZ, ZZ, YY, YY. The middle row (0, 0) carries the controlled parametrised gates, labelled XX^(xx1-0), XX^(xx1-1), ZZ^(zz1-0), ZZ^(zz1-1), YY^(yy1-0), YY^(yy1-1), XX^(xx2-0), XX^(xx2-1), ZZ^(zz2-0), ZZ^(zz2-1), YY^(yy2-0), YY^(yy2-1). Each parameter name ends in the index of the input qubit.",
+     "confirmed_by": "Figure 2 shows a reduced diagram of a parametrised circuit.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 3",
+     "page": 6,
+     "kind": "scatter plot",
+     "shows": "Left: AAPL close price in dollars (y, 0 to about 140) against time in t.u. (x, 0 to 10 000), labelled 12/12/1980-12/03/2020; flat near zero until about t=5000, then rising to about 130 dollars at the end. Right: percentage change of the close price (y, about -0.5 to about 0.4) against time (x, 0 to 10 000); points cluster near 0.0 with sparse outliers.",
+     "confirmed_by": "its percentage change (Figure 3, right-hand panel).",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 4",
+     "page": 7,
+     "kind": "other",
+     "shows": "Left: periodogram of the AAPL percentage change, squared amplitude (y, log scale 0.001 to 1000) against frequency (x, log scale about 1e-4 to about 0.5 per t.u.), dashed line at Threshold=50, with 13 red points at or above the threshold. Right: continuous wavelet transform, octave (y, 2^1 to 2^12) against time (x, 0 to 10 000), colour scale 0 to 1.0, with red dotted horizontal lines at the 13 sinusoid positions.",
+     "confirmed_by": "In the left-hand side of Figure 4 we show the periodogram estimates of the percentage",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 5",
+     "page": 10,
+     "kind": "scatter plot",
+     "shows": "Left: BTC-USD close price in dollars (y, 0 to about 60 000) against time (x, 0 to about 2500 t.u.), labelled 17/09/2014-07/06/2021; near zero until about t=1000, peaks of about 20 000 near t=1200, and about 60 000 at the end. Right: percentage change of the close price (y, about -0.4 to about 0.2) against time; points cluster near 0.0.",
+     "confirmed_by": "Then we consider the percentage change of Bitcoin USD (BTC-USD) (Figure 5, right-hand panel), derived from the 2452 points of its",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 6",
+     "page": 11,
+     "kind": "scatter plot",
+     "shows": "Left: IAG.L close price in pounds (y, 0 to about 800) against time (x, 0 to about 4666 t.u.), labelled 02/01/2003-04/06/2021; rises to about 570 near t=1000, about 700 near t=4000, then drops to about 100 to 200 at the end. Right: percentage change of the close price (y, about -0.3 to about 0.2) against time; points cluster near 0.0 with larger spread near t=1500 and at the end.",
+     "confirmed_by": "(Figure 6, right-hand panel), derived from the 4666 points, of its closing prices (Figure 6, left-hand panel).",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 7",
+     "page": 12,
+     "kind": "table",
+     "shows": "TensorFlow model summary of the BiLSTM: input_1 InputLayer output (None, 94, 1), 0 parameters; bidirectional (None, 94, 128), 133120; bidirectional_1 (None, 94, 32), 41216; bidirectional_2 (None, 1), 1040; bidirectional_3 (None, 1), 272; add (None, 1), 0. Total params 175,648; trainable params 175,648; non-trainable params 0.",
+     "confirmed_by": "layers resulting in 175,648 trainable parameters (Figure 7).",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 8",
+     "page": 14,
+     "kind": "bar chart",
+     "shows": "Four bar-chart panels over 18 signal IDs (AAPL, BTC-USD, IAG.L, F0, F2, F5, F8, F10, L0, L2, L5, L8, L10, Q0, Q2, Q5, Q8, Q10), two bars per signal (dark BiLSTM, hatched QNN). Panels: Mean Squared Error (log y, 1e-6 to about 0.1+), Squared Error Standard Deviation (log y), Mean Ratio (linear y, 0 to 1.4), Ratio Standard Deviation (log y, 1e-5 to about 10). The bars repeat the values in Table 3; for example the Q10 BiLSTM mean ratio bar is the tallest, at about 1.3.",
+     "confirmed_by": "In Table 3 and Figure 8 we show the results using ﬁve metrics for the test data set",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 1",
+     "page": 8,
+     "kind": "table",
+     "shows": "13 sinusoidal components: amplitudes 7.37, 7.22, 7.52, 7.58, 7.33, 7.68, 7.65, 7.10, 7.34, 7.58, 7.72, 7.30, 7.09 with frequencies 0.009, 0.052, 0.063, 0.065, 0.115, 0.143, 0.146, 0.229, 0.233, 0.256, 0.259, 0.292, 0.445.",
+     "confirmed_by": "The values of these 13 sinusoidal components are given in Table 1 and their sum",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 2",
+     "page": 9,
+     "kind": "table",
+     "shows": "15 distortion components (F0 to F10 flat trend, L0 to L10 linear gradient 5e-2, Q0 to Q10 quadratic gradient 5e-5) with noise coefficient 0.0, 0.2, 0.5, 0.8, 1.0 within each trend family, and SNR per signal: F 0.0005, 0.6603, 1.2445, 1.4716, 1.5472; L 1.1793, 2.0653, 2.3653, 2.4303, 2.4251; Q 1.1179, 1.4323, 1.7597, 1.9498, 2.0125.",
+     "confirmed_by": "their values are given in Table 2 in which F, L and Q stand for",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 3",
+     "page": 13,
+     "kind": "table",
+     "shows": "For each of 18 signals (F0 to Q10, AAPL, BTC-USD, IAG.L), one BiLSTM row and one QNN row with test MSE, SESD, MR and SDR; the best value per signal and metric is in bold. Example: F0 MSE 0.00002 (BiLSTM) and 0.00157 (QNN); Q10 MSE 0.04381 (BiLSTM) and 0.01333 (QNN); IAG.L MSE 0.02543 (BiLSTM) and 0.01527 (QNN).",
+     "confirmed_by": "In Table 3 and Figure 8 we show the results using ﬁve metrics for the test data set",
+     "no_text_confirms": false
+    }
+   ],
+   "what_it_is": "A Barclays simulation study comparing a 96-parameter parametrised quantum circuit (simulated) against a 175,648-parameter classical BiLSTM for one-step forecasting of simulated and real stock-derived time series.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "pqc-bilstm-setup",
+     "verdict": "confirmed",
+     "note": "Confirmed. Section 3.3 gives 96 parameters, Section 3.4 and Figure 7 give 175,648, Section 5 gives the simulated forward and classical backward propagation. Figure 7 prints the four layer counts 133120, 41216, 1040 and 272, which sum to 175,648.",
+     "value": "The authors state that the quantum circuit has 96 parameters and the BiLSTM has 175,648 trainable parameters, and that the forward propagation of the quantum circuits is quantum simulated while the back propagation is purely classical.",
+     "anchor": "Section 3.3, p.11; Section 3.4, p.12; Section 5, p.14",
+     "quotes": [
+      "the total number of parametrised gates and total number of parameters is 96.",
+      "layers resulting in 175,648 trainable parameters (Figure 7).",
+      "for the PQCs the forward propagation is quantum simulated, while the back propagation is purely classical."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own model sizes and training setup in Sections 3.3, 3.4 and 5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "pqc-vs-bilstm-forecasting",
+     "verdict": "narrowed",
+     "note": "The claim is the authors' own, and the paper limits it. The abstract and Section 5 state the similarity only for noise variations up to 40 per cent of the amplitude of the deterministic signal; Section 4 says similar in all cases. Table 3 shows the BiLSTM with the lower MSE on F0 (0.00002 against 0.00157), L0, F8, L5, L8, AAPL and BTC-USD. The data are simulated signals built from AAPL sinusoids with added trend and noise, plus three real percentage-change series, and the circuit is simulated.",
+     "value": "The authors report that parametrised quantum circuits, simulated, can be used as a forecasting tool for stock price signals. They report that for noise variations up to 40 per cent of the amplitude of the deterministic signal the PQCs perform similar to the classical BiLSTM, and that they outperform it for signals with higher amplitude noise variations.",
+     "anchor": "Abstract, p.1; Section 4, p.12; Section 5, p.14",
+     "quotes": [
+      "PQCs can be used as a forecasting time series tool for stock price signals.",
+      "small amplitude noise variations (up to 40 per cent of the amplitude of the deterministic signal) PQCs, with only a few parameters, perform similar to classical BiLSTM networks, with thousands of parameters, and outperform them for signals with higher amplitude noise variations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study on simulated and three real series, one run per cell reported.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "Table 3 has no repeated runs, no confidence intervals and no test of significance, so the word similar rests on single values."
+    },
+    {
+     "id": "qnn-data-volume-limit",
+     "verdict": "confirmed",
+     "note": "Confirmed. The authors tie it to running complicated QML models with numerous parameters on big data, even on a 127-qubit IBM Eagle chip. No experiment in the paper tests it.",
+     "value": "The authors state that quantum neural networks have limitations regarding the volume of data they can be trained upon.",
+     "anchor": "Section 5, p.15",
+     "quotes": [
+      "Nevertheless, QNNs have limitations regarding to the volume of data that they can"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own claim, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "emm-simulated-forward-propagation-scope",
+     "value": "The authors state in the abstract that the PQCs are used as quantum neural networks for forecasting time series signals with simulated quantum forward propagation.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "forecasting time series signals with simulated quantum forward propagation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its own experiments in the abstract.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "No quantum hardware is used anywhere in the paper; every quantum result is a simulation."
+    },
+    {
+     "id_suggestion": "emm-backprop-classical-now",
+     "value": "The authors state that the forward propagation of the PQC networks is fully quantum while the backpropagation is currently classical.",
+     "anchor": "Section 3, p.5-6",
+     "quotes": [
+      "the forward propagation of these networks is fully quantum, while the backpropagation is currently classical."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Section 3 says fully quantum while Section 5 says quantum simulated; both describe the same simulated forward pass."
+    },
+    {
+     "id_suggestion": "emm-software-stack",
+     "value": "The authors state that all experiments are conducted using Python 3.6, with the BiLSTMs built in Keras 2.4.31 on TensorFlow 2.3.0, and the PQCs designed in Google Cirq 0.10.02 and transformed into tensors with TensorFlow Quantum 0.4.0 (the version strings are printed with a flat footnote marker appended).",
+     "anchor": "Section 1, p.2; Section 1, p.3",
+     "quotes": [
+      "All the experiments are conducted using Python 3.6. For the BiLSTMs we are",
+      "using Keras 2.4.31 trained on the top of TensorFlow 2.3.0 [2]. For the design of the PQCs we are using Google Cirq 0.10.02 which are then transformed into tensors using",
+      "TensorFlow Quantum 0.4.0 [9]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own software setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-pqc-definition",
+     "value": "The authors define a PQC as a circuit that consists of input qubits that are connected in a circuit of consecutive controlled parametrised gates.",
+     "anchor": "Section 2.1.1, p.5",
+     "quotes": [
+      "A PQC [35] is a circuit that consists of input qubits that are connected in a circuit of consecutive controlled parametrised gates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, in Section 2.1.1.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-xx-layer-definition",
+     "value": "The authors define a layer of XX gates as one in which every input qubit has been connected to the readout qubit with a controlled parametrised XX gate.",
+     "anchor": "Section 2.1.1, p.5",
+     "quotes": [
+      "A layer of XX gates means that every input qubit has been connected to the readout qubit with a controlled parametrised XX gate."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, in Section 2.1.1.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-pqc-architecture",
+     "value": "The authors state that the PQC has 6 layers of gates, each with a controlled parametrised gate connecting each input qubit to the readout qubit, with 16 input qubits, in the order XX, ZZ, YY, XX, ZZ, YY.",
+     "anchor": "Section 3.3, p.11",
+     "quotes": [
+      "consist of 6 layers of gates in which each layer has a controlled parametrised gate connecting each input qubit to the readout qubit.",
+      "Considering that there are 16 input qubits and 6 layers of the network"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own circuit design.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-gate-combination-selected-on-accuracy",
+     "value": "The authors state that the combination of gates was selected based on model accuracy after experimenting with different combinations of layers.",
+     "anchor": "Section 3.3, p.11",
+     "quotes": [
+      "this combination of gates was selected based on model accuracy after experimenting with diﬀerent combinations of layers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states how it chose its own circuit.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The paper does not say which data set the accuracy was measured on. If it was the test set, the PQC result in Table 3 is tuned on the data it is scored on."
+    },
+    {
+     "id_suggestion": "emm-encoding-scheme",
+     "value": "The authors state that each of the 16 input values, centred around 0.5, is encoded to a 0 qubit with a gate X to the power a, where a is the classical value between 0 and 1, and that the predicted output is the expected value of the readout qubit.",
+     "anchor": "Section 3.3, p.11",
+     "quotes": [
+      "the input of 16 values is centred around 0.5 and each value is then encoded to a 0 qubit with a gate Xa where a is the classical value between the 0 to 1 range.",
+      "The predicted output is calculated as the expected value of the readout qubit which is always between the 0 to 1 range."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own encoding.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-bilstm-architecture-training",
+     "value": "The authors state that the BiLSTM has 4 bidirectional layers, a first layer of 128 units with tanh activation, and is trained with the Adam optimiser with mean squared error as the loss function.",
+     "anchor": "Section 3.4, p.12",
+     "quotes": [
+      "consists of 4 bidirectional layers resulting in 175,648 trainable parameters (Figure 7).",
+      "is made of 128 units and tanh activation function.",
+      "The BiLSTM neural network model is trained using the Adam optimiser [27] with mean squared error used as a loss function."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own baseline.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-figure7-layer-counts",
+     "value": "Read from Figure 7: the BiLSTM summary lists layer parameter counts of about 133120, about 41216, about 1040 and about 272, a total of about 175648 trainable parameters, no non-trainable parameters, and an input length of about 94.",
+     "anchor": "Figure 7, Section 3.4, p.12",
+     "quotes": [
+      "Figure 7: BiLSTM neural network model summary (report produced by TensorFlow).",
+      "layers resulting in 175,648 trainable parameters (Figure 7)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "setup",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "The model input length printed in Figure 7 is 94, while Section 3.2 and 3.3 give 16 input points per sample. The paper does not explain the difference. The numbers are printed in the figure, not read by eye; 'about' marks them as figure-read."
+    },
+    {
+     "id_suggestion": "emm-training-300-epochs",
+     "value": "The authors state that both the QNNs and the BiLSTM neural networks are trained for 300 epochs for all the different types of simulated time series signals.",
+     "anchor": "Section 4, p.12",
+     "quotes": [
+      "Both the QNNs and the BiLSTM neural networks are trained for 300 epochs for all the diﬀerent types of simulated time series signals"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The paper gives no training time, no learning rate and no optimiser for the PQC."
+    },
+    {
+     "id_suggestion": "emm-metrics-listed",
+     "value": "The authors state that they show results using five metrics on the test data set and name four: the mean square error, the square error standard deviation, the mean ratio and the standard deviation of the ratio.",
+     "anchor": "Section 4, p.12",
+     "quotes": [
+      "In Table 3 and Figure 8 we show the results using ﬁve metrics for the test data set",
+      "the mean square error (MSE), the square error standard deviation (SESD), the mean ratio (MR) and the standard deviation of the ratio (SDR)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own evaluation setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "The text says five metrics and lists four; Table 3 and Figure 8 show four."
+    },
+    {
+     "id_suggestion": "emm-data-sinusoids-from-aapl",
+     "value": "The authors state that the deterministic part of each simulated signal is the sum of 13 sinusoidal components taken from the periodogram of the AAPL percentage change, those with squared amplitude exceeding 50.",
+     "anchor": "Section 3.1.1, p.7; Table 1, p.8",
+     "quotes": [
+      "The 13 red points indicate the sinusoidal components whose squared amplitude exceeds 50.",
+      "The 13 sinusoidal components derived from the the percentage change for the closing price of AAPL having a squared amplitude greater than 50."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states how its own signals are built.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-threshold-arbitrary",
+     "value": "The authors state that the squared-amplitude threshold of 50 is an arbitrary set threshold that they selected, and that a different threshold would include fewer or more sinusoidal components.",
+     "anchor": "Section 3.1.1, p.7",
+     "quotes": [
+      "whose sqared amplitude exceeds 50, which is an arbitrary set threshold that we have"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states a choice in its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-sinusoid-amplitude-fluctuation",
+     "value": "The authors report that the wavelet analysis shows the amplitude of the sinusoids does not fluctuate dramatically, with fluctuations of the order of 23 per cent.",
+     "anchor": "Section 3.1.1, p.8-9; Figure 4, p.7",
+     "quotes": [
+      "amplitude does not ﬂuctuate dramatically (the ﬂuctuations are of the order of 23 per cent)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A single analysis read in the text; the 23 per cent value is not shown in a table.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-fifteen-distortion-versions",
+     "value": "The authors state that they produce 15 different versions of the trend and noise components, where F, L and Q stand for flat, linear and quadratic trend.",
+     "anchor": "Section 3.1.1, p.9; Table 2, p.9",
+     "quotes": [
+      "In total we produce 15 diﬀerent versions of these combined components"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states how its own signals are built.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-noise-uniform",
+     "value": "The authors state that the noise component is generated by a Uniform distribution U(0, 1), scaled by a noise coefficient.",
+     "anchor": "Section 3.1.1, p.9",
+     "quotes": [
+      "The noise component is generated by a Uniform distribution, U (0, 1)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states how its own signals are built.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Noise is uniform and bounded; real price changes are heavy tailed (Figures 3, 5, 6 show large outliers), so the simulated noise differs in kind from the real series."
+    },
+    {
+     "id_suggestion": "emm-10000-time-steps",
+     "value": "The authors state that for each simulated signal they simulate 10,000 time steps in arbitrary time units with regular sampling and no missing data points.",
+     "anchor": "Section 3.1.1, p.9",
+     "quotes": [
+      "For each signal, we simulate 10,000 time steps measured in arbitrary time units (t.u.) with regular sampling without any missing data points."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own data size.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-realistic-series",
+     "value": "The authors state that, besides the AAPL percentage change, the realistic signals are the percentage change of BTC-USD derived from 2452 closing prices and of IAG.L derived from 4666 closing prices.",
+     "anchor": "Section 3.1.2, p.9-10",
+     "quotes": [
+      "Then we consider the percentage change of Bitcoin USD (BTC-USD) (Figure 5, right-hand panel), derived from the 2452 points of its",
+      "derived from the 4666 points, of its closing prices (Figure 6, left-hand panel)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own data.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-aapl-data-source",
+     "value": "The authors state that the AAPL data are obtained from Yahoo! Finance, consist of N = 10080 points, and that the close price is adjusted for splits.",
+     "anchor": "Section 3.1.1, footnote 3, p.6",
+     "quotes": [
+      "The data are obtained from Yahoo! Finance consisting of N = 10080 points and the close price is adjusted for splits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own data source.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-split-and-horizon",
+     "value": "The authors state that the first three quarters of each signal are used for training and validation and the last quarter for testing, with groups of 17 consecutive points split into 16 input points and 1 output point, so the forecasting horizon is 1 time unit.",
+     "anchor": "Section 3.2, p.10",
+     "quotes": [
+      "The ﬁrst three quarters of the signal are used for training and validation and the last quarter is used for testing.",
+      "Each of these two segments is split into groups of 17 consecutive points which are then split into 16 points for model input and 1 point for model output i.e. the forecasting horizon is 1 (t.u.)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own evaluation split.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "The paper states no split between training and validation and says nothing about early stopping."
+    },
+    {
+     "id_suggestion": "emm-minmax-scaling",
+     "value": "The authors state that a MinMaxscaler with 0.2 as lower bound and 0.8 as upper bound is fitted to the training data and used on both training and testing data, the same for the PQC and the BiLSTM inputs.",
+     "anchor": "Section 3.2, p.10",
+     "quotes": [
+      "The MinMaxscaler with parameters 0.2 as a lower bound and 0.8 as an upper bound of the scaling range is used for the training data.",
+      "The data are scaled in the same way for both the PQC and the BiLSTM inputs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own preprocessing.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-transformer-not-compared",
+     "value": "The authors state that transformer-based models such as Informers have better predictive power for time series, and that they compare only simple network structures because a robust implementation of transformer-like architectures as PQCs is not currently available.",
+     "anchor": "Section 3, p.6",
+     "quotes": [
+      "but in this work we are interested in comparing simple network structures since a robust implementation of transformer-like architectures in the form of PQCs is not currently available."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its own comparison.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The baseline is one BiLSTM design; no other classical model, and no auto-regressive model, is compared."
+    },
+    {
+     "id_suggestion": "emm-table3-f0-mse",
+     "value": "Read from Table 3: on the flat signal F0 with no added noise, the test MSE is 0.00002 for the BiLSTM and 0.00157 for the QNN, and the bold best value is the BiLSTM's.",
+     "anchor": "Table 3, p.13",
+     "quotes": [
+      "0.00002 0.00157",
+      "The bold entries indicate the best estimators for a given signal."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The QNN MSE is about 80 times the BiLSTM's here, which Section 4's phrase similar in all cases does not mention."
+    },
+    {
+     "id_suggestion": "emm-table3-l0-mse",
+     "value": "Read from Table 3: on the linear-trend signal L0 with no added noise, the test MSE is 0.00007 for the BiLSTM and 0.00016 for the QNN.",
+     "anchor": "Table 3, p.13",
+     "quotes": [
+      "0.00007 0.00016",
+      "The bold entries indicate the best estimators for a given signal."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-table3-q0-mse",
+     "value": "Read from Table 3: on the quadratic-trend signal Q0 with no added noise, the test MSE is 0.00007 for the BiLSTM and 0.00001 for the QNN, and the bold best value is the QNN's.",
+     "anchor": "Table 3, p.13",
+     "quotes": [
+      "0.00007 0.00001",
+      "The bold entries indicate the best estimators for a given signal."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-table3-f10-mse",
+     "value": "Read from Table 3: on the flat signal F10 with the highest noise coefficient, the test MSE is 0.02461 for the BiLSTM and 0.01786 for the QNN.",
+     "anchor": "Table 3, p.13",
+     "quotes": [
+      "0.02461 0.01786",
+      "The bold entries indicate the best estimators for a given signal."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-table3-l10-mse",
+     "value": "Read from Table 3: on the linear-trend signal L10 with the highest noise coefficient, the test MSE is 0.02150 for the BiLSTM and 0.01205 for the QNN.",
+     "anchor": "Table 3, p.13",
+     "quotes": [
+      "0.02150 0.01205",
+      "The bold entries indicate the best estimators for a given signal."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-table3-q10-mse",
+     "value": "Read from Table 3: on the quadratic-trend signal Q10 with the highest noise coefficient, the test MSE is 0.04381 for the BiLSTM and 0.01333 for the QNN.",
+     "anchor": "Table 3, p.13",
+     "quotes": [
+      "0.04381 0.01333",
+      "The bold entries indicate the best estimators for a given signal."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "At noise coefficient 0.8 the BiLSTM has the lower MSE on F8 and L8, so the QNN advantage at higher noise is not uniform across Table 3. Counting all 18 signals, the QNN has the lower MSE on 11 and the BiLSTM on 7."
+    },
+    {
+     "id_suggestion": "emm-table3-aapl-mse",
+     "value": "Read from Table 3: on the real AAPL percentage-change series the test MSE is 0.00116 for the BiLSTM and 0.00211 for the QNN.",
+     "anchor": "Table 3, p.13",
+     "quotes": [
+      "0.00116 0.00211",
+      "The bold entries indicate the best estimators for a given signal."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-table3-btc-mse",
+     "value": "Read from Table 3: on the real BTC-USD percentage-change series the test MSE is 0.00896 for the BiLSTM and 0.01324 for the QNN.",
+     "anchor": "Table 3, p.13",
+     "quotes": [
+      "0.00896 0.01324",
+      "The bold entries indicate the best estimators for a given signal."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-table3-iag-mse",
+     "value": "Read from Table 3: on the real IAG.L percentage-change series the test MSE is 0.02543 for the BiLSTM and 0.01527 for the QNN.",
+     "anchor": "Table 3, p.13",
+     "quotes": [
+      "0.02543 0.01527",
+      "The bold entries indicate the best estimators for a given signal."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "world",
+     "reader_inference": "On the three real series the BiLSTM has the lower MSE on two (AAPL, BTC-USD) and the QNN on one (IAG.L)."
+    },
+    {
+     "id_suggestion": "emm-table3-q10-mean-ratio",
+     "value": "Read from Table 3: on Q10 the mean ratio is 1.30926 for the BiLSTM and 0.98959 for the QNN.",
+     "anchor": "Table 3, p.13",
+     "quotes": [
+      "1.30926 0.98959",
+      "The bold entries indicate the best estimators for a given signal."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The paper does not define mean ratio in words; a value of 1 is the apparent target."
+    },
+    {
+     "id_suggestion": "emm-qnn-96-vs-bilstm-overfit-claim",
+     "value": "The authors state that the PQCs have less tendency to overfit the noise because they consist only of 96 trainable parameters compared to the BiLSTM with 175,648 trainable parameters.",
+     "anchor": "Section 4, p.12",
+     "quotes": [
+      "Also, the PQCs have less tendency to overﬁt the noise as it consist only of 96 trainable parameters compared to the BiLSTM neural network that has 175,648 trainable parameters."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim with no overfitting measurement (no training-versus-test curves) in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-trig-vs-polynomial-explanation",
+     "value": "The authors explain the PQC result by saying the signals have trigonometric patterns and the functions that govern the quantum circuit are also trigonometric, while the classical network is governed by polynomial functions that would need many parameters to fit a trigonometric signal.",
+     "anchor": "Section 4, p.12-13",
+     "quotes": [
+      "The signals are functions with trigonometric patterns and the functions that govern the quantum circuit are also trigonometric, which allows the circuit to ﬁt (with fewer parameters)",
+      "the classical neural network is governed by polynomial functions (plus sigmoid and tangent as activation functions)"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's explanation, not tested in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Any advantage that comes from matching the trigonometric form of the simulated sinusoidal signals may not carry to signals without such structure."
+    },
+    {
+     "id_suggestion": "emm-overfit-1830-times-claim",
+     "value": "The authors state that whenever the noise coefficient is higher the PQCs outperform the BiLSTM because the BiLSTM starts to slightly overfit, regardless of the optimiser, since it has 1830 times more parameters.",
+     "anchor": "Section 5, p.14",
+     "quotes": [
+      "the PQCs outperform them because the latter starts to slightly overﬁt, regardless of the optimiser, since it has 1830 times more parameters."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's explanation, not tested in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The paper describes only the Adam optimiser for the BiLSTM; no other optimiser result is shown to support regardless of the optimiser. 175,648 divided by 96 is about 1830."
+    },
+    {
+     "id_suggestion": "emm-trained-faster-claim",
+     "value": "The authors state that QNNs can be trained much faster than traditional neural networks, with a fully quantum optimisation algorithm.",
+     "anchor": "Section 5, p.14",
+     "quotes": [
+      "(i) QNNs can be trained much faster than traditional neural networks (with a fully quantum optimisation algorithm)"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; the paper reports no training time and trains with classical backpropagation on a simulator.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "No timing is reported in the paper, so the faster-training claim is untested here."
+    },
+    {
+     "id_suggestion": "emm-more-accurate-fewer-parameters-claim",
+     "value": "The authors state that QNNs can be more accurate, with a smaller number of model parameters, for noisy signals with deterministic components.",
+     "anchor": "Section 5, p.14",
+     "quotes": [
+      "(ii) QNNs can be more accurate, with smaller number of model parameters, for noisy signals with deterministic components."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's conclusion from one simulated study.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-fully-quantum-training-future",
+     "value": "The authors state that if the optimisation process is replaced by a genuine backpropagation-like quantum optimisation algorithm, the network could be fully trained on a quantum computer.",
+     "anchor": "Section 5, p.15",
+     "quotes": [
+      "Thus, in the future, if the optimisation process is replaced by a genuine backpropagation-like quantum optimisation algorithm then the network could be fully trained on a quantum computer."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's forward-looking claim, not tested.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-big-data-hardware-challenge",
+     "value": "The authors state that running complicated quantum machine learning models with numerous model parameters on big data can be challenging even for quantum computers with a large number of qubits such as IBM's Eagle chip with 127 qubits.",
+     "anchor": "Section 5, p.15",
+     "quotes": [
+      "running complicated quantum machine learning models (i.e. with numerous model parameters) on big data can be challenging even for quantum computers with large number of qubits such as IBM’s Eagle chip with 127 qubits [4]."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim, not tested in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-classical-pre-post-processing",
+     "value": "The authors state that in a realistic scenario the end-to-end process for training a QNN needs to be combined with a classical computer that pre-processes the data and prepares the input for encoding, and scales the readout back to derive the prediction.",
+     "anchor": "Section 5, p.15",
+     "quotes": [
+      "the entire end-to-end process for training a QNN, needs to be combined with a classical computer that would pre-process the data and prepare the input so it can be encoded to quantum arrays of qubits"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statement about practice, not tested in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-fraud-future-work-data-needs",
+     "value": "The authors state that fraud prediction for transactional data is a very challenging use case because a production-ready model needs training sets covering at least one year of transactional activity, consisting of a few billion transactions.",
+     "anchor": "Section 5, p.15",
+     "quotes": [
+      "This is a very challenging use case since in order to build a production-ready model one needs to train it using large data sets that cover at least one year of transactional activity (consisting of few billion transactions)"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statement on future work, not tested in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-fraud-future-work-imbalance",
+     "value": "The authors state that, because of the very low number of fraudulent transactions (unbalanced data) and the variety of fraudulent patterns, fraud prediction is more complicated, and correct model features and precise sampling techniques need to occur during the data preprocessing phase.",
+     "anchor": "Section 5, p.15",
+     "quotes": [
+      "Also, due to the very low number of fraudulent transactions (unbalanced data) and the variety of fraudulent patterns the problem becomes even more complicated"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's statement on future work, not tested in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "world",
+     "reader_inference": "The paper tests no fraud data; fraud is named only as future work."
+    },
+    {
+     "id_suggestion": "emm-cited-mnist-pqc-90",
+     "value": "The authors cite the application of PQCs to a sample of the MNIST database as having a good accuracy of around 90 per cent, similar to an equivalent classical neural network with respect to the number of parameters.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "has been shown to have a good accuracy of around 90 per cent similar to that of an equivalent (i.e. with respect to the number of parameters) classical neural network."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-cited-lstm-beats-autoregressive",
+     "value": "The authors state that the forecasting power of LSTM and BiLSTM neural networks for financial time series has been proven to be superior to that of traditional auto-regressive statistical methods, citing other work.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "their forecasting power has been proven to be superior from that of the traditional auto-regressive type statistical methods [17, 48, 23]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "world",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-cited-quantum-algorithms-faster",
+     "value": "The authors state that in a genuine quantum computing infrastructure quantum algorithms can run significantly faster than their classical equivalents.",
+     "anchor": "Section 1, p.1",
+     "quotes": [
+      "quantum algorithms [22] can run signiﬁcantly faster with respect to their classical equivalents."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A general statement the paper attributes to other work (the Quantum Algorithm Zoo).",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emm-abstract-faster-training-claim",
+     "value": "The authors state in the abstract that QNNs have the significant advantage of being trained significantly faster than a classical machine learning model in a quantum computer.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "having, at the same time, the signiﬁcant advantage of being trained signiﬁcantly faster than a classical machine learning model in a quantum computer."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; no training time is measured in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The experiments run on a simulator, so training speed on a quantum computer is not measured."
+    }
+   ]
+  },
+  {
+   "record_id": "evans-2024-quick-introduction-quantum-machine-learning",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\QMLPapers\\Reviews\\Evans-Byrne-Cook_2024_A-Quick-Introduction-to-Quantum-Machine-Learning-for-Non-Practitioners__2402.14694.pdf",
+   "title_in_file": "A Quick Introduction to Quantum Machine Learning for Non-Practitioners",
+   "version_note": "arXiv:2402.14694v1, 22 Feb 2024. The file is the paper its record names. The text layer drops some equation symbols and one threshold value in Section 4.5.",
+   "pages": 44,
+   "read_extent": "full",
+   "not_read": "",
+   "sections_read": [
+    "Abstract",
+    "1 Why Quantum Computing",
+    "2 Quantum Computing Overview",
+    "2.1 Quantum Physics - Notation and Introduction",
+    "2.2 Superposition and Entanglement",
+    "2.3 Fundamentals of Classical Computing",
+    "2.4 Fundamentals of Quantum Computing",
+    "2.5 Single-Qubit Gates",
+    "2.6 Two-Qubit Gates",
+    "2.7 The Quantum Universal Gate Set",
+    "2.8 Fundamental Challenges of Quantum Computing",
+    "3 Introduction to Classical Deep Learning Algorithms",
+    "3.1 Overview of Classical Machine Learning Problems and Terminology",
+    "3.2 Neural Networks",
+    "3.3 Shared Weight Neural Networks",
+    "3.4 Gradient Descent",
+    "3.5 Backpropagation: Gradient Descent for Neural Networks",
+    "4 Current State of Quantum Computing",
+    "4.1 Quantum Circuit Architecture",
+    "4.2 Embedding Classical Data in Quantum Circuits",
+    "4.3 Quantum Machine Learning",
+    "4.4 Parameter-Shift Rule",
+    "4.5 Variational Quantum Circuit Classification Example - The XOR Problem",
+    "5 Conclusion",
+    "References",
+    "A1 Binary Dimensionality Reduction Example",
+    "A2 Statement and Proof of the Pauli Commutator Identity",
+    "A3 Derivation of the Baker-Campbell-Hausdorff Identity",
+    "A4 Derivation of the Derivative of a Parametric Exponential Operator",
+    "A5 Statement and Proof of Euler's beta function identity",
+    "A6 Derivation of the Stochastic Parameter-Shift Rule"
+   ],
+   "figure_count": 20,
+   "figures": [
+    {
+     "figure": "Figure 1",
+     "page": 8,
+     "kind": "other",
+     "shows": "Bloch sphere of a qubit with |0> = (1,0) at the top and |1> = (0,1) at the bottom, and labelled states (1/sqrt2)(1,1), (1/sqrt2)(1,-1), (1/sqrt2)(1,i), (1/sqrt2)(1,-i) on the equator; a red arrow marks the |0> axis.",
+     "confirmed_by": "This representation is called the Bloch sphere representation, and is depicted in fig. 1.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 2",
+     "page": 9,
+     "kind": "block diagram",
+     "shows": "A classical AND gate with inputs A and B and output C, with a truth table: output 1 only when A and B are both 1.",
+     "confirmed_by": "A simple example is the AND gate shown in fig. 2",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 3",
+     "page": 10,
+     "kind": "block diagram",
+     "shows": "An OR gate built from three NAND gates (each input is fed to both inputs of a NAND, and the two outputs feed a third NAND), with a truth table: output 0 only when A and B are both 0.",
+     "confirmed_by": "Figure 3: The OR gate as a circuit of only NAND gates.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 4",
+     "page": 18,
+     "kind": "other",
+     "shows": "Left: a perceptron diagram, inputs x1 to xD with weights w1 to wD and bias b into a summation, output y = sum of x_i w_i + b. Right: scatter plot of four clusters (axes X and Y from about -2 to about 2) with a single straight decision boundary; two clusters on each side, so the XOR classes are not separated.",
+     "confirmed_by": "The perceptron is shown graphically on the left side of fig. 4, and the image on the right shows the limitations of the perceptron in solving the XOR problem.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 5",
+     "page": 19,
+     "kind": "other",
+     "shows": "Left: a multilayer perceptron diagram with input layer I1 to In, hidden layer H1 to Hn and output layer O1 to On. Right: the same four-cluster XOR scatter plot with the plane split into four quadrants, two shaded gray and two shaded yellow, so each class falls in its own regions.",
+     "confirmed_by": "For example, in the XOR problem shown in the right side of fig. 5 the hidden layer can divide the feature space into the four quadrants shown.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 6",
+     "page": 20,
+     "kind": "block diagram",
+     "shows": "A convolution of a length-4 vector f[1..4] with a length-3 filter g[1..3]; the valid part has two positions, with outputs g[3]f[1] + g[2]f[2] + g[1]f[3] and g[3]f[2] + g[2]f[3] + g[1]f[4].",
+     "confirmed_by": "To better explain what is happening see fig. 6.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 7",
+     "page": 21,
+     "kind": "block diagram",
+     "shows": "A single-layer network with inputs x1 to x4 and two summation neurons that share the weights w1, w2, w3; zero weights are marked on the links that are not connected.",
+     "confirmed_by": "we can rewrite the convolution operation we started with as the simple single layer neural network shown in fig. 7.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 8",
+     "page": 22,
+     "kind": "line plot",
+     "shows": "F(x) = x^2 (blue curve) and its gradient 2x (orange line) against x from about -3 to about 3 (function value on y from about -6 to about 9); points x1 = 2 (gradient about 4) and x2 = -1 are marked.",
+     "confirmed_by": "in fig. 8, assume we are trying to find the minimum of the function F (x) starting at the point x1 = 2.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 9",
+     "page": 24,
+     "kind": "block diagram",
+     "shows": "A classical XOR gate with inputs A and B and output C, with a truth table: output 1 when A and B differ.",
+     "confirmed_by": "consider the classical XOR digital logic gate depicted in fig. 9",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 10",
+     "page": 25,
+     "kind": "circuit diagram",
+     "shows": "A two-qubit circuit: CNOT with control q0 and target q1, then measurement of both into a 2-bit classical register, with a truth table of inputs (q0, q1) in {|0>,|1>} and measured outputs M0, M1: (0,0)->(0,0), (0,1)->(0,1), (1,0)->(1,1), (1,1)->(1,0).",
+     "confirmed_by": "In fig. 10, M0 is the measurement outcome on q0, and M1 is the measurement outcome on q1.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 11",
+     "page": 25,
+     "kind": "circuit diagram",
+     "shows": "A two-qubit example circuit: H on q0 and H then X on q1, then a controlled-Y (control q1, target q0) and a Z on q1, then RX(pi/4) on q0, then a CNOT with control q0 and target q1; gates run left to right.",
+     "confirmed_by": "Graphically, gates are applied sequentially from left to right, as depicted in fig. 11.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 12",
+     "page": 27,
+     "kind": "circuit diagram",
+     "shows": "Block encoding on eight qubits q0 to q7: an H on each qubit, then four layers, each a column pair of RY and RZ rotations with data labels x[0] to about x[63], followed by CNOTs between consecutive qubit pairs and a closing CNOT from q7 to q0.",
+     "confirmed_by": "An example of a circuit with eight qubits, four layers, and two gates per block is shown in fig. 12.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 13",
+     "page": 27,
+     "kind": "circuit diagram",
+     "shows": "Six-qubit QML circuit: q0 (readout) has H, RZ(pi/4), then controlled RX a[0], RY b[0], RX a[1], RY b[1], ... RX a[4], RY b[4], each controlled by one of the data qubits q1 to q5; q1 to q5 each hold RY(data[0..4]). That makes 10 trainable parameters, a[0..4] and b[0..4].",
+     "confirmed_by": "An example circuit for quantum machine learning is shown in fig. 13.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 14",
+     "page": 30,
+     "kind": "circuit diagram",
+     "shows": "Two copies of the Figure 13 circuit: the top with the first controlled RX parameter shifted to a[0] + k, the bottom with it shifted to a[0] - k; all other gates unchanged.",
+     "confirmed_by": "the circuits in fig. 14 would both be run and the output measured for each circuit.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 15",
+     "page": 31,
+     "kind": "circuit diagram",
+     "shows": "A single-qubit circuit: H, then RZ with angle a[0] + x*theta[0], then RX with angle a[1] + x*theta[1], then a measurement into one classical bit.",
+     "confirmed_by": "However, it has been shown that a simple quantum circuit, shown in fig. 15, using only one qubit",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 16",
+     "page": 32,
+     "kind": "circuit diagram",
+     "shows": "A three-qubit circuit: q0 has H, RZ controlled by q1 with parameter theta[0], RZ a[0], RX controlled by q2 with parameter theta[1], RX a[1], then a measurement; q1 and q2 hold RX with angles pi*x and pi*y.",
+     "confirmed_by": "This modified circuit is shown below in fig. 16.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 17",
+     "page": 32,
+     "kind": "scatter plot",
+     "shows": "The generated XOR dataset on the unit square (x and y from 0 to 1.0): about 1000 points, yellow in the lower-left and upper-right quadrants and purple in the other two quadrants, split at 0.5.",
+     "confirmed_by": "This dataset is shown in fig. 17.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 18",
+     "page": 33,
+     "kind": "line plot",
+     "shows": "Two panels titled 150.0 epochs, batch size = 25, stepsize=0.025. (a) Training loss (error, y from about 0.25 to about 2.0) against batch (x, 0 to about 4500): starts near 2.0, falls to a noisy band of about 0.25 to about 0.5 by about 1000 batches. (b) Validation accuracy (y, 0 to 1.0) against batch: about 0.45 at the start, rises to about 1.0 by about 700 batches and stays there.",
+     "confirmed_by": "The plot of validation accuracy per batch over the training period also plateaued early in training as well, as shown in fig. 18(b).",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 19",
+     "page": 33,
+     "kind": "scatter plot",
+     "shows": "Two scatter plots on the unit square for the 187 test points: (a) correct labels and (b) the network's classification results; the two panels look identical, with yellow in the lower-left and upper-right quadrants and purple in the others.",
+     "confirmed_by": "The true labels and the classification results from the network on the test set are shown in fig. 19.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 20",
+     "page": 34,
+     "kind": "line plot",
+     "shows": "(a) theta against batch (0 to about 4500): a green curve from about 5.95 and a red curve from about 3.25 (peaking at about 3.55) both converge to about 3.14 (a dashed line at pi) by about 3000 batches. (b) alpha against batch: a green curve from about 1.8 rising and a red curve from about 4.8 (peaking at about 5.4) both converge to about 4.7; a dashed line sits at about -1.6 (that is, -pi/2).",
+     "confirmed_by": "The convergence of the parameters over the training period are shown below in fig. 20(a) and fig. 20(b), where the ideal parameter values from [40] are shown by dashed lines.",
+     "no_text_confirms": false
+    }
+   ],
+   "what_it_is": "A tutorial from the Naval Surface Warfare Center that introduces quantum computing, classical deep learning, variational quantum circuits and the parameter-shift rule, ending with one simulated XOR classification example.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [
+    {
+     "id": "qml-advantage-needs-investigation",
+     "verdict": "confirmed",
+     "note": "Confirmed. The sentence is in Section 5 on PDF p.34, not p.35 as the stored anchor says. The authors give it as a closing statement; the paper tests no quantum advantage.",
+     "value": "The authors state that quantum machine learning warrants further investigation into its quantum advantage.",
+     "anchor": "Section 5, p.34",
+     "quotes": [
+      "quantum machine learning holds promise for solving hard problems in a variety of domains, and warrants",
+      "further investigation into the quantum advantage of quantum machine learning."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own claim, not tested in the paper.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "qml-intro-scope",
+     "verdict": "confirmed",
+     "note": "Confirmed. The abstract states the scope on p.1 and Section 5 repeats it on p.34.",
+     "value": "The authors state that the manuscript serves as introductory material for researchers new to quantum mechanics and machine learning.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "This manuscript serves as introductory material for researchers that are new to the areas of quantum mechanics and machine learning"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope in the abstract and Section 5.",
+     "result_type": "setup",
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id": "xor-simulation-100-percent",
+     "verdict": "confirmed",
+     "note": "Confirmed. The test set holds 187 points (Section 4.5, p.32), the network is a three-qubit circuit (Figure 16), the run is a simulation, and Figure 19 shows identical true and predicted panels.",
+     "value": "The authors report that in simulation a trained variational quantum circuit classified 100% of the XOR test samples correctly.",
+     "anchor": "Section 4.5, p.33-34",
+     "quotes": [
+      "In testing the network performed very well, correctly classifying",
+      "100% of the testing data samples.",
+      "These results indicate that quantum circuits can be trained (in simulation) using quantum machine learning methods."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated run on a synthetic data set.",
+     "result_type": "measured",
+     "context": "qml",
+     "reader_inference": "One run, one seed, a 187-point noise-free synthetic set; no repeated runs or classical baseline is reported."
+    },
+    {
+     "id": "xor-single-quantum-neuron-advantage-claim",
+     "verdict": "narrowed",
+     "note": "Narrowed. The single-qubit XOR circuit (Figure 15) is cited from reference [40]. The circuit the authors trained is a modified circuit with two added qubits (Figure 16), and no classical network is trained or counted for comparison.",
+     "value": "The authors state that the XOR problem is an example of a problem that can be solved with a single quantum neuron in contrast to a multi-layer classical perceptron, and that this simulated demonstration, run on a modified circuit that adds two qubits to the cited single-qubit circuit, highlights some of the potential advantages of quantum computing and quantum machine learning.",
+     "anchor": "Section 4.5, p.31 and p.34",
+     "quotes": [
+      "This circuit adds two qubits so that the rotation data embedding scheme can be used.",
+      "Since the XOR problem is an example of a problem that can be solved with a single quantum neuron in contrast to a multi-layer classical perceptron, this simulated demonstration highlights some of the potential advantages of quantum computing and quantum machine learning."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own claim; no classical comparison is run.",
+     "result_type": "claim",
+     "context": "qml",
+     "reader_inference": "The advantage claimed rests on counting neurons, and the trained circuit has three qubits and four rotation gates with trainable parameters; the paper does not compare parameter counts or accuracy against a trained classical network."
+    }
+   ],
+   "assertions": [
+    {
+     "id_suggestion": "evans-abstract-expressibility-claim",
+     "value": "The authors state in the abstract that a possible benefit of quantum networks is an increased expressibility of quantum bits over classical bits, which through quantum machine learning leads to an increased expressibility of a quantum neuron.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "A possible benefit in addressing such problems with quantum networks is an increased expressibility of quantum bits over classical bits, which through quantum machine learning leads to an increased expressibility of a quantum neuron."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim; the paper does not measure expressibility.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-abstract-reduction-claim",
+     "value": "The authors state in the abstract that classical information embedded in quantum bits can take advantage of quantum phenomena and increased expressibility for a potential reduction in network size and training time on quantum hardware.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "can take advantage of quantum phenomena and increased expressibility for a potential reduction in network size and training time on quantum hardware."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim about potential, not tested in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The paper measures neither network size nor training time against a classical network."
+    },
+    {
+     "id_suggestion": "evans-classical-parameter-growth",
+     "value": "The authors state that the successes of classical machine learning in classification come at the cost of an exponential growth of parameters in modern network architectures such as GPT.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "they come at the cost of an exponential growth of parameters in modern network architectures (e.g. GPT)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim without evidence in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-exponential-speedup-cited",
+     "value": "The authors state that, in principle, the quantum approach promises an exponential speedup over the von Neumann architecture, citing reference 6.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "In principle, this approach promises an exponential speedup over the von Neumann architecture [6]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-supremacy-2030s-cited",
+     "value": "The authors state that proponents suggest quantum supremacy can be achieved as soon as the early 2030s, citing reference 13, and that substantial hurdles remain.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "in which proponents suggest it can be achieved as soon as the early 2030s [13], yet there remain substantial hurdles before this dream may be realized."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A forecast the paper attributes to proponents and a web source.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-hardware-platform-list",
+     "value": "The authors state that quantum computing architectures include superconducting qubits by IBM, Google, USTC and Rigetti, trapped ions by IonQ and others, photonics by Xanadu and others, and trapped Rydberg atoms by QuEra and others.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "a) using superconducting qubits (often referred to as SQUIDs) by IBM, Google, USTC, and Rigetti, b) trapped ions by IonQ and others, c) photonics by Xanadu and others, and trapped Rydberg atoms by QuEra and others."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A survey statement without a citation in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-church-turing-claim",
+     "value": "The authors state that the polynomial time computational complexity constraint of the von Neumann architecture, as suggested by the Church-Turing thesis, made the quest for alternative architectures inevitable, citing reference 2.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "the polynomial time computational complexity constraint of this computing architecture, as suggested by the Church-Turing thesis, made the quest for alternative architectures inevitable [2]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-superposition-definition",
+     "value": "The authors define superposition as the fact that multiple possible states are present simultaneously, and say it is a property unique to quantum mechanics.",
+     "anchor": "Section 2.1, p.5",
+     "quotes": [
+      "The fact that multiple possible states are present simultaneously is called superposition, and is a property unique to quantum mechanics."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, in Section 2.1.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-measurement-collapse",
+     "value": "The authors state that upon measurement a superposition state collapses and only one basis state is observed while the information for the other state is lost.",
+     "anchor": "Section 2.1, p.5",
+     "quotes": [
+      "but upon measurement this quantum state “collapses”, and only one basis state is observed while the information for the other state is lost."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A textbook statement given without proof in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-probability-amplitude-rule",
+     "value": "The authors state that the square of the magnitude of the probability amplitude gives a real value that corresponds to the probability of finding the state psi in the state phi when measured.",
+     "anchor": "Section 2.1, p.4",
+     "quotes": [
+      "gives a real value that corresponds to the probability of finding the state |ψ⟩ in the state |ϕ⟩ when measured."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A textbook rule stated without proof in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-normalization-requirement",
+     "value": "The authors state that coefficients are added to a state to ensure the condition that the squared norm of a state equals one remains true, and that this is often referred to as normalization.",
+     "anchor": "Section 2.1, p.6",
+     "quotes": [
+      "Coefficients are added to a state to ensure this condition remains true. This is often referred to as normalization."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of normalization, with a worked counter example (a probability of 4) in Section 2.1.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-unitary-definition",
+     "value": "The authors define a unitary operator as an operator that satisfies the property that the operator times its conjugate transpose equals the identity operator, and say the identity corresponds to imparting no change to a quantum state.",
+     "anchor": "Section 2.1, p.3",
+     "quotes": [
+      "and a unitary operator is a special type of operator that satisfies the property:",
+      "where Iˆ is the identity operator and corresponds to imparting no change to a quantum state."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, in Section 2.1.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-hermitian-real-eigenvalues",
+     "value": "The authors state that Hermitian operators have all real eigenvalues despite having potentially all complex entries, and that Hermitian operators typically represent measurable quantities.",
+     "anchor": "Section 2.1, p.4",
+     "quotes": [
+      "An important property of Hermitian operators is that one can easily show that they have all real eigenvalues despite having potentially all complex entries."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A textbook property stated without proof in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-expectation-value-definition",
+     "value": "The authors define the expectation value of an observable with respect to a quantum state as the average value of all possible outcomes, based on the probability of each outcome.",
+     "anchor": "Section 2.1, p.4",
+     "quotes": [
+      "The average value of all possible outcomes, based on the probability of each outcome, is referred to as the expectation value (or expected value) of that observable with respect to that quantum state."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, in Section 2.1.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-expectation-estimated-by-repetition",
+     "value": "The authors state that expectation values can be estimated empirically by performing repeated measurements and averaging the results, and that a finite number of measurements gives an estimate rather than the exact expectation value.",
+     "anchor": "Section 2.1, p.4",
+     "quotes": [
+      "Expectation values can also be estimated empirically by performing repeated measurements and averaging the results.",
+      "Since infinite measurements are not practically feasible, an estimate for the expectation value can be obtained by a finite number of measurements"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states how its own measurement model works.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-entanglement-definition",
+     "value": "The authors define two particles as maximally entangled when each outcome has equal probability, and state that if a system state can be separated into products of subsystem states then it is not entangled.",
+     "anchor": "Section 2.2, p.8",
+     "quotes": [
+      "We say the particles are maximally entangled when each outcome has equal probability (50% for this example).",
+      "If one can separate the total system state into products of subsystem states, then the state is not entangled."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definitions, with a worked example in Section 2.2.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-entanglement-nonlocal-claim",
+     "value": "The authors state that entanglement is a non-local phenomenon, so that virtually all manipulations of the state of one of the particles has some effect on the other particle, regardless of how separated the two particles are.",
+     "anchor": "Section 2.2, p.8",
+     "quotes": [
+      "entanglement is a non-local phenomenon, so that virtually all manipulations (i.e. through computing) of the state of one of the particles has some effect on the other particle, regardless of how separated the two particles are."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement the paper gives without proof.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "A local operation on one particle does not change the measurement statistics of the other particle (the no-signalling property), so the sentence is imprecise as a statement about physical effect. Treat it as informal."
+    },
+    {
+     "id_suggestion": "evans-gates-unitary-requirement",
+     "value": "The authors state that quantum gates, regarded as square matrices, must be unitary, and that the unitary condition is stronger than the invertibility condition and any unitary operator is also invertible.",
+     "anchor": "Section 2.4, p.11",
+     "quotes": [
+      "Since we regard quantum gates as square matrices, we thus require unitary matrices.",
+      "Notice that this condition is stronger than the invertibility condition, and that any unitary operator is also invertible."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own gate model in Section 2.4, derived from reversibility and preserved normalization.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-z-gate-phase",
+     "value": "The authors state that the single-qubit Z gate flips the sign of the amplitude of the |1> state while leaving the |0> state unchanged, and that this does not change probabilities but adds a phase of pi.",
+     "anchor": "Section 2.5, p.11",
+     "quotes": [
+      "This gate simply flips the sign of the amplitude of the |1⟩ state while leaving the |0⟩ state unchanged.",
+      "instead, it adds a phase of π."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of the Z gate, in Section 2.5.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-hadamard-uniform-superposition",
+     "value": "The authors state that the Hadamard gate generates superpositions where each basis state has a probability of 1/2, and that it is typically used at the very beginning of circuits to generate a uniform superposition state.",
+     "anchor": "Section 2.5, p.12",
+     "quotes": [
+      "thus the Hadamard gate generates superpositions",
+      "where each basis state has a probability of 1/2.",
+      "The Hadamard gate is typically used in circuits at the very beginning to generate a uniform"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition and worked cases for the Hadamard gate, Equations 45 to 47.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-single-qubit-decomposition",
+     "value": "The authors state that any arbitrary single-qubit gate can be decomposed as a phase times a Z rotation, a Y rotation and a Z rotation, with four parameters on three sequential one-parameter gates plus a phase scaling parameter.",
+     "anchor": "Section 2.5, p.12-13",
+     "quotes": [
+      "In this context of rotations on the Bloch sphere, one can generalize all single-qubit gates to a product of rotations.",
+      "Uˆ = eiαRˆZ(β)RˆY (γ)RˆZ(δ)",
+      "which equates to four parameters on three sequential one-parameter gates (and a phase scaling parameter)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A textbook decomposition stated without proof in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-cnot-definition",
+     "value": "The authors state that the CNOT gate flips the second qubit if the first qubit contains the |1> state, and does nothing otherwise.",
+     "anchor": "Section 2.6, p.13",
+     "quotes": [
+      "In essence, this gate flips the second qubit if the first qubit contains the |1⟩ state, and does nothing otherwise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of CNOT, with worked cases in Equations 60 and 61.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-universal-gate-set-definition",
+     "value": "The authors define the universal quantum gate set as the set of quantum gates that can produce any unitary operator with sufficient precision, and say that the claim of classical universality is weakened for the quantum case.",
+     "anchor": "Section 2.7, p.14",
+     "quotes": [
+      "that is, the set of quantum gates that can produce any unitary operator with sufficient precision.",
+      "Thus, the claim of classical universality is weakened for the quantum case by only requiring that we produce any unitary operator with sufficient precision."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition, in Section 2.7.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-universal-gate-set-cited",
+     "value": "The authors state that it has been shown that a universal quantum gate set is the set of CNOT, S and RX(pi/4), and that the set is not unique.",
+     "anchor": "Section 2.7, p.15",
+     "quotes": [
+      "It has been shown [6] that one such universal quantum gate set is the set {CNOT, Sˆ, RˆX(π/4)}.",
+      "set is not unique; one can substitute"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work (reference 6).",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-error-correction-hardest-problem",
+     "value": "The authors state that the increased richness of a quantum superposition state leads to one of the hardest problems in realizing quantum computing hardware, the problem of quantum error correction.",
+     "anchor": "Section 2.8, p.15",
+     "quotes": [
+      "leads to one of the hardest problems in realizing quantum computing hardware, the problem of quantum error correction [17]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement attributed to a textbook reference (17).",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-shor-code-overhead",
+     "value": "The authors state that the Shor code corrects an arbitrary single-qubit error by encoding a 9-qubit logical qubit, that codes exist that encode as small as a 5-qubit logical qubit, and that a quantum computer with only single qubit errors must therefore implement 5 times the number of qubits to attain a given number of logical qubits.",
+     "anchor": "Section 2.8, p.16",
+     "quotes": [
+      "A famous result in quantum error correction is known as the Shor code, which can correct an arbitrary error (i.e. any single qubit rotation error), by encoding a 9-qubit logical qubit, however there are codes that can correct any single qubit error by encoding as small as a 5-qubit logical qubit.",
+      "Thus a quantum computer with only single qubit errors must implement 5 times the number of qubits to attain a given number of logical qubits."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to the literature, stated without a citation or proof.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The 5 times figure is the paper's own summary of the 5-qubit code; real overhead depends on the noise model and on fault-tolerant operation, which the paper does not discuss."
+    },
+    {
+     "id_suggestion": "evans-crosstalk-claim",
+     "value": "The authors state that circuits of increasing numbers of qubits suffer from cross-talk errors, which is when qubits in different channels become undesirably entangled to each other, and which requires another level of quantum error correction.",
+     "anchor": "Section 2.8, p.16",
+     "quotes": [
+      "circuits of increasing numbers of qubits suffer from cross-talk errors, which is when qubits in different channels become undesirably entangled to each other, which requires another level of quantum error correction."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement given without evidence in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-ml-train-val-test-roles",
+     "value": "The authors state that the available data is divided into training data, which is used to optimize the model parameters, validation data, which is used to prevent overfitting, and test data, which is a completely blind set used to evaluate the model.",
+     "anchor": "Section 3.1, p.17",
+     "quotes": [
+      "The training data is the data that is used to optimize the model parameters, while the validation data is used to prevent overfitting.",
+      "This phase requires a completely blind set of data called test data, i.e. neither the validation nor training data can be used."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of the data roles, in Section 3.1.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-perceptron-xor-limit",
+     "value": "The authors state that since the perceptron is a linear classifier it can only define a simple linear decision boundary, and so is unable to correctly separate the diagonal and off-diagonal XOR classes.",
+     "anchor": "Section 3.2, p.18",
+     "quotes": [
+      "Since the perceptron is a linear classifier it can only define a simple linear decision boundary. Therefore, the perceptron is unable to correctly separate the diagonal and off-diagonal classes."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An argument by linearity with a figure (Figure 4), not a formal proof.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-nonlinearity-needed",
+     "value": "The authors state that the purpose of the non-linear activation is to increase expressibility of the network, as without non-linearities a series of linear mappings will always reduce to a single linear mapping.",
+     "anchor": "Section 3.2, p.18",
+     "quotes": [
+      "The purpose of the non-linear activation is to increase expressibility of the network, as without non-linearities a series of linear mappings will always reduce to a single linear mapping."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A textbook statement given without proof in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-universal-approximation-cited",
+     "value": "The authors state that the Universal Approximation Theorem was proved in reference 27 and states that MLPs are capable of approximating any continuous function to an arbitrary accuracy given that the hidden layer is of sufficient size.",
+     "anchor": "Section 3.2, p.19",
+     "quotes": [
+      "the Universal Approximation Theorem was proved in [27] which states that MLPs are capable of approximating any continuous function to an arbitrary accuracy given that the hidden layer is of sufficient size."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work (reference 27), stated without its conditions.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The paper omits the conditions of the theorem (for example the activation function and the domain)."
+    },
+    {
+     "id_suggestion": "evans-shared-weights-benefits",
+     "value": "The authors state that sharing a small set of weights across the input space can dramatically reduce the number of network parameters, which can reduce overfitting, reduce training time, and reduce model complexity.",
+     "anchor": "Section 3.3, p.20",
+     "quotes": [
+      "can dramatically reduce the number of network parameters, which can reduce overfitting, reduce training time, and reduce model complexity."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement given without evidence in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-sgd-vs-batch",
+     "value": "The authors state that batch gradient descent effectively computes the average of all individual updates, giving smoother convergence, while stochastic gradient descent gives a much noisier convergence curve, which can help the model jump out of local minima.",
+     "anchor": "Section 3.4, p.22",
+     "quotes": [
+      "This allows a smoother convergence to the correct solution. The stochastic update leads to a much noisier convergence curve as the model is reacting to each data sample individually.",
+      "as the randomness in the updates allows the model to jump out of local minima during training to potentially find better solutions."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A textbook statement given without evidence in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-backprop-chain-rule",
+     "value": "The authors state that backpropagation is a way to compute the gradients in a systematic fashion that can be universally applied to all neural networks and minimizes the amount of duplicate calculations, and that at a high level it can be thought of as a large chain rule.",
+     "anchor": "Section 3.5, p.23",
+     "quotes": [
+      "At a high level backpropagation can be thought of as a large chain rule."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A textbook statement given without proof in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-quantum-measurement-affects-circuit",
+     "value": "The authors state that, unlike classical digital circuits, a qubit measured before the end of a quantum circuit will have significant effects on the rest of the circuit, because of the back-action of measurement.",
+     "anchor": "Section 4.1, p.24",
+     "quotes": [
+      "However a major difference from classical digital circuits is that a qubit measured before the end of the circuit will have significant effects on the rest of the circuit."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A textbook statement given without proof in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-qubit-count-conserved",
+     "value": "The authors state that since quantum gate operations must be unitary and reversible, the total number of qubits is conserved throughout the circuit, whereas classical gates such as AND, OR and XOR have two inputs and one output.",
+     "anchor": "Section 4.1, p.24",
+     "quotes": [
+      "Since quantum gate operations must be unitary and reversible, the total number of qubits is conserved throughout the circuit"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A textbook statement given without proof in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-single-measurement-insufficient",
+     "value": "The authors state that one measurement is not enough to deduce the quantum state of the output qubits, so the expectation value is estimated by repeating the measurement many times, and that a single Z measurement does not have the resolution to discern states that differ only by a phase.",
+     "anchor": "Section 4.1, p.25",
+     "quotes": [
+      "Another contrast to classical logic circuits is that in quantum circuits, one measurement is not enough to deduce the quantum state of the output qubit(s).",
+      "Thus the expectation value is estimated by repeating the measurement many times.",
+      "and this type of measurement protocol (with a single Z measurement) does not have the resolution to discern between such states."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement supported by a worked two-state example (Equations 85 and 86) rather than a general proof.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-two-encoding-strategies",
+     "value": "The authors state that there are currently two main strategies for building quantum machine learning circuits that use classical data: classical dimensionality reduction to match the number of qubits, and gate encoding, in which the data is encoded directly with rotation gates.",
+     "anchor": "Section 4.2, p.26",
+     "quotes": [
+      "Currently, there are two main strategies for building quantum machine learning circuits that use classical data.",
+      "The first strategy is to use classical dimensionality reduction techniques to reduce the dimension of the classical data to match the number of qubits available in the circuit",
+      "In this paradigm the original floating point data is encoded directly into a quantum circuit with the use of rotation gates."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A survey statement given without a citation in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-gate-encoding-range",
+     "value": "The authors state that for gate encoding the original data is normalized to the range [0, pi], to ensure that large and small values are not unintentionally confused for being close together, as they could be if the full range [0, 2pi) was used.",
+     "anchor": "Section 4.2, p.26",
+     "quotes": [
+      "For this type of encoding, the original data is normalized to be in the range of [0, π].",
+      "This range is used to ensure that large and small values are not unintentionally confused for being close together, as they could be if the full [0, 2π) range was used."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of its encoding, in Section 4.2.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-block-encoding-rule",
+     "value": "The authors state that for block encoding the dimensionality of the data D, the number of qubits Q, the number of layers L and the number of gates per block G are chosen with the rule D at most Q times L times G while minimizing the product QLG, with the example of 192 data dimensions on 16 qubits using L equal to 4 and G equal to 3.",
+     "anchor": "Section 4.2, p.26",
+     "quotes": [
+      "To select the values of L and G follow the rule that D ≤ QLG while also trying to minimize the product QLG.",
+      "For example, if the data consists of 192 total dimensions, and we are using a quantum computer/simulator with 16 qubits, we can set L to 4 and G to 3."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own design rule and worked example, in Section 4.2.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The 192 dimensions equal 16 times 4 times 3, so the example meets the rule with equality."
+    },
+    {
+     "id_suggestion": "evans-qml-hybrid-loss-on-quantum-computer",
+     "value": "The authors state that quantum machine learning is really a hybrid quantum-classical computation, in which the error function to be optimized is at least partially calculated by a quantum computer.",
+     "anchor": "Section 4.3, p.26-27",
+     "quotes": [
+      "since quantum machine learning is really a hybrid quantumclassical computation [31].",
+      "Most importantly, the error function",
+      "to be optimized is at least partially calculated by a quantum computer."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A description the paper attributes to reference 31.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-qml-circuit-structure",
+     "value": "The authors state that typical quantum machine learning circuits apply parametrized controlled rotation gates to the readout qubit, controlled off of the data qubits, and use the expectation value of the measured readout qubit, over multiple runs, as the output used to compute a loss function.",
+     "anchor": "Section 4.3, p.27",
+     "quotes": [
+      "Typically these operations are parametrized controlled rotation gates applied to the readout qubit and controlled off of the data qubits",
+      "Upon running the circuit multiple times, the expectation value of the measured readout qubit is used as the final output of the circuit and used to compute a loss function."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the circuit design it uses, shown in Figure 13.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-figure13-setup",
+     "value": "The authors state that in the example circuit qubit 0 is the readout qubit and the only one measured for the output, that qubits 1-5 are the data qubits, and that the network gates are parameterized by trainable network variables.",
+     "anchor": "Section 4.3, p.28; Figure 13, p.27",
+     "quotes": [
+      "In this setup, qubit 0 is the readout qubit and the only one that is measured for the output.",
+      "Qubits 1-5 are the data qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own example circuit.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Figure 13 shows 10 trainable parameters, a[0] to a[4] and b[0] to b[4]; the text indexes them from 1."
+    },
+    {
+     "id_suggestion": "evans-no-backprop-on-quantum-hardware",
+     "value": "The authors state that intermediate measurements would destroy any quantum behavior being utilized by the quantum computer, so in order to maintain any true quantum calculation, backpropagation is not possible, and other methods must be used for calculating the gradient on quantum computers.",
+     "anchor": "Section 4.3, p.28",
+     "quotes": [
+      "However, on a quantum computer these intermediate measurements would destroy any quantum behavior being utilized by the quantum computer.",
+      "This means that in order to maintain any true quantum calculation, backpropagation is not possible [31, 33] and other methods must be used for calculating the gradient on quantum computers [33]."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement the paper attributes to references 31 and 33.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The statement is about hardware. Backpropagation does run on a classical simulator of the circuit, which is how simulated studies such as the Emmanoulopoulos and Dimoska paper train their circuits."
+    },
+    {
+     "id_suggestion": "evans-parameter-shift-rule-claim",
+     "value": "The authors state that the parameter-shift rule allows an analytically exact gradient calculation that can be performed on a quantum computer using the same circuit used to calculate the loss, but with shifted parameter values, and that in practice it yields an approximate gradient because the expectation value is approximated.",
+     "anchor": "Section 4.4, p.28",
+     "quotes": [
+      "The parameter-shift rule is a very useful tool that allows for an analytically exact gradient calculation that can be performed on a quantum computer using the same circuit used to calculate the loss, but with shifted parameter values [33, 34].",
+      "In practice, this results in an approximate gradient due to the approximation of the expectation value."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to references 33 and 34, with a derivation given in the paper.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-two-expectations",
+     "value": "The authors state that in the quantum machine learning context there are in effect two expectations, an expectation with respect to measurement outcomes and an expectation over the data.",
+     "anchor": "Section 4.4, p.28",
+     "quotes": [
+      "However, in the quantum machine learning context, there are in effect two expectations: an expectation with respect to measurement outcomes and an expectation over the data."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own framing of the loss, in Section 4.4.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-parameter-shift-loss-definition",
+     "value": "The authors define the loss function as an expectation value of an observable A in the state produced by a unitary of the form exp(i a theta G), with G a Pauli operator and a a fixed constant.",
+     "anchor": "Section 4.4, p.28",
+     "quotes": [
+      "Let the loss function C(θ) be defined as an expectation value [33, 34, 35]:",
+      "is a unitary operator parameterized by θ with the form UˆG(θ) = eiaθGˆ, where Gˆ is a Pauli operator"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper's own definition of the loss used in its derivation, in Section 4.4.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-parameter-shift-two-extra-circuits",
+     "value": "The paper derives that each term of the gradient is an expectation value in the same form as the original loss function except for a shift by plus or minus pi over 2, so the gradient for each parameter needs the circuit run twice more, once with the parameter shifted up by pi/2 and once shifted down by pi/2.",
+     "anchor": "Section 4.4, Equations 87 to 96, p.28-29",
+     "quotes": [
+      "Of even more importance to this application is that each term is in the same form as the original loss function C(θ) except for the shift by ±π/2.",
+      "For each parameter’s gradient calculation all that is required is running the circuit twice more, once with the parameter shifted up by π/2, and once with the parameter shifted down by π/2 [34]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "A derivation in Section 4.4 whose conditions (Pauli generator, fixed constant a) are quoted in the loss definition and in the stated limit.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The identity (Equation 93) is proved in Appendix A2 for U(theta) = exp(-i theta sigma / 2), which fixes the constant a at minus one half. The main text keeps a general. Algorithm 2 divides by a (one over a times upshift minus downshift) while Equations 95 and 96 multiply by a; the two are inconsistent unless the constant is handled with care."
+    },
+    {
+     "id_suggestion": "evans-parameter-shift-pauli-limit",
+     "value": "The authors state that the derivation pertains to gates of the form exp(i a theta G) with G a Pauli operator, and that using the commutator identity limits the final result to be valid only with Pauli operator-based unitary gates.",
+     "anchor": "Section 4.4, p.29",
+     "quotes": [
+      "The derivation in this section pertains to gates of the form UˆG(θ) = eiaθGˆ with Gˆ a Pauli operator.",
+      "Using this identity does limit the application of the final result to be valid only with Pauli operator-based unitary gates"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its own derivation in Section 4.4.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-parameter-shift-cost",
+     "value": "The authors state that while the parameter-shift rule does calculate exact gradients, it suffers from requiring significantly more circuit evaluations than classical gradient descent, and that the stochastic parameter-shift rule also requires multiple circuit evaluations per training iteration.",
+     "anchor": "Section 4.4, p.29-30",
+     "quotes": [
+      "While the parameter-shift rule does calculate exact gradients, it suffers from requiring significantly more circuit evaluations than classical gradient descent."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement given without a measurement in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Algorithm 2 shows two extra circuit runs per parameter per sample, so the cost grows with the parameter count; this is a reading of the algorithm, not a measurement."
+    },
+    {
+     "id_suggestion": "evans-other-gradient-methods",
+     "value": "The authors state that other notable algorithms for training variational quantum circuits include the Simultaneous Perturbation Stochastic Approximation (SPSA) and the Quantum Natural Gradient (QNG).",
+     "anchor": "Section 4.4, p.30",
+     "quotes": [
+      "Other notable algorithms include the Simultaneous Perturbation Stochastic Approximation (SPSA) [38] and the Quantum Natural Gradient (QNG) [39]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Methods the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-xor-classical-needs-multiple-perceptrons",
+     "value": "The authors state that, due to the non-linear separation between classes, a classical neural network requires multiple perceptrons to solve the XOR problem.",
+     "anchor": "Section 4.5, p.30",
+     "quotes": [
+      "Due to the non-linear separation between classes, a classical neural network requires multiple perceptrons to solve the XOR problem."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A textbook statement given without proof in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-xor-one-qubit-cited",
+     "value": "The authors state that it has been shown that a simple quantum circuit using only one qubit as a single perceptron can solve the XOR problem, leveraging the phase of the qubit as an extra degree of freedom, citing reference 40.",
+     "anchor": "Section 4.5, p.30-31",
+     "quotes": [
+      "However, it has been shown that a simple quantum circuit, shown in fig. 15, using only one qubit",
+      "as a single perceptron can solve the XOR problem. This approach leverages the phase of the qubit as an extra degree of freedom [40]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to reference 40.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-xor-circuit-direct-solution",
+     "value": "The authors state that the single-qubit circuit has a Hadamard gate, a Z rotation by angle theta1 x1 plus alpha and an X rotation by angle theta2 x2 plus alpha, that a direct solution uses theta1 = theta2 = pi and alpha = -pi/2 from reference 40, and that the circuit could be trained by gradient descent.",
+     "anchor": "Section 4.5, p.31",
+     "quotes": [
+      "Z-rotation angle: θ1x1 + α",
+      "X-rotation angle: θ2x2 + α,",
+      "Here there is a direct solution by using θ1 = θ2 = π and α = −π/2 [40], however this circuit could be trained by gradient descent."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A circuit and solution the paper attributes to reference 40.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-xor-circuit-outputs-cited",
+     "value": "The authors state, citing reference 40, that for the input vectors (0, 0) and (1, 1) the single-qubit circuit gives a result near the zero state and for the input vectors (0, 1) and (1, 0) it gives an output near the one state, up to quantum hard precision.",
+     "anchor": "Section 4.5, p.31",
+     "quotes": [
+      "for the input vectors (x1, x2) = (0, 0) and (x1, x2) = (1, 1) the circuit gives a result near the zero state (up to quantum hard precision),",
+      "the circuit gives an output near the one state (up to quantum hard precision) [40]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to reference 40.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-xor-modified-circuit",
+     "value": "The authors state that they modify the cited circuit to be more compatible with the parameter-shift method by adding two qubits for the rotation data embedding, and that the single alpha parameter is split into alpha1 and alpha2 for the Z and X rotations to allow the circuit to be more flexible.",
+     "anchor": "Section 4.5, p.31-32; Figure 16, p.32",
+     "quotes": [
+      "This circuit adds two qubits so that the rotation data embedding scheme can be used.",
+      "Additionally, the single α parameter has been split into α1 and α2 for the Z and X rotations, respectively, to allow the circuit to be more flexible."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own circuit design.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-xor-dataset-split",
+     "value": "The authors state that the XOR data are drawn from a random uniform distribution between 0 and 1 for the x and y values, excluding values of exactly 0.5, and that 1000 sample points were generated, with 750 used for training, 63 for validation and 187 for blind testing.",
+     "anchor": "Section 4.5, p.32",
+     "quotes": [
+      "is generated from a random uniform distribution between 0 and 1 for the x and y values of each data point, though values of exactly 0.5 were excluded",
+      "1000 sample points were generated, with 750 being used for training, 63 used for validation during training, and 187 used for blind testing after training was complete."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own data set and split.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "The data are noise-free and exactly separable by the two coordinate thresholds at 0.5; 63 validation points make a validation accuracy of 100% a coarse signal."
+    },
+    {
+     "id_suggestion": "evans-xor-labels-observable-loss",
+     "value": "The authors state that the observable is the Pauli Z gate with eigenvalues +1 and -1 used as the class labels, that the loss function is the mean squared error of the expectation value, and that the expectation value should be closer to +1 for class 0 and closer to -1 for class 1.",
+     "anchor": "Section 4.5, p.32",
+     "quotes": [
+      "The observable used is the Pauli Z gate, which has two possible eigenvalues {+1, −1}, which are used as the labels for the classes, respectively.",
+      "The loss function to be optimized is given by the mean squared error of the expectation value.",
+      "The expectation value should be closer to +1 for inputs from class 0, and closer to -1 for inputs from class 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experimental setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-xor-optimizer-settings",
+     "value": "The authors state that training used mini-batch gradient descent with a batch size of 25 data samples, a learning rate of 0.025 and 150 epochs, with the gradient calculated using the parameter-shift rule.",
+     "anchor": "Section 4.5, p.32",
+     "quotes": [
+      "To optimize the loss function, mini-batch gradient descent optimization was used, with a batch size of 25 data samples and a learning rate (or step size) of 0.025. The network was trained over 150 epochs.",
+      "The gradient was calculated using the parameter-shift rule in eq. (96)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "750 training points at batch size 25 give 30 batches per epoch, so 150 epochs match the roughly 4500 batches on the Figure 18 axis."
+    },
+    {
+     "id_suggestion": "evans-xor-threshold-value-missing",
+     "value": "The authors state that, to classify a sample in the validation and testing phases, the continuously valued expectation value output from the network is thresholded; outputs greater than or equal to a threshold are class 0 and outputs less than it are class 1 (the threshold value is missing from the text layer).",
+     "anchor": "Section 4.5, p.32-33",
+     "quotes": [
+      "Outputs greater than or equal to are classified as class 0 and outputs less than are classified as class 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own classification rule; the printed value is lost in the text layer.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Class 0 is the expectation value near +1 and class 1 near -1, so the natural threshold is 0, but the paper's printed text does not say so."
+    },
+    {
+     "id_suggestion": "evans-xor-loss-and-validation-curves",
+     "value": "The authors report that the training loss decreased to less than 0.5 on average and plateaued fairly early in training, and that the validation accuracy converges to 100% after about 1000 batches.",
+     "anchor": "Section 4.5, p.33",
+     "quotes": [
+      "The loss decreased to less than 0.5 on average, and plateaued fairly early in the training process.",
+      "The validation accuracy converges to 100% after about 1000 batches, which is an indicator of good network performance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated run.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Figure 18(b) shows the accuracy reaching about 1.0 near 700 batches, earlier than the text says."
+    },
+    {
+     "id_suggestion": "evans-xor-figure18a-loss",
+     "value": "Read from Figure 18(a): the training loss (error) starts at about 2.0 and falls to a noisy band between about 0.25 and about 0.5 after about 1000 batches, and stays in that band to about 4500 batches.",
+     "anchor": "Figure 18(a), p.33",
+     "quotes": [
+      "Figure 18: (a) Training loss vs batch over the training period and (b) Validation accuracy vs batch over the training period.",
+      "The loss decreased to less than 0.5 on average, and plateaued fairly early in the training process."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "The loss does not approach zero, which is expected as the target is plus or minus one and the output is an expectation value bounded between them."
+    },
+    {
+     "id_suggestion": "evans-xor-figure18b-validation",
+     "value": "Read from Figure 18(b): the validation accuracy starts at about 0.45, rises to about 1.0 by about 700 batches, and stays at about 1.0 to about 4500 batches.",
+     "anchor": "Figure 18(b), p.33",
+     "quotes": [
+      "Figure 18: (a) Training loss vs batch over the training period and (b) Validation accuracy vs batch over the training period.",
+      "The plot of validation accuracy per batch over the training period also plateaued early in training as well, as shown in fig. 18(b)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "The validation set has 63 points, so one wrong point would be about 1.6 per cent."
+    },
+    {
+     "id_suggestion": "evans-xor-test-labels-identical",
+     "value": "The authors report that the true labels and the classification results on the test set are shown in Figure 19, that the subplots are identical, and that the network assigned the true label to every test sample.",
+     "anchor": "Section 4.5, p.33; Figure 19, p.33",
+     "quotes": [
+      "The subplots are identical, showing that the network assigned the true label to every test sample."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated run.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-xor-converged-parameters",
+     "value": "The authors report that the final values for theta1 and theta2 at the end of training were 3.14147 and 3.14479, respectively, and that alpha1 and alpha2 converged to values of 4.71247 and 4.71022.",
+     "anchor": "Section 4.5, p.33-34",
+     "quotes": [
+      "final values for θ1 and θ2 at the end of training were 3.14147 and 3.14479, respectively.",
+      "The network parameters α1 and α2 converged to values of 4.71247 and 4.71022."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated run.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Pi is 3.14159 and three halves of pi is 4.71239, so each trained value is within about 0.004 of its target."
+    },
+    {
+     "id_suggestion": "evans-xor-parameters-match-cited",
+     "value": "The authors report that the dashed lines in Figure 20(a) are at exactly pi, the value used for theta1 and theta2 in reference 40, and that the trained parameters converge to approximately pi, and that the network parameters trained here are equivalent to the circuit of reference 40 because a rotation by +3 pi/2 is equivalent to a rotation by -pi/2.",
+     "anchor": "Section 4.5, p.33-34; Figure 20, p.34",
+     "quotes": [
+      "In fig. 20(a), the dashed lines are at exactly π, which correspond to the value used for θ1 and θ2 in [40].",
+      "Since rotations wrap from 2π back to 0, a rotation by +3π/2 is equivalent to a rotation by −π/2. Thus the circuit trained here is equivalent to the circuit presented in [40]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated run, with the equivalence argued in the text.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "A rotation by 3 pi over 2 and by minus pi over 2 differ by a full turn, so they are the same gate."
+    },
+    {
+     "id_suggestion": "evans-xor-figure20-convergence",
+     "value": "Read from Figure 20(a): the two theta curves start at about 5.95 and about 3.25 and converge to about 3.14 by about 3000 batches. Read from Figure 20(b): the two alpha curves start at about 1.8 and about 4.8 and converge to about 4.7.",
+     "anchor": "Figure 20, p.34; Section 4.5, p.33",
+     "quotes": [
+      "Figure 20: Parameter convergence for (a) θ1 and θ2, and (b) α.",
+      "The network parameters trained here, shown with solid lines, converge to approximately π."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Values read from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "The two curves of each panel start at different initial values and end at the same value, which suggests one basin for this problem."
+    },
+    {
+     "id_suggestion": "evans-xor-results-match-cited",
+     "value": "The authors state that, using these methods, the network was successfully trained and the results found match the results given in reference 40.",
+     "anchor": "Section 4.5, p.33",
+     "quotes": [
+      "Using these methods, the network was successfully trained and the results found match the results given in [40]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one simulated run, compared with a cited circuit.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-conclusion-holds-promise",
+     "value": "The authors state that, with the growing capabilities of quantum computers, quantum machine learning holds promise for solving hard problems in a variety of domains.",
+     "anchor": "Section 5, p.34",
+     "quotes": [
+      "With the growing capabilities of quantum computers, quantum machine learning holds promise for solving hard problems in a variety of domains"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' own claim, not tested in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "evans-a1-perceptron-ensemble-encoding",
+     "value": "The authors describe a binary dimensionality reduction example in which data with a starting dimension of 200 is converted to a 16-bit binary vector for 16 qubits, using an ensemble of weak classifiers (perceptrons) trained by a closed-form solution w = y X-transpose (X X-transpose) to the minus one, with each output of minus one converted to zero.",
+     "anchor": "Appendix A1, p.38",
+     "quotes": [
+      "In this example we will assume that our data has a starting dimension of 200 and that we are using a quantum computer/simulator that has 16 qubits.",
+      "w = yXT(XXT)−1,",
+      "Each −1 is converted to zero, and the N outputs are combined together to form the binary representation for the algorithm comparisons."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own example, in Appendix A1.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The example is not used in the XOR experiment, which uses rotation-gate data embedding."
+    },
+    {
+     "id_suggestion": "evans-a2-pauli-commutator-identity",
+     "value": "The authors state and prove in Appendix A2 that for a Pauli matrix and any operator B the commutator of the Pauli matrix with B equals minus i times the difference of two shifted conjugations of B by the rotation exp(-i theta sigma / 2), at plus and minus a shift of pi over two; the proof expands the exponentials with a Pauli matrix identity and ends at the commutator sigma B minus B sigma.",
+     "anchor": "Appendix A2, p.38-39",
+     "quotes": [
+      "A2 Statement and Proof of the Pauli Commutator Identity",
+      "[σi, B] = −i",
+      "= σiB − Bσi"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proved identity whose full statement the text layer breaks across lines, so only fragments could be quoted.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "I checked the algebra by hand: with exp(i pi sigma over four) equal to (1 + i sigma) over square root of two, the difference reduces to i times (sigma B minus B sigma), and the factor of minus i gives the commutator. The identity assumes the rotation exp(-i theta sigma / 2), which fixes the constant a of Section 4.4 at minus one half."
+    },
+    {
+     "id_suggestion": "evans-a3-bch-identity",
+     "value": "The authors prove in Appendix A3 that for operators A and B on a Hilbert space and f of lambda defined as exp(lambda A) B exp(minus lambda A), f of lambda equals exp(lambda times the commutator map with A) applied to B, by Taylor expansion with the nth derivative at zero equal to the nth iterated commutator.",
+     "anchor": "Appendix A3, p.39-40",
+     "quotes": [
+      "Let Aˆ : H → H and Bˆ : H → H be operators in Hilbert space H, and let f (λ) be a single parameter",
+      "f (λ) = eλAˆBˆe−λAˆ.",
+      "f (λ) = eλ[Aˆ,·]Bˆ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement and its conditions are quoted from Appendix A3, and the proof follows by derivatives and a Taylor series.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The paper expands a Taylor series around zero and does not state a convergence condition; for operators on a finite-dimensional space the series converges."
+    },
+    {
+     "id_suggestion": "evans-a4-derivative-of-exponential",
+     "value": "The authors prove in Appendix A4 that for an operator Z of theta the derivative of the exponential of Z with respect to theta equals an integral over s of exp((1 minus s) Z) times the derivative of Z with respect to theta times exp(s Z), using a series expansion, an index swap and Euler's beta function identity.",
+     "anchor": "Appendix A4, p.40-41",
+     "quotes": [
+      "Let Z(θ) be a some operator parameterized by θ. Then",
+      "1 e(1−s)Z(θ) ∂Z(θ) esZ(θ)ds"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The statement and its condition are quoted from Appendix A4 and proved there.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The integral limits are lost in the text layer; the integration is over s from 0 to 1, as the beta function identity in Equation A31 requires."
+    },
+    {
+     "id_suggestion": "evans-a5-euler-beta-identity",
+     "value": "The authors state and prove in Appendix A5 Euler's beta function identity, relating a ratio of factorials to an integral over the unit interval, by an integral of products of powers and exponentials, a change to polar coordinates and a substitution; they note the proof is readily available in numerous online sources.",
+     "anchor": "Appendix A5, p.41-42",
+     "quotes": [
+      "A5 Statement and Proof of Euler’s beta function identity",
+      "Proof. This proof is readily available in numerous online sources."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proved identity whose full statement the text layer breaks across lines, so the statement could not be quoted.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "A standard result, proved here only for the integer arguments the derivation needs."
+    },
+    {
+     "id_suggestion": "evans-a6-stochastic-parameter-shift",
+     "value": "The authors derive in Appendix A6 the stochastic parameter-shift rule for gates of the form with generator H plus theta V, where H is an arbitrary linear combination of Pauli operator tensor products and V is a tensor product of Pauli operators, giving the gradient as an integral over s of a difference of two shifted expectation values.",
+     "anchor": "Appendix A6, p.42-44",
+     "quotes": [
+      "by replacing the operator Gˆ in UˆG(θ) = e−iaθGˆ with Gˆ = Hˆ + θVˆ , where Hˆ is an arbitrary linear combination of Pauli operator tensor products, and Vˆ is a tensor product of Pauli operators.",
+      "which is the stochastic parameter-shift rule [37, 42]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A derivation that the text layer breaks across lines, so the final statement could not be quoted as an equation; the rule is also attributed to references 37 and 42.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The derivation uses a second constant b with b not equal to a in the shifted unitary, which the paper does not explain."
+    },
+    {
+     "id_suggestion": "evans-a6-sampling-cost",
+     "value": "The authors state that the stochastic parameter-shift gradient needs a second quantum circuit run in conjunction with the original circuit, that the integral is approximated by sampling s from a uniform distribution on the unit interval, and that while this requires more resources, it is an accurate quantum calculation of the gradient of the quantum loss function.",
+     "anchor": "Appendix A6, p.44",
+     "quotes": [
+      "Additionally, the integral is approximated by the following sampling scheme:",
+      "While this does require more resources to run, it is an accurate quantum calculation of the gradient of the quantum loss function."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement given with the derivation and a citation, but without a measurement in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ],
+ "read_sha256": "738a611b466e0de872e418bb8bb8dc91fbca0e36e235030839e63cfb40e63390"
+}

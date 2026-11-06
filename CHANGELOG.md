@@ -110,6 +110,21 @@ this project keeps having to replace with a step.
   resting on its quotes and each LOW as one study's single run. Phase 2's
   F162 contradicts the document's in-segment wins, which none of the six
   states, so no relation is written. INTAKE section 74
+- **feat**: Sprint 16 Task F (F114, #170), the reads. All 20 papers (531
+  pages) read in full by six local readers and reviewed in full; five
+  groups applied (g333, g334, g133-r1, g155, g156: 1,144 new assertions,
+  a second apply writing nothing each time); g154-r1 waits for one
+  certainty change the team lead decides. Counts as of 2026-11-06:
+  assertions 34,897 to 36,041. Task B step 3: per page, readers +27%
+  tokens and +70% minutes, and reviewers +92% and +74%, against Sprint
+  15's baseline, with 0 cache misses. INTAKE section 73
+- **fix**: `read_telemetry.totals` counted a trial's writes and the empty
+  re-applies (g333 showed 1,030 written for 515, and 2 applies for 1); it
+  now counts only live writes. Test proven red by injection
+- **fix**: the Task F/G intake test required each list paper to stay at
+  tier "seen"; Task F's reads moved them to "read", and the full suite
+  before Manual Validation failed on it (1 of 1,578). It now accepts
+  "seen" or "read"
 
 ### 2026-10-31 to 2026-11-05 (Sprint 15, PR #149, merged to develop 2026-11-05 and to main via PR #163 the same day; tagged sprint-15)
 
