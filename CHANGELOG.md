@@ -128,7 +128,8 @@ this project keeps having to replace with a step.
 - **docs**: F140 carded for Sprint 17 (team lead, 2026-11-06): testing
   made risk-based, effective and as fast as reasonably possible; the
   local full suite went from 199 s (Sprint 12) to 4,124 s
-- **chore**: Sprint 16 at Phase 5.3 Manual Validation (2026-11-06)
+- **chore**: Sprint 16 at Phase 5.3 Manual Validation (2026-11-06); the
+  sprint's own status field set too (the footer reads it)
 
 ### 2026-10-31 to 2026-11-05 (Sprint 15, PR #149, merged to develop 2026-11-05 and to main via PR #163 the same day; tagged sprint-15)
 
