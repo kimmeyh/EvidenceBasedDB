@@ -81,6 +81,7 @@ from store.backup import backup_before_write  # noqa: E402
 from store.grading import grade, high_grades, low_grade  # noqa: E402
 from store.ingest import (FULL_READ_MARK, AssertionRecord, add_read, append_updated_reason,  # noqa: E402
                           checked_when_stored, insert_verified_assertion, set_tier, sync_verified_assertion, validate_assertion)
+from store.merges import holder, promotes  # noqa: E402
 from store.ocr import IMAGE_SUFFIXES  # noqa: E402
 from store.quotes import (QUOTE, ocr_only_quotes, plain, read_from_figure, require_edit_basis, require_verbatim,  # noqa: E402
                           source_text)
@@ -141,6 +142,9 @@ GROUP_READER: dict[str, str] = {}
 RECORD_READER: dict[str, str] = {}
 RECORD_TAG: dict[str, str] = {}
 UNREAD: dict[str, dict[str, str]] = {}
+# F137 (Sprint 16 Task E, team lead Q6 = 1, 2026-11-06): `store.merges` names each record closed as a duplicate and
+# the record that holds its assertions now. A reader file that names the duplicate still reads as written (g131), and
+# its assertions are entered, checked and owned under the holder; the duplicate itself is never promoted again.
 
 REVIEWS_DIR = ROOT / "manifests" / "sprint13_g_reviews"
 _TABLES = {"quote_edits": QUOTE_EDITS, "extra_quotes": EXTRA_QUOTES, "value_replace": VALUE_REPLACE,
@@ -327,7 +331,10 @@ def assertions(problems: list[str] | None = None) -> list[tuple[str, AssertionRe
 
     def add(g, rid, p, *args):
         try:
-            out.append((g, record(g, rid, *args), rid, p))
+            rec = record(g, rid, *args)
+            if holder(rid) != rid:  # F137: owned, checked and yielded under the record it was merged into
+                rec = replace(rec, provenance=f"{holder(rid)}{rec.provenance[len(rid):]}")
+            out.append((g, rec, holder(rid), p))
         except ValueError as e:
             if problems is None:
                 raise
@@ -650,7 +657,7 @@ def anchor_moves(conn) -> list[tuple[AssertionRecord, object]]:
             when = ANCHOR_FIX_ON.get(aid) or f"{REVIEWED_ON.get(g, '')} ({tag(g, rid)})"
             day = when[:10]
             a = AssertionRecord(
-                id=aid, value=value, provenance=f"{rid}, {anchor}",
+                id=aid, value=value, provenance=f"{holder(rid)}, {anchor}",  # F137: the holding record
                 citation_context="; ".join(f'"{q}" ({anchor})' for q in quotes), evidence_tag=tag_,
                 context=contexts[0], units=units, rounding=rounding, certainty=cert,
                 certainty_reasons=reasons, fidelity=fidelity, reading_level=level, derivation=derivation,
@@ -658,7 +665,7 @@ def anchor_moves(conn) -> list[tuple[AssertionRecord, object]]:
                 updated_reason=f"{when}: {FULL_READ_MARK}: anchor corrected at the sign-off to "
                                f"{anchor}; the stored quotes checked against the source again")
             # F136: an anchor already stored as corrected is not checked again (a sync then changes nothing)
-            out.append((a, checked_when_stored(conn, a, rid)
+            out.append((a, checked_when_stored(conn, a, holder(rid))
                         or require_verbatim(aid, a.citation_context, plain(source_text(p["file"])), value=value)))
     return out
 
@@ -724,7 +731,7 @@ def apply_changes(conn) -> list[str]:
             conn.execute("INSERT INTO paper_applicability (record_id, context_id, rationale) VALUES (?, ?, ?)",
                          (rid, ctx, f"{p['what_it_is'].rstrip('.')} -- first-pass full read"))
             log.append(f"applic {rid} [{ctx}]")
-        if tier != "read":
+        if promotes(rid, tier):
             set_tier(conn, rid, "read", checked_against_source=(
                 f"{day}, Claude, read every quoted passage in context and checked every quote and figure against "
                 f"the source; the paper read whole at first pass by a {first_pass(g, rid)}"))

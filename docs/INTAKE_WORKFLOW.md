@@ -3930,3 +3930,63 @@ snapshot as of 2026-11-06.
   and a page number still dropped; the page check finds a cell on its
   page; a stated limit keeps its type while another measured HIGH is
   still refused; the prompt and the check agree.
+
+## 71. The two Dunjko records held as one (Sprint 16 Task E, F137)
+
+- **The finding.** `dunjko-2017-machine-learning-artificial-intelligence-quantum`
+  (arXiv 1709.02779) and
+  `dunjko-2018-machine-learning-amp-artificial-intelligence` (DOI
+  10.1088/1361-6633/aab406, Reports on Progress in Physics 81(7), 2018)
+  are one paper: the preprint and its journal version. Their local copies
+  are one byte-identical PDF (SHA-256 7aa572f736a826a0...). The team lead
+  chose to hold them as one record (Q6 = 1, 2026-11-06).
+- **The merge** (`scripts/sprint16_f137_dunjko.py`, dry run by default,
+  `--apply` after a verified backup). It refuses unless the two local
+  copies hash the same. dunjko-2018 keeps the paper and adds
+  `arXiv:1709.02779` to its access, after the DOI (the DOI still
+  resolves its citation). Each of dunjko-2017's assertions moves to
+  dunjko-2018: its yield row and the record id in its provenance, with a
+  note in its updated_reason. The anchor and the quotes stay as they
+  were, since the PDF is the same. dunjko-2017 is closed as a duplicate,
+  as the Lin duplicate was (F33): tier `seen`, a disposition that names
+  dunjko-2018, and a `superseded-by` source link. Its reads,
+  applicability and found-via rows stay as its history. A second run
+  changes nothing.
+- **Routes.** dunjko-2017's two found-via routes (QMLPapers and
+  Roadmap-to-QML at a239747648) are copied to dunjko-2018, each with a
+  note: each list linked arXiv 1709.02779, which dunjko-2018's access now
+  holds. F104's test requires every record that holds a listed id to
+  carry the list's route, and it went red on the first gate until the
+  copy was made.
+- **Later reads.** Two older reads name dunjko-2017: g131 (Sprint 13
+  Task G) and Sprint 11's task G (group g03). `store.merges` names the
+  merge (`MERGED_INTO`, `holder()`, `promotes()`), and both appliers
+  (`scripts/full_read_apply.py` and `scripts/sprint11_reading.py`) ask
+  it: such rows are entered, checked and owned under the record it was
+  merged into, and a merged record's tier is never set back to read.
+  The first gate found the Sprint 11 applier: its rerun set dunjko-2017
+  back to read and its provenance back to dunjko-2017. Its test now
+  checks the tier of the record that holds the rows.
+- **Trial on a store copy** (2026-11-06): 69 assertions moved; a second
+  run changed nothing; the applier's dry run and apply after it wrote
+  nothing new, and no provenance named dunjko-2017. Counts are a
+  snapshot as of 2026-11-06.
+- **Applied live** 2026-11-06 06:08, after a verified backup
+  (`evidence-20261106T060806262630-sprint16-f137-dunjko-records-merged.db`):
+  69 assertions moved; the two routes were copied by a second apply at
+  06:49, after its own verified backup
+  (`evidence-20261106T064905128225-sprint16-f137-dunjko-records-merged.db`).
+  The script also refuses to finish if any
+  assertion still names dunjko-2017 in its provenance after the move,
+  so an assertion with no yield row cannot stay behind unseen (fresh-eyes
+  review).
+- **Checks.** Three tests. Two unit tests were proven red by injection:
+  a merged record's row is held by the record it was merged into (with
+  `holder` returning the record itself, the row's owner named
+  dunjko-2017); and a merged record is never set back to read by either
+  applier (with the merge condition removed from `promotes`, dunjko-2017
+  at seen was promoted; added at the fresh-eyes review). Both were
+  proven red again after the functions moved into `store.merges`. The live test
+  (`live_store`) was red before the live merge (dunjko-2017 at tier
+  read) and is green after it; it checks the end state, including the
+  local-file check passing for both records.

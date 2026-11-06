@@ -83,6 +83,18 @@ this project keeps having to replace with a step.
   suggestion on a "measured" result only on "stated limit", and the
   Sprint 16 reader prompt says a stated limit keeps the type "measured".
   INTAKE section 70. Four tests, each proven red
+- **feat**: Sprint 16 Task E (F137, #169). The two Dunjko records are held
+  as one (team lead, Q6 = 1): the arXiv preprint record is closed as a
+  duplicate of the journal-version record (tier seen, a superseded-by
+  link) and its 69 assertions move there, each with a note; the access
+  adds arXiv:1709.02779, and its two list routes are copied there. The
+  new `store.merges` names the merge; both appliers that re-enter older
+  reads of it (`full_read_apply.py`, `sprint11_reading.py`) enter its
+  rows under the record that holds it and never set it back to read.
+  The Sprint 11 and F104 tests now allow for the merge. Applied live
+  with verified backups. INTAKE section 71.
+  Three tests: two unit tests proven red by injection, the live test red
+  before the merge and green after it
 
 ### 2026-10-31 to 2026-11-05 (Sprint 15, PR #149, merged to develop 2026-11-05 and to main via PR #163 the same day; tagged sprint-15)
 
