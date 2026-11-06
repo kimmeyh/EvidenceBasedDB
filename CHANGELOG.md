@@ -95,6 +95,21 @@ this project keeps having to replace with a step.
   with verified backups. INTAKE section 71.
   Three tests: two unit tests proven red by injection, the live test red
   before the merge and green after it
+- **feat**: Sprint 16 Tasks F (intake) and G (F114, #170; F57, #171).
+  Roadmap-to-QML at 399b022651: 6 papers new to the store (4 arXiv, 2
+  Quantum journal papers by DOI, now entered with the journal's free
+  PDF), each with its copy. The team lead's 2 named papers: QBoost for
+  regression (arXiv 2108.13346) and the wangy8205165 white paper
+  (hand-origin, linked code-of from its repository record). F's 20
+  papers' briefs (g333, g334, two re-entry groups, g155, one of g156);
+  `f117_review.py items` writes the review texts; `finalize` names
+  Sprint 16's prompt. INTAKE sections 72 and 73. Tests proven red
+- **feat**: Sprint 16 Task H (F51, #172). The CVQBoost findings record
+  (FourierWall2's working document of 2026-08-04, read in full; no author
+  named, as the document names none) and its six assertions, each value
+  resting on its quotes and each LOW as one study's single run. Phase 2's
+  F162 contradicts the document's in-segment wins, which none of the six
+  states, so no relation is written. INTAKE section 74
 
 ### 2026-10-31 to 2026-11-05 (Sprint 15, PR #149, merged to develop 2026-11-05 and to main via PR #163 the same day; tagged sprint-15)
 

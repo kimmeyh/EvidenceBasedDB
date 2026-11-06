@@ -139,6 +139,23 @@ def test_a_sprint15_read_names_sprint15s_prompt(review, monkeypatch):
     assert {out["tags"][r] for r in out["tags"] if r != "p2"} == {review.S15_TAG}
 
 
+def test_a_sprint16_group_names_sprint16s_prompt(review, monkeypatch):
+    """Sprint 16 Task F: its reads carry figure_count as Sprint 15's do, so a Sprint 16 group is named by its group.
+    Proven to fail by injection, 2026-11-06: with S16_GROUPS ignored in `finalize`, the group named Sprint 15's
+    prompt."""
+    _decide(review, GOOD)
+    monkeypatch.setattr(review.build, "local_file", lambda rid: Path(f"{rid}.json"))
+    monkeypatch.setattr(review, "S16_GROUPS", ("g050",))
+    path = review.READS_DIR / "group_g050.json"
+    group = json.loads(path.read_text(encoding="utf-8"))
+    for p in group["papers"]:
+        p["figure_count"] = 0
+    path.write_text(json.dumps(group), encoding="utf-8")
+    out = review.finalize("g050", "2026-11-06", review.STORED)
+    assert (out["tag"], out["reader"]) == (review.S16_TAG, review.S16_READER)
+    assert "sprint16_f114_reads" in out["reader"]
+
+
 def test_a_missing_or_malformed_decision_is_refused(review):
     """Proven to fail by injection, 2026-10-30: with the basis check removed, a HIGH on "measured result" passed."""
     _decide(review, {k: v for k, v in GOOD.items() if k != "sketch"})

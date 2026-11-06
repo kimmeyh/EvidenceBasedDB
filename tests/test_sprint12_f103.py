@@ -37,7 +37,7 @@ def test_the_store_holds_what_the_script_writes(live_conn):
     """Each source at `read` with every copy's SHA-256 in its evidence;
     each assertion as written; the two parts name each other in their
     dispositions and are not linked (no link type fits a series,
-    ADR-0005 A10); the repository is linked to nothing. Proven to fail by
+    ADR-0005 A10); the repository is linked to nothing but its white paper (Sprint 16 Task G). Proven to fail by
     injection, 2026-10-23: run against the backup taken before the apply,
     it named the first source; against the backup taken before the
     applicability was added, it named the first source's empty
@@ -62,9 +62,14 @@ def test_the_store_holds_what_the_script_writes(live_conn):
     assert held is not None and tuple(held) == ("seen", F103.repo_entry()["access"],
                                                 F103.repo_entry()["disposition"]), repo
     assert F103.repo_entry()["access"] == "https://github.com/wangy8205165/Quantum-NeuralNetwork-WhitePaper"
+    # Sprint 16 Task G (F57): the repository's one link is code-of its white paper, entered then
+    allowed = {(repo, "wangy8205165-2026-quantum-neural-networks-theory-architectures", "code-of")}
     for rid in (part1, part2, repo):
-        assert not live_conn.execute("SELECT 1 FROM source_links WHERE from_id = ? OR to_id = ?",
-                                     (rid, rid)).fetchone(), rid
+        links = {tuple(r) for r in live_conn.execute("SELECT from_id, to_id, link_type FROM source_links WHERE "
+                                                     "from_id = ? OR to_id = ?", (rid, rid))}
+        assert links <= allowed, rid
+    assert allowed <= {tuple(r) for r in live_conn.execute("SELECT from_id, to_id, link_type FROM source_links "
+                                                           "WHERE from_id = ?", (repo,))}
     for key, a in F103.ASSERTIONS:
         row = live_conn.execute("SELECT r.value, r.certainty, r.certainty_reasons, f.citation_context FROM records r "
                                 "JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (a.id,)).fetchone()

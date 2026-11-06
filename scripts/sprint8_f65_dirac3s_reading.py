@@ -328,6 +328,12 @@ CLASSED = {
     "dirac3-integer-cost-per-level-line-falsified": ("not addressed", None),
     "dirac3-integer-cost-tracks-variables-not-levels": ("not addressed", None),
     "dirac3-matches-exact-optimum-on-convex-cvqboost": ("not addressed", None),
+    # Sprint 16 Task H (F51): the CVQBoost findings record's tuning results; the Dirac-3S guide does not cover them
+    "cvqboost-ridge-must-scale-with-record-count": ("not addressed", None),
+    "cvqboost-relaxation-schedule-4-no-gain-3-8x-cost": ("not addressed", None),
+    "cvqboost-16-samples-no-better-than-8": ("not addressed", None),
+    "cvqboost-shallow-weak-learners-hurt": ("not addressed", None),
+    "cvqboost-in-segment-overfit-exceeds-xgboost": ("not addressed", None),
     "dirac3-stratification-falls-short-ballin-2026": ("not addressed", None),
     "favorable-dirac3-papers-are-qci-authored": ("not addressed", None),
     # Added 2026-10-15 (Sprint 9 Task A, F79): Phase 2's B4 and B5 hardware

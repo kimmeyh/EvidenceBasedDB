@@ -3990,3 +3990,156 @@ snapshot as of 2026-11-06.
   (`live_store`) was red before the live merge (dunjko-2017 at tier
   read) and is green after it; it checks the end state, including the
   local-file check passing for both records.
+
+## 72. F114's new papers for Sprint 16: the list's 6 and the team lead's 2 (Sprint 16 Tasks F and G)
+
+Every count is a snapshot as of 2026-11-06. Written before the applies.
+
+- **The list, at one commit.** Roadmap-to-QML read at commit
+  `399b022651` (pushed 2026-11-05; the head on 2026-11-06). Between
+  `ea6f42a7c0` (section 57) and it, only `2026/2026.md` changed, by 6
+  added lines. So that one file was fetched, and the other 12 were copied
+  from the `ea6f42a7c0` copy; each copy's git blob hash was checked equal
+  to its blob at `399b022651` first. The copies are under
+  `References\Roadmap-to-QML_399b022651\`, outside git; the manifest
+  `manifests/sprint16_f114_roadmap.json` records each file's SHA-256.
+- **6 papers new to the store, all linked in `2026/2026.md`.** 4 arXiv
+  ids (2610.42029, 2611.00272, 2611.00303, 2611.05079) and 2 Quantum
+  journal papers by DOI (10.22331/q-2026-10-20-2239 and
+  10.22331/q-2026-10-29-2256). Each enters through the door at `seen`
+  under `qml`, with a route naming the list at `399b022651`. A Quantum
+  link was carried before (F104 entered arXiv ids only); Quantum is open
+  access, so `scripts/sprint16_f114_roadmap.py` now enters a new Quantum
+  link by its DOI with the journal's PDF. Neither Quantum paper is held
+  under another id: a title search of the store found none (F137's
+  lesson); the script now refuses a Quantum entry whose title the store
+  already holds (fresh-eyes review). The 20 other links are carried, as
+  at section 57.
+- **Free copies: 6 of 6.** The arXiv PDFs came through F104's paced
+  fetcher (each carries its arXiv stamp on page 1); the Quantum PDFs came
+  from `quantum-journal.org/papers/<id>/pdf/`. Each is named with its
+  SHA-256 in `evidence`.
+- **The team lead's 2 named papers (Task G, F57; Q2 = 2, Q3 = 1)**, from
+  `manifests/sprint16_f57_named.json` through `build_record`, by
+  `scripts/sprint16_f57_named.py`:
+  - QBoost for regression (Goes et al., arXiv 2108.13346, v1, the only
+    version), api-origin, from its local copy.
+  - The wangy8205165 white paper, "Quantum Neural Networks: Theory,
+    Architectures, and Applications" (29 pages), hand-origin: it has no
+    DOI or arXiv id, and the PDF names no author, so the citation names
+    the GitHub account and the commit. Its local copy's git blob
+    (8f800932c0) is `Quantum_NeuralNetwork.pdf` at the repository's head
+    commit 920c11c (2026-10-26). A `code-of` source link from the
+    repository record (which holds the paper's LaTeX source and PDF) to
+    the paper record. The repository record's disposition, which said it
+    was linked to no paper, is corrected, with a note (fresh-eyes
+    review). `scripts/sprint12_f103_intake.py` entered that record, so
+    it holds the corrected text and Task G's script reads it from there;
+    F103's test now allows that one link. A re-run finds each entry by its id or its access before
+    any metadata request.
+- **Reading.** The 8 are read in full by local readers under
+  `manifests/sprint16_f114_reads/READER_PROMPT.md`, as two new ledger
+  groups after g332: g333 (the 4 arXiv papers and the first Quantum
+  paper) and g334 (the second Quantum paper and the 2 named papers).
+
+## 73. F114 at 20 papers, under Sprint 16's prompts (Sprint 16 Task F)
+
+Written 2026-11-06, before the apply; the counts that enter are added
+when it runs. Every count here is a snapshot as of 2026-11-06.
+
+- **What is read.** 20 papers, each in full, figures included
+  (`scripts/sprint16_f114_local.py` writes the briefs and adds g333 and
+  g334 to the ledger), in the plan's order:
+  - g333 and g334: section 72's 8 papers;
+  - then 12 from the ledger, from the first group not yet read in full.
+    Each reviewed group's unread record that has a file re-enters (F125):
+    g133-r1 (emmanoulopoulos-2022 and evans-2024) and g154-r1 (the four
+    he and heese records Sprint 15 left at its 100). Then g155 (5) and
+    g156's first record (henriet-2020); g156's other four wait for the
+    next release.
+  - Left out, as in Sprint 15: g069's and g072's unread saved web pages
+    (no article), and the records whose source is a directory (three
+    OpenCyc releases, ds3lab-feebee, the fraud-detection handbook). No
+    book falls in the 12 (Q7: Simeone 2022 and Cichocki 2016 went to
+    F138).
+- **The readers.** Local first-pass readers (Sonnet 5.5) under
+  `manifests/sprint16_f114_reads/READER_PROMPT.md`, one per group, each
+  given its prompt with the group filled in. g333 runs first and alone:
+  its telemetry is Task B's step 3, the measure against Sprint 15's
+  baseline, recorded before the other five start.
+- **The review.** One Sonnet 5.5 reviewer per group under
+  `manifests/sprint16_f114_reads/REVIEW_PROMPT.md`; the reviewer reads
+  each paper in full (Q5 = 2). `f117_review.py items` now also writes
+  each paper's review text (`work\f114\texts\<record>.txt`), which
+  Sprint 15 wrote by hand: its pages separated by form feeds, a thin page
+  replaced by its OCR text. On 2026-11-06 it reproduced three of Sprint
+  15's texts byte for byte (checked by hand with a scratch comparison,
+  not by a test: the test uses made-up pages). `finalize` names Sprint 16's tag and prompt for
+  these six groups (their reads carry `figure_count`, as Sprint 15's do,
+  so they are told apart by group).
+- **The apply.** `scripts/full_read_apply.py --telemetry`: a dry run,
+  a trial on a copy of the store, then live with its verified backup; a
+  second apply enters nothing. Every certainty change on a stored
+  assertion waits for the team lead.
+
+## 74. The CVQBoost findings record and its six assertions (Sprint 16 Task H, F51)
+
+Written 2026-11-06, before the apply. Every count is a snapshot as of
+2026-11-06.
+
+- **Released from HOLD** (team lead, Q4 = 1). The hold waited for a
+  re-run that Phase 2 does not hold; Phase 2 cites the document as a
+  planning reference only.
+- **The source.** FourierWall2's working document "Maximizing
+  Predictions from CVQBoost: Cumulative Findings", last updated
+  2026-08-04. Its two copies (`References\` and FourierWall2's
+  `docs\`) both hash to SHA-256 `425358a7b4cec71f...` on 2026-11-06; the
+  script refuses to run if either differs. Read in full on 2026-11-06,
+  sections 1 to 12 and every table.
+- **Authorship** (the handoff's decision 1, still open). The document
+  names no author. F51's card says the authorship is settled by
+  provenance, not by attribution. So the record
+  (`fourierwall2-2026-maximizing-predictions-cvqboost-cumulative-findings`)
+  cites the FourierWall2 campaign and names no person; its route cites
+  the title. The `References\` copy's file name carries a name; the
+  evidence says it is the collector's label, not an attribution.
+- **The six assertions** are the handoff's
+  (`05-sprint-script-draft.py`). Each value is rewritten so that every
+  figure in it is in its own quotes, which the quote check requires. The
+  rewrite drops two figures the drafts' quotes did not hold: the
+  relaxation runs' AUROC pair and QPU seconds (section 9's table). Each
+  is graded LOW, "measured result": each is one study's single run on
+  one seed, and the document itself says "single stochastic runs". The
+  handoff's 2026-09 HIGH grades predate `store.grading` (Sprint 12),
+  under which a measured result is LOW; each reason says why. The
+  in-segment overfitting assertion keeps the draft's note that the
+  section's "3-8x" summary disagrees with its own table (ratios about
+  83, 7.6, 8.2 and 1.7).
+- **Applicability**: `platform:dirac-3` (sections 3 and 4) and `method`
+  (section 2, the handoff's decision 4.1). The five Dirac-3 assertions
+  are classed "not addressed" against the Dirac-3S guide in
+  `scripts/sprint8_f65_dirac3s_reading.py` (F65's rule: each new Dirac-3
+  assertion is classed when it is entered); the guide does not cover
+  CVQBoost's tuning.
+- **Phase 2's two records on the in-segment wins** (sections 6, 10 and
+  11): B4's Dirac-3 replication
+  (`cvqboost-in-segment-edge-negative-on-device-spectra-b4`: no
+  in-segment advantage on any scoreable cell) and F162 (a proxy, not the
+  device, over ten seeds on three cells, label target only: no in-pocket
+  win repeats reliably). None of the six states a win, so no
+  `contradicts` relation is written; the record's evidence names both.
+  The shallow-learner assertion's loss is against a win at the default
+  configuration, and its reason says so. Whether to add a seventh
+  assertion for the wins, contradicted by B4, is a question for the
+  team lead at Manual Validation.
+- **Fresh-eyes review** (after the first apply, 2026-11-06): the F162
+  wording was narrowed to its limits and B4 named; the route's
+  name-bearing citation was replaced by the title; the num_samples
+  finding typed `positive` (an `absence` is a search of the source, and
+  this is a run); the overfitting note restored; the leak assertion's
+  fidelity set to `scoped` (its value leaves out "or vice versa"). The
+  re-apply synced each, after its own verified backup; a further apply
+  writes nothing.
+- `scripts/sprint16_f51_cvqboost.py`: a dry run checks every quote;
+  `--apply` takes a verified backup; a second apply writes nothing.
+  `tests/test_sprint16_f51_cvqboost.py`.
