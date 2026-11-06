@@ -3890,3 +3890,43 @@ snapshot as of 2026-11-06.
 - **Still to come (Task B step 3).** The measures on F114's first Sprint
   16 group, set beside this baseline in the status note before the other
   groups start.
+
+## 70. Table cells that hold only a number, and a stated limit's type (Sprint 16 Tasks C and D, F134 and F135)
+
+- **F134, the cells.** `store.quotes.plain` drops each line that holds
+  only a number, so a quote may cross a page break (the page number sits
+  on a line of its own). The text layer without layout puts each table
+  cell on a line of its own too, so a cell such as 881 was dropped, and
+  a quote through a table's row could not be found (readers g115 and
+  g120, Sprint 15). A PDF's text now holds a third form
+  (`store.quotes.cells_text`): the text without layout with its
+  number-only lines kept, except a page's first and last non-blank line
+  when it holds only a number, since that is where a page number sits.
+  It comes before the OCR part, and the reader check's page check holds
+  the same form for each page. The page number is still dropped from all
+  three forms, so a quote across a page break is found as before and a
+  quote cannot carry a page number (the first version kept every number
+  line; the fresh-eyes review found that a quote, and so its value,
+  could then hold a page number). A table cell that is a page's first or
+  last line is still dropped. The change only adds text a quote may
+  match, so no stored quote can stop matching; the live quote tests
+  confirm it at the full suite.
+- **F135, a stated limit's type.** Reader g118 typed five stated limits
+  on measured results "theoretical", "claim" or "setup", because the
+  reader check refused a high suggestion on a "measured" result. The
+  review prompt has said since Sprint 15 that such a limit is HIGH on
+  "stated limit" whatever its type. Now the check agrees: a "measured"
+  result may be suggested high only on `high_basis` "stated limit", and
+  the Sprint 16 reader prompt says to keep the type "measured" and never
+  change it to pass the check. What a measurement found, even a negative
+  finding or a failure, is a result, not a stated limit, and stays low;
+  the Sprint 16 review prompt's definition of "stated limit" now says the
+  same (Sprint 15's listed "failure" among stated limits). The check is
+  weaker by design: it passes any measured "high" on "stated limit",
+  limit or not, and the review judges it. The applier grades from the
+  coordinator's decisions, never the reader's suggestion, so no grade
+  changes by this.
+- **Checks.** Four tests, each proven red by injection: a cell is found
+  and a page number still dropped; the page check finds a cell on its
+  page; a stated limit keeps its type while another measured HIGH is
+  still refused; the prompt and the check agree.

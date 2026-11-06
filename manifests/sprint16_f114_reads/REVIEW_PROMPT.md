@@ -95,8 +95,11 @@ HIGH means the paper itself settles the statement. Only these bases:
   `"low"` and name the cited result. A textbook-standard tool (Hoeffding,
   a union bound) used as a step does not make it LOW. A bound argued
   informally is not this basis.
-- **stated limit**: a limitation, caveat or failure the paper itself
-  states about its own work.
+- **stated limit**: a limitation or caveat the paper itself states about
+  its own work: what its results do not cover. What a measurement found,
+  even a negative finding or a failure ("did not improve", "failed on
+  the larger instances"), is a measured result, not a stated limit
+  (Sprint 16, F135: the reader prompt says the same).
 
 Everything else is LOW: a measured result (an experiment or simulation
 outcome), the authors' claim or interpretation, a cited result, a field
@@ -115,8 +118,9 @@ not proved (F129)"; the team lead decides that class.
 
 **A stated limit keeps its true type.** A limit the paper states on its
 own measured result is HIGH on "stated limit" whatever its
-`result_type`; a reader may have changed the type to pass the reader
-check (F135). Name the type it should have in `why`.
+`result_type`; a Sprint 15 reader changed the type to pass the reader
+check (F135). From Sprint 16 the reader keeps it "measured"; name the
+type it should have in `why` when it does not.
 
 **A value read from a figure** (the reader marked it `from_figure`; its
 value starts "Read from Figure N") is never HIGH on the figure alone,

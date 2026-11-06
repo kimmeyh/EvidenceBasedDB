@@ -34,7 +34,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from store.ocr import ocr_pages, page_layouts, page_texts  # noqa: E402
-from store.quotes import ocr_only_quotes, plain, read_from_figure, require_verbatim, source_text  # noqa: E402
+from store.quotes import (cells_text, ocr_only_quotes, plain, read_from_figure, require_verbatim,  # noqa: E402
+                          source_text)
 
 VERDICTS = {"confirmed", "corrected", "narrowed", "widened", "contradicted", "not in the paper"}
 RESULT_TYPES = {"measured", "theoretical", "field", "claim", "cited", "vendor", "setup"}
@@ -77,8 +78,12 @@ def assertion_problems(tag: str, a: dict, text: str, stored_context: str = "") -
         out.append(f"{tag}: a high suggestion needs high_basis, one of {sorted(BASES)}")
     if a.get("certainty_suggestion") == "high" and not (a.get("certainty_reason") or "").strip():
         out.append(f"{tag}: a high suggestion says where the paper settles it, in certainty_reason")
-    if a.get("certainty_suggestion") == "high" and a.get("result_type") == "measured":
-        out.append(f"{tag}: a measured result is never high")
+    # F135 (Sprint 16 Task D): a limit the paper states on its own measured result keeps the type "measured" and may
+    # be high on "stated limit" (the review prompt's rule since Sprint 15); reader g118 changed the type to pass.
+    if (a.get("certainty_suggestion") == "high" and a.get("result_type") == "measured"
+            and a.get("high_basis") != "stated limit"):
+        out.append(f'{tag}: a measured result is never high (a limit the paper states on it is high on "stated '
+                   'limit", with the type kept "measured")')
     if not (a.get("anchor") or "").strip():
         out.append(f"{tag}: no anchor (section and page)")
     out += [f'{tag}: the quote "{q[:60]}" is in the OCR text only, so its anchor says "OCR"'
@@ -119,7 +124,9 @@ def page_text(path: str, first: int, last: int) -> str:
         out += [layer[n - 1] for n in range(first, min(last, len(layer)) + 1)]
     ocr = _ocr(path)
     out += [ocr[n] for n in range(first, last + 1) if n in ocr]
-    return plain(" ".join(out))
+    layer = page_texts(path)  # F134: the plain pages again with their number-only lines (table cells) kept
+    cells = "\f".join(layer[n - 1] for n in range(first, min(last, len(layer)) + 1))
+    return plain(" ".join(out)) + " || " + cells_text(cells)
 
 
 def page_problems(tag: str, a: dict, path: str, text: str) -> list[str]:

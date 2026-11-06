@@ -43,15 +43,43 @@ QUOTE = re.compile(r'(?:^|; )"(.+?)" \(')
 _TYPOGRAPHIC = (("’", "'"), ("‘", "'"), ("“", '"'), ("”", '"'), ("​", ""))
 
 
-def plain(text: str) -> str:
+def plain(text: str, keep_numbers: bool = False) -> str:
     """Compatibility forms folded (NFKC), typographic quotes made plain,
     page-number lines dropped (a quote may cross a page break), whitespace
-    collapsed. Applied to both sides of every comparison."""
+    collapsed. Applied to both sides of every comparison.
+
+    `keep_numbers` keeps a line that holds only a number (F134, Sprint 16
+    Task C): the text layer without layout puts each table cell on its own
+    line, so a cell such as 881 was dropped with the page numbers, and a
+    quote through a table could not be found. A source's text holds both
+    forms, so a quote across a page break and a quote through a table cell
+    are each found."""
     text = unicodedata.normalize("NFKC", text)
     for typographic, ascii_form in _TYPOGRAPHIC:
         text = text.replace(typographic, ascii_form)
-    text = re.sub(r"(?m)^\s*\d+\s*$", " ", text)
+    if not keep_numbers:
+        text = re.sub(r"(?m)^\s*\d+\s*$", " ", text)
     return re.sub(r"\s+", " ", text)
+
+
+_NUMBER_ONLY = re.compile(r"\s*\d+\s*")
+
+
+def cells_text(raw: str) -> str:
+    """The text without layout with its table cells kept (F134): `plain(..., keep_numbers=True)`, after each page's
+    first and last non-blank line is dropped when it holds only a number, since that is where a page number sits
+    (fresh-eyes review of Tasks C and D: keeping every number line let a quote carry a page number, and its value
+    the number with it). `raw` is pdftotext's output, pages ended by form feeds. Close to `_fold`, which keeps every
+    number line and also rewrites superscripts and minus signs; a change to one is checked against the other."""
+    pages = []
+    for page in raw.split("\f"):
+        lines = page.splitlines()
+        filled = [i for i, line in enumerate(lines) if line.strip()]
+        for i in {*filled[:1], *filled[-1:]}:
+            if _NUMBER_ONLY.fullmatch(lines[i]):
+                lines[i] = ""
+        pages.append("\n".join(lines))
+    return plain("\n".join(pages), keep_numbers=True)
 
 
 # Set by the test harness for a test without @pytest.mark.live_store: called
@@ -74,10 +102,13 @@ OCR_MARK = " || OCR: "
 
 @lru_cache(maxsize=None)
 def _pdf_text(path: str) -> str:
-    """Both text layers; then, after OCR_MARK, the OCR text of the pages whose text layer is empty or nearly empty
+    """Both text layers (and the plain one again with its number-only lines, F134); then, after OCR_MARK, the OCR text of the pages whose text layer is empty or nearly empty
     (F115, Sprint 15 Task F), so a quote a reader took from such a page is checked against what the engine read."""
     from store.ocr import ocr_pages
-    text = " || ".join(plain(_pdftotext(path, layout)) for layout in (False, True))
+    raw = _pdftotext(path, False)
+    # F134: the text without layout once more with its number-only lines kept, so a quote through table cells is
+    # found; it comes before OCR_MARK, so it counts as the text layer.
+    text = " || ".join([plain(raw), plain(_pdftotext(path, True)), cells_text(raw)])
     ocr = ocr_pages(path)
     return text + (OCR_MARK + plain(" ".join(ocr.pages[n] for n in sorted(ocr.pages))) if ocr.pages else "")
 
@@ -277,7 +308,7 @@ _MATH_SIGNS = "√≥≤±×∞≈≠∑∏∫∂<>"
 
 
 def _fold(text: str) -> str:
-    """`plain` without its page-number rule, which would delete a value or
+    """(See also `cells_text`, F134.) `plain` without its page-number rule, which would delete a value or
     passage that is only a number (fresh-eyes review, 2026-10-21);
     superscripts become ^n before NFKC can merge "10²" into "102"."""
     text = unicodedata.normalize("NFKC", text.translate(_SUPERSCRIPT))

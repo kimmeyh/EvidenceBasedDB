@@ -237,8 +237,9 @@ def test_the_page_check_runs_no_extraction_per_anchor(monkeypatch):
     monkeypatch.setattr(subprocess, "run", no_run)
     ocr._page_texts.cache_clear()
     try:
-        assert check.page_text("x.pdf", 2, 3) == quotes.plain("plain two LAYOUT TWO ocr two")
-        assert check.page_text("x.pdf", 1, 2) == quotes.plain("plain one plain two layout one LAYOUT TWO ocr two")
+        assert check.page_text("x.pdf", 2, 3) == quotes.plain("plain two LAYOUT TWO ocr two") + " || plain two"
+        assert check.page_text("x.pdf", 1, 2) == quotes.plain(
+            "plain one plain two layout one LAYOUT TWO ocr two") + " || plain one plain two"
         assert sorted(map(str, calls)) == ["False", "True", "ocr"]  # each extraction and the OCR lookup once
     finally:
         ocr._page_texts.cache_clear()

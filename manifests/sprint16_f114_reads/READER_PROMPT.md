@@ -3,7 +3,10 @@
 Sprint 16 (2026-11-06): Sprint 15 Task H's prompt below, with F139's
 changes (Task B): each figure page is rendered through the shared render
 cache, so the reviewer opens the same image, and the check records its
-run in the group's telemetry file. Tasks C and D add theirs.
+run in the group's telemetry file. Task C (F134): a quote through table
+cells that hold only a number is now found, so quote such a row as it
+reads. Task D (F135): a stated limit on a measured result keeps the type
+"measured" (in the grading fields below).
 
 Kept verbatim so each reader file can be traced to the instructions it ran
 under. `{GROUP}` is a group of `manifests/sprint13_g_ledger.json`, or a
@@ -266,8 +269,19 @@ check fails a quote that is not on a page its anchor names.
    A "high" suggestion also needs `high_basis`, exactly one of "setup",
    "scope", "definition", "proved result", "stated limit", and
    `certainty_reason` saying where the paper settles it. An empirical
-   result is never "high", however strong. A value read from a figure is
-   never "high".
+   result is never "high", however strong; only a limit the authors state
+   on it can be (next paragraph). A value read from a figure is never
+   "high".
+   **A stated limit on a measured result keeps the type "measured".**
+   When the authors state the limit or caveat of their own measured
+   result, what it does not cover ("our results hold only for 8 qubits",
+   "we did not test on hardware"), set `result_type` "measured",
+   `high_basis` "stated limit", and suggest "high": the paper settles that
+   it states the limit. Never change the type to "theoretical", "claim" or
+   "setup" to pass the check. What the measurement found is a result,
+   even when it is negative ("the model did not improve", "the method
+   failed on the larger instances"): it is not a stated limit, and stays
+   "low".
    **A textbook-standard result is background, not a reason for "low".**
    When the paper restates a standard result (Hoeffding's inequality, the
    no-cloning theorem, the definition of a unitary), grade it on how the

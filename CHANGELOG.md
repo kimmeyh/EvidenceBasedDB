@@ -76,6 +76,13 @@ this project keeps having to replace with a step.
   prompts in `manifests/sprint16_f114_reads/`. INTAKE section 69. Six
   tests, each proven red. Step 3 (the first group's measures) runs with
   F114's first group
+- **feat**: Sprint 16 Tasks C and D (F134, #167; F135, #168). A PDF's
+  text holds a third form with its number-only lines kept, so a quote
+  through table cells is found while a page number is still dropped; the
+  reader check's page check holds it too. The reader check accepts a high
+  suggestion on a "measured" result only on "stated limit", and the
+  Sprint 16 reader prompt says a stated limit keeps the type "measured".
+  INTAKE section 70. Four tests, each proven red
 
 ### 2026-10-31 to 2026-11-05 (Sprint 15, PR #149, merged to develop 2026-11-05 and to main via PR #163 the same day; tagged sprint-15)
 
