@@ -46,6 +46,11 @@ this project keeps having to replace with a step.
   of F114's 30), Q3 = 1 (arXiv v1), Q4 = 1 (F51 released from HOLD into
   Sprint 16), Q5 = 2 (the reviewer keeps the full second read). The plan
   absorbs them; Q6 and Q7 are still open
+- **docs**: Sprint 16 plan approved (team lead, 2026-11-06): Q6 = 1 (one
+  Dunjko record: dunjko-2018 keeps the paper and adds the arXiv id; the
+  2017 record's assertions move to it), Q7 = 1 (monographs are books:
+  Simeone 2022 and Cichocki 2016 move from F114 to F138). Issues #165
+  (Task A) to #172 (Task H) created; PR #164 body updated, still draft
 
 ### 2026-10-31 to 2026-11-05 (Sprint 15, PR #149, merged to develop 2026-11-05 and to main via PR #163 the same day; tagged sprint-15)
 

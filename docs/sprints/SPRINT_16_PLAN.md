@@ -110,8 +110,8 @@ runs `python scripts/run_suite.py --changed` and CI's set on the PR.
 ## Decisions for the team lead
 
 Team lead, 2026-11-05: "q1. 1 (next sprint the will be included in F114)
-q2 2 (next sprint the will be included in F114) q3. 1 q4 1 q5. 2". Q6 and
-Q7 are not yet answered.
+q2 2 (next sprint the will be included in F114) q3. 1 q4 1 q5. 2". Team
+lead, 2026-11-06: "q6. 1 q7. 1", and "Sprint plan approved as amended".
 
 - **Q1 = 1**: F114's 20 start with the 6 new papers on Christophe Pere's
   list. From Sprint 17 on, new list papers are part of F114's 30 as a
@@ -127,6 +127,12 @@ Q7 are not yet answered.
 - **Q5 = 2**: the reviewer keeps the full second read of each paper. F139
   still measures it, and its "read once" item is named as not done, with
   this decision as the reason.
+- **Q6 = 1**: one Dunjko record. The journal record (dunjko-2018) keeps
+  the paper and adds arXiv 1709.02779 to its access; the 2017 record's
+  assertions move to it, each with a note; the 2017 record is closed as a
+  duplicate that names the journal record.
+- **Q7 = 1**: monographs are books. Simeone 2022 and Cichocki 2016 leave
+  F114 for F138 (HOLD); F114's 12 ledger papers skip them.
 
 The questions as asked:
 

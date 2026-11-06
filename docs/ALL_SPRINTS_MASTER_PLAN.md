@@ -499,7 +499,8 @@ and in git. Remaining items below.
   a textbook. A thesis, a review article and a chapter in conference
   proceedings are papers and stay in F114 or F57.
 - Candidates found on 2026-11-05 (snapshot as of that date):
-  - In F114's ledger, not yet read in full:
+  - From F114's ledger, not yet read in full (moved here by the team
+    lead's Sprint 16 Q7 = 1, 2026-11-06: monographs are books):
     simeone-2022-introduction-quantum-machine-learning-engineers (229
     pages, read in part) and
     cichocki-2016-tensor-networks-dimensionality-reduction-large (176
@@ -831,7 +832,10 @@ and in git. Remaining items below.
   Physics 81(7), 2018-06-19, by the same authors with the same title
   plus "a review of recent progress" (Crossref). So no second paper is
   missing; the question is how the store holds a preprint and its
-  journal version (Sprint 16 plan question).
+  journal version (Sprint 16 plan question). Team lead Q6 = 1
+  (2026-11-06): one record. dunjko-2018 keeps the paper and adds the
+  arXiv id; dunjko-2017's assertions move to it, each with a note; the
+  2017 record is closed as a duplicate.
 - Acceptance: each record's paper identified from its citation; the
   missing paper fetched by the paced fetcher if it is free (else on the
   hand-download list); assertions moved to the record that states them,
