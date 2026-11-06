@@ -11,7 +11,8 @@ What it gives:
 - `ocr_pages(path)`: those pages' OCR text, page by page, with the engine that read them;
 - `image_text(path)`: the OCR text of an image file that is a source of its own (not a page of a PDF).
 
-The text is cached in the store folder's `text_cache\\` (outside git) as `pdftotext`'s is: the key is the file's
+The text is cached in `store.text_cache_dir()` (outside git, one folder for every store copy, F136) as
+`pdftotext`'s is: the key is the file's
 SHA-256, the render resolution, `pdftoppm`'s version and the engine's pinned versions, so a changed file or engine
 reads again. A source that needs OCR when the engine is missing raises OcrUnavailable: an image-only page is never
 read as empty without a word.
@@ -32,7 +33,7 @@ from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 
-from store import store_dir
+from store import DEFAULT_DATA_DIR, text_cache_dir
 
 TEXT_FLOOR = 40  # visible characters: a page with fewer has no text layer worth the name
 DPI = 200
@@ -53,11 +54,13 @@ class OcrText:
 
 
 def engine_python() -> Path:
-    """The OCR environment's interpreter: EBDB_OCR_PYTHON, or `ocr-venv` beside the store folder."""
+    """The OCR environment's interpreter: EBDB_OCR_PYTHON, or `ocr-venv` in the data folder. A fixed folder, not
+    beside `store_dir()` (F136): its path is part of the OCR cache key, so a store copy elsewhere found neither the
+    engine nor its cached text."""
     override = (os.environ.get(OCR_PYTHON_ENV) or "").strip()
     if override:
         return Path(override)
-    venv = store_dir().parent / "ocr-venv"
+    venv = Path(DEFAULT_DATA_DIR) / "ocr-venv"
     return venv / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
 
 
@@ -122,7 +125,7 @@ def _cache(path: str, kind: str, pages: list[int]) -> Path | None:
     digest = hashlib.sha256(Path(path).read_bytes()).hexdigest()
     which = hashlib.sha256(",".join(map(str, pages)).encode()).hexdigest()[:8]
     try:
-        return store_dir() / "text_cache" / f"{digest}-{kind}-{_tool()}-{which}.json"
+        return text_cache_dir() / f"{digest}-{kind}-{_tool()}-{which}.json"
     except RuntimeError:  # no store folder off Windows
         return None
 
@@ -163,7 +166,7 @@ def _read(path: str, kind: str, pages: list[int]) -> OcrText:
     result = OcrText({n: page["text"] for n, page in zip(pages, body["pages"])}, body["engine"])
     if cached is not None:
         try:
-            cached.parent.mkdir(exist_ok=True)
+            cached.parent.mkdir(parents=True, exist_ok=True)
             with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=cached.parent, suffix=".partial",
                                              delete=False) as partial:
                 json.dump({"pages": result.pages, "engine": result.engine, "dpi": DPI}, partial, ensure_ascii=False)

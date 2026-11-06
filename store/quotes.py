@@ -34,7 +34,7 @@ from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 
-from store import store_dir
+from store import text_cache_dir
 
 # A quote inside citation_context: "<quote>" (<anchor>), joined by "; ".
 QUOTE = re.compile(r'(?:^|; )"(.+?)" \(')
@@ -107,8 +107,9 @@ def _pdftotext(path: str, layout: bool) -> str:
     its 13 minutes in quote checks. The key is the file's SHA-256, the
     layout and pdftotext's version, so a changed file or a new pdftotext
     extracts again; `plain` is applied after the cache, so a change to it
-    is never hidden. The cache lives in the store folder (`text_cache\\`),
-    outside git; a folder that cannot be written is simply not used. The
+    is never hidden. The cache is `store.text_cache_dir()`, one fixed
+    folder outside git that every store copy reads (F136, Sprint 16); a
+    folder that cannot be written is simply not used. The
     text is stored as bytes, so it comes back exactly as extracted, and a
     file that does not decode is extracted again."""
     cmd = ["pdftotext", "-enc", "UTF-8", *(["-layout"] if layout else []), path, "-"]
@@ -117,13 +118,13 @@ def _pdftotext(path: str, layout: bool) -> str:
     tool = hashlib.sha256(" ".join([_pdftotext_version(), *cmd[:-2]]).encode()).hexdigest()[:12]
     name = f"{digest}-{'layout' if layout else 'plain'}-{tool}.txt"
     try:
-        return (store_dir() / "text_cache" / name).read_bytes().decode("utf-8")
+        return (text_cache_dir() / name).read_bytes().decode("utf-8")
     except (OSError, RuntimeError, UnicodeDecodeError):  # RuntimeError: no store folder off Windows
         pass
     text = subprocess.run(cmd, capture_output=True, check=True).stdout.decode("utf-8", "replace")
     try:
-        cached = store_dir() / "text_cache" / name
-        cached.parent.mkdir(exist_ok=True)
+        cached = text_cache_dir() / name
+        cached.parent.mkdir(parents=True, exist_ok=True)
         # A name of its own per writer, so two processes never share a half-written file.
         with tempfile.NamedTemporaryFile(dir=cached.parent, suffix=".partial", delete=False) as partial:
             partial.write(text.encode("utf-8"))
@@ -175,8 +176,10 @@ def missing_quotes(citation_context: str | None, text: str) -> list[str]:
 @dataclass(frozen=True)
 class Verified:
     """What `require_verbatim` returns: this record's quotes and value,
-    exactly as checked against its source. Made only by `require_verbatim`;
-    the verified write helpers compare it with the record they write, so a
+    exactly as checked against its source. Made only by `require_verbatim`,
+    and by `store.ingest.checked_when_stored` for a row a full read of the
+    same source already stored, checked, exactly so (F136); the verified
+    write helpers compare it with the record they write, so a
     check run without the value cannot license a write."""
     record_id: str
     citation_context: str

@@ -21,7 +21,8 @@ time, so it is never stale and never kept by hand.
    retype it: every line comes from the store, and a retyped list is the
    copy that drifts.
 3. Add one line after it: the number of records, and that a file saved
-   at its target path is linked and read by the next F95 release.
+   at its target path is linked and read by the next F114 release (F95
+   was folded into F114 on 2026-11-05).
 
 ## Rules
 

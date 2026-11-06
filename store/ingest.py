@@ -700,6 +700,26 @@ def insert_verified_assertion(conn: sqlite3.Connection, assertion: AssertionReco
     insert_assertion(conn, assertion, yielded_by=yielded_by)
 
 
+def checked_when_stored(conn: sqlite3.Connection, assertion: AssertionRecord, source_id: str) -> Verified | None:
+    """F136 (Sprint 16 Task A; team lead, 2026-11-05: "The quotes only need to be verified once per PDF, ever"):
+    the check of a stored assertion whose quotes and value are exactly what `assertion` would write, and that a
+    full read of the same source (`source_id`) already wrote. That write checked those quotes and that value against
+    the source (`require_verbatim`), and a sync now writes neither, so they are not checked again.
+
+    None, so the caller checks once before the write, when: the row is new; its quotes or its value (after
+    `with_common_names`, as the sync writes it) would change; or no full read of `source_id` wrote it (a row an
+    earlier partial read stored, from an abstract or another copy, is checked against the full read's source the
+    first time; fresh-eyes review of Task A)."""
+    row = conn.execute("SELECT r.value, f.citation_context, r.provenance, r.updated_reason FROM records r "
+                       "JOIN assertion_fields f ON f.record_id = r.id WHERE r.id = ? AND r.class = 'assertion'",
+                       (assertion.id,)).fetchone()
+    if row is None or row[1] != assertion.citation_context or row[0] != with_common_names(assertion.value):
+        return None
+    if not ((row[2] or "").startswith(f"{source_id}, ") and FULL_READ_MARK in (row[3] or "")):
+        return None
+    return Verified(assertion.id, assertion.citation_context, assertion.value)
+
+
 def sync_verified_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, verified: Verified, note: str,
                             today: str) -> list[str]:
     """`sync_assertion`, refused as `insert_verified_assertion` is."""

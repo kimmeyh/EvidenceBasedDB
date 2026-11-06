@@ -51,6 +51,16 @@ this project keeps having to replace with a step.
   2017 record's assertions move to it), Q7 = 1 (monographs are books:
   Simeone 2022 and Cichocki 2016 move from F114 to F138). Issues #165
   (Task A) to #172 (Task H) created; PR #164 body updated, still draft
+- **feat**: Sprint 16 Task A (F136, #165): each PDF's text extracted
+  once, each quote checked once. `store.text_cache_dir()` gives one
+  cache every store copy reads (it no longer follows `EBDB_STORE_DIR`);
+  the OCR engine folder is fixed too. `full_read_apply.py` checks only
+  new or changed quotes (`store.ingest.checked_when_stored`) and prints
+  its counts. On a store copy a re-apply now checks 0 quotes in about 15
+  seconds (30,113 quotes, 740 sources, 554 seconds without it). INTAKE
+  section 68 states the rule: every write is checked; an unchanged row
+  is not. Three tests, each proven red. Also (Task F): the hand-download
+  list and its skill name F114 instead of F95
 
 ### 2026-10-31 to 2026-11-05 (Sprint 15, PR #149, merged to develop 2026-11-05 and to main via PR #163 the same day; tagged sprint-15)
 

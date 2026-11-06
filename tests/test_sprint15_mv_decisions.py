@@ -85,7 +85,7 @@ def test_a_later_review_of_the_row_keeps_the_team_leads_grade(monkeypatch, live_
     aid = _script().ABSENCE[0]
     [(_, a, rid, p)] = [x for x in fra.assertions() if x[1].id == aid]
     a = replace(a, updated="2026-12-01", updated_reason=f"2026-12-01 (a later review): {fra.FULL_READ_MARK}: regraded")
-    monkeypatch.setattr(fra, "verify", lambda: [(a, rid, p, Verified(aid, a.citation_context, a.value))])
+    monkeypatch.setattr(fra, "verify", lambda conn=None: [(a, rid, p, Verified(aid, a.citation_context, a.value))])
     monkeypatch.setattr(fra, "load_groups", lambda: [])
     monkeypatch.setattr(fra, "write_anchor_moves", lambda c: [])
     conn = connect(live_copy)

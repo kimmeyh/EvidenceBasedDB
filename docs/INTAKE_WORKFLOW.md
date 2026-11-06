@@ -3742,3 +3742,50 @@ Written 2026-11-04, before the apply. Every count here is a snapshot as of
   one was the applier's field test, which passed a namespace where the
   confirmed-row rebuild needs a dataclass. Each fix that guards a rule
   was proven red by injection.
+
+## 68. Each PDF's text extracted once, each quote checked once (Sprint 16 Task A, F136)
+
+Team lead, 2026-11-05: "This reading the PDF should ever be done once per
+PDF, ever, and once done should never need to read it again. The quotes
+only need to be verified once per PDF, ever, and should never need to be
+done again." Counts are a snapshot as of 2026-11-06.
+
+- **The rule, as it now reads: every write is checked; an unchanged row
+  is not.** An assertion's quotes and value are checked against the
+  source text (`require_verbatim`) once, before the write that stores
+  them. A rerun, a second apply or a later sprint that would store them
+  exactly as they are checks nothing and reads no source. "Exactly as
+  they are" means the same quotes, the same value as the sync would
+  write it (after common names), and a row that a full read of the same
+  paper wrote. A new assertion, a changed quote or value, and a row an
+  earlier partial read stored (from an abstract or another copy) are
+  checked once, against the full read's source, as before. No test
+  re-checks every stored quote; the guarantee is the check at each
+  write (fresh-eyes review: an earlier draft of this section claimed
+  such a test).
+- **One text cache for every store copy.** `store.text_cache_dir()` is
+  the live store's `text_cache\`, or `EBDB_TEXT_CACHE_DIR`; it no longer
+  follows `EBDB_STORE_DIR`, so a trial on a store copy reads the same
+  cache (Sprint 15's first trial extracted 894 PDFs again, about 25
+  minutes). The OCR engine's folder is fixed the same way (its path is
+  part of the OCR cache key). This replaces "the trial copies
+  `text_cache\` with the database" (section 67).
+- **The applier.** `scripts/full_read_apply.py`'s `verify(conn)` skips
+  the quote check for a row stored with the same quotes and value
+  (`store.ingest.checked_when_stored`) and reads a source only for the
+  rows it checks. The checks that read no source (figure readings, the
+  image-file HIGH rule, the record rules) still run on every row. Each
+  run prints how many quotes it checked and how many it found stored as
+  written.
+- **Measured on a store copy (2026-11-06)**: a re-apply of every applied
+  group checked 0 quotes and read 0 sources, in about 15 seconds. With
+  the change removed, the same re-apply checked 30,113 quotes and read
+  740 sources, in 554 seconds.
+- **Checks.** Three tests, each proven red by injection: a store copy
+  elsewhere reads the same cache; only a new or changed quote is checked
+  (and a changed quote not in its source is still refused); a re-apply
+  on a store copy checks no quote and reads no source.
+- **Not changed.** `store.ocr.page_texts`' page-by-page fallback (for a
+  PDF whose form feeds disagree with its page count) and `pdfinfo`'s page
+  count still run once per process, not once ever. F139 measures them
+  before anything is changed.

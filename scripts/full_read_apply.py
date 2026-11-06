@@ -80,7 +80,7 @@ from store import connect, recheck, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
 from store.grading import grade, high_grades, low_grade  # noqa: E402
 from store.ingest import (FULL_READ_MARK, AssertionRecord, add_read, append_updated_reason,  # noqa: E402
-                          insert_verified_assertion, set_tier, sync_verified_assertion, validate_assertion)
+                          checked_when_stored, insert_verified_assertion, set_tier, sync_verified_assertion, validate_assertion)
 from store.ocr import IMAGE_SUFFIXES  # noqa: E402
 from store.quotes import (QUOTE, ocr_only_quotes, plain, read_from_figure, require_edit_basis, require_verbatim,  # noqa: E402
                           source_text)
@@ -396,14 +396,15 @@ def grades_not_written(conn) -> list[str]:
     return problems
 
 
-def ocr_check(a, file: str, text: str) -> None:
+def ocr_check(a, file: str, text: str | None) -> None:
     """F115 (Sprint 15 Task F). A quote found only in a source's OCR text says "OCR" in its anchor, so a reader of
     the record knows the words came from a page image. The team lead's grading rule (2026-11-01, plan Q3): OCR of a
     stored PDF's page grades as its text layer; a claim from an image file outside a PDF is HIGH only when another
     source corroborates it, named in its HIGH's why ("corroborated by <record>"), otherwise MEDIUM at most."""
     # The anchor runs to the ")" that ends the quote's entry, so an anchor holding "(Methods)" is read whole (review
     # of Task F: "[^)]*" stopped at the first ")").
-    unmarked = [q for q in ocr_only_quotes(a.citation_context, text)
+    # text None (F136): the quotes are stored as written and were marked when checked; the grade rule still runs
+    unmarked = [q for q in (ocr_only_quotes(a.citation_context, text) if text is not None else [])
                 if not re.search(rf'"{re.escape(q)}" \((?:(?!\)(?:; "|$)).)*\bOCR\b', a.citation_context)]
     if unmarked:
         raise ValueError(f"{a.id}: quotes found only in OCR text need \"OCR\" in their anchor: {unmarked}")
@@ -427,32 +428,60 @@ def figure_check(a) -> None:
         raise ValueError(f"{a.id}: a value read from a figure is never HIGH on the figure alone")
 
 
-def verify() -> list[tuple[AssertionRecord, str, dict, object]]:
+LAST_VERIFY: Counter = Counter()  # F136: what the last verify() checked, and what it found stored as written
+
+
+def verify_counts() -> str:
+    return (f"quote checks: {LAST_VERIFY['checked']} checked, {LAST_VERIFY['stored as written']} stored as written "
+            f"(checked when written, not again); {LAST_VERIFY['sources read']} sources read")
+
+
+def _text(texts: dict[str, str], file: str) -> str:
+    if file not in texts:  # once per file: setdefault built the argument, plain() over the whole text, every time
+        texts[file] = plain(source_text(file))
+    return texts[file]
+
+
+def verify(conn=None) -> list[tuple[AssertionRecord, str, dict, object]]:
     """Every quote verbatim in its source, every coordinator edit resting on named passages, and every figure in
     a value in its own quotes, BEFORE anything is written. Every refusal is collected and raised together (Sprint 14
-    retrospective Q4: a dry run named one, and each fix found the next)."""
+    retrospective Q4: a dry run named one, and each fix found the next).
+
+    F136 (Sprint 16 Task A): with `conn`, an assertion whose quotes and value a full read of the same source
+    already stored exactly as it would write them is not checked again (`checked_when_stored`): that write checked
+    them, and a sync writes no quote or value for it. Only a new or changed quote is checked, so a second apply checks nothing and reads no
+    source. The checks that read no source (the figure, image-HIGH and record rules) still run on every row."""
     texts: dict[str, str] = {}
     out = []
     problems: list[str] = []
+    LAST_VERIFY.clear()
     for _, a, rid, p in assertions(problems):
         try:
-            quotes = QUOTE.findall(a.citation_context)
-            text = texts.setdefault(p["file"], plain(source_text(p["file"])))
             from_figure = a.id in figure_ids(p)
-            from_page = read_from_figure(a.value) if from_figure else ()
-            verified = require_verbatim(a.id, a.citation_context, text, value=a.value, read_from_page=from_page)
+            verified = checked_when_stored(conn, a, rid) if conn is not None else None
+            if verified is not None:
+                LAST_VERIFY["stored as written"] += 1
+                ocr_check(a, p["file"], None)
+            else:
+                LAST_VERIFY["checked"] += 1
+                quotes = QUOTE.findall(a.citation_context)
+                text = _text(texts, p["file"])
+                from_page = read_from_figure(a.value) if from_figure else ()
+                verified = require_verbatim(a.id, a.citation_context, text, value=a.value, read_from_page=from_page)
+                if a.id in VALUE_REPLACE:  # a figure reading's edited value keeps its figure exemption (Sprint 15 MV
+                    require_edit_basis(a.id, a.value, quotes, text, read_from_page=from_page)  # apply: 5 refused)
+                if a.id in QUOTE_EDITS:
+                    require_edit_basis(a.id, None, [n for _, n in QUOTE_EDITS[a.id] if n] or quotes, text)
+                ocr_check(a, p["file"], text)
             if from_figure:
                 figure_check(a)
-            if a.id in VALUE_REPLACE:  # a figure reading's edited value keeps its figure exemption (Sprint 15 MV
-                require_edit_basis(a.id, a.value, quotes, text, read_from_page=from_page)  # apply: 5 refused)
-            if a.id in QUOTE_EDITS:
-                require_edit_basis(a.id, None, [n for _, n in QUOTE_EDITS[a.id] if n] or quotes, text)
-            ocr_check(a, p["file"], text)
             validate_assertion(a)
         except ValueError as e:
             problems.append(str(e))
             continue
         out.append((a, rid, p, verified))
+    LAST_VERIFY["sources read"] = len(texts)
+    LAST_VERIFY["checked"] += 0  # present when 0, for the counts line and its tests
     if problems:
         raise ValueError(f"{len(problems)} refused:\n" + "\n".join(problems))
     return out
@@ -609,7 +638,9 @@ def anchor_moves(conn) -> list[tuple[AssertionRecord, object]]:
                 claim_type=claim_type, search_scope=scope, updated=day,
                 updated_reason=f"{when}: {FULL_READ_MARK}: anchor corrected at the sign-off to "
                                f"{anchor}; the stored quotes checked against the source again")
-            out.append((a, require_verbatim(aid, a.citation_context, plain(source_text(p["file"])), value=value)))
+            # F136: an anchor already stored as corrected is not checked again (a sync then changes nothing)
+            out.append((a, checked_when_stored(conn, a, rid)
+                        or require_verbatim(aid, a.citation_context, plain(source_text(p["file"])), value=value)))
     return out
 
 
@@ -632,7 +663,7 @@ def write_anchor_moves(conn) -> list[str]:
 
 
 def apply_changes(conn) -> list[str]:
-    checked = verify()
+    checked = verify(conn)
     log = []
     contexts = {r[0] for r in conn.execute("SELECT id FROM contexts")}
     for g, p in load_groups():
@@ -755,7 +786,8 @@ def main(argv: list[str] | None = None) -> int:
             moves, unwritten = [], unwritten + [str(e)]
     if "--apply" not in args:
         try:  # the quote checks too, so a dry run names every refusal at once (Q4); verify names assertions' own
-            verify()
+            with connect(DB_PATH) as conn:  # F136: the rows stored as written are not checked again
+                verify(conn)
             refused = []
         except ValueError as e:
             refused = [str(e)]
@@ -767,6 +799,7 @@ def main(argv: list[str] | None = None) -> int:
         papers = load_groups()
         print(Counter(a.certainty for _, a, _, _ in kept), Counter(a.context for _, a, _, _ in kept))
         print(f"anchor fixes on confirmed stored assertions: {moves}")
+        print(verify_counts())
         print(f"{len(kept)} assertions entered or changed from {len(papers)} records. Every quote verbatim, every "
               "edit on named passages, every figure in its quotes. DRY RUN: nothing written. Re-run with --apply.")
         return 0
@@ -785,6 +818,7 @@ def main(argv: list[str] | None = None) -> int:
     undecided = [x for x in log if x.startswith("undecided ")]
     print(f"{len(undecided)} stored assertions with a field changed that no review item names"
           f"{'; read each before the live apply' if undecided else ''}")
+    print(verify_counts())
     print("APPLIED")
     return 0
 
