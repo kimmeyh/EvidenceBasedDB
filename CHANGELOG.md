@@ -125,6 +125,9 @@ this project keeps having to replace with a step.
   tier "seen"; Task F's reads moved them to "read", and the full suite
   before Manual Validation failed on it (1 of 1,578). It now accepts
   "seen" or "read"
+- **docs**: F140 carded for Sprint 17 (team lead, 2026-11-06): testing
+  made risk-based, effective and as fast as reasonably possible; the
+  local full suite went from 199 s (Sprint 12) to 4,124 s
 
 ### 2026-10-31 to 2026-11-05 (Sprint 15, PR #149, merged to develop 2026-11-05 and to main via PR #163 the same day; tagged sprint-15)
 
