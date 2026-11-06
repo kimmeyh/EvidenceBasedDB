@@ -31,6 +31,14 @@ this project keeps having to replace with a step.
   F95 (386 PDFs, no unnamed file saved since 2026-11-01), F98 (the list
   moved to 399b022651 with 6 new papers), F51 and F90 hold checks.
   Phase 1.3: 0 re-checks due; no ADR or schema change in Sprint 15
+- **docs**: Backlog refinement 2026-11-05: Sprint 16 scope selected (team
+  lead): F136, F134, F135, F137, F114, F57 and the new F139. F95 and F98
+  folded into F114 (30 papers per sprint by default, 20 this sprint);
+  their cards removed. Books leave F114 for the new F138, on HOLD.
+  F139 carded by the Coding Agent Team (read once, check once, write
+  once, with telemetry per paper). F137's premise corrected: the two
+  Dunjko records are one paper (preprint and journal version). Sprint 16
+  plan drafted (`docs/sprints/SPRINT_16_PLAN.md`), with 7 questions
 
 ### 2026-10-31 to 2026-11-05 (Sprint 15, PR #149, merged to develop 2026-11-05 and to main via PR #163 the same day; tagged sprint-15)
 

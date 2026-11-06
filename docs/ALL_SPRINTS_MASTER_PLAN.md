@@ -349,13 +349,21 @@ F25 D1-D3 so it measures adjudication of corrected records.
 Sprint 15 carry-forward, after PR #149 merged to develop and PR #163 merged
 develop to main).
 
-- **Scope**: not yet selected (Phase 1.4 slate presented 2026-11-05).
+- **Scope** (DEFINED, team lead 2026-11-05): F136, F134, F135, F137,
+  F114 (20 papers this sprint, then 30 per sprint; F95 and F98 folded
+  in; books excluded), F57, and the new F139 (reading efficiency,
+  before F114's reads). F138 (books) carded on HOLD. F39 was not
+  selected, so model assignments rest on Sprint 13's release (F111).
 - **Fixed before selection by the team lead**: F136 is Sprint 16's first
   task (Sprint 15 retrospective Q1 = 1), and F57's next release reads two
   named papers first (the wangy8205165 white paper, then arXiv
-  2108.13346v2), then follows the relevance ranking (Sprint 15 Manual
-  Validation Q7 = 2).
-- **Plan**: none yet.
+  2108.13346), then follows the relevance ranking (Sprint 15 Manual
+  Validation Q7 = 2). arXiv lists only v1 of 2108.13346 (checked
+  2026-11-05), so "v2" is a plan question.
+- **The team lead asked of F51**: "Does this still have to be on hold?"
+  Answered as a plan question.
+- **Plan**: `docs/sprints/SPRINT_16_PLAN.md` (drafted 2026-11-05, waiting
+  for approval).
 
 ## Next Sprint Candidates
 
@@ -385,8 +393,9 @@ F120 and the released copies F122 and F123 (Sprint 14; F114's first
 release shipped there, and the card stays for the rest); F115, F116,
 F124 to F130 and the released copies F131 to F133 (Sprint 15). F121 (a spike
 carded 2026-10-30) merged into F118 the same day, team lead: "Update
-card F118 and sit this in sprint 14 after F117 completes". F39, F57, F95 and F98 are
-permanent and stay. Closed without
+card F118 and sit this in sprint 14 after F117 completes". F39 and F57
+are permanent and stay; F95 and F98 were permanent until 2026-11-05,
+when the team lead folded both into F114. Closed without
 implementation: F19, F29 (Sprint 5 scope selection, reasons under Sprint 5
 in "Last Completed Sprint"); F49 (Sprint 8 scope selection, Q3 = 1: moot
 under ADR-0004 A7, since no committed export exists to drop a context, and
@@ -426,76 +435,6 @@ and in git. Remaining items below.
   pages that day; the outcomes since the last release logged; each rule
   change names its evidence; its test proven to fail by injection.
 - Depends on: nothing
-
-**F95. Ingest and read the new papers in the Papers folder -- PERMANENT (~90m per release) Priority 40** (NEW 2026-10-21, team lead at Sprint 11 Phase 1.4)
-- Phase: Sourcing / intake, then reading (permanent item, like F39)
-- Value: this enables every paper the team lead saves to reach the store
-  and be read within a sprint ("in general new papers are valuable").
-- Platform: `D:\Data\Harold\EvidenceBasedDB\Papers\` (the team lead's
-  folder: its files are never renamed or moved); `scripts/intake.py`; the
-  verified write path (intake sections 26 and 31)
-- Team lead, 2026-10-21: "Add a backlog item and assign to this sprint and
-  all future sprints - paper folders for new items that have not been
-  ingested or read - ingest them and then read them - in general new
-  papers are valuable."
-- **Released every sprint** as a copy with the next free F#, the same way
-  as F39. Copied from the backlog into each sprint once: a sprint that
-  skips it gets no second copy later, and the next sprint's copy simply
-  covers whatever is new by then.
-- Each release: (1) list every PDF in `Papers\` (and its subfolders) that
-  no record's `access` names; (2) match each to a record by DOI or arXiv
-  id first, so a paper already in the store is linked, not entered twice;
-  (3) enter the rest through the intake door; (4) read each one not yet
-  at `read` and enter its claims, every quote checked before the write;
-  (5) a paper that cannot be entered or read keeps the reason.
-- **Snapshot as of 2026-10-21**: 134 PDFs in `Papers\`; 37 are named by
-  no record's `access` (some may already be in the store under their
-  arXiv id). Read at a release, these count toward F57's total as well;
-  they are not read twice.
-- **Snapshot as of 2026-10-23** (Sprint 12 Phase 1.2): 151 PDFs in
-  `Papers\`; 0 named by no record's `access` (file-name match). The next
-  release holds the named repository below and any file saved after this
-  date. The hand-download list holds 38 records.
-- **Snapshot as of 2026-10-25** (Sprint 13 Phase 1.2): 180 PDFs in
-  `Papers\` and its subfolders; 0 named by no record's `access`
-  (file-name match). The hand-download list holds 43 records. The
-  repository and the Classiq pages named for Sprint 12's release shipped
-  as F103; nothing is named for the next release.
-- **Snapshot as of 2026-10-29** (Sprint 14 Phase 1.2): 374 PDFs in
-  `Papers\` and its subfolders; 166 named by no record's `access`
-  (file-name match). 165 of them are Sprint 13 Task G's downloads of
-  2026-10-25, each a record already in the store that F114 reads (its
-  `access` names the arXiv id or DOI, not the file). The one new file
-  is the PHI-OMEGA paper, which F119 enters. So the next release holds
-  nothing beyond F119 unless a file is saved first.
-- **Snapshot as of 2026-10-30** (Sprint 14 Task B, F122, intake
-  section 55): 374 PDFs; 165 named by no record's `access`, all Task G
-  downloads in ledger groups g295 to g329, linked by the ledger and
-  named in `access` when F114 reads their group. The hand-download list
-  holds 53 records, none with a local copy.
-- **Snapshot as of 2026-11-01** (Sprint 15 Phase 1.2): 378 PDFs; the 4
-  saved since 2026-10-30 are F123's Roadmap-to-QML papers (2609.19983,
-  2610.32762, 2610.34430, 2610.35126), already entered. No new file from
-  the team lead, so the next release holds nothing unless a file is saved
-  first. The hand-download list holds 53 records.
-- **Snapshot as of 2026-11-05** (Sprint 16 Phase 1.2): 386 PDFs; 165
-  named by no record's `access` (file-name match), the same Task G
-  downloads as before. The 8 files added since 2026-11-01 are Sprint
-  15's own downloads, each named by its record; no file saved after
-  2026-11-01 is unnamed. The two papers the team lead named on
-  2026-11-05 are fetched by F57's release, not this one. The
-  hand-download list holds 53 records.
-- **The hand-download list** (team lead, 2026-10-22, Sprint 11 Manual
-  Validation Q2: "Keep an on going list of these in relative priority
-  order and will likely download in the future"): computed by
-  `python scripts/hand_download_list.py` (intake sections 39 and 40),
-  never kept by hand, shown on request by the `hand-download-list` skill,
-  each entry with its target file name and why it matters. A listed paper the team lead has saved into `Papers\` is
-  caught by step (1) and leaves the list once linked.
-- Acceptance per release: every unnamed PDF linked, entered or given a
-  reason; every entered paper at `read` with its assertions, or at `seen`
-  with its reason; the counts before and after recorded.
-- Depends on: none
 
 ### HOLD Items (waiting on an external event)
 
@@ -541,6 +480,36 @@ and in git. Remaining items below.
 - Hold checked 2026-11-05 (Sprint 16 Phase 1.2): both copies still hash
   to `425358a7b4cec71f...`. Stays HOLD.
 - Depends on: the hsbc repository's re-run of the experiment.
+
+**F138. Read in full the books in the store and in the Books folder, with no reading budget (no estimate: as long as the reads take) Priority HOLD** (NEW 2026-11-05, team lead at Sprint 16 scope selection: "split out the reading of any books into a similar backlog items to F114 but for books and put it on HOLD")
+- Phase: Sourcing / extraction (books)
+- Value: this enables a book's claims to enter the store under a process
+  sized for a book, without slowing F114's paper reads.
+- Platform: the store; `D:\Data\Harold\EvidenceBasedDB\Books\` (44 PDFs
+  on 2026-11-05, none named by a record's `access`); F114's reader
+  prompt, review and applier.
+- A book is a whole book or monograph (an ISBN, a whole-book DOI with no
+  chapter suffix, or a monograph series such as Foundations and Trends) or
+  a textbook. A thesis, a review article and a chapter in conference
+  proceedings are papers and stay in F114 or F57.
+- Candidates found on 2026-11-05 (snapshot as of that date):
+  - In F114's ledger, not yet read in full:
+    simeone-2022-introduction-quantum-machine-learning-engineers (229
+    pages, read in part) and
+    cichocki-2016-tensor-networks-dimensionality-reduction-large (176
+    pages, no read row).
+  - In F57 (no read row): freericks-2026-quantum-mechanics-done-right-book
+    (Springer, its copy in `Books\`) and
+    schuld-2018-supervised-learning-quantum-computers (Springer, no copy;
+    also on F90).
+  - Books already read in full: boyd-2004-convex-optimization and
+    dawid-2025-modern-applications-machine-learning-quantum.
+  - The `Books\` folder: 44 PDFs, most of them programming books outside
+    the store's contexts; each is entered only if it bears on a context.
+- On HOLD until the team lead releases it.
+- Acceptance per release: each book read in full (every chapter and
+  appendix) and applied, or given its reason; the counts before and after.
+- Depends on: the team lead's release from HOLD
 
 ### Carded at Sprint 6 Manual Validation, 2026-10-05
 
@@ -599,9 +568,11 @@ and in git. Remaining items below.
   regression problems: solving partial differential equations", Goes et
   al., 2021, checked on arXiv 2026-11-05). No local copy in `Papers\`, no
   manifest names it, and the store has no record of it (all checked
-  2026-11-05), so it is not already read. The release fetches version 2 once from arXiv
-  (`2108.13346v2`; team lead: "only need to read v2 of the paper"), and
-  reads it in full after the white paper. This is not Neven et al.'s
+  2026-11-05), so it is not already read. The team lead: "only need to
+  read v2 of the paper". arXiv lists only v1 (2021-08-30;
+  `arxiv.org/abs/2108.13346v2` returns 404, checked 2026-11-05), so
+  which copy is read is a Sprint 16 plan question. It is read in full
+  after the white paper. This is not Neven et al.'s
   2012 QBoost paper, which has a local copy.
 - **Snapshot as of 2026-10-05**: 1,875 papers; 24 at `read`, all with
   yielded assertions; 14 `screened`; 1,837 `seen`. F45 and F46 cover only
@@ -760,64 +731,6 @@ and in git. Remaining items below.
   Stays HOLD.
 - Depends on: the team lead's downloads
 
-### Carded at Sprint 11 Phase 1.4 (2026-10-21)
-
-**F98. Review Christophe Pere's QML paper repository for new papers, then ingest and read them -- PERMANENT (~60m per release) Priority 42** (NEW 2026-10-21, team lead at Sprint 11 Phase 1.4, for Sprint 12 onward)
-- Phase: Sourcing / intake, then reading (permanent item, like F39)
-- Value: this enables the store to keep pace with a curated QML paper
-  list maintained by an author whose papers it already holds.
-- Acceptance per release: the list's commit recorded; every paper new
-  since the last release matched, entered or given a reason; each read
-  under F57's rules or kept at `seen` with its reason.
-- Platform: https://github.com/Christophe-pere/Roadmap-to-QML ("This
-  repository will contain the major papers, books and blog posts on QML";
-  last push 2026-10-20 at carding), GitHub REST, read only; the intake
-  door; the verified write path
-- Team lead, 2026-10-21: "add to backlog for next sprint: every sprint
-  review the Christophe Pere paper repository for new papers, ingest them and
-  read them". Read as Roadmap-to-QML, his paper list; the seed set once
-  held an empty "Christophere Pere QML Github Repo.txt" for it (removed in
-  Sprint 4). Correct the repository here if another was meant.
-- Released every sprint as one copy, like F95. Each release: (1) read the
-  list at its current commit, recording the commit; (2) diff it against
-  the commit the last release recorded (the first release takes the
-  whole list); (3) match each paper to the store by DOI or arXiv id;
-  (4) enter the new ones and read them under F57's rules and ledger.
-- The first release may be large; it is sized from the list's count at
-  that sprint's planning, and its overflow carries to the next release.
-- **Sized at Sprint 12 Phase 1.2 (snapshot as of 2026-10-23, read only,
-  commit a239747648)**: the list is year files (`2007-2017/` to `2026/`)
-  plus `Workforce.md`, with 1,402 distinct arXiv ids. 1,381 are already in
-  the store (1,142 at `seen`, 239 at `read`; matched by id in `access` or
-  provenance), so the first release enters about 21. The 1,142 at `seen`
-  are read under F57's releases, not twice.
-- **Snapshot as of 2026-10-25** (Sprint 13 Phase 1.2): the first release
-  (F104) recorded a239747648; the list has no commit since (GitHub REST,
-  read only). A release now confirms the commit and enters nothing unless
-  the list changes first.
-- **Snapshot as of 2026-10-29** (Sprint 14 Phase 1.2; GitHub REST, read
-  only): the list moved from a239747648 to ea6f42a7c0 (2026-10-27), 9
-  commits, among them the team lead's own merged pull requests #3, #5
-  and #7 (broken links fixed, authors' arXiv preprints linked for
-  paywalled papers, withdrawn and retracted papers marked inline). Of the
-  34 arXiv ids the diff adds, 30 are already in the store; 4 are not
-  (2609.19983, 2610.32762, 2610.34430, 2610.35126). The diff adds 7 lines
-  that mark a paper withdrawn or retracted; each is compared with the
-  store at the release.
-- **Snapshot as of 2026-11-01** (Sprint 15 Phase 1.2; GitHub REST, read
-  only): the list is still at ea6f42a7c0 (2026-10-27), the commit
-  Sprint 14's release (F123) recorded. A release now confirms the commit
-  and enters nothing unless the list changes first.
-- **Snapshot as of 2026-11-05** (Sprint 16 Phase 1.2; GitHub REST, read
-  only): the list moved to 399b022651 (2026-11-05, 2 commits after
-  ea6f42a7c0). The diff adds 6 papers to `2026/2026.md`, none in the
-  store by id or link: arXiv 2610.42029 (Bhalgami), 2611.00303 (Buzin
-  and Remnev), 2611.00272 (Lo Monaco et al.), 2611.05079 (Seksaria et
-  al.), and two Quantum journal papers (q-2026-10-20-2239, Caro et al.;
-  q-2026-10-29-2256, Cha et al.). The next release enters and reads all
-  6.
-- Depends on: none
-
 ### Carded during Sprint 15 (2026-11-01)
 
 **F134. Table cells that hold only a number are dropped from the text a quote is checked against (~30m) Priority 30** (NEW 2026-11-01, Sprint 15 Task H, reader g115)
@@ -906,15 +819,120 @@ and in git. Remaining items below.
 - The Dunjko 2017 and 2018 records hold one byte-identical PDF. Reader
   g131 (Sprint 15) entered its new assertions under the 2017 record
   only (INTAKE_WORKFLOW.md section 64).
+- **Found at Sprint 16 planning (2026-11-05)**: they are one paper.
+  dunjko-2017 is arXiv 1709.02779 (one version, 2017-09-08);
+  dunjko-2018 is DOI 10.1088/1361-6633/aab406, Reports on Progress in
+  Physics 81(7), 2018-06-19, by the same authors with the same title
+  plus "a review of recent progress" (Crossref). So no second paper is
+  missing; the question is how the store holds a preprint and its
+  journal version (Sprint 16 plan question).
 - Acceptance: each record's paper identified from its citation; the
   missing paper fetched by the paced fetcher if it is free (else on the
   hand-download list); assertions moved to the record that states them,
   each move with its note; the local-file check passes for both.
 - Depends on: none
 
+### Carded during Sprint 16 (2026-11-05)
+
+**F139. Read once, check once, write once: each paper's read as efficient as it can be and still full (~120m [no-history] timebox) Priority 10** (NEW 2026-11-05, team lead at Sprint 16 scope selection: "need a way to optimize the reading - still very effective for the purpose of updating the database, but be as efficient as reasonably possible (total time per page, per paper), total token usage per paper, only test what must be tested, only test once, only read once, only write once, only update the database once, only red test once... Looking for the Coding Agent Team to fill in additional details and propose the backlog item. Assign to this sprint. Should be completed before running F114 this sprint so that the reading updates can be tested")
+- Phase: Reading (pipeline)
+- Value: this prevents time and tokens spent on repeated work (the same
+  text extracted, the same quote checked, the same paper read, the same
+  row written more than once), while each paper is still read in full.
+- Platform: the reader and reviewer prompts
+  (`manifests/sprint15_f114_reads/`), `scripts/sprint13_g_check.py`,
+  `scripts/f117_review.py`, `scripts/full_read_apply.py`, `store/quotes.py`
+  and its text cache, `scripts/run_suite.py`.
+- **Measure first.** Per paper: pages, figures, reader and reviewer
+  minutes, reader and reviewer tokens as each agent reports them, quote
+  checks run, text-cache misses, store rows written and applies run. The
+  pipeline writes these to one telemetry file per group; the summary's
+  Actuals report them per page and per paper. A baseline comes from
+  Sprint 15's progress files where they hold the figure, and is marked
+  unknown where they do not.
+- **Each "once", mapped to where it happens today** (Coding Agent Team,
+  2026-11-05, from the Sprint 15 pipeline):
+  - Extract once: the text cache, keyed by the file's SHA-256 (F136 makes
+    one cache location for every store copy).
+  - Check each quote once: today the reader's checker
+    (`sprint13_g_check.py`), then the dry run, the trial apply and the
+    live apply (`full_read_apply.py`) each check every quote, so a quote
+    is checked about four times, and again on every rerun (the
+    reviewer reads the passages but does not run the check). After: the checker checks a quote when the reader
+    writes it, records the pass with the file's SHA-256 and the quote's
+    hash, and later steps check only a quote that changed (F136 for the
+    applier).
+  - Read once: today the reader reads the whole paper and the reviewer
+    reads it again with the source. Whether the reviewer keeps a second
+    full read is the team lead's decision (Sprint 16 plan question): it
+    is where most of a paper's second token cost sits, and Sprint 15
+    sent a reviewer back for deciding from quotes alone.
+  - Render once: each figure page is rendered to an image once per file
+    and kept beside the text cache, not again by the reviewer.
+  - Write once, update the database once: today a group can be written
+    by the live apply, then the Manual Validation decisions script, then
+    fix-up syncs. After: decisions are gathered before the apply where
+    they can be, and one apply writes each row once; the trial on a store
+    copy runs only when the applier itself changed since its last trial.
+  - Test only what must be tested, once: `run_suite.py --changed` already
+    picks the tests a change touches; the full suite runs only where the
+    workflow names it (team lead, 2026-11-04). A store write that changes
+    no code no longer triggers every `live_store` test, only those that
+    read the rows written.
+  - Red-test once: each new guard is proven red once, at the commit that
+    adds it, and its docstring says how; it is not proven again later.
+- **No loss of effectiveness**: every section, appendix, proof and figure
+  is still read; every written quote still matches its source word for
+  word; the review still finds what Sprint 15's found.
+- Acceptance: the telemetry file for each of F114's Sprint 16 groups;
+  each "once" above either in place with a test proven red, or named
+  with the reason it is not; per-page and per-paper time and tokens for
+  the 20 papers set beside Sprint 15's baseline in the summary; no read
+  loses a section, figure or quote check.
+- Depends on: F136 (extract once, check once in the applier)
+
 ### Carded during Sprint 13 (2026-10-26 to 2026-10-28)
 
-**F114. Read in full the papers in Task G groups g043 to g329, with no reading budget (no estimate: as long as the reads take) Priority 10** (NEW 2026-10-26, team lead at Sprint 13 Task G: "pause after the 5 current agents complete and backlog the remaining for the next sprint")
+**F114. Read in full the new papers (Papers folder, Christophe Pere's list) and the Task G ledger's papers, 30 per sprint, books excluded (no estimate: as long as the reads take) Priority 10** (NEW 2026-10-26, team lead at Sprint 13 Task G: "pause after the 5 current agents complete and backlog the remaining for the next sprint"; F95 and F98 folded in, 30 per sprint, books moved to F138, team lead 2026-11-05)
+- **Changed 2026-11-05 (team lead, Sprint 16 scope selection)**: "combine
+  F95 and F98 into F114 and default to 30 total papers per sprint (but
+  only 20 for this sprint in order to test out the new reading updates)
+  and update so that it no longer includes reading books". So:
+  - **Size**: 30 papers per sprint by default, all sources together;
+    Sprint 16 reads 20. A paper read here is not read again by F57.
+  - **Order in each release**: (1) every PDF in `Papers\` (and its
+    subfolders) that no record's `access` names, matched to a record by
+    DOI or arXiv id first so a paper already stored is linked, not entered
+    twice, then entered through the intake door (was F95); (2) every paper
+    Christophe Pere's list (github.com/Christophe-pere/Roadmap-to-QML,
+    GitHub REST, read only) added since the commit the last release
+    recorded, matched the same way, with the new commit recorded (was F98);
+    (3) the Task G ledger in ledger order. A paper that cannot be entered
+    or read keeps its reason.
+  - **The team lead's files** in `Papers\` are never renamed or moved.
+  - **The hand-download list** (team lead, 2026-10-22: "Keep an on going
+    list of these in relative priority order"): computed by
+    `python scripts/hand_download_list.py`, never kept by hand, shown by
+    the `hand-download-list` skill. A listed paper the team lead saves into
+    `Papers\` is caught by step (1). 53 records on 2026-11-05.
+  - **Books are excluded** and read under F138 instead. A book is a whole
+    book or monograph (an ISBN, a whole-book DOI such as
+    `10.1007/978-...` with no chapter suffix, or a monograph series such
+    as Foundations and Trends) or a textbook. A thesis, a review article
+    and a chapter in conference proceedings are papers.
+  - **Last snapshots of F95 and F98 (2026-11-05)**: `Papers\` holds 386
+    PDFs; 165 are named by no record's `access`, all Task G downloads that
+    this card's ledger names; no unnamed file was saved after 2026-11-01.
+    The list moved from ea6f42a7c0 to 399b022651 and adds 6 papers, none
+    in the store: arXiv 2610.42029, 2611.00303, 2611.00272 and 2611.05079,
+    and the Quantum journal papers q-2026-10-20-2239 and
+    q-2026-10-29-2256. The F95 and F98 cards were removed on 2026-11-05;
+    their histories are in git (last at 3a08106).
+- Acceptance per release: every new PDF in `Papers\` and every new paper
+  on the list linked, entered or given a reason, and the list's commit
+  recorded; the release's papers read in full, reviewed and applied; a
+  paper without a copy on the hand-download list with its reason; no book
+  read; the counts before and after; a second apply writes nothing.
 - Phase: Sourcing / extraction
 - Value: finishes F113. **Snapshot as of 2026-10-26**: 287 groups, 1,430
   records, in `manifests/sprint13_g_ledger.json`, none read by a
@@ -931,7 +949,7 @@ and in git. Remaining items below.
   quoted. No cap on assertions. Each record's stored assertions are given
   to its reader: each is confirmed, corrected, widened or narrowed from
   the whole paper, and new ones are added.
-- Acceptance: for groups g043 to g329, every record with a copy read in
+- The ledger's own acceptance (from 2026-10-26): for groups g043 to g329, every record with a copy read in
   full, its `paper_reads` row `full`, its assertions updated or added
   under the grading rules; every record without a copy listed with its
   reason and on the hand-download list; the counts before and after;
