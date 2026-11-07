@@ -15,6 +15,13 @@ this project keeps having to replace with a step.
 
 ### 2026-11-05 onward (Sprint 16, in progress)
 
+- **docs**: Sprint 16 closed out (2026-11-07). The team lead's five
+  improvement decisions: 1 to 4 carded as F142 (four small pipeline
+  fixes, into the Sprint 17 plan, Priority 12) and 5 as F143 (why the
+  agents' cost per page rose, Priority 30). `SPRINT_16_SUMMARY.md` with
+  Actuals from the telemetry and the commit times; master plan rolled
+  (Last Completed Sprint, Past Sprint Summary row, Current sprint);
+  CHECKLIST Sprint 16 section (PR #164)
 - **docs**: Sprint 16 retrospective recorded (2026-11-07). The team
   lead's combined PO, SM and LD feedback verbatim (Very Good in categories
   1 to 12 and 15; none in 13, 14 and 16) with Claude's draft lines in

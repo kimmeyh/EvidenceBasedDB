@@ -305,3 +305,17 @@ Evidence for each row is the commit named, on the sprint branch
 - [x] **H+C**: Manual Validation Q1 to Q9; the last 24 groups and the decisions applied; team-lead decisions guarded (8c10247)
 - [x] **H+C**: Retrospective, 16 x 4 (this commit); improvement Q1 per the team lead's answer
 - [x] **C**: Summary, master plan roll and this section (this commit); PR #149 ready after CI
+
+## Sprint 16: Read Once, Check Once, Write Once, Then Test It on 20 Papers (reconciled 2026-11-07 at Phase 7.7)
+
+Evidence for each row is the commit named, on the sprint branch
+(`feature/20261105_Sprint_16`, PR #164).
+
+- [x] **C**: Task A (F136) -- each PDF's text extracted once, each quote checked once (f286746)
+- [x] **C**: Task B (F139) -- each read measured, each "once" in place or named (215354e)
+- [x] **C**: Tasks C and D (F134, F135) -- number-only table cells; a stated limit's type (0b83abf)
+- [x] **C**: Task E (F137) -- the two Dunjko records held as one (cd3b56b)
+- [x] **C**: Tasks F, G and H (F114, F57, F51) -- set-up (ea4f63b); 20 papers read, 5 of 6 groups applied (db45ffc)
+- [x] **H+C**: Manual Validation Q1 to Q4; g154-r1 split and applied; the seventh CVQBoost assertion; F140 (71d915e) and F141 carded (db2abe3)
+- [x] **H+C**: Retrospective, 16 x 4 (b574ca9, be500ef); five improvements: F142 (Sprint 17 plan) and F143 (backlog) (this commit)
+- [x] **C**: Summary, master plan roll and this section (this commit); PR #164 ready after CI

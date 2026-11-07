@@ -131,10 +131,15 @@ as of 2026-11-07.
 
 ## Improvement Decisions
 
+Team lead, 2026-11-07: "1. 1 2. 1, 3. 1 4. 1 5. 1". Proposals 1 to 4 go into
+the Sprint 17 plan, held as one card (F142) so Sprint 17's refinement sees them;
+proposal 5 is a new backlog card (F143). None changes code this sprint, so the
+full suite does not run again.
+
 | # | Title | Source | Type | Effort | Decision (now/backlog/skip) |
 |---|---|---|---|---|---|
-| 1 | Write reader telemetry outside the repository, so a reader never blocks a gate | Dev Team, categories 1, 9 and 13 | Tooling | 30m | pending |
-| 2 | A sign-off table to add or split an assertion | Dev Team, categories 7, 9 and 13 | Tooling | 45m | pending |
-| 3 | Split a proof appendix over 30 pages across reviewers by page, in the review prompt | Dev Team, categories 5, 13 and 15 | Process | 15m | pending |
-| 4 | Set both status fields in one step at each phase change | Dev Team, categories 6, 9 and 13 | Tooling | 15m | pending |
-| 5 | Find why per-page agent cost rose, measured per paper kind | Dev Team, categories 1 and 14 | Analysis | 90m [no-history] | pending |
+| 1 | Write reader telemetry outside the repository, so a reader never blocks a gate | Dev Team, categories 1, 9 and 13 | Tooling | 30m | Sprint 17 plan (Q1 = 1): carded as F142 part 1 |
+| 2 | A sign-off table to add or split an assertion | Dev Team, categories 7, 9 and 13 | Tooling | 45m | Sprint 17 plan (Q2 = 1): carded as F142 part 2 |
+| 3 | Split a proof appendix over 30 pages across reviewers by page, in the review prompt | Dev Team, categories 5, 13 and 15 | Process | 15m | Sprint 17 plan (Q3 = 1): carded as F142 part 3 |
+| 4 | Set both status fields in one step at each phase change | Dev Team, categories 6, 9 and 13 | Tooling | 15m | Sprint 17 plan (Q4 = 1): carded as F142 part 4 |
+| 5 | Find why per-page agent cost rose, measured per paper kind | Dev Team, categories 1 and 14 | Analysis | 90m [no-history] | Backlog (Q5 = 1): carded as F143, Priority 30 |

@@ -51,10 +51,28 @@ repository exists. No other F# from either source repository applies here.
 | 13 | docs/sprints/SPRINT_13_SUMMARY.md | [OK] Complete | 2026-10-24 to 2026-10-28 |
 | 14 | docs/sprints/SPRINT_14_SUMMARY.md | [OK] Complete | 2026-10-29 to 2026-10-31 |
 | 15 | docs/sprints/SPRINT_15_SUMMARY.md | [OK] Complete | 2026-11-01 to 2026-11-05 |
+| 16 | docs/sprints/SPRINT_16_SUMMARY.md | [OK] Complete | 2026-11-05 to 2026-11-07 |
 
 ## Last Completed Sprint
 
-Sprint 15 is below; Sprint 14 follows it for continuity.
+Sprint 16 is below; Sprint 15 follows it for continuity.
+
+### Sprint 16: Read Once, Check Once, Write Once, Then Test It on 20 Papers (2026-11-05 to 2026-11-07, PR #164, waiting for the team lead's merge)
+
+Eight tasks, eight issues (#165-#172). **Tooling**: each PDF's text
+extracted once and each quote checked once (F136); each read measured,
+with a telemetry file per group, and each "once" put in place (F139);
+number-only table cells kept and a stated limit's type named (F134,
+F135). **Store**: the two Dunjko records held as one (F137); the
+CVQBoost findings record and its seven assertions (F51). **Reading**:
+F114's 20 papers read in full (531 pages), including the 6 new papers
+on Christophe Pere's list and F57's two named papers. Store (snapshot
+2026-11-07): 34,897 -> 36,209 assertions (11,071 -> 11,491 HIGH); papers
+at `read` 1,805 -> 1,813. Finding: the scripts' repeated work is gone,
+but the agents' cost per page rose (F143). Manual Validation: the
+`he-simulation-scope` split, the seventh CVQBoost assertion, F140 and
+F141 carded. Retrospective: team lead all "Very Good"; F142 and F143
+carded. Full detail: `docs/sprints/SPRINT_16_SUMMARY.md`.
 
 ### Sprint 15: Read Every Page, Figures and Images Included, Then Read 100 More Papers (2026-11-01 to 2026-11-05, PR #149, merged to develop and to main via PR #163 on 2026-11-05; tagged sprint-15)
 
@@ -362,8 +380,11 @@ develop to main).
   2026-11-05), so "v2" is a plan question.
 - **The team lead asked of F51**: "Does this still have to be on hold?"
   Answered as a plan question.
-- **Plan**: `docs/sprints/SPRINT_16_PLAN.md` (drafted 2026-11-05, waiting
-  for approval).
+- **Plan**: `docs/sprints/SPRINT_16_PLAN.md` (approved 2026-11-06).
+- **State (2026-11-07)**: all eight tasks done; Manual Validation and the
+  retrospective complete; PR #164 ready for the team lead's merge. The
+  retrospective's five improvements: F142 (four small fixes, into the
+  Sprint 17 plan) and F143 (backlog, Priority 30).
 
 ## Next Sprint Candidates
 
@@ -1001,6 +1022,57 @@ and in git. Remaining items below.
 - Acceptance: a test, proven red, that `--full` prints a value longer
   than 100 characters whole.
 - Depends on: nothing.
+
+**F142. Four small pipeline fixes from the Sprint 16 retrospective (~105m) Priority 12** (NEW 2026-11-07, Sprint 16 retrospective Category 13, proposals 1 to 4; team lead "1. 1 2. 1, 3. 1 4. 1": each into the Sprint 17 plan)
+- Phase: Tooling (the read pipeline and the sprint status)
+- Value: no gate waits for a reader, a split is a recorded decision and
+  not a hand edit, no reviewer is sent back for a long appendix, and the
+  footer always shows the true phase.
+- Platform: `scripts/read_telemetry.py`, `scripts/run_suite.py`,
+  `scripts/f117_review.py`, `manifests/sprint16_f114_reads/REVIEW_PROMPT.md`
+  (or its Sprint 17 copy), `.claude/sprint_status.json`.
+- Parts:
+  1. Reader telemetry written outside the repository, or left out of the
+     tree fingerprint, so a reader never turns a gate INVALID (30m).
+     Sprint 16 measured the cost: every gate run while a reader worked
+     came back INVALID. F140 part 6 names the same fix; this part does
+     it, and F140 records it as done.
+  2. A sign-off table to add or split an assertion (`f117_review.SIGNOFF_TABLES`),
+     so a split such as Sprint 16's `he-simulation-scope` (MV Q1 = 3)
+     never edits a reader's read file by hand and never needs the built
+     manifest deleted and rebuilt (45m).
+  3. The review prompt splits any proof appendix over 30 pages across
+     reviewers by page from the start (15m). Sprint 16: Monaco's 70-page
+     supplement was graded from statements, and two fresh reviewers then
+     changed 13 of 94 decisions; Heimann's 7 appendices were left unread
+     on the first pass.
+  4. One step sets `status` and `current_sprint.status` together at each
+     phase change (15m). Sprint 16 needed a second commit (8d16500)
+     because the footer reads `current_sprint.status`.
+- Acceptance: each part with a test proven red (part 3 through
+  `tests/test_reader_prompts.py` or its review-prompt equivalent).
+- Depends on: nothing. Sequence after F140 in Sprint 17 if F140 is
+  selected, since part 1 changes what F140 measures.
+
+**F143. Why the agents' cost per page rose, measured per paper kind (~90m [no-history] timebox) Priority 30** (NEW 2026-11-07, Sprint 16 retrospective Category 14, proposal 5; team lead Q5 = 1: backlog)
+- Phase: Reading (cost)
+- Value: an answer to where the reading time goes before the next large
+  release, so a fix targets the true cause.
+- Platform: `scripts/read_telemetry.py` and its files in
+  `manifests/sprint16_f114_reads/telemetry/`, the Sprint 15 baseline.
+- Background (snapshot 2026-11-06, INTAKE section 73): over Sprint 16's
+  20 papers (531 pages) readers spent 4,633 tokens and 0.75 minutes per
+  page, against Sprint 15's 3,645 and 0.44; reviewers 3,224 and 0.24,
+  against 1,676 and 0.14. F139 removed the repeated script work (0
+  text-cache misses; every second apply checked no quote), so the rise is
+  in the agents' own reading.
+- Scope: split the per-page cost by paper kind (proof-heavy, figure-heavy,
+  experiment, survey), by pages viewed as images, and by re-reviews;
+  name the cause with its evidence, and propose a fix each as its own
+  numbered question.
+- Acceptance: each Sprint 16 group's cost split by those measures; the
+  cause named, or the reason it cannot be from the data held.
+- Depends on: F139's telemetry (shipped Sprint 16).
 
 ### Carded during Sprint 13 (2026-10-26 to 2026-10-28)
 
