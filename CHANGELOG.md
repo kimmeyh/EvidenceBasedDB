@@ -15,6 +15,9 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **process**: F144 pilot sent (batch msgbatch_01UToPxejWkyAFEubNSZf4PN,
+  2026-11-07): 5 papers, ledger groups g335 to g339 with their briefs;
+  forecast $1.63, worst case $7.70 (#176)
 - **feat**: F144 reader sends an errored or expired paper again and keeps
   its first result (team lead, Q3 = 1; proven red), and names the team
   lead's workspace in each request: the key is scoped to the
