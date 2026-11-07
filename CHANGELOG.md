@@ -15,6 +15,12 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **docs**: Backlog refinement and Sprint 17 plan (2026-11-07). Scope
+  selected by the team lead: F140 (first), F144, F114 (10 papers), F142,
+  F141, F143. `docs/sprints/SPRINT_17_PLAN.md` drafted with its
+  pre-flights (Batch API facts checked on Anthropic's page; the key's
+  name and Claude Code's own credential order; F144's candidates) and
+  two questions for the team lead
 - **chore**: Sprint 17 opened (2026-11-07). The team lead merged PR #164
   into develop (3180aad) and PR #173 to main (85fbeae); `sprint-16`
   tagged on 85fbeae; branch `feature/20261107_Sprint_17` cut from the

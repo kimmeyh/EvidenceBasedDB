@@ -367,8 +367,13 @@ F25 D1-D3 so it measures adjudication of corrected records.
 Sprint 16 carry-forward, after PR #164 merged to develop and PR #173 merged
 develop to main).
 
-- **Scope**: not yet selected (Phase 1.4 slate presented 2026-11-07).
-- **Plan**: none yet.
+- **Scope** (DEFINED, team lead 2026-11-07): F140 (first, "and complete
+  it so that any other testing in the sprint uses this newly implemented
+  testing methodology"), F144, F114 (10 papers this sprint, none of them
+  F144's; the two PDFs saved into `Papers\` on 2026-11-07 among them),
+  F142, F141, F143. F39 not selected.
+- **Plan**: `docs/sprints/SPRINT_17_PLAN.md` (drafted 2026-11-07, waiting
+  for approval; Q1 and Q2 open).
 
 ## Next Sprint Candidates
 
