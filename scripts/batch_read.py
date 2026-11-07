@@ -363,7 +363,11 @@ def paper_message(group: str, brief: dict, pdf: str) -> tuple[list[dict], dict]:
     body = "\n".join(f"=== PAGE {n} ===\n{t}" + (f"\n|| OCR: {ocr[n]}" if n in ocr else "")
                      for n, t in enumerate(texts, 1))
     attached, left, size, images = [], [], 0, []
-    for n in image_pages(pdf, texts, ocr):
+    # Every page, figure pages first (pilot, 2026-11-07: Kadowaki 1998's figures are vector drawings on pages with no
+    # embedded image and no caption, so a figure-pages-only rule attached none of them and the read was partial). A
+    # page image is about 1,300 input tokens, about $0.0013; the request limits decide what is left out, never cost.
+    first = image_pages(pdf, texts, ocr)
+    for n in first + [p for p in range(1, len(texts) + 1) if p not in first]:
         png = render(pdf, n, 100).read_bytes()
         if len(attached) >= MAX_IMAGES or size + len(png) > MAX_IMAGE_BYTES:
             left.append(n)
@@ -371,6 +375,8 @@ def paper_message(group: str, brief: dict, pdf: str) -> tuple[list[dict], dict]:
         attached.append(n)
         size += len(png)
         images.append((n, png))
+    attached.sort()
+    images.sort()
     head = (f"Your group is {group}. Follow your instructions exactly.\n=== BRIEF ===\n{json.dumps(brief, indent=1)}\n"
             f"=== PAPER TEXT ===\n{body}\n=== PAGE IMAGES ===\nAttached below: pages "
             f"{', '.join(map(str, attached)) or 'none'}."

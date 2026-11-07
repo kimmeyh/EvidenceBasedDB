@@ -15,6 +15,13 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **feat**: F144 pilot results (snapshot 2026-11-07): 5 of 5 succeeded
+  in 5m18s, $0.78 for 99 pages; reader group files g335 to g339 in
+  `manifests/sprint13_g_reads/`, each kept and flagged (2 to 19 check
+  problems, 42 of 49 a value number not in its quotes). Fix from the
+  pilot: every page image is attached, figure pages first, since
+  Kadowaki 1998's vector-drawing figures had no image (test proven
+  red). Nothing written to the store (#176)
 - **process**: F144 pilot sent (batch msgbatch_01UToPxejWkyAFEubNSZf4PN,
   2026-11-07): 5 papers, ledger groups g335 to g339 with their briefs;
   forecast $1.63, worst case $7.70 (#176)

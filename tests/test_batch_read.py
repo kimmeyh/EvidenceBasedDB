@@ -25,6 +25,9 @@ The fresh-eyes review of 2026-11-07 added four guards, each proven red the same 
 Team lead, Q3 = 1 (2026-11-07): an errored or expired paper is sent again, its first result kept. Proven red the same
 day: `unsendable` counting every saved result (INJECTED), and the `earlier` append removed (INJECTED), each failed
 test_an_errored_or_expired_paper_is_sent_again_and_its_first_result_kept.
+
+Pilot, 2026-11-07: every page is attached, figure pages first. Proven red the same day: with the loop over the
+figure pages only (INJECTED), test_every_page_is_attached_including_drawings_with_no_caption failed (5 of 23 pages).
 """
 from __future__ import annotations
 
@@ -194,6 +197,19 @@ def test_a_retried_collection_costs_each_result_once(bm, monkeypatch):
     bm.collect(state, "msgbatch_9", [result])
     after = bm.load_state()
     assert after["spent"] == pytest.approx(1.0) and after["batches"]["msgbatch_9"]["collected"] is True
+
+
+@pytest.mark.live_store
+def test_every_page_is_attached_including_drawings_with_no_caption():
+    """Pilot, 2026-11-07: Kadowaki 1998's figures are vector drawings on pages 16 to 23, with no embedded image and no
+    caption on the page, and a figure-pages-only rule attached none of them (the read came back partial). Every page
+    is attached now, up to the request limits. Local: it renders a PDF in Papers."""
+    mod = _module()
+    pdf = mod.PAPERS / "1998_Kadowaki_Quantum-annealing-in-the-transverse-Ising-model.pdf"
+    content, facts = mod.paper_message("g999", {"group": "g999", "records": []}, str(pdf))
+    assert facts["pages"] == 23 and facts["images"] == 23 and facts["not_attached"] == [], facts
+    labels = [b["text"] for b in content if b["type"] == "text" and b["text"].startswith("=== IMAGE OF PAGE")]
+    assert "=== IMAGE OF PAGE 16 ===" in labels and len(labels) == 23
 
 
 def test_the_key_never_reaches_the_output_or_a_file(bm, capsys, tmp_path):

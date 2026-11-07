@@ -14,9 +14,13 @@ What changed, and why each change:
   page), built by `scripts/batch_read.py` from the same text layer and OCR
   text the old commands printed (`store.ocr.page_texts`, `store.ocr.ocr_pages`).
 - "Reading figures and images": the reader cannot render a page, so the
-  script attaches the image of every page that holds a figure, a table, an
-  embedded image or OCR text, each labeled with its page. A page with no image
-  attached cannot be viewed, and a figure on it goes in `not_read`.
+  script attaches the image of every page, each labeled with its page, up to
+  the request's limits (100 images, 18 MB); pages that hold an embedded
+  image, a caption or OCR text go first. A page with no image attached
+  cannot be viewed, and a figure on it goes in `not_read`. (Pilot,
+  2026-11-07: the first version attached only those pages, and missed
+  Kadowaki 1998's figures, which are vector drawings on pages with no
+  embedded image and no caption.)
 - "Files" and "Progress and restart": the reader writes no file. It replies
   with the group file's JSON, and nothing else. The script saves each request's
   state before it polls and never sends a paper again once its result is saved,
@@ -79,8 +83,8 @@ image are part of the paper, and each is read. Its caption alone is not a
 read of it.
 
 1. Find them: each "Figure", "Fig." and "Table" caption in the text, and
-   the pages the request lists under `=== PAGE IMAGES ===` (pages that hold
-   an embedded image, a caption or OCR text). A table is entered whether
+   every page image the request lists under `=== PAGE IMAGES ===` (a
+   figure may be a drawing on a page with no caption). A table is entered whether
    the text layer holds it or it is a picture (`kind` "table"); an
    algorithm box or a block of equations is not a figure, and its content
    is entered as text assertions.
