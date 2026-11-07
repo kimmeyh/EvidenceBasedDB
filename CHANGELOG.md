@@ -15,6 +15,13 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **process**: Sprint 17 plan approved (2026-11-07); issues #175 to
+  #180. The team lead keeps the API key in a git-ignored key file at the
+  repository root, named ANTHROPIC_API_KEY, read only by the batch script
+  through python-dotenv. New hook `block_env_secret_reads.py` blocks
+  Claude from reading, printing, editing or staging that file; `.gitignore`
+  names it; `tests/test_env_secret_guard.py`, proven red three ways. Order
+  changed by the team lead: F144 first, then F140 (#175, #176)
 - **docs**: Sprint 17 plan absorbs Q2 = 2 (every approved F140
   recommendation before F144) and asks Q1 again with a `.env` option
   outside the repository; F145 carded (what qubit-lab.ch's Evidence pages

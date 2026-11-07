@@ -44,9 +44,10 @@ review and fix cycle. Runtime is separate, with its dominant term.
 | E | **F114, 10 papers.** Order: the 2 PDFs saved into `Papers\` on 2026-11-07 (Ayan Sar et al., IEEE Access 2026, 43 pages; PSI's web article "A proof of the Aaronson-Ambainis conjecture", 9 pages), each entered through the intake door; Christophe Pere's list (unchanged since 399b022651, checked 2026-11-07); then 8 from the ledger, from the first group not yet read in full, with Sprint 16's exclusions (saved web pages with no article, directory sources, books). The 10 are fixed by id at the task start and written to F144's exclusion list; F144 never selects them. Under the Sprint 16 prompts with C's fixes; up to 5 local readers; each reviewer reads the paper in full; one apply with its trial and verified backup | 15m (entry) + 25m (review and sign-off, at Sprint 15's 2.4m per record) | no estimate as a limit (no reading budget). At Sprint 16's rate, about 26 pages per paper and 0.99 agent minutes per page, about 260 agent minutes in the background | Claude, top tier (sign-off, certainty); Sonnet 5.5 readers and reviewers |
 | F | **F143, why per-page cost rose.** Each Sprint 16 group's cost split by paper kind (proof-heavy, figure-heavy, experiment, survey), by pages viewed as images and by re-reviews; Task E's telemetry added; the cause named with its evidence, and each fix asked as its own numbered question | 90m [no-history] timebox | none | Claude, top tier |
 
-**Sequence**: A first and complete (the team lead's instruction), with its
-approved changes in place before B starts. B next, because of the credit's
-expiry. C and D then; C's telemetry part before E's readers start. E's
+**Sequence** (changed at approval, team lead 2026-11-07: "don't run F140
+until F144 is finished"): B first, through its pilot report. A next and
+complete, with every approved change in place before C to F test anything
+(Q2 = 2). C and D then; C's telemetry part before E's readers start. E's
 readers run in the background while F is written; F uses E's telemetry
 too. One apply at a time. Total about 625 minutes at the cards' estimates
 plus Q2's implementation time; at Sprint 16's 1.7 times, about 1,060
@@ -149,7 +150,29 @@ and save future token spend?" Read as a question about F144's batch reads.
 
 ## Decisions for the team lead
 
-Team lead, 2026-11-07: "2. 2" (Q2 = 2). Q1 asked again with a `.env`
+**Approved 2026-11-07** ("Sprint plan approved as amended ... proceed with
+execution"), with the team lead's answers and changes:
+
+- **Q1 (the team lead's own answer)**: "I will put it in the .env file in
+  the local repository D:\Data\Harold\github\EvidenceBasedDB and then we
+  can use if from there", the key "will be called ANTHROPIC_API_KEY", and
+  "Update uv for python-env (not sure of package name)". So: `.env` at the
+  repository root, ignored by git; the package is `python-dotenv`, added
+  with `uv` beside `anthropic`; the script reads the key with
+  `dotenv_values`, which returns it without putting it in the environment,
+  so Claude Code's credential order never sees an `ANTHROPIC_API_KEY`
+  variable. A hook (`block_env_secret_reads.py`) blocks Claude from
+  reading, printing, editing or staging `.env`, done first, before the
+  team lead created the file. The team lead created it the same day (".env
+  is ready to be tried").
+- **Order changed** (team lead, 2026-11-07): "you can test the api key
+  before F144 finishes, but don't run F140 until F144 is finished". So F144
+  (Task B) runs first, F140 (Task A) after F144's pilot report, then C to
+  F. This reverses the selection's "F140 first" and Q2's "F140 before
+  F144"; Q2 = 2 still holds for F140 against the tasks after it (every
+  approved F140 recommendation is implemented before C to F's testing).
+
+Team lead, 2026-11-07, earlier: "2. 2" (Q2 = 2). Q1 asked again with a `.env`
 option, after the team lead asked "do we have an .env file where we can
 store the key?" (no: neither the repository nor
 `D:\Data\Harold\EvidenceBasedDB\` holds one, and `.gitignore` does not
