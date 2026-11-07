@@ -138,6 +138,8 @@ this project keeps having to replace with a step.
   wins, LOW, its reason naming B4 and F162. Q3 = 2: F141 carded (the
   paper view prints assertions in full). Assertions 36,209 (snapshot
   2026-11-06)
+- **chore**: Manual Validation complete (team lead, 2026-11-07); Sprint 16
+  at Phase 7.1 Retrospective, Claude's draft written
 
 ### 2026-10-31 to 2026-11-05 (Sprint 15, PR #149, merged to develop 2026-11-05 and to main via PR #163 the same day; tagged sprint-15)
 
