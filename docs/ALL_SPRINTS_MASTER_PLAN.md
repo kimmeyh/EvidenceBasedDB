@@ -984,6 +984,24 @@ and in git. Remaining items below.
 - Depends on: nothing. Informs: F100's runner, Phases 4 to 7 of every
   sprint, F114's reads.
 
+**F141. The paper view prints each assertion in full (~15m) Priority 40** (NEW 2026-11-06, team lead at Sprint 16 Manual Validation: "this seems to cut off the assertion(s), is there a way to get the full assertion?"; Q3 = 2, carded for Sprint 17)
+- Phase: Tooling (the store viewer)
+- Value: the team lead reads a paper's assertions in full from one
+  command, without a PowerShell pipe over `--json`.
+- Platform: `scripts/view.py`.
+- Today `python scripts/view.py paper <id>` cuts each assertion to its
+  first 100 characters (and each `contexts` line to 80). The full text is
+  in `--json` and in `view.py assertion <id>`. Until this ships:
+  `python scripts/view.py paper <id> --json | ConvertFrom-Json |
+  Select-Object -ExpandProperty yields | Format-List id, certainty,
+  value, provenance, citation_context`.
+- Scope: a `--full` option on `paper` that prints each yielded
+  assertion's id, certainty, full value, provenance and quotes; the
+  default output unchanged.
+- Acceptance: a test, proven red, that `--full` prints a value longer
+  than 100 characters whole.
+- Depends on: nothing.
+
 ### Carded during Sprint 13 (2026-10-26 to 2026-10-28)
 
 **F114. Read in full the new papers (Papers folder, Christophe Pere's list) and the Task G ledger's papers, 30 per sprint, books excluded (no estimate: as long as the reads take) Priority 10** (NEW 2026-10-26, team lead at Sprint 13 Task G: "pause after the 5 current agents complete and backlog the remaining for the next sprint"; F95 and F98 folded in, 30 per sprint, books moved to F138, team lead 2026-11-05)

@@ -334,6 +334,7 @@ CLASSED = {
     "cvqboost-16-samples-no-better-than-8": ("not addressed", None),
     "cvqboost-shallow-weak-learners-hurt": ("not addressed", None),
     "cvqboost-in-segment-overfit-exceeds-xgboost": ("not addressed", None),
+    "cvqboost-tuned-in-segment-wins-single-run": ("not addressed", None),  # the seventh, Manual Validation Q2 = 1
     "dirac3-stratification-falls-short-ballin-2026": ("not addressed", None),
     "favorable-dirac3-papers-are-qci-authored": ("not addressed", None),
     # Added 2026-10-15 (Sprint 9 Task A, F79): Phase 2's B4 and B5 hardware

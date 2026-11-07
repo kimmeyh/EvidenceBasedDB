@@ -4093,6 +4093,18 @@ when it runs. Every count here is a snapshot as of 2026-11-06.
   (HIGH 11,071 to 11,431; LOW 23,726 to 24,510); papers at `read` 1,805
   to 1,813 and at `seen` 562 to 554 (the 8 new papers; the 12 ledger
   papers were already at `read`).
+- **g154-r1, after the team lead's answer** (Manual Validation Q1 = 3,
+  2026-11-06: split). `he-simulation-scope` gave two reasons as one: the
+  three-class reduction is "Due to the high computational cost of
+  simulating large-scale quantum systems", and the 100 samples per class
+  are "To simulate real-world data scarcity". It now holds the first
+  only (HIGH, stated limit; anchor corrected to p.11), and
+  `qgan-training-testing-100-per-class` holds the second (HIGH, setup).
+  The coordinator added that item to the read and recorded both
+  decisions and the sign-off edits; trial, live apply after a verified
+  backup, and a second apply that wrote nothing: 167 assertions entered
+  and 8 changed. Assertions after it and Task H's seventh: 36,209
+  (HIGH 11,491; LOW 24,618).
 - **What the review found.**
   - g333's first reviewer graded Monaco's 70-page supplement from its
     statements and a citation search, not line by line. Two fresh
@@ -4121,7 +4133,7 @@ when it runs. Every count here is a snapshot as of 2026-11-06.
   in the read's figure entries, not in assertions: a cell can be matched
   to its ansatz only on the rendered page.
 
-## 74. The CVQBoost findings record and its six assertions (Sprint 16 Task H, F51)
+## 74. The CVQBoost findings record and its seven assertions (Sprint 16 Task H, F51)
 
 Written 2026-11-06, before the apply. Every count is a snapshot as of
 2026-11-06.
@@ -4168,9 +4180,23 @@ Written 2026-11-06, before the apply. Every count is a snapshot as of
   win repeats reliably). None of the six states a win, so no
   `contradicts` relation is written; the record's evidence names both.
   The shallow-learner assertion's loss is against a win at the default
-  configuration, and its reason says so. Whether to add a seventh
-  assertion for the wins, contradicted by B4, is a question for the
-  team lead at Manual Validation.
+  configuration, and its reason says so.
+- **The seventh assertion** (team lead, Manual Validation Q2 = 1,
+  2026-11-06). `cvqboost-tuned-in-segment-wins-single-run` states
+  section 10's headline: on the tuned rollout (one run, seed 20260804),
+  CVQBoost led inside the segment on ROC-AUC in 5 of 7 valid cells and
+  on PR-AUC in 6 of 7 (the document's count, which takes a tie at 1.000
+  on energy_steel target_real as a lead), and on the whole test set won
+  ROC-AUC 2 of 8 and PR-AUC 3 of 8, with section 11's caveat that the
+  edge is fragile and needs repeats. LOW, measured result. The fresh-eyes
+  review moved the caveat from section 6, which states it for the
+  untuned baseline, to section 11, which states it for this rollout. Its reason names B4 and F162, which did not find
+  such wins. Neither is linked as `contradicts`: B4 compares the segment
+  against a matched random segment, not against XGBoost, and F162 runs
+  the proxy over three cells with XGBoost at library defaults, so
+  neither repeats this configuration on the device. Classed "not
+  addressed" against the Dirac-3S guide (F65). Trial, live apply after a
+  verified backup, and a second apply that wrote nothing.
 - **Fresh-eyes review** (after the first apply, 2026-11-06): the F162
   wording was narrowed to its limits and B4 named; the route's
   name-bearing citation was replaced by the title; the num_samples

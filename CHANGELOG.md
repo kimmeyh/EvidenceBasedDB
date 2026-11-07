@@ -130,6 +130,14 @@ this project keeps having to replace with a step.
   local full suite went from 199 s (Sprint 12) to 4,124 s
 - **chore**: Sprint 16 at Phase 5.3 Manual Validation (2026-11-06); the
   sprint's own status field set too (the footer reads it)
+- **feat**: Manual Validation answers applied (team lead, 2026-11-06).
+  Q1 = 3: `he-simulation-scope` split in two (the three-class reduction,
+  a stated limit, and `qgan-training-testing-100-per-class`, setup;
+  both HIGH), then g154-r1 applied: 167 assertions entered, 8 changed.
+  Q2 = 1: Task H's seventh assertion, the tuned rollout's in-segment
+  wins, LOW, its reason naming B4 and F162. Q3 = 2: F141 carded (the
+  paper view prints assertions in full). Assertions 36,209 (snapshot
+  2026-11-06)
 
 ### 2026-10-31 to 2026-11-05 (Sprint 15, PR #149, merged to develop 2026-11-05 and to main via PR #163 the same day; tagged sprint-15)
 

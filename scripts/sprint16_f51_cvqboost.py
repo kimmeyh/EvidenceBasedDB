@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Sprint 16 Task H (F51, released from HOLD, team lead Q4 = 1): the CVQBoost findings record and its six assertions.
+"""Sprint 16 Task H (F51, released from HOLD, team lead Q4 = 1): the CVQBoost findings record and its seven assertions.
 INTAKE_WORKFLOW.md section 74.
 
 The source is FourierWall2's working document "Maximizing Predictions from CVQBoost: Cumulative Findings", last
 updated 2026-08-04 (SHA-256 425358a7b4cec71f...; the copy in References and FourierWall2's own are identical, checked
-2026-11-06). It was read in full on 2026-11-06. The six assertions are the Cyc and CVQBoost handoff's
+2026-11-06). It was read in full on 2026-11-06. The first six assertions are the Cyc and CVQBoost handoff's
 (`Handoff-2026-10\\ebdb-handoff\\05-sprint-script-draft.py`), each value rewritten so that every figure in it is in its
 own quotes, and each graded by what the document shows: each is one study's run (single runs on one seed), so each
 is LOW, "measured result" (`store.grading`; the handoff's 2026-09 HIGH grades predate it).
@@ -15,8 +15,11 @@ its id carries no author's name (the handoff's draft id did).
 
 Two Phase 2 records bear on the document's in-segment wins (sections 6, 10 and 11): B4's Dirac-3 replication
 (cvqboost-in-segment-edge-negative-on-device-spectra-b4: no in-segment advantage on any scoreable cell) and F162
-(the proxy, not the device, over ten seeds on three cells: no in-pocket win repeats). None of the six states a win, so
-no relation is written; the record's evidence names both. The shallow-learner assertion assumes a win at the default
+(the proxy, not the device, over ten seeds on three cells: no in-pocket win repeats). None of the first six states a
+win, so no relation is written; the record's evidence names both. The seventh (team lead, Sprint 16 Manual Validation
+Q2 = 1, 2026-11-06) states the section 10 wins; its certainty reason names B4 and F162, and neither is linked as
+contradicting it, since neither repeats its configuration on the device (B4 compares against a random segment, F162
+runs the proxy). The shallow-learner assertion assumes a win at the default
 configuration, the kind both records question; its certainty reason says so.
 
     python scripts/sprint16_f51_cvqboost.py           # dry run: every quote checked, nothing written
@@ -155,6 +158,29 @@ ASSERTIONS = [
                         '"0.880->0.668 (0.212) | 0.659->0.633 (0.026)" (section 11, oilgas_gasturbine / target); '
                         '"0.997->0.863 (0.135) | 0.869->0.789 (0.080)" (section 11, telecom_churn / target); '
                         '"i.e. CVQBoost is mostly memorizing there." (section 11)')),
+    # The seventh, team lead at Sprint 16 Manual Validation, Q2 = 1 (2026-11-06): the document's in-segment wins
+    A(id="cvqboost-tuned-in-segment-wins-single-run",
+      value=("On the tuned SPECTRA rollout on Dirac-3 (one run, seed 20260804), CVQBoost led XGBoost inside the "
+             "segment on ROC-AUC in 5 of 7 valid cells and on PR-AUC in 6 of 7 (the document's count, which takes a "
+             "tie on energy_steel target_real as a lead), while on the whole test set it won ROC-AUC in 2 of 8 cells "
+             "and PR-AUC in 3 of 8; the document itself says the in-segment edge is fragile, with high variance and "
+             "heavy training overfit, and that firming it up needs repeats"),
+      provenance="section 10 and section 11",
+      note=("Phase 2 did not find such wins: " + B4 + " (on the device, oilgas and telecom by seed, the segment "
+            "against a matched random segment, not against XGBoost: negative on every scoreable seed cell) and "
+            + F162 + " (the proxy, not the "
+            "device, ten seeds on three cells, label target only, XGBoost at library defaults: not reliably better "
+            "than XGBoost in the pocket on any cell). Neither repeats this configuration on the device over seeds, "
+            "so neither is linked as contradicting it"),
+      citation_context=('"leak-free features, seed 20260804" (section 10); '
+                        '"**Overall:** ROC 2/8 (energy both labels), PR 3/8" (section 10); '
+                        '"**In-segment (`in_pocket==1`, 7 valid cells; telecom target_real is nan):**" (section 10); '
+                        '"**ROC 5/7, PR 6/7 to CVQBoost.**" (section 10); '
+                        '"| energy target_real | | 1.000 / 0.999 | 1.000 / 1.000 | CVQB wins overall+seg |" '
+                        '(section 10 table); '
+                        '"but they come with high variance / heavy training overfit, so the edge is fragile." '
+                        '(section 11); '
+                        '"Firming it up needs repeats" (section 11)')),
     A(id="spectra-label-leak-signature-identical-perfect-models",
       value=("Using SPECTRA's target_real or in_pocket column as a feature when predicting target leaks the answer, with "
              "a recognizable signature: precision 1.000 and both models near-perfect and identical, because both copied "
