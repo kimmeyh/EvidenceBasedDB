@@ -15,6 +15,23 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **feat**: F144 Batch API reader, built and dry-run; nothing sent yet.
+  `scripts/batch_read.py` (select, fetch, submit, poll, status; dry run
+  by default), `requirements-batch.txt`, the no-tool reader prompt
+  `manifests/sprint17_f144_batch/READER_PROMPT.md`, and the slice
+  `manifests/sprint17_f144_slice.json` (174 candidates, a snapshot as of
+  2026-11-07: no read row, no ledger group, not GitHub, withdrawn or
+  retracted). `tests/test_batch_read.py`: no resend, the $95 cap and the
+  2026-11-18 stop, no key in output or files, results in pipeline shape
+  with failures kept; each proven red. `tests/test_reader_prompts.py`
+  accepts the script's state in place of progress files for a prompt
+  whose reader has no tools (proven red). INTAKE_WORKFLOW section 75.
+  Writes nothing to the store. A fresh-eyes review added four guards,
+  each proven red: the cap is tested at the worst case (full max_tokens
+  of output), not the forecast; an interrupted send leaves a `pending`
+  entry that blocks the next send, and the ledger is written before the
+  send; each request and the batch are measured against 32 MB and
+  256 MB; a retried collection costs each result once (#176)
 - **fix**: Key-file hook has no bypass token at all. The automated security
   review found that a token honored on `git commit` still passed
   `git commit ... && cat` of the file. A commit or PR text that names the
