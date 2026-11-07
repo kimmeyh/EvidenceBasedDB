@@ -44,6 +44,26 @@ def store_dir() -> Path:
     return Path(DEFAULT_STORE_DIR)
 
 
+# F136 (Sprint 16 Task A): each PDF's text is extracted once, ever (team lead, 2026-11-05). The cache used to be
+# `store_dir() / "text_cache"`, so a trial on a store copy (EBDB_STORE_DIR pointed elsewhere) found an empty cache
+# and extracted all 894 PDFs again (Sprint 15, about 25 minutes). The cache now has one fixed folder that does NOT
+# follow EBDB_STORE_DIR; only its own variable moves it.
+TEXT_CACHE_ENV = "EBDB_TEXT_CACHE_DIR"
+DEFAULT_DATA_DIR = DEFAULT_STORE_DIR.parent  # the non-repository data folder: Papers, Books, ocr-venv
+
+
+def text_cache_dir() -> Path:
+    """The one text cache every store and every store copy reads: EBDB_TEXT_CACHE_DIR, or the live store's
+    `text_cache\\`. Off Windows without the variable it raises, as `store_dir` does, and the callers then simply do
+    not use a cache."""
+    override = (os.environ.get(TEXT_CACHE_ENV) or "").strip()
+    if override:
+        return Path(override)
+    if not _on_windows():
+        raise RuntimeError(f"No text cache off Windows unless {TEXT_CACHE_ENV} names one.")
+    return Path(DEFAULT_STORE_DIR) / "text_cache"
+
+
 class _NoCommittedExport:
     """What script_paths returns where EXPORT_DIR used to be.
 

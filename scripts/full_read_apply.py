@@ -76,11 +76,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from store import connect, recheck, script_paths  # noqa: E402
+from store import DEFAULT_STORE_DIR, connect, recheck, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
 from store.grading import grade, high_grades, low_grade  # noqa: E402
 from store.ingest import (FULL_READ_MARK, AssertionRecord, add_read, append_updated_reason,  # noqa: E402
-                          insert_verified_assertion, set_tier, sync_verified_assertion, validate_assertion)
+                          checked_when_stored, insert_verified_assertion, set_tier, sync_verified_assertion, validate_assertion)
+from store.merges import holder, promotes  # noqa: E402
 from store.ocr import IMAGE_SUFFIXES  # noqa: E402
 from store.quotes import (QUOTE, ocr_only_quotes, plain, read_from_figure, require_edit_basis, require_verbatim,  # noqa: E402
                           source_text)
@@ -141,6 +142,9 @@ GROUP_READER: dict[str, str] = {}
 RECORD_READER: dict[str, str] = {}
 RECORD_TAG: dict[str, str] = {}
 UNREAD: dict[str, dict[str, str]] = {}
+# F137 (Sprint 16 Task E, team lead Q6 = 1, 2026-11-06): `store.merges` names each record closed as a duplicate and
+# the record that holds its assertions now. A reader file that names the duplicate still reads as written (g131), and
+# its assertions are entered, checked and owned under the holder; the duplicate itself is never promoted again.
 
 REVIEWS_DIR = ROOT / "manifests" / "sprint13_g_reviews"
 _TABLES = {"quote_edits": QUOTE_EDITS, "extra_quotes": EXTRA_QUOTES, "value_replace": VALUE_REPLACE,
@@ -327,7 +331,10 @@ def assertions(problems: list[str] | None = None) -> list[tuple[str, AssertionRe
 
     def add(g, rid, p, *args):
         try:
-            out.append((g, record(g, rid, *args), rid, p))
+            rec = record(g, rid, *args)
+            if holder(rid) != rid:  # F137: owned, checked and yielded under the record it was merged into
+                rec = replace(rec, provenance=f"{holder(rid)}{rec.provenance[len(rid):]}")
+            out.append((g, rec, holder(rid), p))
         except ValueError as e:
             if problems is None:
                 raise
@@ -396,14 +403,15 @@ def grades_not_written(conn) -> list[str]:
     return problems
 
 
-def ocr_check(a, file: str, text: str) -> None:
+def ocr_check(a, file: str, text: str | None) -> None:
     """F115 (Sprint 15 Task F). A quote found only in a source's OCR text says "OCR" in its anchor, so a reader of
     the record knows the words came from a page image. The team lead's grading rule (2026-11-01, plan Q3): OCR of a
     stored PDF's page grades as its text layer; a claim from an image file outside a PDF is HIGH only when another
     source corroborates it, named in its HIGH's why ("corroborated by <record>"), otherwise MEDIUM at most."""
     # The anchor runs to the ")" that ends the quote's entry, so an anchor holding "(Methods)" is read whole (review
     # of Task F: "[^)]*" stopped at the first ")").
-    unmarked = [q for q in ocr_only_quotes(a.citation_context, text)
+    # text None (F136): the quotes are stored as written and were marked when checked; the grade rule still runs
+    unmarked = [q for q in (ocr_only_quotes(a.citation_context, text) if text is not None else [])
                 if not re.search(rf'"{re.escape(q)}" \((?:(?!\)(?:; "|$)).)*\bOCR\b', a.citation_context)]
     if unmarked:
         raise ValueError(f"{a.id}: quotes found only in OCR text need \"OCR\" in their anchor: {unmarked}")
@@ -427,32 +435,79 @@ def figure_check(a) -> None:
         raise ValueError(f"{a.id}: a value read from a figure is never HIGH on the figure alone")
 
 
-def verify() -> list[tuple[AssertionRecord, str, dict, object]]:
+LAST_VERIFY: Counter = Counter()  # F136: what the last verify() checked, and what it found stored as written
+
+
+CHECKED_BY_GROUP: Counter = Counter()  # F139: per group, the assertions the last verify() checked (new or changed)
+
+
+def record_telemetry(step: str) -> list[str]:
+    """F139: the last verify's quote checks per group, as one step in each group's telemetry file
+    (`scripts/read_telemetry.py`); a group without a file is not measured. At an apply the checked assertions are
+    the ones it entered or whose quote or value it changed, so they are its assertions written too (its other rows,
+    such as read rows and access notes, are not counted)."""
+    spec = importlib.util.spec_from_file_location("read_telemetry", Path(__file__).with_name("read_telemetry.py"))
+    t = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(t)
+    writes = step in ("trial", "apply")
+    return [g for g, n in sorted(CHECKED_BY_GROUP.items())
+            if t.step(g, step, quote_checks=n, **({"assertions_written": n} if writes else {})) is not None]
+
+
+def verify_counts() -> str:
+    return (f"quote checks: {LAST_VERIFY['checked']} checked, {LAST_VERIFY['stored as written']} stored as written "
+            f"(checked when written, not again); {LAST_VERIFY['sources read']} sources read")
+
+
+def _text(texts: dict[str, str], file: str) -> str:
+    if file not in texts:  # once per file: setdefault built the argument, plain() over the whole text, every time
+        texts[file] = plain(source_text(file))
+    return texts[file]
+
+
+def verify(conn=None) -> list[tuple[AssertionRecord, str, dict, object]]:
     """Every quote verbatim in its source, every coordinator edit resting on named passages, and every figure in
     a value in its own quotes, BEFORE anything is written. Every refusal is collected and raised together (Sprint 14
-    retrospective Q4: a dry run named one, and each fix found the next)."""
+    retrospective Q4: a dry run named one, and each fix found the next).
+
+    F136 (Sprint 16 Task A): with `conn`, an assertion whose quotes and value a full read of the same source
+    already stored exactly as it would write them is not checked again (`checked_when_stored`): that write checked
+    them, and a sync writes no quote or value for it. Only a new or changed quote is checked, so a second apply checks nothing and reads no
+    source. The checks that read no source (the figure, image-HIGH and record rules) still run on every row."""
     texts: dict[str, str] = {}
     out = []
     problems: list[str] = []
-    for _, a, rid, p in assertions(problems):
+    LAST_VERIFY.clear()
+    CHECKED_BY_GROUP.clear()
+    for g, a, rid, p in assertions(problems):
         try:
-            quotes = QUOTE.findall(a.citation_context)
-            text = texts.setdefault(p["file"], plain(source_text(p["file"])))
             from_figure = a.id in figure_ids(p)
-            from_page = read_from_figure(a.value) if from_figure else ()
-            verified = require_verbatim(a.id, a.citation_context, text, value=a.value, read_from_page=from_page)
+            verified = checked_when_stored(conn, a, rid) if conn is not None else None
+            CHECKED_BY_GROUP[g] += 0  # every group present, a group with nothing new as 0
+            if verified is not None:
+                LAST_VERIFY["stored as written"] += 1
+                ocr_check(a, p["file"], None)
+            else:
+                LAST_VERIFY["checked"] += 1
+                CHECKED_BY_GROUP[g] += 1
+                quotes = QUOTE.findall(a.citation_context)
+                text = _text(texts, p["file"])
+                from_page = read_from_figure(a.value) if from_figure else ()
+                verified = require_verbatim(a.id, a.citation_context, text, value=a.value, read_from_page=from_page)
+                if a.id in VALUE_REPLACE:  # a figure reading's edited value keeps its figure exemption (Sprint 15 MV
+                    require_edit_basis(a.id, a.value, quotes, text, read_from_page=from_page)  # apply: 5 refused)
+                if a.id in QUOTE_EDITS:
+                    require_edit_basis(a.id, None, [n for _, n in QUOTE_EDITS[a.id] if n] or quotes, text)
+                ocr_check(a, p["file"], text)
             if from_figure:
                 figure_check(a)
-            if a.id in VALUE_REPLACE:  # a figure reading's edited value keeps its figure exemption (Sprint 15 MV
-                require_edit_basis(a.id, a.value, quotes, text, read_from_page=from_page)  # apply: 5 refused)
-            if a.id in QUOTE_EDITS:
-                require_edit_basis(a.id, None, [n for _, n in QUOTE_EDITS[a.id] if n] or quotes, text)
-            ocr_check(a, p["file"], text)
             validate_assertion(a)
         except ValueError as e:
             problems.append(str(e))
             continue
         out.append((a, rid, p, verified))
+    LAST_VERIFY["sources read"] = len(texts)
+    LAST_VERIFY["checked"] += 0  # present when 0, for the counts line and its tests
     if problems:
         raise ValueError(f"{len(problems)} refused:\n" + "\n".join(problems))
     return out
@@ -602,14 +657,16 @@ def anchor_moves(conn) -> list[tuple[AssertionRecord, object]]:
             when = ANCHOR_FIX_ON.get(aid) or f"{REVIEWED_ON.get(g, '')} ({tag(g, rid)})"
             day = when[:10]
             a = AssertionRecord(
-                id=aid, value=value, provenance=f"{rid}, {anchor}",
+                id=aid, value=value, provenance=f"{holder(rid)}, {anchor}",  # F137: the holding record
                 citation_context="; ".join(f'"{q}" ({anchor})' for q in quotes), evidence_tag=tag_,
                 context=contexts[0], units=units, rounding=rounding, certainty=cert,
                 certainty_reasons=reasons, fidelity=fidelity, reading_level=level, derivation=derivation,
                 claim_type=claim_type, search_scope=scope, updated=day,
                 updated_reason=f"{when}: {FULL_READ_MARK}: anchor corrected at the sign-off to "
                                f"{anchor}; the stored quotes checked against the source again")
-            out.append((a, require_verbatim(aid, a.citation_context, plain(source_text(p["file"])), value=value)))
+            # F136: an anchor already stored as corrected is not checked again (a sync then changes nothing)
+            out.append((a, checked_when_stored(conn, a, holder(rid))
+                        or require_verbatim(aid, a.citation_context, plain(source_text(p["file"])), value=value)))
     return out
 
 
@@ -632,7 +689,7 @@ def write_anchor_moves(conn) -> list[str]:
 
 
 def apply_changes(conn) -> list[str]:
-    checked = verify()
+    checked = verify(conn)
     log = []
     contexts = {r[0] for r in conn.execute("SELECT id FROM contexts")}
     for g, p in load_groups():
@@ -674,7 +731,7 @@ def apply_changes(conn) -> list[str]:
             conn.execute("INSERT INTO paper_applicability (record_id, context_id, rationale) VALUES (?, ?, ?)",
                          (rid, ctx, f"{p['what_it_is'].rstrip('.')} -- first-pass full read"))
             log.append(f"applic {rid} [{ctx}]")
-        if tier != "read":
+        if promotes(rid, tier):
             set_tier(conn, rid, "read", checked_against_source=(
                 f"{day}, Claude, read every quoted passage in context and checked every quote and figure against "
                 f"the source; the paper read whole at first pass by a {first_pass(g, rid)}"))
@@ -755,7 +812,8 @@ def main(argv: list[str] | None = None) -> int:
             moves, unwritten = [], unwritten + [str(e)]
     if "--apply" not in args:
         try:  # the quote checks too, so a dry run names every refusal at once (Q4); verify names assertions' own
-            verify()
+            with connect(DB_PATH) as conn:  # F136: the rows stored as written are not checked again
+                verify(conn)
             refused = []
         except ValueError as e:
             refused = [str(e)]
@@ -767,6 +825,9 @@ def main(argv: list[str] | None = None) -> int:
         papers = load_groups()
         print(Counter(a.certainty for _, a, _, _ in kept), Counter(a.context for _, a, _, _ in kept))
         print(f"anchor fixes on confirmed stored assertions: {moves}")
+        print(verify_counts())
+        if "--telemetry" in args:
+            print(f"telemetry: dry run recorded for {record_telemetry('dry run')}")
         print(f"{len(kept)} assertions entered or changed from {len(papers)} records. Every quote verbatim, every "
               "edit on named passages, every figure in its quotes. DRY RUN: nothing written. Re-run with --apply.")
         return 0
@@ -785,6 +846,10 @@ def main(argv: list[str] | None = None) -> int:
     undecided = [x for x in log if x.startswith("undecided ")]
     print(f"{len(undecided)} stored assertions with a field changed that no review item names"
           f"{'; read each before the live apply' if undecided else ''}")
+    print(verify_counts())
+    if "--telemetry" in args:  # a store other than the live one is a trial on a copy
+        step = "apply" if Path(DB_PATH).resolve() == (Path(DEFAULT_STORE_DIR) / "evidence.db").resolve() else "trial"
+        print(f"telemetry: {step} recorded for {record_telemetry(step)}")
     print("APPLIED")
     return 0
 

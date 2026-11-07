@@ -1,0 +1,382 @@
+{
+ "group": "g334",
+ "reviewed_on": "2026-11-06",
+ "tag": "Sprint 16 Task F, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint16_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "cha-intro-complementary-goal": [
+   "scope",
+   "Section 1, p.2: the authors state what they analyze (a general trainable sequential re-uploading architecture) as against a dedicated multicopy measurement. A statement of their own scope."
+  ],
+  "cha-qubit-reuse-assumption": [
+   "setup",
+   "Section 3, p.4: the paper states the assumption it works under (the ability to reset system B to rho)."
+  ],
+  "cha-fresh-copy-access-cost": [
+   "scope",
+   "Section 3, p.4: the paper states the access model it assumes (fresh copies, L copies for L layers, cost depends on the state-preparation channel). It sets the conditions its resource statements hold under."
+  ],
+  "cha-restricted-circuit-definition": [
+   "definition",
+   "Section 3.1, p.5, Figure 3: the paper defines the restricted circuit (single-qubit gate on A, then CNOT from B to A) that its single-qubit result covers."
+  ],
+  "cha-single-qubit-bloch-scaling": [
+   "proved result",
+   "Section 3.1, Eqs. 2 to 4, pp.5 and 6: derived with the Kraus operators. I re-derived it: K0 gives weight t^2 and K1 gives (1-t^2) with a Pauli-X flip of y and z, so y and z scale by 2t^2-1. Conditions (restricted circuit, input of Eq. 1) are in the value."
+  ],
+  "cha-output-and-parameters-definition": [
+   "definition",
+   "Section 3.1, Eq. 6, p.6: the paper defines the output w.r.(L)+b and the parameter set (L angles, w, b), dimension L+4."
+  ],
+  "cha-readout-measurable-with-clifford": [
+   "setup",
+   "Section 3.1, p.7: the paper states how its readout is realized (computational-basis measurement plus single-qubit Clifford changes) and that the bias folds into the observable, shown by W' = W + b I2. Standard background, stated as the paper's setup."
+  ],
+  "cha-polynomial-representation-claim": [
+   "proved result",
+   "Section 3.1, Eqs. 7 to 9, pp.7 and 8: proved. Eq. 7 gives the single-angle cases, the Jacobian is a permutation matrix (invertible), and the inverse function theorem (textbook, Hormander, Theorem 1) plus the scaling of Eq. 9 give any coefficient vector. Degree at most L holds since each layer scales y by lambda once. Conditions: single-parameter single-qubit input of Eq. 1, restricted circuit."
+  ],
+  "cha-single-qubit-polynomial-coefficients-any": [
+   "proved result",
+   "Section 3.1, p.8: the conclusion of the argument above, with the inverse function theorem and Eq. 9. Complete in the paper for the restricted circuit and the input of Eq. 1."
+  ],
+  "cha-multiqubit-single-parameter-scaling": [
+   "proved result",
+   "Section 3.2, Eq. 11, p.8, with Appendix A, p.23 and 24: derived. The Kraus sums give weights p+ and p- with p+ minus p- equal to tr(rho W_alpha) = lambda_alpha, so y and z scale by lambda_alpha. I re-checked the algebra."
+  ],
+  "cha-single-parameter-limit-section32": [
+   "stated limit",
+   "Section 3.2, p.9: the authors state that this construction is intrinsically single-parameter and does not by itself give universality for multivariate functions."
+  ],
+  "cha-section33-simulation-strategy": [
+   "scope",
+   "Section 3.3, p.9: the authors state their proof strategy (simulate an ordinary single-qubit classical re-uploading circuit on the Bloch coordinates)."
+  ],
+  "cha-bloch-coordinates-bounded": [
+   "proved result",
+   "Section 3.3, Eq. 12, p.9: the coefficient recovery is derived from tr(W_a W_b) = d delta and tr(W) = 0, and |lambda| at most 1 follows from eigenvalues of plus and minus one. Complete in the paper."
+  ],
+  "cha-upload-gate-is-su2d": [
+   "proved result",
+   "Section 3.3, p.10: shown. The generator is traceless (tr(sigma) tr(W) = 0), so the determinant of the exponential is 1."
+  ],
+  "cha-single-layer-first-order-rotation": [
+   "proved result",
+   "Section 3.3, Eqs. 14 to 18, pp.10 and 11: derived by expanding the unitary and tracing out B. I re-checked the cross terms: they give -i c s lambda [S, tau]."
+  ],
+  "cha-collision-channel-error-o-delta-squared": [
+   "proved result",
+   "Section 3.3, Eqs. 17 to 23, p.11, with the explicit 6 delta^2 bound in Appendix C, p.25. First-order terms agree and the difference is uniformly O(delta^2) for |delta| at most 1. Independent of ref. [47]."
+  ],
+  "cha-finite-rotation-from-many-weak-uploads": [
+   "proved result",
+   "Section 3.3, p.11, with the finite-N bound 6 t^2 / N in Appendix C, p.25: ideal rotations compose exactly and the weak-upload error telescopes to a uniform bound. Does not use ref. [47]."
+  ],
+  "cha-theorem2-input-access": [
+   "scope",
+   "Theorem 2, item 1, p.12: the theorem's own access condition (fresh copies, no classical description of rho). A statement of what the theorem assumes."
+  ],
+  "cha-theorem2-circuit-model": [
+   "scope",
+   "Theorem 2, items 2 to 4, p.12: the theorem's own circuit and readout conditions, stated by the paper. They define what the theorem covers."
+  ],
+  "cha-theorem2-simulation-bound": [
+   "proved result",
+   "Theorem 2, Eq. 26, p.13, proved in Appendix C, p.25: single-step bound 6 delta^2 (I checked the term bounds, they sum to at most 4 delta^2), trace-norm contractivity of CPTP maps, telescoping, and V as trace-norm isometries. Condition N_j at least |t_j| carried in the quote. Does not use ref. [47]."
+  ],
+  "cha-remark4-existential-limit": [
+   "stated limit",
+   "Remark 4, p.13: the authors state that Theorem 2 is existential and that efficiency of layers, gates or sample complexity is not proved."
+  ],
+  "cha-proof-bloch-map-faithful-tietze": [
+   "proved result",
+   "Appendix C, p.24: the map rho to lambda is affine and injective by Eq. 10 and 12 (the coordinates recover rho), and a continuous bijection from a compact set is a homeomorphism. Tietze extension is a textbook tool. This step does not use ref. [47]. It is a step of Theorem 2's proof, which as a whole is graded low."
+  ],
+  "cha-proof-single-step-bound-6-delta-squared": [
+   "proved result",
+   "Appendix C, p.25, Eq. 29 and the telescoping estimate: the term-by-term bounds hold (I checked them) and use only |lambda| at most 1, trace norm facts and CPTP contractivity. Independent of ref. [47]."
+  ],
+  "cha-appendix-b-exponential-expansion": [
+   "proved result",
+   "Appendix B, p.24, Eq. 14: the series expansion with H squared equal to the identity is shown in full and gives cos delta I minus i sin delta sigma tensor W."
+  ],
+  "cha-training-autodiff-not-parameter-shift": [
+   "setup",
+   "Section 4, p.14: the paper states how its own simulations compute gradients (automatic differentiation). The reason given (general full-unitary parameterization) matches the setup in Section 5."
+  ],
+  "cha-experiments-purpose": [
+   "scope",
+   "Section 5, p.14: the authors state the aim of their experiments (trainability beyond existence proofs, regression and classification)."
+  ],
+  "cha-experiments-full-unitary-parameterization": [
+   "setup",
+   "Section 5, Implementation details, p.16 (read on the rendered page): full unitary parameterization U = exp(iH), for numerical flexibility not hardware efficiency."
+  ],
+  "cha-experiments-optimizer-and-init": [
+   "setup",
+   "Section 5, Implementation details, p.16 (rendered page read): PyTorch, full batch, Adam with learning rate 10^-2, N(0,1) initialization, signal qubit in |0>."
+  ],
+  "cha-experiments-polynomial-fit-setup": [
+   "setup",
+   "Section 5, p.16: 201 grid points, MSE, epochs. The rendered page shows 10^4 epochs; the text layer prints it as 104. The value is hedged and correct."
+  ],
+  "cha-experiments-classification-setup": [
+   "setup",
+   "Section 5, p.16: train and test sizes 1000 and 500, 1000 epochs, MSE on binary labels. The paper's own setup."
+  ],
+  "cha-experiments-code-availability": [
+   "setup",
+   "Section 5, p.16, and reference [49], p.23: the paper states where its code is (github.com/HyunHoCha/reupload)."
+  ],
+  "cha-poly-fit-setup": [
+   "setup",
+   "Section 5.1, p.16: the restricted circuit of Figure 3 on the states of Eq. 1, targets as univariate functions of lambda = 2t^2 - 1. The paper's own experiment setup."
+  ],
+  "cha-poly-fit-small-delta-impractical": [
+   "stated limit",
+   "Section 5.1, p.16 (rendered page): the authors state a limit of their own training-free construction (1/Delta diverges, w blows up, poor numerical behavior with few shots)."
+  ],
+  "cha-purity-task-setup": [
+   "setup",
+   "Section 5.2, p.16: the task and threshold are the paper's own setup. I checked that the threshold (1 + 2^(-2/3))/2 gives balanced classes for Bloch vectors uniform in the ball."
+  ],
+  "cha-purity-train-test-sizes": [
+   "setup",
+   "Section 5.2, p.16: 1000 training and 500 test states with the unrestricted circuit of Figure 2a."
+  ],
+  "cha-observation1-l2-cannot-implement-purity": [
+   "proved result",
+   "Observation 1, p.17, proof in Appendix E, pp.26 to 29. I followed the proof: the Kraus-sum step, T = C-tilde^T C, KAK form, and the determinant contrast. Note the proof covers single-qubit input (U, V in SU(4)), which the quotes carry; Observation 1 itself does not name n = 1. Two routine computations are left to the reader (the determinant of the three-matrix combination, and the form of the purity observable). I checked both: the determinant vanishes, and the purity corr matrix has positive determinant."
+  ],
+  "cha-observation1-proof-mechanism": [
+   "proved result",
+   "Appendix E, pp.26 and 29: the singular versus nonsingular correlation matrix contrast is sound. I verified numerically that det corr is 0 for the re-uploading form and positive for observables giving purity."
+  ],
+  "cha-observation1-singular-by-kak": [
+   "proved result",
+   "Appendix E, p.29 (rendered page read): the three corr matrices are printed. From the printed entries, a zero-diagonal combination has determinant 8abc(c1 s2 c2 s3 s1 c3) minus the same term, equal to zero. The paper says 'one can verify'; the check is a short 3x3 computation, confirmed here and numerically."
+  ],
+  "cha-observation1-purity-determinant-positive": [
+   "proved result",
+   "Appendix E, p.29: the form of any observable giving purity on single-qubit inputs is stated ('element-wise expansion reveals'), not derived. I checked it: the annihilator has dimension 6 as in the paper, and det corr is positive for SWAP plus any element (numerically; the printed determinant 1 + c1^2 + (c3+c5)^2 + (c4+c6)^2 is the determinant of identity plus an antisymmetric matrix). The derivation step is omitted in the paper."
+  ],
+  "cha-purity-by-swap-test-two-copies": [
+   "proved result",
+   "Section 5.2, p.17, and Appendix D, p.26: the swap test derivation gives P(0) = 1/2 + tr(rho^2)/2, so <Z> = tr(rho^2). Shown in full in the paper."
+  ],
+  "cha-entropy-task-setup": [
+   "setup",
+   "Section 5.3, pp.17 and 18: the task (Haar-random 2-qubit pure states, A the first qubit, label at entropy 0.3 or more, 1000 train, 500 test) is the paper's own setup."
+  ],
+  "cha-bloch-task-setup": [
+   "setup",
+   "Section 5.4, p.18: the paper's own dataset rules. Balance holds since r3 is uniform on [-1, 1] on the sphere, which I checked."
+  ],
+  "cha-discussion-multiqubit-signal-future": [
+   "stated limit",
+   "Section 6, p.19: the authors state that their universality proof is for a single-qubit signal register and that the multi-qubit case is future work. The 'could enhance' part is hedged."
+  ],
+  "cha-discussion-narrow-operation-family": [
+   "stated limit",
+   "Section 6, p.19: the authors state that their expressivity analysis is confined to a narrow family of operations and that more general ones remain open."
+  ],
+  "goes-hybrid-algorithm-proposed": [
+   "scope",
+   "Abstract, p.1: the authors state what they propose (a hybrid ML and quantum ensemble algorithm for a PDE). Read in context with Sections II and III, which build it."
+  ],
+  "goes-l2-replaces-l0": [
+   "setup",
+   "Section II, p.3: the paper states its own design choice (l2 penalty in place of l0) and its stated reason, used in Eqs. 6 and 7. The value attributes the non-convexity remark to the authors."
+  ],
+  "goes-ensemble-loss-definition": [
+   "definition",
+   "Section II, Eqs. 4 to 7, p.3: the ensemble, the least-squares loss, the l2 penalty and the weight minimizer are defined by the paper itself."
+  ],
+  "goes-float-weight-encoding": [
+   "definition",
+   "Section II, Eqs. 9 and 10, p.3: the paper defines its R-bit binary-fraction weight encoding and the scale and shift to [-d, 2c-d), following Rogers and Singleton. The text cites 'Eq. (11)' where Eq. 8 is meant, a typo that does not change the definition."
+  ],
+  "goes-weights-sum-to-one-constraint": [
+   "setup",
+   "Section II, p.4, and Section III.B, p.5: the paper states its own added constraint that the weights sum to one, with the stated purpose of removing one variable and forcing an affine mixture."
+  ],
+  "goes-qubit-index-mapping": [
+   "definition",
+   "Section II, Eq. 13, p.4: the paper defines the linear index l = kR + r and states why (one-dimensional linear qubit index on the D-Wave processor)."
+  ],
+  "goes-qubo-coefficients-for-annealer": [
+   "definition",
+   "Section II, Eqs. 15 to 17, p.4, and the algorithm list, p.6: the paper defines alpha_i and beta_ij as the QUBO coefficients fed to the annealer, built from the weak-learner outputs and true values."
+  ],
+  "goes-quantum-part-ensemble-form": [
+   "setup",
+   "Section III.B, p.5: the paper states its own quantum step (boosting by annealing, a QBoost variant for regression, previously trained networks, weights summing to one)."
+  ],
+  "goes-five-step-quantum-procedure": [
+   "setup",
+   "Section III.B, p.6: the five-step procedure is the paper's own protocol, stated as a list."
+  ],
+  "goes-scope-single-toy-pde": [
+   "scope",
+   "Section IV, p.6: the paper states that it validates on the 1D viscous Burgers' equation and calls it the toy model. It tests this one problem."
+  ],
+  "goes-training-data-sizes": [
+   "setup",
+   "Section IV, p.6: the sentence is quoted verbatim with M = 160,000 and N = 60,000. The paper's own wording is odd (2,000 instances) but the value repeats it as stated."
+  ],
+  "goes-train-test-time-split": [
+   "setup",
+   "Section IV, p.6: the eight training times and three test times with 20,000 points each are the paper's own data split. They agree with M and N."
+  ],
+  "goes-three-solver-setup": [
+   "setup",
+   "Section IV, p.6: Exact Solver, Simulated Annealing and the 2000Q QPU through D-Wave Ocean, with weights in [-3, 3] and c = d = 3, are stated as the paper's own setup."
+  ],
+  "goes-exact-solver-memory-limit-r7": [
+   "stated limit",
+   "Section IV, pp.7 and 8, and Table II: the authors state a limit on their own Exact Solver runs (memory, only R = 7 on a 16 GB PC) and Table II shows no Exact Solver result above R = 7. It states what the results do not cover, so stated limit. The reader kept the type measured, as the Sprint 16 prompt says."
+  ],
+  "goes-qa-time-fixed-20us": [
+   "setup",
+   "Section IV, p.8: the annealing time fixed at 20 microseconds for all runs is the paper's own setup."
+  ],
+  "goes-limit-connectivity-weak-learners": [
+   "stated limit",
+   "Section V, p.9: the authors state that qubit connectivity may limit the number of weak learners in the ensemble. A limit of their own method, stated in the conclusion."
+  ],
+  "goes-motivation-airbus-challenge": [
+   "setup",
+   "Reference note [58], p.10: the authors state that the work was motivated by the Airbus Quantum Computing Challenge. A statement of the origin of their own work."
+  ],
+  "wang-scope-unfinished-section4": [
+   "scope",
+   "Section 4, p.28: I read the whole file. Headings 4.3, 4.4 and 4.5 (Expressivity) carry no text and the references follow directly. A statement of what the file covers."
+  ],
+  "wang-scope-tutorial-no-experiments": [
+   "scope",
+   "Whole file read: Sections 1 to 4.2 are a tutorial (MLP review, quantum basics, worked state-vector algebra) with no experiment, dataset, simulation result or hardware run."
+  ],
+  "wang-mlp-layer-definition": [
+   "definition",
+   "Section 2.1, Eq. 2.1, pp.2 and 3: the paper defines the MLP and its layer map."
+  ],
+  "wang-qnn-output-form": [
+   "definition",
+   "Section 2.4, Eq. 2.7, p.5, and Eq. 3.23, p.10: the paper defines the QNN output as the expectation value of an observable, citing [10, 11] for the form."
+  ],
+  "wang-qubit-superposition-state": [
+   "definition",
+   "Section 3.1.1, Eq. 3.1, pp.5 and 6: the paper defines the qubit state and states the Born rule as the measurement rule it uses."
+  ],
+  "wang-nqubit-hilbert-space-dimension": [
+   "definition",
+   "Section 3.1.1, Eq. 3.4, p.6: the n-qubit state space and the little-endian convention are the paper's own definitions and setup. The text layer prints 2^n as 2n."
+  ],
+  "wang-rotation-gates-role": [
+   "definition",
+   "Section 3.1.2, Eq. 3.8, p.7, and Eqs. 3.24 to 3.26, p.11: the paper defines the rotation gates. The role (angles encode inputs or hold parameters) is how the paper uses them in Sections 3.3 and 3.4."
+  ],
+  "wang-cnot-definition": [
+   "definition",
+   "Section 3.1.3, Eqs. 3.11 to 3.14, p.8: the paper defines CNOT and gives both control and target matrices, showing that reversing them changes the matrix."
+  ],
+  "wang-bell-state-entangled": [
+   "proved result",
+   "Section 3.1.3, Eqs. 3.15 and 3.16, p.8: the state is worked out explicitly (H on q0, then CNOT from q0 to q1 gives (|00> + |11>)/sqrt 2). Born rule gives 1/2 each. Entanglement is confirmed by the determinant 1/2 (Eq. 3.19), a textbook criterion used as a step."
+  ],
+  "wang-vqnn-pipeline-definition": [
+   "definition",
+   "Section 3.1.4, Eqs. 3.22 and 3.23, p.10: the paper defines the model it calls a typical variational QNN (encode, trainable gates, entangle, measure)."
+  ],
+  "wang-fig5-standard-qnn": [
+   "definition",
+   "Section 3.2, p.10: the paper describes its own example architecture (three qubits, rotation layers, CNOTs, Z-basis measurement per wire). Later text calls it four qubits in places, a slip that does not affect this description."
+  ],
+  "wang-angular-encoding-definition": [
+   "definition",
+   "Section 3.3, Figure 6, pp.11 and 12: the paper defines angular encoding (one qubit per value, rotation gate angle set by the value)."
+  ],
+  "wang-angle-encoding-product-state": [
+   "proved result",
+   "Section 3.3, pp.12 to 14, Eq. 3.27: the product state and the matrix as the tensor product of Rx matrices are written out explicitly. I checked entries of the 8-vector; they agree."
+  ],
+  "wang-hidden-rotation-adds-angles": [
+   "proved result",
+   "Section 3.4, p.15: the product Rx(theta) Rx(x)|0> is multiplied out and the angle-addition identities give Rx(theta + x)|0>. Checked. The result holds for this circuit (Rx on the same axis)."
+  ],
+  "wang-two-qubit-probability-before-after-cnot": [
+   "proved result",
+   "Section 3.6, Eqs. 3.36 and 3.37, p.19 (rendered page read): derived. The first line of Eq. 3.37 has a typo (cos^2 alpha twice); the second line is correct and I re-derived it from Eq. 3.31: cos^2 alpha cos^2 beta + sin^2 alpha sin^2 beta."
+  ],
+  "wang-three-qubit-no-cnot-local": [
+   "proved result",
+   "Section 3.6, Eq. 3.40, p.20 (rendered page read): derived for the encoding plus one rotation layer, giving cos^2((theta3 + x3)/2). The 'however many rotation gates' remark follows since single-qubit gates keep a product state; it is stated, shown for one rotation layer."
+  ],
+  "wang-three-qubit-after-cnots-product-of-cosines": [
+   "proved result",
+   "Section 3.6, Eqs. 3.41 and 3.42, p.20 (rendered page read): the final result (1/2)[1 + product of cos(theta_j + x_j)] is correct. I re-derived it by parity: the final qubit is flipped by q1 xor q0, giving (1/2)(1 + product of cos 2 alpha_j). One intermediate line of Eq. 3.41 prints cos^2 alpha3 where sin^2 alpha3 is meant, a typo."
+  ],
+  "wang-fixed-spectrum-open-question": [
+   "scope",
+   "Section 3.6, p.23: the authors pose the question and defer it. I read Sections 4.2 to 4.5: nothing answers it (4.3 to 4.5 are empty headings). A statement of what the file covers."
+  ],
+  "wang-qnn-output-expectation-single-unitary": [
+   "definition",
+   "Section 3.7, Eq. 3.49, p.24: the paper defines the QNN output as the expectation of an observable and names Pauli-Z as its common observable."
+  ],
+  "wang-pauli-z-expectation-from-probabilities": [
+   "proved result",
+   "Section 3.7, Eqs. 3.50 to 3.53, p.24: derived from the Born rule and eigenvalues plus and minus one: <Z> = |alpha|^2 - |beta|^2 = 2P(0) - 1, so it lies in [-1, 1]."
+  ],
+  "wang-expectation-not-amplitude": [
+   "definition",
+   "Section 3.7, p.24: a clarification of the defined quantity <Z>, following from Eq. 3.52 (real-valued, a difference of probabilities)."
+  ],
+  "wang-multiqubit-expectation-marginals": [
+   "proved result",
+   "Section 3.7, Eqs. 3.55 to 3.60, p.25: derived from the explicit sum of +/- |a|^2 terms for O1 = I x I x Z. Qubit labels in the surrounding text are inconsistent, but the derived sum is correct."
+  ],
+  "wang-output-features-classical-layer": [
+   "scope",
+   "Section 3.7, p.25: the paper states how it uses the expectation values and that other observables are beyond the scope of the section."
+  ],
+  "wang-fourier-series-definition": [
+   "definition",
+   "Section 4.1, Eqs. 4.1 to 4.3, p.26: the paper defines the Fourier series and coefficients; the low and high frequency gloss is the standard meaning of the defined term."
+  ],
+  "wang-finite-trig-expansion": [
+   "definition",
+   "Section 4.1, Eqs. 4.4 to 4.6, p.27: the paper defines the finite trigonometric expansion, the Fourier transform and its inverse, and the discrete versus continuous distinction."
+  ]
+ },
+ "theory_low": {
+  "cha-abstract-universal-one-ancilla": "Abstract, p.1: summary of Theorem 2. Its proof (Appendix C, p.25) rests on the classical single-qubit re-uploading universality of Perez-Salinas et al., ref. [47] (Eq. 28), so it is not a proof wholly in this paper.",
+  "cha-abstract-collision-model-cptp": "Abstract, p.1: each layer is shown to be a CPTP map (Eq. 15), but the 'analogous to collision models' reading is the authors' interpretation, never developed in the text beyond the term 'weak collision channel' in Appendix C.",
+  "cha-intro-one-extra-qubit": "Section 1, p.2: summary of Theorem 2. Theorem 2's proof depends on ref. [47] (Perez-Salinas et al. classical universality, Eq. 28), so the statement is not wholly proved in this paper.",
+  "cha-intro-qubits-not-scale-with-layers": "Section 1, p.2: an introductory assertion about the qubit-reuse consequence. It holds only under the fresh-copy access assumption of Section 3 (the copy count grows with L), and it is not stated as a theorem or proved there.",
+  "cha-remark1-hadamard-dqc1": "Remark 1, p.3: the paper itself calls the DQC1 link an informal connection, and the resemblance to the Hadamard test is stated, not derived.",
+  "cha-remark2-vqc-contained-in-l1": "Remark 2, p.4: containment of a single-copy VQC in L = 1 is stated with 'at least for the usual setting' and no proof. The consequence for tasks needing higher-order dependence is conditional and not proved here.",
+  "cha-qubit-count-n-plus-1-with-reuse": "textbook, stated not proved (F129). Section 3, p.4: the (Ln+1)-qubit equivalence and the (n+1)-qubit reuse count are stated without proof; Section 4 only names the deferred measurement principle.",
+  "cha-remark3-general-affine-map": "Remark 3, p.6: the general affine map is stated and the reduction for Figure 3 is left to 'one can verify'. No derivation in the paper.",
+  "cha-classical-reuploading-simulated": "Section 3.3, p.12: the value holds two claims. That finite classical re-uploading circuits are approximated by quantum uploads is proved here (Eq. 26). That the architecture 'inherits the universal approximation capability' rests on the classical universality result of ref. [47] (Perez-Salinas et al.), cited, not proved here. Graded by the weaker.",
+  "cha-theorem2-universality": "Theorem 2, p.12, proof in Appendix C, p.25: the proof invokes the classical single-qubit re-uploading universality of Perez-Salinas, Rad, Barthe, Dunjko (ref. [47]; Eq. 28) as a step. A proof that uses a specific other paper's theorem is LOW. The simulation part of the proof (Eq. 26) is proved in the paper.",
+  "cha-theorem2-readout-norm-bound": "Theorem 2, Eq. 25, p.12, with Appendix C, p.25: the norm bound comes from choosing a as the right-hand side and using the classical circuit's observable bound ||O_cl|| at most 1 from ref. [47] (Eq. 28). It rests on the cited result.",
+  "cha-proof-conclusion-epsilon-choice": "Appendix C, p.25: this closing step chooses eta_cl = epsilon/(2a) in Eq. 28, which is the classical universality approximation taken from ref. [47]. It depends on that cited result.",
+  "cha-section4-deferred-measurement-equivalence": "textbook, stated not proved (F129). Section 4, p.13: the deferred measurement equivalence to an (Ln+1)-qubit circuit is stated by name, not derived.",
+  "cha-sequence-of-states-upload": "Section 4, p.14: a brief argument with no stated theorem. The qubit count 1 plus ceiling of log2 of the largest dimension is not derived, and the universality claim for sequences rests on Theorem 2, which uses ref. [47].",
+  "cha-poly-fit-training-free-eq27-claim": "Section 5.1, Eq. 27, p.16: the limit claim follows from Eq. 7 only for single nonzero angles. The case of many simultaneously nonzero angles (cross terms) is not shown. Asserted in one line, no proof.",
+  "cha-strictly-less-expressive-than-global-unitary": "Section 5.2, p.17: the general claim 'strictly less expressive than a global (Ln+1)-qubit unitary' is not proved. Observation 1 covers only the purity function at L = 2 (single-qubit input), and Figure 7b is a measured result.",
+  "cha-bloch-layers-suffice-claim": "Section 5.4, pp.18 and 19: stated 'as a fact' with no derivation. Section 3.1 gives the polynomial result only for the restricted circuit and the real-amplitude input family; the unrestricted case is not derived.",
+  "goes-qubo-form-of-ensemble-cost": "Section II, p.3: Eq. 8 is still in real-valued weights. It becomes a QUBO only after the binary encoding of Eqs. 9 to 15. The sentence 'already in the form of a QUBO' is an authors' assertion, loose as written, with no derivation of the form and a cite to [56]. Not a proved result.",
+  "wang-mlp-nonlinearity-essential": "textbook, stated not proved (F129). Section 2.1, p.3: the composition of affine maps is affine is stated in one sentence with no proof.",
+  "wang-mlp-relu-piecewise-linear": "textbook, stated not proved (F129). Section 2.2, p.3: a qualitative statement about ReLU networks, illustrated by Figure 2, with no argument.",
+  "wang-separability-determinant-criterion": "textbook, stated not proved (F129). Section 3.1.3, Eq. 3.19, pp.8 and 9: the rank-one and determinant criterion for two-qubit pure states is stated with its scope but without proof. The Bell-state value 1/2 is correct.",
+  "wang-encoding-matrix-hamming-distance": "Section 3.3, p.14: the closed form in terms of Hamming distance is stated without derivation. It is correct (I checked it against the tensor product), but the paper does not derive it.",
+  "wang-cnot-swaps-amplitudes-entangles": "Section 3.5, pp.17 and 19: the swap of the second and fourth elements is derived (Eq. 3.31). The entanglement claim is not: the text says 'verify using Eq. ??' (a broken reference), and it does not hold for every parameter value (for example when a qubit is a basis state). The text also says 'four qubits' for three. Graded by the weaker.",
+  "wang-cnot-control-probability-unchanged": "Section 3.6, Eq. 3.38, p.19 (rendered page read): the result P(q0 = 0) = cos^2((theta1 + x1)/2) is stated, not derived (my check agrees). The added claim that another measurement basis 'will lead to different situations' is not shown at all. Graded by the weaker.",
+  "wang-amplitudes-trig-form": "Section 3.6, Eqs. 3.45 and 3.46, p.22: the general rewriting as a finite Fourier series is stated from one worked example, and the general result is taken from Schuld, Sweke and Meyer, ref. [13], cited."
+ },
+ "keep_stored": {},
+ "requote": {}
+}

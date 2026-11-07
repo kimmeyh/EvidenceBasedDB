@@ -30,11 +30,12 @@ import re
 import subprocess
 import tempfile
 import unicodedata
+from collections import Counter
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 
-from store import store_dir
+from store import text_cache_dir
 
 # A quote inside citation_context: "<quote>" (<anchor>), joined by "; ".
 QUOTE = re.compile(r'(?:^|; )"(.+?)" \(')
@@ -42,15 +43,43 @@ QUOTE = re.compile(r'(?:^|; )"(.+?)" \(')
 _TYPOGRAPHIC = (("’", "'"), ("‘", "'"), ("“", '"'), ("”", '"'), ("​", ""))
 
 
-def plain(text: str) -> str:
+def plain(text: str, keep_numbers: bool = False) -> str:
     """Compatibility forms folded (NFKC), typographic quotes made plain,
     page-number lines dropped (a quote may cross a page break), whitespace
-    collapsed. Applied to both sides of every comparison."""
+    collapsed. Applied to both sides of every comparison.
+
+    `keep_numbers` keeps a line that holds only a number (F134, Sprint 16
+    Task C): the text layer without layout puts each table cell on its own
+    line, so a cell such as 881 was dropped with the page numbers, and a
+    quote through a table could not be found. A source's text holds both
+    forms, so a quote across a page break and a quote through a table cell
+    are each found."""
     text = unicodedata.normalize("NFKC", text)
     for typographic, ascii_form in _TYPOGRAPHIC:
         text = text.replace(typographic, ascii_form)
-    text = re.sub(r"(?m)^\s*\d+\s*$", " ", text)
+    if not keep_numbers:
+        text = re.sub(r"(?m)^\s*\d+\s*$", " ", text)
     return re.sub(r"\s+", " ", text)
+
+
+_NUMBER_ONLY = re.compile(r"\s*\d+\s*")
+
+
+def cells_text(raw: str) -> str:
+    """The text without layout with its table cells kept (F134): `plain(..., keep_numbers=True)`, after each page's
+    first and last non-blank line is dropped when it holds only a number, since that is where a page number sits
+    (fresh-eyes review of Tasks C and D: keeping every number line let a quote carry a page number, and its value
+    the number with it). `raw` is pdftotext's output, pages ended by form feeds. Close to `_fold`, which keeps every
+    number line and also rewrites superscripts and minus signs; a change to one is checked against the other."""
+    pages = []
+    for page in raw.split("\f"):
+        lines = page.splitlines()
+        filled = [i for i, line in enumerate(lines) if line.strip()]
+        for i in {*filled[:1], *filled[-1:]}:
+            if _NUMBER_ONLY.fullmatch(lines[i]):
+                lines[i] = ""
+        pages.append("\n".join(lines))
+    return plain("\n".join(pages), keep_numbers=True)
 
 
 # Set by the test harness for a test without @pytest.mark.live_store: called
@@ -73,10 +102,13 @@ OCR_MARK = " || OCR: "
 
 @lru_cache(maxsize=None)
 def _pdf_text(path: str) -> str:
-    """Both text layers; then, after OCR_MARK, the OCR text of the pages whose text layer is empty or nearly empty
+    """Both text layers (and the plain one again with its number-only lines, F134); then, after OCR_MARK, the OCR text of the pages whose text layer is empty or nearly empty
     (F115, Sprint 15 Task F), so a quote a reader took from such a page is checked against what the engine read."""
     from store.ocr import ocr_pages
-    text = " || ".join(plain(_pdftotext(path, layout)) for layout in (False, True))
+    raw = _pdftotext(path, False)
+    # F134: the text without layout once more with its number-only lines kept, so a quote through table cells is
+    # found; it comes before OCR_MARK, so it counts as the text layer.
+    text = " || ".join([plain(raw), plain(_pdftotext(path, True)), cells_text(raw)])
     ocr = ocr_pages(path)
     return text + (OCR_MARK + plain(" ".join(ocr.pages[n] for n in sorted(ocr.pages))) if ocr.pages else "")
 
@@ -95,6 +127,9 @@ def ocr_only_quotes(citation_context: str | None, text: str) -> list[str]:
     return out
 
 
+CACHE_MISSES: Counter = Counter()  # F139: extractions this process ran because the text cache lacked them
+
+
 @lru_cache(maxsize=1)
 def _pdftotext_version() -> str:
     out = subprocess.run(["pdftotext", "-v"], capture_output=True)
@@ -107,8 +142,9 @@ def _pdftotext(path: str, layout: bool) -> str:
     its 13 minutes in quote checks. The key is the file's SHA-256, the
     layout and pdftotext's version, so a changed file or a new pdftotext
     extracts again; `plain` is applied after the cache, so a change to it
-    is never hidden. The cache lives in the store folder (`text_cache\\`),
-    outside git; a folder that cannot be written is simply not used. The
+    is never hidden. The cache is `store.text_cache_dir()`, one fixed
+    folder outside git that every store copy reads (F136, Sprint 16); a
+    folder that cannot be written is simply not used. The
     text is stored as bytes, so it comes back exactly as extracted, and a
     file that does not decode is extracted again."""
     cmd = ["pdftotext", "-enc", "UTF-8", *(["-layout"] if layout else []), path, "-"]
@@ -117,13 +153,14 @@ def _pdftotext(path: str, layout: bool) -> str:
     tool = hashlib.sha256(" ".join([_pdftotext_version(), *cmd[:-2]]).encode()).hexdigest()[:12]
     name = f"{digest}-{'layout' if layout else 'plain'}-{tool}.txt"
     try:
-        return (store_dir() / "text_cache" / name).read_bytes().decode("utf-8")
+        return (text_cache_dir() / name).read_bytes().decode("utf-8")
     except (OSError, RuntimeError, UnicodeDecodeError):  # RuntimeError: no store folder off Windows
         pass
+    CACHE_MISSES["pdftotext"] += 1
     text = subprocess.run(cmd, capture_output=True, check=True).stdout.decode("utf-8", "replace")
     try:
-        cached = store_dir() / "text_cache" / name
-        cached.parent.mkdir(exist_ok=True)
+        cached = text_cache_dir() / name
+        cached.parent.mkdir(parents=True, exist_ok=True)
         # A name of its own per writer, so two processes never share a half-written file.
         with tempfile.NamedTemporaryFile(dir=cached.parent, suffix=".partial", delete=False) as partial:
             partial.write(text.encode("utf-8"))
@@ -175,8 +212,10 @@ def missing_quotes(citation_context: str | None, text: str) -> list[str]:
 @dataclass(frozen=True)
 class Verified:
     """What `require_verbatim` returns: this record's quotes and value,
-    exactly as checked against its source. Made only by `require_verbatim`;
-    the verified write helpers compare it with the record they write, so a
+    exactly as checked against its source. Made only by `require_verbatim`,
+    and by `store.ingest.checked_when_stored` for a row a full read of the
+    same source already stored, checked, exactly so (F136); the verified
+    write helpers compare it with the record they write, so a
     check run without the value cannot license a write."""
     record_id: str
     citation_context: str
@@ -269,7 +308,7 @@ _MATH_SIGNS = "√≥≤±×∞≈≠∑∏∫∂<>"
 
 
 def _fold(text: str) -> str:
-    """`plain` without its page-number rule, which would delete a value or
+    """(See also `cells_text`, F134.) `plain` without its page-number rule, which would delete a value or
     passage that is only a number (fresh-eyes review, 2026-10-21);
     superscripts become ^n before NFKC can merge "10²" into "102"."""
     text = unicodedata.normalize("NFKC", text.translate(_SUPERSCRIPT))

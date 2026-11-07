@@ -13,7 +13,147 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-10-31 onward (Sprint 15, in progress)
+### 2026-11-05 onward (Sprint 16, in progress)
+
+- **docs**: Sprint 16 closed out (2026-11-07). The team lead's five
+  improvement decisions: 1 to 4 carded as F142 (four small pipeline
+  fixes, into the Sprint 17 plan, Priority 12) and 5 as F143 (why the
+  agents' cost per page rose, Priority 30). `SPRINT_16_SUMMARY.md` with
+  Actuals from the telemetry and the commit times; master plan rolled
+  (Last Completed Sprint, Past Sprint Summary row, Current sprint);
+  CHECKLIST Sprint 16 section (PR #164)
+- **docs**: Sprint 16 retrospective recorded (2026-11-07). The team
+  lead's combined PO, SM and LD feedback verbatim (Very Good in categories
+  1 to 12 and 15; none in 13, 14 and 16) with Claude's draft lines in
+  `docs/sprints/SPRINT_16_RETROSPECTIVE.md`; five improvements proposed,
+  decisions pending (PR #164)
+- **chore**: Sprint 16 opened (2026-11-05). The team lead merged PR #149
+  into develop (7dca2c9) and PR #163 to main (dff5c49); `sprint-15`
+  tagged on dff5c49; branch `feature/20261105_Sprint_16` cut from the
+  Sprint 15 branch (6.6 carry-forward). Phase 1.1 reconciliation: every
+  commit since 2026-10-31 changed this file; 2026-11-02 and 2026-11-03
+  have no commits (the reads ran in the store and in uncommitted work
+  files, committed on 2026-11-04)
+- **docs**: Sprint 16 Phase 1.2 and 1.3 (2026-11-05). Sprint 15's
+  issues #150 to #162 all closed; its triad present with Actuals; master
+  plan rolled (Sprint 15 merged and tagged). Shipped cards F115, F116,
+  F124 to F130 and the released copies F131 to F133 pruned by hand.
+  Snapshots: F114 (892 of 1,430 records not read in full, 190 groups),
+  F57 (522 papers with no read row; arXiv 2108.13346 not in the store),
+  F95 (386 PDFs, no unnamed file saved since 2026-11-01), F98 (the list
+  moved to 399b022651 with 6 new papers), F51 and F90 hold checks.
+  Phase 1.3: 0 re-checks due; no ADR or schema change in Sprint 15
+- **docs**: Backlog refinement 2026-11-05: Sprint 16 scope selected (team
+  lead): F136, F134, F135, F137, F114, F57 and the new F139. F95 and F98
+  folded into F114 (30 papers per sprint by default, 20 this sprint);
+  their cards removed. Books leave F114 for the new F138, on HOLD.
+  F139 carded by the Coding Agent Team (read once, check once, write
+  once, with telemetry per paper). F137's premise corrected: the two
+  Dunjko records are one paper (preprint and journal version). Sprint 16
+  plan drafted (`docs/sprints/SPRINT_16_PLAN.md`), with 7 questions;
+  draft PR #164 opened
+- **docs**: Sprint 16 plan questions answered (team lead, 2026-11-05):
+  Q1 = 1 (the 6 new list papers first), Q2 = 2 (the two named papers
+  inside F114's 20; from Sprint 17, named and new list papers are part
+  of F114's 30), Q3 = 1 (arXiv v1), Q4 = 1 (F51 released from HOLD into
+  Sprint 16), Q5 = 2 (the reviewer keeps the full second read). The plan
+  absorbs them; Q6 and Q7 are still open
+- **docs**: Sprint 16 plan approved (team lead, 2026-11-06): Q6 = 1 (one
+  Dunjko record: dunjko-2018 keeps the paper and adds the arXiv id; the
+  2017 record's assertions move to it), Q7 = 1 (monographs are books:
+  Simeone 2022 and Cichocki 2016 move from F114 to F138). Issues #165
+  (Task A) to #172 (Task H) created; PR #164 body updated, still draft
+- **feat**: Sprint 16 Task A (F136, #165): each PDF's text extracted
+  once, each quote checked once. `store.text_cache_dir()` gives one
+  cache every store copy reads (it no longer follows `EBDB_STORE_DIR`);
+  the OCR engine folder is fixed too. `full_read_apply.py` checks only
+  new or changed quotes (`store.ingest.checked_when_stored`) and prints
+  its counts. On a store copy a re-apply now checks 0 quotes in about 15
+  seconds (30,113 quotes, 740 sources, 554 seconds without it). INTAKE
+  section 68 states the rule: every write is checked; an unchanged row
+  is not. Three tests, each proven red. Also (Task F): the hand-download
+  list and its skill name F114 instead of F95
+- **feat**: Sprint 16 Task B (F139, #166), steps 1 and 2: each read
+  measured, and each "once" in place or named with its reason.
+  `scripts/read_telemetry.py` keeps one telemetry file per group (papers
+  and pages, each agent's tokens and minutes, each step's quote checks,
+  cache misses, renders and assertions written; totals computed,
+  "unknown" where not measured) and built the Sprint 15 baseline from the
+  session's completion notices (47 groups, 209 papers, 6,108 pages; 3,645
+  reader and 1,676 reviewer tokens per page). The reader's check no longer runs
+  `pdftotext` per anchor: g129 checks in 6 seconds instead of 75 to 95,
+  with the same results. `scripts/render_page.py` renders each figure
+  page once for the reader and the reviewer. The checker and the applier
+  record their steps with `--telemetry`. Sprint 16 reader and review
+  prompts in `manifests/sprint16_f114_reads/`. INTAKE section 69. Six
+  tests, each proven red. Step 3 (the first group's measures) runs with
+  F114's first group
+- **feat**: Sprint 16 Tasks C and D (F134, #167; F135, #168). A PDF's
+  text holds a third form with its number-only lines kept, so a quote
+  through table cells is found while a page number is still dropped; the
+  reader check's page check holds it too. The reader check accepts a high
+  suggestion on a "measured" result only on "stated limit", and the
+  Sprint 16 reader prompt says a stated limit keeps the type "measured".
+  INTAKE section 70. Four tests, each proven red
+- **feat**: Sprint 16 Task E (F137, #169). The two Dunjko records are held
+  as one (team lead, Q6 = 1): the arXiv preprint record is closed as a
+  duplicate of the journal-version record (tier seen, a superseded-by
+  link) and its 69 assertions move there, each with a note; the access
+  adds arXiv:1709.02779, and its two list routes are copied there. The
+  new `store.merges` names the merge; both appliers that re-enter older
+  reads of it (`full_read_apply.py`, `sprint11_reading.py`) enter its
+  rows under the record that holds it and never set it back to read.
+  The Sprint 11 and F104 tests now allow for the merge. Applied live
+  with verified backups. INTAKE section 71.
+  Three tests: two unit tests proven red by injection, the live test red
+  before the merge and green after it
+- **feat**: Sprint 16 Tasks F (intake) and G (F114, #170; F57, #171).
+  Roadmap-to-QML at 399b022651: 6 papers new to the store (4 arXiv, 2
+  Quantum journal papers by DOI, now entered with the journal's free
+  PDF), each with its copy. The team lead's 2 named papers: QBoost for
+  regression (arXiv 2108.13346) and the wangy8205165 white paper
+  (hand-origin, linked code-of from its repository record). F's 20
+  papers' briefs (g333, g334, two re-entry groups, g155, one of g156);
+  `f117_review.py items` writes the review texts; `finalize` names
+  Sprint 16's prompt. INTAKE sections 72 and 73. Tests proven red
+- **feat**: Sprint 16 Task H (F51, #172). The CVQBoost findings record
+  (FourierWall2's working document of 2026-08-04, read in full; no author
+  named, as the document names none) and its six assertions, each value
+  resting on its quotes and each LOW as one study's single run. Phase 2's
+  F162 contradicts the document's in-segment wins, which none of the six
+  states, so no relation is written. INTAKE section 74
+- **feat**: Sprint 16 Task F (F114, #170), the reads. All 20 papers (531
+  pages) read in full by six local readers and reviewed in full; five
+  groups applied (g333, g334, g133-r1, g155, g156: 1,144 new assertions,
+  a second apply writing nothing each time); g154-r1 waits for one
+  certainty change the team lead decides. Counts as of 2026-11-06:
+  assertions 34,897 to 36,041. Task B step 3: per page, readers +27%
+  tokens and +70% minutes, and reviewers +92% and +74%, against Sprint
+  15's baseline, with 0 cache misses. INTAKE section 73
+- **fix**: `read_telemetry.totals` counted a trial's writes and the empty
+  re-applies (g333 showed 1,030 written for 515, and 2 applies for 1); it
+  now counts only live writes. Test proven red by injection
+- **fix**: the Task F/G intake test required each list paper to stay at
+  tier "seen"; Task F's reads moved them to "read", and the full suite
+  before Manual Validation failed on it (1 of 1,578). It now accepts
+  "seen" or "read"
+- **docs**: F140 carded for Sprint 17 (team lead, 2026-11-06): testing
+  made risk-based, effective and as fast as reasonably possible; the
+  local full suite went from 199 s (Sprint 12) to 4,124 s
+- **chore**: Sprint 16 at Phase 5.3 Manual Validation (2026-11-06); the
+  sprint's own status field set too (the footer reads it)
+- **feat**: Manual Validation answers applied (team lead, 2026-11-06).
+  Q1 = 3: `he-simulation-scope` split in two (the three-class reduction,
+  a stated limit, and `qgan-training-testing-100-per-class`, setup;
+  both HIGH), then g154-r1 applied: 167 assertions entered, 8 changed.
+  Q2 = 1: Task H's seventh assertion, the tuned rollout's in-segment
+  wins, LOW, its reason naming B4 and F162. Q3 = 2: F141 carded (the
+  paper view prints assertions in full). Assertions 36,209 (snapshot
+  2026-11-06)
+- **chore**: Manual Validation complete (team lead, 2026-11-07); Sprint 16
+  at Phase 7.1 Retrospective, Claude's draft written
+
+### 2026-10-31 to 2026-11-05 (Sprint 15, PR #149, merged to develop 2026-11-05 and to main via PR #163 the same day; tagged sprint-15)
 
 - **chore**: Sprint 15 opened (2026-10-31). The team lead merged PR #140
   into develop (9059061) and PR #148 to main (934a416); `sprint-14`
