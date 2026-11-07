@@ -13,7 +13,22 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-11-05 onward (Sprint 16, in progress)
+### 2026-11-07 onward (Sprint 17, in progress)
+
+- **chore**: Sprint 17 opened (2026-11-07). The team lead merged PR #164
+  into develop (3180aad) and PR #173 to main (85fbeae); `sprint-16`
+  tagged on 85fbeae; branch `feature/20261107_Sprint_17` cut from the
+  Sprint 16 branch (6.6 carry-forward). Phase 1.1 reconciliation: every
+  Sprint 16 commit changed this file
+- **docs**: Sprint 17 Phase 1.2 and 1.3 (2026-11-07). Sprint 16's issues
+  #165 to #172 all closed; its triad present with Actuals; master plan
+  rolled (Sprint 16 merged and tagged). Shipped cards F51, F134 to F137
+  and F139 pruned by hand. Snapshots: F57 (522 papers with no read row),
+  F114 (880 of 1,430 records not read in full, 187 groups). 0 re-checks
+  due; no ADR or schema change. The team lead's Batch API reader brief
+  carded as F144 (Priority 10; the $100 API credit expires 2026-11-18)
+
+### 2026-11-05 to 2026-11-07 (Sprint 16, PR #164, merged to develop 2026-11-07 and to main via PR #173 the same day; tagged sprint-16)
 
 - **docs**: Sprint 16 closed out (2026-11-07). The team lead's five
   improvement decisions: 1 to 4 carded as F142 (four small pipeline
