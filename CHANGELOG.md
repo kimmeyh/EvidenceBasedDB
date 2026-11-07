@@ -15,6 +15,12 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **fix**: Key-file hook closes three gaps a fresh-eyes review found: the
+  bypass token is honored only on `git commit` and `gh` commands, and the
+  block message no longer names it; the file name matches in any letter
+  case, with trailing dots or an NTFS stream suffix; an inline
+  python-dotenv loader call (which finds the file without naming it) is
+  blocked. MultiEdit added to the matcher. Each gap proven red (#176)
 - **process**: Sprint 17 plan approved (2026-11-07); issues #175 to
   #180. The team lead keeps the API key in a git-ignored key file at the
   repository root, named ANTHROPIC_API_KEY, read only by the batch script
