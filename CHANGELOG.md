@@ -15,6 +15,9 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **process**: Task B (F144) blocked at the pilot: the API key is not
+  scoped to a workspace, so each request needs a workspace id the team
+  lead holds. Built and dry-run on draft PR #181; status recorded (#176)
 - **fix**: Key-file hook has no bypass token at all. The automated security
   review found that a token honored on `git commit` still passed
   `git commit ... && cat` of the file. A commit or PR text that names the
