@@ -15,6 +15,11 @@ this project keeps having to replace with a step.
 
 ### 2026-11-05 onward (Sprint 16, in progress)
 
+- **docs**: Sprint 16 retrospective recorded (2026-11-07). The team
+  lead's combined PO, SM and LD feedback verbatim (Very Good in categories
+  1 to 12 and 15; none in 13, 14 and 16) with Claude's draft lines in
+  `docs/sprints/SPRINT_16_RETROSPECTIVE.md`; five improvements proposed,
+  decisions pending (PR #164)
 - **chore**: Sprint 16 opened (2026-11-05). The team lead merged PR #149
   into develop (7dca2c9) and PR #163 to main (dff5c49); `sprint-15`
   tagged on dff5c49; branch `feature/20261105_Sprint_16` cut from the
