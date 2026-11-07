@@ -15,6 +15,12 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **fix**: Key-file hook has no bypass token at all. The automated security
+  review found that a token honored on `git commit` still passed
+  `git commit ... && cat` of the file. A commit or PR text that names the
+  file now goes in by a message file (`git commit -F`, `--body-file`). The
+  trailing-dot shell form, `dotenv run` and `python -m dotenv` are also
+  blocked. Each proven red (#176)
 - **fix**: Key-file hook closes three gaps a fresh-eyes review found: the
   bypass token is honored only on `git commit` and `gh` commands, and the
   block message no longer names it; the file name matches in any letter

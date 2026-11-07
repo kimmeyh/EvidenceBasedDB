@@ -20,6 +20,13 @@ covered and proven red the same day: with `re.IGNORECASE` removed and the
 failed; with the LOADER check removed (INJECTED), the three loader cases
 failed; with `and TEXT_COMMANDS.match(command)` removed (INJECTED), the two
 `allow_env_mention` cases on `cat` failed. Each restored and green.
+
+Security review the same day: a token honored on `git commit` still passed
+`git commit ... && cat .env`, so the token is gone; the trailing-dot shell
+form and `dotenv run` and `python -m dotenv` are now blocked. Proven red: with
+a token check `if "allow_env_mention" in command: return None` put back
+(INJECTED), the two cases that carry the token failed; with the trailing-dot part removed from NAME
+(INJECTED), `type .env.` failed. Each restored and green.
 """
 from __future__ import annotations
 
@@ -61,9 +68,13 @@ def _run(tool: str, args: dict) -> subprocess.CompletedProcess:
     ("Bash", {"command": 'python -c "from dotenv import dotenv_values; print(dotenv_values())"'}),
     ("PowerShell", {"command": "python -c 'import dotenv; dotenv.load_dotenv(); import os'"}),
     ("Bash", {"command": "dotenv list"}),
-    # The bypass token is honored only on git commit and gh commands.
+    ("Bash", {"command": "dotenv run -- printenv"}),
+    ("Bash", {"command": "python -X utf8 -m dotenv list"}),
+    ("Bash", {"command": "type .env."}),
+    # No bypass token: the old one passed these (fresh-eyes and security reviews, 2026-11-07).
     ("Bash", {"command": "cat .env # allow_env_mention"}),
-    ("Bash", {"command": "echo hi && git commit -m 'x' && cat .env # allow_env_mention"}),
+    ("Bash", {"command": "git commit -m 'x' && cat .env # allow_env_mention"}),
+    ("Bash", {"command": "git commit -m 'ignore .env'"}),
 ])
 def test_reading_the_secret_file_is_blocked(tool, args):
     proc = _run(tool, args)
@@ -86,18 +97,21 @@ def test_lookalike_names_are_not_blocked(tool, args):
 
 
 @pytest.mark.parametrize("command", [
-    "git commit -m 'ignore .env' # allow_env_mention",
-    "gh pr edit 174 --body 'the key file .env is ignored' # allow_env_mention",
+    "git commit -F ../commit_message.txt",
+    "gh pr edit 174 --body-file ../pr_body.md",
+    "uv pip install --system python-dotenv==1.1.0",
+    "python scripts/batch_read.py status",
 ])
-def test_a_mention_with_the_bypass_token_passes(command):
+def test_a_mention_by_a_message_file_passes(command):
+    """The way to name the file in a commit or a PR body: the text is in a file, never in the command."""
     proc = _run("Bash", {"command": command})
     assert proc.returncode == 0, proc.stderr
 
 
-def test_the_block_message_does_not_name_the_bypass_token():
-    """The first message told a blocked agent to add the token, on any command (fresh-eyes review 2026-11-07)."""
+def test_the_block_message_names_no_bypass():
+    """The first message told a blocked agent to add a token, on any command (fresh-eyes review 2026-11-07)."""
     proc = _run("Bash", {"command": "cat .env"})
-    assert proc.returncode == 2 and "allow_env_mention" not in proc.stderr, proc.stderr
+    assert proc.returncode == 2 and "allow_" not in proc.stderr and "-F" in proc.stderr, proc.stderr
 
 
 def test_malformed_payload_fails_open():
