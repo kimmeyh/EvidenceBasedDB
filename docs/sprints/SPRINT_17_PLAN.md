@@ -149,16 +149,35 @@ and save future token spend?" Read as a question about F144's batch reads.
 
 ## Decisions for the team lead
 
-- **Q1. Under what name does the API key reach the script?**
-  1. A separate variable, `EBDB_ANTHROPIC_API_KEY`, set by you as a
-     Windows user variable. Claude Code keeps using your subscription;
-     only the script spends the credit. The brief's other key rules stay
-     (never printed, never written to a file, log or commit).
-  2. `ANTHROPIC_API_KEY`, as the brief says. Claude Code asks once whether
+Team lead, 2026-11-07: "2. 2" (Q2 = 2). Q1 asked again with a `.env`
+option, after the team lead asked "do we have an .env file where we can
+store the key?" (no: neither the repository nor
+`D:\Data\Harold\EvidenceBasedDB\` holds one, and `.gitignore` does not
+name `.env`; checked 2026-11-07).
+
+- **Q2 = 2**: every approved F140 recommendation is implemented, whatever
+  its size, before F144 starts. F144's pilot then runs later, with fewer
+  days left for its follow-on batches before 2026-11-18. If F140's
+  implementation would push the pilot past 2026-11-14, that is reported
+  to the team lead as a changed commitment the day it is known.
+
+- **Q1 (asked again). Where is the API key kept?**
+  1. A `.env` file outside the repository,
+     `D:\Data\Harold\EvidenceBasedDB\.env`, holding one line,
+     `EBDB_ANTHROPIC_API_KEY=...`, that you paste in once. Only the script
+     reads it, with a few lines of its own code (no new package). Claude
+     Code keeps using your subscription; no shell sees the key; nothing
+     needs a restart. Task B adds `.env` to `.gitignore` and a hook,
+     proven red, that blocks any tool call by Claude from reading or
+     printing that file.
+  2. A Windows user variable, `EBDB_ANTHROPIC_API_KEY`. Claude Code keeps
+     using your subscription, but you must restart Claude Code, and every
+     command Claude runs can see the variable.
+  3. `ANTHROPIC_API_KEY`, as the brief says. Claude Code asks once whether
      to use it; if approved, or in any non-interactive run, Claude Code's
      own work bills to the credit and stops when the credit reaches $0.
   - Recommend 1
-- **Q2. How much of F140's implementation happens before F144 starts?**
+- **Q2 (answered 2). How much of F140's implementation happens before F144 starts?**
   F140's analysis ends in recommendations you approve one by one.
   1. The approved recommendations up to a 120-minute timebox, then F144
      starts; larger ones are carded for Sprint 18. F144's pilot runs
@@ -169,10 +188,10 @@ and save future token spend?" Read as a question about F144's batch reads.
      before the credit expires.
   - Recommend 1
 
-**Your step (not a question)**: before Task B's pilot, set the key under
-the name Q1 chooses as a Windows user environment variable, then restart
-Claude Code so its shell sees the variable. Claude never reads or prints
-its value.
+**Your step (not a question)**: before Task B's pilot, put the key where
+Q1 chooses (with Q1 = 1: create `D:\Data\Harold\EvidenceBasedDB\.env`
+with the one line, after Task B's hook is in place). Claude never reads
+or prints its value.
 
 ## Premise falsifier
 
@@ -202,7 +221,8 @@ fields, not from the forecast; A's timings are measured before and after.
 | Risk | Mitigation |
 |---|---|
 | The key leaks into output, a file or a commit | Read only from the environment; a test proven red that no output, state file or result holds it; never echoed by any command |
-| Claude Code itself spends the credit | Q1 (a separate variable name) |
+| Claude Code itself spends the credit | Q1 (the key kept outside Claude Code's credential order) |
+| F140's full implementation (Q2 = 2) delays F144 past the credit | The pilot's date is tracked in the status note; a slip past 2026-11-14 is reported the day it is known |
 | A record is sent twice, or a closed session loses a batch | The state file is saved before polling; no resend once a result is saved; a test proven red |
 | Spending passes the credit | The $95 cap checked before each batch on the estimated cost; the running total from the API's usage; a test proven red |
 | A batch read is cut short | `max_tokens` at the 300k beta; a result whose `stop_reason` is `max_tokens` is flagged, never treated as whole |

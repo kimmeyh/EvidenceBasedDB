@@ -15,6 +15,10 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **docs**: Sprint 17 plan absorbs Q2 = 2 (every approved F140
+  recommendation before F144) and asks Q1 again with a `.env` option
+  outside the repository; F145 carded (what qubit-lab.ch's Evidence pages
+  teach, for Sprint 18) (2026-11-07)
 - **docs**: Sprint 17 draft PR #174 recorded (2026-11-07)
 - **docs**: Backlog refinement and Sprint 17 plan (2026-11-07). Scope
   selected by the team lead: F140 (first), F144, F114 (10 papers), F142,

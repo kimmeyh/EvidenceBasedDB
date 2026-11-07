@@ -1079,6 +1079,59 @@ and in git. Remaining items below.
 - Depends on: nothing. Time-bound: the credit expires 2026-11-18, so the
   build and the follow-on batches must run before then.
 
+**F145. What qubit-lab.ch's Evidence pages teach about quantum computing, and about how to show evidence (~120m [no-history] timebox) Priority 20** (NEW 2026-11-07, team lead during Sprint 17 planning: "add to backlog for next sprint - what can we learn from this site: https://qubit-lab.ch/evidence#qmc-correlation-0 about Quantum Computing", with a screenshot of the page's menu)
+- Phase: Sourcing / extraction (web source) and method review
+- Value: this enables the store to hold a practitioner's published,
+  pre-registered quantum results with their own verdicts and limits, and
+  shows this repository and Phase 2 a way of presenting evidence that a
+  reader can check.
+- Platform: https://qubit-lab.ch/evidence (read only, the UA
+  "EvidenceBasedDB-fetcher/1.0"); its public files only (for example
+  `/evidence-runs.json` and the Zenodo design, DOI
+  10.5281/zenodo.22498143); the intake door; the store.
+- What the page holds (read 2026-11-07, a summary, not yet checked
+  against the page): qubit-lab.ch, a Swiss firm offering PQC readiness
+  and quantum prototyping for financial services, publishes "Evidence,
+  not promises":
+  - Six method studies (August to September 2026): "Which method" (QAOA
+    concentration over 12,397 certified runs), "Noise & hardware" (a
+    noise ladder ending on IBM ibm_kingston, Heron r2, 156 qubits,
+    20,000 shots, unmitigated), "QSVM island", "VQC island", "Kernel
+    atlas" and "VQC atlas".
+  - Five sample runs: Quantum Monte Carlo, Portfolio, Collateral, Index
+    replication and QML classification.
+  - Its verdicts are mostly "Parity" or "No advantage demonstrated". The
+    Monte Carlo run (simulator, model evaluations) shows amplitude
+    estimation converging faster, with advantage not claimed. The
+    correlation-0 follow-up (the link the team lead gave) reports the
+    slopes unchanged and a crossover shift that does not exclude zero at
+    200 and 400 repetitions.
+  - It cites arXiv 2607.15815, "The Fourier Wall", already in the store
+    as `mancilla-2026-fourier-wall-spectra` (read), for its
+    classification method.
+  - Several studies' raw results and scripts are "on request" or gated in
+    a "Resource Room"; designs were tagged in a public repository before
+    the runs.
+- Scope:
+  1. Read the public Evidence pages and public files in full; enter
+     qubit-lab.ch as a source record (a vendor, with its conflict of
+     interest named) and each study's and run's stated result as an
+     assertion with its own limits, quotes checked. Gated or "on request"
+     material is listed, not requested.
+  2. Link each result to what the store already holds on the same
+     question (QAOA, quantum kernels and VQC, amplitude estimation, The
+     Fourier Wall, Phase 2's CVQBoost and SPECTRA results), as
+     corroborating or contradicting where it bears.
+  3. A short note on what this repository and Phase 2 could adopt from
+     the presentation: the verdict vocabulary, pre-registration tags,
+     certified run records in machine-readable form, and published
+     corrections. Each adoption is asked as its own numbered question.
+- Acceptance: the source and its assertions entered with quotes checked
+  and certainty graded (a vendor's own result, single source); each link
+  to existing assertions with its reason; the gated items listed; the
+  note's proposals asked.
+- Depends on: nothing. Target: Sprint 18 (team lead, "for next sprint").
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT
