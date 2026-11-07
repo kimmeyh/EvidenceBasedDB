@@ -75,7 +75,10 @@ def test_every_listed_paper_is_held_and_carries_the_route(live_conn):
     for ident in sorted(F104.listed()):
         for rid in [r for i in (bad[ident] if ident in bad else [ident]) for r in hold.get(i, [])]:
             assert rid in routed, (ident, rid)
-    assert len(routed) == MANIFEST["arxiv_ids_new"] + MANIFEST["routes_added_to_held_papers"]
+    # F137 (Sprint 16 Task E): a record merged into another passed its route to the record that holds it now.
+    from store.merges import MERGED_INTO
+    copied = {new for old, new in MERGED_INTO.items() if old in routed and new in routed}
+    assert len(routed) == MANIFEST["arxiv_ids_new"] + MANIFEST["routes_added_to_held_papers"] + len(copied)
 
 
 def test_a_second_apply_enters_nothing(live_copy):

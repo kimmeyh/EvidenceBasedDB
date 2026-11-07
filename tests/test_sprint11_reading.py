@@ -150,8 +150,8 @@ def test_each_read_is_qualified_and_the_store_matches_the_script(live_conn, task
         assert (s11.SUBAGENT_READER, "subagent") in rows, rid
         if [a for a in p["assertions"] if a["id_suggestion"] not in s11.DROP]:
             assert ("Claude", "partial") in rows, rid
-            assert live_conn.execute("SELECT tier FROM paper_fields WHERE record_id = ?",
-                                     (rid,)).fetchone()[0] == "read", rid
+            assert live_conn.execute("SELECT tier FROM paper_fields WHERE record_id = ?",  # F137: a merged record's
+                                     (s11.holder(rid),)).fetchone()[0] == "read", rid  # holder is the one read
     bad = []
     for _, a, _, _ in s11.assertions(task):
         if FULL_READ_MARK in (live_conn.execute("SELECT updated_reason FROM records WHERE id = ?", (a.id,)).fetchone()

@@ -54,8 +54,7 @@ def test_the_disk_cache_is_keyed_by_content_and_layout(monkeypatch, tmp_path):
     of the cache key, the changed file returned the old text. Restored."""
     calls: list = []
     _fake_pdftotext(monkeypatch, calls)
-    (tmp_path / "store").mkdir()  # the cache makes text_cache\, never the store folder itself
-    monkeypatch.setenv("EBDB_STORE_DIR", str(tmp_path / "store"))
+    monkeypatch.setenv("EBDB_TEXT_CACHE_DIR", str(tmp_path / "text_cache"))  # made by the first write (F136)
     pdf = tmp_path / "a.pdf"
     pdf.write_bytes(b"%PDF one")
     assert quotes._pdftotext(str(pdf), False) == "text 1\r\n"
@@ -64,16 +63,38 @@ def test_the_disk_cache_is_keyed_by_content_and_layout(monkeypatch, tmp_path):
     assert len(calls) == 2
     pdf.write_bytes(b"%PDF two")
     assert quotes._pdftotext(str(pdf), False) == "text 3\r\n"  # a changed file extracts again
-    assert len(list((tmp_path / "store" / "text_cache").glob("*.txt"))) == 3
-    assert not list((tmp_path / "store" / "text_cache").glob("*.partial"))
+    assert len(list((tmp_path / "text_cache").glob("*.txt"))) == 3
+    assert not list((tmp_path / "text_cache").glob("*.partial"))
+
+
+def test_a_store_copy_elsewhere_reads_the_same_cache(monkeypatch, tmp_path):
+    """F136 (Sprint 16 Task A; team lead, 2026-11-05: "reading the PDF should ever be done once per PDF, ever").
+    Sprint 15's trial on a store copy (EBDB_STORE_DIR pointed at the copy) found an empty cache and extracted 894
+    PDFs again. The cache folder no longer follows EBDB_STORE_DIR. Proven to fail by injection, 2026-11-06: with
+    text_cache_dir() returning store_dir() / "text_cache", the copy extracted again (2 calls) and the default
+    folder named the copy's. Restored."""
+    import store
+    calls: list = []
+    _fake_pdftotext(monkeypatch, calls)
+    monkeypatch.setenv("EBDB_TEXT_CACHE_DIR", str(tmp_path / "text_cache"))
+    monkeypatch.setenv("EBDB_STORE_DIR", str(tmp_path / "live"))
+    pdf = tmp_path / "a.pdf"
+    pdf.write_bytes(b"%PDF one")
+    assert quotes._pdftotext(str(pdf), False) == "text 1\r\n"
+    monkeypatch.setenv("EBDB_STORE_DIR", str(tmp_path / "trial copy"))
+    assert quotes._pdftotext(str(pdf), False) == "text 1\r\n"  # the copy reads the cache: nothing extracted
+    assert len(calls) == 1
+    # Without its own variable the cache is the live store's folder, wherever EBDB_STORE_DIR points
+    monkeypatch.delenv("EBDB_TEXT_CACHE_DIR")
+    monkeypatch.setattr(store, "_on_windows", lambda: True)
+    assert store.text_cache_dir() == Path(store.DEFAULT_STORE_DIR) / "text_cache"
 
 
 def test_a_new_pdftotext_extracts_again(monkeypatch, tmp_path):
     """Proven to fail by injection, 2026-10-23: with the version left out
     of the cache key, the second version returned the first one's text.
     Restored."""
-    (tmp_path / "store").mkdir()
-    monkeypatch.setenv("EBDB_STORE_DIR", str(tmp_path / "store"))
+    monkeypatch.setenv("EBDB_TEXT_CACHE_DIR", str(tmp_path / "text_cache"))
     pdf = tmp_path / "a.pdf"
     pdf.write_bytes(b"%PDF one")
     calls: list = []
@@ -101,9 +122,9 @@ def test_the_real_version_is_never_left_faked():
 def test_a_folder_that_cannot_be_written_only_skips_the_cache(monkeypatch, tmp_path):
     calls: list = []
     _fake_pdftotext(monkeypatch, calls)
-    blocker = tmp_path / "store"
-    blocker.write_text("a file where the store folder would be")
-    monkeypatch.setenv("EBDB_STORE_DIR", str(blocker))
+    blocker = tmp_path / "text_cache"
+    blocker.write_text("a file where the cache folder would be")
+    monkeypatch.setenv("EBDB_TEXT_CACHE_DIR", str(blocker))
     pdf = tmp_path / "a.pdf"
     pdf.write_bytes(b"%PDF one")
     assert quotes._pdftotext(str(pdf), False) == "text 1\r\n"

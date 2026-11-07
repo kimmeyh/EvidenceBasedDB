@@ -36,7 +36,7 @@ def test_ocr_text_is_cached_by_file_and_engine_and_named_in_provenance(tmp_path,
     source.write_bytes(b"%PDF fake")
     monkeypatch.setattr(ocr, "thin_pages", lambda path: [2])
     monkeypatch.setattr(ocr, "_tool", lambda: "t")
-    monkeypatch.setattr(ocr, "store_dir", lambda: tmp_path)
+    monkeypatch.setattr(ocr, "text_cache_dir", lambda: tmp_path / "text_cache")
     monkeypatch.setattr(ocr.subprocess, "run", lambda *a, **k: None)  # pdftoppm
     calls = []
     engine = {"rapidocr": "3.10.0", "onnxruntime": "1.31.1", "models": {"PP-OCRv6_rec_small.onnx": "ab" * 32}}
@@ -62,7 +62,7 @@ def test_a_changed_page_set_reads_again_and_a_number_box_survives(tmp_path, monk
     source = tmp_path / "s.pdf"
     source.write_bytes(b"%PDF fake")
     monkeypatch.setattr(ocr, "_tool", lambda: "t")
-    monkeypatch.setattr(ocr, "store_dir", lambda: tmp_path)
+    monkeypatch.setattr(ocr, "text_cache_dir", lambda: tmp_path / "text_cache")
     monkeypatch.setattr(ocr.subprocess, "run", lambda *a, **k: None)
     calls = []
 

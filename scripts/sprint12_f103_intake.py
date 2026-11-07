@@ -149,11 +149,13 @@ def entries() -> list[tuple[str, dict]]:
 
 def repo_entry() -> dict:
     return {"access": f"https://github.com/{REPO}", "kind": "repo", "context": "qml",
+            # Sprint 16 Task G (F57, 2026-11-06): the white paper is now entered and linked, so "linked to no paper"
+            # no longer held. This script owns the disposition; scripts/sprint16_f57_named.py reads it from here.
             "disposition": ("Repository named by the team lead for the F95 release (2026-10-22). It holds no code: "
                             "its files (listed 2026-10-23) are the LaTeX source and PDF of a white paper, \"Quantum "
-                            "Neural Networks: Theory, Architectures, and Applications\", in two versions. Linked to "
-                            "no paper, since no source names it as a paper's code. Kept at seen: the white paper is "
-                            "a candidate for the next F95 release, to enter as a paper"),
+                            "Neural Networks: Theory, Architectures, and Applications\", entered as "
+                            "wangy8205165-2026-quantum-neural-networks-theory-architectures and linked code-of "
+                            "(Sprint 16 Task G, 2026-11-06)"),
             "found_via": REPO_FOUND_VIA, "cited_as": f"github.com/{REPO}"}
 
 

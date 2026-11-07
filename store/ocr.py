@@ -11,7 +11,8 @@ What it gives:
 - `ocr_pages(path)`: those pages' OCR text, page by page, with the engine that read them;
 - `image_text(path)`: the OCR text of an image file that is a source of its own (not a page of a PDF).
 
-The text is cached in the store folder's `text_cache\\` (outside git) as `pdftotext`'s is: the key is the file's
+The text is cached in `store.text_cache_dir()` (outside git, one folder for every store copy, F136) as
+`pdftotext`'s is: the key is the file's
 SHA-256, the render resolution, `pdftoppm`'s version and the engine's pinned versions, so a changed file or engine
 reads again. A source that needs OCR when the engine is missing raises OcrUnavailable: an image-only page is never
 read as empty without a word.
@@ -32,7 +33,7 @@ from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 
-from store import store_dir
+from store import DEFAULT_DATA_DIR, text_cache_dir
 
 TEXT_FLOOR = 40  # visible characters: a page with fewer has no text layer worth the name
 DPI = 200
@@ -53,11 +54,13 @@ class OcrText:
 
 
 def engine_python() -> Path:
-    """The OCR environment's interpreter: EBDB_OCR_PYTHON, or `ocr-venv` beside the store folder."""
+    """The OCR environment's interpreter: EBDB_OCR_PYTHON, or `ocr-venv` in the data folder. A fixed folder, not
+    beside `store_dir()` (F136): its path is part of the OCR cache key, so a store copy elsewhere found neither the
+    engine nor its cached text."""
     override = (os.environ.get(OCR_PYTHON_ENV) or "").strip()
     if override:
         return Path(override)
-    venv = store_dir().parent / "ocr-venv"
+    venv = Path(DEFAULT_DATA_DIR) / "ocr-venv"
     return venv / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
 
 
@@ -79,15 +82,23 @@ def page_texts(path: str) -> list[str]:
     return list(_page_texts(path))
 
 
+def page_layouts(path: str) -> list[str]:
+    """Each page's text in pdftotext's -layout mode, split from the cached whole-file extraction the same way
+    (F139, Sprint 16 Task B): the reader's check ran one uncached `pdftotext -layout -f -l` per anchor, 58 of its 62
+    seconds on a 494-assertion group."""
+    return list(_page_texts(path, True))
+
+
 @lru_cache(maxsize=None)
-def _page_texts(path: str) -> tuple[str, ...]:
+def _page_texts(path: str, layout: bool = False) -> tuple[str, ...]:
     from store.quotes import _pdftotext
-    pages = _pdftotext(path, False).split("\f")
+    pages = _pdftotext(path, layout).split("\f")
     if pages and not pages[-1].strip():
         pages = pages[:-1]
     n = page_count(path)
     if len(pages) != n:
-        pages = [subprocess.run(["pdftotext", "-enc", "UTF-8", "-f", str(i), "-l", str(i), path, "-"],
+        pages = [subprocess.run(["pdftotext", "-enc", "UTF-8", *(["-layout"] if layout else []), "-f", str(i),
+                                 "-l", str(i), path, "-"],
                                 capture_output=True, check=True).stdout.decode("utf-8", "replace")
                  for i in range(1, n + 1)]
     return tuple(pages)
@@ -122,7 +133,7 @@ def _cache(path: str, kind: str, pages: list[int]) -> Path | None:
     digest = hashlib.sha256(Path(path).read_bytes()).hexdigest()
     which = hashlib.sha256(",".join(map(str, pages)).encode()).hexdigest()[:8]
     try:
-        return store_dir() / "text_cache" / f"{digest}-{kind}-{_tool()}-{which}.json"
+        return text_cache_dir() / f"{digest}-{kind}-{_tool()}-{which}.json"
     except RuntimeError:  # no store folder off Windows
         return None
 
@@ -149,6 +160,8 @@ def _read(path: str, kind: str, pages: list[int]) -> OcrText:
                 return text
         except (OSError, ValueError, KeyError):
             pass
+    from store.quotes import CACHE_MISSES
+    CACHE_MISSES["ocr"] += 1  # F139
     with tempfile.TemporaryDirectory() as tmp:
         if kind == "image":
             images = [path]
@@ -163,7 +176,7 @@ def _read(path: str, kind: str, pages: list[int]) -> OcrText:
     result = OcrText({n: page["text"] for n, page in zip(pages, body["pages"])}, body["engine"])
     if cached is not None:
         try:
-            cached.parent.mkdir(exist_ok=True)
+            cached.parent.mkdir(parents=True, exist_ok=True)
             with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=cached.parent, suffix=".partial",
                                              delete=False) as partial:
                 json.dump({"pages": result.pages, "engine": result.engine, "dpi": DPI}, partial, ensure_ascii=False)

@@ -1,0 +1,189 @@
+{
+ "group": "g133-r1",
+ "reviewed_on": "2026-11-06",
+ "tag": "Sprint 16 Task F, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint16_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "emm-simulated-forward-propagation-scope": [
+   "scope",
+   "Abstract, p.1: the authors state the scope of their own method, PQCs as QNNs with simulated quantum forward propagation. Section 3 and Section 5 repeat that forward propagation is simulated."
+  ],
+  "emm-backprop-classical-now": [
+   "setup",
+   "Section 3, p.5-6: the authors state their training setup, fully quantum (simulated) forward propagation and classical backpropagation. Section 5, p.14 repeats it."
+  ],
+  "emm-software-stack": [
+   "setup",
+   "Section 1, pp.2-3: the authors state the software versions as quoted; the trailing digit on Keras 2.4.3 and Cirq 0.10.0 is the footnote marker, as the value says."
+  ],
+  "emm-pqc-definition": [
+   "definition",
+   "Section 2.1.1, p.5: the paper defines a PQC in its own words (the sentence carries citation [35], but it is a definition of the term, not a cited result)."
+  ],
+  "emm-xx-layer-definition": [
+   "definition",
+   "Section 2.1.1, p.5: the paper defines a layer of XX gates, with Figure 2 notation."
+  ],
+  "emm-pqc-architecture": [
+   "setup",
+   "Section 3.3, p.11: 6 layers, 16 input qubits, 96 parameters, layer order XX, ZZ, YY, XX, ZZ, YY, all stated in the text."
+  ],
+  "emm-gate-combination-selected-on-accuracy": [
+   "setup",
+   "Section 3.3, p.11: the authors state how they chose the gate combination (model accuracy, after trying combinations). It states the procedure only, not the other combinations tried or their results."
+  ],
+  "emm-encoding-scheme": [
+   "setup",
+   "Section 3.3, p.11: the encoding (X^a gate on a 0 qubit, 16 values centred around 0.5) and the output (expected value of the readout qubit, in 0 to 1) are stated as the paper's own design."
+  ],
+  "emm-bilstm-architecture-training": [
+   "setup",
+   "Section 3.4, p.12: 4 bidirectional layers, first layer 128 units with tanh, Adam, mean squared error, all as stated."
+  ],
+  "emm-training-300-epochs": [
+   "setup",
+   "Section 4, p.12: both model types are trained for 300 epochs on all simulated signals, as stated."
+  ],
+  "emm-metrics-listed": [
+   "setup",
+   "Section 4, p.12: the text says five metrics and names four (MSE, SESD, MR, SDR). The value says exactly that, so it does not overstate. Table 3 shows the same four rows."
+  ],
+  "emm-data-sinusoids-from-aapl": [
+   "setup",
+   "Section 3.1.1, p.7 and Table 1, p.8: 13 periodogram components of the AAPL percentage change with squared amplitude above 50 form the deterministic part."
+  ],
+  "emm-threshold-arbitrary": [
+   "setup",
+   "Section 3.1.1, p.7: the text calls the threshold of 50 arbitrary and chosen by the authors, and says a different threshold would include fewer or more components."
+  ],
+  "emm-fifteen-distortion-versions": [
+   "setup",
+   "Section 3.1.1, p.9 and Table 2: 15 trend and noise versions, F, L and Q for flat, linear and quadratic, as stated."
+  ],
+  "emm-noise-uniform": [
+   "setup",
+   "Section 3.1.1, p.9: noise from U(0,1), multiplied by a noise coefficient (stated in the same paragraph), as the value says."
+  ],
+  "emm-10000-time-steps": [
+   "setup",
+   "Section 3.1.1, p.9: 10,000 time steps in arbitrary time units, regular sampling, no missing points, as stated for each simulated signal."
+  ],
+  "emm-realistic-series": [
+   "setup",
+   "Section 3.1.2, p.9-10: BTC-USD from 2452 closing prices and IAG.L from 4666, besides the AAPL series, as stated."
+  ],
+  "emm-aapl-data-source": [
+   "setup",
+   "Section 3.1.1, footnote 3, p.6: Yahoo! Finance, N = 10080 points, close price adjusted for splits, as stated."
+  ],
+  "emm-split-and-horizon": [
+   "setup",
+   "Section 3.2, p.10: first three quarters for training and validation, last quarter for testing, groups of 17 split 16 plus 1, horizon 1 t.u., as stated."
+  ],
+  "emm-minmax-scaling": [
+   "setup",
+   "Section 3.2, p.10: MinMaxscaler 0.2 to 0.8, fitted on training data, applied to both sets, same scaling for PQC and BiLSTM inputs, as stated."
+  ],
+  "pqc-bilstm-setup": [
+   "setup",
+   "Section 3.3 p.11 (96 parameters), Section 3.4 p.12 (175,648 trainable parameters) and Section 5 p.14 (forward propagation quantum simulated, backpropagation purely classical): all stated as the paper's own setup."
+  ],
+  "evans-normalization-requirement": [
+   "definition",
+   "Section 2.1, p.5-6: Eq. 23 imposes the unit-norm condition and the text names the added coefficients normalization."
+  ],
+  "evans-unitary-definition": [
+   "definition",
+   "Section 2.1, p.3: Eq. 6 defines a unitary operator by U U-dagger = U-dagger U = I, and says the identity imparts no change."
+  ],
+  "evans-expectation-value-definition": [
+   "definition",
+   "Section 2.1, p.4: the paper defines the expectation value as the probability-weighted average of outcomes, Eq. 11."
+  ],
+  "evans-z-gate-phase": [
+   "definition",
+   "Section 2.5, p.11: Z is defined by its matrix, Eq. 44, and the text states its action (sign flip of the |1> amplitude, a phase of pi, probabilities unchanged)."
+  ],
+  "evans-cnot-definition": [
+   "definition",
+   "Section 2.6, p.13: CNOT is defined by its matrix, Eq. 59, and checked on |00> and |10> in Eqs. 60-61."
+  ],
+  "evans-universal-gate-set-definition": [
+   "definition",
+   "Section 2.7, p.14: the paper defines the universal quantum gate set as the gates that can produce any unitary operator with sufficient precision, and states the weakening of classical universality."
+  ],
+  "evans-ml-train-val-test-roles": [
+   "definition",
+   "Section 3.1, p.17: the paper defines the training, validation and test data by their roles."
+  ],
+  "evans-block-encoding-rule": [
+   "definition",
+   "Section 4.2, p.26: the paper defines its block-encoding design rule D <= QLG, minimizing QLG. The example 16 x 4 x 3 = 192 follows the rule."
+  ],
+  "evans-figure13-setup": [
+   "setup",
+   "Section 4.3, p.27-28: the text states the roles of qubit 0 (readout, the only qubit measured), qubits 1-5 (data) and the trainable network gates for the paper's example circuit."
+  ],
+  "evans-parameter-shift-loss-definition": [
+   "definition",
+   "Section 4.4, p.28: the paper defines C(theta) as an expectation value, Eq. 87, with U_G(theta) = exp(i a theta G), G a Pauli operator and a a fixed constant."
+  ],
+  "evans-parameter-shift-pauli-limit": [
+   "stated limit",
+   "Section 4.4, p.29: the authors state that the derivation covers gates exp(i a theta G) with G a Pauli operator and that the identity limits the result to Pauli-based gates. A limit on their own derivation."
+  ],
+  "evans-xor-modified-circuit": [
+   "setup",
+   "Section 4.5, p.31-32: the paper states its own modification of the cited circuit (two added qubits for rotation data embedding, alpha split into alpha1 and alpha2)."
+  ],
+  "evans-xor-dataset-split": [
+   "setup",
+   "Section 4.5, p.32: uniform data on [0,1], exact 0.5 excluded, 1000 points split 750, 63 and 187; the sizes add to 1000."
+  ],
+  "evans-xor-labels-observable-loss": [
+   "setup",
+   "Section 4.5, p.32: Pauli Z observable with eigenvalues +1 and -1 as labels, mean squared error loss, expectation near +1 for class 0 and -1 for class 1, as stated."
+  ],
+  "evans-xor-optimizer-settings": [
+   "setup",
+   "Section 4.5, p.32: mini-batch gradient descent, batch 25, step 0.025, 150 epochs, gradient by the parameter-shift rule, as stated. Figure 18 titles repeat the values."
+  ],
+  "evans-xor-threshold-value-missing": [
+   "setup",
+   "Section 4.5, p.32-33: the thresholding of the expectation value into class 0 (at or above) and class 1 (below) is stated. I rendered page 33: the threshold value is blank in the PDF too, as the value says, so the value claims no number."
+  ],
+  "evans-a1-perceptron-ensemble-encoding": [
+   "setup",
+   "Appendix A1, p.38: the paper describes its example (200 dimensions, 16 qubits, a perceptron ensemble with the closed form w = y X^T (X X^T)^-1, minus ones mapped to zero). It is an illustrative procedure, stated as assumed."
+  ],
+  "evans-a2-pauli-commutator-identity": [
+   "proved result",
+   "Appendix A2, p.38-39: the identity is stated for U_i(theta) = exp(-i theta sigma_i / 2) and Pauli sigma_i, any B, with the proof in full. I checked the algebra (A6 to A10): it is correct and ends at sigma B - B sigma. Note the condition: this is the exp(-i theta sigma/2) form only (see the Section 4.4 item)."
+  ],
+  "evans-a3-bch-identity": [
+   "proved result",
+   "Appendix A3, p.39-40: stated and proved by Taylor expansion, with f'(lambda) = e^{lambda A}[A,B]e^{-lambda A} for general lambda, so the nth derivative at 0 is the nth iterated commutator. The pattern is shown at n = 1 and 2, then stated; no boundedness condition is given. A textbook tool; accepted as proved."
+  ],
+  "evans-a4-derivative-of-exponential": [
+   "proved result",
+   "Appendix A4, p.40-41: stated and proved by series expansion, an index swap and Euler's beta identity, which the paper proves in A5. The series terms are shown for low orders and the pattern stated. I checked the final collapse to the integral: it is correct."
+  ],
+  "evans-a5-euler-beta-identity": [
+   "proved result",
+   "Appendix A5, p.41-42: the identity is stated and proved (integration by parts, product of Gamma integrals, polar coordinates, t = sin^2). I checked the steps: they hold. A42 swaps the roles of the two exponents, which is harmless by symmetry of B. The opening remark that the proof is available online does not remove the proof, which is in the paper."
+  ],
+  "qml-intro-scope": [
+   "scope",
+   "Abstract, p.1, and Section 5, p.34: the authors state the manuscript is introductory material for researchers new to quantum mechanics and machine learning."
+  ]
+ },
+ "theory_low": {
+  "evans-perceptron-xor-limit": "textbook, stated not proved (F129). Section 3.2, p.18: the perceptron's XOR limit is stated with Figure 4 as illustration. There is no proof in the paper.",
+  "evans-single-measurement-insufficient": "textbook, stated not proved (F129). Section 4.1, p.25: one measurement cannot fix the state, and a single Z measurement cannot tell Eq. 85 from Eq. 86. These are shown by an example, not proved as a statement.",
+  "evans-parameter-shift-two-extra-circuits": "Section 4.4, pp.28-29 (checked against the rendered page 29). Not a proved result as stated. The commutator identity (Eq. 93) is proved in A2 only for U_i(theta) = exp(-i theta sigma_i / 2), that is a = -1/2. Section 4.4 applies it to exp(i a theta G) with 'a a fixed constant' and still concludes a shift of +-pi/2 for every a. For general a the identity and the pi/2 shift do not hold, and the condition on a is not stated. Eq. 90 also has the derivative signs reversed against U_G = exp(i a theta G), and Eq. 93 prints both shifts as +pi/2 (the second should be -pi/2, as in A2). The paper also cites [34] for the 'two more runs' statement. The conditions are lost, so LOW.",
+  "evans-a6-stochastic-parameter-shift": "Appendix A6, p.42-44: a derivation of a rule the paper attributes to [37, 42] ('which is the stochastic parameter-shift rule [37, 42]'). It reuses Eq. 93, whose proof (A2) covers only exp(-i theta sigma/2). A54 applies it with U_V = exp(i b theta V), 'b another constant, b not equal to a', and gives no condition on b. The sampling approximation (A59) is cited to [37]. Not a theorem stated and proved with its conditions."
+ },
+ "keep_stored": {},
+ "requote": {}
+}

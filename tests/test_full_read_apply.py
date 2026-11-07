@@ -94,7 +94,7 @@ def test_a_confirmed_row_rebuilt_for_its_grade_keeps_its_other_fields(monkeypatc
                               fidelity="exact", derivation="extracted", claim_type="positive", search_scope=None,
                               updated="2026-12-01", updated_reason=f"2026-12-01 (a test): {g.FULL_READ_MARK}: regraded")
         p = {"existing": [{"id": aid, "verdict": "confirmed"}]}
-        monkeypatch.setattr(g, "verify", lambda: [(a, "src", p, Verified(aid, cc, row[0]))])
+        monkeypatch.setattr(g, "verify", lambda conn=None: [(a, "src", p, Verified(aid, cc, row[0]))])
         monkeypatch.setattr(g, "load_groups", lambda: [])
         monkeypatch.setattr(g, "write_anchor_moves", lambda c: [])
         g.apply_changes(conn)
@@ -447,7 +447,7 @@ def applied_once(request, tmp_path_factory) -> dict:
                 conn.commit()
                 log = g.apply_changes(conn)
                 _APPLIED.update(
-                    log=tuple(log),
+                    log=tuple(log), verify=dict(g.LAST_VERIFY),
                     darji_note=conn.execute("SELECT updated_reason FROM records WHERE id = ?", (DARJI,)).fetchone()[0],
                     contexts={rid: [r[0] for r in conn.execute(
                         "SELECT context_id FROM record_contexts WHERE record_id = ?", (rid,))] for rid in KEPT_CONTEXTS})
@@ -464,6 +464,17 @@ def test_the_apply_writes_its_refusal_notes_through_refusal_reason_and_nothing_e
     sentinel was absent from darji-2024's note; again on the shared apply (Q6), 2026-10-31."""
     assert applied_once["darji_note"].endswith("NOT entered: SENTINEL-REASON")
     assert [x for x in applied_once["log"] if not x.startswith(("exists", "refuse "))] == []
+
+
+@pytest.mark.live_store
+def test_a_re_apply_checks_no_quote_and_reads_no_source(applied_once):
+    """F136 acceptance: a second apply of every applied group checks nothing (and, above, writes nothing). Sprint
+    15's re-apply checked about 10,000 quotes, 23 minutes. Proven to fail by injection, 2026-11-06: with
+    apply_changes calling verify() without its connection, every quote was checked again. Restored."""
+    counts = applied_once["verify"]  # a Counter turned dict: a count of 0 may be absent
+    assert counts.get("checked", 0) == 0, counts
+    assert counts["sources read"] == 0
+    assert counts["stored as written"] > 1000
 
 
 @pytest.mark.live_store
@@ -550,6 +561,49 @@ def test_every_refusal_is_named_in_one_run(monkeypatch):
         g.assertions()  # without a list to name them in, the first refusal raises, as the apply needs
 
 
+def test_only_a_new_or_changed_quote_is_checked(monkeypatch):
+    """F136 (Sprint 16 Task A; team lead, 2026-11-05: "The quotes only need to be verified once per PDF, ever").
+    The applier checked every quote of every reviewed group on each run, about 23 minutes for Sprint 15's 47 groups,
+    though a row stored as it would write it gets no quote written. Now: a row stored with the same quotes and value
+    is not checked and its source is not read; a new row and a changed quote are checked, and a bad one is still
+    refused; so are a changed value and a row an earlier partial read stored (fresh-eyes review). Proven to fail by
+    injection, 2026-11-06: with checked_when_stored returning None for every row, the unchanged row was checked and
+    its source read; with it returning a check for every row, the changed quote that is not in its source was
+    written unrefused; with the value comparison removed, "revalued" went unchecked; with the full-read condition
+    removed, "partial" went unchecked. Restored."""
+    from types import SimpleNamespace
+    g = _script()
+    full = f"2026-11-01 (g050): {g.FULL_READ_MARK}: entered"
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE records (id TEXT, class TEXT, value TEXT, provenance TEXT, updated_reason TEXT)")
+    conn.execute("CREATE TABLE assertion_fields (record_id TEXT, citation_context TEXT)")
+    for aid, value, why in (("same", "v", full), ("moved", "v", full), ("revalued", "old v", full),
+                            ("partial", "v", "2026-10-01 (Sprint 12): from the abstract")):
+        conn.execute("INSERT INTO records VALUES (?, 'assertion', ?, 'p, p.1', ?)", (aid, value, why))
+        conn.execute("""INSERT INTO assertion_fields VALUES (?, '"q" (p.1)')""", (aid,))
+    wanted = {"same": '"q" (p.1)', "moved": '"not in the source" (p.1)', "revalued": '"q" (p.1)',
+              "partial": '"q" (p.1)', "new": '"q" (p.2)'}
+    paper = {"record_id": "p", "file": "f", "existing": [], "assertions": [{"id_suggestion": i} for i in wanted]}
+    monkeypatch.setattr(g, "load_groups", lambda: [("g050", paper)])
+    monkeypatch.setattr(g, "record", lambda gg, rid, aid, a, why, sid=None: SimpleNamespace(
+        id=aid, citation_context=wanted[aid], value="v", certainty="low", certainty_reasons=""))
+    reads: list = []
+    monkeypatch.setattr(g, "source_text", lambda f: reads.append(f) or "the source holds q only")
+    monkeypatch.setattr(g, "validate_assertion", lambda a: None)
+    with pytest.raises(ValueError) as e:
+        g.verify(conn)
+    assert str(e.value).splitlines()[1:] == ["moved: not verbatim in its source: 'not in the source'"]
+    assert (g.LAST_VERIFY["checked"], g.LAST_VERIFY["stored as written"], len(reads)) == (4, 1, 1)
+    for aid in ("moved", "revalued", "partial"):
+        del wanted[aid]
+    paper["assertions"] = [{"id_suggestion": i} for i in wanted]
+    reads.clear()
+    conn.execute("INSERT INTO records VALUES ('new', 'assertion', 'v', 'p, p.2', ?)", (full,))
+    conn.execute("""INSERT INTO assertion_fields VALUES ('new', '"q" (p.2)')""")  # as the first apply wrote it
+    assert [a.id for a, _, _, _ in g.verify(conn)] == ["same", "new"]
+    assert (g.LAST_VERIFY["checked"], g.LAST_VERIFY["sources read"], reads) == (0, 0, [])  # the rerun reads nothing
+
+
 def test_a_field_no_review_item_names_is_listed(synthetic_store, monkeypatch):
     """Sprint 14 retrospective Q2: the reader's context replaced two stored contexts that no review decided, and the
     trial on a copy did not show it. Every field the sync changes that no review item names is now a line of the
@@ -565,7 +619,7 @@ def test_a_field_no_review_item_names_is_listed(synthetic_store, monkeypatch):
     a = row(id="claim-one", context="qml", updated_reason="n", updated="2026-10-31")
     paper = {"record_id": "p", "existing": [{"id": "claim-one", "verdict": "confirmed"}]}
     monkeypatch.setattr(g, "load_groups", lambda: [])
-    monkeypatch.setattr(g, "verify", lambda: [(a, "p", paper, None)])
+    monkeypatch.setattr(g, "verify", lambda conn=None: [(a, "p", paper, None)])
     monkeypatch.setattr(g, "sync_verified_assertion", lambda *args: ["value", "citation_context", "context"])
     monkeypatch.setattr(g, "REQUOTE", {"claim-one": "fuller quotes"})
     monkeypatch.setattr(g, "CONTEXT_FIX", {"claim-one": "qml"})

@@ -3742,3 +3742,469 @@ Written 2026-11-04, before the apply. Every count here is a snapshot as of
   one was the applier's field test, which passed a namespace where the
   confirmed-row rebuild needs a dataclass. Each fix that guards a rule
   was proven red by injection.
+
+## 68. Each PDF's text extracted once, each quote checked once (Sprint 16 Task A, F136)
+
+Team lead, 2026-11-05: "This reading the PDF should ever be done once per
+PDF, ever, and once done should never need to read it again. The quotes
+only need to be verified once per PDF, ever, and should never need to be
+done again." Counts are a snapshot as of 2026-11-06.
+
+- **The rule, as it now reads: every write is checked; an unchanged row
+  is not.** An assertion's quotes and value are checked against the
+  source text (`require_verbatim`) once, before the write that stores
+  them. A rerun, a second apply or a later sprint that would store them
+  exactly as they are checks nothing and reads no source. "Exactly as
+  they are" means the same quotes, the same value as the sync would
+  write it (after common names), and a row that a full read of the same
+  paper wrote. A new assertion, a changed quote or value, and a row an
+  earlier partial read stored (from an abstract or another copy) are
+  checked once, against the full read's source, as before. No test
+  re-checks every stored quote; the guarantee is the check at each
+  write (fresh-eyes review: an earlier draft of this section claimed
+  such a test).
+- **One text cache for every store copy.** `store.text_cache_dir()` is
+  the live store's `text_cache\`, or `EBDB_TEXT_CACHE_DIR`; it no longer
+  follows `EBDB_STORE_DIR`, so a trial on a store copy reads the same
+  cache (Sprint 15's first trial extracted 894 PDFs again, about 25
+  minutes). The OCR engine's folder is fixed the same way (its path is
+  part of the OCR cache key). This replaces "the trial copies
+  `text_cache\` with the database" (section 67).
+- **The applier.** `scripts/full_read_apply.py`'s `verify(conn)` skips
+  the quote check for a row stored with the same quotes and value
+  (`store.ingest.checked_when_stored`) and reads a source only for the
+  rows it checks. The checks that read no source (figure readings, the
+  image-file HIGH rule, the record rules) still run on every row. Each
+  run prints how many quotes it checked and how many it found stored as
+  written.
+- **Measured on a store copy (2026-11-06)**: a re-apply of every applied
+  group checked 0 quotes and read 0 sources, in about 15 seconds. With
+  the change removed, the same re-apply checked 30,113 quotes and read
+  740 sources, in 554 seconds.
+- **Checks.** Three tests, each proven red by injection: a store copy
+  elsewhere reads the same cache; only a new or changed quote is checked
+  (and a changed quote not in its source is still refused); a re-apply
+  on a store copy checks no quote and reads no source.
+- **Not changed.** `store.ocr.page_texts`' page-by-page fallback (for a
+  PDF whose form feeds disagree with its page count) and `pdfinfo`'s page
+  count still run once per process, not once ever. F139 measures them
+  before anything is changed.
+
+## 69. Read once, check once, write once: the read measured (Sprint 16 Task B, F139)
+
+Team lead, 2026-11-05: "be as efficient as reasonably possible (total
+time per page, per paper), total token usage per paper, only test what
+must be tested, only test once, only read once, only write once, only
+update the database once, only red test once". Every count below is a
+snapshot as of 2026-11-06.
+
+- **Telemetry, one file per group.** `scripts/read_telemetry.py` keeps
+  `manifests/sprint16_f114_reads/telemetry/<group>.json`: the group's
+  papers and their pages (`start`, from the brief), each reader and
+  reviewer by task id with the tokens and minutes its completion notice
+  reports (`agent`, entered by the coordinator), and each step that
+  touched the group (the reader check, a render, the dry run, the trial,
+  the apply) with the quote checks it ran, the text-cache misses it
+  caused, the pages it rendered and the assertions it wrote (entered, or
+  with a changed quote or value; an apply's read rows and access notes
+  are not counted). The checker and
+  the applier record a step only with `--telemetry`, so a test run never
+  writes into a group's file. `report` computes the totals and the
+  per-page figures each time; nothing is stored as a total. A field no
+  step measured is "unknown", never 0. Tokens and minutes belong to an
+  agent, which reads a whole group, so they are per group and per page,
+  and per paper only where a group holds one paper.
+- **The Sprint 15 baseline** (`read_telemetry.py baseline`, in
+  `telemetry/baseline_sprint15.json`): 47 groups (g062-r1, g064-r1,
+  g076-r1, g113-r1, g114 to g154, g331, g332; 13 folders in the same work
+  folder were Sprint 14's and are left out), 209 papers, 6,108 PDF pages
+  (2 papers are web pages, with no page count), 2,190 page images
+  rendered. Readers: 22,265,688 tokens and 2,705 minutes; reviewers:
+  10,239,461 tokens and 856 minutes. Per page: 3,645 reader tokens and
+  1,676 reviewer tokens; 0.44 reader minutes and 0.14 reviewer minutes.
+  Per paper: about 106,500 reader tokens and 49,000 reviewer tokens. One
+  g122 reader failed, and a failed agent's notice carries no usage, so
+  the reader sums are a lower bound by that agent's use
+  (`reader_agents_without_usage`).
+  Sources: the session's completion notices for tokens and minutes; the
+  briefs and pdfinfo for pages; each group's work folder for images and
+  for a second minutes figure (the span of its file times). A resumed
+  agent's notice repeats its total tokens, so the last is kept; its
+  duration can cover only the last leg or include the wait, so the
+  minutes are approximate. One reviewer read two groups and is split
+  evenly between them. Each notice is parsed on its own: the first
+  version read a whole transcript line, and a background command's notice
+  before an agent's on the same line counted g134's reviewer twice
+  (fresh-eyes review; corrected before commit). Quote checks, cache
+  misses and assertions written were not counted in Sprint 15:
+  "unknown".
+- **Each "once", where it stands:**
+  - *Extract once*: in place (section 68), and now in the reader's check
+    too. Its page check ran one uncached `pdftotext -layout` per anchor:
+    58 of 62 seconds on g129 (494 assertions). Each page's two layouts
+    now come from the cached whole-file extractions
+    (`store.ocr.page_layouts`), and the OCR pages are looked up once per
+    file. g129 now checks in 6 seconds (75 to 95 before), g120 in 4 (16
+    before). Every Sprint 15 group still reports 0 problems except g123,
+    whose 1 problem is the same line as before the change; g330 (a Sprint
+    14 group) also prints the same 9 lines as before.
+  - *Check each quote once*: in the applier, in place (section 68). In
+    the reader's check, named and not built: a whole group now checks in
+    3 to 22 seconds (all 60 groups in Sprint 15's work folder: 479
+    seconds together), so a record
+    of passed quotes would save seconds a run, and it would add a new
+    maker of `Verified` fed by a reader's own files. The remaining fixed
+    cost is pdfinfo's page count, about 0.6 seconds per PDF per run.
+  - *Read once*: named and not done. The reviewer keeps the full second
+    read (Sprint 16 plan, Q5 = 2).
+  - *Render once*: in place. `scripts/render_page.py` renders a page once
+    per file, page and resolution into the text cache's `pages` folder,
+    and the reader and the reviewer prompts both use it at 100 dpi (the
+    reviewer used 110, so no image could be shared). The saving is
+    pdftoppm's time; an image costs the reviewer's tokens either way. A
+    crop of one panel is not cached.
+  - *Write once*: one apply per sprint. The trial on a store copy still
+    runs before every apply, not only when the applier changed: the
+    "undecided" lines (a stored field changed that no review item names)
+    are computed only from an apply's log, so the trial is where they are
+    read before the live apply. Since section 68 a trial re-checks no
+    stored row (a re-apply of every applied group took about 15 seconds
+    on a copy); only the new rows' quotes are checked.
+  - *Test once*: `scripts/run_suite.py --changed` runs the tests a change
+    touches and adds the 61 store test files only when the store changed.
+    Narrowing those to "the tests that read the rows written" is named
+    and not done: a store test checks a rule over every row, so no test
+    can be left out by the rows a write touched. They run once after the
+    one apply.
+  - *Red-test once*: in place. Each new guard is proven red once at the
+    commit that adds it and says how in its docstring
+    (`tests/test_guard_discipline.py`).
+- **Checks.** Five tests, each proven red by injection: an unmeasured
+  field is "unknown", never 0; a repeated notice replaces the first and
+  steps add up; the reader check and the applier record their steps; the
+  Sprint 15 baseline counts each agent once; a page is rendered once. One
+  more on the reader check: its page check runs no extraction per
+  anchor. Not tested: the applier's trial-or-apply label, which compares
+  the store path with the default; a live store moved with
+  `EBDB_STORE_DIR` would be labeled a trial.
+- **Still to come (Task B step 3).** The measures on F114's first Sprint
+  16 group, set beside this baseline in the status note before the other
+  groups start.
+
+## 70. Table cells that hold only a number, and a stated limit's type (Sprint 16 Tasks C and D, F134 and F135)
+
+- **F134, the cells.** `store.quotes.plain` drops each line that holds
+  only a number, so a quote may cross a page break (the page number sits
+  on a line of its own). The text layer without layout puts each table
+  cell on a line of its own too, so a cell such as 881 was dropped, and
+  a quote through a table's row could not be found (readers g115 and
+  g120, Sprint 15). A PDF's text now holds a third form
+  (`store.quotes.cells_text`): the text without layout with its
+  number-only lines kept, except a page's first and last non-blank line
+  when it holds only a number, since that is where a page number sits.
+  It comes before the OCR part, and the reader check's page check holds
+  the same form for each page. The page number is still dropped from all
+  three forms, so a quote across a page break is found as before and a
+  quote cannot carry a page number (the first version kept every number
+  line; the fresh-eyes review found that a quote, and so its value,
+  could then hold a page number). A table cell that is a page's first or
+  last line is still dropped. The change only adds text a quote may
+  match, so no stored quote can stop matching; the live quote tests
+  confirm it at the full suite.
+- **F135, a stated limit's type.** Reader g118 typed five stated limits
+  on measured results "theoretical", "claim" or "setup", because the
+  reader check refused a high suggestion on a "measured" result. The
+  review prompt has said since Sprint 15 that such a limit is HIGH on
+  "stated limit" whatever its type. Now the check agrees: a "measured"
+  result may be suggested high only on `high_basis` "stated limit", and
+  the Sprint 16 reader prompt says to keep the type "measured" and never
+  change it to pass the check. What a measurement found, even a negative
+  finding or a failure, is a result, not a stated limit, and stays low;
+  the Sprint 16 review prompt's definition of "stated limit" now says the
+  same (Sprint 15's listed "failure" among stated limits). The check is
+  weaker by design: it passes any measured "high" on "stated limit",
+  limit or not, and the review judges it. The applier grades from the
+  coordinator's decisions, never the reader's suggestion, so no grade
+  changes by this.
+- **Checks.** Four tests, each proven red by injection: a cell is found
+  and a page number still dropped; the page check finds a cell on its
+  page; a stated limit keeps its type while another measured HIGH is
+  still refused; the prompt and the check agree.
+
+## 71. The two Dunjko records held as one (Sprint 16 Task E, F137)
+
+- **The finding.** `dunjko-2017-machine-learning-artificial-intelligence-quantum`
+  (arXiv 1709.02779) and
+  `dunjko-2018-machine-learning-amp-artificial-intelligence` (DOI
+  10.1088/1361-6633/aab406, Reports on Progress in Physics 81(7), 2018)
+  are one paper: the preprint and its journal version. Their local copies
+  are one byte-identical PDF (SHA-256 7aa572f736a826a0...). The team lead
+  chose to hold them as one record (Q6 = 1, 2026-11-06).
+- **The merge** (`scripts/sprint16_f137_dunjko.py`, dry run by default,
+  `--apply` after a verified backup). It refuses unless the two local
+  copies hash the same. dunjko-2018 keeps the paper and adds
+  `arXiv:1709.02779` to its access, after the DOI (the DOI still
+  resolves its citation). Each of dunjko-2017's assertions moves to
+  dunjko-2018: its yield row and the record id in its provenance, with a
+  note in its updated_reason. The anchor and the quotes stay as they
+  were, since the PDF is the same. dunjko-2017 is closed as a duplicate,
+  as the Lin duplicate was (F33): tier `seen`, a disposition that names
+  dunjko-2018, and a `superseded-by` source link. Its reads,
+  applicability and found-via rows stay as its history. A second run
+  changes nothing.
+- **Routes.** dunjko-2017's two found-via routes (QMLPapers and
+  Roadmap-to-QML at a239747648) are copied to dunjko-2018, each with a
+  note: each list linked arXiv 1709.02779, which dunjko-2018's access now
+  holds. F104's test requires every record that holds a listed id to
+  carry the list's route, and it went red on the first gate until the
+  copy was made.
+- **Later reads.** Two older reads name dunjko-2017: g131 (Sprint 13
+  Task G) and Sprint 11's task G (group g03). `store.merges` names the
+  merge (`MERGED_INTO`, `holder()`, `promotes()`), and both appliers
+  (`scripts/full_read_apply.py` and `scripts/sprint11_reading.py`) ask
+  it: such rows are entered, checked and owned under the record it was
+  merged into, and a merged record's tier is never set back to read.
+  The first gate found the Sprint 11 applier: its rerun set dunjko-2017
+  back to read and its provenance back to dunjko-2017. Its test now
+  checks the tier of the record that holds the rows.
+- **Trial on a store copy** (2026-11-06): 69 assertions moved; a second
+  run changed nothing; the applier's dry run and apply after it wrote
+  nothing new, and no provenance named dunjko-2017. Counts are a
+  snapshot as of 2026-11-06.
+- **Applied live** 2026-11-06 06:08, after a verified backup
+  (`evidence-20261106T060806262630-sprint16-f137-dunjko-records-merged.db`):
+  69 assertions moved; the two routes were copied by a second apply at
+  06:49, after its own verified backup
+  (`evidence-20261106T064905128225-sprint16-f137-dunjko-records-merged.db`).
+  The script also refuses to finish if any
+  assertion still names dunjko-2017 in its provenance after the move,
+  so an assertion with no yield row cannot stay behind unseen (fresh-eyes
+  review).
+- **Checks.** Three tests. Two unit tests were proven red by injection:
+  a merged record's row is held by the record it was merged into (with
+  `holder` returning the record itself, the row's owner named
+  dunjko-2017); and a merged record is never set back to read by either
+  applier (with the merge condition removed from `promotes`, dunjko-2017
+  at seen was promoted; added at the fresh-eyes review). Both were
+  proven red again after the functions moved into `store.merges`. The live test
+  (`live_store`) was red before the live merge (dunjko-2017 at tier
+  read) and is green after it; it checks the end state, including the
+  local-file check passing for both records.
+
+## 72. F114's new papers for Sprint 16: the list's 6 and the team lead's 2 (Sprint 16 Tasks F and G)
+
+Every count is a snapshot as of 2026-11-06. Written before the applies.
+
+- **The list, at one commit.** Roadmap-to-QML read at commit
+  `399b022651` (pushed 2026-11-05; the head on 2026-11-06). Between
+  `ea6f42a7c0` (section 57) and it, only `2026/2026.md` changed, by 6
+  added lines. So that one file was fetched, and the other 12 were copied
+  from the `ea6f42a7c0` copy; each copy's git blob hash was checked equal
+  to its blob at `399b022651` first. The copies are under
+  `References\Roadmap-to-QML_399b022651\`, outside git; the manifest
+  `manifests/sprint16_f114_roadmap.json` records each file's SHA-256.
+- **6 papers new to the store, all linked in `2026/2026.md`.** 4 arXiv
+  ids (2610.42029, 2611.00272, 2611.00303, 2611.05079) and 2 Quantum
+  journal papers by DOI (10.22331/q-2026-10-20-2239 and
+  10.22331/q-2026-10-29-2256). Each enters through the door at `seen`
+  under `qml`, with a route naming the list at `399b022651`. A Quantum
+  link was carried before (F104 entered arXiv ids only); Quantum is open
+  access, so `scripts/sprint16_f114_roadmap.py` now enters a new Quantum
+  link by its DOI with the journal's PDF. Neither Quantum paper is held
+  under another id: a title search of the store found none (F137's
+  lesson); the script now refuses a Quantum entry whose title the store
+  already holds (fresh-eyes review). The 20 other links are carried, as
+  at section 57.
+- **Free copies: 6 of 6.** The arXiv PDFs came through F104's paced
+  fetcher (each carries its arXiv stamp on page 1); the Quantum PDFs came
+  from `quantum-journal.org/papers/<id>/pdf/`. Each is named with its
+  SHA-256 in `evidence`.
+- **The team lead's 2 named papers (Task G, F57; Q2 = 2, Q3 = 1)**, from
+  `manifests/sprint16_f57_named.json` through `build_record`, by
+  `scripts/sprint16_f57_named.py`:
+  - QBoost for regression (Goes et al., arXiv 2108.13346, v1, the only
+    version), api-origin, from its local copy.
+  - The wangy8205165 white paper, "Quantum Neural Networks: Theory,
+    Architectures, and Applications" (29 pages), hand-origin: it has no
+    DOI or arXiv id, and the PDF names no author, so the citation names
+    the GitHub account and the commit. Its local copy's git blob
+    (8f800932c0) is `Quantum_NeuralNetwork.pdf` at the repository's head
+    commit 920c11c (2026-10-26). A `code-of` source link from the
+    repository record (which holds the paper's LaTeX source and PDF) to
+    the paper record. The repository record's disposition, which said it
+    was linked to no paper, is corrected, with a note (fresh-eyes
+    review). `scripts/sprint12_f103_intake.py` entered that record, so
+    it holds the corrected text and Task G's script reads it from there;
+    F103's test now allows that one link. A re-run finds each entry by its id or its access before
+    any metadata request.
+- **Reading.** The 8 are read in full by local readers under
+  `manifests/sprint16_f114_reads/READER_PROMPT.md`, as two new ledger
+  groups after g332: g333 (the 4 arXiv papers and the first Quantum
+  paper) and g334 (the second Quantum paper and the 2 named papers).
+
+## 73. F114 at 20 papers, under Sprint 16's prompts (Sprint 16 Task F)
+
+Written 2026-11-06, before the apply; the counts that enter are added
+when it runs. Every count here is a snapshot as of 2026-11-06.
+
+- **What is read.** 20 papers, each in full, figures included
+  (`scripts/sprint16_f114_local.py` writes the briefs and adds g333 and
+  g334 to the ledger), in the plan's order:
+  - g333 and g334: section 72's 8 papers;
+  - then 12 from the ledger, from the first group not yet read in full.
+    Each reviewed group's unread record that has a file re-enters (F125):
+    g133-r1 (emmanoulopoulos-2022 and evans-2024) and g154-r1 (the four
+    he and heese records Sprint 15 left at its 100). Then g155 (5) and
+    g156's first record (henriet-2020); g156's other four wait for the
+    next release.
+  - Left out, as in Sprint 15: g069's and g072's unread saved web pages
+    (no article), and the records whose source is a directory (three
+    OpenCyc releases, ds3lab-feebee, the fraud-detection handbook). No
+    book falls in the 12 (Q7: Simeone 2022 and Cichocki 2016 went to
+    F138).
+- **The readers.** Local first-pass readers (Sonnet 5.5) under
+  `manifests/sprint16_f114_reads/READER_PROMPT.md`, one per group, each
+  given its prompt with the group filled in. g333 runs first and alone:
+  its telemetry is Task B's step 3, the measure against Sprint 15's
+  baseline, recorded before the other five start.
+- **The review.** One Sonnet 5.5 reviewer per group under
+  `manifests/sprint16_f114_reads/REVIEW_PROMPT.md`; the reviewer reads
+  each paper in full (Q5 = 2). `f117_review.py items` now also writes
+  each paper's review text (`work\f114\texts\<record>.txt`), which
+  Sprint 15 wrote by hand: its pages separated by form feeds, a thin page
+  replaced by its OCR text. On 2026-11-06 it reproduced three of Sprint
+  15's texts byte for byte (checked by hand with a scratch comparison,
+  not by a test: the test uses made-up pages). `finalize` names Sprint 16's tag and prompt for
+  these six groups (their reads carry `figure_count`, as Sprint 15's do,
+  so they are told apart by group).
+- **The apply.** `scripts/full_read_apply.py --telemetry`: a dry run,
+  a trial on a copy of the store, then live with its verified backup; a
+  second apply enters nothing. Every certainty change on a stored
+  assertion waits for the team lead.
+- **What ran (2026-11-06).** All 20 papers (531 pages) were read in full,
+  and each group's check printed 0 problems. Five of the six groups are
+  applied, each with its trial, its live apply after a verified backup,
+  and a second apply that wrote nothing: g333 (515 assertions), g334
+  (198), g133-r1 (125 changes), g155 (257 changes) and g156 (61 changes).
+  g154-r1 (4 papers, 76 items decided) waits for one certainty change
+  (`he-simulation-scope`, stored HIGH, proposed LOW) that the team lead
+  decides; it applies after that answer. Counts, before the first apply
+  (backup at 11:56) and after g155's: assertions 34,897 to 36,041
+  (HIGH 11,071 to 11,431; LOW 23,726 to 24,510); papers at `read` 1,805
+  to 1,813 and at `seen` 562 to 554 (the 8 new papers; the 12 ledger
+  papers were already at `read`).
+- **g154-r1, after the team lead's answer** (Manual Validation Q1 = 3,
+  2026-11-06: split). `he-simulation-scope` gave two reasons as one: the
+  three-class reduction is "Due to the high computational cost of
+  simulating large-scale quantum systems", and the 100 samples per class
+  are "To simulate real-world data scarcity". It now holds the first
+  only (HIGH, stated limit; anchor corrected to p.11), and
+  `qgan-training-testing-100-per-class` holds the second (HIGH, setup).
+  The coordinator added that item to the read and recorded both
+  decisions and the sign-off edits; trial, live apply after a verified
+  backup, and a second apply that wrote nothing: 167 assertions entered
+  and 8 changed. Assertions after it and Task H's seventh: 36,209
+  (HIGH 11,491; LOW 24,618).
+- **What the review found.**
+  - g333's first reviewer graded Monaco's 70-page supplement from its
+    statements and a citation search, not line by line. Two fresh
+    reviewers then read every proof (49 and 45 items); 13 of the 94
+    decisions changed (14%). A long proof appendix is split across
+    reviewers by page from the start.
+  - The dependence rule, as applied: a result whose proof reaches a
+    specific other paper's theorem, even through the paper's own lemmas,
+    is LOW, and its `why` names the cited result.
+  - The coordinator's sign-off changed two grades: Monaco's
+    `supp-e2a-tight-frames-coefficients` (the value drops the condition
+    kappa < 1) and Henke's `henke-dwave-parameters` (the value says 100
+    microsecond anneals for the D-Wave runs, but the Figure 3 run used
+    20). Both are LOW.
+- **The telemetry** (`python scripts/read_telemetry.py report <group>`).
+  Per page over the 20 papers: readers 4,633 tokens and 0.75 minutes,
+  reviewers 3,224 tokens and 0.24 minutes. Sprint 15's baseline is
+  3,645 and 0.44 for readers, and 1,676 and 0.14 for reviewers. Every
+  group had 0 text-cache misses, and every second apply checked no quote,
+  so the repeated script work is gone. The agents' own reading is the
+  cost, and it did not fall. The report first counted a trial's writes
+  and the empty re-applies too; `totals` now counts only live writes
+  (`tests/test_f139_telemetry.py`).
+- **A table the text layer flattens.** Heimann's Tables IV and V are in
+  the text layer as rows of numbers with no row labels. Their numbers are
+  in the read's figure entries, not in assertions: a cell can be matched
+  to its ansatz only on the rendered page.
+
+## 74. The CVQBoost findings record and its seven assertions (Sprint 16 Task H, F51)
+
+Written 2026-11-06, before the apply. Every count is a snapshot as of
+2026-11-06.
+
+- **Released from HOLD** (team lead, Q4 = 1). The hold waited for a
+  re-run that Phase 2 does not hold; Phase 2 cites the document as a
+  planning reference only.
+- **The source.** FourierWall2's working document "Maximizing
+  Predictions from CVQBoost: Cumulative Findings", last updated
+  2026-08-04. Its two copies (`References\` and FourierWall2's
+  `docs\`) both hash to SHA-256 `425358a7b4cec71f...` on 2026-11-06; the
+  script refuses to run if either differs. Read in full on 2026-11-06,
+  sections 1 to 12 and every table.
+- **Authorship** (the handoff's decision 1, still open). The document
+  names no author. F51's card says the authorship is settled by
+  provenance, not by attribution. So the record
+  (`fourierwall2-2026-maximizing-predictions-cvqboost-cumulative-findings`)
+  cites the FourierWall2 campaign and names no person; its route cites
+  the title. The `References\` copy's file name carries a name; the
+  evidence says it is the collector's label, not an attribution.
+- **The six assertions** are the handoff's
+  (`05-sprint-script-draft.py`). Each value is rewritten so that every
+  figure in it is in its own quotes, which the quote check requires. The
+  rewrite drops two figures the drafts' quotes did not hold: the
+  relaxation runs' AUROC pair and QPU seconds (section 9's table). Each
+  is graded LOW, "measured result": each is one study's single run on
+  one seed, and the document itself says "single stochastic runs". The
+  handoff's 2026-09 HIGH grades predate `store.grading` (Sprint 12),
+  under which a measured result is LOW; each reason says why. The
+  in-segment overfitting assertion keeps the draft's note that the
+  section's "3-8x" summary disagrees with its own table (ratios about
+  83, 7.6, 8.2 and 1.7).
+- **Applicability**: `platform:dirac-3` (sections 3 and 4) and `method`
+  (section 2, the handoff's decision 4.1). The five Dirac-3 assertions
+  are classed "not addressed" against the Dirac-3S guide in
+  `scripts/sprint8_f65_dirac3s_reading.py` (F65's rule: each new Dirac-3
+  assertion is classed when it is entered); the guide does not cover
+  CVQBoost's tuning.
+- **Phase 2's two records on the in-segment wins** (sections 6, 10 and
+  11): B4's Dirac-3 replication
+  (`cvqboost-in-segment-edge-negative-on-device-spectra-b4`: no
+  in-segment advantage on any scoreable cell) and F162 (a proxy, not the
+  device, over ten seeds on three cells, label target only: no in-pocket
+  win repeats reliably). None of the six states a win, so no
+  `contradicts` relation is written; the record's evidence names both.
+  The shallow-learner assertion's loss is against a win at the default
+  configuration, and its reason says so.
+- **The seventh assertion** (team lead, Manual Validation Q2 = 1,
+  2026-11-06). `cvqboost-tuned-in-segment-wins-single-run` states
+  section 10's headline: on the tuned rollout (one run, seed 20260804),
+  CVQBoost led inside the segment on ROC-AUC in 5 of 7 valid cells and
+  on PR-AUC in 6 of 7 (the document's count, which takes a tie at 1.000
+  on energy_steel target_real as a lead), and on the whole test set won
+  ROC-AUC 2 of 8 and PR-AUC 3 of 8, with section 11's caveat that the
+  edge is fragile and needs repeats. LOW, measured result. The fresh-eyes
+  review moved the caveat from section 6, which states it for the
+  untuned baseline, to section 11, which states it for this rollout. Its reason names B4 and F162, which did not find
+  such wins. Neither is linked as `contradicts`: B4 compares the segment
+  against a matched random segment, not against XGBoost, and F162 runs
+  the proxy over three cells with XGBoost at library defaults, so
+  neither repeats this configuration on the device. Classed "not
+  addressed" against the Dirac-3S guide (F65). Trial, live apply after a
+  verified backup, and a second apply that wrote nothing.
+- **Fresh-eyes review** (after the first apply, 2026-11-06): the F162
+  wording was narrowed to its limits and B4 named; the route's
+  name-bearing citation was replaced by the title; the num_samples
+  finding typed `positive` (an `absence` is a search of the source, and
+  this is a run); the overfitting note restored; the leak assertion's
+  fidelity set to `scoped` (its value leaves out "or vice versa"). The
+  re-apply synced each, after its own verified backup; a further apply
+  writes nothing.
+- `scripts/sprint16_f51_cvqboost.py`: a dry run checks every quote;
+  `--apply` takes a verified backup; a second apply writes nothing.
+  `tests/test_sprint16_f51_cvqboost.py`.

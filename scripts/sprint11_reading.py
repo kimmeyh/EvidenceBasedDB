@@ -47,6 +47,7 @@ from store import connect, recheck, script_paths  # noqa: E402
 from store.backup import backup_before_write  # noqa: E402
 from store.ingest import (AssertionRecord, add_read, append_updated_reason, insert_verified_assertion,  # noqa: E402
                           set_tier, sync_verified_assertion, validate_assertion)
+from store.merges import holder, promotes  # noqa: E402
 from store.quotes import QUOTE, plain, require_edit_basis, require_verbatim, source_text  # noqa: E402
 
 _spec = importlib.util.spec_from_file_location("f80", Path(__file__).with_name("sprint9_f80_reading.py"))
@@ -458,7 +459,8 @@ def anchor_safe(anchor: str) -> str:
 def assertions(task: str) -> list[tuple[str, AssertionRecord, str, dict]]:
     tag, out = TAGS[task], []
     for g, p in load_groups(task):
-        rid = p["record_id"]
+        read_as = p["record_id"]
+        rid = holder(read_as)  # F137 (Sprint 16 Task E): a merged record's rows are held by the record it joined
         for a in p["assertions"]:
             aid = a["id_suggestion"]
             if aid in DROP:
@@ -473,7 +475,7 @@ def assertions(task: str) -> list[tuple[str, AssertionRecord, str, dict]]:
                 certainty_reasons=reasons, fidelity=a.get("fidelity") or "scoped", derivation="extracted",
                 claim_type=a["claim_type"],
                 search_scope=("the paper's own text, as read" if a["claim_type"] == "absence" else None),
-                updated=TODAY, updated_reason=(f"{TODAY} ({tag}): extracted from {rid}; first-pass read by a "
+                updated=TODAY, updated_reason=(f"{TODAY} ({tag}): extracted from {read_as}; first-pass read by a "
                                                "subagent, every quoted passage read in context by the coordinator")),
                 rid, p))
     return out
@@ -559,7 +561,7 @@ def apply_changes(conn, task: str) -> list[str]:
                              "AND extent = ? AND detail = ?", (det, rid, reader, TODAY, extent,
                                                                have[(reader, TODAY, extent)]))
                 log.append(f"update read {rid} [{reader}]")
-        if tier != "read":
+        if promotes(rid, tier):
             set_tier(conn, rid, "read", checked_against_source=(
                 f"{TODAY}, Claude, read every quoted passage in context and checked every quote and figure against "
                 "the source; first pass by a subagent"))

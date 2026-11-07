@@ -140,7 +140,7 @@ def ranked(conn, counts: dict[str, int]) -> list[dict]:
 def render(items: list[dict]) -> str:
     lines = [f"Hand-download list: {len(items)} records, highest priority first (computed from the store; "
              "intake sections 39 and 40).",
-             f"Save each file under {BASE}\\ at its target path; F95's next release links and reads it.", ""]
+             f"Save each file under {BASE}\\ at its target path; F114's next release links and reads it.", ""]
     current = None
     for i, item in enumerate(items, 1):
         if item["group"] != current:
