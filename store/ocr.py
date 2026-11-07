@@ -68,10 +68,42 @@ def visible(text: str) -> int:
     return len(re.sub(r"\s", "", text))
 
 
+def _disk_cached(path: str, kind: str, make):
+    """`make()`'s JSON-able result for `path`, kept in the text cache under the file's SHA-256 and `kind` (F140,
+    Sprint 17 Task A). The page count and the per-page fallback were kept for the process only, so every test process
+    started `pdfinfo` once per PDF: 390 starts and 180 of 230 seconds in one quote test, at 0.3 to 0.6 seconds a
+    process start on this machine. A folder that cannot be written is simply not used, as for `_pdftotext`."""
+    digest = hashlib.sha256(Path(path).read_bytes()).hexdigest()
+    try:
+        cached = text_cache_dir() / f"{digest}-{kind}.json"
+    except RuntimeError:  # no store folder off Windows
+        cached = None
+    if cached is not None:
+        try:
+            return json.loads(cached.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            pass
+    from store.quotes import CACHE_MISSES
+    CACHE_MISSES[kind.split("-")[0]] += 1  # F139's miss count, so a run reports what it extracted
+    value = make()
+    if cached is not None:
+        try:
+            cached.parent.mkdir(parents=True, exist_ok=True)
+            with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=cached.parent, suffix=".partial",
+                                             delete=False) as partial:
+                json.dump(value, partial, ensure_ascii=False)
+            Path(partial.name).replace(cached)
+        except OSError:
+            pass
+    return value
+
+
 @lru_cache(maxsize=None)
 def page_count(path: str) -> int:
-    out = subprocess.run(["pdfinfo", path], capture_output=True, check=True).stdout.decode("utf-8", "replace")
-    return int(re.search(r"^Pages:\s+(\d+)", out, re.M)[1])
+    def run() -> int:
+        out = subprocess.run(["pdfinfo", path], capture_output=True, check=True).stdout.decode("utf-8", "replace")
+        return int(re.search(r"^Pages:\s+(\d+)", out, re.M)[1])
+    return int(_disk_cached(path, "pdfinfo-pages", run))
 
 
 def page_texts(path: str) -> list[str]:
@@ -97,10 +129,14 @@ def _page_texts(path: str, layout: bool = False) -> tuple[str, ...]:
         pages = pages[:-1]
     n = page_count(path)
     if len(pages) != n:
-        pages = [subprocess.run(["pdftotext", "-enc", "UTF-8", *(["-layout"] if layout else []), "-f", str(i),
-                                 "-l", str(i), path, "-"],
-                                capture_output=True, check=True).stdout.decode("utf-8", "replace")
-                 for i in range(1, n + 1)]
+        def per_page() -> list[str]:
+            return [subprocess.run(["pdftotext", "-enc", "UTF-8", *(["-layout"] if layout else []), "-f", str(i),
+                                    "-l", str(i), path, "-"],
+                                   capture_output=True, check=True).stdout.decode("utf-8", "replace")
+                    for i in range(1, n + 1)]
+        from store.quotes import _pdftotext_version  # the extraction's tool is part of the key, as for `_pdftotext`
+        tool = hashlib.sha256(_pdftotext_version().encode()).hexdigest()[:12]
+        pages = _disk_cached(path, f"pages-{'layout' if layout else 'plain'}-{tool}", per_page)
     return tuple(pages)
 
 

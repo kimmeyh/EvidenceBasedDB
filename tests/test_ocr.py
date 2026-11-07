@@ -14,6 +14,35 @@ UDARU = (r"D:\Data\Harold\EvidenceBasedDB\Papers\QML Quantum Machine Learning Fo
          r"Approach To Risk Assessment 202511.pdf")
 
 
+def test_the_page_count_and_the_per_page_fallback_are_kept_on_disk_across_processes(tmp_path, monkeypatch):
+    """F140 (Sprint 17 Task A): `page_count` started `pdfinfo` once per PDF in every test process, 180 of 230 seconds
+    in one quote test. The count, and the per-page extraction used when pdftotext's form feeds disagree with it, are
+    now kept in the text cache, so a second process (here: the process caches cleared) starts nothing. Proven red
+    2026-11-07: with `page_count` calling its `run()` directly (INJECTED), the second count started `pdfinfo` again;
+    with `per_page()` called directly (INJECTED), the second split started pdftotext again."""
+    pdf = tmp_path / "paper.pdf"
+    pdf.write_bytes(b"%PDF-1.4 a fixture, never opened by a real tool")
+    started = []
+
+    def fake_run(cmd, **kwargs):
+        started.append(cmd[0])
+        out = b"Pages:          2\n" if cmd[0] == "pdfinfo" else f"page {cmd[cmd.index('-f') + 1]}".encode()
+        return type("R", (), {"stdout": out, "returncode": 0})()
+
+    monkeypatch.setattr(ocr, "text_cache_dir", lambda: tmp_path / "text_cache")
+    monkeypatch.setattr(ocr.subprocess, "run", fake_run)
+    monkeypatch.setattr(quotes, "_pdftotext", lambda path, layout: "three\fform\ffeeds\f")  # 3 parts for 2 pages
+    monkeypatch.setattr(quotes, "_pdftotext_version", lambda: "pdftotext version test")
+    for _ in range(2):  # the second pass is a new process: nothing kept in memory
+        ocr.page_count.cache_clear()
+        ocr._page_texts.cache_clear()
+        assert ocr.page_count(str(pdf)) == 2
+        assert ocr.page_texts(str(pdf)) == ["page 1", "page 2"]
+    assert started == ["pdfinfo", "pdftotext", "pdftotext"], started
+    ocr.page_count.cache_clear()
+    ocr._page_texts.cache_clear()
+
+
 def test_a_thin_page_is_found_and_read_and_a_missing_engine_is_never_silence(tmp_path, monkeypatch):
     """A page with fewer than TEXT_FLOOR visible characters is the one sent to OCR; a source that needs OCR when
     the engine is missing raises, so an image-only page is never read as empty without a flag. Proven to fail by

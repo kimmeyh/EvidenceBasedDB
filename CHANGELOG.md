@@ -15,6 +15,19 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **perf**: F140 part 2: the page count and the per-page fallback
+  extraction are kept in the text cache (`store/ocr.py`). Every test
+  process started `pdfinfo` once per PDF: in the slowest quote test, 390
+  starts and 180 of 230 seconds, at 0.3 to 0.6 seconds a process start
+  on this machine. That test now takes 37 seconds with the cache filled.
+  Test proven red twice (#175)
+- **feat**: F140 part 1: `scripts/test_inventory.py` writes
+  `docs/test_inventory.json` (per test file: what it guards, its kind,
+  tests and seconds from a timed full run, where it runs, red proof
+  recorded); `tests/test_test_inventory.py` fails on a test file missing
+  from it or a row for a file that is gone (proven red). Timed full run,
+  2026-11-07 (snapshot): 1,615 tests in 44m34s; live-store data checks
+  71% of test time, hook checks 19% (#175)
 - **process**: Task B (F144) blocked at the pilot: the API key is not
   scoped to a workspace, so each request needs a workspace id the team
   lead holds. Built and dry-run on draft PR #181; status recorded (#176)
