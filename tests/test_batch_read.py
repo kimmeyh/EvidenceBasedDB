@@ -21,6 +21,10 @@ The fresh-eyes review of 2026-11-07 added four guards, each proven red the same 
 - the `pending` test in `refusal` turned off: test_an_interrupted_send_blocks_the_next_and_a_refused_send_leaves_nothing;
 - `too_big` emptied: test_a_request_over_the_size_limit_is_refused;
 - the already-saved test in `collect` turned off: test_a_retried_collection_costs_each_result_once (spent 2.0, not 1.0).
+
+Team lead, Q3 = 1 (2026-11-07): an errored or expired paper is sent again, its first result kept. Proven red the same
+day: `unsendable` counting every saved result (INJECTED), and the `earlier` append removed (INJECTED), each failed
+test_an_errored_or_expired_paper_is_sent_again_and_its_first_result_kept.
 """
 from __future__ import annotations
 
@@ -93,6 +97,28 @@ def test_a_saved_result_is_never_sent_again(bm):
     assert bm.load_state()["batches"]["msgbatch_1"]["records"] == ["c-2022-z"]
     assert bm.submit(["--n", "5", "--apply"], date(2026, 11, 7), fake_factory(batches)) == 0
     assert len(batches.created) == 1, "a record in flight was sent again"
+
+
+def test_an_errored_or_expired_paper_is_sent_again_and_its_first_result_kept(bm):
+    """Team lead, 2026-11-07, Q3 = 1: an errored or expired request is not billed and holds no read, so it is sent
+    again; the first result stays in the state (`earlier`) and on disk."""
+    state = bm.load_state()
+    state["results"] = {"a-2020-x": {"group": "g335", "batch": "msgbatch_0", "type": "expired"},
+                        "b-2021-y": {"group": "g336", "batch": "msgbatch_0", "type": "succeeded"}}
+    bm.save_state(state)
+    batches = FakeBatches()
+    assert bm.submit(["--n", "5", "--apply"], date(2026, 11, 7), fake_factory(batches)) == 0
+    assert bm.load_state()["batches"]["msgbatch_1"]["records"] == ["a-2020-x", "c-2022-z"]
+    (bm.WORK / "raw").mkdir(parents=True, exist_ok=True)
+    (bm.WORK / "raw" / "a-2020-x.json").write_text("{}", encoding="utf-8")
+    state = bm.load_state()
+    result = {"custom_id": state["batches"]["msgbatch_1"]["groups"]["a-2020-x"],
+              "result": {"type": "errored", "error": {"type": "api_error"}}}
+    bm.collect(state, "msgbatch_1", [result])
+    after = bm.load_state()
+    assert after["earlier"][0]["type"] == "expired" and after["results"]["a-2020-x"]["type"] == "errored"
+    assert (bm.WORK / "raw" / "a-2020-x.json").read_text(encoding="utf-8") == "{}"
+    assert (bm.WORK / "raw" / "a-2020-x.msgbatch_1.json").is_file()
 
 
 def test_nothing_is_sent_on_or_after_the_stop_date(bm, capsys):

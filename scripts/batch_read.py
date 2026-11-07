@@ -115,10 +115,16 @@ def in_flight(state: dict) -> set[str]:
     return {rid for b in state["batches"].values() if not b.get("collected") for rid in b["records"]}
 
 
+# Result types that are not billed and hold no read: sent again in a later batch (team lead, 2026-11-07, Q3 = 1).
+RESEND = ("errored", "expired", "canceled")
+
+
 def unsendable(state: dict) -> set[str]:
-    """Records never to send again: a result is saved (whatever its type), a batch holding them is not yet
-    collected, or a send of them was interrupted (`pending`)."""
-    return set(state["results"]) | in_flight(state) | set((state.get("pending") or {}).get("records", []))
+    """Records never to send again: a billed result is saved (succeeded), a batch holding them is not yet collected,
+    or a send of them was interrupted (`pending`). An errored, expired or canceled result is not billed and holds no
+    read, so it is sent again (team lead, 2026-11-07, Q3 = 1); `collect` keeps the earlier result under `earlier`."""
+    billed = {rid for rid, r in state["results"].items() if r.get("type") not in RESEND}
+    return billed | in_flight(state) | set((state.get("pending") or {}).get("records", []))
 
 
 def cost(input_tokens: int, output_tokens: int) -> float:
@@ -144,14 +150,21 @@ def refusal(state: dict, worst: float, today: date, cap: float = CAP) -> str | N
 
 # ---------------------------------------------------------------- the key
 
+# The team lead's key is scoped to the Organization, not to one workspace, so each request names its workspace in the
+# `anthropic-workspace-id` header ("A key that isn't scoped to a workspace runs in the workspace named by each
+# request's anthropic-workspace-id header", platform.claude.com/docs/en/manage-claude/workspaces, read 2026-11-07).
+# Not a secret (team lead, 2026-11-07, who supplied it). ANTHROPIC_WORKSPACE_ID in the key file overrides it.
+WORKSPACE_ID = "wrkspc_01Q57rtVrKmnLphMHqGSocHz"
+
+
 def api_key() -> tuple[str, str | None]:
-    """The key and an optional workspace id, from the key file only. Never printed."""
+    """The key and the workspace id. The key comes from the key file only and is never printed."""
     from dotenv import dotenv_values
     values = dotenv_values(KEY_FILE) if KEY_FILE.is_file() else {}
     key = values.get("ANTHROPIC_API_KEY") or ""
     if not key:
         raise SystemExit("no ANTHROPIC_API_KEY in the repository's key file")
-    return key, values.get("ANTHROPIC_WORKSPACE_ID") or None
+    return key, values.get("ANTHROPIC_WORKSPACE_ID") or WORKSPACE_ID
 
 
 def redact(text: str, key: str) -> str:
@@ -515,7 +528,12 @@ def collect(state: dict, batch_id: str, results) -> None:
             # A collection retried after a failure part way (fresh-eyes review, 2026-11-07): saved and costed once.
             print(f"{raw['custom_id']}  {rid}  already saved")
             continue
-        (WORK / "raw" / f"{rid}.json").write_text(json.dumps(raw, indent=1, ensure_ascii=False), encoding="utf-8")
+        if rid in state["results"]:  # a resent errored or expired paper: its earlier result is kept, never dropped
+            state.setdefault("earlier", []).append({"record_id": rid, **state["results"][rid]})
+        raw_path = WORK / "raw" / f"{rid}.json"
+        if raw_path.exists():  # a resent paper: the first attempt's file stays, this one carries its batch id
+            raw_path = WORK / "raw" / f"{rid}.{batch_id}.json"
+        raw_path.write_text(json.dumps(raw, indent=1, ensure_ascii=False), encoding="utf-8")
         entry = {"group": raw["custom_id"], "batch": batch_id, "type": raw["result"]["type"]}
         if raw["result"]["type"] == "succeeded":
             msg = raw["result"]["message"]

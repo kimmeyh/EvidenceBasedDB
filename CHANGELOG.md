@@ -15,6 +15,11 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **feat**: F144 reader sends an errored or expired paper again and keeps
+  its first result (team lead, Q3 = 1; proven red), and names the team
+  lead's workspace in each request: the key is scoped to the
+  Organization, so the API needs the `anthropic-workspace-id` header.
+  A no-spend check listed the models with it (#176)
 - **feat**: F144 Batch API reader, built and dry-run; nothing sent yet.
   `scripts/batch_read.py` (select, fetch, submit, poll, status; dry run
   by default), `requirements-batch.txt`, the no-tool reader prompt
