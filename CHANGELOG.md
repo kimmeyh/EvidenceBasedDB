@@ -15,6 +15,7 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **docs**: Sprint 17 draft PR #174 recorded (2026-11-07)
 - **docs**: Backlog refinement and Sprint 17 plan (2026-11-07). Scope
   selected by the team lead: F140 (first), F144, F114 (10 papers), F142,
   F141, F143. `docs/sprints/SPRINT_17_PLAN.md` drafted with its
