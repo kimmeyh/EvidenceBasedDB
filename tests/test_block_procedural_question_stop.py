@@ -179,6 +179,19 @@ def test_blocks_when_the_final_paragraph_is_a_numbered_list_after_a_question(tmp
     assert proc.returncode == 2
 
 
+@pytest.mark.parametrize("message", [
+    "Task B done.\n\nProceed to Task C?\n\n- a. (Recommendation) Yes. Pro: on time.\n- b. No",
+    "Task B done.\n\nq1. Proceed to Task C?\n- a. (Recommendation) Yes.\n- b. No.",
+])
+def test_blocks_a_question_in_the_lettered_shape(tmp_path, message):
+    """The 2026-11-07 shape (docs/SPRINT_RETROSPECTIVE.md) asks with lettered options, and puts a q1 title and its
+    options in one paragraph; both still read as a question (review of the format change). Proven red 2026-11-07:
+    with NUMBERED_LINE back to digits only and ITEM_QUESTION unused (INJECTED), both messages were allowed."""
+    repo = _scratch_repo(tmp_path, _status())
+    proc = _run_hook(repo, SPRINT_BRANCH, message)
+    assert proc.returncode == 2, f"expected block for {message!r}"
+
+
 def test_allows_the_same_question_before_plan_approval(tmp_path):
     """Before 3.7 approval, asking is REQUIRED (Invariant 1)."""
     repo = _scratch_repo(tmp_path, _status(plan_approved=False, status="phase_3_planning", pr=None))

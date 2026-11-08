@@ -4257,3 +4257,81 @@ pipeline already consumes; the coordinator review and
 - **The state** (`D:\Data\Harold\EvidenceBasedDB\work\f144\state.json`,
   outside git): batches, results with tokens and cost, and each record's
   file or why it has none.
+
+## 76. F114 at 10 papers, under Sprint 17's prompts (Sprint 17 Task E)
+
+Every count is a snapshot as of its own date: the plan below as of
+2026-11-07 (written before the intake apply), the reads, reviews and
+apply as of 2026-11-08 (written after the apply). Section 75 is F144's,
+on its own branch.
+
+- **The 2 new PDFs**, saved into `Papers\` by the team lead on
+  2026-11-07 and named by no record (a title and access search of the
+  store found neither), enter at `seen` through the door from
+  `manifests/sprint17_f114_new.json`:
+  - Sar et al., "Quantum Machine Learning in Medical Image Analysis: From
+    Diagnostics to Surgery Planning," IEEE Access 14, 2026 (DOI
+    10.1109/ACCESS.2026.3663498, 43 pages), api-origin from its DOI,
+    under `qml`. The file is named for "Ayan", the first author's given
+    name; the record id follows the door (`sar-2026-...`). The file is not
+    renamed.
+  - PSI, "A proof of the Aaronson-Ambainis conjecture" (9 pages), a web
+    article printed from a browser on 2026-11-07, hand-origin (no DOI or
+    arXiv id), under `qc`. The proof and its Lean check are linked from
+    the page and not held, so the article is the source read: a
+    company's own announcement of its result.
+  - Each PDF's SHA-256 is in its `evidence`.
+- **Christophe Pere's list** is unchanged since `399b022651` (checked
+  2026-11-07), so it adds no paper.
+- **The 10, fixed by id at the task start**
+  (`scripts/sprint17_f114_local.py`): g348, a new ledger group (the 2
+  new papers; g335 to g347 are F144's groups on its branch); g230's Pere
+  v2 (team lead q3 = a); g295, all 5, the first group not yet read in
+  full; g296's first 2. The records of g230 and g296 left out of the
+  briefs are left for a later release. Each id is on F144's exclusion
+  list, so F144 never sends it.
+- **Prompts.** `manifests/sprint17_f114_reads/READER_PROMPT.md` and
+  `REVIEW_PROMPT.md`: Sprint 16's, with Task C's fixes (a proof
+  appendix over 30 pages split across reviewers by page; the sign-off
+  `add` table), and every script path set to the Sprint 17 worktree,
+  since the main checkout is on F144's branch. Telemetry stays in
+  `manifests/sprint16_f114_reads/telemetry/` (one folder for F143).
+- **Reads (2026-11-07 to 08).** 4 local readers (Sonnet 5.5), one per
+  group, all 10 papers read in full, 0 check problems. 1,199 new
+  assertions and 4 verdicts on Pere v2's stored assertions (2 confirmed,
+  1 corrected, 1 narrowed). The paper's own statements disagree in
+  places: Pere v2's Table 10 against its text, Albash's Appendix A
+  proof, Alarfaj's dates and headline metrics. Each disagreement is in
+  the read's `reader_inference` and in the reviewer's why.
+- **Reviews.** One reviewer per group (no proof appendix over 30 pages;
+  Albash's appendices span about pages 55 to 65). 431 items decided:
+  264 HIGH, 167 LOW (the review files list the HIGHs and the 136
+  theoretical LOWs; any other LOW needs no table entry). No certainty change on a stored assertion, so none waits for
+  the team lead. g348's first review graded 2 of PSI's own claims HIGH;
+  finalize refused them (a vendor's own claim is LOW), and the reviewer
+  re-decided both LOW. The cited-step rule made Aharonov's headline
+  theorems LOW (their proofs use results cited from other papers); that
+  is F129's open question, not a defect in the paper.
+- **Apply.** Dry run: 1,201 assertions entered or changed from 10
+  records, every quote verbatim, 0 refusals. Live apply after a verified
+  backup (`evidence-20261108T011457987899-...db`), with 0 stored fields
+  changed that no review item names; the 10 papers at `read`. A second
+  apply checked nothing and wrote nothing. Assertions after it: 37,408
+  (HIGH 11,754; LOW 25,554; MODERATE 97; VERY-LOW 1; no certainty 2).
+- **Fresh-eyes review of the apply (2026-11-08, read-only).** No high
+  finding: the two new records match their PDFs; of about 75 sampled
+  assertions (45 HIGH) no vendor claim is HIGH, and Pere v2's 4 stored
+  assertions match the paper. Found, and left for the team lead (a signed
+  review is never edited in place; a fix is a later sign-off):
+  - about 5 of 45 sampled HIGH values say more than their quotes
+    (sar-vqc-components, sar-qcnn-architecture, sar-metric-families,
+    aharonov-model-definition, alarfaj-dataset-description); the paper
+    supports each, so nothing false is stored;
+  - albash-grover-local-condition-not-proof is HIGH as a stated limit,
+    but it is the review's judgment of another paper's result;
+  - Pere v2's narrowed chance-level-and-signature-control still joins
+    the claims that are also entered one by one;
+  - random-instance-distribution-scope is typed `absence` but is a
+    setup statement; PSI's record has no `coi`, where QCi's records
+    name the authors' employer; 49 records at `read` (these 10 among
+    them) keep a disposition ending "not yet read".

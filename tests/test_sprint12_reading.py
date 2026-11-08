@@ -189,7 +189,9 @@ def test_every_quote_is_in_its_source(task):
     s12 = _script()
     cache, bad, checked = {}, [], 0
     for _, a, _, p in s12.assertions(task):
-        text = cache.setdefault(p["file"], plain(source_text(p["file"])))
+        if p["file"] not in cache:  # F140 q6: source_text is already plain; built once per file, not per assertion
+            cache[p["file"]] = source_text(p["file"])
+        text = cache[p["file"]]
         for q in QUOTE.findall(a.citation_context):
             if plain(q) not in text:
                 bad.append(f"{a.id}: {q[:70]}")

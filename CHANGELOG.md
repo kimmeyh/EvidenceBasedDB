@@ -82,6 +82,175 @@ this project keeps having to replace with a step.
   entry that blocks the next send, and the ledger is written before the
   send; each request and the batch are measured against 32 MB and
   256 MB; a retried collection costs each result once (#176)
+- **process**: status at Phase 5.3 Manual Validation; full suite passed
+  (1,649); PR #174 closes #175 to #180. Team lead q24 = a (2026-11-08):
+  F144's branch is combined into this one, then the second checkout is
+  removed, before Manual Validation
+- **docs**: fresh-eyes review of Task E's apply (24b05d7). No high
+  finding. INTAKE section 76's snapshot line now dates the plan and the
+  apply apart, the totals name every certainty, and the review's
+  findings are listed for the team lead; the brief script's docstring
+  no longer claims it writes F144's exclusion list
+- **feat**: F114 Task E applied (INTAKE section 76; snapshot
+  2026-11-08). 10 papers read in full by 4 local readers, reviewed and
+  signed off; 1,201 assertions entered or changed, every quote verbatim;
+  live apply after a verified backup, a second apply wrote nothing. The
+  10 papers at `read`. Assertions 37,408 (HIGH 11,754; LOW 25,554)
+- **docs**: F143 (Task F): `docs/F143_READING_COST.md`. The cost per page
+  rose because each page yields more assertions (1.83 to 2.47 per page)
+  and more review items (0.79 to 1.35), most in theory-heavy papers; the
+  tokens per assertion stayed flat. Not waste: the full-read rule working
+- **fix**: `run_suite`'s tree id no longer crashes when a reader rewrites
+  a new telemetry file between the scratch index's `git add -A` and its
+  `git rm --cached` (`-f` added). Found at Task E's first gate, which
+  crashed before any test ran while 4 readers worked. A gap in F142 part
+  1's fix. Proven red
+- **feat**: F114 Task E set up (INTAKE section 76). The team lead's 2 new
+  PDFs entered at `seen` through the door
+  (`manifests/sprint17_f114_new.json`, after a verified backup): Sar et
+  al., IEEE Access 2026, and PSI's web article on the Aaronson-Ambainis
+  conjecture. The 10 papers fixed by id in
+  `scripts/sprint17_f114_local.py`: g348 (new ledger group, the 2 new
+  papers), g230's Pere v2, g295 (5), g296's first 2. Sprint 17 reader
+  and review prompts name the Sprint 17 worktree's scripts, since the
+  main checkout is on F144's branch; `f117_review` tags these groups
+  with the Sprint 17 prompt (proven red). 4 local readers started
+- **fix**: fresh-eyes review of 2580ce2 (the sign-off `add` table). (1)
+  An added assertion skipped the reader's own checks. Its field values
+  are now checked when it is merged (an unknown result type crashed the
+  applier's grading). Finalize runs the reader's quote, length, page and
+  grade checks on it. (2) The sign-off's why now reaches the stored
+  history; before, only a fixed phrase did. (3) Every added assertion is
+  an item to decide ("new-added"). Before, a LOW suggestion entered with
+  no decision. Each proven red
+- **feat**: F141 (Task D): `python scripts/view.py paper <id> --full`
+  prints each yielded assertion whole: id, certainty, value, provenance
+  and quotes. The default output is unchanged (the value cut at 100
+  characters). `--full` on another mode is refused. Proven red
+- **feat**: F142 part 2 (Task C): the sign-off `add` table adds an
+  assertion to a group's read, or splits one (a `value_replace` on the
+  old assertion plus an `add`). Sprint 16 split `he-simulation-scope` by
+  editing the reader's read file by hand (db2abe3); the read file is now
+  never edited. `scripts/review_additions.py` merges the table for both
+  `f117_review.papers` and `full_read_apply.load_groups`, refusing an id
+  the group holds, a paper not in the group, no why, a missing field or
+  an empty quote. The added assertion is an item to decide, its quotes
+  are checked against the paper, and its history says the sign-off
+  added it. The group builder treats an added id as taken. Proven red
+- **feat**: F140 q4 (team lead, 2026-11-07: a, with a check that the
+  parallel run completes with no locked file and no file written by two
+  processes). `run_suite` runs pytest on 16 workers when pytest-xdist is
+  installed (`requirements-dev.txt`, pinned 3.8.0), else serially with a
+  note. Trial (snapshot 2026-11-07): full suite, 1,641 of 1,641 passed in
+  6m51s against 37m48s serial, under a one-hour limit; tree unchanged;
+  no new `.partial` file. CI is unchanged. Proven red (#175)
+- **fix**: the text cache writer (`store/quotes.py`) deletes its
+  `.partial` file when the replace fails, as the OCR cache writer
+  already did. Four were found in the cache, from 2026-10-23 to
+  2026-10-25; parallel workers (F140 q4) make a failed replace more
+  likely. Proven red (#175)
+- **test**: F140 q6 (team lead, 2026-11-07: a). The four reading tests'
+  quote checks drop the outer `plain()`: `source_text` is already plain.
+  Equivalence check before the change (snapshot 2026-11-07): 1,477
+  sources, 8,146 quotes and 234 figures, 0 verdicts different. A second
+  cause found on the same line: `cache.setdefault(key, plain(...))`
+  built the text on every assertion, not once per file. Now built once.
+  `test_sprint12_reading[G]` 37 s to 15.3 s (#175)
+- **feat**: F140 q7, q8 and q9 (team lead, 2026-11-07: a, a, a). A full
+  run is not repeated on a tree and store that already passed it
+  (`--force` runs it); every `--changed` gate adds 9 high-impact test
+  files (about 265 s serial); every run takes the last failures first
+  (`--ff`). The team lead's answers to q4 to q14 recorded in
+  `docs/F140_TESTING_ANALYSIS.md`. Finding: Part 4 names a `--no-verify`
+  hook as high impact, but no hook or test here names `--no-verify`.
+  Each change proven red (#175)
+- **fix**: fresh-eyes review of f79714b. (1) The rebuild guard in
+  `f117_build_groups.py` read only `decisions/<g>.json`, so a group
+  reviewed in parts could be rebuilt with changed ids under its
+  decisions; both scripts now find decision files in one place
+  (`decisions_in`), and a stray name such as `g1.p1.old.json` is not a
+  part. (2) `run_suite`'s summary is the log's last line in pytest's
+  ending form, not any line that names a count. (3) `set_status.py`
+  takes a one-line status only, leaves no `.partial` file when a replace
+  fails, and refuses `--note` with no text. Each proven red (#177)
+- **feat**: F142 part 3 (Task C): a proof appendix over 30 pages is split
+  across reviewers by page from the start. The Sprint 17 review prompt
+  (`manifests/sprint17_f114_reads/REVIEW_PROMPT.md`) says how; each part
+  writes `decisions/GROUP.pN.json`, and `f117_review.decisions_of` merges
+  the parts, refusing an item decided twice or a group with both forms.
+  Tests proven red (#177)
+- **feat**: F142 part 4 (Task C): `scripts/set_status.py` sets `status`
+  and `current_sprint.status` in one step and refuses any status not
+  "Phase n.n Name"; a test fails when the committed fields differ.
+  Proven red (#177)
+- **fix**: `run_suite` records PASSED only when pytest reports at least
+  one passed test. `run_suite.py --help` exited 0 with no test run and
+  was recorded PASSED for the tree, which a commit could have used.
+  Proven red
+- **process**: the question shape now defines Effort as the cost to build
+  AND the cost to run, with how often, and Prevention as keeping the
+  defect from ever being made (a test is a control). Team lead, 2026-11-07,
+  q11 and q13. Guard extended; proven red
+
+- **fix**: F142 part 1 (Task C): reader telemetry
+  (`manifests/*/telemetry/`) is left out of `run_suite`'s tree id, so a
+  reader writing telemetry no longer turns a gate INVALID (Sprint 16: two
+  gates, 130 minutes). No test reads those files. Test proven red (#177)
+- **docs**: F140 part 3 to 9: `docs/F140_TESTING_ANALYSIS.md`. The slow
+  suite came in two steps: F114's first apply (7,715 assertions,
+  2026-10-30) and Sprint 15's pdfinfo starts (2026-11-04); the second is
+  fixed. Run 2 after the fix: 37m48s (cache filling). The 10-minute
+  target is not met: the live-store data checks are 69% of the time and
+  the suite uses one of 32 processors. Sprint 16's gate timeline rebuilt
+  (547 gate minutes in 15.6 hours). Recommendations q4 to q14 asked
+  (#175)
+
+- **process**: improvements, questions and decisions put to the team lead
+  take one shape (team lead, 2026-11-07): `i1`/`q1` with a brief title,
+  What it is, What it prevents and/or catches, Prevention or control,
+  Long-term value, Evidence, Effort, and lettered options with pros and
+  cons, one marked "(Recommendation)"; answered "i1. a" or "all as
+  recommended". Authoritative in `docs/SPRINT_RETROSPECTIVE.md`; CLAUDE.md,
+  the workflow, SPRINT_PLANNING, the backlog-refinement skill, the model
+  heuristics, F144's card and both question hooks' messages point at it.
+  `block_procedural_question_stop.py` now reads lettered options and a
+  `q1. ...?` title as a question (it took only digit lines; proven red).
+  `tests/test_question_format.py` checks the section's fields, the
+  pointers, and that no rule surface (CLAUDE.md, top-level docs, all of
+  `.claude/`) states the old form except as dated history; proven red
+  three ways. A fresh-eyes review found the first version scanned four
+  files and missed three. `run_suite --changed` now runs the inventory
+  check on any test-file change (proven red)
+- **fix**: the fresh-eyes review of 5454ccb (F140). The per-page key now
+  holds pdftotext's options as well as its version, and the page-count
+  key holds poppler's version, so a changed option or a new poppler makes
+  them again (the regression fdedff9 had closed for the whole-file text).
+  A cached value of the wrong type or length is made again; a failed
+  write removes its `.partial` file. F139's `cache_misses` counts
+  pdftotext and OCR runs only (`quotes.extraction_misses`), so groups
+  before and after F140 compare. `tests/test_test_inventory.py` now also
+  fails when a computed inventory field differs from its computation
+  ("computed, never stored"), and the inventory records the last real
+  defect each test caught, where one is on record. Five injections, each
+  red, then green. Both key changes refill those cache entries once
+  (#175)
+
+- **perf**: F140 part 2: the page count and the per-page fallback
+  extraction are kept in the text cache (`store/ocr.py`). Every test
+  process started `pdfinfo` once per PDF: in the slowest quote test, 390
+  starts and 180 of 230 seconds, at 0.3 to 0.6 seconds a process start
+  on this machine. That test now takes 37 seconds with the cache filled.
+  Test proven red twice (#175)
+- **feat**: F140 part 1: `scripts/test_inventory.py` writes
+  `docs/test_inventory.json` (per test file: what it guards, its kind,
+  tests and seconds from a timed full run, where it runs, red proof
+  recorded); `tests/test_test_inventory.py` fails on a test file missing
+  from it or a row for a file that is gone (proven red). Timed full run,
+  2026-11-07 (snapshot): 1,615 tests in 44m34s; live-store data checks
+  71% of test time, hook checks 19% (#175)
+- **process**: Task B (F144) blocked at the pilot: the API key is not
+  scoped to a workspace, so each request needs a workspace id the team
+  lead holds. Built and dry-run on draft PR #181; status recorded (#176)
 - **fix**: Key-file hook has no bypass token at all. The automated security
   review found that a token honored on `git commit` still passed
   `git commit ... && cat` of the file. A commit or PR text that names the

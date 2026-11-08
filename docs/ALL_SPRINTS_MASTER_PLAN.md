@@ -1067,9 +1067,11 @@ and in git. Remaining items below.
   lost session loses at most one batch; (b) one short prompt the team
   lead pastes into a new session to run the next X papers in batches of
   that size, resume from the state file, and stop at the spend cap.
-- Process: every decision question as a plain numbered list with a
-  "Recommend N" line; the requirement echoed back before more than one
-  file is touched (CLAUDE.md).
+- Process: every decision question in the shape of
+  `docs/SPRINT_RETROSPECTIVE.md`, "Presenting improvements, questions and
+  decisions" (team lead, 2026-11-07; the card first said a numbered list
+  with a "Recommend N" line); the requirement echoed back before more
+  than one file is touched (CLAUDE.md).
 - Acceptance: the API reader prompt passes `tests/test_reader_prompts.py`;
   the four rule tests exist, each proven red; 5 pilot papers sent, each
   result saved in the repository as a reader group file with its check

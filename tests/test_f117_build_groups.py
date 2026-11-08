@@ -355,6 +355,15 @@ def test_a_written_files_bare_id_is_never_taken_and_a_rebuild_keeps_its_decided_
     with pytest.raises(SystemExit, match="chen-2024-a-x"):
         b.main(["--write"])
     assert not g076.exists()
+    # Fresh-eyes review of f79714b: a group reviewed in parts (F142 part 3) was invisible to this guard. Proven red
+    # 2026-11-07: with `decided_ids` reading only `<g>.json` again (INJECTED), the rebuild below was written.
+    (decisions / "g076.json").unlink()
+    (decisions / "g076.p1.json").write_text(json.dumps({"other-id": {}}), encoding="utf-8")
+    (decisions / "g076.p2.json").write_text(json.dumps({"chen-2024-a-x": {}}), encoding="utf-8")
+    (decisions / "g076.p1.old.json").write_text("{}", encoding="utf-8")  # a stray name is not a part
+    with pytest.raises(SystemExit, match="chen-2024-a-x"):
+        b.main(["--write"])
+    assert not g076.exists()
 
 
 def test_two_different_ids_on_one_assertion_are_refused(tmp_path, monkeypatch):
@@ -377,7 +386,14 @@ def test_the_builders_three_edge_cases(tmp_path, monkeypatch):
     (reviews / "g050.json").write_text(json.dumps({"id_fix": {"x": "src-x"}}), encoding="utf-8")
     monkeypatch.setattr(b, "REVIEWS_DIR", reviews)
     assert b.written_ids() == {"x", "src-x"}
-    spec = importlib.util.spec_from_file_location("f117_fresh", ROOT / "scripts" / "f117_build_groups.py")
+    # F142 part 2 (Sprint 17 Task C): an id a sign-off adds is taken, finalized into the review or not yet. Proven red
+    # 2026-11-07: with the "add" set left out of written_ids (INJECTED), neither id was there.
+    (reviews / "g050.json").write_text(json.dumps({"id_fix": {"x": "src-x"}, "add": {"x-2": {}}}), encoding="utf-8")
+    (tmp_path / "work" / "review" / "signoff").mkdir(parents=True)
+    (tmp_path / "work" / "review" / "signoff" / "g051.json").write_text(json.dumps({"add": {"y-2": {}}}),
+                                                                        encoding="utf-8")
+    assert b.written_ids() == {"x", "src-x", "x-2", "y-2"}
+    spec =importlib.util.spec_from_file_location("f117_fresh", ROOT / "scripts" / "f117_build_groups.py")
     fresh = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(fresh)
     monkeypatch.setattr(fresh, "DB_PATH", tmp_path / "no-store.db")

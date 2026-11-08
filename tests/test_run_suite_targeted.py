@@ -90,7 +90,11 @@ def test_a_document_change_in_this_repository_runs_the_spelling_and_dash_guards(
     assert "tests/test_sprint13_read_ledger.py" in reader_file, reader_file
     script = set(rs.targeted_tests(ROOT, ["scripts/sprint13_read_ledger.py"]))
     assert set(rs.SCRIPT_GUARDS) <= script, script
-    assert "tests/test_guard_discipline.py" in rs.targeted_tests(ROOT, ["tests/test_reader_prompts.py"])
+    picked = rs.targeted_tests(ROOT, ["tests/test_reader_prompts.py"])
+    assert "tests/test_guard_discipline.py" in picked
+    # F140: a changed test file changes its inventory row, so the inventory check runs too. Proven red 2026-11-07:
+    # with test_test_inventory left out of TEST_GUARDS (INJECTED), this assertion failed.
+    assert "tests/test_test_inventory.py" in picked
 
 
 def test_a_new_test_file_runs_itself_and_conftest_runs_everything(repo):
@@ -195,3 +199,68 @@ def test_a_helper_or_an_unnamed_change_runs_the_full_suite(repo):
     assert rs.full_suite_due(rs.changed_files(repo)) == (
         "tests/helpers.py changed: a helper or fixture that tests may read")
     assert rs.targeted_tests(repo, rs.changed_files(repo)) is None
+
+
+def test_a_run_that_passed_no_test_is_never_recorded_passed():
+    """2026-11-07: `run_suite.py --help` reached pytest, exited 0 with no tests run, and was recorded PASSED for the
+    tree. Proven red the same day: with `verdict` back to `rc == 0` alone (INJECTED), the --help and collect-only
+    cases came back PASSED."""
+    rs = _runner()
+    assert rs.verdict(0, "t", "t", "no pytest summary line") == "FAILED"
+    assert rs.verdict(0, "t", "t", "1607 tests collected in 9.1s") == "FAILED"
+    assert rs.verdict(0, "t", "t", "0 passed, 3 deselected in 1.0s") == "FAILED"
+    assert rs.verdict(0, "t", "t", "1607 passed, 11 skipped in 2268.4s") == "PASSED"
+    assert rs.verdict(1, "t", "t", "3 failed, 1604 passed in 2268.4s") == "FAILED"
+    assert rs.verdict(0, "t", "u", "1607 passed in 2268.4s") == "INVALID"
+
+
+def test_the_summary_is_the_logs_last_line_in_pytests_ending_form():
+    """Fresh-eyes review of f79714b: the summary was the last line ANYWHERE in the log that named a count, so a run
+    with no summary could borrow "12 passed" from a parametrize id or a docstring. Proven red 2026-11-07: with
+    `summary_line` searching every line again (INJECTED), the --fixtures case returned the docstring line."""
+    rs = _runner()
+    fixtures = "tmp_path -- conftest.py\n    a helper; 12 passed when it was written\n\n"
+    assert rs.summary_line(fixtures) == "no pytest summary line"
+    assert rs.verdict(0, "t", "t", rs.summary_line(fixtures)) == "FAILED"
+    run = "....\ntests/test_x.py::t[12 passed] ok\n======= 579 passed in 1451.60s (0:24:11) =======\n"
+    assert rs.summary_line(run) == "579 passed in 1451.60s (0:24:11)"
+    assert rs.summary_line("1 passed, 2 warnings in 0.5s\n") == "1 passed, 2 warnings in 0.5s"
+
+
+def test_every_gate_runs_the_high_impact_tests_last_failures_first(tmp_path):
+    """F140 q8 and q9 (team lead, 2026-11-07: a, a). Proven red the same day: with `with_high_impact` returning
+    `picked` unchanged (INJECTED), the full_read_apply test was not added; with "--ff" taken out of PYTEST_ARGS
+    (INJECTED), the last assertion failed. A listed file that is gone is refused, never skipped."""
+    rs = _runner()
+    picked, added = rs.with_high_impact(ROOT, ["tests/test_us_english.py"])
+    assert "tests/test_full_read_apply.py" in picked and "tests/test_us_english.py" in picked
+    assert added == len(rs.HIGH_IMPACT)
+    assert rs.with_high_impact(ROOT, picked)[1] == 0
+    with pytest.raises(FileNotFoundError, match="gone"):
+        rs.with_high_impact(tmp_path, [])
+    assert "--ff" in rs.PYTEST_ARGS
+
+
+def test_the_runner_uses_the_measured_workers_when_xdist_is_installed(monkeypatch):
+    """F140 q4 (team lead, 2026-11-07: a). Proven red the same day: with `parallel_args` returning [] (INJECTED), the
+    installed case failed. Without xdist the run is serial, never refused: the verdict does not depend on it."""
+    import importlib.util as iu
+    rs = _runner()
+    monkeypatch.setattr(iu, "find_spec", lambda name: object() if name == "xdist" else None)
+    assert rs.parallel_args() == ["-n", "16"]
+    monkeypatch.setattr(iu, "find_spec", lambda name: None)
+    assert rs.parallel_args() == []
+
+
+def test_a_full_run_is_not_repeated_on_a_tree_and_store_that_already_passed_it():
+    """F140 q7 (team lead, 2026-11-07: a). Proven red the same day: with the tree comparison removed from
+    `full_run_already_passed` (INJECTED), a changed tree was taken as already passed."""
+    rs = _runner()
+    last = {"verdict": "PASSED", "args": [], "tree": "t1", "tree_after": "t1", "store_checked": "s1"}
+    assert rs.full_run_already_passed(last, "t1", "s1")
+    assert not rs.full_run_already_passed(last, "t2", "s1"), "the tree changed"
+    assert not rs.full_run_already_passed(last, "t1", "s2"), "the store changed"
+    assert not rs.full_run_already_passed(last, "t1", None), "no store (CI): never skipped"
+    assert not rs.full_run_already_passed({**last, "args": ["tests/test_x.py"]}, "t1", "s1"), "a targeted run"
+    assert not rs.full_run_already_passed({**last, "verdict": "FAILED"}, "t1", "s1")
+    assert not rs.full_run_already_passed(None, "t1", "s1")

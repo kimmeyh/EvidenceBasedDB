@@ -6,6 +6,7 @@ file (`manifests/sprint13_g_reviews/<g>.json`, as Task G's were).
 reads to make it (record, anchor, value, quotes, the reader's suggestion and reason):
   - "new-high": a new assertion the reader suggested HIGH: "high" with a basis and why, or "low" with why;
   - "new-theory": a new theoretical result the reader did not suggest HIGH: "low" with its cause, or "high";
+  - "new-added": an assertion the sign-off's `add` table added (F142 part 2), whatever it suggests: as new-high;
   - "changed": a stored assertion the reader corrected, narrowed, widened or contradicted: "accept" or "keep" with
     why, and the grade of the accepted value ("high" with basis and why, or "low" with why);
   - "stored-high": a stored HIGH the reader confirmed: "high" with basis and why, or "low" with why.
@@ -42,6 +43,9 @@ from store.ingest import FULL_READ_MARK  # noqa: E402
 _spec = importlib.util.spec_from_file_location("f117_build_groups", ROOT / "scripts" / "f117_build_groups.py")
 build = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(build)
+_spec = importlib.util.spec_from_file_location("review_additions", ROOT / "scripts" / "review_additions.py")
+additions = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(additions)
 
 _, DB_PATH, _ = script_paths(__file__)
 REVIEW = build.cloud.WORK / "review"
@@ -57,6 +61,10 @@ S15_READER = "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_read
 S16_TAG = "Sprint 16 Task F, F114 (local read)"
 S16_READER = "Claude Sonnet 5.5 (F114 local reader, manifests/sprint16_f114_reads/READER_PROMPT.md)"
 S16_GROUPS = ("g133-r1", "g154-r1", "g155", "g156", "g333", "g334")
+# Sprint 17 Task E (INTAKE section 76): its reads ran under Sprint 17's prompt, told apart by group as Sprint 16's are
+S17_TAG = "Sprint 17 Task E, F114 (local read)"
+S17_READER = "Claude Sonnet 5.5 (F114 local reader, manifests/sprint17_f114_reads/READER_PROMPT.md)"
+S17_GROUPS = ("g230", "g295", "g296", "g348")
 UNRECORDED = "Claude (F114 cloud session; the model is not in the result's commits, the launcher's default was Sonnet)"
 CHANGED = {"corrected", "narrowed", "widened", "contradicted"}
 
@@ -82,8 +90,17 @@ def stored_text(ids: list[str]) -> dict[str, tuple[str, str]]:
         conn.close()
 
 
+def signoff(g: str) -> dict:
+    """The coordinator's sign-off edits for the group (WORK/review/signoff/<g>.json), or none."""
+    path = REVIEW / "signoff" / f"{g}.json"
+    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+
+
 def papers(g: str) -> list[dict]:
-    return json.loads((READS_DIR / f"group_{g}.json").read_text(encoding="utf-8"))["papers"]
+    """The group's read, with the sign-off's added assertions (F142 part 2, `review_additions`); the read file itself is
+    never edited."""
+    ps = json.loads((READS_DIR / f"group_{g}.json").read_text(encoding="utf-8"))["papers"]
+    return additions.merge(g, ps, signoff(g).get("add", {}))
 
 
 TEXTS = build.cloud.WORK / "texts"
@@ -117,8 +134,7 @@ def applied(g: str) -> list[str]:
     with no apply of this group; `--store` then names the store to read."""
     ps = papers(g)
     # Under the id the applier enters it (the sign-off's id_fix), and never a dropped one (review of 7b2179f).
-    so = REVIEW / "signoff" / f"{g}.json"
-    edits = json.loads(so.read_text(encoding="utf-8")) if so.exists() else {}
+    edits = signoff(g)
     id_fix, drop = edits.get("id_fix", {}), edits.get("drop", {})
     new = [id_fix.get(a["id_suggestion"], a["id_suggestion"]) for p in ps for a in p.get("assertions", [])
            if a["id_suggestion"] not in drop]
@@ -154,7 +170,10 @@ def items(g: str, stored: dict[str, str] | None = None,
     for p in ps:
         rid = p["record_id"]
         for a in p.get("assertions", []):
-            if a.get("certainty_suggestion") == "high":
+            if additions.MARK in a:  # every assertion a sign-off adds is decided, whatever it suggests: the new half
+                # of a split HIGH would otherwise enter LOW with no decision (fresh-eyes review of 2580ce2)
+                out.append({"kind": "new-added", "signoff_why": a[additions.MARK], **_show(rid, a, a["id_suggestion"])})
+            elif a.get("certainty_suggestion") == "high":
                 out.append({"kind": "new-high", **_show(rid, a, a["id_suggestion"])})
             elif a.get("result_type") == "theoretical":
                 out.append({"kind": "new-theory", **_show(rid, a, a["id_suggestion"])})
@@ -198,9 +217,27 @@ def _settled(aid: str, v) -> tuple[str, str, str]:
     raise ValueError(f"{aid}: a settled decision is \"low\", [\"low\", why] or [\"high\", basis, why], not {v!r}")
 
 
+def decisions_of(g: str) -> dict:
+    """The group's decisions: `decisions/<g>.json`, or its parts `decisions/<g>.p1.json`, `<g>.p2.json`, ... when a
+    proof appendix over 30 pages was split across reviewers by page (F142 part 3, Sprint 17; REVIEW_PROMPT.md).
+    Both forms at once, or an item decided in two parts, is refused: one item has one decision. The files are found
+    by `f117_build_groups.decisions_in`, which the rebuild guard uses too."""
+    return build.decisions_in(REVIEW / "decisions", g)
+
+
+def plain_text(path: str) -> str:
+    from store.quotes import plain, source_text
+    return plain(source_text(path))
+
+
 def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> dict:
+    add = signoff(g).get("add", {})
+    if add:  # the reader's own checks on what the coordinator added (fresh-eyes review of 2580ce2)
+        bad = additions.text_problems(papers(g), add, plain_text)
+        if bad:
+            raise ValueError(f"{g}: sign-off add: " + "; ".join(bad))
     its = items(g, stored)
-    decisions = json.loads((REVIEW / "decisions" / f"{g}.json").read_text(encoding="utf-8"))
+    decisions = decisions_of(g)
     missing = [i["id"] for i in its if i["id"] not in decisions]
     if missing:
         raise ValueError(f"{g}: no decision for {missing}")
@@ -272,7 +309,8 @@ def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> 
     # Sprint 15 Task H: a read under Sprint 15's prompt carries figure_count (its check requires it); it names that
     # sprint's prompt, not Sprint 14's (g062-r1 was first finalized as a Sprint 14 read)
     s15 = {p["record_id"] for p in papers(g) if "figure_count" in p}
-    later = (S16_TAG, S16_READER) if g in S16_GROUPS else (S15_TAG, S15_READER)
+    later = ((S17_TAG, S17_READER) if g in S17_GROUPS else (S16_TAG, S16_READER) if g in S16_GROUPS
+             else (S15_TAG, S15_READER))
     tag_of = {r: later if r in s15 else (LOCAL_TAG, LOCAL_READER) for r in local}
     whole = local and local == held and len(set(tag_of.values())) == 1  # read wholly by one sprint's local readers
     if whole:
@@ -294,7 +332,8 @@ def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> 
 # re-finalize writes them again instead of losing them. theory_low is here for a requoted theoretical stored LOW,
 # which is no item (review of aabdd49).
 SIGNOFF_TABLES = {"value_replace", "extra_quotes", "quote_edits", "anchor_fix", "context_fix", "requote", "drop",
-                  "result_type_fix", "theory_low", "reenter"}  # reenter: record id -> why (review of b185729)
+                  "result_type_fix", "theory_low", "reenter",  # reenter: record id -> why (review of b185729)
+                  "add"}  # add: new id -> {record_id, why, assertion}, merged by `papers` (F142 part 2)
 EDIT_TABLES = ("value_replace", "extra_quotes", "quote_edits", "anchor_fix", "context_fix", "result_type_fix")
 
 

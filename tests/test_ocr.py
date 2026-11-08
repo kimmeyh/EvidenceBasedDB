@@ -14,6 +14,74 @@ UDARU = (r"D:\Data\Harold\EvidenceBasedDB\Papers\QML Quantum Machine Learning Fo
          r"Approach To Risk Assessment 202511.pdf")
 
 
+def test_the_page_count_and_the_per_page_fallback_are_kept_on_disk_across_processes(tmp_path, monkeypatch):
+    """F140 (Sprint 17 Task A): `page_count` started `pdfinfo` once per PDF in every test process, 180 of 230 seconds
+    in one quote test. The count, and the per-page extraction used when pdftotext's form feeds disagree with it, are
+    now kept in the text cache, so a second process (here: the process caches cleared) starts nothing. Proven red
+    2026-11-07: with `page_count` calling its `run()` directly (INJECTED), the second count started `pdfinfo` again;
+    with `per_page()` called directly (INJECTED), the second split started pdftotext again. The review of 5454ccb
+    added: layout kept apart from plain, a wrong-typed or short cache file made again, a new poppler and a changed
+    file each a new key, files only under the cache folder, and F139's miss count left alone. Proven red
+    2026-11-07: with `valid` ignored (INJECTED), the wrong-typed count was served; with the tool key left out of the
+    per-page key (INJECTED), the newer poppler started no pdftotext; with the misses counted as "pdftotext"
+    (INJECTED), `extraction_misses` was 2."""
+    pdf = tmp_path / "paper.pdf"
+    pdf.write_bytes(b"%PDF-1.4 a fixture, never opened by a real tool")
+    started = []
+
+    def fake_run(cmd, **kwargs):
+        started.append(cmd[0])
+        out = b"Pages:          2\n" if cmd[0] == "pdfinfo" else f"page {cmd[cmd.index('-f') + 1]}".encode()
+        return type("R", (), {"stdout": out, "returncode": 0})()
+
+    cache = tmp_path / "text_cache"
+    monkeypatch.setattr(ocr, "text_cache_dir", lambda: cache)
+    monkeypatch.setattr(ocr.subprocess, "run", fake_run)
+    monkeypatch.setattr(quotes, "_pdftotext", lambda path, layout: "three\fform\ffeeds\f")  # 3 parts for 2 pages
+    monkeypatch.setattr(quotes, "_pdftotext_version", lambda: "pdftotext version test")
+    monkeypatch.setattr(quotes, "CACHE_MISSES", type(quotes.CACHE_MISSES)())
+
+    def new_process():
+        ocr.page_count.cache_clear()
+        ocr._page_texts.cache_clear()
+
+    for _ in range(2):  # the second pass is a new process: nothing kept in memory
+        new_process()
+        assert ocr.page_count(str(pdf)) == 2
+        assert ocr.page_texts(str(pdf)) == ["page 1", "page 2"]
+    assert started == ["pdfinfo", "pdftotext", "pdftotext"], started
+    assert sorted(p.parent for p in tmp_path.rglob("*.json")) == [cache, cache]  # nothing written elsewhere
+    assert quotes.extraction_misses() == 0  # F139's count stays pdftotext runs only (review of 5454ccb)
+
+    # Layout pages are kept apart from plain ones.
+    new_process()
+    assert ocr.page_layouts(str(pdf)) == ["page 1", "page 2"] and started.count("pdftotext") == 4
+
+    # A cache file of the wrong type or length is made again, never served (review of 5454ccb).
+    for f in cache.glob("*.json"):
+        f.write_text('"two"' if "pdfinfo" in f.name else '["only one page"]', encoding="utf-8")
+    new_process()
+    started.clear()
+    assert ocr.page_count(str(pdf)) == 2 and ocr.page_texts(str(pdf)) == ["page 1", "page 2"]
+    assert started == ["pdfinfo", "pdftotext", "pdftotext"], started
+
+    # A changed option or a new poppler is a new key (review of 5454ccb: fdedff9's fix for the whole-file text).
+    monkeypatch.setattr(quotes, "_pdftotext_version", lambda: "pdftotext version newer")
+    new_process()
+    started.clear()
+    ocr.page_count(str(pdf))
+    ocr.page_texts(str(pdf))
+    assert started == ["pdfinfo", "pdftotext", "pdftotext"], started
+
+    # A changed file is a new key.
+    pdf.write_bytes(b"%PDF-1.4 the same file, changed")
+    new_process()
+    started.clear()
+    ocr.page_count(str(pdf))
+    assert started == ["pdfinfo"], started
+    new_process()
+
+
 def test_a_thin_page_is_found_and_read_and_a_missing_engine_is_never_silence(tmp_path, monkeypatch):
     """A page with fewer than TEXT_FLOOR visible characters is the one sent to OCR; a source that needs OCR when
     the engine is missing raises, so an image-only page is never read as empty without a flag. Proven to fail by

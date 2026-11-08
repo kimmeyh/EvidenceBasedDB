@@ -12,6 +12,7 @@ Usage:
     python scripts/view.py contexts                    # list all contexts with counts
     python scripts/view.py contexts <context-id>        # list records in one context
     python scripts/view.py paper <paper-id>              # full paper record + its yields
+    python scripts/view.py paper <paper-id> --full       # each yielded assertion whole (F141)
     python scripts/view.py assertion <assertion-id>      # full assertion + its relations
     (add --json to any command for machine-readable output)
 """
@@ -244,7 +245,7 @@ def cmd_assertion(conn, assertion_id: str, corroboration: dict | None = None) ->
     }
 
 
-def _print_text(data: dict, mode: str) -> None:
+def _print_text(data: dict, mode: str, full: bool = False) -> None:
     if "error" in data:
         print(f"error: {data['error']}", file=sys.stderr)
         return
@@ -291,6 +292,11 @@ def _print_text(data: dict, mode: str) -> None:
             for y in data["yields"]:
                 if "error" in y:
                     print(f"    - {y['error']}")
+                elif full:  # F141: each assertion whole, as `view.py assertion` prints it, without a second command
+                    print(f"    - [{y['id']}] certainty {y['certainty']}")
+                    print(f"      Value:      {y['value']}")
+                    print(f"      Provenance: {y['provenance']}")
+                    print(f"      Quotes:     {y['citation_context'] or '(none)'}")
                 else:
                     print(f"    - [{y['id']}] {y['value'][:100]}")
 
@@ -332,7 +338,12 @@ def main() -> int:
     parser.add_argument("mode", choices=["contexts", "paper", "assertion"])
     parser.add_argument("id", nargs="?", default=None, help="record/context id (omit for 'contexts' to list all)")
     parser.add_argument("--json", action="store_true", dest="as_json", help="output machine-readable JSON")
+    parser.add_argument("--full", action="store_true",
+                        help="paper mode: print each assertion whole (id, certainty, value, provenance, quotes)")
     args = parser.parse_args()
+    if args.full and args.mode != "paper":
+        print("error: --full is for 'paper' mode ('assertion' already prints in full)", file=sys.stderr)
+        return 1
 
     if args.mode in ("paper", "assertion") and args.id is None:
         print(f"error: '{args.mode}' mode requires an id", file=sys.stderr)
@@ -369,7 +380,7 @@ def main() -> int:
     if args.as_json:
         print(json.dumps(data, indent=2, ensure_ascii=False))
     else:
-        _print_text(data, text_mode)
+        _print_text(data, text_mode, full=args.full)
 
     # A paper whose yielded assertion cannot be resolved carries the error
     # nested under "yields"; that is still a failed lookup and must not exit

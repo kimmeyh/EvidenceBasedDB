@@ -262,11 +262,11 @@ def main(argv: list[str] | None = None) -> int:
         print(x)
     print(f"{len(problems)} problems")
     if "--telemetry" in args:  # F139: this run's checks against the group's telemetry file, named by its brief
-        from store.quotes import CACHE_MISSES
+        from store.quotes import extraction_misses
         sys.path.insert(0, str(Path(__file__).resolve().parent))
         import read_telemetry
         recorded = read_telemetry.step(Path(args[1]).stem, "check", quote_checks=len(QUOTE_CHECKS),
-                                       cache_misses=sum(CACHE_MISSES.values()))
+                                       cache_misses=extraction_misses())
         print(f"telemetry: {'recorded' if recorded else 'not recorded (no file)'} for {Path(args[1]).stem}")
     return 0 if not problems else 1
 
