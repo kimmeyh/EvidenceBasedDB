@@ -15,6 +15,10 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **process**: status at Phase 5.3 Manual Validation; full suite passed
+  (1,649); PR #174 closes #175 to #180. Team lead q24 = a (2026-11-08):
+  F144's branch is combined into this one, then the second checkout is
+  removed, before Manual Validation
 - **docs**: fresh-eyes review of Task E's apply (24b05d7). No high
   finding. INTAKE section 76's snapshot line now dates the plan and the
   apply apart, the totals name every certainty, and the review's
