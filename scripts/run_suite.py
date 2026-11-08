@@ -116,6 +116,19 @@ HIGH_IMPACT = ("tests/test_full_read_apply.py", "tests/test_apply_paper_applicab
 # F140 q9 (team lead, 2026-11-07: a): last failures first, so a gate re-run after a fix reports the fix first. The
 # pytest cache it reads is git-ignored, so it never changes the tree id.
 PYTEST_ARGS = ("-q", "--ff")
+# F140 q4 (team lead, 2026-11-07: a, "verify that the parallel execution can be completed (not stalled due to locked
+# files, 2 processes changing the same file...)"). Trial the same day: the full suite with 16 workers passed 1641 of
+# 1641 in 6m51s (serial: 37m48s), under a one-hour limit, the tree unchanged, and no .partial file left in the text
+# cache. The cache writers use a name of their own per writer and delete it when a replace fails; live_export dumps
+# once per worker into that worker's own folder. 16 of the 32 processors: the measured setting.
+WORKERS = 16
+
+
+def parallel_args() -> list[str]:
+    """`-n WORKERS` when pytest-xdist is installed (requirements-dev.txt); otherwise none, and the run is serial: the
+    verdict is the same either way, only slower."""
+    import importlib.util
+    return ["-n", str(WORKERS)] if importlib.util.find_spec("xdist") else []
 # Files every test depends on, so a change to one runs the full suite.
 EVERYTHING = ("tests/conftest.py", "store/__init__.py", "pytest.ini", "pyproject.toml", "setup.cfg")
 
@@ -298,7 +311,10 @@ def main(argv: list[str]) -> int:
     log = ROOT / LOG
     log.parent.mkdir(exist_ok=True)
     with log.open("w", encoding="utf-8") as out:
-        rc = subprocess.run([sys.executable, "-m", "pytest", *PYTEST_ARGS, *argv], cwd=ROOT, stdout=out,
+        workers = [] if "-n" in argv else parallel_args()
+        if not workers and "-n" not in argv:
+            print("pytest-xdist is not installed (pip install -r requirements-dev.txt): the run is serial")
+        rc = subprocess.run([sys.executable, "-m", "pytest", *PYTEST_ARGS, *workers, *argv], cwd=ROOT, stdout=out,
                             stderr=subprocess.STDOUT).returncode
     after = working_tree(ROOT)
     summary = summary_line(log.read_text(encoding="utf-8", errors="replace"))

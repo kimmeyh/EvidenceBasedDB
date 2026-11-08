@@ -241,6 +241,17 @@ def test_every_gate_runs_the_high_impact_tests_last_failures_first(tmp_path):
     assert "--ff" in rs.PYTEST_ARGS
 
 
+def test_the_runner_uses_the_measured_workers_when_xdist_is_installed(monkeypatch):
+    """F140 q4 (team lead, 2026-11-07: a). Proven red the same day: with `parallel_args` returning [] (INJECTED), the
+    installed case failed. Without xdist the run is serial, never refused: the verdict does not depend on it."""
+    import importlib.util as iu
+    rs = _runner()
+    monkeypatch.setattr(iu, "find_spec", lambda name: object() if name == "xdist" else None)
+    assert rs.parallel_args() == ["-n", "16"]
+    monkeypatch.setattr(iu, "find_spec", lambda name: None)
+    assert rs.parallel_args() == []
+
+
 def test_a_full_run_is_not_repeated_on_a_tree_and_store_that_already_passed_it():
     """F140 q7 (team lead, 2026-11-07: a). Proven red the same day: with the tree comparison removed from
     `full_run_already_passed` (INJECTED), a changed tree was taken as already passed."""

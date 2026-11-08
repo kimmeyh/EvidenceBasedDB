@@ -15,6 +15,13 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **feat**: F140 q4 (team lead, 2026-11-07: a, with a check that the
+  parallel run completes with no locked file and no file written by two
+  processes). `run_suite` runs pytest on 16 workers when pytest-xdist is
+  installed (`requirements-dev.txt`, pinned 3.8.0), else serially with a
+  note. Trial (snapshot 2026-11-07): full suite, 1,641 of 1,641 passed in
+  6m51s against 37m48s serial, under a one-hour limit; tree unchanged;
+  no new `.partial` file. CI is unchanged. Proven red (#175)
 - **fix**: the text cache writer (`store/quotes.py`) deletes its
   `.partial` file when the replace fails, as the OCR cache writer
   already did. Four were found in the cache, from 2026-10-23 to

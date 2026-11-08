@@ -322,8 +322,13 @@ F144's). Each answer is recorded here when it comes.
   slowest tests, and the gate history.
 - The 20x cause named with its evidence: yes, Part 2: the data growth and
   the pdfinfo starts, each tied to its commit.
-- The full suite under 10 minutes, or the reason it is not: not met; the
-  reason and the levers are in Part 2.
+- The full suite under 10 minutes, or the reason it is not: not met at
+  first (the reason and the levers are in Part 2). Met after q4, q6 and
+  q9 (snapshot 2026-11-07): the full suite through `run_suite.py` on 16
+  workers passed 1,642 tests in 4m58s. The trial before it, 1,641 in
+  6m51s, finished under a one-hour limit with the tree unchanged and no
+  file left half-written. This is a dated amendment; the summary above
+  is kept as written.
 - Sprint 16's gate timeline rebuilt: yes, Part 8.
 - Target stated: an approved small change verified and committed in its
   development time plus about 15 minutes. Today a `--changed` gate that
