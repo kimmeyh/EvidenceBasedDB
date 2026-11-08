@@ -93,7 +93,11 @@ QUESTION_PATTERNS = [
     re.compile(r"(?im)^\s*next:\s*$"),
 ]
 
-NUMBERED_LINE = re.compile(r"^\s*\d+[.)]\s+")
+# An option line: "1. Yes", or the 2026-11-07 shape's lettered "- a. (Recommendation) Yes" (review of the format
+# change: the old pattern took only digit lines, so a lettered list hid the question above it).
+NUMBERED_LINE = re.compile(r"^\s*(?:-\s*)?(?:\d+|[a-z])[.)]\s+")
+# The shape's item title, "q1. Proceed to Task C?" (or i1.), with its options in the same paragraph.
+ITEM_QUESTION = re.compile(r"(?im)^\s*[qi]\d+\.\s.*\?\s*$")
 
 # Sprint 9 retrospective I1: the status footer. Two footers in Sprint 9
 # (about 3:48 and 3:58) were typed by hand and wrong; the script said 3:37.
@@ -212,7 +216,7 @@ def ends_in_procedural_question(message: str) -> bool:
     tail = _tail(message)
     if not tail:
         return False
-    if any(p.rstrip().endswith("?") for p in tail):
+    if any(p.rstrip().endswith("?") or ITEM_QUESTION.search(p) for p in tail):
         return True
     joined = "\n\n".join(tail)
     return any(p.search(joined) for p in QUESTION_PATTERNS)
@@ -350,7 +354,8 @@ def main() -> int:
         "\n"
         "If a stop is genuinely required, say which SPRINT_STOPPING_CRITERIA.md\n"
         "criterion applies, by number (\"Criterion 2: BLOCKED ...\", a \"STOP:\"\n"
-        "template, or a \"Class 1/2/3 decision\" with a plain numbered list), and\n"
+        "template, or a \"Class 1/2/3 decision\" in the shape of SPRINT_RETROSPECTIVE.md\n"
+        "\"Presenting improvements, questions and decisions\"), and\n"
         "the hook allows the stop. \"Confirming the next step\" is not a criterion.\n"
         "\n"
         "Bypass (team-lead-sanctioned only): rename the branch to include\n"

@@ -90,7 +90,11 @@ def test_a_document_change_in_this_repository_runs_the_spelling_and_dash_guards(
     assert "tests/test_sprint13_read_ledger.py" in reader_file, reader_file
     script = set(rs.targeted_tests(ROOT, ["scripts/sprint13_read_ledger.py"]))
     assert set(rs.SCRIPT_GUARDS) <= script, script
-    assert "tests/test_guard_discipline.py" in rs.targeted_tests(ROOT, ["tests/test_reader_prompts.py"])
+    picked = rs.targeted_tests(ROOT, ["tests/test_reader_prompts.py"])
+    assert "tests/test_guard_discipline.py" in picked
+    # F140: a changed test file changes its inventory row, so the inventory check runs too. Proven red 2026-11-07:
+    # with test_test_inventory left out of TEST_GUARDS (INJECTED), this assertion failed.
+    assert "tests/test_test_inventory.py" in picked
 
 
 def test_a_new_test_file_runs_itself_and_conftest_runs_everything(repo):

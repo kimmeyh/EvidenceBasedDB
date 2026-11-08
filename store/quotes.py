@@ -130,6 +130,13 @@ def ocr_only_quotes(citation_context: str | None, text: str) -> list[str]:
 CACHE_MISSES: Counter = Counter()  # F139: extractions this process ran because the text cache lacked them
 
 
+def extraction_misses() -> int:
+    """F139's `cache_misses`: the pdftotext and OCR runs only. F140 also counts page-count and per-page misses
+    ("pdfinfo", "pages") under their own keys; summing them in would make a group before F140 and one after it
+    count different things (review of 5454ccb)."""
+    return CACHE_MISSES["pdftotext"] + CACHE_MISSES["ocr"]
+
+
 @lru_cache(maxsize=1)
 def _pdftotext_version() -> str:
     out = subprocess.run(["pdftotext", "-v"], capture_output=True)

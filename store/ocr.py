@@ -68,11 +68,20 @@ def visible(text: str) -> int:
     return len(re.sub(r"\s", "", text))
 
 
-def _disk_cached(path: str, kind: str, make):
+def _tool_key(*parts: str) -> str:
+    """A short hash of poppler's version and the command's options, so a new poppler or a changed option makes the
+    value again, as `quotes._pdftotext` keys its text (review of fdedff9, and of 5454ccb)."""
+    from store.quotes import _pdftotext_version
+    return hashlib.sha256(" ".join([_pdftotext_version(), *parts]).encode()).hexdigest()[:12]
+
+
+def _disk_cached(path: str, kind: str, make, valid):
     """`make()`'s JSON-able result for `path`, kept in the text cache under the file's SHA-256 and `kind` (F140,
     Sprint 17 Task A). The page count and the per-page fallback were kept for the process only, so every test process
     started `pdfinfo` once per PDF: 390 starts and 180 of 230 seconds in one quote test, at 0.3 to 0.6 seconds a
-    process start on this machine. A folder that cannot be written is simply not used, as for `_pdftotext`."""
+    process start on this machine. A cached value that `valid` refuses (a wrong type or length) is made again. A
+    folder that cannot be written is simply not used, as for `_pdftotext`. A miss is counted under `kind`'s first
+    word ("pdfinfo", "pages"), never "pdftotext"; F139's telemetry counts pdftotext runs only."""
     digest = hashlib.sha256(Path(path).read_bytes()).hexdigest()
     try:
         cached = text_cache_dir() / f"{digest}-{kind}.json"
@@ -80,21 +89,26 @@ def _disk_cached(path: str, kind: str, make):
         cached = None
     if cached is not None:
         try:
-            return json.loads(cached.read_text(encoding="utf-8"))
+            value = json.loads(cached.read_text(encoding="utf-8"))
+            if valid(value):
+                return value
         except (OSError, ValueError):
             pass
     from store.quotes import CACHE_MISSES
-    CACHE_MISSES[kind.split("-")[0]] += 1  # F139's miss count, so a run reports what it extracted
+    CACHE_MISSES[kind.split("-")[0]] += 1
     value = make()
     if cached is not None:
+        partial = None
         try:
             cached.parent.mkdir(parents=True, exist_ok=True)
             with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=cached.parent, suffix=".partial",
-                                             delete=False) as partial:
-                json.dump(value, partial, ensure_ascii=False)
-            Path(partial.name).replace(cached)
+                                             delete=False) as out:
+                partial = Path(out.name)
+                json.dump(value, out, ensure_ascii=False)
+            partial.replace(cached)
         except OSError:
-            pass
+            if partial is not None:
+                partial.unlink(missing_ok=True)
     return value
 
 
@@ -103,7 +117,8 @@ def page_count(path: str) -> int:
     def run() -> int:
         out = subprocess.run(["pdfinfo", path], capture_output=True, check=True).stdout.decode("utf-8", "replace")
         return int(re.search(r"^Pages:\s+(\d+)", out, re.M)[1])
-    return int(_disk_cached(path, "pdfinfo-pages", run))
+    # pdfinfo is poppler too: a new poppler may repair a damaged file to a different page count.
+    return _disk_cached(path, f"pdfinfo-pages-{_tool_key('pdfinfo')}", run, lambda v: type(v) is int and v > 0)
 
 
 def page_texts(path: str) -> list[str]:
@@ -129,14 +144,14 @@ def _page_texts(path: str, layout: bool = False) -> tuple[str, ...]:
         pages = pages[:-1]
     n = page_count(path)
     if len(pages) != n:
+        cmd = ["pdftotext", "-enc", "UTF-8", *(["-layout"] if layout else [])]
+
         def per_page() -> list[str]:
-            return [subprocess.run(["pdftotext", "-enc", "UTF-8", *(["-layout"] if layout else []), "-f", str(i),
-                                    "-l", str(i), path, "-"],
+            return [subprocess.run([*cmd, "-f", str(i), "-l", str(i), path, "-"],
                                    capture_output=True, check=True).stdout.decode("utf-8", "replace")
                     for i in range(1, n + 1)]
-        from store.quotes import _pdftotext_version  # the extraction's tool is part of the key, as for `_pdftotext`
-        tool = hashlib.sha256(_pdftotext_version().encode()).hexdigest()[:12]
-        pages = _disk_cached(path, f"pages-{'layout' if layout else 'plain'}-{tool}", per_page)
+        pages = _disk_cached(path, f"pages-{'layout' if layout else 'plain'}-{_tool_key(*cmd)}", per_page,
+                             lambda v: type(v) is list and len(v) == n and all(type(p) is str for p in v))
     return tuple(pages)
 
 

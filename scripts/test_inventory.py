@@ -2,9 +2,10 @@
 """F140 part 1 (Sprint 17 Task A): the test inventory, generated so it can be reproduced.
 
 One row per test file under tests/: what it guards (its module docstring's first sentence), its kind, its tests and
-local time (from a pytest JUnit XML file, when given), where it runs, and whether it records a red proof. Written to
-`docs/test_inventory.json`; `tests/test_test_inventory.py` fails when a test file is missing from it, or a row names a
-file that is gone.
+local time (from a pytest JUnit XML file, when given), where it runs, whether it records a red proof, and the last
+time it caught a real defect (CAUGHT). Written to `docs/test_inventory.json`; `tests/test_test_inventory.py` fails
+when a test file is missing from it, a row names a file that is gone, or a computed field (COMPUTED) differs from
+what this script computes now. Only the tests and seconds are a snapshot of one timed run.
 
     python scripts/test_inventory.py [--junit FILE] [--write]
 
@@ -32,6 +33,20 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "test_inventory.json"
 PROVEN = re.compile(r"proven (red|to fail)|INJECTED|went red", re.IGNORECASE)
+COMPUTED = ("guards", "kind", "runs", "red_proof_recorded", "last_caught")  # checked against the files by a test
+
+# The last time a test caught a real defect, where one is on record (F140 part 3: the retrospectives, INTAKE and git
+# history of Sprints 11 to 16, each commit read). A record, not a computation: git does not say which test found a
+# defect. Add a line when a test goes red on a real defect.
+CAUGHT = {
+    "tests/test_intake.py": "2026-11-04: a committed manifest no workflow named "
+                            "(test_every_committed_manifest_is_named_in_the_workflow; CHANGELOG)",
+    "tests/test_sprint12_reading.py": "2026-10-28: Task G's apply rewrote Task F's read rows (5e10948)",
+    "tests/test_sprint13_reading.py": "2026-10-28: Task G's apply rewrote Task F's read rows (5e10948)",
+    "tests/test_sprint13_g_apply.py": "2026-10-28: Task G's apply rewrote Task F's read rows (5e10948)",
+    "tests/test_changelog_currency.py": "2026-10-28: commits with no CHANGELOG entry (db8aeb7, af2c2ca)",
+    "tests/test_f65_dirac3s_reading.py": "2026-10-22: F92's Dirac-3 assertions not classed (Issue #116)",
+}
 
 
 def _run_suite():
@@ -103,10 +118,10 @@ def inventory(junit: Path | None = None) -> list[dict]:
         text = f.read_text(encoding="utf-8", errors="replace")
         k = kind(path, text, rs)
         tests, seconds = times.get(path, (None, None))
-        ci = not re.search(r"^def test_", _unmarked(text), re.MULTILINE) is None
+        ci = re.search(r"^def test_", _unmarked(text), re.MULTILINE) is not None
         rows.append({"file": path, "guards": first_sentence(text), "kind": k, "tests": tests, "seconds": seconds,
                      "runs": {"full": True, "ci": ci, "changed": trigger(path, rs)},
-                     "red_proof_recorded": bool(PROVEN.search(text))})
+                     "red_proof_recorded": bool(PROVEN.search(text)), "last_caught": CAUGHT.get(path)})
     return rows
 
 

@@ -14,9 +14,78 @@ Adapted 2026-08-30 from spamfilter-multi's SPRINT_RETROSPECTIVE.md via hsbc-quan
 2. **Draft in parallel**: Claude writes its Development Team feedback for all 16 categories into `docs/sprints/drafts/SPRINT_N_RETROSPECTIVE_claude_draft.md` while waiting.
 3. **Record verbatim**: paste the template into `docs/sprints/SPRINT_N_RETROSPECTIVE.md`; the team lead's exact words per category; Claude's lines from the draft. Exit gate: 16 categories, 4 roles, no placeholders.
 4. **Combine and display** in chat, both feedback sets together per category.
-5. **Propose improvements** from the combined feedback; per proposal: Title / Source / Type / Effort / Recommendation. Display; do NOT auto-apply.
-6. **Team lead disposes each**: apply now, backlog, or skip (blanket disposition acceptable). Record in an "Improvement Decisions" section.
+5. **Propose improvements** from the combined feedback, each as `i1` to `iN` in the shape of "Presenting improvements, questions and decisions" below. Display; do NOT auto-apply.
+6. **Team lead disposes each**: "i1. a i2. c ..." or "all as recommended". Record in an "Improvement Decisions" section.
 7. **Apply**: now-items as commits on the sprint branch; backlog-items to ALL_SPRINTS_MASTER_PLAN.md; skips noted. Then the mandatory completion updates (master plan Last Completed Sprint, summary doc scheduling, CHECKLIST reconciliation). THEN `gh pr ready`.
+
+## Presenting improvements, questions and decisions (AUTHORITATIVE)
+
+Team lead, 2026-11-07. It applies to retrospective improvements, and to
+every other question or decision put to the team lead (a plan question, a
+Manual Validation decision, an F140-style recommendation). The goal it
+serves: effective long-term, as efficient as reasonably possible, and in
+line with this repository's architecture, its agile practice and its
+risk-based, automated testing.
+
+Each item:
+
+```
+iN. <brief title>          (qN for a question or decision outside a retrospective)
+- What it is: <the change, in one or two sentences>
+- What it prevents: <the defect or waste it stops, and at which point:
+  the sprint process, a backlog item, a sprint card, development, or
+  testing; the earlier, the better>
+  AND/OR What it catches: <what it finds once it has happened>
+- Prevention or control: <prevention (preferred) or control>
+- Long-term value: <what it keeps giving, sprint after sprint>
+- Evidence: <how many times it happened, the time it cost, the
+  efficiency it would gain, and how that was measured>
+- Extends: <the rule, checklist item or test it builds on> (when one does)
+- Effort: <minutes, files>
+- Options:
+  - a. (Recommendation) <option>. Pro: <...>. Con: <...>.
+  - b. <option>. Pro: <...>. Con: <...>.
+  - ...
+```
+
+The options usually come from this set, in order of preference:
+
+- the best option done now, or carded, by its effort;
+- the best option carded for the next or a later sprint, because of its
+  time or the number of files it changes;
+- the next-best alternative, and the one after it;
+- skip this sprint, but track it in case it happens again;
+- skip.
+
+Exactly one option is marked "(Recommendation)". A yes/no decision is
+`a. Yes` and `b. No`, never a question titled yes/no over its options.
+The team lead answers "i1. a i2. c q1. b" or "all as recommended", so
+every item needs a number and every option a letter.
+
+The team lead's example (2026-11-07, verbatim):
+
+```
+  i1. A refusal test stubs what the refusal protects
+  - What it is: a Phase 4 checklist line: a test of a refusal replaces the action the refusal blocks (a run, a write, a device client) with a stub that
+    fails at once.
+  - What it prevents: a red proof that removes the refusal and then does the real action. The --tests proof started test runs inside test runs from
+    16:29 to 17:52. Two runner refusal tests still run against real paths, so their proofs would write into experiments/phase2/results/ or open a device
+    client.
+  - Long-term value: every future refusal proof is safe to run, locally and in CI. It protects evidence files and metered seconds.
+  - Prevention or control: prevention.
+  - Extends: the Phase 4 per-term item.
+  - Effort: about 5 minutes, one file.
+  - Alternatives:
+    - a. (Recommendation) A checklist line (the proposal). Pro: 5 minutes, and it applies from the next task. Con: nothing enforces it.
+    - b. A test that fails a refusal test that has no stub. Pro: enforced. Con: about 60 minutes. A source scan cannot tell which action a refusal
+      blocks, so it would give false results.
+    - c. A time limit on each proof run. Pro: stops a run that does not end. Con: it is a control, not prevention. It does not stop a write or a device
+      call that happens before the limit.
+```
+
+Until 2026-11-07 a proposal was Title / Source / Type / Effort /
+Recommendation and a decision was a numbered list answered by a digit
+with a "Recommend N" line; Sprints 1 to 16 used that form.
 
 ## The 16 Mandatory Categories
 

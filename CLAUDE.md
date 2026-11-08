@@ -147,12 +147,22 @@ deliberately: `CLAUDE.md` is read in full every session, memory is recalled
 selectively, and a rule that lives only in memory has already been missed
 once for exactly that reason.
 
-- **Don't ask a decision question except as a PLAIN NUMBERED LIST Harold can
-  answer by typing a digit.** Not the AskUserQuestion tool's multiple-choice
-  UI, and not prose. The test is mechanical: if Harold cannot answer by
-  typing `1`, it is formatted wrong. Applies to yes/no ("1. Yes  2. No"),
-  option comparisons, and path selection, inside or outside any auto-advance
-  window -- only the FORMAT is at issue, not whether asking is allowed.
+- **Don't present an improvement, question or decision in any shape but
+  the one in `docs/SPRINT_RETROSPECTIVE.md`, "Presenting improvements,
+  questions and decisions (AUTHORITATIVE)".** Team lead, 2026-11-07: each
+  item is numbered (`i1` for a retrospective improvement, `q1` for any other
+  question or decision) with a brief title, then What it is, What it
+  prevents and/or catches, Prevention or control, Long-term value,
+  Evidence, Extends, Effort, and options
+  `a.` to `z.` each with its pros and cons, the recommended one marked
+  "(Recommendation)". Harold answers "i1. a i2. c q1. b" or "all as
+  recommended". The test is mechanical: if Harold cannot answer with an
+  item number and a letter, it is formatted wrong. Not the AskUserQuestion
+  tool's multiple-choice UI, and not prose. Applies to yes/no ("a. Yes
+  b. No"), option comparisons, and path selection, inside or outside any
+  auto-advance window -- only the FORMAT is at issue, not whether asking is
+  allowed. (Until 2026-11-07 the form was a numbered list answered by a
+  digit, with a "Recommend N" line.)
   **Treat AskUserQuestion as a banned tool call in this project, full stop
   -- do not evaluate whether a given question "fits" it.** Violated in this
   repository in Sprint 2 (2026-09-17) immediately after already being
@@ -175,11 +185,11 @@ once for exactly that reason.
   1% yield, and disclosed it only at Manual Validation, two days later.
   (Sprint 7 retrospective I4.)
 - **Don't phrase a decision question so "yes" could mean two different
-  things.** Each question needs one unambiguous answer form: yes/no, or
-  select 1/2/3/.../all. A compound question carrying two decisions ("approve
-  the text? And where should it be hosted?") is two numbered questions, not
-  one. **A question with numbered options is never titled as a yes/no
-  question, and every decision question ends with a "Recommend N" line.**
+  things.** Each question needs one unambiguous answer form: one letter
+  from its options. A compound question carrying two decisions ("approve
+  the text? And where should it be hosted?") is two items, not
+  one. **A question with lettered options is never titled as a yes/no
+  question, and every decision marks one option "(Recommendation)".**
   Sprint 8 (2026-10-13): Q5 was titled "Should the 7 past release merges be
   tagged too?" over numbered options, so the answer "yes" had to be
   interpreted; Q7 had no recommendation line, so "as recommended" bound to

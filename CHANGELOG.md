@@ -15,6 +15,36 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **process**: improvements, questions and decisions put to the team lead
+  take one shape (team lead, 2026-11-07): `i1`/`q1` with a brief title,
+  What it is, What it prevents and/or catches, Prevention or control,
+  Long-term value, Evidence, Effort, and lettered options with pros and
+  cons, one marked "(Recommendation)"; answered "i1. a" or "all as
+  recommended". Authoritative in `docs/SPRINT_RETROSPECTIVE.md`; CLAUDE.md,
+  the workflow, SPRINT_PLANNING, the backlog-refinement skill, the model
+  heuristics, F144's card and both question hooks' messages point at it.
+  `block_procedural_question_stop.py` now reads lettered options and a
+  `q1. ...?` title as a question (it took only digit lines; proven red).
+  `tests/test_question_format.py` checks the section's fields, the
+  pointers, and that no rule surface (CLAUDE.md, top-level docs, all of
+  `.claude/`) states the old form except as dated history; proven red
+  three ways. A fresh-eyes review found the first version scanned four
+  files and missed three. `run_suite --changed` now runs the inventory
+  check on any test-file change (proven red)
+- **fix**: the fresh-eyes review of 5454ccb (F140). The per-page key now
+  holds pdftotext's options as well as its version, and the page-count
+  key holds poppler's version, so a changed option or a new poppler makes
+  them again (the regression fdedff9 had closed for the whole-file text).
+  A cached value of the wrong type or length is made again; a failed
+  write removes its `.partial` file. F139's `cache_misses` counts
+  pdftotext and OCR runs only (`quotes.extraction_misses`), so groups
+  before and after F140 compare. `tests/test_test_inventory.py` now also
+  fails when a computed inventory field differs from its computation
+  ("computed, never stored"), and the inventory records the last real
+  defect each test caught, where one is on record. Five injections, each
+  red, then green. Both key changes refill those cache entries once
+  (#175)
+
 - **perf**: F140 part 2: the page count and the per-page fallback
   extraction are kept in the text cache (`store/ocr.py`). Every test
   process started `pdfinfo` once per PDF: in the slowest quote test, 390

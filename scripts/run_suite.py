@@ -94,7 +94,8 @@ MANIFEST_GUARDS = ("tests/test_intake.py", "tests/test_sprint11_read_ledger.py",
                    "tests/test_sprint13_read_ledger.py", "tests/test_reader_prompts.py")
 SCRIPT_GUARDS = ("tests/test_verified_writes.py", "tests/test_schema.py", "tests/test_store_durability.py",
                  "tests/test_qpu_balance_not_stored.py")
-TEST_GUARDS = ("tests/test_guard_discipline.py",)
+# test_test_inventory: a test file's docstring or markers change its inventory row (F140; review of the format change).
+TEST_GUARDS = ("tests/test_guard_discipline.py", "tests/test_test_inventory.py")
 # Files every test depends on, so a change to one runs the full suite.
 EVERYTHING = ("tests/conftest.py", "store/__init__.py", "pytest.ini", "pyproject.toml", "setup.cfg")
 

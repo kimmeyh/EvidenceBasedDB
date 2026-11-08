@@ -34,9 +34,11 @@ same as applying it (CLAUDE.md "Things Claude Should NOT Do").
    order with no group headers, HOLD items after the 20.**
 5. **Pass 1 never selects scope. Pass 2 is the only pass that does.**
    The team lead makes the final call; the slate is a proposal.
-6. **Decision questions are a plain numbered list** the team lead can
-   answer by typing a digit. Never the AskUserQuestion tool (hook-blocked
-   in this repository).
+6. **Decision questions take the shape of `docs/SPRINT_RETROSPECTIVE.md`,
+   "Presenting improvements, questions and decisions"**: `q1` to `qN`,
+   lettered options with pros and cons, one marked "(Recommendation)",
+   answered as "q1. a" (team lead, 2026-11-07). Never the AskUserQuestion
+   tool (hook-blocked in this repository).
 
 ## Procedure
 
