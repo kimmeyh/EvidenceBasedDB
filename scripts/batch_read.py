@@ -81,6 +81,10 @@ SLICE = ROOT / "manifests" / "sprint17_f144_slice.json"
 PROMPT = ROOT / "manifests" / "sprint17_f144_batch" / "READER_PROMPT.md"
 REPO_READS = ROOT / "manifests" / "sprint13_g_reads"
 REPO_BRIEFS = ROOT / "manifests" / "sprint17_f144_batch" / "briefs"
+# Records never sent or fetched, each with its reason (committed, so every exclusion is reviewed): Task E's papers
+# ("fixed by id at the task start and written to F144's exclusion list; F144 never selects them", Sprint 17 plan) and
+# a record whose saved file is another record's paper.
+EXCLUDE = ROOT / "manifests" / "sprint17_f144_batch" / "exclude.json"
 KEY_FILE = ROOT / ".env"
 LOCAL = Path(r"D:\Data\Harold\EvidenceBasedDB\work\f114\local")
 WORK = Path(r"D:\Data\Harold\EvidenceBasedDB\work\f144")
@@ -183,6 +187,18 @@ def ledger() -> dict:
     return json.loads(LEDGER.read_text(encoding="utf-8"))
 
 
+def excluded() -> dict[str, str]:
+    """record id -> why it is never sent or fetched. A missing file means none; an entry with no reason is refused,
+    so an exclusion always says why."""
+    if not EXCLUDE.is_file():
+        return {}
+    out = json.loads(EXCLUDE.read_text(encoding="utf-8"))["records"]
+    blank = sorted(rid for rid, why in out.items() if not str(why).strip())
+    if blank:
+        raise ValueError(f"{EXCLUDE.name}: an exclusion with no reason: {blank}")
+    return out
+
+
 def candidates(conn, held: set[str]) -> dict[str, dict]:
     """record id -> {context, rank, kind, ident, doi}: no read row, in no ledger group, an arXiv id or a DOI, not a
     GitHub repository, not withdrawn and not retracted (the store keeps those "so it is never cited as live evidence",
@@ -274,7 +290,7 @@ def fetch(args: list[str]) -> int:
     f89 = _load("f89dl", "sprint10_f89_downloads.py")
     # Tried for good: a saved file, or no free copy known. A failed download is tried again on the next run.
     settled = {rid for rid, f in state["files"].items() if f.get("path") or f.get("why", "").startswith("no free copy")}
-    todo, skip = [], unsendable(state) | settled
+    todo, skip = [], unsendable(state) | settled | set(excluded())
     with connect(DB_PATH) as conn:
         for r in slice_rows():
             rid = r["record_id"]
@@ -421,7 +437,7 @@ def submit(args: list[str], today: date | None = None, client_factory=make_clien
     today = today or date.today()
     apply = "--apply" in args
     state = load_state()
-    skip = unsendable(state)
+    skip = unsendable(state) | set(excluded())
     picks = [r["record_id"] for r in slice_rows()
              if r["record_id"] not in skip and state["files"].get(r["record_id"], {}).get("path")][:n]
     if not picks:

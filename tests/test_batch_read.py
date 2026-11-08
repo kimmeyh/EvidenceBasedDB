@@ -71,7 +71,7 @@ def bm(tmp_path, monkeypatch):
     mod = _module()
     for name, path in (("WORK", tmp_path / "work"), ("LOCAL", tmp_path / "local"), ("REPO_READS", tmp_path / "reads"),
                        ("REPO_BRIEFS", tmp_path / "briefs"), ("LEDGER", tmp_path / "ledger.json"),
-                       ("SLICE", tmp_path / "slice.json")):
+                       ("SLICE", tmp_path / "slice.json"), ("EXCLUDE", tmp_path / "exclude.json")):
         monkeypatch.setattr(mod, name, path)
     mod.LEDGER.write_text(json.dumps({"rule": "", "groups": {"g334": {"records": []}}}), encoding="utf-8")
     mod.SLICE.write_text(json.dumps({"slice": [{"record_id": r} for r in ("a-2020-x", "b-2021-y", "c-2022-z")]}),
@@ -100,6 +100,19 @@ def test_a_saved_result_is_never_sent_again(bm):
     assert bm.load_state()["batches"]["msgbatch_1"]["records"] == ["c-2022-z"]
     assert bm.submit(["--n", "5", "--apply"], date(2026, 11, 7), fake_factory(batches)) == 0
     assert len(batches.created) == 1, "a record in flight was sent again"
+
+
+def test_an_excluded_record_is_never_sent_and_an_exclusion_needs_a_reason(bm):
+    """Sprint 17 plan, Task E: its papers are "written to F144's exclusion list; F144 never selects them"; and
+    2026-11-07, a preprint record whose fetched file is the published paper of another record. Proven red the same
+    day: with `excluded()` left out of `submit`'s skip set (INJECTED), b-2021-y was sent."""
+    bm.EXCLUDE.write_text(json.dumps({"records": {"b-2021-y": "Task E reads it"}}), encoding="utf-8")
+    batches = FakeBatches()
+    assert bm.submit(["--n", "5", "--apply"], date(2026, 11, 7), fake_factory(batches)) == 0
+    assert bm.load_state()["batches"]["msgbatch_1"]["records"] == ["a-2020-x", "c-2022-z"]
+    bm.EXCLUDE.write_text(json.dumps({"records": {"c-2022-z": " "}}), encoding="utf-8")
+    with pytest.raises(ValueError, match="no reason"):
+        bm.excluded()
 
 
 def test_an_errored_or_expired_paper_is_sent_again_and_its_first_result_kept(bm):

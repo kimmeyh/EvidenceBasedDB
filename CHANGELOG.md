@@ -15,6 +15,15 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **feat**: F144 exclusion list
+  (`manifests/sprint17_f144_batch/exclude.json`): a record named there
+  is never sent or fetched, and each entry must give its reason. It
+  holds Task E's papers once they are fixed by id (the plan), and now
+  Huang 2023, a preprint record whose fetched copy is byte-identical to
+  Li 2024's published paper. Fetch of the free-copy slice (snapshot
+  2026-11-07): 130 tried, 8 saved, 34 refused by the publisher (403, an
+  HTML page in place of the PDF, a failed TLS check; never worked
+  around), 88 with no free copy. Test proven red (#176)
 - **feat**: F144 reader self-check (team lead, q2: "can't this be written
   into the prompt to check itself before returning?"). The batch prompt's
   last section now makes the reader check each assertion before it
