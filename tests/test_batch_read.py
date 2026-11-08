@@ -115,6 +115,30 @@ def test_an_excluded_record_is_never_sent_and_an_exclusion_needs_a_reason(bm):
         bm.excluded()
 
 
+def test_an_excluded_record_is_never_fetched_and_a_null_reason_is_refused(bm, monkeypatch):
+    """Fresh-eyes review, 2026-11-07: the exclusion in `fetch` had no test, and a null reason passed as "None".
+    Proven red the same day: with `excluded()` left out of `fetch`'s skip set (INJECTED), b-2021-y was looked up; with
+    the reason check back to `str(why).strip()` (INJECTED), the null reason passed."""
+    state = bm.load_state()
+    state["files"] = {}
+    bm.save_state(state)
+    bm.SLICE.write_text(json.dumps({"slice": [{"record_id": r, "kind": "arxiv", "ident": "1"}
+                                              for r in ("a-2020-x", "b-2021-y")]}), encoding="utf-8")
+    bm.EXCLUDE.write_text(json.dumps({"records": {"b-2021-y": "Task E reads it"}}), encoding="utf-8")
+    conn = SimpleNamespace(execute=lambda sql, args: SimpleNamespace(fetchone=lambda: ("a title",)))
+    monkeypatch.setattr(bm, "connect", lambda path: contextlib.nullcontext(conn))
+    monkeypatch.setattr(bm, "_load", lambda name, file: SimpleNamespace(
+        f80dl=SimpleNamespace(dc=SimpleNamespace(openalex_key=lambda: None))))
+    monkeypatch.setattr(bm.citations, "PacedFetcher", lambda: None)
+    looked_up = []
+    monkeypatch.setattr(bm, "free_copy", lambda f89, rid, *rest: looked_up.append(rid))
+    bm.fetch(["--n", "5"])  # a dry run: nothing fetched
+    assert looked_up == ["a-2020-x"]
+    bm.EXCLUDE.write_text(json.dumps({"records": {"a-2020-x": None}}), encoding="utf-8")
+    with pytest.raises(ValueError, match="no reason"):
+        bm.excluded()
+
+
 def test_an_errored_or_expired_paper_is_sent_again_and_its_first_result_kept(bm):
     """Team lead, 2026-11-07, Q3 = 1: an errored or expired request is not billed and holds no read, so it is sent
     again; the first result stays in the state (`earlier`) and on disk."""
@@ -264,7 +288,8 @@ def test_results_land_in_the_pipeline_shape_and_failures_are_kept(bm, monkeypatc
 
 
 SELF_CHECK = ("List every digit string in its value", "Never name a label by its number in a value",
-              "every number read by eye has \"about\"", "Each quote is on a page its anchor names",
+              "every number read by eye has \"about\"", "Write a power of ten out in full",
+              "opens \"Read from Figure S2:\"", "Each quote is on a page its anchor names",
               "a ligature (\"ﬁ\") stays a ligature")
 
 

@@ -193,7 +193,7 @@ def excluded() -> dict[str, str]:
     if not EXCLUDE.is_file():
         return {}
     out = json.loads(EXCLUDE.read_text(encoding="utf-8"))["records"]
-    blank = sorted(rid for rid, why in out.items() if not str(why).strip())
+    blank = sorted(rid for rid, why in out.items() if not (isinstance(why, str) and why.strip()))  # null is no reason
     if blank:
         raise ValueError(f"{EXCLUDE.name}: an exclusion with no reason: {blank}")
     return out

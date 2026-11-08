@@ -33,6 +33,12 @@ What changed, and why each change:
   in a value, a number no quote holds, a figure number without "about") and
   its two smaller ones (a quote off its anchor's page, a ligature changed).
   Measured on the next batch; the pilot had 49 problems in 5 papers.
+  Measured 2026-11-07 (batch msgbatch_01S5Uj1X3e8mZjAgErbbVGAQ, 8 papers):
+  16.6 problems per 100 assertions against the pilot's 26.9 (71 in 428
+  against 49 in 182). Rule 3 then changed: its "about 17 x 10^4" example
+  was itself flagged (the check reads "10" and "4" as numbers with no
+  "about"), and "Read from Supplementary Figure 2:" failed the check's
+  opening, 8 times in one paper.
 
 `{GROUP}` is the ledger group the script gave the paper (one paper per group).
 `tests/test_reader_prompts.py` checks this prompt as it checks the others; its
@@ -312,9 +318,12 @@ value that its quotes do not hold. For each assertion:
    cited work", "the theorem" in the value. The one exception is the
    opening "Read from Figure N:" of a `from_figure` value.
 3. **In a `from_figure` value, every number read by eye has "about"**:
-   each end of a range ("about 0.38 to about 0.40"), each axis value, and
-   each power ("about 17 x 10^4"). A number that the caption or the text
-   holds is quoted instead.
+   each end of a range ("about 0.38 to about 0.40") and each axis value.
+   Write a power of ten out in full ("about 170,000", "about 1,210,000"),
+   never "x 10^5": the check reads the "10" and the "5" as two numbers
+   with no "about". A number that the caption or the text holds is quoted
+   instead. A supplementary figure opens "Read from Figure S2:", never
+   "Read from Supplementary Figure 2:", which the check does not accept.
 4. **Each quote is on a page its anchor names.** A figure assertion that
    quotes the text discussing the figure on another page names both pages
    ("Figure 3, p.18; Section 4, p.12").

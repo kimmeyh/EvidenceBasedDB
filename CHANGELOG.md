@@ -15,6 +15,15 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **feat**: F144 measurement batch collected (snapshot 2026-11-07): 8 of
+  8 succeeded, $2.22, total spent $3.00 of the $95 cap. With the
+  self-check, 16.6 check problems per 100 assertions (71 in 428) against
+  the pilot's 26.9 (49 in 182). Every reply is kept and flagged. The
+  prompt's rule 3 is corrected: its "x 10^4" example was itself flagged,
+  so a power of ten is written in full, and a supplementary figure opens
+  "Read from Figure S2:". Review fixes: a null exclusion reason is
+  refused, and the exclusion in `fetch` has its own test. Both proven red
+  (#176)
 - **process**: Task E's 8 ledger papers fixed by id in F144's exclusion
   list: Pere v2 (q3 = a) and 7 in ledger order from g295 and g296, the
   first groups not yet read in full (g069 and g072 skipped, as in Sprint
