@@ -15,6 +15,11 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **fix**: the text cache writer (`store/quotes.py`) deletes its
+  `.partial` file when the replace fails, as the OCR cache writer
+  already did. Four were found in the cache, from 2026-10-23 to
+  2026-10-25; parallel workers (F140 q4) make a failed replace more
+  likely. Proven red (#175)
 - **test**: F140 q6 (team lead, 2026-11-07: a). The four reading tests'
   quote checks drop the outer `plain()`: `source_text` is already plain.
   Equivalence check before the change (snapshot 2026-11-07): 1,477

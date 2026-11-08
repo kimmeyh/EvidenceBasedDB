@@ -165,15 +165,20 @@ def _pdftotext(path: str, layout: bool) -> str:
         pass
     CACHE_MISSES["pdftotext"] += 1
     text = subprocess.run(cmd, capture_output=True, check=True).stdout.decode("utf-8", "replace")
+    partial_path = None
     try:
         cached = text_cache_dir() / name
         cached.parent.mkdir(parents=True, exist_ok=True)
         # A name of its own per writer, so two processes never share a half-written file.
         with tempfile.NamedTemporaryFile(dir=cached.parent, suffix=".partial", delete=False) as partial:
+            partial_path = Path(partial.name)
             partial.write(text.encode("utf-8"))
-        Path(partial.name).replace(cached)
+        partial_path.replace(cached)
     except (OSError, RuntimeError):
-        pass
+        # A failed write or replace (on Windows, the target held open by another process) loses one cache entry and
+        # leaves no .partial file: four were found in text_cache from 2026-10-23 to 25 (F140 q4, 2026-11-07).
+        if partial_path is not None:
+            partial_path.unlink(missing_ok=True)
     return text
 
 
