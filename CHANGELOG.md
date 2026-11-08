@@ -15,6 +15,13 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **test**: F140 q6 (team lead, 2026-11-07: a). The four reading tests'
+  quote checks drop the outer `plain()`: `source_text` is already plain.
+  Equivalence check before the change (snapshot 2026-11-07): 1,477
+  sources, 8,146 quotes and 234 figures, 0 verdicts different. A second
+  cause found on the same line: `cache.setdefault(key, plain(...))`
+  built the text on every assertion, not once per file. Now built once.
+  `test_sprint12_reading[G]` 37 s to 15.3 s (#175)
 - **feat**: F140 q7, q8 and q9 (team lead, 2026-11-07: a, a, a). A full
   run is not repeated on a tree and store that already passed it
   (`--force` runs it); every `--changed` gate adds 9 high-impact test
