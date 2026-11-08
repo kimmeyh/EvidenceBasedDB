@@ -209,6 +209,27 @@ def test_reader_telemetry_is_not_part_of_the_tree_id_and_a_manifest_still_is(rep
     assert staged == ""
 
 
+def test_a_new_telemetry_file_rewritten_while_the_tree_id_is_taken_does_not_crash_it(repo, monkeypatch):
+    """Sprint 17 Task E (2026-11-07): a reader rewrote its group's new, untracked telemetry file between the scratch
+    index's `git add -A` and its `git rm --cached`; git refuses to unstage an entry that differs from both HEAD and the
+    file ("use -f to force removal"), so the gate crashed before any test ran. Proven red 2026-11-07: without `-f`,
+    the rewrite between the two steps raised CalledProcessError."""
+    runner = _runner()
+    telemetry = repo / "manifests" / "sprint17_reads" / "telemetry"
+    telemetry.mkdir(parents=True)
+    (telemetry / "g401.json").write_text('{"steps": []}\n', encoding="utf-8")
+    real = runner._git
+
+    def rewrite_after_add(r, *args, env=None):
+        out = real(r, *args, env=env)
+        if args[:1] == ("add",):  # the reader's check writes its file now
+            (telemetry / "g401.json").write_text('{"steps": [{"name": "check"}]}\n', encoding="utf-8")
+        return out
+
+    monkeypatch.setattr(runner, "_git", rewrite_after_add)
+    assert runner.working_tree(repo)
+
+
 def test_the_verdict_comes_from_the_exit_code_and_a_still_tree():
     v, ok = _runner().verdict, "12 passed in 1.0s"  # PASSED also needs a passed count (2026-11-07)
     assert (v(0, "t1", "t1", ok), v(1, "t1", "t1", ok), v(0, "t1", "t2", ok), v(1, "t1", "t2", ok)) == (

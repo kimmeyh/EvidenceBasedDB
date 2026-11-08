@@ -61,6 +61,10 @@ S15_READER = "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_read
 S16_TAG = "Sprint 16 Task F, F114 (local read)"
 S16_READER = "Claude Sonnet 5.5 (F114 local reader, manifests/sprint16_f114_reads/READER_PROMPT.md)"
 S16_GROUPS = ("g133-r1", "g154-r1", "g155", "g156", "g333", "g334")
+# Sprint 17 Task E (INTAKE section 76): its reads ran under Sprint 17's prompt, told apart by group as Sprint 16's are
+S17_TAG = "Sprint 17 Task E, F114 (local read)"
+S17_READER = "Claude Sonnet 5.5 (F114 local reader, manifests/sprint17_f114_reads/READER_PROMPT.md)"
+S17_GROUPS = ("g230", "g295", "g296", "g348")
 UNRECORDED = "Claude (F114 cloud session; the model is not in the result's commits, the launcher's default was Sonnet)"
 CHANGED = {"corrected", "narrowed", "widened", "contradicted"}
 
@@ -305,7 +309,8 @@ def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> 
     # Sprint 15 Task H: a read under Sprint 15's prompt carries figure_count (its check requires it); it names that
     # sprint's prompt, not Sprint 14's (g062-r1 was first finalized as a Sprint 14 read)
     s15 = {p["record_id"] for p in papers(g) if "figure_count" in p}
-    later = (S16_TAG, S16_READER) if g in S16_GROUPS else (S15_TAG, S15_READER)
+    later = ((S17_TAG, S17_READER) if g in S17_GROUPS else (S16_TAG, S16_READER) if g in S16_GROUPS
+             else (S15_TAG, S15_READER))
     tag_of = {r: later if r in s15 else (LOCAL_TAG, LOCAL_READER) for r in local}
     whole = local and local == held and len(set(tag_of.values())) == 1  # read wholly by one sprint's local readers
     if whole:

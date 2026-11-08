@@ -6,7 +6,10 @@ one rule added, F142 part 3: a proof appendix over 30 pages is split
 across reviewers by page from the start (section "A long proof appendix"
 below). Sprint 16: Monaco's 70-page supplement was graded from its
 statements, and two fresh reviewers then changed 13 of 94 decisions;
-Heimann's 7 appendices were left unread on the first pass.
+Heimann's 7 appendices were left unread on the first pass. Every path into
+the repository names the Sprint 17 worktree
+(`D:\Data\Harold\github\EvidenceBasedDB-sprint17`): the main checkout is
+on another branch during Sprint 17.
 
 Sprint 16 (2026-11-06): Sprint 15 Task H's review prompt below, with
 F139's render-once change (Task B). The reviewer still reads the whole
@@ -62,9 +65,9 @@ output file:
   form feeds; a page whose text layer is empty starts "[OCR text of page
   N]" and holds the OCR text instead.
 - The paper's PDF, at the path in the group's reader file
-  `D:\Data\Harold\github\EvidenceBasedDB\manifests\sprint13_g_reads\group_GROUP.json`
+  `D:\Data\Harold\github\EvidenceBasedDB-sprint17\manifests\sprint13_g_reads\group_GROUP.json`
   (`file`), when an item rests on a figure: get the page's image with
-  `python -X utf8 D:\Data\Harold\github\EvidenceBasedDB\scripts\render_page.py "<file>" <page> --group GROUP`
+  `python -X utf8 D:\Data\Harold\github\EvidenceBasedDB-sprint17\scripts\render_page.py "<file>" <page> --group GROUP`
   and view the image at the path it prints with the Read tool. It is the
   image the reader rendered when there is one (F139, Sprint 16: render
   once); add `--dpi 150` when the labels are too small to read. Keep any

@@ -4208,3 +4208,40 @@ Written 2026-11-06, before the apply. Every count is a snapshot as of
 - `scripts/sprint16_f51_cvqboost.py`: a dry run checks every quote;
   `--apply` takes a verified backup; a second apply writes nothing.
   `tests/test_sprint16_f51_cvqboost.py`.
+
+## 76. F114 at 10 papers, under Sprint 17's prompts (Sprint 17 Task E)
+
+Every count is a snapshot as of 2026-11-07. Written before the intake
+apply. Section 75 is F144's, on its own branch.
+
+- **The 2 new PDFs**, saved into `Papers\` by the team lead on
+  2026-11-07 and named by no record (a title and access search of the
+  store found neither), enter at `seen` through the door from
+  `manifests/sprint17_f114_new.json`:
+  - Sar et al., "Quantum Machine Learning in Medical Image Analysis: From
+    Diagnostics to Surgery Planning," IEEE Access 14, 2026 (DOI
+    10.1109/ACCESS.2026.3663498, 43 pages), api-origin from its DOI,
+    under `qml`. The file is named for "Ayan", the first author's given
+    name; the record id follows the door (`sar-2026-...`). The file is not
+    renamed.
+  - PSI, "A proof of the Aaronson-Ambainis conjecture" (9 pages), a web
+    article printed from a browser on 2026-11-07, hand-origin (no DOI or
+    arXiv id), under `qc`. The proof and its Lean check are linked from
+    the page and not held, so the article is the source read: a
+    company's own announcement of its result.
+  - Each PDF's SHA-256 is in its `evidence`.
+- **Christophe Pere's list** is unchanged since `399b022651` (checked
+  2026-11-07), so it adds no paper.
+- **The 10, fixed by id at the task start**
+  (`scripts/sprint17_f114_local.py`): g348, a new ledger group (the 2
+  new papers; g335 to g347 are F144's groups on its branch); g230's Pere
+  v2 (team lead q3 = a); g295, all 5, the first group not yet read in
+  full; g296's first 2. The records of g230 and g296 left out of the
+  briefs are left for a later release. Each id is on F144's exclusion
+  list, so F144 never sends it.
+- **Prompts.** `manifests/sprint17_f114_reads/READER_PROMPT.md` and
+  `REVIEW_PROMPT.md`: Sprint 16's, with Task C's fixes (a proof
+  appendix over 30 pages split across reviewers by page; the sign-off
+  `add` table), and every script path set to the Sprint 17 worktree,
+  since the main checkout is on F144's branch. Telemetry stays in
+  `manifests/sprint16_f114_reads/telemetry/` (one folder for F143).

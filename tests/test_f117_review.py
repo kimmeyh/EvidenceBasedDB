@@ -177,6 +177,13 @@ def test_a_sprint16_group_names_sprint16s_prompt(review, monkeypatch):
     out = review.finalize("g050", "2026-11-06", review.STORED)
     assert (out["tag"], out["reader"]) == (review.S16_TAG, review.S16_READER)
     assert "sprint16_f114_reads" in out["reader"]
+    # Sprint 17 Task E: its groups name Sprint 17's prompt. Proven red 2026-11-07: with S17_GROUPS ignored in
+    # `finalize` (INJECTED), the group named Sprint 16's prompt.
+    monkeypatch.setattr(review, "S16_GROUPS", ())
+    monkeypatch.setattr(review, "S17_GROUPS", ("g050",))
+    out = review.finalize("g050", "2026-11-07", review.STORED)
+    assert (out["tag"], out["reader"]) == (review.S17_TAG, review.S17_READER)
+    assert "sprint17_f114_reads" in out["reader"]
 
 
 def test_a_missing_or_malformed_decision_is_refused(review):

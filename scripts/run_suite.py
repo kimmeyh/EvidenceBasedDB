@@ -86,7 +86,9 @@ def working_tree(repo: Path) -> str:
             shutil.copyfile(index, scratch)  # its stat cache makes `add -A` fast
         env = dict(os.environ, GIT_INDEX_FILE=str(scratch))
         _git(repo, "add", "-A", env=env)
-        _git(repo, "rm", "-r", "-q", "--cached", "--ignore-unmatch", "--", *NOT_FINGERPRINTED, env=env)
+        # -f: a reader may rewrite a new telemetry file between the two steps, and git refuses to unstage an entry that
+        # differs from both HEAD and the file (Sprint 17 Task E, 2026-11-07: the gate crashed before any test ran)
+        _git(repo, "rm", "-r", "-q", "-f", "--cached", "--ignore-unmatch", "--", *NOT_FINGERPRINTED, env=env)
         return _git(repo, "write-tree", env=env)
 
 

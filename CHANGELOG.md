@@ -15,6 +15,21 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **fix**: `run_suite`'s tree id no longer crashes when a reader rewrites
+  a new telemetry file between the scratch index's `git add -A` and its
+  `git rm --cached` (`-f` added). Found at Task E's first gate, which
+  crashed before any test ran while 4 readers worked. A gap in F142 part
+  1's fix. Proven red
+- **feat**: F114 Task E set up (INTAKE section 76). The team lead's 2 new
+  PDFs entered at `seen` through the door
+  (`manifests/sprint17_f114_new.json`, after a verified backup): Sar et
+  al., IEEE Access 2026, and PSI's web article on the Aaronson-Ambainis
+  conjecture. The 10 papers fixed by id in
+  `scripts/sprint17_f114_local.py`: g348 (new ledger group, the 2 new
+  papers), g230's Pere v2, g295 (5), g296's first 2. Sprint 17 reader
+  and review prompts name the Sprint 17 worktree's scripts, since the
+  main checkout is on F144's branch; `f117_review` tags these groups
+  with the Sprint 17 prompt (proven red). 4 local readers started
 - **fix**: fresh-eyes review of 2580ce2 (the sign-off `add` table). (1)
   An added assertion skipped the reader's own checks. Its field values
   are now checked when it is merged (an unknown result type crashed the
