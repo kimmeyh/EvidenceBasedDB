@@ -4211,8 +4211,10 @@ Written 2026-11-06, before the apply. Every count is a snapshot as of
 
 ## 76. F114 at 10 papers, under Sprint 17's prompts (Sprint 17 Task E)
 
-Every count is a snapshot as of 2026-11-07. Written before the intake
-apply. Section 75 is F144's, on its own branch.
+Every count is a snapshot as of its own date: the plan below as of
+2026-11-07 (written before the intake apply), the reads, reviews and
+apply as of 2026-11-08 (written after the apply). Section 75 is F144's,
+on its own branch.
 
 - **The 2 new PDFs**, saved into `Papers\` by the team lead on
   2026-11-07 and named by no record (a title and access search of the
@@ -4253,8 +4255,9 @@ apply. Section 75 is F144's, on its own branch.
   proof, Alarfaj's dates and headline metrics. Each disagreement is in
   the read's `reader_inference` and in the reviewer's why.
 - **Reviews.** One reviewer per group (no proof appendix over 30 pages;
-  Albash's appendices span about pages 55 to 65). 431 items: 264 HIGH,
-  167 LOW. No certainty change on a stored assertion, so none waits for
+  Albash's appendices span about pages 55 to 65). 431 items decided:
+  264 HIGH, 167 LOW (the review files list the HIGHs and the 136
+  theoretical LOWs; any other LOW needs no table entry). No certainty change on a stored assertion, so none waits for
   the team lead. g348's first review graded 2 of PSI's own claims HIGH;
   finalize refused them (a vendor's own claim is LOW), and the reviewer
   re-decided both LOW. The cited-step rule made Aharonov's headline
@@ -4265,4 +4268,21 @@ apply. Section 75 is F144's, on its own branch.
   backup (`evidence-20261108T011457987899-...db`), with 0 stored fields
   changed that no review item names; the 10 papers at `read`. A second
   apply checked nothing and wrote nothing. Assertions after it: 37,408
-  (HIGH 11,754; LOW 25,554).
+  (HIGH 11,754; LOW 25,554; MODERATE 97; VERY-LOW 1; no certainty 2).
+- **Fresh-eyes review of the apply (2026-11-08, read-only).** No high
+  finding: the two new records match their PDFs; of about 75 sampled
+  assertions (45 HIGH) no vendor claim is HIGH, and Pere v2's 4 stored
+  assertions match the paper. Found, and left for the team lead (a signed
+  review is never edited in place; a fix is a later sign-off):
+  - about 5 of 45 sampled HIGH values say more than their quotes
+    (sar-vqc-components, sar-qcnn-architecture, sar-metric-families,
+    aharonov-model-definition, alarfaj-dataset-description); the paper
+    supports each, so nothing false is stored;
+  - albash-grover-local-condition-not-proof is HIGH as a stated limit,
+    but it is the review's judgment of another paper's result;
+  - Pere v2's narrowed chance-level-and-signature-control still joins
+    the claims that are also entered one by one;
+  - random-instance-distribution-scope is typed `absence` but is a
+    setup statement; PSI's record has no `coi`, where QCi's records
+    name the authors' employer; 49 records at `read` (these 10 among
+    them) keep a disposition ending "not yet read".

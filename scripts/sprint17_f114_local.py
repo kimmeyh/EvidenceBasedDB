@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 r"""Sprint 17 Task E (F114, 10 papers): the local readers' briefs. INTAKE_WORKFLOW.md section 76.
 
-The 10, fixed by id at the task start (Sprint 17 plan, Task E) and written to F144's exclusion list
-(`manifests/sprint17_f144_batch/exclude.json`, on F144's branch), so F144 never selects them:
+The 10, fixed by id at the task start (Sprint 17 plan, Task E). Each is also on F144's exclusion list
+(`manifests/sprint17_f144_batch/exclude.json`, on F144's branch, written by hand there; this script does not write
+or check it), so F144 never selects them. The groups and ids below were chosen by hand from the ledger, not computed:
 
 - g348, a new ledger group: the 2 PDFs the team lead saved into Papers on 2026-11-07, entered through the door by
   `manifests/sprint17_f114_new.json` (Sar et al., IEEE Access 2026; PSI's web article on the Aaronson-Ambainis

@@ -15,6 +15,11 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **docs**: fresh-eyes review of Task E's apply (24b05d7). No high
+  finding. INTAKE section 76's snapshot line now dates the plan and the
+  apply apart, the totals name every certainty, and the review's
+  findings are listed for the team lead; the brief script's docstring
+  no longer claims it writes F144's exclusion list
 - **feat**: F114 Task E applied (INTAKE section 76; snapshot
   2026-11-08). 10 papers read in full by 4 local readers, reviewed and
   signed off; 1,201 assertions entered or changed, every quote verbatim;
