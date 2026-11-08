@@ -355,6 +355,15 @@ def test_a_written_files_bare_id_is_never_taken_and_a_rebuild_keeps_its_decided_
     with pytest.raises(SystemExit, match="chen-2024-a-x"):
         b.main(["--write"])
     assert not g076.exists()
+    # Fresh-eyes review of f79714b: a group reviewed in parts (F142 part 3) was invisible to this guard. Proven red
+    # 2026-11-07: with `decided_ids` reading only `<g>.json` again (INJECTED), the rebuild below was written.
+    (decisions / "g076.json").unlink()
+    (decisions / "g076.p1.json").write_text(json.dumps({"other-id": {}}), encoding="utf-8")
+    (decisions / "g076.p2.json").write_text(json.dumps({"chen-2024-a-x": {}}), encoding="utf-8")
+    (decisions / "g076.p1.old.json").write_text("{}", encoding="utf-8")  # a stray name is not a part
+    with pytest.raises(SystemExit, match="chen-2024-a-x"):
+        b.main(["--write"])
+    assert not g076.exists()
 
 
 def test_two_different_ids_on_one_assertion_are_refused(tmp_path, monkeypatch):

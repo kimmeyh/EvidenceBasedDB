@@ -41,7 +41,26 @@ def test_one_step_sets_both_fields_and_appends_the_note(tmp_path):
     assert not list(tmp_path.glob("*.partial"))
 
 
-@pytest.mark.parametrize("bad", ["Manual Validation", "Phase 5.3.1 Manual Validation", "Phase 5 Validation"])
+def test_a_failed_replace_leaves_no_partial_file_and_a_bare_note_is_refused(tmp_path, monkeypatch, capsys):
+    """Fresh-eyes review of f79714b: a replace that fails (the file held open on Windows) left `*.partial` in
+    `.claude/`, where it changes the tree id and `git add -A` sweeps it up; `--note` as the last argument raised
+    IndexError. Proven red 2026-11-07: with the `finally` unlink removed (INJECTED), the .partial file stayed."""
+    p = _status_file(tmp_path)
+    s = _script()
+
+    def refuse(self, target):
+        raise PermissionError("held open")
+    monkeypatch.setattr(type(p), "replace", refuse)
+    with pytest.raises(PermissionError):
+        s.set_status("Phase 5.3 Manual Validation", path=p)
+    monkeypatch.undo()
+    assert not list(tmp_path.glob("*.partial"))
+    assert s.main(["Phase 4.1 Execution", "--note"]) == 2
+    assert "needs its text" in capsys.readouterr().out
+
+
+@pytest.mark.parametrize("bad", ["Manual Validation", "Phase 5.3.1 Manual Validation", "Phase 5 Validation",
+                                 "Phase 4.1 Execution\nPhase 9.9 Injected line"])
 def test_a_status_that_is_not_phase_n_n_is_refused_and_nothing_is_written(tmp_path, bad):
     p = _status_file(tmp_path)
     before = p.read_text(encoding="utf-8")

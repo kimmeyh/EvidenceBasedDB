@@ -21,11 +21,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 STATUS = ROOT / ".claude" / "sprint_status.json"
-FORM = re.compile(r"^Phase \d+\.\d+ \S")
+FORM = re.compile(r"Phase \d+\.\d+ \S[^\n]*")  # the whole status, one line (fresh-eyes review of f79714b)
 
 
 def set_status(status: str, note: str | None = None, path: Path = STATUS) -> dict:
-    if not FORM.match(status):
+    if not FORM.fullmatch(status):
         raise ValueError(f"a status starts 'Phase n.n <name>': {status!r}")
     data = json.loads(path.read_text(encoding="utf-8"))
     data["status"] = status
@@ -36,7 +36,10 @@ def set_status(status: str, note: str | None = None, path: Path = STATUS) -> dic
     with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=path.parent, suffix=".partial", delete=False) as out:
         json.dump(data, out, indent=2, ensure_ascii=False)
         out.write("\n")
-    Path(out.name).replace(path)
+    try:
+        Path(out.name).replace(path)
+    finally:  # a failed replace (the file held open on Windows) leaves no .partial file in the tree
+        Path(out.name).unlink(missing_ok=True)
     return data
 
 
@@ -45,6 +48,9 @@ def main(argv: list[str] | None = None) -> int:
     note = None
     if "--note" in args:
         i = args.index("--note")
+        if i + 1 >= len(args) or not args[i + 1].strip():
+            print("REFUSED: --note needs its text")
+            return 2
         note = args[i + 1]
         del args[i:i + 2]
     if len(args) != 1:

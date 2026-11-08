@@ -5,8 +5,9 @@ fresh reviewers then changed 13 of 94 decisions).
 
 Proven red 2026-11-07: with the split section's "over 30 pages" line changed (INJECTED), the test named the Sprint 17
 prompt. It first PASSED that injection twice: the whole-file check found the phrase in the header, then the
-section check found it in the section's last line; hence the section-only text and the specific phrase. with the Sprint 17 prompt folder renamed so no prompt from Sprint 17 on was found (INJECTED), the floor check
-failed instead of passing on an empty list. Each restored and green.
+section check found it in the section's last line; hence the section-only text and the specific phrase. With the
+Sprint 17 prompt folder renamed so no prompt from Sprint 17 on was found (INJECTED), the floor check failed instead
+of passing on an empty list. Each restored and green.
 """
 from __future__ import annotations
 

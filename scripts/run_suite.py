@@ -212,6 +212,14 @@ def covers_the_store(picked: list[str] | None, extra: list[str], store_files: li
     return not extra and (picked is None or set(store_files) <= set(picked))
 
 
+def summary_line(log: str) -> str:
+    """pytest's summary: the log's LAST non-empty line, in pytest's ending form ("... in 1.0s"). Fresh-eyes review of
+    f79714b: the last matching line ANYWHERE in the log was taken, so a run with no summary whose output held "12
+    passed" elsewhere (a parametrize id, a docstring) could have been recorded PASSED."""
+    last = next((ln.strip().strip("= ") for ln in reversed(log.splitlines()) if ln.strip()), "")
+    return last if re.search(r"\d+ (passed|failed|error).* in \d+(\.\d+)?s", last) else "no pytest summary line"
+
+
 def verdict(rc: int, before: str, after: str, summary: str = "") -> str:
     """PASSED needs rc 0 AND a summary line that counts passed tests. 2026-11-07: `run_suite.py --help` reached
     pytest, exited 0 with no tests run, and was recorded PASSED for the tree, which a commit could have used."""
@@ -256,9 +264,7 @@ def main(argv: list[str]) -> int:
         rc = subprocess.run([sys.executable, "-m", "pytest", "-q", *argv], cwd=ROOT, stdout=out,
                             stderr=subprocess.STDOUT).returncode
     after = working_tree(ROOT)
-    lines = log.read_text(encoding="utf-8", errors="replace").splitlines()
-    summary = next((ln.strip("= ") for ln in reversed(lines) if re.search(r"\d+ (passed|failed|error)", ln)),
-                   "no pytest summary line")
+    summary = summary_line(log.read_text(encoding="utf-8", errors="replace"))
     result = verdict(rc, before, after, summary)
     record = {"verdict": result, "rc": rc, "tree": before, "tree_after": after, "args": argv,
               "summary": summary, "head": _git(ROOT, "rev-parse", "HEAD"),

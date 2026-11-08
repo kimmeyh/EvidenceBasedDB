@@ -212,3 +212,16 @@ def test_a_run_that_passed_no_test_is_never_recorded_passed():
     assert rs.verdict(0, "t", "t", "1607 passed, 11 skipped in 2268.4s") == "PASSED"
     assert rs.verdict(1, "t", "t", "3 failed, 1604 passed in 2268.4s") == "FAILED"
     assert rs.verdict(0, "t", "u", "1607 passed in 2268.4s") == "INVALID"
+
+
+def test_the_summary_is_the_logs_last_line_in_pytests_ending_form():
+    """Fresh-eyes review of f79714b: the summary was the last line ANYWHERE in the log that named a count, so a run
+    with no summary could borrow "12 passed" from a parametrize id or a docstring. Proven red 2026-11-07: with
+    `summary_line` searching every line again (INJECTED), the --fixtures case returned the docstring line."""
+    rs = _runner()
+    fixtures = "tmp_path -- conftest.py\n    a helper; 12 passed when it was written\n\n"
+    assert rs.summary_line(fixtures) == "no pytest summary line"
+    assert rs.verdict(0, "t", "t", rs.summary_line(fixtures)) == "FAILED"
+    run = "....\ntests/test_x.py::t[12 passed] ok\n======= 579 passed in 1451.60s (0:24:11) =======\n"
+    assert rs.summary_line(run) == "579 passed in 1451.60s (0:24:11)"
+    assert rs.summary_line("1 passed, 2 warnings in 0.5s\n") == "1 passed, 2 warnings in 0.5s"

@@ -349,11 +349,35 @@ def assemble(groups: dict[str, list[str]], written: set[str] = frozenset()) -> t
     return built, renames
 
 
+def decisions_in(folder: Path, g: str, missing_ok: bool = False) -> dict:
+    """A group's decisions in `folder`: `<g>.json`, or its parts `<g>.p1.json`, `<g>.p2.json`, ... when a proof
+    appendix over 30 pages was split across reviewers by page (F142 part 3, Sprint 17; REVIEW_PROMPT.md). Both forms
+    at once, or an item decided in two parts, is refused: one item has one decision. The one place that finds a
+    group's decision files, so the rebuild guard and `f117_review.decisions_of` cannot disagree (fresh-eyes review of
+    f79714b: the guard read only `<g>.json` and passed every split group)."""
+    whole = folder / f"{g}.json"
+    numbered = [(int(m.group(1)), p) for p in folder.glob(f"{g}.p*.json")
+                if (m := re.fullmatch(rf"{re.escape(g)}\.p(\d+)\.json", p.name))]
+    parts = [p for _, p in sorted(numbered)]
+    if whole.exists() and parts:
+        raise ValueError(f"{g}: both {whole.name} and part files {[p.name for p in parts]}; keep one form")
+    if not parts:
+        if missing_ok and not whole.exists():
+            return {}
+        return json.loads(whole.read_text(encoding="utf-8"))
+    merged: dict = {}
+    for p in parts:
+        for aid, d in json.loads(p.read_text(encoding="utf-8")).items():
+            if aid in merged:
+                raise ValueError(f"{g}: {aid} decided in two parts ({p.name} and an earlier part)")
+            merged[aid] = d
+    return merged
+
+
 def decided_ids(g: str) -> set[str]:
-    """The ids a group's review decisions name: a group rebuilt after its file was deleted is prefixed against a
-    different batch, so an id can change under its decisions (review of 7914e80)."""
-    path = cloud.WORK / "review" / "decisions" / f"{g}.json"
-    return set(json.loads(path.read_text(encoding="utf-8"))) if path.exists() else set()
+    """The ids a group's review decisions name, whole or in parts: a group rebuilt after its file was deleted is
+    prefixed against a different batch, so an id can change under its decisions (review of 7914e80)."""
+    return set(decisions_in(cloud.WORK / "review" / "decisions", g, missing_ok=True))
 
 
 def read_sha256(g: str) -> str:

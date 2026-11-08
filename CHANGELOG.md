@@ -15,6 +15,15 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **fix**: fresh-eyes review of f79714b. (1) The rebuild guard in
+  `f117_build_groups.py` read only `decisions/<g>.json`, so a group
+  reviewed in parts could be rebuilt with changed ids under its
+  decisions; both scripts now find decision files in one place
+  (`decisions_in`), and a stray name such as `g1.p1.old.json` is not a
+  part. (2) `run_suite`'s summary is the log's last line in pytest's
+  ending form, not any line that names a count. (3) `set_status.py`
+  takes a one-line status only, leaves no `.partial` file when a replace
+  fails, and refuses `--note` with no text. Each proven red (#177)
 - **feat**: F142 part 3 (Task C): a proof appendix over 30 pages is split
   across reviewers by page from the start. The Sprint 17 review prompt
   (`manifests/sprint17_f114_reads/REVIEW_PROMPT.md`) says how; each part
