@@ -89,6 +89,9 @@ from store.quotes import (QUOTE, ocr_only_quotes, plain, read_from_figure, requi
 _spec = importlib.util.spec_from_file_location("f80", Path(__file__).with_name("sprint9_f80_reading.py"))
 f80 = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(f80)
+_spec = importlib.util.spec_from_file_location("review_additions", Path(__file__).with_name("review_additions.py"))
+additions = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(additions)
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -132,6 +135,9 @@ EXTENT_FIX: dict[str, list[str]] = {}  # record id -> [extent, detail]: the coor
 REENTER: dict[str, str] = {}  # record id -> why: a paper refused at an earlier read whose assertions now enter
 REFUSED = re.compile(r"read (whole )?at first pass and NOT entered")
 ID_FIX: dict[str, str] = {}  # a new assertion's id where the reader's suggestion is already another source's
+# F142 part 2 (Sprint 17 Task C): group -> the review's "add" table, the assertions the coordinator's sign-off added
+# to the read or split from one (`review_additions`); merged by load_groups, so the read file is never edited by hand.
+ADD: dict[str, dict] = {}
 
 # F114's groups (g043 on, Sprint 14 Task E, F117) were read in cloud sessions and entered in Sprint 14, so their
 # review names its own tag and reader; a group without them is one of Task G's. "readers" overrides the reader for
@@ -173,6 +179,8 @@ def _load_reviews() -> dict[str, tuple[str, str]]:
         RECORD_TAG.update(review.get("tags", {}))
         if review.get("unread"):
             UNREAD[g] = review["unread"]
+        if review.get("add"):
+            ADD[g] = review["add"]
         for key, table in _TABLES.items():
             for aid, v in review.get(key, {}).items():
                 if aid in table:
@@ -249,7 +257,8 @@ def load_groups() -> list[tuple[str, dict]]:
     """Every paper of the reviewed groups; refuses a reader file whose records are not its group's."""
     out = []
     for g in groups():
-        papers = json.loads((READS_DIR / f"group_{g}.json").read_text(encoding="utf-8"))["papers"]
+        papers = additions.merge(g, json.loads((READS_DIR / f"group_{g}.json").read_text(encoding="utf-8"))["papers"],
+                                 ADD.get(g, {}))
         want = group_records(g) - set(UNREAD.get(g, {}))
         got = [p["record_id"] for p in papers]
         if set(got) != want or len(got) != len(want):
@@ -350,8 +359,9 @@ def assertions(problems: list[str] | None = None) -> list[tuple[str, AssertionRe
                 add(g, rid, p, aid, e, f"{e['verdict']} at a full read")
         for a in p.get("assertions", []):
             aid = a["id_suggestion"]
-            if aid not in DROP:
-                add(g, rid, p, aid, a, "extracted at a full read", ID_FIX.get(aid, aid))
+            if aid not in DROP:  # an assertion the sign-off added says so in its history (F142 part 2)
+                how = "added at the coordinator's sign-off" if additions.MARK in a else "extracted at a full read"
+                add(g, rid, p, aid, a, how, ID_FIX.get(aid, aid))
     return out
 
 

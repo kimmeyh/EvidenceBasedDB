@@ -326,7 +326,10 @@ def written_ids() -> set[str]:
     return ({a.get("id_suggestion") or a.get("id") for f in READS_DIR.glob("group_g*.json")
              for p in json.loads(f.read_text(encoding="utf-8"))["papers"] for a in p.get("assertions", [])}
             | {new for f in REVIEWS_DIR.glob("g*.json")
-               for new in (json.loads(f.read_text(encoding="utf-8")).get("id_fix") or {}).values()})
+               for new in (json.loads(f.read_text(encoding="utf-8")).get("id_fix") or {}).values()}
+            # F142 part 2: an assertion a sign-off added is held by its group too, in the review or not yet finalized
+            | {new for f in [*REVIEWS_DIR.glob("g*.json"), *(cloud.WORK / "review" / "signoff").glob("g*.json")]
+               for new in (json.loads(f.read_text(encoding="utf-8")).get("add") or {})})
 
 
 def assemble(groups: dict[str, list[str]], written: set[str] = frozenset()) -> tuple[dict[str, list[dict]], list[str]]:

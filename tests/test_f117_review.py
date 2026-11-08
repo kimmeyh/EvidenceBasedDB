@@ -269,6 +269,43 @@ def test_the_coordinators_sign_off_is_merged_on_every_finalize(review):
         review.finalize("g050", "2026-10-30", review.STORED)
 
 
+ADDED = {"record_id": "p1", "why": "split from narrow, the team lead's decision",
+         "assertion": {"value": "the second half", "anchor": "p.4", "quotes": ["the second half, as quoted"],
+                       "result_type": "setup", "claim_type": "positive", "context": "qml",
+                       "certainty_suggestion": "high"}}
+
+
+def test_a_split_is_a_sign_off_add_and_the_read_file_is_never_edited(review):
+    """F142 part 2 (Sprint 17 Task C): Sprint 16 split `he-simulation-scope` (MV Q1 = 3) by editing the reader's
+    read file by hand (db2abe3). A split is now a `value_replace` on the old assertion plus an `add` in the sign-off:
+    the added assertion is an item to decide like a reader's, the review file carries the table for the applier, and
+    the read file stays as the reader wrote it. Proven red 2026-11-07: with `papers` not merging the sign-off
+    (INJECTED), the added item was missing (KeyError); with "add" left out of
+    SIGNOFF_TABLES (INJECTED), finalize refused the table; with the held-id check removed (INJECTED), an add under a
+    stored id passed."""
+    read = (review.READS_DIR / "group_g050.json").read_text(encoding="utf-8")
+    so = review.REVIEW / "signoff"
+    so.mkdir()
+    (so / "g050.json").write_text(json.dumps({"value_replace": {"narrow": "the first half"},
+                                              "add": {"narrow-2": ADDED}}), encoding="utf-8")
+    assert {i["id"]: i["kind"] for i in review.items("g050", review.STORED)}["narrow-2"] == "new-high"
+    _decide(review, GOOD)
+    with pytest.raises(ValueError, match=r"no decision for \['narrow-2'\]"):
+        review.finalize("g050", "2026-11-07", review.STORED)
+    _decide(review, {**GOOD, "narrow-2": {"decision": "high", "basis": "setup", "why": "Section 4 states it"}})
+    out = review.finalize("g050", "2026-11-07", review.STORED)
+    assert out["add"] == {"narrow-2": ADDED} and out["value_replace"] == {"narrow": "the first half"}
+    assert out["graded_high"]["narrow-2"] == ["setup", "Section 4 states it"]
+    assert (review.READS_DIR / "group_g050.json").read_text(encoding="utf-8") == read
+
+    for bad, match in (({"st-lo": ADDED}, "already holds"), ({"x": {**ADDED, "record_id": "p9"}}, "not a paper"),
+                       ({"x": {**ADDED, "why": " "}}, "no why"),
+                       ({"x": {**ADDED, "assertion": {**ADDED["assertion"], "quotes": []}}}, r"missing \['quotes'\]")):
+        (so / "g050.json").write_text(json.dumps({"add": bad}), encoding="utf-8")
+        with pytest.raises(ValueError, match=match):
+            review.papers("g050")
+
+
 def test_a_reentry_names_a_paper_of_the_group(review):
     """Review of b185729: a paper refused at an earlier read enters only where the review names it in `reenter`,
     keyed by record id. Proven to fail by injection, 2026-10-30: with the reenter table checked against assertion

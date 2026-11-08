@@ -42,6 +42,9 @@ from store.ingest import FULL_READ_MARK  # noqa: E402
 _spec = importlib.util.spec_from_file_location("f117_build_groups", ROOT / "scripts" / "f117_build_groups.py")
 build = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(build)
+_spec = importlib.util.spec_from_file_location("review_additions", ROOT / "scripts" / "review_additions.py")
+additions = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(additions)
 
 _, DB_PATH, _ = script_paths(__file__)
 REVIEW = build.cloud.WORK / "review"
@@ -82,8 +85,17 @@ def stored_text(ids: list[str]) -> dict[str, tuple[str, str]]:
         conn.close()
 
 
+def signoff(g: str) -> dict:
+    """The coordinator's sign-off edits for the group (WORK/review/signoff/<g>.json), or none."""
+    path = REVIEW / "signoff" / f"{g}.json"
+    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+
+
 def papers(g: str) -> list[dict]:
-    return json.loads((READS_DIR / f"group_{g}.json").read_text(encoding="utf-8"))["papers"]
+    """The group's read, with the sign-off's added assertions (F142 part 2, `review_additions`); the read file itself is
+    never edited."""
+    ps = json.loads((READS_DIR / f"group_{g}.json").read_text(encoding="utf-8"))["papers"]
+    return additions.merge(g, ps, signoff(g).get("add", {}))
 
 
 TEXTS = build.cloud.WORK / "texts"
@@ -117,8 +129,7 @@ def applied(g: str) -> list[str]:
     with no apply of this group; `--store` then names the store to read."""
     ps = papers(g)
     # Under the id the applier enters it (the sign-off's id_fix), and never a dropped one (review of 7b2179f).
-    so = REVIEW / "signoff" / f"{g}.json"
-    edits = json.loads(so.read_text(encoding="utf-8")) if so.exists() else {}
+    edits = signoff(g)
     id_fix, drop = edits.get("id_fix", {}), edits.get("drop", {})
     new = [id_fix.get(a["id_suggestion"], a["id_suggestion"]) for p in ps for a in p.get("assertions", [])
            if a["id_suggestion"] not in drop]
@@ -302,7 +313,8 @@ def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> 
 # re-finalize writes them again instead of losing them. theory_low is here for a requoted theoretical stored LOW,
 # which is no item (review of aabdd49).
 SIGNOFF_TABLES = {"value_replace", "extra_quotes", "quote_edits", "anchor_fix", "context_fix", "requote", "drop",
-                  "result_type_fix", "theory_low", "reenter"}  # reenter: record id -> why (review of b185729)
+                  "result_type_fix", "theory_low", "reenter",  # reenter: record id -> why (review of b185729)
+                  "add"}  # add: new id -> {record_id, why, assertion}, merged by `papers` (F142 part 2)
 EDIT_TABLES = ("value_replace", "extra_quotes", "quote_edits", "anchor_fix", "context_fix", "result_type_fix")
 
 

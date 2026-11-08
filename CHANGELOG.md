@@ -15,6 +15,16 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **feat**: F142 part 2 (Task C): the sign-off `add` table adds an
+  assertion to a group's read, or splits one (a `value_replace` on the
+  old assertion plus an `add`). Sprint 16 split `he-simulation-scope` by
+  editing the reader's read file by hand (db2abe3); the read file is now
+  never edited. `scripts/review_additions.py` merges the table for both
+  `f117_review.papers` and `full_read_apply.load_groups`, refusing an id
+  the group holds, a paper not in the group, no why, a missing field or
+  an empty quote. The added assertion is an item to decide, its quotes
+  are checked against the paper, and its history says the sign-off
+  added it. The group builder treats an added id as taken. Proven red
 - **feat**: F140 q4 (team lead, 2026-11-07: a, with a check that the
   parallel run completes with no locked file and no file written by two
   processes). `run_suite` runs pytest on 16 workers when pytest-xdist is

@@ -386,7 +386,14 @@ def test_the_builders_three_edge_cases(tmp_path, monkeypatch):
     (reviews / "g050.json").write_text(json.dumps({"id_fix": {"x": "src-x"}}), encoding="utf-8")
     monkeypatch.setattr(b, "REVIEWS_DIR", reviews)
     assert b.written_ids() == {"x", "src-x"}
-    spec = importlib.util.spec_from_file_location("f117_fresh", ROOT / "scripts" / "f117_build_groups.py")
+    # F142 part 2 (Sprint 17 Task C): an id a sign-off adds is taken, finalized into the review or not yet. Proven red
+    # 2026-11-07: with the "add" set left out of written_ids (INJECTED), neither id was there.
+    (reviews / "g050.json").write_text(json.dumps({"id_fix": {"x": "src-x"}, "add": {"x-2": {}}}), encoding="utf-8")
+    (tmp_path / "work" / "review" / "signoff").mkdir(parents=True)
+    (tmp_path / "work" / "review" / "signoff" / "g051.json").write_text(json.dumps({"add": {"y-2": {}}}),
+                                                                        encoding="utf-8")
+    assert b.written_ids() == {"x", "src-x", "x-2", "y-2"}
+    spec =importlib.util.spec_from_file_location("f117_fresh", ROOT / "scripts" / "f117_build_groups.py")
     fresh = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(fresh)
     monkeypatch.setattr(fresh, "DB_PATH", tmp_path / "no-store.db")

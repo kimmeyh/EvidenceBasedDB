@@ -294,6 +294,36 @@ def test_a_record_marked_unread_is_left_out_of_its_group(tmp_path, monkeypatch):
     assert [p["record_id"] for _, p in g.load_groups()] == ["a", "b"]
 
 
+def test_an_assertion_the_sign_off_adds_is_entered_and_checked_without_editing_the_read(tmp_path, monkeypatch):
+    """F142 part 2 (Sprint 17 Task C): Sprint 16 split `he-simulation-scope` by editing the reader's read file by hand
+    (db2abe3). The review's `add` table now carries the new assertion; load_groups merges it, the read file is
+    unchanged, its history says the sign-off added it, and its quote is checked against the paper like a reader's.
+    Proven red 2026-11-07: with load_groups not merging ADD (INJECTED), the added assertion was missing; with the
+    sign-off's history line replaced by the reader's (INJECTED), "added at the coordinator's sign-off" was missing."""
+    import json
+    g = _script()
+    monkeypatch.setattr(g, "ledger", lambda: {"groups": {"g076": {"records": [{"record_id": "a"}]}}})
+    monkeypatch.setattr(g, "ONLY", ["g076"])
+    monkeypatch.setattr(g, "READS_DIR", tmp_path)
+    read = {"papers": [{"record_id": "a", "file": "a.pdf", "assertions": [], "existing": []}]}
+    (tmp_path / "group_g076.json").write_text(json.dumps(read), encoding="utf-8")
+    added = {"value": "The authors use only 100 samples per class for training and testing.", "anchor": "p.11",
+             "quotes": ["only 100 samples per class are used"], "context": "qml", "claim_type": "positive",
+             "result_type": "setup"}
+    monkeypatch.setattr(g, "ADD", {"g076": {"x-split": {"record_id": "a", "why": "split, team lead Q1 = 3",
+                                                        "assertion": added}}})
+    [(_, p)] = g.load_groups()
+    assert [a["id_suggestion"] for a in p["assertions"]] == ["x-split"]
+    assert json.loads((tmp_path / "group_g076.json").read_text(encoding="utf-8")) == read
+
+    monkeypatch.setattr(g, "source_text", lambda _: "To simulate scarcity, only 100 samples per class are used.")
+    [(a, _, _, _)] = g.verify()
+    assert a.id == "x-split" and "added at the coordinator's sign-off" in a.updated_reason
+    monkeypatch.setattr(g, "source_text", lambda _: "No such sentence in this paper.")
+    with pytest.raises(ValueError):
+        g.verify()
+
+
 def test_an_apply_that_rewrites_a_read_row_is_rolled_back_unless_named(synthetic_store, monkeypatch):
     """Sprint 13 retrospective I1 (team lead, 2026-10-28): the trial log's 114 'update read' lines went unquestioned
     and the real apply rewrote Task F's rows. Proven to fail, 2026-10-28: with commit_apply committing whatever
