@@ -360,7 +360,8 @@ def assertions(problems: list[str] | None = None) -> list[tuple[str, AssertionRe
         for a in p.get("assertions", []):
             aid = a["id_suggestion"]
             if aid not in DROP:  # an assertion the sign-off added says so in its history (F142 part 2)
-                how = "added at the coordinator's sign-off" if additions.MARK in a else "extracted at a full read"
+                how = (f"added at the coordinator's sign-off ({a[additions.MARK]})" if additions.MARK in a
+                       else "extracted at a full read")  # the decision and who made it (review of 2580ce2)
                 add(g, rid, p, aid, a, how, ID_FIX.get(aid, aid))
     return out
 

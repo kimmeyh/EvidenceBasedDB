@@ -6,6 +6,7 @@ file (`manifests/sprint13_g_reviews/<g>.json`, as Task G's were).
 reads to make it (record, anchor, value, quotes, the reader's suggestion and reason):
   - "new-high": a new assertion the reader suggested HIGH: "high" with a basis and why, or "low" with why;
   - "new-theory": a new theoretical result the reader did not suggest HIGH: "low" with its cause, or "high";
+  - "new-added": an assertion the sign-off's `add` table added (F142 part 2), whatever it suggests: as new-high;
   - "changed": a stored assertion the reader corrected, narrowed, widened or contradicted: "accept" or "keep" with
     why, and the grade of the accepted value ("high" with basis and why, or "low" with why);
   - "stored-high": a stored HIGH the reader confirmed: "high" with basis and why, or "low" with why.
@@ -165,7 +166,10 @@ def items(g: str, stored: dict[str, str] | None = None,
     for p in ps:
         rid = p["record_id"]
         for a in p.get("assertions", []):
-            if a.get("certainty_suggestion") == "high":
+            if additions.MARK in a:  # every assertion a sign-off adds is decided, whatever it suggests: the new half
+                # of a split HIGH would otherwise enter LOW with no decision (fresh-eyes review of 2580ce2)
+                out.append({"kind": "new-added", "signoff_why": a[additions.MARK], **_show(rid, a, a["id_suggestion"])})
+            elif a.get("certainty_suggestion") == "high":
                 out.append({"kind": "new-high", **_show(rid, a, a["id_suggestion"])})
             elif a.get("result_type") == "theoretical":
                 out.append({"kind": "new-theory", **_show(rid, a, a["id_suggestion"])})
@@ -217,7 +221,17 @@ def decisions_of(g: str) -> dict:
     return build.decisions_in(REVIEW / "decisions", g)
 
 
+def plain_text(path: str) -> str:
+    from store.quotes import plain, source_text
+    return plain(source_text(path))
+
+
 def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> dict:
+    add = signoff(g).get("add", {})
+    if add:  # the reader's own checks on what the coordinator added (fresh-eyes review of 2580ce2)
+        bad = additions.text_problems(papers(g), add, plain_text)
+        if bad:
+            raise ValueError(f"{g}: sign-off add: " + "; ".join(bad))
     its = items(g, stored)
     decisions = decisions_of(g)
     missing = [i["id"] for i in its if i["id"] not in decisions]

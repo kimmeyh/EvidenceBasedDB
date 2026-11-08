@@ -178,6 +178,9 @@ decide on `stored_value` and `stored_quotes`.
   Decide `"low"` with its cause (for example "a sketch, not a proof",
   "proved in reference [12], cited here", "the conditions are lost in
   the text layer"), or `"high"` with basis "proved result" and why.
+- **new-added**: an assertion the coordinator's sign-off added, or split
+  from another (`signoff_why` says why). Decide `"high"` with a basis
+  and why, or `"low"` with why, as for new-high.
 - **changed**: a stored assertion the reader corrected, narrowed,
   widened or contradicted. `stored` is its current certainty. First,
   `"decision"`: `"accept"` if the reader's new value is right by the

@@ -309,7 +309,7 @@ def test_an_assertion_the_sign_off_adds_is_entered_and_checked_without_editing_t
     (tmp_path / "group_g076.json").write_text(json.dumps(read), encoding="utf-8")
     added = {"value": "The authors use only 100 samples per class for training and testing.", "anchor": "p.11",
              "quotes": ["only 100 samples per class are used"], "context": "qml", "claim_type": "positive",
-             "result_type": "setup"}
+             "result_type": "setup", "kind": "shown"}
     monkeypatch.setattr(g, "ADD", {"g076": {"x-split": {"record_id": "a", "why": "split, team lead Q1 = 3",
                                                         "assertion": added}}})
     [(_, p)] = g.load_groups()
@@ -318,9 +318,10 @@ def test_an_assertion_the_sign_off_adds_is_entered_and_checked_without_editing_t
 
     monkeypatch.setattr(g, "source_text", lambda _: "To simulate scarcity, only 100 samples per class are used.")
     [(a, _, _, _)] = g.verify()
-    assert a.id == "x-split" and "added at the coordinator's sign-off" in a.updated_reason
+    # the decision and who made it reach the store (fresh-eyes review of 2580ce2: only a fixed phrase did)
+    assert a.id == "x-split" and "added at the coordinator's sign-off (split, team lead Q1 = 3)" in a.updated_reason
     monkeypatch.setattr(g, "source_text", lambda _: "No such sentence in this paper.")
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="x-split"):
         g.verify()
 
 

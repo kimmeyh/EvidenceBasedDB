@@ -15,6 +15,14 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **fix**: fresh-eyes review of 2580ce2 (the sign-off `add` table). (1)
+  An added assertion skipped the reader's own checks. Its field values
+  are now checked when it is merged (an unknown result type crashed the
+  applier's grading). Finalize runs the reader's quote, length, page and
+  grade checks on it. (2) The sign-off's why now reaches the stored
+  history; before, only a fixed phrase did. (3) Every added assertion is
+  an item to decide ("new-added"). Before, a LOW suggestion entered with
+  no decision. Each proven red
 - **feat**: F141 (Task D): `python scripts/view.py paper <id> --full`
   prints each yielded assertion whole: id, certainty, value, provenance
   and quotes. The default output is unchanged (the value cut at 100

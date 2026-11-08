@@ -271,24 +271,26 @@ def test_the_coordinators_sign_off_is_merged_on_every_finalize(review):
 
 ADDED = {"record_id": "p1", "why": "split from narrow, the team lead's decision",
          "assertion": {"value": "the second half", "anchor": "p.4", "quotes": ["the second half, as quoted"],
-                       "result_type": "setup", "claim_type": "positive", "context": "qml",
-                       "certainty_suggestion": "high"}}
+                       "result_type": "setup", "claim_type": "positive", "context": "qml", "kind": "shown",
+                       "certainty_suggestion": "low"}}
+PAPER_TEXT = "the first half, then the second half, as quoted in Section 4"
 
 
-def test_a_split_is_a_sign_off_add_and_the_read_file_is_never_edited(review):
+def test_a_split_is_a_sign_off_add_and_the_read_file_is_never_edited(review, monkeypatch):
     """F142 part 2 (Sprint 17 Task C): Sprint 16 split `he-simulation-scope` (MV Q1 = 3) by editing the reader's
     read file by hand (db2abe3). A split is now a `value_replace` on the old assertion plus an `add` in the sign-off:
-    the added assertion is an item to decide like a reader's, the review file carries the table for the applier, and
-    the read file stays as the reader wrote it. Proven red 2026-11-07: with `papers` not merging the sign-off
-    (INJECTED), the added item was missing (KeyError); with "add" left out of
+    the added assertion is always an item to decide (a LOW suggestion too: fresh-eyes review of 2580ce2), the review
+    file carries the table for the applier, and the read file stays as the reader wrote it. Proven red 2026-11-07:
+    with `papers` not merging the sign-off (INJECTED), the added item was missing (KeyError); with "add" left out of
     SIGNOFF_TABLES (INJECTED), finalize refused the table; with the held-id check removed (INJECTED), an add under a
-    stored id passed."""
+    stored id passed; with the "new-added" branch removed (INJECTED), the LOW add was no item."""
+    monkeypatch.setattr(review, "plain_text", lambda path: PAPER_TEXT)
     read = (review.READS_DIR / "group_g050.json").read_text(encoding="utf-8")
     so = review.REVIEW / "signoff"
     so.mkdir()
     (so / "g050.json").write_text(json.dumps({"value_replace": {"narrow": "the first half"},
                                               "add": {"narrow-2": ADDED}}), encoding="utf-8")
-    assert {i["id"]: i["kind"] for i in review.items("g050", review.STORED)}["narrow-2"] == "new-high"
+    assert {i["id"]: i["kind"] for i in review.items("g050", review.STORED)}["narrow-2"] == "new-added"
     _decide(review, GOOD)
     with pytest.raises(ValueError, match=r"no decision for \['narrow-2'\]"):
         review.finalize("g050", "2026-11-07", review.STORED)
@@ -300,10 +302,33 @@ def test_a_split_is_a_sign_off_add_and_the_read_file_is_never_edited(review):
 
     for bad, match in (({"st-lo": ADDED}, "already holds"), ({"x": {**ADDED, "record_id": "p9"}}, "not a paper"),
                        ({"x": {**ADDED, "why": " "}}, "no why"),
-                       ({"x": {**ADDED, "assertion": {**ADDED["assertion"], "quotes": []}}}, r"missing \['quotes'\]")):
+                       ({"x": {**ADDED, "assertion": {**ADDED["assertion"], "quotes": []}}}, r"missing \['quotes'\]"),
+                       ({"x": {**ADDED, "assertion": {**ADDED["assertion"], "result_type": "measurement"}}},
+                        "result_type 'measurement' is not one of")):
         (so / "g050.json").write_text(json.dumps({"add": bad}), encoding="utf-8")
         with pytest.raises(ValueError, match=match):
             review.papers("g050")
+
+
+def test_an_added_assertion_passes_the_readers_own_checks_at_finalize(review, monkeypatch):
+    """Fresh-eyes review of 2580ce2: an add was checked only for non-empty fields, so a quote on another page than its
+    anchor, or a HIGH suggestion with no basis, passed where a reader's would not. Finalize now runs the reader's
+    checks (`sprint13_g_check.assertion_problems` and `page_problems`) on every add. Proven red 2026-11-07: with
+    `text_problems` not called (INJECTED), the quote the paper never says passed finalize."""
+    monkeypatch.setattr(review, "plain_text", lambda path: PAPER_TEXT)
+    _decide(review, {**GOOD, "x": {"decision": "low", "why": "setup, not graded"}})
+    so = review.REVIEW / "signoff"
+    so.mkdir()
+    cases = (({**ADDED["assertion"], "quotes": ["a sentence the paper never says"]}, "not verbatim|not found"),
+             ({**ADDED["assertion"], "certainty_suggestion": "high"}, "needs high_basis"))
+    for a, match in cases:
+        (so / "g050.json").write_text(json.dumps({"add": {"x": {**ADDED, "assertion": a}}}), encoding="utf-8")
+        with pytest.raises(ValueError, match=match):
+            review.finalize("g050", "2026-11-07", review.STORED)
+    (so / "g050.json").write_text(json.dumps({"add": {"x": ADDED}}), encoding="utf-8")
+    monkeypatch.setattr(review.additions.reader, "page_problems", lambda tag, a, path, text: [f"{tag}: OFF PAGE"])
+    with pytest.raises(ValueError, match="p1/x: OFF PAGE"):
+        review.finalize("g050", "2026-11-07", review.STORED)
 
 
 def test_a_reentry_names_a_paper_of_the_group(review):
