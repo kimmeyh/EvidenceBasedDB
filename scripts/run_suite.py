@@ -7,7 +7,8 @@ and a full suite ran while an injection was still in the code, so its
 result described neither tree. This runner:
 
   - fingerprints the working tree (tracked and untracked files, ignored
-    ones left out) before and after the run, as a git tree id;
+    ones and reader telemetry, NOT_FINGERPRINTED, left out) before and
+    after the run, as a git tree id;
   - prints ONE verdict line, from pytest's exit code, never from its
     output: PASSED, FAILED, or INVALID when the tree changed during the
     run (an edit, an injection, a stray file);
@@ -211,10 +212,12 @@ def covers_the_store(picked: list[str] | None, extra: list[str], store_files: li
     return not extra and (picked is None or set(store_files) <= set(picked))
 
 
-def verdict(rc: int, before: str, after: str) -> str:
+def verdict(rc: int, before: str, after: str, summary: str = "") -> str:
+    """PASSED needs rc 0 AND a summary line that counts passed tests. 2026-11-07: `run_suite.py --help` reached
+    pytest, exited 0 with no tests run, and was recorded PASSED for the tree, which a commit could have used."""
     if before != after:
         return "INVALID"
-    return "PASSED" if rc == 0 else "FAILED"
+    return "PASSED" if rc == 0 and re.search(r"\b[1-9]\d* passed", summary) else "FAILED"
 
 
 def main(argv: list[str]) -> int:
@@ -256,7 +259,7 @@ def main(argv: list[str]) -> int:
     lines = log.read_text(encoding="utf-8", errors="replace").splitlines()
     summary = next((ln.strip("= ") for ln in reversed(lines) if re.search(r"\d+ (passed|failed|error)", ln)),
                    "no pytest summary line")
-    result = verdict(rc, before, after)
+    result = verdict(rc, before, after, summary)
     record = {"verdict": result, "rc": rc, "tree": before, "tree_after": after, "args": argv,
               "summary": summary, "head": _git(ROOT, "rev-parse", "HEAD"),
               "store_checked": stamp if result == "PASSED" and covers_store else store_checked(last),

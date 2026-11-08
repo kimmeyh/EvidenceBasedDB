@@ -15,6 +15,25 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **feat**: F142 part 3 (Task C): a proof appendix over 30 pages is split
+  across reviewers by page from the start. The Sprint 17 review prompt
+  (`manifests/sprint17_f114_reads/REVIEW_PROMPT.md`) says how; each part
+  writes `decisions/GROUP.pN.json`, and `f117_review.decisions_of` merges
+  the parts, refusing an item decided twice or a group with both forms.
+  Tests proven red (#177)
+- **feat**: F142 part 4 (Task C): `scripts/set_status.py` sets `status`
+  and `current_sprint.status` in one step and refuses any status not
+  "Phase n.n Name"; a test fails when the committed fields differ.
+  Proven red (#177)
+- **fix**: `run_suite` records PASSED only when pytest reports at least
+  one passed test. `run_suite.py --help` exited 0 with no test run and
+  was recorded PASSED for the tree, which a commit could have used.
+  Proven red
+- **process**: the question shape now defines Effort as the cost to build
+  AND the cost to run, with how often, and Prevention as keeping the
+  defect from ever being made (a test is a control). Team lead, 2026-11-07,
+  q11 and q13. Guard extended; proven red
+
 - **fix**: F142 part 1 (Task C): reader telemetry
   (`manifests/*/telemetry/`) is left out of `run_suite`'s tree id, so a
   reader writing telemetry no longer turns a gate INVALID (Sprint 16: two

@@ -78,6 +78,29 @@ def test_finalize_writes_the_applier_tables(review):
     assert (out["tag"], out["reader"]) == (review.TAG, review.READER)
 
 
+def test_a_split_review_is_merged_from_its_parts_and_a_double_decision_is_refused(review):
+    """F142 part 3 (Sprint 17 Task C): a proof appendix over 30 pages is split across reviewers by page from the
+    start, each writing `decisions/<g>.pN.json`. Sprint 16: Monaco's 70-page supplement was graded from statements,
+    and two fresh reviewers then changed 13 of 94 decisions. Proven red 2026-11-07: with `decisions_of` reading only
+    `<g>.json` (INJECTED), the parted group raised FileNotFoundError; with the duplicate check removed (INJECTED), an
+    item decided in two parts kept the later decision silently."""
+    folder = review.REVIEW / "decisions"
+    items = list(GOOD.items())
+    (folder / "g050.p1.json").write_text(json.dumps(dict(items[:2])), encoding="utf-8")
+    (folder / "g050.p2.json").write_text(json.dumps(dict(items[2:])), encoding="utf-8")
+    out = review.finalize("g050", "2026-11-07", review.STORED)
+    assert out["theory_low"] == {"sketch": "a sketch, not a proof"} and "thm" in out["graded_high"]
+
+    (folder / "g050.p2.json").write_text(json.dumps(dict(items[1:])), encoding="utf-8")  # "sketch" in both parts
+    with pytest.raises(ValueError, match="decided in two parts"):
+        review.finalize("g050", "2026-11-07", review.STORED)
+
+    (folder / "g050.p2.json").write_text(json.dumps(dict(items[2:])), encoding="utf-8")
+    _decide(review, GOOD)  # the whole file as well as the parts
+    with pytest.raises(ValueError, match="keep one form"):
+        review.finalize("g050", "2026-11-07", review.STORED)
+
+
 def test_a_re_entry_group_is_finalized_without_a_ledger_entry(review, monkeypatch):
     """F125 (Sprint 15 Task C): g050-r1 re-enters a record g050 left for the next release; it has no ledger entry,
     and the builder's NEXT_RELEASE mark on its record is its parent's, not its own. Proven to fail by injection,

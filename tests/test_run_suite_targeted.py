@@ -199,3 +199,16 @@ def test_a_helper_or_an_unnamed_change_runs_the_full_suite(repo):
     assert rs.full_suite_due(rs.changed_files(repo)) == (
         "tests/helpers.py changed: a helper or fixture that tests may read")
     assert rs.targeted_tests(repo, rs.changed_files(repo)) is None
+
+
+def test_a_run_that_passed_no_test_is_never_recorded_passed():
+    """2026-11-07: `run_suite.py --help` reached pytest, exited 0 with no tests run, and was recorded PASSED for the
+    tree. Proven red the same day: with `verdict` back to `rc == 0` alone (INJECTED), the --help and collect-only
+    cases came back PASSED."""
+    rs = _runner()
+    assert rs.verdict(0, "t", "t", "no pytest summary line") == "FAILED"
+    assert rs.verdict(0, "t", "t", "1607 tests collected in 9.1s") == "FAILED"
+    assert rs.verdict(0, "t", "t", "0 passed, 3 deselected in 1.0s") == "FAILED"
+    assert rs.verdict(0, "t", "t", "1607 passed, 11 skipped in 2268.4s") == "PASSED"
+    assert rs.verdict(1, "t", "t", "3 failed, 1604 passed in 2268.4s") == "FAILED"
+    assert rs.verdict(0, "t", "u", "1607 passed in 2268.4s") == "INVALID"

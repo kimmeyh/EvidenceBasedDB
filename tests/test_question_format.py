@@ -7,7 +7,8 @@ Proven red 2026-11-07: with the "- Evidence:" line removed from the section (INJ
 with the backlog-refinement skill's pointer reverted to "a plain numbered list ... typing a digit" (INJECTED), the
 second named the skill; with the Stop hook's message put back to "with a plain numbered list" (INJECTED; the review
 of the format change found it, and the first version of this test scanned four files and missed it), the third
-named the hook. Each restored and green.
+named the hook. Each restored and green. With the Effort line's "cost to run" removed (INJECTED), the first test
+named it again.
 """
 from __future__ import annotations
 
@@ -17,7 +18,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TITLE = "Presenting improvements, questions and decisions"
 FIELDS = ("What it is:", "What it prevents:", "What it catches:", "Prevention or control:", "Long-term value:",
-          "Evidence:", "Effort:", "Options:", "(Recommendation)", "all as recommended", "i1. a")
+          "Evidence:", "Effort:", "Options:", "(Recommendation)", "all as recommended", "i1. a",
+          "cost to build", "cost to run", "is a control")  # the q13 and q11 definitions, 2026-11-07
 POINTERS = ("CLAUDE.md", "docs/SPRINT_EXECUTION_WORKFLOW.md", ".claude/skills/backlog-refinement/SKILL.md",
             ".claude/hooks/block_ask_user_question.py", ".claude/hooks/block_procedural_question_stop.py",
             ".claude/model_assignment_heuristics.json")

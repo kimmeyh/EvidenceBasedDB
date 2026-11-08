@@ -198,9 +198,29 @@ def _settled(aid: str, v) -> tuple[str, str, str]:
     raise ValueError(f"{aid}: a settled decision is \"low\", [\"low\", why] or [\"high\", basis, why], not {v!r}")
 
 
+def decisions_of(g: str) -> dict:
+    """The group's decisions: `decisions/<g>.json`, or its parts `decisions/<g>.p1.json`, `<g>.p2.json`, ... when a
+    proof appendix over 30 pages was split across reviewers by page (F142 part 3, Sprint 17; REVIEW_PROMPT.md).
+    Both forms at once, or an item decided in two parts, is refused: one item has one decision."""
+    folder = REVIEW / "decisions"
+    whole = folder / f"{g}.json"
+    parts = sorted(folder.glob(f"{g}.p[0-9]*.json"), key=lambda p: int(p.name[len(g) + 2:-5]))
+    if whole.exists() and parts:
+        raise ValueError(f"{g}: both {whole.name} and part files {[p.name for p in parts]}; keep one form")
+    if not parts:
+        return json.loads(whole.read_text(encoding="utf-8"))
+    merged: dict = {}
+    for p in parts:
+        for aid, d in json.loads(p.read_text(encoding="utf-8")).items():
+            if aid in merged:
+                raise ValueError(f"{g}: {aid} decided in two parts ({p.name} and an earlier part)")
+            merged[aid] = d
+    return merged
+
+
 def finalize(g: str, reviewed_on: str, stored: dict[str, str] | None = None) -> dict:
     its = items(g, stored)
-    decisions = json.loads((REVIEW / "decisions" / f"{g}.json").read_text(encoding="utf-8"))
+    decisions = decisions_of(g)
     missing = [i["id"] for i in its if i["id"] not in decisions]
     if missing:
         raise ValueError(f"{g}: no decision for {missing}")

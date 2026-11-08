@@ -195,6 +195,13 @@ def test_reader_telemetry_is_not_part_of_the_tree_id_and_a_manifest_still_is(rep
     telemetry.mkdir(parents=True)
     (telemetry / "g400.json").write_text('{"steps": []}\n', encoding="utf-8")
     assert _runner().working_tree(repo) == tree
+    # Sprint 16's case: a committed telemetry file that a reader rewrites (review of ae57b36).
+    git = ["git", "-C", str(repo), "-c", "user.name=t", "-c", "user.email=t@t"]
+    subprocess.run([*git, "add", "-A"], check=True)
+    subprocess.run([*git, "commit", "-q", "-m", "telemetry"], check=True)
+    tree = _runner().working_tree(repo)
+    (telemetry / "g400.json").write_text('{"steps": [{"name": "check"}]}\n', encoding="utf-8")
+    assert _runner().working_tree(repo) == tree
     (telemetry.parent / "group_g400.json").write_text("{}\n", encoding="utf-8")
     assert _runner().working_tree(repo) != tree
     staged = subprocess.run(["git", "-C", str(repo), "diff", "--cached", "--name-only"], capture_output=True,
@@ -203,8 +210,8 @@ def test_reader_telemetry_is_not_part_of_the_tree_id_and_a_manifest_still_is(rep
 
 
 def test_the_verdict_comes_from_the_exit_code_and_a_still_tree():
-    v = _runner().verdict
-    assert (v(0, "t1", "t1"), v(1, "t1", "t1"), v(0, "t1", "t2"), v(1, "t1", "t2")) == (
+    v, ok = _runner().verdict, "12 passed in 1.0s"  # PASSED also needs a passed count (2026-11-07)
+    assert (v(0, "t1", "t1", ok), v(1, "t1", "t1", ok), v(0, "t1", "t2", ok), v(1, "t1", "t2", ok)) == (
         "PASSED", "FAILED", "INVALID", "INVALID")
 
 

@@ -36,12 +36,18 @@ iN. <brief title>          (qN for a question or decision outside a retrospectiv
   the sprint process, a backlog item, a sprint card, development, or
   testing; the earlier, the better>
   AND/OR What it catches: <what it finds once it has happened>
-- Prevention or control: <prevention (preferred) or control>
+- Prevention or control: <prevention (preferred) or control>. Prevention
+  keeps the defect from ever being made: a better requirement or card, a
+  design that makes it impossible by construction, a better development
+  method. A test, check or review that finds the defect after it is made
+  is a control, however early it runs (team lead, 2026-11-07, q11).
 - Long-term value: <what it keeps giving, sprint after sprint>
 - Evidence: <how many times it happened, the time it cost, the
   efficiency it would gain, and how that was measured>
 - Extends: <the rule, checklist item or test it builds on> (when one does)
-- Effort: <minutes, files>
+- Effort: <cost to build (minutes, files)> AND <cost to run, and how
+  often: per commit, per gate, per apply, per sprint, per CI run> (team
+  lead, 2026-11-07, q13)
 - Options:
   - a. (Recommendation) <option>. Pro: <...>. Con: <...>.
   - b. <option>. Pro: <...>. Con: <...>.
