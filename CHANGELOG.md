@@ -15,6 +15,10 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **process**: Task E's 8 ledger papers fixed by id in F144's exclusion
+  list: Pere v2 (q3 = a) and 7 in ledger order from g295 and g296, the
+  first groups not yet read in full (g069 and g072 skipped, as in Sprint
+  15). Task E's 2 new PDFs are added when intake gives them ids (#176)
 - **feat**: F144 exclusion list
   (`manifests/sprint17_f144_batch/exclude.json`): a record named there
   is never sent or fetched, and each entry must give its reason. It
