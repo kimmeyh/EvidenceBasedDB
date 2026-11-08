@@ -15,6 +15,19 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **fix**: F142 part 1 (Task C): reader telemetry
+  (`manifests/*/telemetry/`) is left out of `run_suite`'s tree id, so a
+  reader writing telemetry no longer turns a gate INVALID (Sprint 16: two
+  gates, 130 minutes). No test reads those files. Test proven red (#177)
+- **docs**: F140 part 3 to 9: `docs/F140_TESTING_ANALYSIS.md`. The slow
+  suite came in two steps: F114's first apply (7,715 assertions,
+  2026-10-30) and Sprint 15's pdfinfo starts (2026-11-04); the second is
+  fixed. Run 2 after the fix: 37m48s (cache filling). The 10-minute
+  target is not met: the live-store data checks are 69% of the time and
+  the suite uses one of 32 processors. Sprint 16's gate timeline rebuilt
+  (547 gate minutes in 15.6 hours). Recommendations q4 to q14 asked
+  (#175)
+
 - **process**: improvements, questions and decisions put to the team lead
   take one shape (team lead, 2026-11-07): `i1`/`q1` with a brief title,
   What it is, What it prevents and/or catches, Prevention or control,

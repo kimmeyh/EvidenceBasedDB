@@ -185,6 +185,23 @@ def test_the_tree_id_sees_untracked_files_ignores_ignored_ones_and_leaves_the_in
     assert staged == ""
 
 
+def test_reader_telemetry_is_not_part_of_the_tree_id_and_a_manifest_still_is(repo):
+    """F142 part 1 (Sprint 17 Task C): a reader writes its group's telemetry while it works, and in Sprint 16 that
+    turned two gates INVALID (130 minutes). The telemetry folders are left out of the tree id; a manifest beside them
+    is not. Proven red 2026-11-07: with the `git rm --cached` of NOT_FINGERPRINTED removed (INJECTED), a new
+    telemetry file changed the tree id."""
+    tree = _runner().working_tree(repo)
+    telemetry = repo / "manifests" / "sprint17_reads" / "telemetry"
+    telemetry.mkdir(parents=True)
+    (telemetry / "g400.json").write_text('{"steps": []}\n', encoding="utf-8")
+    assert _runner().working_tree(repo) == tree
+    (telemetry.parent / "group_g400.json").write_text("{}\n", encoding="utf-8")
+    assert _runner().working_tree(repo) != tree
+    staged = subprocess.run(["git", "-C", str(repo), "diff", "--cached", "--name-only"], capture_output=True,
+                            text=True, check=True).stdout
+    assert staged == ""
+
+
 def test_the_verdict_comes_from_the_exit_code_and_a_still_tree():
     v = _runner().verdict
     assert (v(0, "t1", "t1"), v(1, "t1", "t1"), v(0, "t1", "t2"), v(1, "t1", "t2")) == (

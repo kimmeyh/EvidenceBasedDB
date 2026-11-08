@@ -67,9 +67,16 @@ def _git(repo: Path, *args: str, env: dict | None = None) -> str:
                           env=env).stdout.strip()
 
 
+# Reader telemetry (F139's per-group files): a reader's check writes its group's file while it works, and no test
+# reads these files (the manifest guards read top-level manifests only), so they are left out of the fingerprint.
+# Sprint 16: two gates (130 minutes) came back INVALID because a reader wrote telemetry during the run (F142 part 1).
+NOT_FINGERPRINTED = (":(glob)manifests/*/telemetry/**",)
+
+
 def working_tree(repo: Path) -> str:
     """The git tree id of the working tree as `git add -A` would stage it,
-    computed in a scratch index so the real one is untouched."""
+    computed in a scratch index so the real one is untouched, without the
+    paths in NOT_FINGERPRINTED."""
     index = Path(_git(repo, "rev-parse", "--git-path", "index"))
     index = index if index.is_absolute() else repo / index
     with tempfile.TemporaryDirectory() as tmp:
@@ -78,6 +85,7 @@ def working_tree(repo: Path) -> str:
             shutil.copyfile(index, scratch)  # its stat cache makes `add -A` fast
         env = dict(os.environ, GIT_INDEX_FILE=str(scratch))
         _git(repo, "add", "-A", env=env)
+        _git(repo, "rm", "-r", "-q", "--cached", "--ignore-unmatch", "--", *NOT_FINGERPRINTED, env=env)
         return _git(repo, "write-tree", env=env)
 
 
