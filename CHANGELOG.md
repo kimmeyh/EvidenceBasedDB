@@ -15,6 +15,9 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **docs**: F144's exclusion list holds Task E's 2 new papers, entered
+  2026-11-07 (`sar-2026-...` and `psi-2026-...`, ledger group g348 on
+  the Sprint 17 branch), so all 10 of Task E's papers are excluded
 - **feat**: F144 measurement batch collected (snapshot 2026-11-07): 8 of
   8 succeeded, $2.22, total spent $3.00 of the $95 cap. With the
   self-check, 16.6 check problems per 100 assertions (71 in 428) against
