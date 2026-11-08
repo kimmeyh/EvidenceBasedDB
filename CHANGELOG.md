@@ -15,6 +15,16 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **feat**: F144 reader self-check (team lead, q2: "can't this be written
+  into the prompt to check itself before returning?"). The batch prompt's
+  last section now makes the reader check each assertion before it
+  replies, one pass for each cause found in the pilot's 49 problems
+  (snapshot 2026-11-07): a number no quote holds (40; the entry below
+  says 42, a miscount), a label's number in a value ("eqn. (11)", "ref.
+  26"), a figure number without "about", a quote off its anchor's page
+  (8), a ligature changed (1). A batch request cannot run the check
+  script, so the script still checks every saved reply. Test proven red
+  (#176)
 - **feat**: F144 pilot results (snapshot 2026-11-07): 5 of 5 succeeded
   in 5m18s, $0.78 for 99 pages; reader group files g335 to g339 in
   `manifests/sprint13_g_reads/`, each kept and flagged (2 to 19 check

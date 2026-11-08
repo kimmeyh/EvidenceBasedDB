@@ -248,3 +248,18 @@ def test_results_land_in_the_pipeline_shape_and_failures_are_kept(bm, monkeypatc
     assert after["results"]["c-2022-z"]["check"].startswith("FLAGGED")
     assert after["batches"]["msgbatch_9"]["collected"] is True
     assert after["spent"] == pytest.approx(2 * (0.1 + 0.1))
+
+
+SELF_CHECK = ("List every digit string in its value", "Never name a label by its number in a value",
+              "every number read by eye has \"about\"", "Each quote is on a page its anchor names",
+              "a ligature (\"ﬁ\") stays a ligature")
+
+
+def test_the_batch_prompt_makes_the_reader_check_each_assertion_before_it_replies():
+    """Team lead, q2 (2026-11-07): "can't this be written into the prompt to check itself before returning?" The
+    pilot's 49 check problems in 5 papers came from five causes; the prompt's last section names a pass for each.
+    Proven red the same day: with the label rule's heading changed (INJECTED), this test named it."""
+    text = (ROOT / "manifests" / "sprint17_f144_batch" / "READER_PROMPT.md").read_text(encoding="utf-8")
+    section = " ".join(text[text.index("## Check before you finish"):].split())
+    missing = [rule for rule in SELF_CHECK if rule not in section]
+    assert missing == [], f"the batch prompt's self-check lacks: {missing}"

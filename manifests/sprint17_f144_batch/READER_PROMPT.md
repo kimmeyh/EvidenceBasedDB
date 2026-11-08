@@ -27,6 +27,12 @@ What changed, and why each change:
   which is what the progress files did for a local reader.
 - "Check before you finish": the reader cannot run the check, so it checks its
   own reply against the rules, and the script runs the check on the saved reply.
+  Amended 2026-11-07 after the pilot (team lead, q2: "can't this be written
+  into the prompt to check itself before returning?"): an explicit pass,
+  assertion by assertion, aimed at the pilot's three causes (a label's number
+  in a value, a number no quote holds, a figure number without "about") and
+  its two smaller ones (a quote off its anchor's page, a ligature changed).
+  Measured on the next batch; the pilot had 49 problems in 5 papers.
 
 `{GROUP}` is the ledger group the script gave the paper (one paper per group).
 `tests/test_reader_prompts.py` checks this prompt as it checks the others; its
@@ -287,7 +293,35 @@ You cannot run the check, so check your reply against every rule above
 before you give it: each quote copied exactly from the text in this
 request, each number in a value inside its quotes, each anchor's page the
 page its quotes fall under, every stored assertion given a verdict, every
-figure listed. The script then runs
+figure listed.
+
+Then make one more pass, assertion by assertion, in `existing` and in
+`assertions`, before you give the reply. The pilot's five replies all
+failed the script's check, 49 problems, and 40 of them were a number in a
+value that its quotes do not hold. For each assertion:
+
+1. **List every digit string in its value** ("0.92", "2.2", "26", "1",
+   "10^4"). For each one, find it in that assertion's quotes. When it is
+   not there, add the quote from the text that holds it, or take the
+   number out of the value. A number you computed or carried from another
+   page is not in the quotes: put it in `reader_inference`.
+2. **Never name a label by its number in a value.** "eqn. (11)", "ref.
+   26", "Section 4", "Table 2", "Theorem 3" and "Fig. 3" all put a number
+   in the value that the quotes rarely hold. Name the label in `anchor`
+   ("Theorem 3, Section 4, p.9") and say "the authors' equation", "a
+   cited work", "the theorem" in the value. The one exception is the
+   opening "Read from Figure N:" of a `from_figure` value.
+3. **In a `from_figure` value, every number read by eye has "about"**:
+   each end of a range ("about 0.38 to about 0.40"), each axis value, and
+   each power ("about 17 x 10^4"). A number that the caption or the text
+   holds is quoted instead.
+4. **Each quote is on a page its anchor names.** A figure assertion that
+   quotes the text discussing the figure on another page names both pages
+   ("Figure 3, p.18; Section 4, p.12").
+5. **Copy each quote as the text gives it, character for character**: a
+   ligature ("ﬁ") stays a ligature, a plain "fi" stays plain.
+
+The script then runs
 `scripts/sprint13_g_check.py <the group file> <the brief> --sprint15` on
 your saved reply against the PDF's own text; a reply that fails it is kept
 and flagged for the coordinator's review, never dropped.
