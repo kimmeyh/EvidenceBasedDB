@@ -280,17 +280,39 @@ so it is not proposed again without that history.
 Asked as q4 to q14 in the Sprint 17 message of 2026-11-07 (q1 to q3 were
 F144's). Each answer is recorded here when it comes.
 
-- q4. Run the suite in parallel (pytest-xdist).
-- q5. Test whether antivirus causes the slow process start.
-- q6. Drop the duplicate `plain()` in the quote tests.
+- q4. Run the suite in parallel (pytest-xdist). Team lead, 2026-11-07:
+  a, "however, when doing parallels verify that the parallel execution
+  can be completed (not stalled due to locked files, 2 processes changing
+  the same file...)".
+- q5. Test whether antivirus causes the slow process start. Team lead:
+  c, with a request for a step-by-step walkthrough of a real-time
+  exclusion for `D:\Data\Harold\github` and `D:\Data\Harold\EvidenceBasedDB`
+  that keeps the weekly scan. Given 2026-11-07 (contextual exclusions,
+  `ScanTrigger:OnAccess`, and a weekly custom scan task); the before and
+  after timing waits on the team lead applying it.
+- q6. Drop the duplicate `plain()` in the quote tests. Team lead: a.
 - q7. Skip the second full run when the retrospective changes nothing.
-- q8. High-impact test files run on every gate.
-- q9. Last failures first on every gate.
-- q10. Replay each guard's recorded injection (class A).
-- q11. A trial apply fails on a field no review named (class F).
-- q12. No stored reason holds a stale phrase (class G).
+  Team lead: a.
+- q8. High-impact test files run on every gate. Team lead: a.
+- q9. Last failures first on every gate. Team lead: a.
+- q10. Replay each guard's recorded injection (class A). Team lead: "skip
+  until proven valuable and then only for items missed/caught". Recorded
+  as skip and track: a guard that misses a defect, or catches one, gets
+  its replay then.
+- q11. A trial apply fails on a field no review named (class F). Team
+  lead: "the recommended is not prevention as prevention is keeping it
+  from ever happening (improved requirements/card, improved development
+  methodology...)". Re-presented with prevention options; open.
+- q12. No stored reason holds a stale phrase (class G). No answer;
+  re-presented; open.
 - q13. Snapshot counts in INTAKE recomputed from the store (class H).
+  Team lead: effort must give the cost to build and the cost to run, and
+  how often. Re-presented; open. The rule is now in
+  `docs/SPRINT_RETROSPECTIVE.md`.
 - q14. A review that cites fewer pages than the PDF is refused (class J).
+  Team lead: "none of these prevents it - what can we do so that it NEVER
+  comes back without reading all the pages - 100% reading of all the
+  pages." Re-presented with page-chunked assignment; open.
 
 ## Acceptance (from the card)
 

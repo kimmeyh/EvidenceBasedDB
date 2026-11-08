@@ -15,6 +15,14 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **feat**: F140 q7, q8 and q9 (team lead, 2026-11-07: a, a, a). A full
+  run is not repeated on a tree and store that already passed it
+  (`--force` runs it); every `--changed` gate adds 9 high-impact test
+  files (about 265 s serial); every run takes the last failures first
+  (`--ff`). The team lead's answers to q4 to q14 recorded in
+  `docs/F140_TESTING_ANALYSIS.md`. Finding: Part 4 names a `--no-verify`
+  hook as high impact, but no hook or test here names `--no-verify`.
+  Each change proven red (#175)
 - **fix**: fresh-eyes review of f79714b. (1) The rebuild guard in
   `f117_build_groups.py` read only `decisions/<g>.json`, so a group
   reviewed in parts could be rebuilt with changed ids under its

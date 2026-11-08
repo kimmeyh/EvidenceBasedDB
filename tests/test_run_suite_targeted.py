@@ -225,3 +225,31 @@ def test_the_summary_is_the_logs_last_line_in_pytests_ending_form():
     run = "....\ntests/test_x.py::t[12 passed] ok\n======= 579 passed in 1451.60s (0:24:11) =======\n"
     assert rs.summary_line(run) == "579 passed in 1451.60s (0:24:11)"
     assert rs.summary_line("1 passed, 2 warnings in 0.5s\n") == "1 passed, 2 warnings in 0.5s"
+
+
+def test_every_gate_runs_the_high_impact_tests_last_failures_first(tmp_path):
+    """F140 q8 and q9 (team lead, 2026-11-07: a, a). Proven red the same day: with `with_high_impact` returning
+    `picked` unchanged (INJECTED), the full_read_apply test was not added; with "--ff" taken out of PYTEST_ARGS
+    (INJECTED), the last assertion failed. A listed file that is gone is refused, never skipped."""
+    rs = _runner()
+    picked, added = rs.with_high_impact(ROOT, ["tests/test_us_english.py"])
+    assert "tests/test_full_read_apply.py" in picked and "tests/test_us_english.py" in picked
+    assert added == len(rs.HIGH_IMPACT)
+    assert rs.with_high_impact(ROOT, picked)[1] == 0
+    with pytest.raises(FileNotFoundError, match="gone"):
+        rs.with_high_impact(tmp_path, [])
+    assert "--ff" in rs.PYTEST_ARGS
+
+
+def test_a_full_run_is_not_repeated_on_a_tree_and_store_that_already_passed_it():
+    """F140 q7 (team lead, 2026-11-07: a). Proven red the same day: with the tree comparison removed from
+    `full_run_already_passed` (INJECTED), a changed tree was taken as already passed."""
+    rs = _runner()
+    last = {"verdict": "PASSED", "args": [], "tree": "t1", "tree_after": "t1", "store_checked": "s1"}
+    assert rs.full_run_already_passed(last, "t1", "s1")
+    assert not rs.full_run_already_passed(last, "t2", "s1"), "the tree changed"
+    assert not rs.full_run_already_passed(last, "t1", "s2"), "the store changed"
+    assert not rs.full_run_already_passed(last, "t1", None), "no store (CI): never skipped"
+    assert not rs.full_run_already_passed({**last, "args": ["tests/test_x.py"]}, "t1", "s1"), "a targeted run"
+    assert not rs.full_run_already_passed({**last, "verdict": "FAILED"}, "t1", "s1")
+    assert not rs.full_run_already_passed(None, "t1", "s1")

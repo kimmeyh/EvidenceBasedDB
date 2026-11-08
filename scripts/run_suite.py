@@ -105,6 +105,17 @@ SCRIPT_GUARDS = ("tests/test_verified_writes.py", "tests/test_schema.py", "tests
                  "tests/test_qpu_balance_not_stored.py")
 # test_test_inventory: a test file's docstring or markers change its inventory row (F140; review of the format change).
 TEST_GUARDS = ("tests/test_guard_discipline.py", "tests/test_test_inventory.py")
+# F140 q8 (team lead, 2026-11-07: a): the high-impact tests run on every gate, whatever changed. A missed defect
+# there damages the store or a boundary (docs/F140_TESTING_ANALYSIS.md, Part 4): the appliers with their backup and
+# second-apply checks, the certainty grading and escalation, durable and verified writes, the schema, the
+# sibling-write guard, the commit-verdict hook and the hook registrations. About 265 s serial (inventory, run 1).
+HIGH_IMPACT = ("tests/test_full_read_apply.py", "tests/test_apply_paper_applicability.py", "tests/test_f117_review.py",
+               "tests/test_store_durability.py", "tests/test_verified_writes.py", "tests/test_schema.py",
+               "tests/test_sibling_repo_write_guard.py", "tests/test_block_commit_with_piped_tests.py",
+               "tests/test_hook_registration.py")
+# F140 q9 (team lead, 2026-11-07: a): last failures first, so a gate re-run after a fix reports the fix first. The
+# pytest cache it reads is git-ignored, so it never changes the tree id.
+PYTEST_ARGS = ("-q", "--ff")
 # Files every test depends on, so a change to one runs the full suite.
 EVERYTHING = ("tests/conftest.py", "store/__init__.py", "pytest.ini", "pyproject.toml", "setup.cfg")
 
@@ -169,6 +180,16 @@ def targeted_tests(repo: Path, changed: list[str]) -> list[str] | None:
     return sorted(picked) or None
 
 
+def with_high_impact(repo: Path, picked: list[str]) -> tuple[list[str], int]:
+    """`picked` plus HIGH_IMPACT (F140 q8), and how many were added. A listed file that is gone is refused, not
+    skipped: a silent skip would drop a high-impact test from every gate."""
+    gone = [p for p in HIGH_IMPACT if not (repo / p).is_file()]
+    if gone:
+        raise FileNotFoundError(f"HIGH_IMPACT names test files that are gone: {gone}")
+    added = set(HIGH_IMPACT) - set(picked)
+    return sorted(set(picked) | added), len(added)
+
+
 def store_stamp(folder: Path | None = None) -> str | None:
     """Size and modification time of the store and its write-ahead log, or
     None where there is no store (CI). Imported late: the commit hook loads
@@ -228,12 +249,25 @@ def verdict(rc: int, before: str, after: str, summary: str = "") -> str:
     return "PASSED" if rc == 0 and re.search(r"\b[1-9]\d* passed", summary) else "FAILED"
 
 
+def full_run_already_passed(last: dict | None, tree: str, stamp: str | None) -> bool:
+    """F140 q7 (team lead, 2026-11-07: a): a full run is not repeated when this tree, and this store, already passed
+    the full suite: the second full run of a sprint whose retrospective changed nothing proves nothing new."""
+    return bool(last and last.get("verdict") == "PASSED" and last.get("args") == [] and last.get("tree") == tree
+                and last.get("tree_after") == tree and stamp is not None and last.get("store_checked") == stamp)
+
+
 def main(argv: list[str]) -> int:
     try:
         last = json.loads((ROOT / VERDICT).read_text(encoding="utf-8"))
     except (OSError, ValueError):
         last = None
     stamp = store_stamp()
+    force = "--force" in argv
+    argv = [a for a in argv if a != "--force"]
+    if not argv and not force and full_run_already_passed(last, tree := working_tree(ROOT), stamp):
+        print(f"SUITE PASSED already: the full suite passed this tree {tree[:10]} and this store at "
+              f"{last.get('finished')}; nothing changed, so it is not run again (F140 q7; --force runs it)")
+        return 0
     covers_store = not argv
     if "--changed" in argv:
         argv = list(argv)
@@ -254,6 +288,9 @@ def main(argv: list[str]) -> int:
             if added:
                 print(f"--changed: the store changed since its tests last passed, so {added} more "
                       "test files with the live_store marker run too")
+            picked, added = with_high_impact(ROOT, picked)
+            if added:
+                print(f"--changed: {added} more high-impact test files run on every gate (F140 q8)")
         covers_store = covers_the_store(picked, argv, store_tests(ROOT))
         argv = [*(picked or []), *argv]
     before = working_tree(ROOT)
@@ -261,7 +298,7 @@ def main(argv: list[str]) -> int:
     log = ROOT / LOG
     log.parent.mkdir(exist_ok=True)
     with log.open("w", encoding="utf-8") as out:
-        rc = subprocess.run([sys.executable, "-m", "pytest", "-q", *argv], cwd=ROOT, stdout=out,
+        rc = subprocess.run([sys.executable, "-m", "pytest", *PYTEST_ARGS, *argv], cwd=ROOT, stdout=out,
                             stderr=subprocess.STDOUT).returncode
     after = working_tree(ROOT)
     summary = summary_line(log.read_text(encoding="utf-8", errors="replace"))
