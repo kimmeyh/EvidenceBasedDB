@@ -15,6 +15,10 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **feat**: F141 (Task D): `python scripts/view.py paper <id> --full`
+  prints each yielded assertion whole: id, certainty, value, provenance
+  and quotes. The default output is unchanged (the value cut at 100
+  characters). `--full` on another mode is refused. Proven red
 - **feat**: F142 part 2 (Task C): the sign-off `add` table adds an
   assertion to a group's read, or splits one (a `value_replace` on the
   old assertion plus an `add`). Sprint 16 split `he-simulation-scope` by
