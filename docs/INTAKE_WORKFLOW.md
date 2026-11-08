@@ -4245,3 +4245,24 @@ apply. Section 75 is F144's, on its own branch.
   `add` table), and every script path set to the Sprint 17 worktree,
   since the main checkout is on F144's branch. Telemetry stays in
   `manifests/sprint16_f114_reads/telemetry/` (one folder for F143).
+- **Reads (2026-11-07 to 08).** 4 local readers (Sonnet 5.5), one per
+  group, all 10 papers read in full, 0 check problems. 1,199 new
+  assertions and 4 verdicts on Pere v2's stored assertions (2 confirmed,
+  1 corrected, 1 narrowed). The paper's own statements disagree in
+  places: Pere v2's Table 10 against its text, Albash's Appendix A
+  proof, Alarfaj's dates and headline metrics. Each disagreement is in
+  the read's `reader_inference` and in the reviewer's why.
+- **Reviews.** One reviewer per group (no proof appendix over 30 pages;
+  Albash's appendices span about pages 55 to 65). 431 items: 264 HIGH,
+  167 LOW. No certainty change on a stored assertion, so none waits for
+  the team lead. g348's first review graded 2 of PSI's own claims HIGH;
+  finalize refused them (a vendor's own claim is LOW), and the reviewer
+  re-decided both LOW. The cited-step rule made Aharonov's headline
+  theorems LOW (their proofs use results cited from other papers); that
+  is F129's open question, not a defect in the paper.
+- **Apply.** Dry run: 1,201 assertions entered or changed from 10
+  records, every quote verbatim, 0 refusals. Live apply after a verified
+  backup (`evidence-20261108T011457987899-...db`), with 0 stored fields
+  changed that no review item names; the 10 papers at `read`. A second
+  apply checked nothing and wrote nothing. Assertions after it: 37,408
+  (HIGH 11,754; LOW 25,554).

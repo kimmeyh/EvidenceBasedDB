@@ -15,6 +15,15 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **feat**: F114 Task E applied (INTAKE section 76; snapshot
+  2026-11-08). 10 papers read in full by 4 local readers, reviewed and
+  signed off; 1,201 assertions entered or changed, every quote verbatim;
+  live apply after a verified backup, a second apply wrote nothing. The
+  10 papers at `read`. Assertions 37,408 (HIGH 11,754; LOW 25,554)
+- **docs**: F143 (Task F): `docs/F143_READING_COST.md`. The cost per page
+  rose because each page yields more assertions (1.83 to 2.47 per page)
+  and more review items (0.79 to 1.35), most in theory-heavy papers; the
+  tokens per assertion stayed flat. Not waste: the full-read rule working
 - **fix**: `run_suite`'s tree id no longer crashes when a reader rewrites
   a new telemetry file between the scratch index's `git add -A` and its
   `git rm --cached` (`-f` added). Found at Task E's first gate, which
