@@ -80,7 +80,8 @@ from store import DEFAULT_STORE_DIR, connect, recheck, script_paths  # noqa: E40
 from store.backup import backup_before_write  # noqa: E402
 from store.grading import grade, high_grades, low_grade  # noqa: E402
 from store.ingest import (FULL_READ_MARK, AssertionRecord, add_read, append_updated_reason,  # noqa: E402
-                          checked_when_stored, insert_verified_assertion, set_tier, sync_verified_assertion, validate_assertion)
+                          checked_when_stored, decided_day, insert_verified_assertion, set_tier,
+                          sync_verified_assertion, validate_assertion)
 from store.merges import holder, promotes  # noqa: E402
 from store.ocr import IMAGE_SUFFIXES  # noqa: E402
 from store.quotes import (QUOTE, ocr_only_quotes, plain, read_from_figure, require_edit_basis, require_verbatim,  # noqa: E402
@@ -467,13 +468,21 @@ def record_telemetry(step: str) -> list[str]:
 
 def verify_counts() -> str:
     return (f"quote checks: {LAST_VERIFY['checked']} checked, {LAST_VERIFY['stored as written']} stored as written "
-            f"(checked when written, not again); {LAST_VERIFY['sources read']} sources read")
+            f"(checked when written, not again); {LAST_VERIFY['sources read']} sources read; "
+            f"{LAST_VERIFY['kept by a later decision']} kept by a later decision (neither checked nor written)")
 
 
 def _text(texts: dict[str, str], file: str) -> str:
     if file not in texts:  # once per file: setdefault built the argument, plain() over the whole text, every time
         texts[file] = plain(source_text(file))
     return texts[file]
+
+
+def decided_later(conn, a: AssertionRecord) -> bool:
+    """A stored row whose latest Manual Validation decision (`store.ingest.decided_day`) is after the day this apply
+    would write it: the sync refuses it, so nothing here may change it."""
+    row = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (a.id,)).fetchone()
+    return bool(row and a.updated and a.updated < decided_day(row[0]))
 
 
 def verify(conn=None) -> list[tuple[AssertionRecord, str, dict, object]]:
@@ -491,6 +500,12 @@ def verify(conn=None) -> list[tuple[AssertionRecord, str, dict, object]]:
     LAST_VERIFY.clear()
     CHECKED_BY_GROUP.clear()
     for g, a, rid, p in assertions(problems):
+        if conn is not None and decided_later(conn, a):
+            # Sprint 17 q23: a row the team lead corrected at a Manual Validation after this review is never written
+            # by a re-apply (`sync_assertion` refuses a sync dated before the decision), so its quotes, which differ
+            # from the review's, are not checked or written here either; without this a re-apply checked 6
+            LAST_VERIFY["kept by a later decision"] += 1
+            continue
         try:
             from_figure = a.id in figure_ids(p)
             verified = checked_when_stored(conn, a, rid) if conn is not None else None

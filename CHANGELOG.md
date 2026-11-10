@@ -15,6 +15,17 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **fix**: Sprint 17 Manual Validation q23 = a: the 8 Task E assertions
+  the fresh-eyes review found are corrected in the store by
+  `scripts/sprint17_q23_corrections.py` (quotes added to 5 HIGH values,
+  Albash's footnote LOW, Pere's combined claim narrowed, one claim type
+  fixed). Its second apply wrote the added quotes twice; the script now
+  adds each once (tested, proven red) and a later apply wrote nothing.
+  Its fresh-eyes review added Albash's two unquoted passages; the
+  applier's quote check now skips a row the team lead corrected after
+  its review, as the sync already did (tested, proven red), prints how
+  many it kept, and still checks a row decided on or before the review
+  day (tested, proven red) (#179)
 - **process**: status at Phase 5.3 Manual Validation; full suite passed
   (1,649); PR #174 closes #175 to #180. Team lead q24 = a (2026-11-08):
   F144's branch is combined into this one, then the second checkout is

@@ -501,7 +501,9 @@ def test_the_apply_writes_its_refusal_notes_through_refusal_reason_and_nothing_e
 def test_a_re_apply_checks_no_quote_and_reads_no_source(applied_once):
     """F136 acceptance: a second apply of every applied group checks nothing (and, above, writes nothing). Sprint
     15's re-apply checked about 10,000 quotes, 23 minutes. Proven to fail by injection, 2026-11-06: with
-    apply_changes calling verify() without its connection, every quote was checked again. Restored."""
+    apply_changes calling verify() without its connection, every quote was checked again. Restored. Sprint 17 q23
+    (2026-11-09): before `decided_later`, the rows corrected at Manual Validation were checked again (6 checked, the
+    gate's failure)."""
     counts = applied_once["verify"]  # a Counter turned dict: a count of 0 may be absent
     assert counts.get("checked", 0) == 0, counts
     assert counts["sources read"] == 0
@@ -617,7 +619,7 @@ def test_only_a_new_or_changed_quote_is_checked(monkeypatch):
     paper = {"record_id": "p", "file": "f", "existing": [], "assertions": [{"id_suggestion": i} for i in wanted]}
     monkeypatch.setattr(g, "load_groups", lambda: [("g050", paper)])
     monkeypatch.setattr(g, "record", lambda gg, rid, aid, a, why, sid=None: SimpleNamespace(
-        id=aid, citation_context=wanted[aid], value="v", certainty="low", certainty_reasons=""))
+        id=aid, citation_context=wanted[aid], value="v", certainty="low", certainty_reasons="", updated="2026-11-01"))
     reads: list = []
     monkeypatch.setattr(g, "source_text", lambda f: reads.append(f) or "the source holds q only")
     monkeypatch.setattr(g, "validate_assertion", lambda a: None)
@@ -633,6 +635,51 @@ def test_only_a_new_or_changed_quote_is_checked(monkeypatch):
     conn.execute("""INSERT INTO assertion_fields VALUES ('new', '"q" (p.2)')""")  # as the first apply wrote it
     assert [a.id for a, _, _, _ in g.verify(conn)] == ["same", "new"]
     assert (g.LAST_VERIFY["checked"], g.LAST_VERIFY["sources read"], reads) == (0, 0, [])  # the rerun reads nothing
+
+
+def _corrected_row(monkeypatch, decided: str):
+    """A store holding one row 'fixed' with a Manual Validation decision dated `decided`, and a review entry for it
+    dated 2026-11-01 whose quote is not in the source. Returns the script module and the store."""
+    from types import SimpleNamespace
+    g = _script()
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE records (id TEXT, class TEXT, value TEXT, provenance TEXT, updated_reason TEXT)")
+    conn.execute("CREATE TABLE assertion_fields (record_id TEXT, citation_context TEXT)")
+    reason = (f"2026-10-29 (g050): {g.FULL_READ_MARK}: entered | "
+              f"{decided} (Sprint 17 Manual Validation, q23 = a): x")
+    conn.execute("INSERT INTO records VALUES ('fixed', 'assertion', 'v', 'p, p.1', ?)", (reason,))
+    conn.execute("""INSERT INTO assertion_fields VALUES ('fixed', '"q" (p.1)')""")
+    paper = {"record_id": "p", "file": "f", "existing": [], "assertions": [{"id_suggestion": "fixed"}]}
+    monkeypatch.setattr(g, "load_groups", lambda: [("g050", paper)])
+    monkeypatch.setattr(g, "record", lambda gg, rid, aid, a, why, sid=None: SimpleNamespace(
+        id=aid, citation_context='"the review quote" (p.1)', value="v", certainty="low", certainty_reasons="",
+        updated="2026-11-01"))
+    monkeypatch.setattr(g, "source_text", lambda f: "the source holds q only")
+    monkeypatch.setattr(g, "validate_assertion", lambda a: None)
+    return g, conn
+
+
+def test_a_row_the_team_lead_corrected_after_the_review_is_neither_checked_nor_written(monkeypatch):
+    """Sprint 17 q23 (2026-11-09): a row corrected at Manual Validation after its review differs from the review, and
+    the sync refuses to write it back (`sync_assertion`, `decided_day`); verify() must not check its quotes or hand it
+    to the write, and the printed counts say it was kept. Proven to fail by injection, 2026-11-09: with
+    `decided_later` returning False, the corrected row was checked, and its review quote, not in the source, was
+    refused."""
+    g, conn = _corrected_row(monkeypatch, "2026-11-09")
+    assert g.verify(conn) == []
+    assert (g.LAST_VERIFY["checked"], g.LAST_VERIFY["kept by a later decision"]) == (0, 1)
+    assert "1 kept by a later decision" in g.verify_counts()
+
+
+@pytest.mark.parametrize("decided", ["2026-11-01", "2026-10-30"])
+def test_a_row_decided_on_or_before_the_review_day_is_still_checked(monkeypatch, decided):
+    """The other side of the rule above, from the fresh-eyes review of 2026-11-09: the sync writes a row whose
+    decision is not after the review day (`today < decided_day(reason)` is false), so verify() must still check it.
+    Here the review quote is not in the source, so the check refuses it. Proven to fail by injection, 2026-11-09:
+    with `decided_later` returning True, the row was skipped and nothing was refused."""
+    g, conn = _corrected_row(monkeypatch, decided)
+    with pytest.raises(ValueError):
+        g.verify(conn)
 
 
 def test_a_field_no_review_item_names_is_listed(synthetic_store, monkeypatch):

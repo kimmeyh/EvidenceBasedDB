@@ -4286,3 +4286,42 @@ on its own branch.
     setup statement; PSI's record has no `coi`, where QCi's records
     name the authors' employer; 49 records at `read` (these 10 among
     them) keep a disposition ending "not yet read".
+- **Corrected 2026-11-09 (Sprint 17 Manual Validation, q23 = a;
+  counts are a snapshot as of that date).**
+  `scripts/sprint17_q23_corrections.py` changes the 8 assertions in the
+  store; the signed reviews are not rewritten. The five HIGH values keep
+  their text and gain the passages they rest on as quotes;
+  albash-grover-local-condition-not-proof is LOW, "field statement";
+  chance-level-and-signature-control is narrowed to the one claim the
+  separate Pere v2 assertions do not hold, LOW, "authors' claim";
+  random-instance-distribution-scope is `positive`. Every quote was
+  checked verbatim against its PDF before the write. The first version
+  appended the added quotes on every apply, so the second apply wrote
+  them twice into 4 records; the script now adds each once, a third
+  apply put the 4 back to the original quotes plus each added quote
+  once (compared against the first backup,
+  `evidence-20261109T213330101296-...db`), and a fourth apply wrote
+  nothing. Those 4 records' histories carry three q23 notes. Assertions
+  37,408; HIGH 11,753.
+- **The fresh-eyes review of the q23 apply (2026-11-09).** Every added
+  quote is verbatim on its page; only the 8 rows changed. It found
+  albash-grover-local-condition-not-proof still saying more than its
+  quote (Roland and Cerf, and the numerical evidence): both passages
+  from footnote 16 are now quoted (one more apply; the next wrote
+  nothing). Two grades are asked of the team lead: Albash's LOW against
+  its siblings' HIGH, and Pere's narrowed claim, which reads as a
+  stated limit. The gate then found that a re-apply of the Task E
+  groups checked the 6 corrected rows' quotes again: `full_read_apply`
+  now keeps a row the team lead corrected after its review
+  (`decided_later`), which the sync already refused to write.
+- **The fresh-eyes review of `decided_later` (2026-11-09).** No high
+  finding: a kept row is written exactly as before, which is not at
+  all. Two changes followed. The printed quote-check counts now say
+  how many rows were kept by a later decision, so a dry run shows the
+  skip. Two new test cases show that a row decided on or before the
+  review day is still checked, as the sync still writes it (each
+  proven red). One finding is accepted, not changed: the review's
+  copy of a kept row is no longer validated, so a bad review entry
+  for such a row no longer stops an apply. That copy is replaced by
+  the team lead's decision and is never written, so checking it
+  protects nothing.
