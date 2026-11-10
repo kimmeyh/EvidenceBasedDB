@@ -243,6 +243,16 @@ once for exactly that reason.
   `.claude/hooks/block_unraw_escape.py` blocks an in-place edit of any
   repository file, and treats a search pattern that names sed as data.
 
+- **Don't create a second working folder for this repository without
+  asking.** All work happens in `D:\Data\Harold\github\EvidenceBasedDB`;
+  another branch is a `git checkout` away. Sprint 17 made
+  `EvidenceBasedDB-sprint17` with `git worktree add` unasked: the main
+  folder could not switch branches, the status footer read the wrong
+  folder, and combining them (q24) cost two merges and a second Manual
+  Validation hand-over. Team lead, Sprint 17 retrospective i1 = a
+  (2026-11-10). Hook-enforced: `.claude/hooks/block_worktree_add.py`
+  (a shell `git worktree add` and the EnterWorktree tool).
+
 - **Don't stage a commit without reading what you are staging.** Run
   `git status --short` first and account for every entry. `git add -A` is fine
   once you have. It happened here: a review-findings commit swept in an

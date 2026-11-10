@@ -52,10 +52,29 @@ repository exists. No other F# from either source repository applies here.
 | 14 | docs/sprints/SPRINT_14_SUMMARY.md | [OK] Complete | 2026-10-29 to 2026-10-31 |
 | 15 | docs/sprints/SPRINT_15_SUMMARY.md | [OK] Complete | 2026-11-01 to 2026-11-05 |
 | 16 | docs/sprints/SPRINT_16_SUMMARY.md | [OK] Complete | 2026-11-05 to 2026-11-07 |
+| 17 | docs/sprints/SPRINT_17_SUMMARY.md | [OK] Complete | 2026-11-07 to 2026-11-10 |
 
 ## Last Completed Sprint
 
-Sprint 16 is below; Sprint 15 follows it for continuity.
+Sprint 17 is below; Sprint 16 follows it for continuity.
+
+### Sprint 17: Test Faster, Then Read on the API Credit (2026-11-07 to 2026-11-10, PR #174, merge to develop pending the team lead)
+
+Six tasks, six issues (#175-#180). **Tooling**: the full suite from about
+69 minutes to 7 to 11, with a test inventory and last failures first
+(F140); reader telemetry out of the gate's tree id and the sign-off fixes
+(F142); `view.py paper <id> --full` (F141). **Batch API**: the reader on
+the Anthropic credit, dry run by default, the $95 cap and the 2026-11-18
+stop (F144, PR #181); 13 papers for $3.00 (2026-11-07), nothing written
+to the store. **Reading**: F114's 10 papers read in full and applied
+(1,201 assertions entered or changed); the cost per page explained
+(F143). Store (snapshot 2026-11-10): 36,209 -> 37,408 assertions (11,491
+-> 11,754 HIGH); 2,369 papers. Manual Validation: one working folder
+(q24), 8 assertions corrected (q23), 161 papers split into one-paper
+groups (q20), the quotes-first reader rule (q28), the Albash and Pere
+grades (q29, q31); F146 to F148 carded. Retrospective: team lead all
+"Very Good"; the worktree hook (i1), two workflow lines (i2, i4); F149
+carded. Full detail: `docs/sprints/SPRINT_17_SUMMARY.md`.
 
 ### Sprint 16: Read Once, Check Once, Write Once, Then Test It on 20 Papers (2026-11-05 to 2026-11-07, PR #164, merged to develop and to main via PR #173 on 2026-11-07; tagged sprint-16)
 
@@ -1208,6 +1227,14 @@ and in git. Remaining items below.
   summary, a test that a block it wrote matches the store (live_store),
   proven red.
 - Depends on: nothing.
+
+**F149. The ledger script names a new group from the highest number, not the count (~15m) Priority 20** (NEW 2026-11-10, Sprint 17 retrospective Category 13, the Development Team, from the fresh-eyes review of the q20 split)
+- Phase: Reading (pipeline)
+- Value: this prevents a new ledger group from reusing an existing group's name when the ledger has a gap.
+- Platform: `scripts/sprint13_g_ledger.py`; `manifests/sprint13_g_ledger.json`.
+- `sprint13_g_ledger.py` names a new group `g{len(groups) + 1}`. Today the names g001 to g509 are contiguous, so the next is g510, which is right; one deleted or skipped name would make it reuse a name. `scripts/batch_read.py`'s `next_group` already uses the highest number plus one.
+- Acceptance: the script names a new group from the highest number plus one, with a test on a ledger with a gap, proven red.
+- Depends on: nothing. Target: the Sprint 18 plan.
 
 ## Design documents governing this repository
 

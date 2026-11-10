@@ -121,4 +121,14 @@ as of the date each names.
 
 ## Improvement Decisions
 
-Asked as i1 to i4 on 2026-11-10; the team lead's answers are recorded here when they come.
+Team lead, 2026-11-10: "i1. a i2. b i3. b i4. a".
+
+| # | Title | Source | Type | Effort | Decision (now/backlog/skip) |
+|---|---|---|---|---|---|
+| i1 | No new working folder or worktree without asking | Dev Team, categories 1, 4 and 9 | Hook + rule | 30m | Now (a): `.claude/hooks/block_worktree_add.py` on the shell and EnterWorktree tools, `tests/test_block_worktree_add.py` (proven red), a CLAUDE.md line |
+| i2 | A script that adds to stored text is tested for a second run before its first apply | Dev Team, categories 1 and 2 | Process | 5m | Now (b): a Phase 4 line in `docs/SPRINT_EXECUTION_WORKFLOW.md`, not enforced |
+| i3 | Every option in a question checked against the code and data before it is asked | Dev Team, category 6 | Process | 10m | Skip, tracked (b): two cases this sprint (q20's count, q30's option b); a third brings it back |
+| i4 | A decision's date read from the clock when the answer arrives | Dev Team, categories 6 and 8 | Process | 10m | Now (a): a Phase 5 line in `docs/SPRINT_EXECUTION_WORKFLOW.md` |
+
+Category 13's item (the ledger script names a new group from `len(groups)`; 15m) is carded as F149 for the Sprint 18
+plan.

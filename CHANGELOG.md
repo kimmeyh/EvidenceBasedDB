@@ -15,6 +15,23 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **process**: Sprint 17 retrospective applied (team lead, 2026-11-10,
+  "i1. a i2. b i3. b i4. a"): i1, no second working folder without
+  asking, hook-enforced by `.claude/hooks/block_worktree_add.py` on the
+  shell and EnterWorktree tools (`tests/test_block_worktree_add.py`,
+  proven red) and a CLAUDE.md line. A fresh-eyes review found escape
+  routes in its first version (an apostrophe pairing quotes across the
+  command, the heredoc opener line erased, its bypass token honored in a
+  comment, `git -c`, `git.exe`, a quoted -C path, a line continuation):
+  quoted text is no longer stripped, heredoc bodies are stripped from the
+  line after the opener, the token is removed (the team lead runs an
+  approved add with `!`), and each route is a test case; i2, a Phase 4 line (an appending
+  script is tested for a second run before its first apply); i4, a
+  Phase 5 line (a decision's date is read from the clock); i3 skipped
+  and tracked; Category 13 carded as F149. Sprint 17 summary written,
+  the master plan rolled (Last Completed Sprint, Past Sprint Summary
+  row) and the checklist reconciled (PR #174)
+
 - **docs**: Sprint 17 retrospective (Phase 7.1): Manual Validation
   complete (team lead, 2026-11-10); the team lead's feedback recorded
   verbatim, the Development Team's draft, and improvements i1 to i4

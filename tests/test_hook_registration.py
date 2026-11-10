@@ -194,7 +194,8 @@ def test_the_guards_this_repository_depends_on_are_registered():
                      "block_procedural_question_stop.py",
                      "block_missing_sprint_cards.py",
                      "block_commit_during_mutation.py",
-                     "block_env_secret_reads.py"):
+                     "block_env_secret_reads.py",
+                     "block_worktree_add.py"):
         assert required in commands, (
             f"{required} is not registered in .claude/settings.json. It guards "
             "the silent-corruption class: an escape consumed by a shell or a "
