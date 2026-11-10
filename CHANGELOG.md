@@ -26,6 +26,73 @@ this project keeps having to replace with a step.
   its review, as the sync already did (tested, proven red), prints how
   many it kept, and still checks a row decided on or before the review
   day (tested, proven red) (#179)
+- **docs**: F144's exclusion list holds Task E's 2 new papers, entered
+  2026-11-07 (`sar-2026-...` and `psi-2026-...`, ledger group g348 on
+  the Sprint 17 branch), so all 10 of Task E's papers are excluded
+- **feat**: F144 measurement batch collected (snapshot 2026-11-07): 8 of
+  8 succeeded, $2.22, total spent $3.00 of the $95 cap. With the
+  self-check, 16.6 check problems per 100 assertions (71 in 428) against
+  the pilot's 26.9 (49 in 182). Every reply is kept and flagged. The
+  prompt's rule 3 is corrected: its "x 10^4" example was itself flagged,
+  so a power of ten is written in full, and a supplementary figure opens
+  "Read from Figure S2:". Review fixes: a null exclusion reason is
+  refused, and the exclusion in `fetch` has its own test. Both proven red
+  (#176)
+- **process**: Task E's 8 ledger papers fixed by id in F144's exclusion
+  list: Pere v2 (q3 = a) and 7 in ledger order from g295 and g296, the
+  first groups not yet read in full (g069 and g072 skipped, as in Sprint
+  15). Task E's 2 new PDFs are added when intake gives them ids (#176)
+- **feat**: F144 exclusion list
+  (`manifests/sprint17_f144_batch/exclude.json`): a record named there
+  is never sent or fetched, and each entry must give its reason. It
+  holds Task E's papers once they are fixed by id (the plan), and now
+  Huang 2023, a preprint record whose fetched copy is byte-identical to
+  Li 2024's published paper. Fetch of the free-copy slice (snapshot
+  2026-11-07): 130 tried, 8 saved, 34 refused by the publisher (403, an
+  HTML page in place of the PDF, a failed TLS check; never worked
+  around), 88 with no free copy. Test proven red (#176)
+- **feat**: F144 reader self-check (team lead, q2: "can't this be written
+  into the prompt to check itself before returning?"). The batch prompt's
+  last section now makes the reader check each assertion before it
+  replies, one pass for each cause found in the pilot's 49 problems
+  (snapshot 2026-11-07): a number no quote holds (40; the entry below
+  says 42, a miscount), a label's number in a value ("eqn. (11)", "ref.
+  26"), a figure number without "about", a quote off its anchor's page
+  (8), a ligature changed (1). A batch request cannot run the check
+  script, so the script still checks every saved reply. Test proven red
+  (#176)
+- **feat**: F144 pilot results (snapshot 2026-11-07): 5 of 5 succeeded
+  in 5m18s, $0.78 for 99 pages; reader group files g335 to g339 in
+  `manifests/sprint13_g_reads/`, each kept and flagged (2 to 19 check
+  problems, 42 of 49 a value number not in its quotes). Fix from the
+  pilot: every page image is attached, figure pages first, since
+  Kadowaki 1998's vector-drawing figures had no image (test proven
+  red). Nothing written to the store (#176)
+- **process**: F144 pilot sent (batch msgbatch_01UToPxejWkyAFEubNSZf4PN,
+  2026-11-07): 5 papers, ledger groups g335 to g339 with their briefs;
+  forecast $1.63, worst case $7.70 (#176)
+- **feat**: F144 reader sends an errored or expired paper again and keeps
+  its first result (team lead, Q3 = 1; proven red), and names the team
+  lead's workspace in each request: the key is scoped to the
+  Organization, so the API needs the `anthropic-workspace-id` header.
+  A no-spend check listed the models with it (#176)
+- **feat**: F144 Batch API reader, built and dry-run; nothing sent yet.
+  `scripts/batch_read.py` (select, fetch, submit, poll, status; dry run
+  by default), `requirements-batch.txt`, the no-tool reader prompt
+  `manifests/sprint17_f144_batch/READER_PROMPT.md`, and the slice
+  `manifests/sprint17_f144_slice.json` (174 candidates, a snapshot as of
+  2026-11-07: no read row, no ledger group, not GitHub, withdrawn or
+  retracted). `tests/test_batch_read.py`: no resend, the $95 cap and the
+  2026-11-18 stop, no key in output or files, results in pipeline shape
+  with failures kept; each proven red. `tests/test_reader_prompts.py`
+  accepts the script's state in place of progress files for a prompt
+  whose reader has no tools (proven red). INTAKE_WORKFLOW section 75.
+  Writes nothing to the store. A fresh-eyes review added four guards,
+  each proven red: the cap is tested at the worst case (full max_tokens
+  of output), not the forecast; an interrupted send leaves a `pending`
+  entry that blocks the next send, and the ledger is written before the
+  send; each request and the batch are measured against 32 MB and
+  256 MB; a retried collection costs each result once (#176)
 - **process**: status at Phase 5.3 Manual Validation; full suite passed
   (1,649); PR #174 closes #175 to #180. Team lead q24 = a (2026-11-08):
   F144's branch is combined into this one, then the second checkout is

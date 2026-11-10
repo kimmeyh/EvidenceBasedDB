@@ -75,6 +75,18 @@ def test_every_reader_prompt_from_task_g_on_forbids_hook_override_tokens():
 
 RESTART = ("## Progress and restart", "progress.json", "done/", "partial/", "last_page_read", "start here, every time",
            "--partial")  # a local reader's paths use "\", F114's cloud reader's "/"; both are compared as "/"
+# Sprint 17 F144: a reader with no tools (one Batch API request) keeps no files; the script that sends it keeps the
+# state, and the prompt must say so: the script saves its state before it waits, saves the reply the moment it
+# arrives, and never sends a paper again once its reply is saved.
+NO_TOOLS = "you have no tools"
+NO_TOOL_RESTART = ("## Progress and restart", "saves its state before it waits", "saves your reply the moment it arrives",
+                   "is never sent again", "give your whole reply in one piece")
+
+
+def restart_problems(text: str) -> list[str]:
+    flat = " ".join(text.lower().replace("\\", "/").split())
+    wanted = NO_TOOL_RESTART if NO_TOOLS in flat else RESTART
+    return [w for w in wanted if w.lower() not in flat]
 
 
 def test_every_reader_prompt_from_task_g_on_saves_its_progress_and_starts_from_it():
@@ -83,10 +95,14 @@ def test_every_reader_prompt_from_task_g_on_saves_its_progress_and_starts_from_i
     loose anything if we cross current or weekly session limits". Proven to
     fail, 2026-10-26: run on Task G's instructions with the "Progress and
     restart" section and the --partial paragraph cut, the check named all
-    seven phrases missing."""
-    missing = {p: [w for w in RESTART if w.lower() not in instructions(p).lower().replace("\\", "/")]
-               for p in prompts()}
+    seven phrases missing. Sprint 17 F144's no-tool branch proven to fail,
+    2026-11-07: with the F144 prompt's "Progress and restart" section cut
+    (INJECTED), the check named its five phrases; and a tool reader's prompt
+    is still held to the seven (the second assertion below)."""
+    missing = {p: restart_problems(instructions(p)) for p in prompts()}
     assert {p: m for p, m in missing.items() if m} == {}
+    old = restart_problems(instructions(ROOT / "manifests" / "sprint13_reads" / "READER_PROMPT.md"))
+    assert "progress.json" in old and "saves its state before it waits" not in old, old
 
 
 # Sprint 15 Task H (F114, F115, F116, F126, F129): what a reader prompt from Sprint 15 on carries.

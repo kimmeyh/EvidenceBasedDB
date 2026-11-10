@@ -4209,6 +4209,55 @@ Written 2026-11-06, before the apply. Every count is a snapshot as of
   `--apply` takes a verified backup; a second apply writes nothing.
   `tests/test_sprint16_f51_cvqboost.py`.
 
+## 75. Papers read through the Message Batches API (Sprint 17 Task B, F144)
+
+The team lead's brief of 2026-11-07: read papers with no read row on the
+team lead's API credit ($100, expiring 2026-11-18), one paper per Batch
+API request to Claude Sonnet 5.5, with no tools. **This path writes
+NOTHING to the store.** Its output is the reader group file the F114
+pipeline already consumes; the coordinator review and
+`scripts/full_read_apply.py` enter it as for any other group.
+
+- **The script.** `scripts/batch_read.py`, with the subcommands `select`,
+  `fetch`, `submit`, `poll` and `status`. Each is a dry run without
+  `--apply`. Its packages are in `requirements-batch.txt`.
+- **The key.** ANTHROPIC_API_KEY in the repository's git-ignored key file,
+  read by python-dotenv's `dotenv_values`, which never puts it in the
+  environment (Claude Code ranks that variable above the subscription
+  login). A key not scoped to a workspace also needs
+  ANTHROPIC_WORKSPACE_ID in the same file. Claude never reads the file;
+  `.claude/hooks/block_env_secret_reads.py` blocks it.
+- **The candidates** (`manifests/sprint17_f144_slice.json`; 174 records,
+  a snapshot as of 2026-11-07): every paper record with no read row that
+  no ledger group holds (a ledger record is F114's), with an arXiv id or
+  a DOI, not a GitHub repository, not withdrawn and not retracted. F57's
+  order: context `qml`, `qc`, `ml`, `world`, `method`, then the most
+  cited by OpenAlex.
+- **The files.** Free copies only: the arXiv copy, then each open-access
+  PDF link OpenAlex lists, tried in turn. A failed TLS check is never
+  worked around. A record with no free copy goes on the hand-download
+  list, never into a batch. On 2026-11-07, 48 of the 174 had a free link
+  and 126 had none (a snapshot); publisher sites often answered with an
+  HTML or bot-check page.
+- **The prompt.** `manifests/sprint17_f144_batch/READER_PROMPT.md`:
+  Sprint 16 Task F's prompt, changed only where a request with no tools
+  cannot do what it says. The text arrives page by page; the image of
+  each page that holds a figure, a table, an embedded image or OCR text
+  is attached (at most 100 images and 18 MB a request; a page over that
+  is named as not attached, and the reader lists it in `not_read`).
+- **The rules** (`tests/test_batch_read.py`, each proven red): a record
+  whose result is saved, or whose batch is in flight, is never sent
+  again; a batch whose estimate would take the spend past $95 is
+  refused, and nothing is sent on or after 2026-11-18; the key never
+  reaches the output or a file; each result is saved raw first, then
+  written as the group file (`work\f114\local\reads\group_<g>.json`
+  and `manifests/sprint13_g_reads/`), then checked by
+  `scripts/sprint13_g_check.py --sprint15`, and a failing result is kept
+  and flagged, never dropped.
+- **The state** (`D:\Data\Harold\EvidenceBasedDB\work\f144\state.json`,
+  outside git): batches, results with tokens and cost, and each record's
+  file or why it has none.
+
 ## 76. F114 at 10 papers, under Sprint 17's prompts (Sprint 17 Task E)
 
 Every count is a snapshot as of its own date: the plan below as of
