@@ -1134,6 +1134,81 @@ and in git. Remaining items below.
   note's proposals asked.
 - Depends on: nothing. Target: Sprint 18 (team lead, "for next sprint").
 
+**F146. The agreement map, then the HIGH audit, on the API credit before it expires (~240m [no-history] timebox) Priority 10** (NEW 2026-11-09, team lead at Sprint 17 Manual Validation, q26 = a: "What the API credit does in Sprint 18 - option a")
+- Phase: Certainty (metered, Message Batches API)
+- Value: this enables the store to say, for each assertion, which
+  assertions from other papers support or contradict it, and to show
+  that each HIGH value is held by its own quotes. Both are judged by a
+  model, recorded with provenance, and decided by the team lead, never
+  written to a grade by the script.
+- Platform: the Anthropic Message Batches API, `ANTHROPIC_API_KEY` (read
+  only from the environment, never printed or written);
+  `scripts/batch_read.py`'s state, cap and stop rules; `store.grading`;
+  the `assertion_relations` table (42 links as of 2026-11-09: 35
+  supports, 7 contradicts).
+- Facts (a snapshot as of 2026-11-09): 37,408 assertions; 11,753 HIGH.
+  The team lead gives the credit as $97, expiring 2026-11-18; F144 had
+  spent $3.00 of its $95 cap by 2026-11-07. Batch prices, from the
+  claude-api skill's cache of 2026-11-03 (re-check on the pricing page
+  before sending): Haiku 5.5 $0.05 / $0.25 per MTok in and out, Sonnet
+  5.5 $1 / $5.
+- Scope:
+  1. The agreement map. Haiku 5.5 screens pairs of assertions from
+     different papers that share a context and a topic. Sonnet 5.5 judges
+     each pair the screen keeps: supports, contradicts or unrelated, with
+     the quotes that decide it. Results are saved as proposals, outside
+     the store.
+  2. The HIGH audit. Sonnet 5.5 checks each HIGH value against its own
+     quotes: held, held in part, or not held, with why.
+  3. Both reuse F144's rules: dry run by default, a cost forecast and a
+     worst case before each send, the cap (the credit left, less a
+     margin), nothing sent on or after 2026-11-18, a saved result never
+     sent again, a failing result kept and flagged.
+- Asked of the team lead in Sprint 18, before anything is written to the
+  store: whether "corroborated by an independent study" becomes an ADR
+  basis for HIGH (ADR-0004 amendment), and which proposals are applied.
+- Acceptance: both batches collected, the spend recorded per request,
+  the proposals counted and sampled for the team lead, nothing written
+  to the store without a decision, each rule tested and proven red.
+- Depends on: F144 (its state file and rules). Before 2026-11-18.
+
+**F147. One apply function that writes only the fields a review decided (~120m [no-history] timebox) Priority 20** (NEW 2026-11-09, team lead at Sprint 17 Manual Validation, q11 = a)
+- Phase: Store integrity (prevention)
+- Value: this enables every future applier to be safe by construction:
+  a field no review decided cannot be written, so the defect never
+  reaches the store.
+- Platform: `store/ingest.py` (`sync_assertion`,
+  `sync_verified_assertion`), `scripts/full_read_apply.py`
+  (`decided_fields`), the sprint applier scripts.
+- Evidence: an applier wrote an undecided field 4 times (4d969d9,
+  ed5ab01, aabdd49, d740d72), each needing a fix and a re-apply.
+- Scope: appliers write through one shared function that takes the
+  review's decided fields and refuses any other field, naming it. The
+  existing appliers move to it.
+- Acceptance: an applier that tries an undecided field is refused, by a
+  test proven red; the existing appliers pass through it unchanged.
+- Already done (Sprint 17): the card-template line "lists every field
+  this applier writes" in `docs/BACKLOG_REFINEMENT.md`.
+- Depends on: nothing.
+
+**F148. Counts in documents written from the store, never typed (~90m [no-history] timebox) Priority 20** (NEW 2026-11-09, team lead at Sprint 17 Manual Validation, q13 = a)
+- Phase: Documentation integrity (prevention)
+- Value: this enables a count in INTAKE_WORKFLOW.md or a sprint summary
+  to be right when written, since a script prints it from the store with
+  its date.
+- Platform: a new `scripts/doc_counts.py`; `docs/INTAKE_WORKFLOW.md`;
+  the sprint summaries.
+- Evidence: 5 or more wrong counts (5e10948, bb82d0a, 80fcbb9, 6e4bfb7,
+  6d5bcec, f1257c1).
+- Scope: `scripts/doc_counts.py` prints, or writes into a dated block,
+  the counts a document names (assertions, papers, HIGH and LOW by
+  basis, group states). ADR amendments keep their dated snapshots, as
+  CLAUDE.md requires.
+- Acceptance: the generator's block in INTAKE_WORKFLOW.md and the next
+  summary, a test that a block it wrote matches the store (live_store),
+  proven red.
+- Depends on: nothing.
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT

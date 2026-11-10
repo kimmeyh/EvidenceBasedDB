@@ -289,7 +289,12 @@ F144's). Each answer is recorded here when it comes.
   exclusion for `D:\Data\Harold\github` and `D:\Data\Harold\EvidenceBasedDB`
   that keeps the weekly scan. Given 2026-11-07 (contextual exclusions,
   `ScanTrigger:OnAccess`, and a weekly custom scan task); the before and
-  after timing waits on the team lead applying it.
+  after timing waits on the team lead applying it. Then found
+  (2026-11-08): Defender is in passive mode, and Norton 360 is the
+  active scanner, so the Defender steps do not apply. The team lead
+  applied Norton 360 exclusions for both folders ("both are listed").
+  The full suite on the same tree took 10m16s before and 6m57s after;
+  this is one run each, so run-to-run variation is not ruled out.
 - q6. Drop the duplicate `plain()` in the quote tests. Team lead: a.
 - q7. Skip the second full run when the retrospective changes nothing.
   Team lead: a.
@@ -302,17 +307,28 @@ F144's). Each answer is recorded here when it comes.
 - q11. A trial apply fails on a field no review named (class F). Team
   lead: "the recommended is not prevention as prevention is keeping it
   from ever happening (improved requirements/card, improved development
-  methodology...)". Re-presented with prevention options; open.
-- q12. No stored reason holds a stale phrase (class G). No answer;
-  re-presented; open.
+  methodology...)". Re-presented with prevention options. Team lead,
+  2026-11-09: a. One apply function that refuses any field no review
+  decided, carded as F147 for Sprint 18; and now, a card-template line
+  in `docs/BACKLOG_REFINEMENT.md`: a card for an applier lists every
+  field it writes.
+- q12. No stored reason holds a stale phrase (class G). Re-presented.
+  Team lead, 2026-11-09: "make note for future sprints in case we see
+  more of these in the future". Recorded as skip and track: seen once
+  (25d3985); a second case brings back the computed status (stored
+  reasons hold no status words; the status is computed when a record
+  is read).
 - q13. Snapshot counts in INTAKE recomputed from the store (class H).
   Team lead: effort must give the cost to build and the cost to run, and
-  how often. Re-presented; open. The rule is now in
-  `docs/SPRINT_RETROSPECTIVE.md`.
+  how often. Re-presented. The rule is now in
+  `docs/SPRINT_RETROSPECTIVE.md`. Team lead, 2026-11-09: a. A count
+  generator, `scripts/doc_counts.py`, carded as F148 for Sprint 18.
 - q14. A review that cites fewer pages than the PDF is refused (class J).
   Team lead: "none of these prevents it - what can we do so that it NEVER
   comes back without reading all the pages - 100% reading of all the
-  pages." Re-presented with page-chunked assignment; open.
+  pages." Re-presented with page-chunked assignment. Team lead,
+  2026-11-09: "NO, read the whole paper". No chunking: a paper is read
+  whole, as the full-read rule says.
 
 ## Acceptance (from the card)
 

@@ -293,6 +293,40 @@ Shape:
     "context": "qml", "reader_inference": ""}]}]}
 ```
 
+## Write the quotes first, then the value
+
+The self-check below did not stop it. The measurement batch's eight
+replies, read with it, still failed the check 71 times in 428
+assertions, and most of the failures were again a number in a value that
+its quotes do not hold (a snapshot as of 2026-11-07). So build each
+assertion in this order, every time:
+
+1. Write its quotes first, copied from the text.
+2. Then write its value. **Copy each number into the value only from a
+   quote you have already written** for that assertion. A number with no
+   quote under it does not go in the value: add the quote that holds it
+   first, or leave the number out.
+
+Three real cases from the measurement batch, each flagged by the check:
+
+- **A year or label added to a quoted result.** The quotes were "Our best
+  model ensemble achieves a 2.251% top-5 error on the test" and "...
+  (top-5 error of 2.991%)". The value said "on the ILSVRC 2017 test set".
+  No quote held "2017". Right: quote the sentence that names the
+  challenge and its year, or write "on the challenge's test set".
+- **A number carried from another passage.** The quote was "Due to the
+  InGaAs-SPD saturation, the average photon count cannot be further
+  increased for the DD channel." The value added "limits the DD
+  comparison to about 550 average counts". The 550 is in another
+  sentence ("As the average count increases to 550, ..."), which was not
+  quoted. Right: quote that sentence too, with its page in the anchor,
+  or leave the 550 out.
+- **Quotes written for some numbers but not all.** The value named a
+  pump at 1552.5 nm and Stokes collection at 1545.3 nm. The quotes held
+  the 50 MHz laser, the 2.5 mm waveguide and the 1559.7 nm anti-Stokes
+  line, but not 1552.5 or 1545.3. Right: one quote for each number, or
+  a shorter value.
+
 ## Check before you finish
 
 You cannot run the check, so check your reply against every rule above

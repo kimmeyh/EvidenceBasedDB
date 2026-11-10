@@ -97,4 +97,6 @@ What can be lowered without reading less:
   minutes rise cannot be measured.
 
 The fixes are asked as numbered questions in the Sprint 17 messages
-(q21 onward).
+(q21 onward). Team lead, 2026-11-09: q21 and q22 "not needed". No
+change follows from this analysis; it stays as the record of why the
+cost per page rose.

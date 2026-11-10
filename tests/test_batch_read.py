@@ -301,3 +301,18 @@ def test_the_batch_prompt_makes_the_reader_check_each_assertion_before_it_replie
     section = " ".join(text[text.index("## Check before you finish"):].split())
     missing = [rule for rule in SELF_CHECK if rule not in section]
     assert missing == [], f"the batch prompt's self-check lacks: {missing}"
+
+
+def test_the_batch_prompt_has_the_reader_write_the_quotes_before_the_value_with_three_real_cases():
+    """Team lead, q28 = a (2026-11-09): with the self-check, the measurement batch still failed 71 times in 428
+    assertions, mostly a number its quotes do not hold. The rule and three worked examples from those flags come
+    before the self-check. Proven red 2026-11-09: with the rule's bold sentence changed (INJECTED), this test named it;
+    with the third case removed (INJECTED), it counted two."""
+    text = (ROOT / "manifests" / "sprint17_f144_batch" / "READER_PROMPT.md").read_text(encoding="utf-8")
+    start = text.index("## Write the quotes first, then the value")
+    assert start < text.index("## Check before you finish")
+    section = " ".join(text[start:text.index("## Check before you finish")].split())
+    assert "Copy each number into the value only from a quote you have already written" in section
+    cases = [c for c in ("A year or label added to a quoted result", "A number carried from another passage",
+                         "Quotes written for some numbers but not all") if c in section]
+    assert len(cases) == 3, f"worked examples found: {cases}"

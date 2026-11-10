@@ -4257,6 +4257,17 @@ pipeline already consumes; the coordinator review and
 - **The state** (`D:\Data\Harold\EvidenceBasedDB\work\f144\state.json`,
   outside git): batches, results with tokens and cost, and each record's
   file or why it has none.
+- **Quotes first, then the value** (team lead q28 = a, 2026-11-09; it
+  replaced q19). With the self-check, the measurement batch still failed
+  the check 71 times in 428 assertions, most of them a number its
+  quotes do not hold (a snapshot as of 2026-11-07). The prompt now
+  has the reader write each assertion's quotes first and copy each
+  number into the value only from a quote already written, with three
+  worked examples taken from those flags (Hu 2020, Li 2024, Jin 2023;
+  each checked against the paper's text). Guarded by
+  `tests/test_batch_read.py`, proven red. The next local reader
+  prompt (a later F114 read) copies this section; Sprint 17's local
+  prompt stays as Task E's readers received it.
 
 ## 76. F114 at 10 papers, under Sprint 17's prompts (Sprint 17 Task E)
 
@@ -4377,7 +4388,7 @@ on its own branch.
 
 ## 77. The unstarted ledger groups split one paper to a group (Sprint 17, q20 = a)
 
-Team lead, Manual Validation, 2026-11-08: q20 = a. Every paper of the
+Team lead, Manual Validation, 2026-11-09: q20 = a. Every paper of the
 ledger groups that were never started gets a group of its own. The old
 group keeps a dated "superseded" note. Nothing is deleted.
 

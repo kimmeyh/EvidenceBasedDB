@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sprint 17 Manual Validation q20 = a (team lead, 2026-11-08): each paper of the unstarted ledger groups g297 to
+"""Sprint 17 Manual Validation q20 = a (team lead, 2026-11-09): each paper of the unstarted ledger groups g297 to
 g329 gets a one-paper group of its own, and the old group keeps a dated note of where each paper went.
 
 Why: a 5-paper group is read by one reader in one sitting; a paper read alone is a smaller unit to start, stop and

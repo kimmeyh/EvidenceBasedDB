@@ -15,6 +15,23 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **feat**: Sprint 17 Manual Validation q28 = a: the batch reader prompt
+  has the reader write each assertion's quotes first and copy each
+  number into the value only from a quote already written, with three
+  worked examples from the measurement batch's flags (test proven red;
+  INTAKE section 75)
+- **docs**: Sprint 17 Manual Validation answers recorded: q5 (Norton
+  360 is the active scanner; exclusions applied; one run each, 10m16s
+  before and 6m57s after), q11 = a, q12 skip and track, q13 = a, q14
+  (the whole paper, no chunking) in F140_TESTING_ANALYSIS.md; q21 and
+  q22 not needed in F143_READING_COST.md. New cards: F146 (the
+  agreement map and the HIGH audit on the API credit, q26 = a), F147
+  (one apply function for decided fields only, q11), F148 (counts
+  written from the store, q13). The card template now asks an applier's
+  card to list every field it writes (q11). Date correction: these
+  answers and q20 = a were given 2026-11-09 (local time), not
+  2026-11-08 as the q20 commit message (301611f) says
+
 - **feat**: Sprint 17 Manual Validation q20 = a: the never-started
   ledger groups g297 to g329 (161 papers, a snapshot as of 2026-11-09)
   split into one-paper groups g349 to g509 by
