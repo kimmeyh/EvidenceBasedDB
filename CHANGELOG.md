@@ -15,6 +15,11 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **docs**: Sprint 17 retrospective (Phase 7.1): Manual Validation
+  complete (team lead, 2026-11-10); the team lead's feedback recorded
+  verbatim, the Development Team's draft, and improvements i1 to i4
+  asked
+
 - **process**: status at Phase 5.3 Manual Validation with no question
   open; the validation steps are with the team lead
 
