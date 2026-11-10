@@ -15,6 +15,9 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **process**: status at Phase 5.3 Manual Validation with no question
+  open; the validation steps are with the team lead
+
 - **fix**: Sprint 17 Manual Validation q29 = b (confirmed at q30 = a)
   and q31 = a: albash-grover-local-condition-not-proof is HIGH again,
   "stated limit", like its two siblings; chance-level-and-signature-
