@@ -4385,6 +4385,18 @@ on its own branch.
   for such a row no longer stops an apply. That copy is replaced by
   the team lead's decision and is never written, so checking it
   protects nothing.
+- **The two grades the q23 review asked (team lead, 2026-11-10).** The
+  answer "q20 b q30 b" was confirmed at q30 = a to mean q29 = b, and the
+  Pere reason was re-asked as q31, since `store.grading`'s fixed LOW
+  reasons cannot be reworded.
+  albash-grover-local-condition-not-proof is HIGH again, "stated
+  limit", graded as the review's two other stated limits are (q29 = b).
+  chance-level-and-signature-control stays LOW, "authors' claim", and
+  its reason now adds "a limit the authors state on their own null
+  result, kept LOW by the team lead" (q31 = a). Applied by
+  `scripts/sprint17_q29_q31_grades.py` after a verified backup; a
+  second apply, and a re-run of the q23 script, wrote nothing. HIGH:
+  11,754 (a snapshot as of 2026-11-10).
 
 ## 77. The unstarted ledger groups split one paper to a group (Sprint 17, q20 = a)
 

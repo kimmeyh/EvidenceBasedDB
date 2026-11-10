@@ -15,6 +15,14 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **fix**: Sprint 17 Manual Validation q29 = b (confirmed at q30 = a)
+  and q31 = a: albash-grover-local-condition-not-proof is HIGH again,
+  "stated limit", like its two siblings; chance-level-and-signature-
+  control stays LOW with its reason's why added.
+  `scripts/sprint17_q29_q31_grades.py`, tested and proven red three
+  ways; a re-apply and a re-run of the q23 script wrote nothing. HIGH
+  11,754 (snapshot 2026-11-10) (INTAKE section 76) (#179)
+
 - **process**: status at Phase 5.3 Manual Validation, re-handed over in
   one folder (q24 = a done: the second checkout is removed, and the
   full suite passed in the main folder, 1,670). Sprint 17's local reader
