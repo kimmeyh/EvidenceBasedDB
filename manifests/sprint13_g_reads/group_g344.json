@@ -1,0 +1,1550 @@
+{
+ "papers": [
+  {
+   "record_id": "lundberg-2020-local-explanations-global-understanding-explainable",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2019-05_Lundberg_From-local-explanations-to-global-understanding-with-explainable-AI.pdf",
+   "title_in_file": "Explainable AI for Trees: From Local Explanations to Global Understanding",
+   "version_note": "The file is the arXiv v1 preprint (1905.04610v1, 11 May 2019) titled 'Explainable AI for Trees: From Local Explanations to Global Understanding'. The record id names the later published version 'From local explanations to global understanding with explainable AI for trees'. The content matches the record.",
+   "pages": 72,
+   "read_extent": "full",
+   "not_read": "",
+   "sections_read": [
+    "Abstract",
+    "1 Introduction",
+    "2.1 Tree-based models can be more accurate than neural networks",
+    "2.2 Tree-based models can be more interpretable than linear models",
+    "2.3 Current local explanations for tree-based models are inconsistent",
+    "2.4 Model-agnostic local explanations are slow and variable",
+    "2.5 TreeExplainer provides fast local explanations with guaranteed consistency",
+    "2.6 TreeExplainer extends local explanations to measure interaction effects",
+    "2.7 Local explanations from TreeExplainer can be used as building blocks for global understanding (2.7.1 to 2.7.5)",
+    "3 Discussion",
+    "Acknowledgements",
+    "Methods 1 to 18 (including Algorithms 1 to 3 and Theorems 1 and 2)",
+    "Supplementary Figures 1 to 40",
+    "References"
+   ],
+   "figure_count": 46,
+   "figures": [
+    {
+     "figure": "Figure 1",
+     "page": 2,
+     "kind": "block diagram",
+     "shows": "(A) A black-box model (inputs Age 65, BMI 40, Blood pressure 180, Sex Female; mortality risk score 4) next to a TreeExplainer local explanation with per-feature credits +2.5, +0.5, +3 and -2. (B) Pipeline from datasets (mortality, kidney, hospital) and a model, through TreeExplainer, to a samples-by-features SHAP value matrix, feeding five downstream tools: model summarization, feature dependence, interaction effects, model monitoring and explanation embeddings.",
+     "confirmed_by": "By combining many local explanations we can represent",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 2",
+     "page": 4,
+     "kind": "other",
+     "shows": "(A) Table of test performance for gradient boosted trees, linear model and neural network on three datasets: mortality C-statistic 0.821/0.813/0.816; kidney PR AUC 0.890/0.871/0.872; hospital R2 0.674/0.595/0.629, with significance markers. (B) Six heat maps of simulated risk over age (25 to 65) and BMI (17 to 27+) from linear to quadratic in BMI. (C) Line plot of log loss difference from the true model (0 to about 0.005) against amount of non-linearity for all-feature and two-feature gradient boosting and logistic regression and the true model. (D) Line plot of percent weight on irrelevant features (0 to about 16%) against non-linearity; logistic regression rises, gradient boosting stays at about 0.",
+     "confirmed_by": "Gradient boosted tree models can be both more accurate than neural networks and",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 3",
+     "page": 7,
+     "kind": "heat map",
+     "shows": "Tile grid of explanation method performance (tile size and colour from low to high score) for 8 methods (TreeExplainer independent, TreeExplainer, Saabas, Kernel SHAP 1000 mean ref., IME 1000, mean(|TreeExplainer|), Gain/Gini Importance, Random) on 21 metrics (runtime, local accuracy, consistency guarantees, keep/remove positive/negative/absolute with mask/resample/impute) for decision tree, random forest and gradient boosted trees on the chronic kidney disease data. TreeExplainer variants have the largest, reddest tiles overall; Saabas is mid-ranked; global methods are blank or tiny on most local metrics.",
+     "confirmed_by": "TreeExplainer outperforms previous approaches not only by having theoretical guarantees of consistency",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 4",
+     "page": 9,
+     "kind": "scatter plot",
+     "shows": "(A) Bar chart of mean(|SHAP value|) and beeswarm SHAP summary plot for the mortality model; Age has the largest value (about 1.0), then Sex (about 0.2), then systolic blood pressure; long right tails for many features. (B) SHAP dependence plot of systolic blood pressure (80 to 240 mmHg) coloured by age, with an inflection near 120 to 140 and vertical dispersion. (C) Same without the age interaction. (D) SHAP interaction value of systolic blood pressure with age. B equals C plus D. (E) Kidney model dependence plot of systolic blood pressure coloured by blood urea nitrogen. (F) Kidney model interaction value of white blood cells with blood urea nitrogen. (G) Mortality model interaction of sex and age (about 30 to 75 years); male and female curves cross with the largest gap near age 60.",
+     "confirmed_by": "By combining many local explanations we can provide rich summaries of both an",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 5",
+     "page": 11,
+     "kind": "scatter plot",
+     "shows": "Four stacked panels over sample index ordered by time (0 to about 147000, 2012 to 2016; first year shaded as training). (A) Smoothed model squared error: about 3500 in training, about 7500 after. (B) SHAP loss value of the room 6 feature: near or below 0 until about 88000, then many positive values up to about 25000. (C) SHAP loss value of general anesthesia with a spike near sample 39000 of up to about 70000. (D) SHAP loss value of atrial fibrillation drifting upward from about -15000 early to about 0 to 5000 late.",
+     "confirmed_by": "Monitoring plots reveal problems that would otherwise be invisible in a retrospective",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 6",
+     "page": 12,
+     "kind": "heat map",
+     "shows": "(A) Heat map of 14,000+ mortality individuals (columns, hierarchical clustering order) by normalized SHAP values of top features (rows: Age, Sex, Systolic blood pressure, White blood cells, BMI etc.), with labelled subgroups such as early-onset high BP, inflammation 25-35 years, underweight 65-75 years. (B-D) Two-component PCA embeddings of kidney visits coloured by predicted log odds of end-stage renal disease (about -4 to 6), SHAP value of blood creatinine (about -0.75 to 1.25) and SHAP value of urine protein/creatinine ratio (about -0.75 to 0.75); the two features align with the two orthogonal axes.",
+     "confirmed_by": "Local explanation embeddings support both supervised clustering and interpretable",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 1",
+     "page": 36,
+     "kind": "line plot",
+     "shows": "(A) Saabas attribution against feature depth in the tree for k-way AND functions (k = 2 to 10): credit rises steeply with depth. (B) Tree SHAP gives equal credit across depth (1/k each). (C) Explanation runtime in minutes against number of features (20 to 90): model-agnostic lower bound rises from about 25 to about 117; Tree SHAP near zero. (D) Std. deviation as percent of magnitude: IME about 3 to 4, Kernel SHAP about 1 to 2, Tree SHAP zero. (E-F) Estimation error (max and mean over features) against number of model evaluations for Kernel SHAP and IME variants on kidney data, with a dashed line at 1% of the tenth most important feature; footnote gives 1.8 CPU days and 3.3 CPU years.",
+     "confirmed_by": "TreeExplainer represents a dramatic performance",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 2",
+     "page": 37,
+     "kind": "block diagram",
+     "shows": "Two small trees (Model A: output Cough and Fever times 80; Model B adds Cough times 10) and bar charts of individualized (Fever = yes, Cough = yes) attributions for Tree SHAP and Saabas, and global mean(|Tree SHAP|), Gain and Permutation. Tree SHAP: A 30/30, B 30/35. Saabas: A 20/40 (Fever/Cough), B 40/25. Gain: A 33%/67%, B 56%/44%. Inconsistency flagged for Saabas and Gain.",
+     "confirmed_by": "Two simple tree models that demonstrate inconsistencies in the Saabas",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 3",
+     "page": 37,
+     "kind": "block diagram",
+     "shows": "Number line from 0 through E[f(x)], E[f(x)|x1], f(x), E[f(x)|x1,x2], E[f(x)|x1,x2,x3] with arrows phi0 to phi4 showing how Saabas values are differences of conditional expectations along the decision path order.",
+     "confirmed_by": "except SHAP values result from averaging over all possible orderings",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 4",
+     "page": 38,
+     "kind": "heat map",
+     "shows": "Tile grid like Figure 3 for decision tree, random forest and gradient boosted trees on a simulated 60-feature dataset with tightly correlated groups; TreeExplainer variants rank first, then Saabas, Kernel SHAP, IME, with global methods and Random mostly blank or tiny on local metrics. Caption says thirteen metrics but about 21 columns are shown.",
+     "confirmed_by": "metrics and three regression models in a simulated dataset with 60 features divided into tightly",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 5",
+     "page": 39,
+     "kind": "heat map",
+     "shows": "Same tile grid for a simulated dataset with 60 independent features; TreeExplainer variants again at the top of each model's ranking.",
+     "confirmed_by": "metrics and three regression models in a simulated dataset with 60 independent features.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 6",
+     "page": 40,
+     "kind": "heat map",
+     "shows": "Tiles for 12 human-intuition scenarios (AND, OR, XOR, SUM; false/false, false/true, true/true) for 8 methods on a decision tree. Kernel SHAP, TreeExplainer and IME have large red tiles everywhere; Saabas has small blue tiles in the AND and OR true/true, OR false/true and XOR true/true cases; mean(|TreeExplainer|) and Gain are mostly tiny or blank.",
+     "confirmed_by": "Shapley value based methods agree with human intuition.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 7",
+     "page": 41,
+     "kind": "line plot",
+     "shows": "Four panels of fraction of support recovered (y) against size of support (x, 4 to 20 features) for Gain, Permutation, mean(|SHAP value|) and mean(SHAP value of loss): single tree with product interactions (A), random forest of 10 trees with product interactions (B), single tree with minimum interactions (C), forest of 10 trees with minimum interactions (D). SHAP-based curves lie at or above gain and permutation, with small gaps in B and D.",
+     "confirmed_by": "SHAP values can be combined to provide better feature selection power",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 8",
+     "page": 42,
+     "kind": "line plot",
+     "shows": "Partial dependence of systolic blood pressure (x, 80 to 240) in the mortality model: about 1.6 at 80, minimum about 1.4 near 120, rising to about 2.4 above 215.",
+     "confirmed_by": "Partial dependence plot of systolic blood pressure in the mortality model.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 9",
+     "page": 42,
+     "kind": "line plot",
+     "shows": "Median duration in hours (sliding window of 40) against electrophysiology procedure order (about 3000 to 6600; year starts 2013 to 2016 marked). The red series falls from about 6.5 hours in 2013 to about 4.5 hours by 2015 and 2016; the blue series stays near 2.5 hours.",
+     "confirmed_by": "the duration of these procedures dropped",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 10",
+     "page": 43,
+     "kind": "scatter plot",
+     "shows": "Kidney visit two-component local explanation embedding coloured by SHAP value of urine protein (A, about -1.0 to 0.75), blood cystatin-C (B, about -0.6 to 0.8) and blood urea nitrogen (C, about -0.6 to 0.6); all align with the principal components.",
+     "confirmed_by": "This shows the next three top features beyond those shown in Figures",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 11",
+     "page": 43,
+     "kind": "scatter plot",
+     "shows": "Unsupervised PCA embedding of kidney data coloured by log odds of end-stage renal disease (A), SHAP of blood creatinine (B) and SHAP of urine protein/creatinine ratio (C); colour gradients are not cleanly aligned with the axes.",
+     "confirmed_by": "Unlike an embedding based in the local explanation space",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 12",
+     "page": 44,
+     "kind": "scatter plot",
+     "shows": "Bar chart of mean(|SHAP value|) (up to about 0.55) and SHAP summary plot for the kidney gradient boosted model; top features Blood Creatinine, Urine Protein/Creatinine Ratio, Urine Protein, Blood Cystatin-C, Blood Urea Nitrogen, Creatinine clearance.",
+     "confirmed_by": "Bar chart (left) and summary plot (right) for a gradient boosted",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 13",
+     "page": 44,
+     "kind": "scatter plot",
+     "shows": "Bar chart and SHAP summary plot for the hospital procedure duration model; top features General anesthesia, Time of day, ASA code, ORIF procedure, MAC; mean(|SHAP|) up to about 11 and SHAP values from about -100 to about 300 minutes.",
+     "confirmed_by": "decision tree model trained on the hospital procedure duration data.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 14",
+     "page": 45,
+     "kind": "heat map",
+     "shows": "Unsupervised complete-linkage clustering of 14,264 mortality individuals by normalized data values, coloured by row-normalized SHAP values; few coherent risk groups.",
+     "confirmed_by": "A clustering of 14,264 mortality study individuals by their normalized",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 15",
+     "page": 45,
+     "kind": "scatter plot",
+     "shows": "SHAP value of loss for procedure hour of day (x, 0 to 24) against hour: mostly near 0, with a sharp dip down to about -85000 between about 7 and 9 hours.",
+     "confirmed_by": "A dependence plot for time of day vs the SHAP value of time of day",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 16",
+     "page": 46,
+     "kind": "line plot",
+     "shows": "Keep positive (mask), random forest, kidney data: mean model output (y, about 0.2 to 0.6) against max fraction of features kept. Legend scores: Tree SHAP path dependent 0.587, independent 0.578, Kernel SHAP 0.564, Saabas 0.550, Sampling SHAP 0.356, Random 0.270, mean(|Tree SHAP|) 0.243, Gain 0.242.",
+     "confirmed_by": "Keep positive (mask) metric for a random forest trained on the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 17",
+     "page": 47,
+     "kind": "line plot",
+     "shows": "Keep positive (resample), random forest. Legend scores: Tree SHAP independent 0.464, path dependent 0.461, Saabas 0.444, Kernel SHAP 0.379, Sampling SHAP 0.308, mean(|Tree SHAP|) 0.241, Gain 0.241, Random 0.225.",
+     "confirmed_by": "Keep positive (resample) metric for a random forest trained on the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 18",
+     "page": 48,
+     "kind": "line plot",
+     "shows": "Keep positive (impute), random forest. Legend scores: Tree SHAP path dependent 0.623, independent 0.609, Saabas 0.554, Kernel SHAP 0.425, Sampling SHAP 0.297, mean(|Tree SHAP|) 0.240, Gain 0.239, Random 0.228.",
+     "confirmed_by": "Keep positive (impute) metric for a random forest trained on the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 19",
+     "page": 49,
+     "kind": "line plot",
+     "shows": "Keep negative (mask), random forest; y is negative mean model output (higher better). Legend: Kernel SHAP -0.061, Tree SHAP path dependent -0.067, independent -0.069, Saabas -0.075, Sampling SHAP -0.172, Random -0.270, Gain and mean(|Tree SHAP|) -0.371.",
+     "confirmed_by": "Keep negative (mask) metric for a random forest trained on the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 20",
+     "page": 50,
+     "kind": "line plot",
+     "shows": "Keep negative (resample), random forest. Legend: Tree SHAP independent and path dependent -0.067, Saabas -0.074, Kernel SHAP -0.103, Sampling SHAP -0.156, Random -0.223, Gain and mean(|Tree SHAP|) -0.254.",
+     "confirmed_by": "Keep negative (resample) metric for a random forest trained on the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 21",
+     "page": 51,
+     "kind": "line plot",
+     "shows": "Keep negative (impute), random forest. Legend: Tree SHAP path dependent -0.048, independent -0.051, Saabas -0.080, Kernel SHAP -0.099, Sampling SHAP -0.159, Random -0.225, Gain and mean(|Tree SHAP|) -0.371.",
+     "confirmed_by": "Keep negative (impute) metric for a random forest trained on the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 22",
+     "page": 52,
+     "kind": "line plot",
+     "shows": "Keep absolute (mask), random forest; ROC AUC (y, 0.5 to 1.0) against fraction kept. All methods except Random reach about 0.98 or above quickly: Tree SHAP, Saabas and Kernel SHAP 0.986, Sampling SHAP 0.984, mean(|Tree SHAP|) and Gain 0.983, Random 0.952.",
+     "confirmed_by": "Keep absolute (mask) metric for a random forest trained on the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 23",
+     "page": 53,
+     "kind": "line plot",
+     "shows": "Keep absolute (resample), random forest; ROC AUC. Legend: Tree SHAP variants, Kernel SHAP and Saabas 0.986, Sampling SHAP 0.984, mean(|Tree SHAP|) and Gain 0.983, Random 0.956.",
+     "confirmed_by": "Keep absolute (resample) metric for a random forest trained on the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 24",
+     "page": 54,
+     "kind": "line plot",
+     "shows": "Captioned as Keep absolute (impute), but the plot title reads 'Keep Absolute (resample)' and the legend values are identical to Supplementary Figure 23 (0.986, 0.986, 0.986, 0.986, 0.984, 0.983, 0.983, 0.956), so the image appears to repeat the previous figure.",
+     "confirmed_by": "Keep absolute (impute) metric for a random forest trained on the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 25",
+     "page": 55,
+     "kind": "line plot",
+     "shows": "Remove positive (mask), random forest; negative mean model output. Legend: Kernel SHAP -0.061, Tree SHAP path dependent -0.062, independent -0.063, Saabas -0.073, Sampling SHAP -0.172, Random -0.247, mean(|Tree SHAP|) -0.321, Gain -0.325.",
+     "confirmed_by": "Remove positive (mask) metric for a random forest trained on the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 26",
+     "page": 56,
+     "kind": "line plot",
+     "shows": "Remove positive (resample), random forest. Legend: Tree SHAP independent -0.060, path dependent -0.061, Saabas -0.069, Kernel SHAP -0.098, Sampling SHAP -0.148, Random -0.220, mean(|Tree SHAP|) and Gain -0.252.",
+     "confirmed_by": "Remove positive (resample) metric for a random forest trained on the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 27",
+     "page": 57,
+     "kind": "line plot",
+     "shows": "Remove positive (impute), random forest. Legend: Tree SHAP path dependent -0.070, independent -0.071, Saabas -0.092, Kernel SHAP -0.120, Sampling SHAP -0.160, Random -0.221, mean(|Tree SHAP|) -0.265, Gain -0.268.",
+     "confirmed_by": "Remove positive (impute) metric for a random forest trained on the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 28",
+     "page": 58,
+     "kind": "line plot",
+     "shows": "Remove negative (mask), random forest; mean model output. Legend: Tree SHAP path dependent 0.561, independent 0.552, Kernel SHAP 0.540, Saabas 0.533, Sampling SHAP 0.357, Random 0.245, Gain and mean(|Tree SHAP|) 0.238.",
+     "confirmed_by": "Remove negative (mask) metric for a random forest trained on the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 29",
+     "page": 59,
+     "kind": "line plot",
+     "shows": "Remove negative (resample), random forest. Legend: Tree SHAP independent 0.464, path dependent 0.461, Saabas 0.443, Kernel SHAP 0.378, Sampling SHAP 0.301, Gain and mean(|Tree SHAP|) 0.238, Random 0.221.",
+     "confirmed_by": "Remove negative (resample) metric for a random forest trained on the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 30",
+     "page": 60,
+     "kind": "line plot",
+     "shows": "Remove negative (impute), random forest. Legend: Tree SHAP path dependent 0.542, independent 0.528, Saabas 0.518, Kernel SHAP 0.380, Sampling SHAP 0.293, Gain and mean(|Tree SHAP|) 0.238, Random 0.223.",
+     "confirmed_by": "Remove negative (impute) metric for a random forest trained on the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 31",
+     "page": 61,
+     "kind": "line plot",
+     "shows": "Remove absolute (mask), random forest; y is 1 - ROC AUC (higher better, up to 0.5). Legend: Tree SHAP independent 0.457, path dependent 0.412, mean(|Tree SHAP|) 0.340, Gain 0.318, Kernel SHAP 0.287, Saabas 0.266, Sampling SHAP 0.107, Random 0.080.",
+     "confirmed_by": "Remove absolute (mask) metric for a random forest trained on the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 32",
+     "page": 62,
+     "kind": "line plot",
+     "shows": "Remove absolute (resample), random forest; 1 - ROC AUC. Legend: Tree SHAP independent 0.548, path dependent 0.540, mean(|Tree SHAP|) 0.243, Saabas 0.229, Gain 0.216, Kernel SHAP 0.169, Sampling SHAP 0.097, Random 0.079.",
+     "confirmed_by": "Remove absolute (resample) metric for a random forest trained on the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 33",
+     "page": 63,
+     "kind": "line plot",
+     "shows": "Remove absolute (impute), random forest; 1 - ROC AUC. Legend: Tree SHAP independent 0.457, path dependent 0.412, mean(|Tree SHAP|) 0.340, Gain 0.318, Kernel SHAP 0.276, Saabas 0.266, Sampling SHAP 0.110, Random 0.081.",
+     "confirmed_by": "Remove absolute (impute) metric for a random forest trained on the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 34",
+     "page": 64,
+     "kind": "bar chart",
+     "shows": "Number of respondents (of 33) for each entered fever/cough/headache allocation for an AND function, for samples true/true, false/true and false/false. The consensus (blue bar) is 5/5/0 for true/true (about 13 respondents), 0/2/0 for false/true (about 26) and 0/0/0 for false/false (about 32).",
+     "confirmed_by": "Consensus human intuition values for an AND function.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 35",
+     "page": 64,
+     "kind": "bar chart",
+     "shows": "Respondent counts for an OR function: consensus 5/5/0 for true/true (about 16 respondents), 0/8/0 for false/true (about 11, a plurality only), 0/0/0 for false/false (about 31).",
+     "confirmed_by": "Consensus human intuition values for an OR function.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 36",
+     "page": 65,
+     "kind": "bar chart",
+     "shows": "Respondent counts for an XOR function: consensus 2/2/0 for true/true (about 28), 0/8/0 for false/true (about 8 of a widely spread set), 0/0/0 for false/false (about 31).",
+     "confirmed_by": "Consensus human intuition values for an eXclusive OR (XOR) function.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 37",
+     "page": 65,
+     "kind": "bar chart",
+     "shows": "Respondent counts for a SUM function: consensus 2/2/0 for true/true (about 30), 0/2/0 for false/true (about 25), 0/0/0 for false/false (about 31).",
+     "confirmed_by": "Consensus human intuition values for a SUM function.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 38",
+     "page": 66,
+     "kind": "bar chart",
+     "shows": "Feature attribution values for Fever, Cough and Headache for the AND (true/true) decision tree. Human consensus is about 5 for Fever and Cough, 0 for Headache. Kernel SHAP, TreeExplainer variants and IME match; Saabas gives about 8 to Fever and about 2 to Cough; Gain/mean(|TreeExplainer|) about 0.5 each. Legend sum-of-absolute-difference scores: 0.00, 0.00, 0.00, 0.08 (IME), 5.99 (Saabas), 9.00 (Gain), 9.90, 13.87 (Random).",
+     "confirmed_by": "Comparison with human intuition for an AND function.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 39",
+     "page": 67,
+     "kind": "bar chart",
+     "shows": "Same for OR (true/true). Shapley-based methods match the human consensus of about 5 each for Fever and Cough; Saabas gives about 8 and about 2. Scores: 0.00, 0.00, 0.02, 0.29 (IME), 5.99 (Saabas), 9.00 (Gain), 9.88, 10.78 (Random).",
+     "confirmed_by": "Comparison with human intuition for an OR function.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure 40",
+     "page": 68,
+     "kind": "bar chart",
+     "shows": "Same for XOR (true/true). Human consensus about 2 each for Fever and Cough; Shapley-based methods match; Saabas gives about 8 for Fever and about -4 for Cough. Scores: 0.00, 0.00, 0.02, 0.16 (IME), 3.00 (Gain), 3.94, 8.56 (Random), 11.98 (Saabas).",
+     "confirmed_by": "Comparison with human intuition for an eXclusive OR (XOR) function.",
+     "no_text_confirms": false
+    }
+   ],
+   "what_it_is": "A preprint presenting TreeExplainer, an exact polynomial-time algorithm (Tree SHAP) for Shapley-value explanations of tree ensembles, SHAP interaction values, and five tools that combine local explanations (summary, dependence, interaction, monitoring, embeddings), demonstrated on three medical datasets and benchmarks.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "lundberg-theorem1-unique-shapley",
+     "value": "The paper states that only one feature attribution method based on the conditional-expectation set function satisfies the three properties of local accuracy, consistency and missingness: the classic Shapley values averaged over all feature orderings. The authors say the equivalent result was previously presented in a cited work and follows from cooperative game theory.",
+     "anchor": "Theorem 1, Methods 9, p.20",
+     "quotes": [
+      "Only one possible feature attribution method based on fx satisﬁes Properties 1, 2 and 3:",
+      "The equivalent of Theorem 1 has been previously presented in [41]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper attributes the result to earlier work and does not reprove it here.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-theorem2-saabas-converges-to-shap",
+     "value": "The paper proves that for binary features, in the limit of an infinite ensemble of totally random fully developed trees, the Saabas values equal the SHAP values. The proof argues that each tree's decision path is a random feature ordering, so averaging over the ensemble reproduces the Shapley ordering average.",
+     "anchor": "Theorem 2 and Proof, Methods 9, p.20-21",
+     "quotes": [
+      "In the limit of an inﬁnite ensemble of totally random fully developed trees on binary features the Saabas",
+      "values equal the SHAP values [41]",
+      "Taking the average of the Saabas values over the ensemble"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The theorem is stated with its conditions and followed by a proof in Methods 9.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The proof is a short argument; it covers only the idealized infinite random-tree limit, not finite greedily built ensembles."
+    },
+    {
+     "id_suggestion": "lundberg-treeshap-complexity",
+     "value": "The authors state that Tree SHAP has worst-case complexity proportional to the number of trees times the number of leaves times the square of the maximum tree depth, which they call an exponential complexity improvement over previous exact Shapley methods.",
+     "anchor": "Methods 10.1, p.21",
+     "quotes": [
+      "Letting T be the number of trees, D the maximum depth of any tree, and L the number of leaves, Tree SHAP has worst case complexity of",
+      "This represents an exponential complexity improvement over previous exact Shapley methods"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The bound is stated with its variables and derived in the paper's complexity analysis (Methods 10.1.2, p.22).",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The formula itself is printed with a line break in the text layer and is not quoted here."
+    },
+    {
+     "id_suggestion": "lundberg-independent-treeshap-complexity",
+     "value": "The authors state that, assuming the weight calculation takes constant time, Independent Tree SHAP does constant work at each node, giving time proportional to the number of trees times the number of background samples times the number of leaves.",
+     "anchor": "Methods 10.2 Complexity Analysis, p.24",
+     "quotes": [
+      "If we assume CALCWEIGHT takes constant time",
+      "Repeating this algorithm for each tree and for each background"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Conditions (constant-time weight lookup) and derivation are given in the complexity analysis.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-independent-treeshap-background-200",
+     "value": "The authors state that the experiments in the paper used 200 background samples to produce low variance estimates with Independent Tree SHAP.",
+     "anchor": "Methods 10.2, p.24",
+     "quotes": [
+      "Note that for the experiments in this paper we used R = 200 background samples to produce low variance estimates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experimental setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-speed-and-zero-variance",
+     "value": "The authors report that for moderate sized models TreeExplainer is several orders of magnitude faster than model-agnostic alternatives and has zero estimation variability.",
+     "anchor": "Section 2.5, p.6; Supplementary Figure 1, p.36",
+     "quotes": [
+      "For moderate sized models, TreeExplainer is several orders of magnitude faster than model-agnostic alternatives,",
+      "and has zero estimation variability"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from the authors' own timing experiments on simulated and kidney data.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-model-agnostic-baseline-caveat",
+     "value": "The authors state that the model-agnostic baselines were run with a single background reference sample and that the reported Kernel SHAP and IME times are only a lower bound, so the speed comparison uses favourable settings for those baselines.",
+     "anchor": "Methods 8, p.19",
+     "quotes": [
+      "We also only used a single background reference sample for the model-agnostic approaches.",
+      "the reported times are only a lower bound"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limitation on their own measured comparison.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-sampling-shap-cpu-cost",
+     "value": "The authors report that computing low variance model-agnostic Shapley estimates for the kidney dataset experiments would have taken almost 2 CPU days for basic explanations and over 3 CPU years for interaction values.",
+     "anchor": "Section 2.4, p.5; Methods 8, p.19",
+     "quotes": [
+      "would have taken almost 2 CPU days for basic explanations",
+      "over 3 CPU years for interaction values"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Extrapolated cost estimate from the authors' convergence experiments.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Low variance was defined by the authors as a standard deviation below 1% of the tenth largest feature impact."
+    },
+    {
+     "id_suggestion": "lundberg-exact-shapley-np-hard-cited",
+     "value": "The authors cite prior work for the statement that computing Shapley values exactly is NP-hard in general, requiring a summation over all feature subsets.",
+     "anchor": "Section 1, p.3",
+     "quotes": [
+      "computing them exactly is NP-hard",
+      "requiring a summation over all feature subsets"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Result attributed to a cited work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-saabas-inconsistent",
+     "value": "The authors state that Saabas values are inconsistent: a model can be modified to make a feature clearly more important while the Saabas value attributed to that feature decreases.",
+     "anchor": "Section 2.3, p.5; Methods 9, p.20",
+     "quotes": [
+      "we can modify a model to make a feature clearly more important, and yet the Saabas",
+      "value attributed to that feature will decrease",
+      "they do not match the SHAP values, and so must violate consistency"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Shown with an explicit counterexample on small trees (Supplementary Figure 2) and an argument from the ordering average.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-saabas-and-function-bias",
+     "value": "The authors state that in multi-way AND trees no feature should get more credit than another, yet Saabas values give splits near the root much less credit than splits near the leaves.",
+     "anchor": "Section 2.3, p.5",
+     "quotes": [
+      "yet Saabas values give splits near the root much less credit than splits near the leaves"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Shown on constructed AND trees (Supplementary Figure 1A) rather than on real data.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-saabas-single-ordering",
+     "value": "The authors state that Saabas values are computed like SHAP values but consider only the single feature ordering defined by a tree's decision path rather than averaging over all orderings, and that they satisfy local accuracy.",
+     "anchor": "Section 2.5, p.6; Methods 9, p.20",
+     "quotes": [
+      "rather than averaging over all feature orderings, Saabas values only consider the single ordering",
+      "Saabas values satisfy the local accuracy property"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Follows from the definitions of Saabas values and Shapley values given in Methods 6 and 9.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-property-definitions",
+     "value": "The paper defines local accuracy as requiring attribution values to sum up to the model output, and consistency as requiring that if a feature's contribution increases or stays the same regardless of other inputs, its attribution should not decrease.",
+     "anchor": "Section 2.5, p.5-6; Methods 9, p.19-20",
+     "quotes": [
+      "the explanation’s attribution values should sum up to the output f (x).",
+      "Consistency states that if a model changes so that some feature’s contribution increases or stays the same regardless",
+      "of the other inputs, that input’s attribution should not decrease."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definitions the paper's guarantees depend on.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-benchmark-21-metrics",
+     "value": "The authors report that TreeExplainer outperforms alternative explanation methods across a benchmark of 21 local explanation metrics that they designed, applied to eight explanation methods across three model types and three datasets.",
+     "anchor": "Section 2.5, p.6",
+     "quotes": [
+      "TreeExplainer consistently outperforms alternative methods across a benchmark of 21",
+      "We designed 21 metrics to comprehensively evaluate the performance of local explanation methods"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical benchmark by the method's own authors on metrics they chose.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Benchmark metrics were designed by the same authors who propose the method; the main text shows only the kidney dataset results, with the other results in supplementary figures."
+    },
+    {
+     "id_suggestion": "lundberg-saabas-improves-with-more-trees",
+     "value": "The Figure 3 caption states that, as expected, Saabas becomes a better approximation to the Shapley values, and so a better attribution method, as the number of trees increases.",
+     "anchor": "Figure 3 caption, p.7",
+     "quotes": [
+      "Note that, as expected, Saabas becomes a better approximation to the Shapley values"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical observation across decision tree, random forest and boosted tree rows of one benchmark.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-benchmark-synthetic-repeat",
+     "value": "The Figure 3 caption states that when the experiments were repeated in two synthetic datasets, TreeExplainer remained the top performing method.",
+     "anchor": "Figure 3 caption, p.7",
+     "quotes": [
+      "When these experiments were repeated in two synthetic datasets, TreeExplainer remained the top performing method"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from the authors' own benchmark.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-user-study-setup",
+     "value": "The authors state that the user study used four simple models and 33 English-speaking individuals in the U.S. on Amazon Mechanical Turk, who allocated credit among input features for three samples per model.",
+     "anchor": "Methods 12, p.28",
+     "quotes": [
+      "we use four simple models and ask 33 english speaking individuals in the U.S. on Amazon"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own experimental setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-user-study-result",
+     "value": "The authors report that Shapley-value based explanation methods agree with the human consensus attribution in all the scenarios tested, whereas the heuristic Saabas method differs significantly from the consensus in several non-linear cases.",
+     "anchor": "Section 2.5, p.6; Methods 12, p.29",
+     "quotes": [
+      "Shapley value based explanation methods agree with human intuition in all the scenarios we tested",
+      "the heuristic Saabas method diﬀers signiﬁcantly from the human consensus in several of the nonlinear cases"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical user study with small models and a plurality-vote consensus.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The consensus for some scenarios was a plurality of widely spread answers (Supplementary Figures 35 and 36)."
+    },
+    {
+     "id_suggestion": "lundberg-user-study-limit-three-features",
+     "value": "The Supplementary Figure 6 caption states that, because the small human-understandable models have only three features, model-agnostic Shapley methods are accurate and comparable with TreeExplainer in the user study.",
+     "anchor": "Supplementary Figure 6 caption, p.40",
+     "quotes": [
+      "models have only three features, model agnostic Shapley methods are accurate and so comparable with"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state what the user study cannot distinguish.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The user study does not separate TreeExplainer from sampling-based Shapley estimators."
+    },
+    {
+     "id_suggestion": "lundberg-mortality-dataset-setup",
+     "value": "The mortality dataset has 14,407 individuals and 79 features from the NHANES I Epidemiologic Followup Study, used to model risk of death over twenty years of followup.",
+     "anchor": "Section 1, p.3",
+     "quotes": [
+      "Mortality – a mortality dataset with 14,407 individuals and 79 features"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own dataset.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-kidney-dataset-setup",
+     "value": "The kidney dataset follows 3,939 chronic kidney disease patients from the CRIC study over 10,745 visits, with 333 features, to classify progression to end-stage renal disease within 4 years.",
+     "anchor": "Section 1, p.3",
+     "quotes": [
+      "a kidney dataset that follows 3,939 chronic kidney disease patients",
+      "over 10,745 visits with the goal of using 333 features"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own dataset.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-hospital-dataset-setup",
+     "value": "The hospital dataset is an electronic medical record dataset with 147,000 procedures and 2,185 features used to predict the duration of an upcoming procedure.",
+     "anchor": "Section 1, p.3",
+     "quotes": [
+      "with 147,000 procedures and 2,185 features"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own dataset.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-100-random-splits",
+     "value": "The authors state that they used 100 random train/test splits followed by retraining to assess the statistical significance of the separation between methods.",
+     "anchor": "Methods 3, p.15",
+     "quotes": [
+      "We used 100 random train/test splits followed by retraining to assess the statistical"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own evaluation protocol.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-accuracy-mortality-pvalues",
+     "value": "On the mortality dataset the authors report that gradient boosted trees outperformed the linear lasso with a P-value below 0.01 and the neural network with a P-value of 0.03.",
+     "anchor": "Methods 3, p.15",
+     "quotes": [
+      "In the mortality dataset, gradient boosted trees outperformed the linear lasso with a P-value < 0.01 and the neural network with a P-value of 0.03."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study on one dataset.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-accuracy-kidney-pvalues",
+     "value": "On the kidney dataset the authors report that gradient boosted trees outperformed the linear lasso with a P-value below 0.01 and the neural network with a P-value of 0.08.",
+     "anchor": "Methods 3, p.15",
+     "quotes": [
+      "In the chronic kidney disease dataset, gradient boosted trees trees outperformed the linear lasso with a P-value < 0.01 and the neural",
+      "network with a P-value of 0.08."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study on one dataset.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The 0.08 P-value is not below 0.05, which sits uneasily with the main-text statement that gradient boosted trees outperform deep learning on all three datasets; Figure 2A marks no significance for kidney versus the neural network."
+    },
+    {
+     "id_suggestion": "lundberg-accuracy-hospital-pvalues",
+     "value": "On the hospital procedure duration dataset the authors report that gradient boosted trees outperformed both the linear lasso and the neural network with a P-value below 0.01.",
+     "anchor": "Methods 3, p.15",
+     "quotes": [
+      "In the hospital procedure duration dataset, gradient boosted trees trees outperformed",
+      "both the linear lasso and neural network with a P-value < 0.01."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one study on one dataset.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-fig2a-accuracy-values",
+     "value": "Read from Figure 2A: test performance of gradient boosted trees, linear model and neural network is about 0.821, about 0.813 and about 0.816 (C-statistic) on mortality; about 0.890, about 0.871 and about 0.872 (area under the PR curve) on kidney disease; and about 0.674, about 0.595 and about 0.629 (R2) on hospital procedure duration.",
+     "anchor": "Figure 2A, p.4; Section 2.1, p.5",
+     "quotes": [
+      "(A) Gradient boosted tree models outperform both linear",
+      "gradient boosted trees outperform both deep learning and"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Values read from the figure for one study.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": "The gaps are small for mortality (about 0.005 to 0.008 C-statistic) and kidney disease (about 0.018 to 0.019 PR AUC)."
+    },
+    {
+     "id_suggestion": "lundberg-linear-vs-tree-simulation-setup",
+     "value": "The authors simulated labels from the real mortality-dataset covariates using a logistic function of a linear age term and a BMI term that interpolates between linear and quadratic. They generated 11 datasets with varying non-linearity, used noise-free probability labels, and trained gradient boosted trees and L1-regularized logistic regression on each.",
+     "anchor": "Methods 4.2-4.3, p.17",
+     "quotes": [
+      "For each of the 11 datasets with varying degrees p of nonlinearity, models were tuned on a validation set",
+      "so as to avoid the need to average our results over many random replicates",
+      "The quadratic function of BMI was parameterized as (1 − p) times a linear function, plus"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own simulation design.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The simulation uses one feature pair (age and BMI) and one linear model type, so the interpretability comparison is limited to this design."
+    },
+    {
+     "id_suggestion": "lundberg-linear-uses-irrelevant-features",
+     "value": "The authors report that even a moderate amount of non-linearity in the true relationship causes the lasso logistic regression to start using irrelevant features, while gradient boosted trees correctly use only age and BMI across all levels of non-linearity.",
+     "anchor": "Section 2.2, p.5; Methods 4, p.16",
+     "quotes": [
+      "even a moderate amount of non-linearity in the true relationship",
+      "causes the linear model to start using other irrelevant features",
+      "the gradient boosted tree model correctly uses only age and BMI across all levels of function"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result from one simulation.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The authors conclude that gradient boosted trees can be more interpretable than linear models; that conclusion rests on one simulated design."
+    },
+    {
+     "id_suggestion": "lundberg-fig2c-crossover",
+     "value": "Read from Figure 2C: the log loss difference from the true model for gradient boosting stays roughly flat at about 0.0007 to about 0.001, while the logistic regression curves start near 0 and rise to about 0.005 at the highest non-linearity, crossing the gradient boosting line roughly one-third of the way along the axis.",
+     "anchor": "Figure 2C, p.4",
+     "quotes": [
+      "(red) is better than gradient boosting (blue) up until a"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Values read by eye from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-fig2d-irrelevant-weight",
+     "value": "Read from Figure 2D: the share of weight the logistic regression assigns to features not used by the data-generating model rises from about 0% to about 16% as non-linearity increases, while gradient boosting stays at about 0%.",
+     "anchor": "Figure 2D, p.4",
+     "quotes": [
+      "As the true function becomes more non-linear the linear model assigns more"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Values read by eye from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-summary-plot-rare-effects",
+     "value": "The authors report that SHAP summary plots of the mortality model show long right tails for many features, so features with low global importance can be extremely important for specific individuals, and that rare mortality effects always stretch to the right.",
+     "anchor": "Section 2.7.1, p.8; Methods 14, p.30",
+     "quotes": [
+      "These long tails",
+      "which implies there are many ways to die abnormally early when medical",
+      "The long right tails in the summary"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Observation from one model on one dataset, with the interpretation offered by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The reading that there are many ways to die abnormally early but not to live abnormally longer is the authors' interpretation of the plot."
+    },
+    {
+     "id_suggestion": "lundberg-sex-effect-size",
+     "value": "The authors report that in the mortality model men have about a 0.6 increase in log-hazards relative to women, which corresponds to about 7 years of change in the age feature.",
+     "anchor": "Methods 14, p.30",
+     "quotes": [
+      "with men having about a 0.6 increase in log-hazards",
+      "which corresponds to about 7 years of change in the age feature"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Model-specific numeric observation read from the summary plot.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-fig4a-top-features",
+     "value": "Read from Figure 4A: in the mortality model Age has the largest mean(|SHAP value|) at about 1.0, followed by Sex at about 0.2, then systolic blood pressure, white blood cells and BMI.",
+     "anchor": "Figure 4A, p.9; Methods 14, p.30",
+     "quotes": [
+      "The long right tails in the summary",
+      "the dominating factor for risk of death in the U.S. in the 1970s"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Values read by eye from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-sbp-age-interaction",
+     "value": "The authors report that the SHAP dependence plot for systolic blood pressure in the mortality model shows vertical dispersion driven by age, because early onset high blood pressure is more concerning to the model than late onset high blood pressure.",
+     "anchor": "Section 2.7.2, p.8; Methods 16, p.31",
+     "quotes": [
+      "early onset high blood pressure is more concerning",
+      "to the model than late onset high blood pressure",
+      "vertical dispersion is primarily driven by an interaction with age"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Observation from one model, confirmed with SHAP interaction values.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-sbp-heterogeneity-range",
+     "value": "The authors report that among individuals with the same recorded blood pressure of 180 mmHg, the impact on log-hazard ratio varies from 0.2 to 0.6 because of other factors.",
+     "anchor": "Methods 15, p.31",
+     "quotes": [
+      "ratio varies from 0.2 to 0.6 because of other factors that"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Numeric observation read from one dependence plot.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The 180 mmHg value comes from the preceding sentence of Methods 15, not from the quote."
+    },
+    {
+     "id_suggestion": "lundberg-age-sex-interaction",
+     "value": "The authors report that the SHAP interaction value of age and sex in the mortality model shows the largest difference in risk between men and women at age 60, and that being male always confers greater risk than being female in the plain SHAP view.",
+     "anchor": "Section 2.7.3, p.8",
+     "quotes": [
+      "risk between men and women is at age 60.",
+      "being male always confers greater risk of mortality than being female"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Observation from one model on one dataset; the cardiovascular explanation is described only as plausible.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-wbc-bun-interaction",
+     "value": "The authors report that in the kidney disease model high white blood cell counts are more concerning to the model when accompanied by high blood urea nitrogen.",
+     "anchor": "Section 2.7.3, p.8-10",
+     "quotes": [
+      "High white blood cell counts are more concerning to the model when they are accompanied",
+      "by high blood urea nitrogen."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Observation from one model; the link to inflammation is offered as support, not tested.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-shap-interaction-values-definition",
+     "value": "The authors define SHAP interaction values, based on the Shapley interaction index, as a matrix of feature attributions with main effects on the diagonal and interaction effects off the diagonal.",
+     "anchor": "Section 2.6, p.6; Methods 13, p.29",
+     "quotes": [
+      "The SHAP interaction values consist of a matrix of feature attributions"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition given in Section 2.6 and Methods 13.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-interaction-runtime",
+     "value": "The authors state that SHAP interaction values can be computed by running Tree SHAP twice per feature, once with the other feature fixed as present and once absent, with runtime scaling with the number of features times the Tree SHAP cost.",
+     "anchor": "Methods 13, p.29",
+     "quotes": [
+      "since we repeat the process for each feature",
+      "This allows us to use Algorithm 2 twice"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived from the interaction value identity given in Methods 13.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-monitoring-room-swap",
+     "value": "The authors report that after intentionally swapping the labels of operating rooms 6 and 13, the overall model loss gives no indication of a problem, whereas the SHAP monitoring plot for the room 6 feature clearly shows when the labeling error begins.",
+     "anchor": "Section 2.7.4, p.10",
+     "quotes": [
+      "We intentionally swapped the labels of operating rooms 6 and 13 two-thirds of the way",
+      "gives no indication that a problem has occurred",
+      "whereas the SHAP monitoring plot for the room 6"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One injected error in one simulated deployment.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The error was injected by the authors, who knew where to look; this is a single case."
+    },
+    {
+     "id_suggestion": "lundberg-fig5ab-reading",
+     "value": "Read from Figure 5: the smoothed squared error is about 3500 during the training year and about 7500 afterwards with no visible step at the label swap, while the SHAP loss value for the room 6 feature shifts from near or below 0 to positive values up to about 25000 from about sample 88000.",
+     "anchor": "Figure 5A-B, p.11",
+     "quotes": [
+      "averaged over the nearest 1,000 samples",
+      "which is invisible in the overall model loss."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Values read by eye from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": "The text puts the swap two-thirds of the way through the data, while the plot shows the shift at roughly 0.6 of the sample index range."
+    },
+    {
+     "id_suggestion": "lundberg-monitoring-anesthesia-spike",
+     "value": "The authors report that SHAP monitoring of the general anesthesia feature showed a spike in error shortly after the deployment window begins, which they attribute to a previously undiscovered temporary electronic medical record configuration problem.",
+     "anchor": "Section 2.7.4, p.10",
+     "quotes": [
+      "2) Figure 5C shows a spike in error for the general anesthesia feature shortly after the deployment window begins."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single observation in one retrospective deployment simulation, with the cause identified by checking hospital records.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-monitoring-af-drift",
+     "value": "The authors report that the atrial fibrillation feature becomes gradually less useful over time and ends up hurting the model, with a significant upward trend in its SHAP loss value (P-value 5.4 × 10^-19).",
+     "anchor": "Section 2.7.4, p.10; Figure 5 caption, p.11",
+     "quotes": [
+      "the feature becomes gradually less useful",
+      "over time and ends up hurting the model",
+      "The upward trend of the plot shows feature drift over time (P-value 5.4 × 10−19)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "One feature in one retrospective deployment simulation.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-monitoring-scope-batch",
+     "value": "The authors state that their deployment simulation is a simple batch prediction task and so is far less prone to errors than actual real-time deployments.",
+     "anchor": "Methods 17, p.32",
+     "quotes": [
+      "This is a simple batch prediction task, and so is far less prone to errors than actual real-time deployments"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the scope of their monitoring experiment.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-embedding-kidney-two-pcs",
+     "value": "The authors report that the top two principal components of the kidney explanation embedding highlight two distinct risk factors for disease progression, aligned with blood creatinine and the urine protein to creatinine ratio.",
+     "anchor": "Methods 18, p.33; Figure 6B-D, p.12",
+     "quotes": [
+      "explanation embedding highlight two distinct risk factors for disease progression",
+      "The ﬁrst principal component aligns with blood creatinine levels"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Observation from one model on one dataset.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-supervised-clustering-mortality",
+     "value": "The authors report that hierarchical supervised clustering of the mortality model's SHAP values gives many groups of people sharing a similar mortality risk for similar reasons, such as early onset high blood pressure, young people with inflammation markers and underweight older people.",
+     "anchor": "Section 2.7.5, p.10; Methods 18, p.33",
+     "quotes": [
+      "Running hierarchical supervised clustering using the mortality model results in many groups of people",
+      "such as people with early onset high-blood pressure, young people with inﬂammation markers, and underweight older"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Qualitative result from one model; no quantitative clustering metric is reported.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-treeshap-brute-force-validation",
+     "value": "The authors state that Tree SHAP was validated by comparing its results to the brute force approach for thousands of random models and datasets with fewer than 15 features.",
+     "anchor": "Methods 10.1.2, p.22",
+     "quotes": [
+      "has been validated by comparing its results to the brute force approach based on Algorithm",
+      "for thousands of random models and datasets where M < 15."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the range (M < 15) over which the validation was run.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-loss-explanation-approximation",
+     "value": "The authors state that there is no simple way to adjust Shapley values to exactly account for a non-linear transformation of model output, so for explaining a model's loss they combine a previously proposed compositional approximation (Deep SHAP) with ideas from Tree SHAP in Independent Tree SHAP.",
+     "anchor": "Methods 10.2, p.22",
+     "quotes": [
+      "there is no simple way to adjust the Shapley values of a function to exactly account for a",
+      "we combine a previously proposed compositional approximation (Deep SHAP)"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit on exactness for loss explanations.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Loss explanations used in monitoring are therefore based on an approximation, unlike the exact Tree SHAP prediction explanations."
+    },
+    {
+     "id_suggestion": "lundberg-impute-metric-caveat",
+     "value": "The authors state that imputation-based benchmark metrics avoid evaluating the model on unrealistic data but come at the cost of encouraging explanation methods to assign importance to correlated features, and that they chose not to include metrics based on retraining.",
+     "anchor": "Methods 11, p.24",
+     "quotes": [
+      "this comes at the cost of encouraging explanation methods to assign importance to correlated features",
+      "we did not include metrics based on retraining the original model"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state limits on their own benchmark metrics.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-feature-selection-power",
+     "value": "The authors report that in simulated independent-feature settings with strong third-order interactions (and a minimum-function variant), for a single tree and for ten trees, SHAP-value based rankings recovered true features better than gain and permutation, with all paired t-test P-values below 10^-7.",
+     "anchor": "Supplementary Figure 7 caption, p.41",
+     "quotes": [
+      "Both SHAP value based methods outperform gain and permutation testing in every",
+      "P-values being < 10−7"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Simulation result from the authors' own setup.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "In panels B and D of Supplementary Figure 7 the curves are close, so the practical gain is small there."
+    },
+    {
+     "id_suggestion": "lundberg-trees-beat-deep-models-cited",
+     "value": "The authors cite prior work for the statement that tree-based models consistently outperform standard deep models on tabular-style datasets where features are individually meaningful and lack strong multi-scale temporal or spatial structure.",
+     "anchor": "Section 2.1, p.3",
+     "quotes": [
+      "tree-based models consistently outperform standard deep models on tabular-style datasets"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Statement attributed to a cited work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-conclusion-local-explanations-building-blocks",
+     "value": "The authors conclude that they have improved the interpretability of tree models with an exact Shapley method, a local explanation capturing interaction effects, and tools built from many local explanations, and anticipate that local explanations will become foundational building blocks for downstream machine learning tasks.",
+     "anchor": "Section 3, p.10",
+     "quotes": [
+      "We anticipate that in the future local explanations will become foundational building blocks"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Forward-looking author claim.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-fig-supp2-attribution-numbers",
+     "value": "Read from Supplementary Figure 2: for both Fever and Cough set to Yes, Tree SHAP gives about 30 to each feature in the first model and about 30 (Fever) and about 35 (Cough) in the second model, while Saabas gives about 20 (Fever) and about 40 (Cough) in the first model and about 40 (Fever) and about 25 (Cough) in the second, so Cough gets less credit despite a larger impact.",
+     "anchor": "Supplementary Figure 2, p.37",
+     "quotes": [
+      "The Cough feature has a larger impact in Model B than Model",
+      "A, but is attributed less importance in Model B."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Values read from a constructed toy example.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-fig-supp1a-and-credit",
+     "value": "Read from Supplementary Figure 1A-B: for Saabas on a two-way AND function the credit is about 0.33 at the root and about 0.67 at the deepest split, and for a ten-way AND the root credit is near 0 against about 0.5 at the deepest split; Tree SHAP assigns equal credit of about 0.5 for the two-way AND and about 0.1 for the ten-way AND at every depth.",
+     "anchor": "Supplementary Figure 1A-B, p.36",
+     "quotes": [
+      "(C-F) TreeExplainer represents a dramatic performance"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Values read by eye from a figure of constructed trees.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": "The Tree SHAP values equal 1/k for a k-way AND, consistent with equal credit across symmetric features."
+    },
+    {
+     "id_suggestion": "lundberg-fig-supp1cd-runtime",
+     "value": "Read from Supplementary Figure 1C-D: the model-agnostic lower-bound runtime rises roughly linearly from about 25 minutes at about 20 features to about 117 minutes at about 90 features while Tree SHAP stays near zero, and normalized standard deviation is about 3 to 4 percent for IME and about 1 to 2 percent for Kernel SHAP against zero for Tree SHAP.",
+     "anchor": "Supplementary Figure 1C-D, p.36",
+     "quotes": [
+      "TreeExplainer’s Tree SHAP algorithm runs thousands of times faster",
+      "the number of samples required to maintain estimates with constant variance grows linearly"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Values read by eye from a figure; runtime is a lower bound for the baselines.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-fig-supp16-keep-positive-mask",
+     "value": "Read from Supplementary Figure 16: on the keep positive (mask) metric for a random forest on kidney data, the area scores are about 0.587 for Tree SHAP (path dependent), about 0.578 for independent, about 0.564 for Kernel SHAP, about 0.550 for Saabas, about 0.356 for Sampling SHAP, about 0.270 for Random, and about 0.243 and about 0.242 for mean(|Tree SHAP|) and Gain.",
+     "anchor": "Supplementary Figure 16, p.46",
+     "quotes": [
+      "the ordering is good, as we include more and more features we push the model’s output higher."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Values read from a figure for one model on one dataset.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": "The global methods (Gain, mean(|Tree SHAP|)) score below Random on this local metric, as expected since they give the same ordering for every prediction."
+    },
+    {
+     "id_suggestion": "lundberg-fig-supp31-remove-absolute",
+     "value": "Read from Supplementary Figure 31: on the remove absolute (mask) metric for a random forest on kidney data the scores are about 0.457 for Tree SHAP (independent), about 0.412 for path dependent, about 0.340 for mean(|Tree SHAP|), about 0.318 for Gain, about 0.287 for Kernel SHAP, about 0.266 for Saabas, about 0.107 for Sampling SHAP and about 0.080 for Random.",
+     "anchor": "Supplementary Figure 31, p.61",
+     "quotes": [
+      "except that we remove the"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Values read from a figure for one model on one dataset.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lundberg-fig-supp22-keep-absolute-saturates",
+     "value": "Read from Supplementary Figure 22: on the keep absolute (mask) metric every method except Random reaches an ROC AUC of about 0.983 to about 0.986, against about 0.952 for Random, so the metric separates the methods only slightly.",
+     "anchor": "Supplementary Figure 22, p.52",
+     "quotes": [
+      "Keep absolute (mask) metric for a random forest trained on the"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Values read from a figure for one model on one dataset.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": "The small spread suggests this metric does little to distinguish the explanation methods."
+    },
+    {
+     "id_suggestion": "lundberg-fig-supp38-40-user-study-scores",
+     "value": "Read from Supplementary Figures 38 to 40: sum of absolute differences from the human consensus is about 0.00 to about 0.29 for the Shapley-based methods in the three true/true cases, about 5.99 for Saabas on AND and OR and about 11.98 on XOR, about 9.00 for Gain on AND and OR and about 3.00 on XOR, and about 13.87, about 10.78 and about 8.56 for Random.",
+     "anchor": "Supplementary Figures 38-40, p.66-68",
+     "quotes": [
+      "consensus values to measure their consistency with human intuition"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Values read from figures for three scenarios of a small user study.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": "Saabas misattributes credit in all three true/true cases, giving about 8 to Fever; for XOR it also gives Cough a negative value."
+    },
+    {
+     "id_suggestion": "lundberg-fig-supp9-af-duration",
+     "value": "Read from Supplementary Figure 9: the median duration of one electrophysiology series (red) falls from about 6.5 hours in 2013 to about 4.5 hours by 2015 and 2016, while the other series (blue) stays near about 2.5 hours.",
+     "anchor": "Supplementary Figure 9, p.42",
+     "quotes": [
+      "the duration of these procedures dropped"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Values read by eye from a figure; series identities inferred from the caption.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": "The red series is presumed to be atrial fibrillation ablation, the series the caption discusses."
+    }
+   ]
+  }
+ ]
+}
