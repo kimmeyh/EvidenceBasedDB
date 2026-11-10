@@ -58,7 +58,9 @@ UNREAD = {
 }
 FIRST_GROUP = "g043"
 # Ledger groups after this one are not Task G's and have no cloud brief: g330 holds Sprint 14 Task C's 4 papers,
-# read locally by Task F (review of 1cb63bb: records() raised on its missing brief).
+# read locally by Task F (review of 1cb63bb: records() raised on its missing brief). The one exception: the
+# one-paper groups that Task G's never-started groups were split into (q20 = a, g349 to g509), named by each old
+# group's `superseded` note, have cloud briefs and are offered (records()).
 LAST_GROUP = "g329"
 UPLOAD_WAIT = 240
 STALE_HOURS = 3  # no push for this long: the session is taken as dead, and the paper is launched again
@@ -83,7 +85,12 @@ def records() -> list[tuple[str, dict]]:
     """Every record of groups g043 on, in ledger order, with its brief entry (stored assertions included)."""
     groups = json.loads(LEDGER.read_text(encoding="utf-8"))["groups"]
     out = []
-    for g in sorted(x for x in groups if FIRST_GROUP <= x <= LAST_GROUP):
+    # q20 = a (2026-11-09): a superseded group's papers moved to one-paper groups past LAST_GROUP (g349 to g509),
+    # each with a cloud brief; its old brief is history, not work. The moved papers are offered in their new groups.
+    task_g = [x for x in groups if FIRST_GROUP <= x <= LAST_GROUP]
+    moved = {r["moved_to"] for x in task_g for r in groups[x].get("superseded", {}).get("records", [])}
+    for g in sorted((x for x in task_g if "superseded" not in groups[x]), key=lambda x: int(x[1:])) + \
+            sorted(moved, key=lambda x: int(x[1:])):
         brief = json.loads((BRIEFS / f"{g}.json").read_text(encoding="utf-8"))
         out += [(g, r) for r in brief["records"]]
     return out

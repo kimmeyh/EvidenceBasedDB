@@ -15,6 +15,17 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **feat**: Sprint 17 Manual Validation q20 = a: the never-started
+  ledger groups g297 to g329 (161 papers, a snapshot as of 2026-11-09)
+  split into one-paper groups g349 to g509 by
+  `scripts/sprint17_q20_split.py`. Each old group keeps a dated
+  `superseded` note naming every paper and its new group; nothing is
+  deleted. The status script reports such a group as superseded, and
+  the cloud reader offers each moved paper in its new group, never the
+  old brief. A fresh-eyes review found the moved papers offered by no
+  reader and the "has started" check untested; both fixed. Each check
+  proven red (INTAKE section 77) (#179)
+
 - **fix**: Sprint 17 Manual Validation q23 = a: the 8 Task E assertions
   the fresh-eyes review found are corrected in the store by
   `scripts/sprint17_q23_corrections.py` (quotes added to 5 HIGH values,

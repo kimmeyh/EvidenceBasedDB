@@ -4374,3 +4374,47 @@ on its own branch.
   for such a row no longer stops an apply. That copy is replaced by
   the team lead's decision and is never written, so checking it
   protects nothing.
+
+## 77. The unstarted ledger groups split one paper to a group (Sprint 17, q20 = a)
+
+Team lead, Manual Validation, 2026-11-08: q20 = a. Every paper of the
+ledger groups that were never started gets a group of its own. The old
+group keeps a dated "superseded" note. Nothing is deleted.
+
+- **What was split** (a snapshot as of 2026-11-09): g297 to g329, 33
+  groups, 161 papers (31 groups of 5, g309 with 2, g329 with 4). An
+  earlier figure of 158 in the question was a miscount. Before the
+  split, each of the 161 was checked: no read in the store naming its
+  group, no reader file, no review, no scratch folder, no F144
+  exclusion entry, no cloud launch or result. The only files were the
+  briefs written when the ledger was built. Six of the papers do have
+  older read rows, none naming these groups: three papers with
+  first-pass reads in Sprint 11 and 12 groups (G09, G93, G95), as
+  every paper in this ledger may (it is the full re-read), and three
+  QCi emails read in full when they arrived.
+  The script checks the store, the review, the reader files and the
+  scratch folder each time it runs; the exclusion list and the cloud
+  launches were checked by hand, once.
+  g295 and g296 are not split: Task E read papers from them.
+- **The shape** (chosen 2026-11-09, so "one record, one group" stays
+  true). The old group's `records` is empty, and its `superseded` note
+  holds every record it held, with its file and its new group
+  (`moved_to`). The new groups are g349 to g509, in ledger order. The
+  other shape, where the old group keeps its records, would have put
+  each paper in two groups. The ledger script refuses that. The review
+  builder would also have offered the old group for review a second
+  time.
+- **The briefs.** Each new group has a brief in
+  `D:\Data\Harold\EvidenceBasedDB\work\f114\briefs\` (outside git), with
+  the paper's stored assertions as of the split. The old briefs stay
+  where they are.
+- **The readers of the ledger.** `scripts/sprint13_g_status.py` reports
+  an old group as "superseded" (33 groups). `scripts/f114_cloud.py`
+  offers each moved paper in its new group, and no longer offers an
+  old brief. A local reader is given its groups by the sprint's own
+  script, as before; which reader takes g349 to g509 is Sprint 18's
+  choice. `scripts/sprint17_q20_split.py`
+  made the split. It is a dry run by default, and a second run writes
+  nothing. `tests/test_sprint17_q20_split.py` guards the committed
+  ledger: each record in one group, and each note pointing at its
+  paper's own group. Each check was proven red.
