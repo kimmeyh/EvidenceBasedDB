@@ -15,6 +15,12 @@ this project keeps having to replace with a step.
 
 ### 2026-11-07 onward (Sprint 17, in progress)
 
+- **process**: status at Phase 5.3 Manual Validation, re-handed over in
+  one folder (q24 = a done: the second checkout is removed, and the
+  full suite passed in the main folder, 1,670). Sprint 17's local reader
+  and review prompts keep the removed folder's path, as the record of
+  what Task E's readers received. q29 and q30 asked
+
 - **feat**: Sprint 17 Manual Validation q28 = a: the batch reader prompt
   has the reader write each assertion's quotes first and copy each
   number into the value only from a quote already written, with three
