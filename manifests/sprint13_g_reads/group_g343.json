@@ -1,0 +1,1146 @@
+{
+ "papers": [
+  {
+   "record_id": "hu-2020-squeeze-excitation-networks",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2017-09_Hu_Squeeze-and-Excitation-Networks.pdf",
+   "title_in_file": "Squeeze-and-Excitation Networks",
+   "version_note": "arXiv 1709.01507v4 (16 May 2019), the journal-style extended version; the record id carries the year 2020.",
+   "pages": 13,
+   "read_extent": "full",
+   "not_read": "",
+   "sections_read": [
+    "Abstract",
+    "1 Introduction",
+    "2 Related Work",
+    "3 Squeeze-and-Excitation Blocks",
+    "3.1 Squeeze: Global Information Embedding",
+    "3.2 Excitation: Adaptive Recalibration",
+    "3.3 Instantiations",
+    "4 Model and Computational Complexity",
+    "5 Experiments",
+    "5.1 Image Classification",
+    "5.2 Scene Classification",
+    "5.3 Object Detection on COCO",
+    "5.4 ILSVRC 2017 Classification Competition",
+    "6 Ablation Study",
+    "6.1 Reduction ratio",
+    "6.2 Squeeze Operator",
+    "6.3 Excitation Operator",
+    "6.4 Different stages",
+    "6.5 Integration strategy",
+    "7 Role of SE Blocks",
+    "7.1 Effect of Squeeze",
+    "7.2 Role of Excitation",
+    "8 Conclusion",
+    "Acknowledgments",
+    "Appendix: Details of SENet-154",
+    "References"
+   ],
+   "figure_count": 24,
+   "figures": [
+    {
+     "figure": "Figure 1",
+     "page": 2,
+     "kind": "block diagram",
+     "shows": "A Squeeze-and-Excitation block: input X (H'xW'xC') passes through Ftr to U (HxWxC); Fsq gives a 1x1xC descriptor; Fex(.,W) gives 1x1xC weights; Fscale rescales U to X-tilde (HxWxC).",
+     "confirmed_by": "The structure of the SE building block is depicted in",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 2",
+     "page": 4,
+     "kind": "block diagram",
+     "shows": "Original Inception module (left) and SE-Inception module (right): the module output (HxWxC) goes through global pooling (1x1xC), FC (1x1xC/r), ReLU, FC (1x1xC), Sigmoid, then Scale of the module output.",
+     "confirmed_by": "to be an entire Inception module (see Fig. 2)",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 3",
+     "page": 4,
+     "kind": "block diagram",
+     "shows": "Original ResNet module (left) and SE-ResNet module (right): the residual branch output passes through global pooling, FC (C/r), ReLU, FC (C), Sigmoid, Scale, then is summed with the identity branch.",
+     "confirmed_by": "the SE block transformation Ftr is taken to be the non-identity branch of a residual module",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 4",
+     "page": 6,
+     "kind": "line plot",
+     "shows": "Four panels of top-1 error (%) against epoch (0 to 100) for train and val curves of baselines and SE counterparts (ResNet-50, ResNet-152, ResNeXt-50, BN-Inception). Error falls steeply early, with step drops near epochs 30, 60 and 90. SE curves sit below the baseline curves throughout, ending at roughly 20 to 30 percent.",
+     "confirmed_by": "We observe that SE blocks yield a steady improvement throughout the optimisation procedure.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 5",
+     "page": 10,
+     "kind": "block diagram",
+     "shows": "Five integration designs: (a) residual block, (b) standard SE block (SE after Residual, before summation), (c) SE-PRE (SE before Residual), (d) SE-POST (SE after the summation), (e) SE-Identity (SE on the identity connection parallel to Residual).",
+     "confirmed_by": "In addition to the proposed SE design, we consider three variants",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 6",
+     "page": 10,
+     "kind": "line plot",
+     "shows": "Six panels (SE_2_3, SE_3_4, SE_4_6, SE_5_1, SE_5_2, SE_5_3) of mean excitation activation (y, 0 to 1) against channel index (x, up to about 256, 512, 1024, 2048, 2048, 2048) for goldfish, pug, plane, cliff and all classes. Curves nearly coincide in SE_2_3 and SE_3_4, diverge in SE_4_6 and SE_5_1, are about 1 for almost all channels in SE_5_2 except one dip near channel about 1400, and lie low (about 0.1 to 0.4) in SE_5_3 with class-dependent offsets.",
+     "confirmed_by": "and plot their distribution in Fig. 6",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 7",
+     "page": 11,
+     "kind": "line plot",
+     "shows": "Six panels (SE_2_3 to SE_5_3) of mean activation with standard-deviation bands for goldfish and plane images against channel index. The bands are narrow in early modules and wider in SE_5_1, with a saturated near-1 pattern in SE_5_2.",
+     "confirmed_by": "the mean and standard deviations of the activations for image instances within the same class",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 8",
+     "page": 12,
+     "kind": "photograph",
+     "shows": "Sample ImageNet images for the four classes goldfish, pug, plane and cliff.",
+     "confirmed_by": "(example images from these classes are shown in Appendix)",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 1",
+     "page": 5,
+     "kind": "table",
+     "shows": "Layer configurations of ResNet-50, SE-ResNet-50 and SE-ResNeXt-50 (32x4d) per stage (output sizes 112 down to 1), with SE fc output dimensions [16,256], [32,512], [64,1024], [128,2048].",
+     "confirmed_by": "a detailed description of SE-ResNet-50 and SE-ResNeXt-50 is given in Table 1",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 2",
+     "page": 5,
+     "kind": "table",
+     "shows": "ImageNet single-crop top-1/top-5 error and GFLOPs for ResNet-50/101/152, ResNeXt-50/101, VGG-16, BN-Inception, Inception-ResNet-v2: original, re-implementation and SENet. For example ResNet-50 7.48 top-5 re-implemented vs 6.62 with SE, 3.86 vs 3.87 GFLOPs. SE improves every row.",
+     "confirmed_by": "We observe that SE blocks consistently improve performance across different depths with an extremely small increase in computational complexity.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 3",
+     "page": 6,
+     "kind": "table",
+     "shows": "MobileNet and ShuffleNet: re-implementation top-1 28.4 and 32.6, top-5 9.4 and 12.5, 569 and 140 MFLOPs, 4.2M and 1.8M params; with SE top-1 25.3 and 31.0, top-5 7.7 and 11.1, 572 and 142 MFLOPs, 4.7M and 2.4M params.",
+     "confirmed_by": "The numbers in brackets denote the performance improvement over the re-implementation.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 4",
+     "page": 7,
+     "kind": "table",
+     "shows": "CIFAR-10 error (%) original vs SENet: ResNet-110 6.37 vs 5.21, ResNet-164 5.46 vs 4.39, WRN-16-8 4.27 vs 3.88, Shake-Shake+Cutout 2.56 vs 2.12.",
+     "confirmed_by": "We report the performance of each baseline and its SENet counterpart on CIFAR-10",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 5",
+     "page": 7,
+     "kind": "table",
+     "shows": "CIFAR-100 error (%) original vs SENet: ResNet-110 26.88 vs 23.85, ResNet-164 24.33 vs 21.31, WRN-16-8 20.43 vs 19.14, Shake-Even+Cutout 15.85 vs 15.41.",
+     "confirmed_by": "in Table 4 and performance on CIFAR-100 in Table 5",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 6",
+     "page": 7,
+     "kind": "table",
+     "shows": "Places365 validation top-1/top-5 error: Places-365-CNN 41.07/11.48, ResNet-152 (ours) 41.15/11.61, SE-ResNet-152 40.37/11.01.",
+     "confirmed_by": "We report the results in Table 6, comparing also with prior work.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 7",
+     "page": 7,
+     "kind": "table",
+     "shows": "Faster R-CNN on COCO minival, AP@IoU=0.5 and AP: ResNet-50 57.9/38.0, SE-ResNet-50 61.0/40.4, ResNet-101 60.1/39.9, SE-ResNet-101 62.7/41.9.",
+     "confirmed_by": "reports the validation set performance of the object detector using ResNet-50, ResNet-101 and their SE counterparts as trunk architectures",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 8",
+     "page": 8,
+     "kind": "table",
+     "shows": "Single-crop ImageNet validation errors for state-of-the-art CNNs at 224x224 and 320x320/299x299 crops; SENet-154 gets 18.68/4.47 (top-1/top-5) at 224 and 17.28/3.79 at 320.",
+     "confirmed_by": "We compare this model with prior work on the ImageNet validation set in Table 8 using standard crop",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 9",
+     "page": 8,
+     "kind": "table",
+     "shows": "Larger crops / extra data: Very Deep PolyNet 18.71/4.25, NASNet-A 17.3/3.8, PNASNet-5 17.1/3.8, SENet-154 (crop 320) 16.88/3.58, AmoebaNet-C 16.5/3.5, ResNeXt-101 32x48d with extra data 14.6/2.4.",
+     "confirmed_by": "we include the strongest results that we are currently aware of in Table 9",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 10",
+     "page": 8,
+     "kind": "table",
+     "shows": "SE-ResNet-50 at reduction ratios r = 2, 4, 8, 16, 32: top-1 22.29, 22.25, 22.26, 22.28, 22.72; top-5 6.00, 6.09, 5.99, 6.03, 6.20; params 45.7M, 35.7M, 30.7M, 28.1M, 26.9M; original ResNet-50 23.30/6.55/25.6M.",
+     "confirmed_by": "The comparison in Table 10 shows that performance is robust to a range of reduction ratios.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 11",
+     "page": 9,
+     "kind": "table",
+     "shows": "Squeeze operator in SE-ResNet-50: Max pooling 22.57/6.09, Avg pooling 22.28/6.03 (top-1/top-5 error).",
+     "confirmed_by": "average pooling achieves slightly better performance",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 12",
+     "page": 9,
+     "kind": "table",
+     "shows": "Excitation non-linearity in SE-ResNet-50: ReLU 23.47/6.98, Tanh 23.00/6.38, Sigmoid 22.28/6.03 (top-1/top-5 error).",
+     "confirmed_by": "exchanging the sigmoid for tanh slightly worsens performance",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 13",
+     "page": 9,
+     "kind": "table",
+     "shows": "SE blocks at different stages of ResNet-50: baseline 23.30/6.55, SE Stage 2 23.03/6.48, Stage 3 23.04/6.32, Stage 4 22.68/6.22, All 22.28/6.03; GFLOPs 3.86 to 3.87; params 25.6M to 28.1M.",
+     "confirmed_by": "the gains induced by SE blocks at different stages are complementary",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 14",
+     "page": 9,
+     "kind": "table",
+     "shows": "Integration strategy with ResNet-50: SE 22.28/6.03, SE-PRE 22.23/6.00, SE-POST 22.78/6.35, SE-Identity 22.20/6.15 (top-1/top-5 error).",
+     "confirmed_by": "the performance of each variant is reported in Table 14",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 15",
+     "page": 9,
+     "kind": "table",
+     "shows": "SE vs SE_3x3 (SE after the 3x3 conv inside the residual branch): top-1 22.28 vs 22.48, top-5 6.03 vs 6.02, GFLOPs 3.87 vs 3.86, params 28.1M vs 25.8M.",
+     "confirmed_by": "accuracy with fewer parameters than the standard SE block",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 16",
+     "page": 10,
+     "kind": "table",
+     "shows": "Effect of squeeze: ResNet-50 23.30/6.55, 3.86 GFLOPs, 25.6M; NoSqueeze 22.93/6.39, 4.27 GFLOPs, 28.1M; SE 22.28/6.03, 3.87 GFLOPs, 28.1M.",
+     "confirmed_by": "The accuracy and computational complexity of both models are compared to a standard ResNet-50 model in Table 16.",
+     "no_text_confirms": false
+    }
+   ],
+   "what_it_is": "The paper proposes the Squeeze-and-Excitation block for channel-wise feature recalibration in CNNs and evaluates it on ImageNet, CIFAR, Places365, COCO and ILSVRC 2017, with ablations and an analysis of the excitation activations.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "se-block-definition",
+     "value": "The authors define the SE block as a computational unit built on a transformation that maps an input to feature maps. A squeeze step produces a channel descriptor by global average pooling over the spatial dimensions. An excitation step turns it into per-channel weights that rescale the feature maps.",
+     "anchor": "Section 3 and 3.1-3.2, p.3",
+     "quotes": [
+      "A Squeeze-and-Excitation block is a computational unit",
+      "This is achieved by using global average pooling to generate channel-wise statistics.",
+      "rescaling U with the activations s"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the block and its squeeze, excitation and scale operations in Section 3.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "se-excitation-gate-form",
+     "value": "The authors state that the excitation is a sigmoid gating mechanism, a bottleneck of two fully-connected layers around a ReLU, with reduction ratio r, to limit model complexity and aid generalisation.",
+     "anchor": "Section 3.2, p.3",
+     "quotes": [
+      "s = Fex(z, W) = σ(g(z, W)) = σ(W2δ(W1z))",
+      "a bottleneck with two fully-connected (FC) layers around"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper gives the excitation equation and its parameterisation.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "se-excitation-criteria",
+     "value": "The authors state that the excitation function must learn a non-mutually-exclusive relationship, so that multiple channels can be emphasised rather than a one-hot activation, which motivates the sigmoid gate.",
+     "anchor": "Section 3.2, p.3",
+     "quotes": [
+      "it must learn a non-mutually-exclusive relationship since we would like to ensure that multiple channels are allowed to be emphasised"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Design criterion stated by the authors in Section 3.2.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "se-resnet-integration",
+     "value": "The authors state that in SE-ResNet the SE block transformation is the non-identity branch of a residual module, and that squeeze and excitation both act before summation with the identity branch.",
+     "anchor": "Section 3.3, p.4",
+     "quotes": [
+      "is taken to be the non-identity branch of a residual module",
+      "Squeeze and Excitation both act before summation with the identity branch."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own SE-ResNet construction.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "se-claim-global-info-eases-learning",
+     "value": "The authors claim that giving a unit a mechanism to explicitly model dynamic, non-linear dependencies between channels using global information can ease the learning process; they offer this as a claim motivating the design, set against prior work that assumed instance-agnostic functions with local receptive fields.",
+     "anchor": "Section 2, p.2",
+     "quotes": [
+      "we claim that providing the unit with a mechanism to explicitly model dynamic, non-linear dependencies between channels using global information can ease the learning process"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim in Related Work; the experiments are the evidence.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "imagenet-training-protocol",
+     "value": "The authors report training on ImageNet 2012 with synchronous SGD with momentum 0.9 and minibatch 1024, initial learning rate 0.6 decreased by a factor of 10 every 30 epochs, for 100 epochs from scratch, with baseline and SE models trained with identical optimisation schemes and reduction ratio 16 by default.",
+     "anchor": "Section 5.1, p.5",
+     "quotes": [
+      "momentum 0.9 and a minibatch size of 1024",
+      "The initial learning rate is set to 0.6 and decreased by a factor of 10 every 30 epochs.",
+      "Models are trained for 100 epochs from scratch",
+      "Each baseline network architecture and its corresponding SE counterpart are trained with identical optimisation schemes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training setup in Section 5.1.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The value 16 for r is stated on p.5 ('set to 16 by default') and is not in the quotes given here."
+    },
+    {
+     "id_suggestion": "table2-baselines-retrained",
+     "value": "The authors state that, for a fair comparison, they re-train the baseline models and report the scores in a re-implementation column, alongside the results reported in the original papers.",
+     "anchor": "Table 2 caption, p.5",
+     "quotes": [
+      "we re-train the baseline models and report the scores in the re-implementation column"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Stated evaluation protocol in the caption.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "No repeated runs or variance estimates are reported for the single-crop errors."
+    },
+    {
+     "id_suggestion": "se-ilsvrc2017-result",
+     "value": "The authors report that their best SENet ensemble achieves 2.251% top-5 error on the ILSVRC 2017 test set, roughly a 25% relative improvement over the previous year's winner (2.991%).",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "Our best model ensemble achieves a 2.251% top-5 error on the test",
+      "This represents roughly a 25% relative improvement when compared to the winner entry of the previous year (top-5 error of 2.991%)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A competition result reported by the authors; the test set is evaluated by the organisers.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ilsvrc-entry-composition",
+     "value": "The authors state that the winning entry was a small ensemble of SENets using a standard multi-scale and multi-crop fusion strategy to obtain 2.251% top-5 test error.",
+     "anchor": "Section 5.4, p.7",
+     "quotes": [
+      "Our winning entry comprised a small ensemble of SENets that employed a standard multi-scale and multi-crop fusion strategy"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The authors describe the composition of their own submission.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "se-resnet50-flops",
+     "value": "The authors report that ResNet-50 needs about 3.86 GFLOPs per forward pass at 224 × 224 input, and SE-ResNet-50 with reduction ratio 16 about 3.87 GFLOPs, a 0.26% relative increase.",
+     "anchor": "Section 4, p.4",
+     "quotes": [
+      "ResNet-50 requires ∼3.86 GFLOPs in a single forward pass for a 224 × 224 pixel input image.",
+      "r (introduced in Section 3.2) to 16, SE-ResNet-50 requires ∼3.87 GFLOPs, corresponding to a 0.26% relative increase over the original ResNet-50."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Measured computational cost for one architecture pair.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "se-resnet50-gpu-runtime",
+     "value": "The authors report a forward-and-backward pass through ResNet-50 taking 190 ms versus 209 ms for SE-ResNet-50 with a training minibatch of 256 images, on a server with 8 NVIDIA Titan X GPUs.",
+     "anchor": "Section 4, p.4",
+     "quotes": [
+      "a single pass forwards and backwards through ResNet-50 takes 190 ms, compared to 209 ms for SE-ResNet-50 with a training minibatch of 256 images",
+      "both timings are performed on a server with 8 NVIDIA Titan X GPUs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Timing measured on one setup.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Roughly a 10% runtime overhead on GPU versus a 0.26% FLOP increase."
+    },
+    {
+     "id_suggestion": "se-resnet50-cpu-inference",
+     "value": "The authors report CPU inference time for a 224 × 224 input of 164 ms for ResNet-50 versus 167 ms for SE-ResNet-50.",
+     "anchor": "Section 4, p.4",
+     "quotes": [
+      "ResNet-50 takes 164 ms in comparison to 167 ms for SE-ResNet-50"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single timing measurement.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "se-resnet50-extra-params",
+     "value": "The authors report that SE-ResNet-50 introduces about 2.5 million additional parameters beyond the roughly 25 million of ResNet-50, about a 10% increase, mostly from the final stage.",
+     "anchor": "Section 4, p.4; p.5",
+     "quotes": [
+      "SE-ResNet-50 introduces ∼2.5 million additional parameters beyond the",
+      "∼25 million parameters required by ResNet-50, corresponding to a ∼10% increase."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reported parameter count for one architecture.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "se-remove-final-stage",
+     "value": "The authors report that removing the SE blocks of the final stage costs under 0.1% top-5 error on ImageNet and reduces the relative parameter increase to about 4%.",
+     "anchor": "Section 4, p.5",
+     "quotes": [
+      "(<0.1% top-5 error on ImageNet) reducing the relative parameter increase to ∼4%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical statement; no table is given for this variant in the paper.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The result is stated in prose only, without a table."
+    },
+    {
+     "id_suggestion": "se-network-depth-results",
+     "value": "The authors report that SE-ResNet-50 reaches 6.62% single-crop top-5 validation error versus 7.48% for ResNet-50, and that SE-ResNet-101 (6.07%) outperforms the deeper ResNet-152 (6.34%).",
+     "anchor": "Section 5.1, p.6",
+     "quotes": [
+      "SE-ResNet-50 achieves a single-crop top-5 validation error of 6.62%, exceeding ResNet-50 (7.48%) by 0.86%",
+      "SE-ResNet-101 (6.07% top-5 error) not only matches, but outperforms the deeper ResNet-152 network (6.34% top-5 error) by 0.27%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result reported without repeated runs.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "se-resnet50-vs-resnet101-cost",
+     "value": "The authors report that SE-ResNet-50 approaches ResNet-101 (6.52% top-5 error) with about half the computational burden (3.87 GFLOPs versus 7.58 GFLOPs).",
+     "anchor": "Section 5.1, p.6",
+     "quotes": [
+      "ResNet-101 network (6.52% top-5 error)",
+      "3.87 GFLOPs vs. 7.58 GFLOPs"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical comparison.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "se-resnext-results",
+     "value": "The authors report that SE-ResNeXt-50 reaches 5.49% top-5 error, better than ResNeXt-50 (5.90%) and the deeper ResNeXt-101 (5.57%).",
+     "anchor": "Section 5.1, p.6",
+     "quotes": [
+      "SE-ResNeXt-50 has a top-5 error of 5.49% which is superior to both its direct counterpart ResNeXt-50 (5.90%",
+      "top-5 error) as well as the deeper ResNeXt-101 (5.57% top-5 error)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical single comparison.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "se-inception-resnet-v2-result",
+     "value": "The authors report that SE-Inception-ResNet-v2 (4.79% top-5 error) outperforms their re-implemented Inception-ResNet-v2 baseline (5.21%) by 0.42%.",
+     "anchor": "Section 5.1, p.6",
+     "quotes": [
+      "SE counterpart (4.79% top-5 error) outperforms our reimplemented Inception-ResNet-v2 baseline (5.21% top-5 error) by 0.42%"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical single comparison.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "se-non-residual-networks",
+     "value": "The authors report that SE blocks improve performance on the non-residual VGG-16 (with batch normalization added) and BN-Inception architectures.",
+     "anchor": "Section 5.1, p.6",
+     "quotes": [
+      "we observe that SE blocks bring improvements in performance on the non-residual settings."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Table 2 gives VGG-16 top-5 8.81 to 7.70 and BN-Inception 7.89 to 7.14."
+    },
+    {
+     "id_suggestion": "se-mobile-networks",
+     "value": "The authors report that SE blocks consistently improve the accuracy of MobileNet and ShuffleNet by a large margin at a minimal increase in computational cost.",
+     "anchor": "Section 5.1, p.6; p.7",
+     "quotes": [
+      "The total training process required ∼ 400 epochs",
+      "the accuracy by a large margin at a minimal increase in computational cost."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Table 3: MobileNet top-1 28.4 to 25.3, ShuffleNet 32.6 to 31.0; params 4.2M to 4.7M and 1.8M to 2.4M."
+    },
+    {
+     "id_suggestion": "se-cifar10-results",
+     "value": "The authors report that SENet versions had lower CIFAR-10 error than the baselines in every comparison, with original errors 6.37, 5.46, 4.27, 2.56 versus SENet 5.21, 4.39, 3.88, 2.12 (percent).",
+     "anchor": "Table 4, p.7; Section 5.1, p.7",
+     "quotes": [
+      "original 6.37 5.46 4.27 2.56",
+      "SENet 5.21 4.39 3.88 2.12",
+      "We observe that in every comparison SENets outperform the baseline architectures"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result, single runs.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Baselines in order: ResNet-110, ResNet-164, WRN-16-8, Shake-Shake+Cutout."
+    },
+    {
+     "id_suggestion": "se-cifar100-results",
+     "value": "The authors report CIFAR-100 errors of 26.88, 24.33, 20.43, 15.85 (percent) for the baselines versus 23.85, 21.31, 19.14, 15.41 for the SENet counterparts.",
+     "anchor": "Table 5, p.7",
+     "quotes": [
+      "26.88 24.33 20.43 15.85",
+      "SENet 23.85 21.31 19.14 15.41"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result, single runs.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Baselines in order: ResNet-110, ResNet-164, WRN-16-8, Shake-Even+Cutout."
+    },
+    {
+     "id_suggestion": "se-places365-results",
+     "value": "The authors report that SE-ResNet-152 achieves 11.01% top-5 error on the Places365 validation set versus 11.61% for ResNet-152, surpassing Places-365-CNN (11.48%).",
+     "anchor": "Section 5.2, p.7",
+     "quotes": [
+      "We observe that SE-ResNet-152 (11.01% top-5 error) achieves a lower validation error than ResNet-152 (11.61% top-5 error),",
+      "which has a top-5 error of 11.48% on this task."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "se-coco-detection-results",
+     "value": "The authors report that, as the Faster R-CNN trunk, SE-ResNet-50 outperforms ResNet-50 by 2.4 points of AP (a relative 6.3% improvement) and 3.1 points on AP@IoU=0.5, and SE-ResNet-101 improves AP by 2.0 points (5.0% relative).",
+     "anchor": "Section 5.3, p.7",
+     "quotes": [
+      "SE-ResNet-50 outperforms ResNet-50 by 2.4% (a relative 6.3% improvement)",
+      "and by 3.1% on AP@IoU=0.5",
+      "a 2.0% improvement (5.0% relative improvement) on the AP metric"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result on COCO minival.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "senet154-single-crop",
+     "value": "The authors report that SENet-154 achieves 18.68% top-1 and 4.47% top-5 error with a 224 × 224 centre crop, which they describe as the strongest reported result in that comparison.",
+     "anchor": "Section 5.4, p.8",
+     "quotes": [
+      "We observe that SENet-154 achieves a top-1 error of 18.68% and a top-5 error of 4.47%",
+      "using a 224 × 224 centre crop evaluation, which represents the strongest reported result"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical result; the paper itself notes later stronger results.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "stronger-later-results-cited",
+     "value": "The authors note that later results are stronger and attribute the best overall performance to a ResNeXt-101 32×48d model pretrained on about one billion weakly labelled images, which they say may be complementary to their architecture changes.",
+     "anchor": "Section 5.4, p.8",
+     "quotes": [
+      "The best overall performance was reported by [80] using a ResNeXt-101 32×48d architecture.",
+      "pretraining their model on approximately one billion weakly labelled images"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "senet154-appendix-training",
+     "value": "The authors state that SENet-154 was trained on 8 servers (64 GPUs) in parallel to enable large batch sizes (2048), with initial learning rate 1.0.",
+     "anchor": "Appendix: Details of SENet-154, p.12",
+     "quotes": [
+      "Training was performed with 8 servers (64 GPUs) in parallel to enable large batch sizes (2048).",
+      "The initial learning rate was set to 1.0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Stated training setup in the appendix.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ablation-setup-scope",
+     "value": "The authors state that all ablation experiments were run on ImageNet on a single machine with 8 GPUs, using ResNet-50 as backbone, with the learning rate starting at 0.1 and training until validation loss plateaus (about 300 epochs in total); they also removed the FC biases in the excitation operation.",
+     "anchor": "Section 6, p.8",
+     "quotes": [
+      "All ablation experiments are performed on the ImageNet dataset on a single machine (with 8 GPUs). ResNet-50 is used as the backbone architecture.",
+      "the learning rate is initialised to 0.1 and training continues until the validation loss plateaus",
+      "removing the biases of the FC layers in the excitation operation facilitates the modelling of channel dependencies"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope and protocol of its ablations.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The 300 epochs figure appears in the same sentence group as '(∼300 epochs in total)'."
+    },
+    {
+     "id_suggestion": "reduction-ratio-ablation",
+     "value": "The authors report SE-ResNet-50 top-5 errors of 6.00, 6.09, 5.99, 6.03 and 6.20 (percent) for reduction ratios 2, 4, 8, 16 and 32, versus 6.55 for the original ResNet-50, with parameters falling from 45.7M to 26.9M.",
+     "anchor": "Table 10, p.8",
+     "quotes": [
+      "top-5 err. 6.00 6.09 5.99 6.03 6.20 6.55",
+      "Params 45.7M 35.7M 30.7M 28.1M 26.9M 25.6M"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical ablation, single runs.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "reduction-ratio-robust-r16",
+     "value": "The authors state that performance is robust to a range of reduction ratios, that increased complexity does not improve performance monotonically, and that r = 16 achieves a good balance between accuracy and complexity.",
+     "anchor": "Section 6.1, p.8",
+     "quotes": [
+      "The comparison in Table 10 shows that performance is robust to a range of reduction ratios.",
+      "Setting r = 16 achieves a good balance between accuracy and complexity."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical conclusion from one ablation.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "reduction-ratio-uniform-limit",
+     "value": "The authors state that using an identical reduction ratio throughout a network may not be optimal because layers play different roles, so tuning ratios per layer might improve results.",
+     "anchor": "Section 6.1, p.8",
+     "quotes": [
+      "using an identical ratio throughout a network may not be optimal"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit of their uniform-ratio setting.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "squeeze-operator-max-vs-avg",
+     "value": "The authors report that both max and average pooling are effective as the squeeze operator, with average pooling slightly better, and that SE performance is fairly robust to the choice of aggregation operator.",
+     "anchor": "Section 6.2, p.8",
+     "quotes": [
+      "While both max and average pooling are effective, average pooling achieves slightly better performance",
+      "the performance of SE blocks is fairly robust to the choice of speciﬁc aggregation operator"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical ablation.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Table 11: top-5 error 6.09 (max) vs 6.03 (avg)."
+    },
+    {
+     "id_suggestion": "excitation-nonlinearity-ablation",
+     "value": "The authors report that replacing the sigmoid with tanh slightly worsens performance, while ReLU is dramatically worse and drops SE-ResNet-50 below the ResNet-50 baseline, with top-5 errors of 6.98, 6.38 and 6.03 (percent) for ReLU, tanh and sigmoid.",
+     "anchor": "Section 6.3, p.9; Table 12, p.9",
+     "quotes": [
+      "exchanging the sigmoid for tanh slightly worsens performance",
+      "using ReLU is dramatically worse and in fact causes the performance of SE-ResNet-50 to drop below that of the ResNet-50 baseline",
+      "top-5 err. 6.98 6.38 6.03"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical ablation.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "stage-ablation",
+     "value": "The authors report that SE blocks added to ResNet-50 one stage at a time each help, with top-5 errors of 6.55 for the baseline, 6.48, 6.32 and 6.22 for stages 2, 3 and 4, and 6.03 with SE at all stages, and say the gains are complementary.",
+     "anchor": "Section 6.4, p.9; Table 13, p.9",
+     "quotes": [
+      "top-5 err. 6.55 6.48 6.32 6.22 6.03",
+      "the gains induced by SE blocks at different stages are complementary"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical ablation.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "integration-strategy-ablation",
+     "value": "The authors report that SE-PRE, SE-Identity and the standard SE block perform similarly well while SE-POST leads to a drop in performance, with top-5 errors of 6.03, 6.00, 6.35 and 6.15 (percent) for SE, SE-PRE, SE-POST and SE-Identity.",
+     "anchor": "Section 6.5, p.9; Table 14, p.9",
+     "quotes": [
+      "We observe that the SE-PRE, SE-Identity and proposed SE block each perform similarly well, while usage",
+      "of the SE-POST block leads to a drop in performance.",
+      "top-5 err. 6.03 6.00 6.35 6.15"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical ablation.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "integration-location-robust-claim",
+     "value": "The authors suggest that improvements from SE units are fairly robust to their location, provided they are applied prior to branch aggregation.",
+     "anchor": "Section 6.5, p.9",
+     "quotes": [
+      "provided that they are applied prior to branch aggregation"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An authors' interpretation drawn from the integration ablation.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "se-3x3-variant",
+     "value": "The authors report that placing the SE block after the 3 × 3 convolution inside the residual unit gives comparable accuracy with fewer parameters than the standard SE block.",
+     "anchor": "Section 6.5, p.9",
+     "quotes": [
+      "accuracy with fewer parameters than the standard SE block"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical ablation.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Table 15: 28.1M vs 25.8M params; top-5 6.03 vs 6.02."
+    },
+    {
+     "id_suggestion": "role-analysis-empirical-scope",
+     "value": "The authors state that a rigorous theoretical analysis of learned representations remains challenging, so they take an empirical approach to understanding the SE block, aiming only at a primitive understanding of its practical function.",
+     "anchor": "Section 7, p.9",
+     "quotes": [
+      "A rigorous theoretical analysis of the representations learned by deep neural networks remains challenging"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the scope of their analysis.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "nosqueeze-ablation",
+     "value": "The authors report that removing the global pooling (NoSqueeze) gives top-5 error 6.39% versus 6.03% for SE and 6.55% for ResNet-50, with 4.27 versus 3.87 GFLOPs, and conclude that global information matters.",
+     "anchor": "Section 7.1, p.9-10; Table 16, p.10",
+     "quotes": [
+      "we remove the pooling operation and replace the two FC layers with corresponding 1 × 1 convolutions",
+      "top-5 err. 6.55 6.39 6.03",
+      "GFLOPs 3.86 4.27 3.87",
+      "underlining the importance of the squeeze operation"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Empirical ablation.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "NoSqueeze has the same parameters as SE (28.1M) but higher FLOPs."
+    },
+    {
+     "id_suggestion": "excitation-early-layers-class-agnostic",
+     "value": "The authors report that the distribution of excitation activations across different classes is very similar at earlier layers of the network, which they take to suggest that channel importance is shared across classes in early stages.",
+     "anchor": "Section 7.2, p.10",
+     "quotes": [
+      "the distribution across different classes is very similar at the earlier layers of the network"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Qualitative reading of plots from four sampled classes.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "excitation-later-layers-class-specific",
+     "value": "The authors report that at greater depth the value of each channel becomes much more class-specific, as different classes show different preferences to the discriminative value of features, consistent with earlier work on feature specificity.",
+     "anchor": "Section 7.2, p.10-11",
+     "quotes": [
+      "depth, the value of each channel becomes much more",
+      "as different classes exhibit different preferences to the discriminative value of features"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Qualitative reading of plots.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The quote begins at the end of p.10 and continues on p.11."
+    },
+    {
+     "id_suggestion": "excitation-se52-saturation",
+     "value": "The authors report that SE_5_2 tends towards a saturated state with most activations close to one, at which point an SE block reduces to the identity operator, and infer that SE_5_2 and SE_5_3 are less important for recalibration.",
+     "anchor": "Section 7.2, p.11",
+     "quotes": [
+      "tendency towards a saturated state in which most of the activations are close to one",
+      "an SE block reduces to the identity operator",
+      "are less important than previous blocks in providing recalibration to the network"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Qualitative reading of activation plots and an inference by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "excitation-instance-specific",
+     "value": "The authors report that the dynamic behaviour of SE blocks varies over both classes and instances within a class, with instance-specific responses supporting increasingly class-specific needs at different layers.",
+     "anchor": "Section 7.2, p.11",
+     "quotes": [
+      "indicating that the dynamic behaviour of SE blocks varies over both classes and instances within a class"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Qualitative reading of plots from two classes.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fig6-se52-saturated-from-figure",
+     "value": "Read from Figure 6: in SE_5_2 the mean excitation activations are about 1 across almost all channels for every class curve, with a single sharp dip toward about 0 near channel index about 1400.",
+     "anchor": "Figure 6, p.10",
+     "quotes": [
+      "With the exception of the unusual behaviour at SE_5_2"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Value read by eye from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fig6-se53-low-activations-from-figure",
+     "value": "Read from Figure 6: in SE_5_3 the mean activations lie low, about 0.1 to about 0.4, with the class curves separated by roughly constant offsets across the channels.",
+     "anchor": "Figure 6, p.10",
+     "quotes": [
+      "a similar pattern emerges over different classes, up to a modest change in scale"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Value read by eye from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fig4-training-curves-from-figure",
+     "value": "Read from Figure 4: in all four panels the SE variants' train and val top-1 error curves lie below those of the baselines across the 100 epochs, with the gap persisting after the step drops at about epochs 30, 60 and 90.",
+     "anchor": "Figure 4, p.6",
+     "quotes": [
+      "SENets exhibit improved optimisation characteristics and produce consistent gains in performance which are sustained throughout the training process."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Reading from a plot.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-state-of-the-art-claim",
+     "value": "The authors conclude that a wide range of experiments show the effectiveness of SENets, which achieve state-of-the-art performance across multiple datasets and tasks.",
+     "anchor": "Section 8, p.11",
+     "quotes": [
+      "A wide range of experiments show the effectiveness of SENets, which achieve state-of-the-art performance across multiple datasets and tasks."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors' summary claim; the paper itself acknowledges later stronger ImageNet results.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The state-of-the-art wording is qualified by the later-results discussion in Section 5.4."
+    },
+    {
+     "id_suggestion": "conclusion-pruning-future-use",
+     "value": "The authors suggest that the feature importance values produced by SE blocks may be of use for other tasks such as network pruning for model compression, without testing it.",
+     "anchor": "Section 8, p.11",
+     "quotes": [
+      "may be of use for other tasks such as network pruning for model compression"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A speculative statement with no experiment.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

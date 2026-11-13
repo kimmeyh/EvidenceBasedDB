@@ -294,6 +294,37 @@ def test_a_record_marked_unread_is_left_out_of_its_group(tmp_path, monkeypatch):
     assert [p["record_id"] for _, p in g.load_groups()] == ["a", "b"]
 
 
+def test_an_assertion_the_sign_off_adds_is_entered_and_checked_without_editing_the_read(tmp_path, monkeypatch):
+    """F142 part 2 (Sprint 17 Task C): Sprint 16 split `he-simulation-scope` by editing the reader's read file by hand
+    (db2abe3). The review's `add` table now carries the new assertion; load_groups merges it, the read file is
+    unchanged, its history says the sign-off added it, and its quote is checked against the paper like a reader's.
+    Proven red 2026-11-07: with load_groups not merging ADD (INJECTED), the added assertion was missing; with the
+    sign-off's history line replaced by the reader's (INJECTED), "added at the coordinator's sign-off" was missing."""
+    import json
+    g = _script()
+    monkeypatch.setattr(g, "ledger", lambda: {"groups": {"g076": {"records": [{"record_id": "a"}]}}})
+    monkeypatch.setattr(g, "ONLY", ["g076"])
+    monkeypatch.setattr(g, "READS_DIR", tmp_path)
+    read = {"papers": [{"record_id": "a", "file": "a.pdf", "assertions": [], "existing": []}]}
+    (tmp_path / "group_g076.json").write_text(json.dumps(read), encoding="utf-8")
+    added = {"value": "The authors use only 100 samples per class for training and testing.", "anchor": "p.11",
+             "quotes": ["only 100 samples per class are used"], "context": "qml", "claim_type": "positive",
+             "result_type": "setup", "kind": "shown"}
+    monkeypatch.setattr(g, "ADD", {"g076": {"x-split": {"record_id": "a", "why": "split, team lead Q1 = 3",
+                                                        "assertion": added}}})
+    [(_, p)] = g.load_groups()
+    assert [a["id_suggestion"] for a in p["assertions"]] == ["x-split"]
+    assert json.loads((tmp_path / "group_g076.json").read_text(encoding="utf-8")) == read
+
+    monkeypatch.setattr(g, "source_text", lambda _: "To simulate scarcity, only 100 samples per class are used.")
+    [(a, _, _, _)] = g.verify()
+    # the decision and who made it reach the store (fresh-eyes review of 2580ce2: only a fixed phrase did)
+    assert a.id == "x-split" and "added at the coordinator's sign-off (split, team lead Q1 = 3)" in a.updated_reason
+    monkeypatch.setattr(g, "source_text", lambda _: "No such sentence in this paper.")
+    with pytest.raises(ValueError, match="x-split"):
+        g.verify()
+
+
 def test_an_apply_that_rewrites_a_read_row_is_rolled_back_unless_named(synthetic_store, monkeypatch):
     """Sprint 13 retrospective I1 (team lead, 2026-10-28): the trial log's 114 'update read' lines went unquestioned
     and the real apply rewrote Task F's rows. Proven to fail, 2026-10-28: with commit_apply committing whatever
@@ -470,7 +501,9 @@ def test_the_apply_writes_its_refusal_notes_through_refusal_reason_and_nothing_e
 def test_a_re_apply_checks_no_quote_and_reads_no_source(applied_once):
     """F136 acceptance: a second apply of every applied group checks nothing (and, above, writes nothing). Sprint
     15's re-apply checked about 10,000 quotes, 23 minutes. Proven to fail by injection, 2026-11-06: with
-    apply_changes calling verify() without its connection, every quote was checked again. Restored."""
+    apply_changes calling verify() without its connection, every quote was checked again. Restored. Sprint 17 q23
+    (2026-11-09): before `decided_later`, the rows corrected at Manual Validation were checked again (6 checked, the
+    gate's failure)."""
     counts = applied_once["verify"]  # a Counter turned dict: a count of 0 may be absent
     assert counts.get("checked", 0) == 0, counts
     assert counts["sources read"] == 0
@@ -586,7 +619,7 @@ def test_only_a_new_or_changed_quote_is_checked(monkeypatch):
     paper = {"record_id": "p", "file": "f", "existing": [], "assertions": [{"id_suggestion": i} for i in wanted]}
     monkeypatch.setattr(g, "load_groups", lambda: [("g050", paper)])
     monkeypatch.setattr(g, "record", lambda gg, rid, aid, a, why, sid=None: SimpleNamespace(
-        id=aid, citation_context=wanted[aid], value="v", certainty="low", certainty_reasons=""))
+        id=aid, citation_context=wanted[aid], value="v", certainty="low", certainty_reasons="", updated="2026-11-01"))
     reads: list = []
     monkeypatch.setattr(g, "source_text", lambda f: reads.append(f) or "the source holds q only")
     monkeypatch.setattr(g, "validate_assertion", lambda a: None)
@@ -602,6 +635,51 @@ def test_only_a_new_or_changed_quote_is_checked(monkeypatch):
     conn.execute("""INSERT INTO assertion_fields VALUES ('new', '"q" (p.2)')""")  # as the first apply wrote it
     assert [a.id for a, _, _, _ in g.verify(conn)] == ["same", "new"]
     assert (g.LAST_VERIFY["checked"], g.LAST_VERIFY["sources read"], reads) == (0, 0, [])  # the rerun reads nothing
+
+
+def _corrected_row(monkeypatch, decided: str):
+    """A store holding one row 'fixed' with a Manual Validation decision dated `decided`, and a review entry for it
+    dated 2026-11-01 whose quote is not in the source. Returns the script module and the store."""
+    from types import SimpleNamespace
+    g = _script()
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE records (id TEXT, class TEXT, value TEXT, provenance TEXT, updated_reason TEXT)")
+    conn.execute("CREATE TABLE assertion_fields (record_id TEXT, citation_context TEXT)")
+    reason = (f"2026-10-29 (g050): {g.FULL_READ_MARK}: entered | "
+              f"{decided} (Sprint 17 Manual Validation, q23 = a): x")
+    conn.execute("INSERT INTO records VALUES ('fixed', 'assertion', 'v', 'p, p.1', ?)", (reason,))
+    conn.execute("""INSERT INTO assertion_fields VALUES ('fixed', '"q" (p.1)')""")
+    paper = {"record_id": "p", "file": "f", "existing": [], "assertions": [{"id_suggestion": "fixed"}]}
+    monkeypatch.setattr(g, "load_groups", lambda: [("g050", paper)])
+    monkeypatch.setattr(g, "record", lambda gg, rid, aid, a, why, sid=None: SimpleNamespace(
+        id=aid, citation_context='"the review quote" (p.1)', value="v", certainty="low", certainty_reasons="",
+        updated="2026-11-01"))
+    monkeypatch.setattr(g, "source_text", lambda f: "the source holds q only")
+    monkeypatch.setattr(g, "validate_assertion", lambda a: None)
+    return g, conn
+
+
+def test_a_row_the_team_lead_corrected_after_the_review_is_neither_checked_nor_written(monkeypatch):
+    """Sprint 17 q23 (2026-11-09): a row corrected at Manual Validation after its review differs from the review, and
+    the sync refuses to write it back (`sync_assertion`, `decided_day`); verify() must not check its quotes or hand it
+    to the write, and the printed counts say it was kept. Proven to fail by injection, 2026-11-09: with
+    `decided_later` returning False, the corrected row was checked, and its review quote, not in the source, was
+    refused."""
+    g, conn = _corrected_row(monkeypatch, "2026-11-09")
+    assert g.verify(conn) == []
+    assert (g.LAST_VERIFY["checked"], g.LAST_VERIFY["kept by a later decision"]) == (0, 1)
+    assert "1 kept by a later decision" in g.verify_counts()
+
+
+@pytest.mark.parametrize("decided", ["2026-11-01", "2026-10-30"])
+def test_a_row_decided_on_or_before_the_review_day_is_still_checked(monkeypatch, decided):
+    """The other side of the rule above, from the fresh-eyes review of 2026-11-09: the sync writes a row whose
+    decision is not after the review day (`today < decided_day(reason)` is false), so verify() must still check it.
+    Here the review quote is not in the source, so the check refuses it. Proven to fail by injection, 2026-11-09:
+    with `decided_later` returning True, the row was skipped and nothing was refused."""
+    g, conn = _corrected_row(monkeypatch, decided)
+    with pytest.raises(ValueError):
+        g.verify(conn)
 
 
 def test_a_field_no_review_item_names_is_listed(synthetic_store, monkeypatch):

@@ -252,6 +252,33 @@ def test_main_requires_id_for_paper_and_assertion_modes(store_db_path):
         assert "requires an id" in proc.stderr
 
 
+def test_paper_full_prints_each_assertion_whole(tmp_path):
+    """F141 (Sprint 17 Task D): the team lead at Sprint 16 Manual Validation, "this seems to cut off the
+    assertion(s), is there a way to get the full assertion?". `paper --full` prints each yielded assertion whole;
+    the default output still cuts at 100 characters. Proven red 2026-11-07: with the `full` branch never taken
+    (INJECTED), the value was cut and the provenance line was missing."""
+    db = tmp_path / "evidence.db"
+    conn = _seed_store(db)
+    long_value = "The authors state that " + "the bound holds for every circuit depth they tested, " * 4 + "end."
+    insert_assertion(conn, AssertionRecord(
+        id="test-assertion-long", value=long_value, provenance="test-paper-one, p.7",
+        citation_context='"the bound holds" (p.7)', evidence_tag="N/A", derivation="extracted", context="qml",
+        certainty="low", certainty_reasons="fixture", fidelity="exact", reading_level=10,
+        documents=["test-paper-one"]), yielded_by="test-paper-one")
+    conn.commit()
+    conn.close()
+    assert len(long_value) > 100
+    full = _run_view_cli(db, ["paper", "test-paper-one", "--full"])
+    assert full.returncode == 0, full.stderr
+    assert long_value in full.stdout
+    assert "Provenance: test-paper-one, p.7" in full.stdout and '"the bound holds" (p.7)' in full.stdout
+    assert "certainty low" in full.stdout
+    short = _run_view_cli(db, ["paper", "test-paper-one"])
+    assert long_value not in short.stdout and long_value[:100] in short.stdout
+    wrong = _run_view_cli(db, ["assertion", "test-assertion-long", "--full"])
+    assert wrong.returncode == 1 and "--full is for 'paper' mode" in wrong.stderr
+
+
 def test_main_exit_code_reflects_error_for_unknown_paper(store_db_path):
     proc = _run_view_cli(store_db_path, ["paper", "no-such-paper", "--json"])
     assert proc.returncode == 1

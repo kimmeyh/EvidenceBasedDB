@@ -21,7 +21,9 @@ A group is, by the last step it has reached:
 - reading: the scratch folder holds saved papers or notes (k of n done, and the page reached);
 - started: the scratch folder exists, with nothing saved (a reader on the prompt before 2026-10-26, or one
   stopped before its first save);
-- not started.
+- not started;
+- superseded: never started, and its papers moved to one-paper groups (q20 = a, 2026-11-09); the ledger's
+  `superseded` note names each paper and its new group.
 
 Read-only. Usage:
   python scripts/sprint13_g_status.py            one line per group not yet applied, then the counts
@@ -71,7 +73,11 @@ def reading(tmp: Path, records: list[str]) -> str:
     return f"{len([r for r in done if r in records])} of {len(records)} papers saved{where}"
 
 
-def state(g: str, records: list[str], applied: set[tuple[str, str]]) -> tuple[str, str]:
+def state(g: str, records: list[str], applied: set[tuple[str, str]],
+          superseded: dict | None = None) -> tuple[str, str]:
+    if superseded:  # q20 = a (2026-11-09): its papers moved to one-paper groups, which report for themselves
+        moved = [r["moved_to"] for r in superseded["records"]]
+        return "superseded", f"{len(moved)} papers moved to {moved[0]} to {moved[-1]}"
     if records and all((g, r) in applied for r in records):
         return "applied", ""
     if (REVIEWS / f"{g}.json").exists():
@@ -91,16 +97,16 @@ def state(g: str, records: list[str], applied: set[tuple[str, str]]) -> tuple[st
 
 def main(argv: list[str] | None = None) -> int:
     args = list(sys.argv[1:] if argv is None else argv)
-    groups = {g: [r["record_id"] for r in body["records"]]
-              for g, body in json.loads(LEDGER.read_text(encoding="utf-8"))["groups"].items()}
+    ledger = json.loads(LEDGER.read_text(encoding="utf-8"))["groups"]
+    groups = {g: [r["record_id"] for r in body["records"]] for g, body in ledger.items()}
     for brief in sorted((WORK / "briefs").glob("g*-r*.json")):
         groups[brief.stem] = [r["record_id"] for r in json.loads(brief.read_text(encoding="utf-8"))["records"]]
     applied = applied_records()
     counts = Counter()
     for g, records in groups.items():
-        name, detail = state(g, records, applied)
+        name, detail = state(g, records, applied, ledger.get(g, {}).get("superseded"))
         counts[name] += 1
-        if "--all" in args or name not in ("applied", "not started"):
+        if "--all" in args or name not in ("applied", "not started", "superseded"):
             print(f"{g}  {name}" + (f"  ({detail})" if detail else ""))
     print(", ".join(f"{n} {k}" for k, n in counts.most_common()) + f"; {len(groups)} groups")
     return 0

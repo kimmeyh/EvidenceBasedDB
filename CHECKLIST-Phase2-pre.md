@@ -319,3 +319,17 @@ Evidence for each row is the commit named, on the sprint branch
 - [x] **H+C**: Manual Validation Q1 to Q4; g154-r1 split and applied; the seventh CVQBoost assertion; F140 (71d915e) and F141 carded (db2abe3)
 - [x] **H+C**: Retrospective, 16 x 4 (b574ca9, be500ef); five improvements: F142 (Sprint 17 plan) and F143 (backlog) (this commit)
 - [x] **C**: Summary, master plan roll and this section (this commit); PR #164 ready after CI
+
+## Sprint 17: Test Faster, Then Read on the API Credit (reconciled 2026-11-10 at Phase 7.7)
+
+Evidence for each row is the commit named, on the sprint branch
+(`feature/20261107_Sprint_17`, PR #174).
+
+- [x] **C**: Task A (F140) -- test inventory (5454ccb); no repeat full run, high-impact tests, last failures first (e75c9c3); 16 workers (5e19e63)
+- [x] **C**: Task B (F144) -- the Batch API reader (b1a8762); pilot and measurement batch kept and flagged (045e5c8, 8bf5a1f); PR #181 merged by the team lead (c0573a7)
+- [x] **C**: Task C (F142) -- telemetry out of the tree id (ae57b36); sign-off adds (2580ce2, 6a398db); parts 3 and 4 (f79714b)
+- [x] **C**: Task D (F141) -- `view.py paper <id> --full` (355d1af)
+- [x] **C**: Tasks E and F (F114, F143) -- set-up (f3fec50); 10 papers applied and the cost analysis (24b05d7); review findings (7d95f35)
+- [x] **H+C**: Manual Validation q20 to q31; one working folder (a0575a5); q23 (4ae56cd); q20 (301611f); q28 and F146 to F148 (7270922); q29 and q31 (a019078)
+- [x] **H+C**: Retrospective, 16 x 4 (18fd683); i1 and i4 applied, i2 as a checklist line, i3 skipped and tracked, F149 carded (this commit)
+- [x] **C**: Summary, master plan roll and this section (this commit); PR #174 ready after CI

@@ -1,8 +1,10 @@
 """PreToolUse hook blocking the AskUserQuestion tool call in this repository.
 
 Team lead feedback (CLAUDE.md "Things Claude Should NOT Do"): decision
-questions must be a PLAIN NUMBERED LIST the team lead can answer by typing a
-digit, never the AskUserQuestion tool's multiple-choice UI. This was violated
+questions are written in the response text in the shape of
+docs/SPRINT_RETROSPECTIVE.md "Presenting improvements, questions and
+decisions" (team lead, 2026-11-07; until then a numbered list answered by a
+digit), never the AskUserQuestion tool's multiple-choice UI. This was violated
 twice in Sprint 2 (2026-09-17), the second time immediately after already
 being corrected for the identical thing earlier in the SAME session, with the
 rule present in CLAUDE.md and memory the whole time. A rule that lives only in
@@ -13,8 +15,8 @@ mechanical instead of relying on remembering to apply a rule already known.
 Exit 0 = allow. Exit 2 = block; stderr fed back to Claude.
 No bypass token: unlike the sibling-repo write guard, there is no legitimate
 case where AskUserQuestion is the right tool call in this repository. If a
-decision question is genuinely needed, ask it as plain numbered text in the
-response body instead -- that path is unaffected by this hook, since it is
+decision question is genuinely needed, ask it as text in the response body
+instead -- that path is unaffected by this hook, since it is
 not a tool call at all.
 """
 from __future__ import annotations
@@ -48,8 +50,10 @@ def main() -> int:
         "[BLOCKED] AskUserQuestion is banned in this repository, full stop "
         "(CLAUDE.md \"Things Claude Should NOT Do\").\n"
         "\n"
-        "Ask the same options as a PLAIN NUMBERED LIST in the response text "
-        "instead -- one the team lead can answer by typing a single digit. "
+        "Ask it in the response text instead, in the shape of "
+        "docs/SPRINT_RETROSPECTIVE.md \"Presenting improvements, questions and "
+        "decisions\": numbered q1 (i1 for an improvement), lettered options, one "
+        "marked (Recommendation), answered as \"q1. a\". "
         "There is no case in this repository where the tool call is the "
         "right move; do not re-evaluate whether this particular question "
         "'fits' it.\n"

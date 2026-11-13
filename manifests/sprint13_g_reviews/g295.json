@@ -1,0 +1,643 @@
+{
+ "group": "g295",
+ "reviewed_on": "2026-11-08",
+ "tag": "Sprint 17 Task E, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint17_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "abrams-problem-statement": [
+   "definition",
+   "Introduction p.2: the paper defines its own problem (U, approximate eigenvector Va, true V and lambda_v)."
+  ],
+  "abrams-locality-requirement": [
+   "scope",
+   "Sec. 3 p.5: the paper states the condition (sum of k-local terms, k independent of n) under which its method is meant to apply."
+  ],
+  "abrams-first-quantized-qubits": [
+   "definition",
+   "Sec. 3 p.6: the paper defines its own encoding (l qubits per particle, n*l qubits)."
+  ],
+  "abrams-initial-state-from-classical-wavefunction": [
+   "setup",
+   "Sec. 3 p.6: the paper states the input it requires (a classical wavefunction) and excludes density-functional methods."
+  ],
+  "abrams-open-problems-gates-errors": [
+   "stated limit",
+   "Conclusion p.8: the paper itself says gate counts and error analysis are left open."
+  ],
+  "aharonov-model-definition": [
+   "definition",
+   "Sec. 1 p.2 and Sec. 2.2 p.8: the paper defines the adiabatic model (Hinit, Hfinal, ground state of Hfinal as output, gap along the straight line)."
+  ],
+  "aharonov-general-hfinal-scope": [
+   "scope",
+   "Sec. 1 p.2: the paper states that Hfinal is any local Hamiltonian (not only diagonal) and that this is what its results need."
+  ],
+  "aharonov-explicit-sparse-definition": [
+   "definition",
+   "Sec. 1.1 p.3: the paper defines explicit sparse Hamiltonians."
+  ],
+  "aharonov-six-state-open": [
+   "stated limit",
+   "Sec. 1.2 p.4: the paper states that six-state particles come from its construction and that improving this is open."
+  ],
+  "aharonov-noise-model-open": [
+   "stated limit",
+   "Sec. 1.2 p.4: the paper states that the right noise model and fault tolerance are not yet studied."
+  ],
+  "aharonov-five-body-interaction": [
+   "definition",
+   "Sec. 1.3 p.5 and Eq. (5) p.10: the paper's own Hamiltonian acts on three clock and two computation qubits."
+  ],
+  "aharonov-open-improve-parameters": [
+   "stated limit",
+   "Sec. 1.6 p.6: the paper states that better parameters (run time, particle dimension) are left open."
+  ],
+  "aharonov-open-one-dimensional": [
+   "stated limit",
+   "Sec. 1.6 p.6: the paper states that the one-dimensional case is left open."
+  ],
+  "aharonov-open-fault-tolerance": [
+   "stated limit",
+   "Sec. 1.6 p.6: the paper states that fault tolerance and physical usefulness are left open."
+  ],
+  "aharonov-open-adiabatic-optimization-power": [
+   "stated limit",
+   "Sec. 1.6 p.6: the paper states that the power of adiabatic optimization is left open."
+  ],
+  "aharonov-spectral-gap-definition": [
+   "definition",
+   "Sec. 2.1 p.7: the paper defines the spectral gap, zero if the ground state is degenerate."
+  ],
+  "aharonov-k-local-restriction": [
+   "scope",
+   "Sec. 2.1 p.7: the paper states that it restricts itself to k-local Hamiltonians and tries to keep k small."
+  ],
+  "aharonov-definition-2-2-running-time": [
+   "definition",
+   "Definition 2.2, Sec. 2.2 p.8: the paper defines k-local adiabatic computation and its running time T*max||H(s)||."
+  ],
+  "aharonov-hamiltonian-construction-definition": [
+   "definition",
+   "Sec. 3.1.1 p.10: the paper defines Hinit, Hfinal and H(s) as sums of penalty terms."
+  ],
+  "aharonov-claim-3-2": [
+   "proved result",
+   "Claim 3.2, Sec. 3.1.1 p.11: stated with its proof (Hinit|gamma0>=0 by direct check; sum of projectors is positive semidefinite)."
+  ],
+  "aharonov-claim-3-3": [
+   "proved result",
+   "Claim 3.3, Sec. 3.1.1 p.11: stated with its proof (Hfinal|eta>=0 by direct check, left to the reader as 'easy to verify'; each H_l is positive semidefinite)."
+  ],
+  "aharonov-claim-3-7-monotone-ground-state": [
+   "proved result",
+   "Claim 3.7, Sec. 3.1.2 p.13: stated with a proof (power-iteration limit, Perron's theorem which is textbook); preservation of monotonicity is stated as 'easy to check'."
+  ],
+  "aharonov-claim-3-8-conductance": [
+   "proved result",
+   "Claim 3.8, Sec. 3.1.2 pp.13-14: stated with a case analysis proof using Claim 3.7; the conductance bound itself is applied after the claim."
+  ],
+  "aharonov-model-no-postprocessing": [
+   "scope",
+   "Sec. 3.1.3 p.14: the paper states that its model allows one adiabatic evolution and a measurement, with no classical postprocessing."
+  ],
+  "aharonov-lemma-3-10-identity-padding": [
+   "proved result",
+   "Lemma 3.10, Sec. 3.1.3 p.15: stated with a proof (pad the circuit with identity gates, trace distance <= l2 distance, triangle inequality); the step 'easy to check' for the traced-out clock is short and elementary."
+  ],
+  "aharonov-three-local-penalty-j": [
+   "setup",
+   "Sec. 3.2.1 p.17: the paper sets the penalty J = epsilon^-2 L^6 and defines the 3-local Hamiltonians H'init, H'final."
+  ],
+  "aharonov-claim-3-16-restriction-equal": [
+   "proved result",
+   "Claim 3.16, Sec. 3.2.2 p.18: stated with a direct proof (projection identity for each H_l)."
+  ],
+  "aharonov-lemma-3-17-perturbation": [
+   "proved result",
+   "Lemma 3.17, Sec. 3.2.2 pp.18-19: stated with its conditions (J>2K) and a full proof in the paper; the paper notes a similar lemma in [20] but proves this one."
+  ],
+  "aharonov-circuit-layout-assumption": [
+   "setup",
+   "Sec. 4.1 p.21: the paper states its circuit layout assumption (R rounds, L=2nR gates) and the padding it needs."
+  ],
+  "aharonov-six-state-particles-lattice": [
+   "definition",
+   "Sec. 4.2 p.21: the paper defines its 6-state particles, the four phases and the n x (R+1) lattice."
+  ],
+  "aharonov-geometrical-clock-shapes": [
+   "definition",
+   "Sec. 4.3 pp.21-22: the paper defines shapes and the L+1 legal shapes, each with a 2^n-dimensional subspace."
+  ],
+  "ajag-scope-three-problem-classes": [
+   "scope",
+   "Sec. 1 p.7: the paper states its scope (facility location, unit commitment, HENS)."
+  ],
+  "ajag-qap-definition": [
+   "definition",
+   "Sec. 3 p.12: the paper defines its quadratic assignment problem (C, T, binary x_pi; demand and resource constraints dropped)."
+  ],
+  "ajag-qap-benchmark-setup": [
+   "setup",
+   "Sec. 3 p.12: QAPLIB instances, D-Wave 2000Q, Gurobi on a Dell Optiplex i7-6700 with 16 GB."
+  ],
+  "ajag-same-system-all-instances": [
+   "setup",
+   "Sec. 3 p.12: the paper states the same system and environment was used for all instances."
+  ],
+  "ajag-vqe-chosen-ibm-example": [
+   "setup",
+   "Sec. 3.1 p.14: the paper states it chose VQE from the Qiskit Aqua library for the IBM Q example."
+  ],
+  "ajag-qap-largest-400-variables": [
+   "setup",
+   "Sec. 3.3 p.17: instances of 3 to 20 facilities; the largest has 400 binary variables (20 x 20)."
+  ],
+  "ajag-qap-model-statistics": [
+   "setup",
+   "Table 1, Sec. 3.3 p.17: variable and constraint counts of the paper's two formulations (n^2 variables; 2n constraints for KB, 0 for QUBO)."
+  ],
+  "ajag-qap-solver-protocol": [
+   "setup",
+   "Sec. 3.3 p.17: the paper states both solvers were run on all instances, best quantum result reported, 12 hour Gurobi timeout."
+  ],
+  "ajag-uc-formulation": [
+   "setup",
+   "Sec. 4 pp.19-20 and Eq. (6): the paper states its single-period unit commitment formulation."
+  ],
+  "ajag-uc-random-instances": [
+   "setup",
+   "Sec. 4 p.20: randomly generated instances solved on D-Wave 2000Q and with Gurobi on the i7-6700."
+  ],
+  "ajag-uc-discretization": [
+   "setup",
+   "Sec. 4.1 pp.20-21: the paper states it divided each continuous power variable into N grids chosen for 0.01% of the global optimum."
+  ],
+  "ajag-uc-model-size-12-units": [
+   "setup",
+   "Sec. 4.2 p.21: the paper states the model sizes for 12 units (12/12/25 original; 144 binary and 13 constraints reformulated), consistent with Table 3 and N=10."
+  ],
+  "ajag-uc-model-statistics": [
+   "setup",
+   "Table 3, Sec. 4.2 p.22: the paper's model statistics for n units and N grids."
+  ],
+  "ajag-hens-instance": [
+   "setup",
+   "Sec. 5 p.24: a random instance m=4, n=3, reformulated and solved on D-Wave and with Gurobi."
+  ],
+  "ajag-hens-discretization": [
+   "setup",
+   "Sec. 5.1 p.25: the paper states it discretized q_ij into N grid points chosen for least deviation."
+  ],
+  "ajag-hens-model-statistics": [
+   "setup",
+   "Table 5, Sec. 5.2 p.27: the paper's model statistics for m sources, n sinks and N grid points."
+  ],
+  "ajag-hens-largest-instance-and-weights": [
+   "setup",
+   "Sec. 5.2 p.26: 15x15 instance, 225 MILP variables, 1350 binary variables (N=5, Table 6), A=20 and B=5 set by trial and error."
+  ],
+  "alarfaj-abstract-balanced-experiment": [
+   "scope",
+   "Abstract p.1: the paper states it also ran experiments on balanced data with deep learning (Sec. IV.C.9, p.11)."
+  ],
+  "alarfaj-dataset-description": [
+   "setup",
+   "Sec. III.A.a p.5: the paper states the dataset size (284,807 transactions, 492 frauds, 0.172 percent) and the PCA treatment."
+  ],
+  "alarfaj-dataset-columns": [
+   "setup",
+   "Sec. III.A.a p.5: the paper states the 31 columns (time, V1-V28, amount, class)."
+  ],
+  "alarfaj-dataset-pca-only-numeric": [
+   "setup",
+   "Sec. IV.A p.8: the paper states the inputs are PCA outputs, original features are not given, Time is seconds since the first transaction, no null values."
+  ],
+  "alarfaj-ml-models-settings": [
+   "setup",
+   "Sec. III.A.b pp.5-6: the paper states the settings (tree depth 4 with entropy, k=5, C tuned by Randomised Search CV, XGBoost defaults)."
+  ],
+  "alarfaj-cnn-keras-pipeline": [
+   "setup",
+   "Sec. III.A.c p.7: the paper states the Keras CNN pipeline."
+  ],
+  "alarfaj-cnn-model-parameters": [
+   "setup",
+   "Sec. IV.C.3 p.10 and Table 8: the paper states 119,457 parameters, 119,265 trainable, 192 non-trainable."
+  ],
+  "alarfaj-cnn-proposed-first-layer": [
+   "setup",
+   "Sec. IV.C.11 p.13: the paper states the first layer (32 filters of size 3, ReLU, batch norm, dropout 0.25)."
+  ],
+  "alarfaj-cnn-14-layer-architecture": [
+   "setup",
+   "Sec. IV.C.11.a pp.13-14: the paper states the architecture as described. Note: the layers listed number 13, not 14; the value repeats the paper's own label."
+  ],
+  "alarfaj-layers-varied-11-to-20": [
+   "setup",
+   "Sec. IV.C.2 pp.9-10: the paper states it varied layers from 11 to 20 against a 5-layer baseline."
+  ],
+  "albash-review-scope-closed-system": [
+   "scope",
+   "Abstract p.1: the review states it focuses on the closed-system setting."
+  ],
+  "albash-aqc-basic-idea": [
+   "definition",
+   "Sec. I p.2: the review states what AQC is (initial and final Hamiltonians, adiabatic theorem); the adiabatic-theorem remark is a standard qualitative statement used as the definition."
+  ],
+  "albash-definition-1-aqc": [
+   "definition",
+   "Definition 1, Sec. I p.3: the review defines k-local AQC."
+  ],
+  "albash-cost-definition": [
+   "definition",
+   "Sec. I pp.3-4, Eq. (1): the review adopts the cost definition of Aharonov et al. and says it mostly uses tf."
+  ],
+  "albash-review-omits-open-systems": [
+   "scope",
+   "Sec. I p.4: the review states it omits open systems, all experimental work and all error correction work."
+  ],
+  "albash-at-only-upper-bound": [
+   "stated limit",
+   "Sec. II p.6: the review states that the adiabatic theorem gives only an upper bound on evolution time."
+  ],
+  "albash-definition-2-gevrey": [
+   "definition",
+   "Definition 2, Sec. II.B.2 p.7: the review defines the Gevrey class."
+  ],
+  "albash-speedup-strong": [
+   "definition",
+   "Sec. III p.9: the review adopts the definition of a strong speedup (Papageorgiou-Traub); the factoring remark is only an illustration."
+  ],
+  "albash-speedup-unqualified": [
+   "definition",
+   "Sec. III p.9: the review defines an unqualified quantum speedup; Shor is only an illustration."
+  ],
+  "albash-speedup-limited": [
+   "definition",
+   "Sec. III p.9: the review defines a limited quantum speedup and says it is useful for StoqAQC."
+  ],
+  "albash-glued-trees-pagerank-caveats": [
+   "stated limit",
+   "Sec. III footnote 13, p.9: the review states that glued trees is strictly not adiabatic (it uses excited states) and that the PageRank evidence is numerical."
+  ],
+  "albash-grover-problem-definition": [
+   "definition",
+   "Sec. III.A p.9: the review defines the Grover search problem."
+  ],
+  "albash-grover-hamiltonians": [
+   "definition",
+   "Sec. III.A.1 pp.9-10, Eqs. (15)-(16): the review defines H0, H1 and the linear schedule."
+  ],
+  "albash-grover-two-dim-subspace-min-gap": [
+   "proved result",
+   "Sec. III.A.1 p.10, Eqs. (17)-(20): the 2-dimensional reduction and the gap Delta(s)=sqrt((1-2s)^2+4s(1-s)/N) are given; minimum at s=1/2 equals 2^(-n/2) by direct algebra."
+  ],
+  "albash-grover-local-condition-not-proof": [
+   "stated limit",
+   "Sec. III.A.2 footnote 16, p.11: the review itself says tf~sqrt(N) rests on a heuristic local condition and is not a proof, with numerical evidence."
+  ],
+  "albash-deutsch-jozsa-problem": [
+   "definition",
+   "Sec. III.B p.12: the review defines the Deutsch-Jozsa problem."
+  ],
+  "albash-dj-linear-interpolation-readout": [
+   "proved result",
+   "Sec. III.B.2 p.13, Eqs. (34)-(35): follows directly from the definitions of |psi_f> and mu_f."
+  ],
+  "albash-dj-oracle-too-powerful": [
+   "stated limit",
+   "Sec. III.B.2 p.13: the review itself states the objection that H1 precomputes mu_f and has no classical oracle analogue."
+  ],
+  "albash-lemma-1-gap-overlap": [
+   "proved result",
+   "Lemma 1, Sec. III.B.2 p.13: stated with its conditions and a full proof in the review (2x2 block, gap minimised at eta=1/2). The text layer drops the square root in the gap formula; the end value |a| is correct."
+  ],
+  "albash-bernstein-vazirani-problem": [
+   "definition",
+   "Sec. III.C p.14: the review defines the Bernstein-Vazirani problem."
+  ],
+  "albash-independent-subsystem-evolution": [
+   "proved result",
+   "Sec. III.C p.14, Eqs. (39)-(43): a direct derivation from the block-diagonal Hamiltonian by expanding the time-ordered exponential."
+  ],
+  "albash-bv-measurement-outcomes": [
+   "proved result",
+   "Sec. III.C pp.14-15, Eqs. (49)-(53): given the final state (49), the measurement analysis is shown and the failure probability 2^-m follows."
+  ],
+  "albash-glued-trees-problem": [
+   "definition",
+   "Sec. III.D p.15: the review defines the glued trees problem."
+  ],
+  "albash-google-matrix-definition": [
+   "definition",
+   "Sec. III.E.1 pp.16-17, Eq. (59): the review defines the Google matrix and alpha."
+  ],
+  "albash-pagerank-ground-state": [
+   "proved result",
+   "Sec. III.E.2 p.17: h(G)=(1-G)^dagger(1-G) is positive semidefinite and p is its zero eigenvector; uniqueness from Perron-Frobenius, a textbook tool."
+  ],
+  "albash-pagerank-average-case-numerical": [
+   "stated limit",
+   "Sec. III.E.3 p.18: the review itself says the speedup is average case, not provable, with numerical evidence."
+  ],
+  "albash-definition-3-universal-aqc": [
+   "definition",
+   "Definition 3, Sec. IV p.18: the review defines universal AQC."
+  ],
+  "albash-history-state-goal": [
+   "scope",
+   "Sec. IV.B p.19: the review states the goal of the history state proof (polynomial overhead in L)."
+  ],
+  "albash-history-hamiltonian-terms": [
+   "definition",
+   "Sec. IV.B p.20, Eqs. (73)-(78): the review defines the terms Hc, Hc-init, Hinput and the propagation term."
+  ],
+  "albash-space-time-hamiltonian": [
+   "definition",
+   "Sec. IV.D pp.22-23, Eqs. (83)-(87): the review defines the space-time Hamiltonian and its terms."
+  ],
+  "albash-space-time-hamming-weight": [
+   "proved result",
+   "Sec. IV.D p.22: the one-sentence argument is complete (equal numbers of left and right steps from middle to middle)."
+  ],
+  "albash-definition-4-frustration-free": [
+   "definition",
+   "Definition 4, Sec. IV.F p.24: the review defines frustration freeness."
+  ],
+  "albash-gap-amplification-excited-state-caveat": [
+   "stated limit",
+   "Sec. IV.F p.24: the review itself states the construction does not fit its Definition 1."
+  ],
+  "albash-hamiltonian-complexity-promise-problem": [
+   "definition",
+   "Sec. V p.25: the review describes the promise problem it means by Hamiltonian quantum complexity theory."
+  ],
+  "albash-k-sat-definition": [
+   "definition",
+   "Sec. V.A.1 p.25: the review defines k-SAT."
+  ],
+  "albash-np-complete-np-hard-definitions": [
+   "definition",
+   "Sec. V.A.2 p.26: the review defines NP-complete and NP-hard."
+  ],
+  "albash-k-local-hamiltonian-problem": [
+   "definition",
+   "Sec. V.A.3 p.26, Eq. (94): the review defines the k-local Hamiltonian problem."
+  ],
+  "albash-promise-gap-distinct-spectral-gap": [
+   "definition",
+   "Sec. V.A.3 footnote 24, p.26: the review separates the promise gap from the spectral gap."
+  ],
+  "albash-3-sat-to-3-local-hamiltonian": [
+   "proved result",
+   "Sec. V.A.3 p.26, Eq. (95): H|X>=q|X> with q the number of unsatisfied clauses, so the smallest eigenvalue is 0 or at least 1; a complete elementary argument."
+  ],
+  "albash-ma-definition": [
+   "definition",
+   "Sec. V.B p.27: the review defines MA."
+  ],
+  "albash-1d-dimensionality-reduction-open": [
+   "stated limit",
+   "Sec. V.D p.28: the review itself states that further dimensionality reduction is an open problem."
+  ],
+  "albash-definition-5-stoquastic": [
+   "definition",
+   "Definition 5, Sec. VI p.29: the review defines stoquastic Hamiltonians."
+  ],
+  "albash-definition-6-stoqaqc": [
+   "definition",
+   "Definition 6, Sec. VI pp.29-30: the review defines StoqAQC."
+  ],
+  "albash-definition-7-8-stoqaqceval-bstoqp": [
+   "definition",
+   "Definitions 7 and 8, Sec. VI p.30: the review defines StoqAQCEval and BStoqP."
+  ],
+  "albash-lemma-3-stoquastic-ground-state-nonnegative": [
+   "proved result",
+   "Lemma 3, Sec. VI.A p.30: stated with a full proof (1-beta*H is non-negative, Perron-Frobenius, a textbook tool)."
+  ],
+  "albash-jordan-construction-sector": [
+   "proved result",
+   "Sec. VI.C pp.32-33, Eqs. (106)-(108): the replacement of matrix elements, the identity H~=H x |-><-| + Hbar x |+><+| and the uncoupled sectors are shown in the text."
+  ],
+  "albash-gap-not-proxy-for-runtime": [
+   "stated limit",
+   "Sec. VI.D p.34: the review itself states a small gap does not strictly imply a long run time."
+  ],
+  "albash-numerics-extrapolation-conjecture": [
+   "stated limit",
+   "Sec. VI.D p.34: the review itself states that extrapolations from numerics are conjectures."
+  ],
+  "albash-hamming-critical-point-vanishing-gap": [
+   "proved result",
+   "Sec. VI.D.1 p.34, Eqs. (113)-(114): a complete continuity argument (the ground eigenvalue of B changes from A00 to -1 as s goes from 0 to 1), so B has a vanishing gap at some sc."
+  ],
+  "albash-2sat-ring-definition": [
+   "definition",
+   "Sec. VI.D.2 p.35: the review defines 2-SAT on a ring and shows by a parity argument that the number of disagree clauses must be even."
+  ],
+  "albash-2sat-ring-classical-cost-n": [
+   "proved result",
+   "Sec. VI.D.2 p.35: the algorithm (go around the ring, satisfy each clause) is a complete argument for a cost of at most n."
+  ],
+  "albash-2sat-gauge-requires-ground-state": [
+   "stated limit",
+   "Sec. VI.D.2 p.35, Eqs. (118)-(119): the unitary and the agree-only Hamiltonian are shown, and the review itself states the caveat that U requires knowing the ground state."
+  ],
+  "albash-semiclassical-potential": [
+   "definition",
+   "Sec. VI.G.1 p.45, Eq. (163) and footnote 37: the review defines the semiclassical potential and states its own caveat about bit-symmetry."
+  ],
+  "albash-projector-initial-no-better-than-quadratic": [
+   "proved result",
+   "Sec. VII.A pp.47-48, Eqs. (171)-(181): the review reproduces a full proof of the bound (Farhi et al., Theorem 1) using the Schrodinger equation and Cauchy-Schwarz."
+  ],
+  "albash-xx-term-locally-stoquastic": [
+   "proved result",
+   "Sec. VII.F footnote 39, p.52: rotating sigma_z to sigma_x makes the Hamiltonian stoquastic; checked against the terms of Eqs. (203)-(204)."
+  ],
+  "albash-tts-metric": [
+   "definition",
+   "Sec. VII.H pp.54-55, Eqs. (212)-(213): the review defines TTS and TTSopt and the benchmarking procedure."
+  ],
+  "albash-review-closed-system-scope-outlook": [
+   "scope",
+   "Sec. VIII p.55: the review states that it left out open systems and experimental work."
+  ],
+  "albash-challenge-stoqaqc-simulatable": [
+   "stated limit",
+   "Sec. VIII pp.55-56: Challenge 1 in the review's own list of key challenges."
+  ],
+  "albash-challenge-np-hard-speedup": [
+   "stated limit",
+   "Sec. VIII pp.55-56: Challenge 2 in the review's own list of key challenges."
+  ],
+  "albash-challenge-non-oracular-speedup": [
+   "stated limit",
+   "Sec. VIII pp.55-56: Challenge 3 in the review's own list of key challenges."
+  ],
+  "albash-challenge-nonstoquastic-ground-state-prep": [
+   "stated limit",
+   "Sec. VIII pp.55-56: Challenge 4 in the review's own list of key challenges."
+  ],
+  "albash-challenge-native-aqc-algorithms": [
+   "stated limit",
+   "Sec. VIII pp.55-56: Challenge 5 in the review's own list of key challenges."
+  ],
+  "albash-challenge-new-speedup-problem": [
+   "stated limit",
+   "Sec. VIII pp.55-56: Challenge 6 in the review's own list of key challenges."
+  ],
+  "albash-challenge-adiabatic-vs-diabatic": [
+   "stated limit",
+   "Sec. VIII pp.55-56: Challenge 7 in the review's own list of key challenges."
+  ],
+  "albash-challenge-optimal-schedule-unknown-gap": [
+   "stated limit",
+   "Sec. VIII pp.55-56: Challenge 8 in the review's own list of key challenges."
+  ],
+  "albash-challenge-tunneling-scaling-speedup": [
+   "stated limit",
+   "Sec. VIII pp.55-56: Challenge 9 in the review's own list of key challenges."
+  ],
+  "albash-challenge-entanglement-speedup": [
+   "stated limit",
+   "Sec. VIII pp.55-56: Challenge 10 in the review's own list of key challenges."
+  ],
+  "albash-appendix-a1-path-length-bound": [
+   "proved result",
+   "Appendix A.1 p.56, Eqs. (A1)-(A2): a complete proof (differentiate the eigenstate equation; the operator norm of a projector is at most 1). Checked against the page image."
+  ],
+  "albash-appendix-c1-gamma0-ground-state": [
+   "proved result",
+   "Appendix C.1 pp.57-58: a complete proof (sum of projectors is positive semidefinite; the all-zero clock state is annihilated)."
+  ],
+  "albash-appendix-c2-eta-ground-state": [
+   "proved result",
+   "Appendix C.2 p.58, Eqs. (C1)-(C2): a complete proof (each H_l is positive semidefinite; the propagation terms cancel on |eta>)."
+  ],
+  "albash-appendix-c3-subspace-invariant": [
+   "proved result",
+   "Appendix C.3 p.58, Eq. (C3): the action of each term on |gamma(l)> is computed, so S0 is invariant."
+  ],
+  "albash-appendix-c3a-gerschgorin-small-s": [
+   "proved result",
+   "Appendix C.3.a p.58, Eq. (C5): a complete Gerschgorin disk argument (a textbook tool) giving a gap of at least 1/6 for s<1/3."
+  ],
+  "albash-appendix-stochastic-matrix-p": [
+   "proved result",
+   "Appendix C.3.b p.59, Eqs. (C6)-(C10): a complete derivation using Perron's theorem (a textbook tool)."
+  ],
+  "albash-appendix-monotone-ground-state": [
+   "proved result",
+   "Appendix C.3.b pp.59-60, Eqs. (C14)-(C18): a complete proof of monotonicity (G(s) preserves monotonicity; power-iteration limit; Perron's theorem, textbook). Components checked."
+  ],
+  "albash-appendix-c4-illegal-clock-energy": [
+   "proved result",
+   "Appendix C.4 p.60: block diagonality and the energy of at least one unit on illegal clock states (Hc penalty; other terms positive semidefinite) are shown."
+  ],
+  "albash-appendix-e2-gadget-setup": [
+   "setup",
+   "Appendix E.2 p.63: the review defines the gadget (ancilla registers, k ancillas per term, rk in total)."
+  ],
+  "albash-appendix-e2-ancilla-ground-state": [
+   "proved result",
+   "Appendix E.2 p.64: the ground states and first excited energy k-1 of HA, and the commuting operator X_s, are shown directly from the definitions."
+  ]
+ },
+ "theory_low": {
+  "abrams-fft-eigen-algorithm-claim": "Abstract p.1 and Sec. 2 pp.3-5: an algorithm description and an authors' claim of polynomial time; no theorem and no proof of the complexity.",
+  "abrams-running-time-overlap-condition": "Introduction p.2: a claim of time proportional to 1/|<Va|V>|^2 and 1/epsilon, stated without proof. Footnote 2, p.5-6, says the total operation count scales as epsilon^-2, so the two statements do not agree.",
+  "abrams-applies-to-any-poly-unitary": "Sec. 2 p.3: an authors' claim that the algorithm applies to any polynomial-time U; no proof.",
+  "abrams-controlled-power-loop": "Sec. 2 p.4: a description of how U^j is built (a loop with a flag qubit) with 'implemented easily'; an algorithm sketch, no theorem or proof.",
+  "abrams-fft-reveals-eigenphases": "Sec. 2 p.4: 'self-evident' from Eq. (7); stated, not proved.",
+  "abrams-fft-cost-and-accuracy": "textbook, stated not proved (F129): Sec. 2 p.4 states the QFT cost poly(m) and accuracy linear in M with no derivation.",
+  "abrams-measurement-probability": "Sec. 2 p.4: a short argument with no theorem or proof statement; the poly-trials claim is stated, not proved.",
+  "abrams-eigenvector-collapse": "Sec. 2 p.4: stated as a consequence of measurement; no proof, no conditions.",
+  "abrams-total-ops-scale-eps-minus-two": "Footnote 2 pp.5-6: an informal argument that the cost scales as epsilon^-2; no proof, and it conflicts with the 1/epsilon in the Introduction.",
+  "aharonov-abstract-equivalence": "Abstract p.1: summary of Theorem 1.1, which is LOW (see that item).",
+  "aharonov-theorem-1-1": "Theorem 1.1, Sec. 1.1 p.3: one direction is cited to [13,9]; the other direction is Theorems 3.1/3.15, whose proofs use the cited Theorem 2.1 (adiabatic theorem), Sec. 2.2 p.8, is 'adapted from [29]' (Reichardt) and Lemma 3.14 (Kitaev's geometrical lemma, Lemma 14.4 in [22]), Sec. 3.1.4 p.16, is cited and not proved. Cited-step rule (a consequence of the rule, not a defect in the paper).",
+  "aharonov-corollary-1-2": "Corollary 1.2, Sec. 1.1 p.3: rests on Theorem 1.1 and on the result of [4] (cited, not proved here).",
+  "aharonov-theorem-1-1-nonlocal-scope": "Sec. 1.2 p.3: the first half (Theorem 1.1 uses 3-local terms between distant particles) is the paper's scope, but 'three-particle Hamiltonians are technologically very difficult to realize' is a field claim with no support. Weaker part wins.",
+  "aharonov-theorem-1-3": "Theorem 1.3, Sec. 1.2 p.4: proved as Theorem 4.1, which rests on the cited Theorem 2.1 (adiabatic theorem), Sec. 2.2 p.8, is 'adapted from [29]' (Reichardt) and on Lemma 3.12 (Lemma 3.14 (Kitaev's geometrical lemma, Lemma 14.4 in [22]), Sec. 3.1.4 p.16, is cited and not proved). Cited-step rule.",
+  "aharonov-key-observation-nonnegligible-overlap": "Sec. 1.3 p.4: an overview of the idea ('under some mild restrictions'); the formal statements are the later lemmas.",
+  "aharonov-initial-hamiltonian-unique-ground": "Sec. 1.3 p.5: an overview sentence; the formal statement is Theorem 3.1, which is LOW.",
+  "aharonov-gap-via-markov-conductance": "Sec. 1.3 p.5: an overview; the formal statement is Lemma 3.5, which is LOW.",
+  "aharonov-output-extraction-clock-measurement": "Sec. 1.3 p.5 and footnote 4: an overview of output extraction; no proof here (see Lemma 3.10).",
+  "aharonov-five-local-running-time-overview": "Sec. 1.3 p.5: 'roughly O(L^5)' is an overview figure; the exact bound is in Theorem 3.1, which is LOW.",
+  "aharonov-three-local-running-time-overview": "Sec. 1.3 p.5: 'roughly O(L^14)' is an overview figure; the improvement to 3-locality is also credited to [20].",
+  "aharonov-grid-snake-construction": "Sec. 1.4 p.6: an overview of the Section 4 construction, not a proved statement.",
+  "aharonov-invariant-subspace-stronger-bound": "Sec. 2.2 p.9: a short informal justification ('follows from Schrodinger's equation'); not a numbered theorem.",
+  "aharonov-general-models-also-hold": "Sec. 2.2 p.9: 'Obviously' the main results hold for more general models; no proof.",
+  "aharonov-fact-2-4-eigenvector-map": "Fact 2.4, Sec. 2.3 p.9: 'easy to verify'; no proof in the paper.",
+  "aharonov-theorem-3-1": "Theorem 3.1, Sec. 3.1 p.10: proved through Claim 3.9, which uses the cited Theorem 2.1 (adiabatic theorem), Sec. 2.2 p.8, is 'adapted from [29]' (Reichardt). Cited-step rule. The text layer also garbles the middle of the statement.",
+  "aharonov-claim-3-4-invariant-subspace": "Claim 3.4, Sec. 3.1.2 p.11: 'easy to verify'; no proof in the paper.",
+  "aharonov-lemma-3-5-gap-in-subspace": "Lemma 3.5, Sec. 3.1.2 pp.11-14: the proof for s>=1/3 applies Theorem 2.5, the conductance bound of Sinclair-Jerrum [34], a specific cited theorem (Gerschgorin and Perron are textbook). Borderline: the conductance bound is also standard in Markov chain texts; the coordinator may upgrade.",
+  "aharonov-claim-3-9-history-state": "Claim 3.9, Sec. 3.1.3 p.14: the proof uses Lemma 3.5 (LOW) and the cited Theorem 2.1 (adiabatic theorem), Sec. 2.2 p.8, is 'adapted from [29]' (Reichardt). Cited-step rule.",
+  "aharonov-history-state-measurement-probability": "Sec. 3.1.3 p.14: an informal argument (probability 1/L, repeat O(L) times) that motivates Lemma 3.10; not a theorem.",
+  "aharonov-lemma-3-11-full-space-gap": "Lemma 3.11, Sec. 3.1.4 p.15: its proof uses Lemma 3.12, which uses the cited Lemma 3.14 (Kitaev's geometrical lemma, Lemma 14.4 in [22]), Sec. 3.1.4 p.16, is cited and not proved, and Lemma 3.5. Cited-step rule.",
+  "aharonov-lemma-3-12-legal-clock-gap": "Lemma 3.12, Sec. 3.1.4 pp.15-17: the proof uses Lemma 3.14 (Kitaev's geometrical lemma, Lemma 14.4 in [22]), Sec. 3.1.4 p.16, is cited and not proved, and Claim 3.13 ('easy to check').",
+  "aharonov-claim-3-13-block-diagonal": "Claim 3.13, Sec. 3.1.4 p.16: 'easy to check'; no proof in the paper.",
+  "aharonov-theorem-3-15": "Theorem 3.15, Sec. 3.2 p.17: the proof uses Lemmas 3.12, 3.18, 3.19 and the cited Theorem 2.1 (adiabatic theorem), Sec. 2.2 p.8, is 'adapted from [29]' (Reichardt). Cited-step rule.",
+  "aharonov-three-local-history-not-exact-ground": "Sec. 3.2.1 p.18: the paper says the proof of Claim 3.3 does not apply and eta is no longer an exact ground state, without proof; the value's 'because the terms are no longer positive semidefinite' is not what the passage says.",
+  "aharonov-lemma-3-18-three-local-gap": "Lemma 3.18, Sec. 3.2.2 p.19: the proof applies Lemma 3.17 to the gap of Lemma 3.12, which rests on the cited Lemma 3.14 (Kitaev's geometrical lemma, Lemma 14.4 in [22]), Sec. 3.1.4 p.16, is cited and not proved.",
+  "aharonov-lemma-3-19-final-ground-state-close": "Lemma 3.19, Sec. 3.2.2 pp.19-20: the proof uses b-a=Omega(1/L^3) from Lemma 3.12, which rests on the cited Lemma 3.14 (Kitaev's geometrical lemma, Lemma 14.4 in [22]), Sec. 3.1.4 p.16, is cited and not proved.",
+  "aharonov-three-local-running-time": "Sec. 3.2.2 p.20: the bound follows from the cited Theorem 2.1 (adiabatic theorem), Sec. 2.2 p.8, is 'adapted from [29]' (Reichardt) and Lemmas 3.12, 3.19, 3.10; cited-step rule. The arithmetic is consistent.",
+  "aharonov-theorem-4-1": "Theorem 4.1, Sec. 4 p.20: the proof is 'essentially the same as' Sec. 3.2.2 and rests on the cited Theorem 2.1 (adiabatic theorem), Sec. 2.2 p.8, is 'adapted from [29]' (Reichardt) and on Lemma 3.12 (Lemma 3.14 (Kitaev's geometrical lemma, Lemma 14.4 in [22]), Sec. 3.1.4 p.16, is cited and not proved). Cited-step rule.",
+  "aharonov-claim-4-2-legal-shapes": "Claim 4.2, Sec. 4.4.1 p.24: the proof is an outline ending in 'easy to verify'; Table 1 is garbled in the text layer so its conditions cannot be checked.",
+  "aharonov-two-site-propagation-property": "Sec. 4.4.2 p.25: a design property of the construction, argued informally; not a numbered result.",
+  "aharonov-lemma-4-6-grid-gap": "Lemma 4.6, Sec. 4.5 p.27: the proof is one line reusing Lemma 3.12, which rests on the cited Lemma 3.14 (Kitaev's geometrical lemma, Lemma 14.4 in [22]), Sec. 3.1.4 p.16, is cited and not proved.",
+  "aharonov-lemma-4-7-grid-full-gap": "Lemma 4.7, Sec. 4.5 p.27: 'The proof is similar to' Lemmas 3.18 and 3.19; no proof given, and those are LOW.",
+  "aharonov-grid-output-shape-measurement": "Sec. 4.5 p.27: a sketch of a modification of Lemma 3.10 ('a minor modification still applies'); no proof.",
+  "albash-theorem-1-jansen-ruskai-seiler": "Theorem 1, Sec. II.B.1 p.7: stated and attributed to JRS (2007); the review says 'refer the reader to the original literature for their proofs'. Cited, not proved.",
+  "albash-theorem-2-elgart-hagedorn": "Theorem 2, Sec. II.B.2 p.8: stated and attributed to Elgart-Hagedorn (2012); proof not given. Cited, not proved.",
+  "albash-theorem-3-ge-exponentially-small-error": "Theorem 3, Sec. II.B.3 p.8: stated and attributed to Ge et al. (2015); proof not given. Cited, not proved.",
+  "albash-grover-linear-schedule-no-speedup": "Sec. III.A.1 p.10: 'This suggests'; the conclusion comes from a sufficient condition (22), not a lower bound on the linear schedule.",
+  "albash-grover-p2-sufficient-condition": "Sec. III.A.2 p.11: the condition tf >> 2 pi sqrt(N)[1+log 2N] comes from the adiabatic condition (7)/(8)/(23), which is Theorem 1 of Jansen-Ruskai-Seiler (cited, proof not given), and from inequality (25), whose proof in Appendix A.2 drops an absolute value (see that item).",
+  "albash-grover-local-schedule-quadratic": "Sec. III.A.2 p.11: the integral (27)-(28) is calculus, but 'the expected quadratic speedup' needs a small adiabatic error; footnote 16 says it rests on a heuristic local condition and numerics.",
+  "albash-grover-multi-marked-spectrum": "Sec. III.A.3 p.12: the spectrum (33) is stated ('one finds') without derivation.",
+  "albash-dj-unitary-interpolation-o1": "Sec. III.B.1 pp.12-13: spectrum preservation is shown, but the O(1) run time rests on the adiabatic condition (7)/(8)/(23), which is Theorem 1 of Jansen-Ruskai-Seiler (cited, proof not given).",
+  "albash-dj-linear-interpolation-o1": "Sec. III.B.2 p.13: Lemma 1 is proved, but the O(1) run time follows from the adiabatic condition (8), i.e. the adiabatic condition (7)/(8)/(23), which is Theorem 1 of Jansen-Ruskai-Seiler (cited, proof not given).",
+  "albash-bv-o1-runtime": "Sec. III.C p.15: 'since only a single qubit is effectively evolving' is an informal argument; no gap or tf is computed (credited to Hen 2014b), and O(1) rests on an adiabatic condition. Argued informally.",
+  "albash-glued-trees-almost-adiabatic": "Sec. III.D p.15: the algorithm is Somma et al. (2012), cited; 'only example so far' is a survey claim. The 'almost' caveat is the review's own, but weaker parts win.",
+  "albash-glued-trees-gap-structure": "Sec. III.D pp.15-16: the c/n^3 bounds are Somma et al.'s and are not derived in the review (Fig. 2 is illustrative).",
+  "albash-glued-trees-polynomial-time": "Sec. III.D p.16: the schedule argument is a sketch ('we conclude'); the n^6 run time is not derived and rests on the cited Somma et al. gap bounds.",
+  "albash-circuit-sim-product-2m-unitaries": "Sec. IV.A p.19: the error bound is credited to van Dam et al. (2001) and the derivation is a sketch (Trotter-BCH, no full proof).",
+  "albash-history-ground-states": "Sec. IV.B p.20: the ground-state facts are proved in Appendix C.1-C.3, but 'the ground state is unique for s in [0,1]' in the whole space needs Appendix C.4, which uses the cited Geometrical Lemma (Kitaev et al.; Aharonov-Naveh).",
+  "albash-history-gap-bounds": "Sec. IV.B p.20: the bounds (79)-(80) rest on the conductance bound (Sinclair-Jerrum, cited) and, for the global gap, the cited Geometrical Lemma (Appendix C.4).",
+  "albash-history-measurement-amplify": "Sec. IV.B pp.20-21: the 1/(L+1) probability is stated; the amplification and the 'efficient implementation' claim rest on the gap bounds (79)-(80), which are LOW, and are not proved here.",
+  "albash-mizel-gap-analysis-incomplete": "Sec. IV.C p.21 and footnote 22: a statement about other papers' results (Mizel et al., Childs et al., Breuckmann-Terhal); a survey statement, not a result of this review.",
+  "albash-lemma-2-nullspace-projection": "Lemma 2, Sec. IV.C pp.21-22: stated and attributed to Childs et al. (2013); no proof given. Cited, not proved.",
+  "albash-space-time-initial-ground-state": "Sec. IV.D p.23: the ground state and eigenvalue 1 of H(0) are asserted without derivation, and Hinit in Eq. (88) is not a term of H(lambda) in Eq. (83).",
+  "albash-space-time-four-body": "Sec. IV.D p.23: the 4-body remark is the review's own, but the Lloyd-Terhal 2-local improvement is a cited result. Weaker part wins.",
+  "albash-claim-1-ma-amplification": "Claim 1, Sec. V.B p.27: attributed to others (Goldreich; Marriott-Watrous; Nagaj et al.); the Appendix D proof is incomplete (see appendix-d-amplification-proof).",
+  "albash-no-theorem-rules-out-stoqaqc-speedup": "Sec. VI.B p.31: 'there does not exist a general theorem' is a claim about the whole literature, which the review cannot settle; the Monte Carlo remark is a field statement.",
+  "albash-jordan-not-ground-state-universal": "Sec. VI.C p.33: the caveat is the review's own, but the first half rests on the cited universality of H_ZZXX (Biamonte-Love; Sec. V.D). Weaker part wins.",
+  "albash-hamming-overlap-exponentially-small": "Sec. VI.D.1 p.34, Eq. (112): the overlap bound is stated without derivation, and the 'we will show' part is covered by the next items.",
+  "albash-hamming-exponential-time-conclusion": "Sec. VI.D.1 p.35: the argument (credited to van Dam et al.) proves an exponentially small gap at sc; the review's own p.34 caveat says a small gap does not strictly imply exponential run time. The value overstates.",
+  "albash-2sat-ring-minimum-gap": "Sec. VI.D.2 pp.35-36, Eqs. (120)-(133): the gap formula is derived in the text, but 'which implies a polynomial run time' rests on adiabatic theorems (JRS, cited). Weaker part wins.",
+  "albash-first-order-transition-not-always-small-gap": "Sec. VI.D.6 p.39: a field statement with citations (counterexamples known), not a result of this review.",
+  "albash-stoqaqc-vs-sa-single-spin-only": "Sec. VI.E p.40: the review's own caveat on single-spin SA is mixed with the cited claim that cluster-update SA can be significantly more efficient. Weaker part wins.",
+  "albash-plain-hamming-weight-costs": "Sec. VI.E.1 p.40: the O(sqrt n) quantum time and the O(n log n) SA bound are cited (Muthukrishnan et al., 2016); not derived here.",
+  "albash-number-partitioning-encoding-problem": "Sec. VI.F.1 p.41: a set of cited field statements (Hayes, Mertens, Garey-Johnson) with the authors' inference; not a result of this review.",
+  "albash-exact-cover-speedup-open": "Sec. VI.F.2 p.42: 'in all cases that have been studied to date' and 'no polynomial-time classical algorithm known' are survey claims about the field.",
+  "albash-grover-tunneling-n-qubits": "Sec. VI.G.1 pp.45-46: the potential (165) and Eq. (168) are shown, but 'tunneling of O(n) qubits' is an interpretation from the semiclassical picture and Fig. 8 numerics ('this potential suggests'). Argued informally.",
+  "albash-structureless-final-hamiltonian-bound": "Sec. VII.A p.48, Eq. (183): 'one can show... [Theorem 2 of Farhi et al., 2008]'; stated and cited, no proof.",
+  "albash-exponentially-small-gaps-not-ruled-out": "Sec. VII.G p.53: 'it is plausible' that the mechanism extends (citing Laumann et al.); a speculation with a cited basis.",
+  "albash-dickson-perturbative-crossing-avoided": "Sec. VII.G p.54: 'it can be shown that higher order corrections do not depend on a' is not shown; the result is Dickson's (cited).",
+  "albash-quantum-chemistry-aqc-unknown-gap": "Sec. VIII pp.55-56: the mapping and the gadget reduction are cited claims, and the unknown gap scaling is a field statement.",
+  "albash-appendix-a2-inequality-25": "Appendix A.2 pp.56-57, Eqs. (A4)-(A5): the proof drops the absolute value on dDelta/dA between (A4b) and (A5a) (|d2A/ds2| has |dDelta/dA|), then uses that the integral of the derivative term vanishes from Delta(0)=Delta(1)=1. That holds only if Delta is monotone, and for Grover Delta dips to a minimum. Checked on the page image. Inequality (25) is not established as written.",
+  "albash-appendix-b-grover-lower-bound": "Appendix B p.57, Eqs. (B1)-(B10): the lower bound tf >= eps*(N-1)/(4 sqrt N) for a schedule independent of m is proved, but 'the locally optimised schedule is asymptotically optimal' needs the achievability of tf~sqrt(N), which footnote 16 (p.11) says is numerical (the rigorous bound has an extra log). Weaker part wins.",
+  "albash-appendix-b-optimality-general": "Appendix B footnote 40, p.57: the generalisation to arbitrary driving Hamiltonians is asserted without proof.",
+  "albash-appendix-conductance-lower-bound": "Appendix C.3.b p.60, Eqs. (C19)-(C24): the case analysis for F(B)/Pi(B) >= 1/(6L) is shown, but the gap bound applies the conductance bound of Sinclair-Jerrum (C13), a specific cited theorem. Borderline: also standard in Markov chain texts; the coordinator may upgrade.",
+  "albash-appendix-global-gap-l-cubed": "Appendix C.4 pp.60-61, Eq. (C29): the proof applies the Geometrical Lemma (Lemma 4; Aharonov-Naveh; Kitaev et al.), a cited lemma stated without proof.",
+  "albash-appendix-d-amplification-proof": "Appendix D pp.61-62: the first part (majority vote, multiplicative Chernoff, a textbook tool) is sound apart from a slip in the exponent of (D3) (a factor p). The second part (MA(c,c-1/|eta|^g)) defines no acceptance threshold (majority vote is wrong for c not 1/2) and omits completeness, so the proof is incomplete.",
+  "albash-appendix-e1-perturbation-series-converges": "Appendix E.1 pp.62-63, Eqs. (E12)-(E17): the convergence bound is derived, but it builds on the expansion (E12)-(E13) of Bloch (1958), quoted ('it can be shown') and not derived.",
+  "albash-appendix-e2-k-th-order-splitting": "Appendix E.2 pp.64-65: shown explicitly only to second order; 'this argument extends to order k-1' is asserted, and it relies on the expansion of Bloch quoted in E.1.",
+  "albash-appendix-e2-effective-hamiltonian": "Appendix E.2 p.65, Eqs. (E29)-(E33): the leading-order coefficient is computed, but it relies on the Bloch expansion quoted in E.1 and the r-term case is 'the natural generalisation'.",
+  "albash-appendix-e2-gadget-implementation-difficulty": "Appendix E.2 p.65: the strength mismatch is the review's own remark, but 'weaker gadgets exist' is a cited result (Cao and Nagaj, 2015). Weaker part wins."
+ },
+ "keep_stored": {},
+ "requote": {}
+}

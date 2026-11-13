@@ -130,6 +130,13 @@ def ocr_only_quotes(citation_context: str | None, text: str) -> list[str]:
 CACHE_MISSES: Counter = Counter()  # F139: extractions this process ran because the text cache lacked them
 
 
+def extraction_misses() -> int:
+    """F139's `cache_misses`: the pdftotext and OCR runs only. F140 also counts page-count and per-page misses
+    ("pdfinfo", "pages") under their own keys; summing them in would make a group before F140 and one after it
+    count different things (review of 5454ccb)."""
+    return CACHE_MISSES["pdftotext"] + CACHE_MISSES["ocr"]
+
+
 @lru_cache(maxsize=1)
 def _pdftotext_version() -> str:
     out = subprocess.run(["pdftotext", "-v"], capture_output=True)
@@ -158,15 +165,20 @@ def _pdftotext(path: str, layout: bool) -> str:
         pass
     CACHE_MISSES["pdftotext"] += 1
     text = subprocess.run(cmd, capture_output=True, check=True).stdout.decode("utf-8", "replace")
+    partial_path = None
     try:
         cached = text_cache_dir() / name
         cached.parent.mkdir(parents=True, exist_ok=True)
         # A name of its own per writer, so two processes never share a half-written file.
         with tempfile.NamedTemporaryFile(dir=cached.parent, suffix=".partial", delete=False) as partial:
+            partial_path = Path(partial.name)
             partial.write(text.encode("utf-8"))
-        Path(partial.name).replace(cached)
+        partial_path.replace(cached)
     except (OSError, RuntimeError):
-        pass
+        # A failed write or replace (on Windows, the target held open by another process) loses one cache entry and
+        # leaves no .partial file: four were found in text_cache from 2026-10-23 to 25 (F140 q4, 2026-11-07).
+        if partial_path is not None:
+            partial_path.unlink(missing_ok=True)
     return text
 
 

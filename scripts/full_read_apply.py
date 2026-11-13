@@ -80,7 +80,8 @@ from store import DEFAULT_STORE_DIR, connect, recheck, script_paths  # noqa: E40
 from store.backup import backup_before_write  # noqa: E402
 from store.grading import grade, high_grades, low_grade  # noqa: E402
 from store.ingest import (FULL_READ_MARK, AssertionRecord, add_read, append_updated_reason,  # noqa: E402
-                          checked_when_stored, insert_verified_assertion, set_tier, sync_verified_assertion, validate_assertion)
+                          checked_when_stored, decided_day, insert_verified_assertion, set_tier,
+                          sync_verified_assertion, validate_assertion)
 from store.merges import holder, promotes  # noqa: E402
 from store.ocr import IMAGE_SUFFIXES  # noqa: E402
 from store.quotes import (QUOTE, ocr_only_quotes, plain, read_from_figure, require_edit_basis, require_verbatim,  # noqa: E402
@@ -89,6 +90,9 @@ from store.quotes import (QUOTE, ocr_only_quotes, plain, read_from_figure, requi
 _spec = importlib.util.spec_from_file_location("f80", Path(__file__).with_name("sprint9_f80_reading.py"))
 f80 = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(f80)
+_spec = importlib.util.spec_from_file_location("review_additions", Path(__file__).with_name("review_additions.py"))
+additions = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(additions)
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -132,6 +136,9 @@ EXTENT_FIX: dict[str, list[str]] = {}  # record id -> [extent, detail]: the coor
 REENTER: dict[str, str] = {}  # record id -> why: a paper refused at an earlier read whose assertions now enter
 REFUSED = re.compile(r"read (whole )?at first pass and NOT entered")
 ID_FIX: dict[str, str] = {}  # a new assertion's id where the reader's suggestion is already another source's
+# F142 part 2 (Sprint 17 Task C): group -> the review's "add" table, the assertions the coordinator's sign-off added
+# to the read or split from one (`review_additions`); merged by load_groups, so the read file is never edited by hand.
+ADD: dict[str, dict] = {}
 
 # F114's groups (g043 on, Sprint 14 Task E, F117) were read in cloud sessions and entered in Sprint 14, so their
 # review names its own tag and reader; a group without them is one of Task G's. "readers" overrides the reader for
@@ -173,6 +180,8 @@ def _load_reviews() -> dict[str, tuple[str, str]]:
         RECORD_TAG.update(review.get("tags", {}))
         if review.get("unread"):
             UNREAD[g] = review["unread"]
+        if review.get("add"):
+            ADD[g] = review["add"]
         for key, table in _TABLES.items():
             for aid, v in review.get(key, {}).items():
                 if aid in table:
@@ -249,7 +258,8 @@ def load_groups() -> list[tuple[str, dict]]:
     """Every paper of the reviewed groups; refuses a reader file whose records are not its group's."""
     out = []
     for g in groups():
-        papers = json.loads((READS_DIR / f"group_{g}.json").read_text(encoding="utf-8"))["papers"]
+        papers = additions.merge(g, json.loads((READS_DIR / f"group_{g}.json").read_text(encoding="utf-8"))["papers"],
+                                 ADD.get(g, {}))
         want = group_records(g) - set(UNREAD.get(g, {}))
         got = [p["record_id"] for p in papers]
         if set(got) != want or len(got) != len(want):
@@ -350,8 +360,10 @@ def assertions(problems: list[str] | None = None) -> list[tuple[str, AssertionRe
                 add(g, rid, p, aid, e, f"{e['verdict']} at a full read")
         for a in p.get("assertions", []):
             aid = a["id_suggestion"]
-            if aid not in DROP:
-                add(g, rid, p, aid, a, "extracted at a full read", ID_FIX.get(aid, aid))
+            if aid not in DROP:  # an assertion the sign-off added says so in its history (F142 part 2)
+                how = (f"added at the coordinator's sign-off ({a[additions.MARK]})" if additions.MARK in a
+                       else "extracted at a full read")  # the decision and who made it (review of 2580ce2)
+                add(g, rid, p, aid, a, how, ID_FIX.get(aid, aid))
     return out
 
 
@@ -456,13 +468,21 @@ def record_telemetry(step: str) -> list[str]:
 
 def verify_counts() -> str:
     return (f"quote checks: {LAST_VERIFY['checked']} checked, {LAST_VERIFY['stored as written']} stored as written "
-            f"(checked when written, not again); {LAST_VERIFY['sources read']} sources read")
+            f"(checked when written, not again); {LAST_VERIFY['sources read']} sources read; "
+            f"{LAST_VERIFY['kept by a later decision']} kept by a later decision (neither checked nor written)")
 
 
 def _text(texts: dict[str, str], file: str) -> str:
     if file not in texts:  # once per file: setdefault built the argument, plain() over the whole text, every time
         texts[file] = plain(source_text(file))
     return texts[file]
+
+
+def decided_later(conn, a: AssertionRecord) -> bool:
+    """A stored row whose latest Manual Validation decision (`store.ingest.decided_day`) is after the day this apply
+    would write it: the sync refuses it, so nothing here may change it."""
+    row = conn.execute("SELECT updated_reason FROM records WHERE id = ?", (a.id,)).fetchone()
+    return bool(row and a.updated and a.updated < decided_day(row[0]))
 
 
 def verify(conn=None) -> list[tuple[AssertionRecord, str, dict, object]]:
@@ -480,6 +500,12 @@ def verify(conn=None) -> list[tuple[AssertionRecord, str, dict, object]]:
     LAST_VERIFY.clear()
     CHECKED_BY_GROUP.clear()
     for g, a, rid, p in assertions(problems):
+        if conn is not None and decided_later(conn, a):
+            # Sprint 17 q23: a row the team lead corrected at a Manual Validation after this review is never written
+            # by a re-apply (`sync_assertion` refuses a sync dated before the decision), so its quotes, which differ
+            # from the review's, are not checked or written here either; without this a re-apply checked 6
+            LAST_VERIFY["kept by a later decision"] += 1
+            continue
         try:
             from_figure = a.id in figure_ids(p)
             verified = checked_when_stored(conn, a, rid) if conn is not None else None
