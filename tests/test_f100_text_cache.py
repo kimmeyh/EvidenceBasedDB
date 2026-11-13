@@ -129,3 +129,22 @@ def test_a_folder_that_cannot_be_written_only_skips_the_cache(monkeypatch, tmp_p
     pdf.write_bytes(b"%PDF one")
     assert quotes._pdftotext(str(pdf), False) == "text 1\r\n"
     assert quotes._pdftotext(str(pdf), False) == "text 2\r\n"  # no cache, so each call extracts
+
+
+def test_a_failed_replace_leaves_no_partial_file(monkeypatch, tmp_path):
+    """F140 q4 (2026-11-07): four `.partial` files from 2026-10-23 to 25 were found in the text cache; parallel
+    workers make a failed replace (the target held open on Windows) more likely. Proven red the same day: with the
+    unlink in the `except` removed (INJECTED), the .partial file stayed."""
+    calls: list = []
+    _fake_pdftotext(monkeypatch, calls)
+    cache = tmp_path / "text_cache"
+    monkeypatch.setenv("EBDB_TEXT_CACHE_DIR", str(cache))
+    pdf = tmp_path / "a.pdf"
+    pdf.write_bytes(b"%PDF one")
+
+    def held_open(self, target):
+        raise PermissionError("held open by another process")
+    monkeypatch.setattr(Path, "replace", held_open)
+    assert quotes._pdftotext(str(pdf), False) == "text 1\r\n"  # the text is still returned
+    monkeypatch.undo()
+    assert list(cache.glob("*.partial")) == []

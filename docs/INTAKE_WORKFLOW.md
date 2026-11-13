@@ -4208,3 +4208,236 @@ Written 2026-11-06, before the apply. Every count is a snapshot as of
 - `scripts/sprint16_f51_cvqboost.py`: a dry run checks every quote;
   `--apply` takes a verified backup; a second apply writes nothing.
   `tests/test_sprint16_f51_cvqboost.py`.
+
+## 75. Papers read through the Message Batches API (Sprint 17 Task B, F144)
+
+The team lead's brief of 2026-11-07: read papers with no read row on the
+team lead's API credit ($100, expiring 2026-11-18), one paper per Batch
+API request to Claude Sonnet 5.5, with no tools. **This path writes
+NOTHING to the store.** Its output is the reader group file the F114
+pipeline already consumes; the coordinator review and
+`scripts/full_read_apply.py` enter it as for any other group.
+
+- **The script.** `scripts/batch_read.py`, with the subcommands `select`,
+  `fetch`, `submit`, `poll` and `status`. Each is a dry run without
+  `--apply`. Its packages are in `requirements-batch.txt`.
+- **The key.** ANTHROPIC_API_KEY in the repository's git-ignored key file,
+  read by python-dotenv's `dotenv_values`, which never puts it in the
+  environment (Claude Code ranks that variable above the subscription
+  login). A key not scoped to a workspace also needs
+  ANTHROPIC_WORKSPACE_ID in the same file. Claude never reads the file;
+  `.claude/hooks/block_env_secret_reads.py` blocks it.
+- **The candidates** (`manifests/sprint17_f144_slice.json`; 174 records,
+  a snapshot as of 2026-11-07): every paper record with no read row that
+  no ledger group holds (a ledger record is F114's), with an arXiv id or
+  a DOI, not a GitHub repository, not withdrawn and not retracted. F57's
+  order: context `qml`, `qc`, `ml`, `world`, `method`, then the most
+  cited by OpenAlex.
+- **The files.** Free copies only: the arXiv copy, then each open-access
+  PDF link OpenAlex lists, tried in turn. A failed TLS check is never
+  worked around. A record with no free copy goes on the hand-download
+  list, never into a batch. On 2026-11-07, 48 of the 174 had a free link
+  and 126 had none (a snapshot); publisher sites often answered with an
+  HTML or bot-check page.
+- **The prompt.** `manifests/sprint17_f144_batch/READER_PROMPT.md`:
+  Sprint 16 Task F's prompt, changed only where a request with no tools
+  cannot do what it says. The text arrives page by page; the image of
+  each page that holds a figure, a table, an embedded image or OCR text
+  is attached (at most 100 images and 18 MB a request; a page over that
+  is named as not attached, and the reader lists it in `not_read`).
+- **The rules** (`tests/test_batch_read.py`, each proven red): a record
+  whose result is saved, or whose batch is in flight, is never sent
+  again; a batch whose estimate would take the spend past $95 is
+  refused, and nothing is sent on or after 2026-11-18; the key never
+  reaches the output or a file; each result is saved raw first, then
+  written as the group file (`work\f114\local\reads\group_<g>.json`
+  and `manifests/sprint13_g_reads/`), then checked by
+  `scripts/sprint13_g_check.py --sprint15`, and a failing result is kept
+  and flagged, never dropped.
+- **The state** (`D:\Data\Harold\EvidenceBasedDB\work\f144\state.json`,
+  outside git): batches, results with tokens and cost, and each record's
+  file or why it has none.
+- **Quotes first, then the value** (team lead q28 = a, 2026-11-09; it
+  replaced q19). With the self-check, the measurement batch still failed
+  the check 71 times in 428 assertions, most of them a number its
+  quotes do not hold (a snapshot as of 2026-11-07). The prompt now
+  has the reader write each assertion's quotes first and copy each
+  number into the value only from a quote already written, with three
+  worked examples taken from those flags (Hu 2020, Li 2024, Jin 2023;
+  each checked against the paper's text). Guarded by
+  `tests/test_batch_read.py`, proven red. The next local reader
+  prompt (a later F114 read) copies this section; Sprint 17's local
+  prompt stays as Task E's readers received it.
+
+## 76. F114 at 10 papers, under Sprint 17's prompts (Sprint 17 Task E)
+
+Every count is a snapshot as of its own date: the plan below as of
+2026-11-07 (written before the intake apply), the reads, reviews and
+apply as of 2026-11-08 (written after the apply). Section 75 is F144's,
+on its own branch.
+
+- **The 2 new PDFs**, saved into `Papers\` by the team lead on
+  2026-11-07 and named by no record (a title and access search of the
+  store found neither), enter at `seen` through the door from
+  `manifests/sprint17_f114_new.json`:
+  - Sar et al., "Quantum Machine Learning in Medical Image Analysis: From
+    Diagnostics to Surgery Planning," IEEE Access 14, 2026 (DOI
+    10.1109/ACCESS.2026.3663498, 43 pages), api-origin from its DOI,
+    under `qml`. The file is named for "Ayan", the first author's given
+    name; the record id follows the door (`sar-2026-...`). The file is not
+    renamed.
+  - PSI, "A proof of the Aaronson-Ambainis conjecture" (9 pages), a web
+    article printed from a browser on 2026-11-07, hand-origin (no DOI or
+    arXiv id), under `qc`. The proof and its Lean check are linked from
+    the page and not held, so the article is the source read: a
+    company's own announcement of its result.
+  - Each PDF's SHA-256 is in its `evidence`.
+- **Christophe Pere's list** is unchanged since `399b022651` (checked
+  2026-11-07), so it adds no paper.
+- **The 10, fixed by id at the task start**
+  (`scripts/sprint17_f114_local.py`): g348, a new ledger group (the 2
+  new papers; g335 to g347 are F144's groups on its branch); g230's Pere
+  v2 (team lead q3 = a); g295, all 5, the first group not yet read in
+  full; g296's first 2. The records of g230 and g296 left out of the
+  briefs are left for a later release. Each id is on F144's exclusion
+  list, so F144 never sends it.
+- **Prompts.** `manifests/sprint17_f114_reads/READER_PROMPT.md` and
+  `REVIEW_PROMPT.md`: Sprint 16's, with Task C's fixes (a proof
+  appendix over 30 pages split across reviewers by page; the sign-off
+  `add` table), and every script path set to the Sprint 17 worktree,
+  since the main checkout is on F144's branch. Telemetry stays in
+  `manifests/sprint16_f114_reads/telemetry/` (one folder for F143).
+- **Reads (2026-11-07 to 08).** 4 local readers (Sonnet 5.5), one per
+  group, all 10 papers read in full, 0 check problems. 1,199 new
+  assertions and 4 verdicts on Pere v2's stored assertions (2 confirmed,
+  1 corrected, 1 narrowed). The paper's own statements disagree in
+  places: Pere v2's Table 10 against its text, Albash's Appendix A
+  proof, Alarfaj's dates and headline metrics. Each disagreement is in
+  the read's `reader_inference` and in the reviewer's why.
+- **Reviews.** One reviewer per group (no proof appendix over 30 pages;
+  Albash's appendices span about pages 55 to 65). 431 items decided:
+  264 HIGH, 167 LOW (the review files list the HIGHs and the 136
+  theoretical LOWs; any other LOW needs no table entry). No certainty change on a stored assertion, so none waits for
+  the team lead. g348's first review graded 2 of PSI's own claims HIGH;
+  finalize refused them (a vendor's own claim is LOW), and the reviewer
+  re-decided both LOW. The cited-step rule made Aharonov's headline
+  theorems LOW (their proofs use results cited from other papers); that
+  is F129's open question, not a defect in the paper.
+- **Apply.** Dry run: 1,201 assertions entered or changed from 10
+  records, every quote verbatim, 0 refusals. Live apply after a verified
+  backup (`evidence-20261108T011457987899-...db`), with 0 stored fields
+  changed that no review item names; the 10 papers at `read`. A second
+  apply checked nothing and wrote nothing. Assertions after it: 37,408
+  (HIGH 11,754; LOW 25,554; MODERATE 97; VERY-LOW 1; no certainty 2).
+- **Fresh-eyes review of the apply (2026-11-08, read-only).** No high
+  finding: the two new records match their PDFs; of about 75 sampled
+  assertions (45 HIGH) no vendor claim is HIGH, and Pere v2's 4 stored
+  assertions match the paper. Found, and left for the team lead (a signed
+  review is never edited in place; a fix is a later sign-off):
+  - about 5 of 45 sampled HIGH values say more than their quotes
+    (sar-vqc-components, sar-qcnn-architecture, sar-metric-families,
+    aharonov-model-definition, alarfaj-dataset-description); the paper
+    supports each, so nothing false is stored;
+  - albash-grover-local-condition-not-proof is HIGH as a stated limit,
+    but it is the review's judgment of another paper's result;
+  - Pere v2's narrowed chance-level-and-signature-control still joins
+    the claims that are also entered one by one;
+  - random-instance-distribution-scope is typed `absence` but is a
+    setup statement; PSI's record has no `coi`, where QCi's records
+    name the authors' employer; 49 records at `read` (these 10 among
+    them) keep a disposition ending "not yet read".
+- **Corrected 2026-11-09 (Sprint 17 Manual Validation, q23 = a;
+  counts are a snapshot as of that date).**
+  `scripts/sprint17_q23_corrections.py` changes the 8 assertions in the
+  store; the signed reviews are not rewritten. The five HIGH values keep
+  their text and gain the passages they rest on as quotes;
+  albash-grover-local-condition-not-proof is LOW, "field statement";
+  chance-level-and-signature-control is narrowed to the one claim the
+  separate Pere v2 assertions do not hold, LOW, "authors' claim";
+  random-instance-distribution-scope is `positive`. Every quote was
+  checked verbatim against its PDF before the write. The first version
+  appended the added quotes on every apply, so the second apply wrote
+  them twice into 4 records; the script now adds each once, a third
+  apply put the 4 back to the original quotes plus each added quote
+  once (compared against the first backup,
+  `evidence-20261109T213330101296-...db`), and a fourth apply wrote
+  nothing. Those 4 records' histories carry three q23 notes. Assertions
+  37,408; HIGH 11,753.
+- **The fresh-eyes review of the q23 apply (2026-11-09).** Every added
+  quote is verbatim on its page; only the 8 rows changed. It found
+  albash-grover-local-condition-not-proof still saying more than its
+  quote (Roland and Cerf, and the numerical evidence): both passages
+  from footnote 16 are now quoted (one more apply; the next wrote
+  nothing). Two grades are asked of the team lead: Albash's LOW against
+  its siblings' HIGH, and Pere's narrowed claim, which reads as a
+  stated limit. The gate then found that a re-apply of the Task E
+  groups checked the 6 corrected rows' quotes again: `full_read_apply`
+  now keeps a row the team lead corrected after its review
+  (`decided_later`), which the sync already refused to write.
+- **The fresh-eyes review of `decided_later` (2026-11-09).** No high
+  finding: a kept row is written exactly as before, which is not at
+  all. Two changes followed. The printed quote-check counts now say
+  how many rows were kept by a later decision, so a dry run shows the
+  skip. Two new test cases show that a row decided on or before the
+  review day is still checked, as the sync still writes it (each
+  proven red). One finding is accepted, not changed: the review's
+  copy of a kept row is no longer validated, so a bad review entry
+  for such a row no longer stops an apply. That copy is replaced by
+  the team lead's decision and is never written, so checking it
+  protects nothing.
+- **The two grades the q23 review asked (team lead, 2026-11-10).** The
+  answer "q20 b q30 b" was confirmed at q30 = a to mean q29 = b, and the
+  Pere reason was re-asked as q31, since `store.grading`'s fixed LOW
+  reasons cannot be reworded.
+  albash-grover-local-condition-not-proof is HIGH again, "stated
+  limit", graded as the review's two other stated limits are (q29 = b).
+  chance-level-and-signature-control stays LOW, "authors' claim", and
+  its reason now adds "a limit the authors state on their own null
+  result, kept LOW by the team lead" (q31 = a). Applied by
+  `scripts/sprint17_q29_q31_grades.py` after a verified backup; a
+  second apply, and a re-run of the q23 script, wrote nothing. HIGH:
+  11,754 (a snapshot as of 2026-11-10).
+
+## 77. The unstarted ledger groups split one paper to a group (Sprint 17, q20 = a)
+
+Team lead, Manual Validation, 2026-11-09: q20 = a. Every paper of the
+ledger groups that were never started gets a group of its own. The old
+group keeps a dated "superseded" note. Nothing is deleted.
+
+- **What was split** (a snapshot as of 2026-11-09): g297 to g329, 33
+  groups, 161 papers (31 groups of 5, g309 with 2, g329 with 4). An
+  earlier figure of 158 in the question was a miscount. Before the
+  split, each of the 161 was checked: no read in the store naming its
+  group, no reader file, no review, no scratch folder, no F144
+  exclusion entry, no cloud launch or result. The only files were the
+  briefs written when the ledger was built. Six of the papers do have
+  older read rows, none naming these groups: three papers with
+  first-pass reads in Sprint 11 and 12 groups (G09, G93, G95), as
+  every paper in this ledger may (it is the full re-read), and three
+  QCi emails read in full when they arrived.
+  The script checks the store, the review, the reader files and the
+  scratch folder each time it runs; the exclusion list and the cloud
+  launches were checked by hand, once.
+  g295 and g296 are not split: Task E read papers from them.
+- **The shape** (chosen 2026-11-09, so "one record, one group" stays
+  true). The old group's `records` is empty, and its `superseded` note
+  holds every record it held, with its file and its new group
+  (`moved_to`). The new groups are g349 to g509, in ledger order. The
+  other shape, where the old group keeps its records, would have put
+  each paper in two groups. The ledger script refuses that. The review
+  builder would also have offered the old group for review a second
+  time.
+- **The briefs.** Each new group has a brief in
+  `D:\Data\Harold\EvidenceBasedDB\work\f114\briefs\` (outside git), with
+  the paper's stored assertions as of the split. The old briefs stay
+  where they are.
+- **The readers of the ledger.** `scripts/sprint13_g_status.py` reports
+  an old group as "superseded" (33 groups). `scripts/f114_cloud.py`
+  offers each moved paper in its new group, and no longer offers an
+  old brief. A local reader is given its groups by the sprint's own
+  script, as before; which reader takes g349 to g509 is Sprint 18's
+  choice. `scripts/sprint17_q20_split.py`
+  made the split. It is a dry run by default, and a second run writes
+  nothing. `tests/test_sprint17_q20_split.py` guards the committed
+  ledger: each record in one group, and each note pointing at its
+  paper's own group. Each check was proven red.

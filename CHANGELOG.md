@@ -13,7 +13,366 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-11-05 onward (Sprint 16, in progress)
+### 2026-11-07 onward (Sprint 17, in progress)
+
+- **process**: Sprint 17 retrospective applied (team lead, 2026-11-10,
+  "i1. a i2. b i3. b i4. a"): i1, no second working folder without
+  asking, hook-enforced by `.claude/hooks/block_worktree_add.py` on the
+  shell and EnterWorktree tools (`tests/test_block_worktree_add.py`,
+  proven red) and a CLAUDE.md line. A fresh-eyes review found escape
+  routes in its first version (an apostrophe pairing quotes across the
+  command, the heredoc opener line erased, its bypass token honored in a
+  comment, `git -c`, `git.exe`, a quoted -C path, a line continuation):
+  quoted text is no longer stripped, heredoc bodies are stripped from the
+  line after the opener, the token is removed (the team lead runs an
+  approved add with `!`), and each route is a test case; i2, a Phase 4 line (an appending
+  script is tested for a second run before its first apply); i4, a
+  Phase 5 line (a decision's date is read from the clock); i3 skipped
+  and tracked; Category 13 carded as F149. Sprint 17 summary written,
+  the master plan rolled (Last Completed Sprint, Past Sprint Summary
+  row) and the checklist reconciled (PR #174)
+
+- **docs**: Sprint 17 retrospective (Phase 7.1): Manual Validation
+  complete (team lead, 2026-11-10); the team lead's feedback recorded
+  verbatim, the Development Team's draft, and improvements i1 to i4
+  asked
+
+- **process**: status at Phase 5.3 Manual Validation with no question
+  open; the validation steps are with the team lead
+
+- **fix**: Sprint 17 Manual Validation q29 = b (confirmed at q30 = a)
+  and q31 = a: albash-grover-local-condition-not-proof is HIGH again,
+  "stated limit", like its two siblings; chance-level-and-signature-
+  control stays LOW with its reason's why added.
+  `scripts/sprint17_q29_q31_grades.py`, tested and proven red three
+  ways; a re-apply and a re-run of the q23 script wrote nothing. HIGH
+  11,754 (snapshot 2026-11-10) (INTAKE section 76) (#179)
+
+- **process**: status at Phase 5.3 Manual Validation, re-handed over in
+  one folder (q24 = a done: the second checkout is removed, and the
+  full suite passed in the main folder, 1,670). Sprint 17's local reader
+  and review prompts keep the removed folder's path, as the record of
+  what Task E's readers received. q29 and q30 asked
+
+- **feat**: Sprint 17 Manual Validation q28 = a: the batch reader prompt
+  has the reader write each assertion's quotes first and copy each
+  number into the value only from a quote already written, with three
+  worked examples from the measurement batch's flags (test proven red;
+  INTAKE section 75)
+- **docs**: Sprint 17 Manual Validation answers recorded: q5 (Norton
+  360 is the active scanner; exclusions applied; one run each, 10m16s
+  before and 6m57s after), q11 = a, q12 skip and track, q13 = a, q14
+  (the whole paper, no chunking) in F140_TESTING_ANALYSIS.md; q21 and
+  q22 not needed in F143_READING_COST.md. New cards: F146 (the
+  agreement map and the HIGH audit on the API credit, q26 = a), F147
+  (one apply function for decided fields only, q11), F148 (counts
+  written from the store, q13). The card template now asks an applier's
+  card to list every field it writes (q11). Date correction: these
+  answers and q20 = a were given 2026-11-09 (local time), not
+  2026-11-08 as the q20 commit message (301611f) says
+
+- **feat**: Sprint 17 Manual Validation q20 = a: the never-started
+  ledger groups g297 to g329 (161 papers, a snapshot as of 2026-11-09)
+  split into one-paper groups g349 to g509 by
+  `scripts/sprint17_q20_split.py`. Each old group keeps a dated
+  `superseded` note naming every paper and its new group; nothing is
+  deleted. The status script reports such a group as superseded, and
+  the cloud reader offers each moved paper in its new group, never the
+  old brief. A fresh-eyes review found the moved papers offered by no
+  reader and the "has started" check untested; both fixed. Each check
+  proven red (INTAKE section 77) (#179)
+
+- **fix**: Sprint 17 Manual Validation q23 = a: the 8 Task E assertions
+  the fresh-eyes review found are corrected in the store by
+  `scripts/sprint17_q23_corrections.py` (quotes added to 5 HIGH values,
+  Albash's footnote LOW, Pere's combined claim narrowed, one claim type
+  fixed). Its second apply wrote the added quotes twice; the script now
+  adds each once (tested, proven red) and a later apply wrote nothing.
+  Its fresh-eyes review added Albash's two unquoted passages; the
+  applier's quote check now skips a row the team lead corrected after
+  its review, as the sync already did (tested, proven red), prints how
+  many it kept, and still checks a row decided on or before the review
+  day (tested, proven red) (#179)
+- **docs**: F144's exclusion list holds Task E's 2 new papers, entered
+  2026-11-07 (`sar-2026-...` and `psi-2026-...`, ledger group g348 on
+  the Sprint 17 branch), so all 10 of Task E's papers are excluded
+- **feat**: F144 measurement batch collected (snapshot 2026-11-07): 8 of
+  8 succeeded, $2.22, total spent $3.00 of the $95 cap. With the
+  self-check, 16.6 check problems per 100 assertions (71 in 428) against
+  the pilot's 26.9 (49 in 182). Every reply is kept and flagged. The
+  prompt's rule 3 is corrected: its "x 10^4" example was itself flagged,
+  so a power of ten is written in full, and a supplementary figure opens
+  "Read from Figure S2:". Review fixes: a null exclusion reason is
+  refused, and the exclusion in `fetch` has its own test. Both proven red
+  (#176)
+- **process**: Task E's 8 ledger papers fixed by id in F144's exclusion
+  list: Pere v2 (q3 = a) and 7 in ledger order from g295 and g296, the
+  first groups not yet read in full (g069 and g072 skipped, as in Sprint
+  15). Task E's 2 new PDFs are added when intake gives them ids (#176)
+- **feat**: F144 exclusion list
+  (`manifests/sprint17_f144_batch/exclude.json`): a record named there
+  is never sent or fetched, and each entry must give its reason. It
+  holds Task E's papers once they are fixed by id (the plan), and now
+  Huang 2023, a preprint record whose fetched copy is byte-identical to
+  Li 2024's published paper. Fetch of the free-copy slice (snapshot
+  2026-11-07): 130 tried, 8 saved, 34 refused by the publisher (403, an
+  HTML page in place of the PDF, a failed TLS check; never worked
+  around), 88 with no free copy. Test proven red (#176)
+- **feat**: F144 reader self-check (team lead, q2: "can't this be written
+  into the prompt to check itself before returning?"). The batch prompt's
+  last section now makes the reader check each assertion before it
+  replies, one pass for each cause found in the pilot's 49 problems
+  (snapshot 2026-11-07): a number no quote holds (40; the entry below
+  says 42, a miscount), a label's number in a value ("eqn. (11)", "ref.
+  26"), a figure number without "about", a quote off its anchor's page
+  (8), a ligature changed (1). A batch request cannot run the check
+  script, so the script still checks every saved reply. Test proven red
+  (#176)
+- **feat**: F144 pilot results (snapshot 2026-11-07): 5 of 5 succeeded
+  in 5m18s, $0.78 for 99 pages; reader group files g335 to g339 in
+  `manifests/sprint13_g_reads/`, each kept and flagged (2 to 19 check
+  problems, 42 of 49 a value number not in its quotes). Fix from the
+  pilot: every page image is attached, figure pages first, since
+  Kadowaki 1998's vector-drawing figures had no image (test proven
+  red). Nothing written to the store (#176)
+- **process**: F144 pilot sent (batch msgbatch_01UToPxejWkyAFEubNSZf4PN,
+  2026-11-07): 5 papers, ledger groups g335 to g339 with their briefs;
+  forecast $1.63, worst case $7.70 (#176)
+- **feat**: F144 reader sends an errored or expired paper again and keeps
+  its first result (team lead, Q3 = 1; proven red), and names the team
+  lead's workspace in each request: the key is scoped to the
+  Organization, so the API needs the `anthropic-workspace-id` header.
+  A no-spend check listed the models with it (#176)
+- **feat**: F144 Batch API reader, built and dry-run; nothing sent yet.
+  `scripts/batch_read.py` (select, fetch, submit, poll, status; dry run
+  by default), `requirements-batch.txt`, the no-tool reader prompt
+  `manifests/sprint17_f144_batch/READER_PROMPT.md`, and the slice
+  `manifests/sprint17_f144_slice.json` (174 candidates, a snapshot as of
+  2026-11-07: no read row, no ledger group, not GitHub, withdrawn or
+  retracted). `tests/test_batch_read.py`: no resend, the $95 cap and the
+  2026-11-18 stop, no key in output or files, results in pipeline shape
+  with failures kept; each proven red. `tests/test_reader_prompts.py`
+  accepts the script's state in place of progress files for a prompt
+  whose reader has no tools (proven red). INTAKE_WORKFLOW section 75.
+  Writes nothing to the store. A fresh-eyes review added four guards,
+  each proven red: the cap is tested at the worst case (full max_tokens
+  of output), not the forecast; an interrupted send leaves a `pending`
+  entry that blocks the next send, and the ledger is written before the
+  send; each request and the batch are measured against 32 MB and
+  256 MB; a retried collection costs each result once (#176)
+- **process**: status at Phase 5.3 Manual Validation; full suite passed
+  (1,649); PR #174 closes #175 to #180. Team lead q24 = a (2026-11-08):
+  F144's branch is combined into this one, then the second checkout is
+  removed, before Manual Validation
+- **docs**: fresh-eyes review of Task E's apply (24b05d7). No high
+  finding. INTAKE section 76's snapshot line now dates the plan and the
+  apply apart, the totals name every certainty, and the review's
+  findings are listed for the team lead; the brief script's docstring
+  no longer claims it writes F144's exclusion list
+- **feat**: F114 Task E applied (INTAKE section 76; snapshot
+  2026-11-08). 10 papers read in full by 4 local readers, reviewed and
+  signed off; 1,201 assertions entered or changed, every quote verbatim;
+  live apply after a verified backup, a second apply wrote nothing. The
+  10 papers at `read`. Assertions 37,408 (HIGH 11,754; LOW 25,554)
+- **docs**: F143 (Task F): `docs/F143_READING_COST.md`. The cost per page
+  rose because each page yields more assertions (1.83 to 2.47 per page)
+  and more review items (0.79 to 1.35), most in theory-heavy papers; the
+  tokens per assertion stayed flat. Not waste: the full-read rule working
+- **fix**: `run_suite`'s tree id no longer crashes when a reader rewrites
+  a new telemetry file between the scratch index's `git add -A` and its
+  `git rm --cached` (`-f` added). Found at Task E's first gate, which
+  crashed before any test ran while 4 readers worked. A gap in F142 part
+  1's fix. Proven red
+- **feat**: F114 Task E set up (INTAKE section 76). The team lead's 2 new
+  PDFs entered at `seen` through the door
+  (`manifests/sprint17_f114_new.json`, after a verified backup): Sar et
+  al., IEEE Access 2026, and PSI's web article on the Aaronson-Ambainis
+  conjecture. The 10 papers fixed by id in
+  `scripts/sprint17_f114_local.py`: g348 (new ledger group, the 2 new
+  papers), g230's Pere v2, g295 (5), g296's first 2. Sprint 17 reader
+  and review prompts name the Sprint 17 worktree's scripts, since the
+  main checkout is on F144's branch; `f117_review` tags these groups
+  with the Sprint 17 prompt (proven red). 4 local readers started
+- **fix**: fresh-eyes review of 2580ce2 (the sign-off `add` table). (1)
+  An added assertion skipped the reader's own checks. Its field values
+  are now checked when it is merged (an unknown result type crashed the
+  applier's grading). Finalize runs the reader's quote, length, page and
+  grade checks on it. (2) The sign-off's why now reaches the stored
+  history; before, only a fixed phrase did. (3) Every added assertion is
+  an item to decide ("new-added"). Before, a LOW suggestion entered with
+  no decision. Each proven red
+- **feat**: F141 (Task D): `python scripts/view.py paper <id> --full`
+  prints each yielded assertion whole: id, certainty, value, provenance
+  and quotes. The default output is unchanged (the value cut at 100
+  characters). `--full` on another mode is refused. Proven red
+- **feat**: F142 part 2 (Task C): the sign-off `add` table adds an
+  assertion to a group's read, or splits one (a `value_replace` on the
+  old assertion plus an `add`). Sprint 16 split `he-simulation-scope` by
+  editing the reader's read file by hand (db2abe3); the read file is now
+  never edited. `scripts/review_additions.py` merges the table for both
+  `f117_review.papers` and `full_read_apply.load_groups`, refusing an id
+  the group holds, a paper not in the group, no why, a missing field or
+  an empty quote. The added assertion is an item to decide, its quotes
+  are checked against the paper, and its history says the sign-off
+  added it. The group builder treats an added id as taken. Proven red
+- **feat**: F140 q4 (team lead, 2026-11-07: a, with a check that the
+  parallel run completes with no locked file and no file written by two
+  processes). `run_suite` runs pytest on 16 workers when pytest-xdist is
+  installed (`requirements-dev.txt`, pinned 3.8.0), else serially with a
+  note. Trial (snapshot 2026-11-07): full suite, 1,641 of 1,641 passed in
+  6m51s against 37m48s serial, under a one-hour limit; tree unchanged;
+  no new `.partial` file. CI is unchanged. Proven red (#175)
+- **fix**: the text cache writer (`store/quotes.py`) deletes its
+  `.partial` file when the replace fails, as the OCR cache writer
+  already did. Four were found in the cache, from 2026-10-23 to
+  2026-10-25; parallel workers (F140 q4) make a failed replace more
+  likely. Proven red (#175)
+- **test**: F140 q6 (team lead, 2026-11-07: a). The four reading tests'
+  quote checks drop the outer `plain()`: `source_text` is already plain.
+  Equivalence check before the change (snapshot 2026-11-07): 1,477
+  sources, 8,146 quotes and 234 figures, 0 verdicts different. A second
+  cause found on the same line: `cache.setdefault(key, plain(...))`
+  built the text on every assertion, not once per file. Now built once.
+  `test_sprint12_reading[G]` 37 s to 15.3 s (#175)
+- **feat**: F140 q7, q8 and q9 (team lead, 2026-11-07: a, a, a). A full
+  run is not repeated on a tree and store that already passed it
+  (`--force` runs it); every `--changed` gate adds 9 high-impact test
+  files (about 265 s serial); every run takes the last failures first
+  (`--ff`). The team lead's answers to q4 to q14 recorded in
+  `docs/F140_TESTING_ANALYSIS.md`. Finding: Part 4 names a `--no-verify`
+  hook as high impact, but no hook or test here names `--no-verify`.
+  Each change proven red (#175)
+- **fix**: fresh-eyes review of f79714b. (1) The rebuild guard in
+  `f117_build_groups.py` read only `decisions/<g>.json`, so a group
+  reviewed in parts could be rebuilt with changed ids under its
+  decisions; both scripts now find decision files in one place
+  (`decisions_in`), and a stray name such as `g1.p1.old.json` is not a
+  part. (2) `run_suite`'s summary is the log's last line in pytest's
+  ending form, not any line that names a count. (3) `set_status.py`
+  takes a one-line status only, leaves no `.partial` file when a replace
+  fails, and refuses `--note` with no text. Each proven red (#177)
+- **feat**: F142 part 3 (Task C): a proof appendix over 30 pages is split
+  across reviewers by page from the start. The Sprint 17 review prompt
+  (`manifests/sprint17_f114_reads/REVIEW_PROMPT.md`) says how; each part
+  writes `decisions/GROUP.pN.json`, and `f117_review.decisions_of` merges
+  the parts, refusing an item decided twice or a group with both forms.
+  Tests proven red (#177)
+- **feat**: F142 part 4 (Task C): `scripts/set_status.py` sets `status`
+  and `current_sprint.status` in one step and refuses any status not
+  "Phase n.n Name"; a test fails when the committed fields differ.
+  Proven red (#177)
+- **fix**: `run_suite` records PASSED only when pytest reports at least
+  one passed test. `run_suite.py --help` exited 0 with no test run and
+  was recorded PASSED for the tree, which a commit could have used.
+  Proven red
+- **process**: the question shape now defines Effort as the cost to build
+  AND the cost to run, with how often, and Prevention as keeping the
+  defect from ever being made (a test is a control). Team lead, 2026-11-07,
+  q11 and q13. Guard extended; proven red
+
+- **fix**: F142 part 1 (Task C): reader telemetry
+  (`manifests/*/telemetry/`) is left out of `run_suite`'s tree id, so a
+  reader writing telemetry no longer turns a gate INVALID (Sprint 16: two
+  gates, 130 minutes). No test reads those files. Test proven red (#177)
+- **docs**: F140 part 3 to 9: `docs/F140_TESTING_ANALYSIS.md`. The slow
+  suite came in two steps: F114's first apply (7,715 assertions,
+  2026-10-30) and Sprint 15's pdfinfo starts (2026-11-04); the second is
+  fixed. Run 2 after the fix: 37m48s (cache filling). The 10-minute
+  target is not met: the live-store data checks are 69% of the time and
+  the suite uses one of 32 processors. Sprint 16's gate timeline rebuilt
+  (547 gate minutes in 15.6 hours). Recommendations q4 to q14 asked
+  (#175)
+
+- **process**: improvements, questions and decisions put to the team lead
+  take one shape (team lead, 2026-11-07): `i1`/`q1` with a brief title,
+  What it is, What it prevents and/or catches, Prevention or control,
+  Long-term value, Evidence, Effort, and lettered options with pros and
+  cons, one marked "(Recommendation)"; answered "i1. a" or "all as
+  recommended". Authoritative in `docs/SPRINT_RETROSPECTIVE.md`; CLAUDE.md,
+  the workflow, SPRINT_PLANNING, the backlog-refinement skill, the model
+  heuristics, F144's card and both question hooks' messages point at it.
+  `block_procedural_question_stop.py` now reads lettered options and a
+  `q1. ...?` title as a question (it took only digit lines; proven red).
+  `tests/test_question_format.py` checks the section's fields, the
+  pointers, and that no rule surface (CLAUDE.md, top-level docs, all of
+  `.claude/`) states the old form except as dated history; proven red
+  three ways. A fresh-eyes review found the first version scanned four
+  files and missed three. `run_suite --changed` now runs the inventory
+  check on any test-file change (proven red)
+- **fix**: the fresh-eyes review of 5454ccb (F140). The per-page key now
+  holds pdftotext's options as well as its version, and the page-count
+  key holds poppler's version, so a changed option or a new poppler makes
+  them again (the regression fdedff9 had closed for the whole-file text).
+  A cached value of the wrong type or length is made again; a failed
+  write removes its `.partial` file. F139's `cache_misses` counts
+  pdftotext and OCR runs only (`quotes.extraction_misses`), so groups
+  before and after F140 compare. `tests/test_test_inventory.py` now also
+  fails when a computed inventory field differs from its computation
+  ("computed, never stored"), and the inventory records the last real
+  defect each test caught, where one is on record. Five injections, each
+  red, then green. Both key changes refill those cache entries once
+  (#175)
+
+- **perf**: F140 part 2: the page count and the per-page fallback
+  extraction are kept in the text cache (`store/ocr.py`). Every test
+  process started `pdfinfo` once per PDF: in the slowest quote test, 390
+  starts and 180 of 230 seconds, at 0.3 to 0.6 seconds a process start
+  on this machine. That test now takes 37 seconds with the cache filled.
+  Test proven red twice (#175)
+- **feat**: F140 part 1: `scripts/test_inventory.py` writes
+  `docs/test_inventory.json` (per test file: what it guards, its kind,
+  tests and seconds from a timed full run, where it runs, red proof
+  recorded); `tests/test_test_inventory.py` fails on a test file missing
+  from it or a row for a file that is gone (proven red). Timed full run,
+  2026-11-07 (snapshot): 1,615 tests in 44m34s; live-store data checks
+  71% of test time, hook checks 19% (#175)
+- **process**: Task B (F144) blocked at the pilot: the API key is not
+  scoped to a workspace, so each request needs a workspace id the team
+  lead holds. Built and dry-run on draft PR #181; status recorded (#176)
+- **fix**: Key-file hook has no bypass token at all. The automated security
+  review found that a token honored on `git commit` still passed
+  `git commit ... && cat` of the file. A commit or PR text that names the
+  file now goes in by a message file (`git commit -F`, `--body-file`). The
+  trailing-dot shell form, `dotenv run` and `python -m dotenv` are also
+  blocked. Each proven red (#176)
+- **fix**: Key-file hook closes three gaps a fresh-eyes review found: the
+  bypass token is honored only on `git commit` and `gh` commands, and the
+  block message no longer names it; the file name matches in any letter
+  case, with trailing dots or an NTFS stream suffix; an inline
+  python-dotenv loader call (which finds the file without naming it) is
+  blocked. MultiEdit added to the matcher. Each gap proven red (#176)
+- **process**: Sprint 17 plan approved (2026-11-07); issues #175 to
+  #180. The team lead keeps the API key in a git-ignored key file at the
+  repository root, named ANTHROPIC_API_KEY, read only by the batch script
+  through python-dotenv. New hook `block_env_secret_reads.py` blocks
+  Claude from reading, printing, editing or staging that file; `.gitignore`
+  names it; `tests/test_env_secret_guard.py`, proven red three ways. Order
+  changed by the team lead: F144 first, then F140 (#175, #176)
+- **docs**: Sprint 17 plan absorbs Q2 = 2 (every approved F140
+  recommendation before F144) and asks Q1 again with a `.env` option
+  outside the repository; F145 carded (what qubit-lab.ch's Evidence pages
+  teach, for Sprint 18) (2026-11-07)
+- **docs**: Sprint 17 draft PR #174 recorded (2026-11-07)
+- **docs**: Backlog refinement and Sprint 17 plan (2026-11-07). Scope
+  selected by the team lead: F140 (first), F144, F114 (10 papers), F142,
+  F141, F143. `docs/sprints/SPRINT_17_PLAN.md` drafted with its
+  pre-flights (Batch API facts checked on Anthropic's page; the key's
+  name and Claude Code's own credential order; F144's candidates) and
+  two questions for the team lead
+- **chore**: Sprint 17 opened (2026-11-07). The team lead merged PR #164
+  into develop (3180aad) and PR #173 to main (85fbeae); `sprint-16`
+  tagged on 85fbeae; branch `feature/20261107_Sprint_17` cut from the
+  Sprint 16 branch (6.6 carry-forward). Phase 1.1 reconciliation: every
+  Sprint 16 commit changed this file
+- **docs**: Sprint 17 Phase 1.2 and 1.3 (2026-11-07). Sprint 16's issues
+  #165 to #172 all closed; its triad present with Actuals; master plan
+  rolled (Sprint 16 merged and tagged). Shipped cards F51, F134 to F137
+  and F139 pruned by hand. Snapshots: F57 (522 papers with no read row),
+  F114 (880 of 1,430 records not read in full, 187 groups). 0 re-checks
+  due; no ADR or schema change. The team lead's Batch API reader brief
+  carded as F144 (Priority 10; the $100 API credit expires 2026-11-18)
+
+### 2026-11-05 to 2026-11-07 (Sprint 16, PR #164, merged to develop 2026-11-07 and to main via PR #173 the same day; tagged sprint-16)
 
 - **docs**: Sprint 16 closed out (2026-11-07). The team lead's five
   improvement decisions: 1 to 4 carded as F142 (four small pipeline

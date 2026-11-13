@@ -64,6 +64,12 @@ In the master plan the order of the bullets may vary; the five named ones
 card. A permanent item states `Acceptance per release:`.
 `tests/test_backlog_cards.py` enforces them, and the minutes.
 
+**A card for an applier (a script that writes to the store) lists every
+field this applier writes**, in its scope, so a field no review decided
+is visible before the script exists. Team lead, Sprint 17 Manual
+Validation q11 = a (2026-11-09): an applier wrote an undecided field 4
+times. This line holds until F147's apply function enforces it.
+
 **Card practices taken from spamfilter-multi (F94, Sprint 11 Task B,
 2026-10-22).** Read at spamfilter-multi 20d2a7ab (its
 `BACKLOG_REFINEMENT.md`, `SPRINT_PLANNING.md` and master plan cards),

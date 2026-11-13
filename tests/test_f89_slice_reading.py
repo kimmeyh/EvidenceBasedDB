@@ -36,7 +36,9 @@ def test_every_quote_is_in_its_source():
     f89 = _script()
     cache, bad, checked = {}, [], 0
     for _, a, _, p in f89.assertions():
-        text = cache.setdefault(p["file"], plain(source_text(p["file"])))
+        if p["file"] not in cache:  # F140 q6: source_text is already plain; built once per file, not per assertion
+            cache[p["file"]] = source_text(p["file"])
+        text = cache[p["file"]]
         for q in QUOTE.findall(a.citation_context):
             if plain(q) not in text:
                 bad.append(f"{a.id}: {q[:70]}")
@@ -55,7 +57,9 @@ def test_every_figure_in_a_value_is_in_its_source():
     f89 = _script()
     cache, missing = {}, []
     for _, a, _, p in f89.assertions():
-        text = cache.setdefault(p["file"], re.sub(r"(\d), (\d{3})(?!\d)", r"\1,\2", plain(source_text(p["file"]))))
+        if p["file"] not in cache:  # F140 q6, as above
+            cache[p["file"]] = re.sub(r"(\d), (\d{3})(?!\d)", r"\1,\2", source_text(p["file"]))
+        text = cache[p["file"]]
         for num in re.findall(r"(?<![\w.])(?<![A-Za-z]-)\d+(?:\.\d+)?", a.value):
             if not re.search(rf"(?<![\d.]){re.escape(num)}(?!\d)", text):
                 missing.append(f"{a.id}: {num}")
