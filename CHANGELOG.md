@@ -13,7 +13,15 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-11-07 onward (Sprint 17, in progress)
+### 2026-11-13 onward (Sprint 18, in progress)
+
+- **process**: Sprint 18 Phase 1: sprint-17 tagged on main's merge
+  commit (125cb9d, PR #182); branch cut from Sprint 17's; status
+  advanced; CHANGELOG reconciled (every Sprint 17 day with commits has
+  entries; 2026-11-11 and 2026-11-12 had none); Sprint 17's shipped
+  cards pruned by hand; design-document currency checked
+
+### 2026-11-07 to 2026-11-10 (Sprint 17, PR #174, merged to develop 2026-11-13 and to main via PR #182 the same day; tagged sprint-17)
 
 - **process**: Sprint 17 retrospective applied (team lead, 2026-11-10,
   "i1. a i2. b i3. b i4. a"): i1, no second working folder without
