@@ -15,6 +15,9 @@ this project keeps having to replace with a step.
 
 ### 2026-11-13 onward (Sprint 18, in progress)
 
+- **process**: status at Phase 3.7 with draft PR #183; full suite 1,698
+  passed on the planning tree
+
 - **docs**: Sprint 18 plan drafted (`docs/sprints/SPRINT_18_PLAN.md`):
   scope F146, F114, F149, F147, F145, F148 (team lead, 2026-11-18);
   q1 (F146's sends, since the credit's stop date has passed) and q2
