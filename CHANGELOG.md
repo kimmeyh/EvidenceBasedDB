@@ -13,7 +13,7 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-11-13 onward (Sprint 18, in progress)
+### 2026-11-13 to 2026-11-19 (Sprint 18, in progress)
 
 - **process**: status at Phase 3.7 with draft PR #183; full suite 1,698
   passed on the planning tree
