@@ -850,11 +850,15 @@ and in git. Remaining items below.
 - **Snapshot as of 2026-11-13** (Sprint 18 Phase 1.2, after Sprint 17's
   10 and the q20 split): the ledger holds 1,676 records in 515 groups
   (298 not started, 171 applied, 33 superseded, 13 read but not
-  applied); 725 have a `full` read row dated 2026-10-26 or later, 951 do
-  not. Step (1): `Papers\` holds 172 PDFs that no record's `access`
+  applied); 792 have a `full` read row, 884 do not, in 326 groups
+  (corrected 2026-11-18 at Sprint 18 planning: the first figures, 725
+  and 951, counted only read rows dated 2026-10-26 or later, which drops
+  the full reads of groups g001 to g042 made before that date). Step (1): `Papers\` holds 172 PDFs that no record's `access`
   names; 171 are ledger downloads, and 1 is new
   (`2023_Huang_Noise-Resilient-Single-Pixel-Compressive-Sensing-with-Single-Photon.pdf`,
-  saved 2026-11-07). Step (2): the list moved from 399b022651 to
+  saved 2026-11-07; it is the stored record
+  `huang-2023-noise-resilient-single-pixel-compressive`, at `seen`, so it
+  is linked, not entered). Step (2): the list moved from 399b022651 to
   7113ded1df (2026-11-10) and adds 3 papers: arXiv 2611.08461,
   2611.10105 and 2611.08821. Sprint 17's rate: 10 papers read, reviewed
   and applied by local readers inside Tasks A to F.

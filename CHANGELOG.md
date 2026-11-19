@@ -15,6 +15,14 @@ this project keeps having to replace with a step.
 
 ### 2026-11-13 onward (Sprint 18, in progress)
 
+- **docs**: Sprint 18 plan drafted (`docs/sprints/SPRINT_18_PLAN.md`):
+  scope F146, F114, F149, F147, F145, F148 (team lead, 2026-11-18);
+  q1 (F146's sends, since the credit's stop date has passed) and q2
+  (which appliers F147 moves) asked. The master plan's 2026-11-13 F114
+  ledger snapshot corrected (792 read in full and 884 not, in 326
+  groups; the first figures counted only read rows from 2026-10-26),
+  and the Huang 2023 PDF named as a stored record
+
 - **process**: Sprint 18 Phase 1: sprint-17 tagged on main's merge
   commit (125cb9d, PR #182); branch cut from Sprint 17's; status
   advanced; CHANGELOG reconciled (every Sprint 17 day with commits has
