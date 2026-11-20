@@ -15,6 +15,10 @@ this project keeps having to replace with a step.
 
 ### 2026-11-13 to 2026-11-19 (Sprint 18, in progress)
 
+- **docs**: Sprint 18 plan records q1 = c (F146 runs on Claude Code
+  subagents, no API spend, no key read) and q2 = a (F147 moves the live
+  applier, freezes the 23 one-time scripts); plan approval still open
+
 - **process**: status at Phase 3.7 with draft PR #183; full suite 1,698
   passed on the planning tree
 

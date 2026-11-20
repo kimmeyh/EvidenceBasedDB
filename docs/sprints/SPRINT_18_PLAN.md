@@ -17,6 +17,11 @@ lead gave the credit's expiry as 2026-11-18 (2026-11-07), and
 the credit as carded. q1 asks how F146 runs. Whether any credit remains
 is an account fact that cannot be checked from here.
 
+**Answered 2026-11-19: q1 = c, q2 = a.** F146 runs on Claude Code
+subagents on the team lead's subscription, with no API spend; no API key
+is read by F146. F147 moves the live applier and every new applier to the
+shared function and freezes the 23 one-time scripts by a test.
+
 ## Objective
 
 Build the agreement map and the HIGH audit (F146), and run them the way
@@ -38,17 +43,19 @@ term.
 |---|---|---|---|---|
 | A | **F149, the ledger's next group name.** `scripts/sprint13_g_ledger.py` line 75 sets `start = len(groups)`; it becomes the highest group number plus one, as `batch_read.next_group` does. A test on a ledger with a gap, proven red | 15m | none | Claude, top tier |
 | B | **F147, one apply function.** A shared function in `store/ingest.py` takes the review's decided fields and refuses any other field, naming it. `scripts/full_read_apply.py` moves to it, so Task D's apply runs through it. The other appliers per q2. A test, proven red, that an undecided field is refused; Task D's trial apply shows the same writes as before the change | 120m [no-history] timebox | none | Claude, top tier |
-| C | **F146, the agreement map and the HIGH audit.** Built in full, dry run by default, on F144's rules (a forecast and a worst case before each send, a cap, a saved result never sent again, a failing result kept and flagged, the key never printed or written). Part 1: Haiku 5.5 screens pairs of assertions from different papers that share a context and a topic; Sonnet 5.5 judges each kept pair (supports, contradicts or unrelated, with the deciding quotes). Part 2: Sonnet 5.5 checks each HIGH value against its own quotes (held, held in part, not held, with why). Results are proposals, saved outside the store. How the sends run: q1. Each rule tested and proven red | 240m [no-history] timebox | per q1: the dry run counts the candidate pairs first (the map's size is not known until then: `[unbounded]` until the dry run). The HIGH audit: 11,754 assertions, about 830 characters each (value, reasons and quotes) | Claude, top tier; the judging per q1 |
+| C | **F146, the agreement map and the HIGH audit.** Built in full, dry run by default, on F144's rules (a forecast and a worst case before each send, a cap, a saved result never sent again, a failing result kept and flagged, the key never printed or written). Part 1: Haiku 5.5 screens pairs of assertions from different papers that share a context and a topic; Sonnet 5.5 judges each kept pair (supports, contradicts or unrelated, with the deciding quotes). Part 2: Sonnet 5.5 checks each HIGH value against its own quotes (held, held in part, not held, with why). Results are proposals, saved outside the store. How the sends run: q1 = c, Claude Code subagents on the subscription, no API spend: a script screen replaces the Haiku screen for part 1, the scripts write each subagent's input file and check its result file, and a saved result is never run again. Each rule tested and proven red | 240m [no-history] timebox | q1 = c: the dry run counts the candidate pairs first (the map's size is not known until then: `[unbounded]` until the dry run). The HIGH audit: 11,754 assertions, about 830 characters each; about 40 Sonnet 5.5 subagent runs of about 300 assertions, about 3 hours at 5 in parallel `[no-history]` | Claude, top tier; Sonnet 5.5 subagents judge |
 | D | **F114, 30 papers.** Order: (1) the 1 new PDF in `Papers\`, Huang 2023, linked to its stored record `huang-2023-noise-resilient-single-pixel-compressive` (at `seen`); (2) the 3 papers Christophe Pere's list added at 7113ded1df (arXiv 2611.08461, 2611.10105, 2611.08821), each fetched once from arXiv and entered through the intake door, with the list's new commit recorded; (3) 26 from the ledger, from the first group not yet read in full, with Sprint 16's exclusions (saved web pages with no article, directory sources, books), new groups named by Task A's fix. Readers under Sprint 17's prompts with q28's quotes-first rule; up to 5 local readers; each reviewer reads the paper in full; one apply through Task B's function, with its trial and verified backup | 20m (entry) + 72m (review and sign-off, at Sprint 15's 2.4m per record) | no estimate as a limit (no reading budget). At Sprint 16's rate, about 26 pages per paper and 0.99 agent minutes per page: about 780 agent minutes in the background | Claude, top tier (sign-off, certainty); Sonnet 5.5 readers and reviewers |
 | E | **F145, qubit-lab.ch's Evidence pages.** Read the public page and `/evidence-runs.json` in full; enter qubit-lab.ch as a source record (a vendor, its conflict of interest named) and each study's and run's stated result as an assertion with its own limits, quotes checked and certainty graded (a vendor's own result, single source); link each to what the store holds on the same question, with its reason; list gated or "on request" material without requesting it; a short note on what this repository and Phase 2 could adopt, each adoption asked as its own question | 120m [no-history] timebox | two fetches (pre-flight below) | Claude, top tier |
 | F | **F148, counts from the store.** `scripts/doc_counts.py` prints, or writes into a dated block, the counts a document names (assertions, papers, HIGH and LOW by basis, group states). Its block in `docs/INTAKE_WORKFLOW.md` and in Sprint 18's summary. Earlier dated sections and ADR amendments keep their snapshots. A `live_store` test, proven red, that the block matches the store | 90m [no-history] timebox | one store read, seconds | Claude, top tier |
 
 **Sequence**: A, then B, both before D's apply. D's readers start after A,
-in the background. C is built while they read; its sends follow q1. E and
+in the background. C is built while they read; its subagent runs (q1 = c)
+start after D's reads, so the two do not share the usage limits at once. E and
 F next. D's review and apply come last, through B's function. One apply at
 a time. Total about 677 minutes at the cards' estimates; at Sprint 17's
 1.25 times, about 850 minutes, plus D's reads in the background and C's
-run time per q1. No findings allowance: the scope is not dominated by
+subagent runs (about 3 hours for the audit, the map unknown until the dry
+run). No findings allowance: the scope is not dominated by
 verification.
 
 **If a Criterion 3 stop becomes necessary, the cut line is F, then E**:
@@ -158,6 +165,7 @@ any retrospective improvements that change code). Every other gate is
     is 240m shorter.
     - Pro: about 300 minutes off the sprint at Sprint 17's pace.
     - Con: neither the map nor the audit; you selected F146 for this sprint.
+- **Answer (team lead, 2026-11-19): c.**
 
 **q2. Which existing appliers F147 moves to the shared function**
 - What it is: the card says "the existing appliers move to it". There are
@@ -188,6 +196,7 @@ any retrospective improvements that change code). Every other gate is
     - Pro: no apply path is left outside the function.
     - Con: about 185 more minutes, mostly on scripts that already ran and
       may never run again.
+- **Answer (team lead, 2026-11-19): a.**
 
 ## Premise falsifier
 
@@ -217,8 +226,8 @@ after; F's test compares the block with a fresh store read.
 
 | Risk | Mitigation |
 |---|---|
-| Money spent without a decision | q1; the dry run is the default; no send until you answer q1's follow-up (option a) or set a cap (option b) |
-| The key leaks into output, a file or a commit | F144's rules: read only from `.env` by `dotenv_values`, never printed or written; the hook on `.env`; a test proven red |
+| Money spent without a decision | q1 = c: no API send in F146; a test, proven red, that F146's scripts import no API client |
+| The key leaks into output, a file or a commit | F146 reads no key (q1 = c); the hook on `.env` stays in force |
 | F147 changes what an apply writes | D's trial apply compared before and after B; a verified backup before each live apply; a second apply writes nothing |
 | An F146 proposal changes a grade without a decision | Results saved outside the store as proposals; nothing written without your decision; a test proven red |
 | A vendor's claim graded too high (F145) | A vendor's own result, single source: its conflict of interest named in the record; certainty by `store.grading` |
@@ -232,8 +241,8 @@ after; F's test compares the block with a fresh store read.
 ## Definition of Done
 
 - A: the next group named from the highest number plus one; its test proven red
-- B: the shared function with its test proven red; the appliers per q2; D's trial apply writes the same as before B
-- C: both parts built, dry-run and forecast from the real counts; each rule tested and proven red; sends per q1, with the spend recorded per request and the proposals counted and sampled for you; nothing written to the store without a decision
+- B: the shared function with its test proven red; the live applier moved and the 23 one-time scripts frozen by a test proven red (q2 = a); D's trial apply writes the same as before B
+- C: both parts built, dry-run and forecast from the real counts; each rule tested and proven red; runs on Sonnet 5.5 subagents (q1 = c), each run's input and result saved, and the proposals counted and sampled for you; nothing written to the store without a decision
 - D: 30 papers read in full, reviewed and applied once through B's function; Huang 2023 linked; the 3 list papers entered and the list's commit recorded; the counts before and after; a second apply writes nothing
 - E: the source and its assertions entered with quotes checked and certainty graded; each link with its reason; the gated items listed; the note's proposals asked
 - F: `scripts/doc_counts.py`, its blocks in `docs/INTAKE_WORKFLOW.md` and the summary, its test proven red
