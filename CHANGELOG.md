@@ -15,6 +15,13 @@ this project keeps having to replace with a step.
 
 ### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
 
+- **test**: F147 (Task B, #185) follow-up: d9ec0b2 said its review's
+  findings were fixed and its tests proven red 5 ways, but 4 checks had
+  no test or no red proof. Added and proven red: every undecided field
+  named in one run, `main()`'s refusal writing nothing, the
+  `in_transaction` guard not masking SQLite's own rollback, and the two
+  frozen-list tests (each injection named in its docstring)
+
 - **feat**: F114 (Task D, #187): the 28 groups' first-pass reads (30
   papers) in `manifests/sprint13_g_reads/`, each a byte copy of the
   reader's work file and each checked with 0 problems against its brief;

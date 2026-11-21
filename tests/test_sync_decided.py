@@ -22,6 +22,18 @@ in store/ finds nothing):
 - the SYNC_FROZEN check removed from `script_problems` (`if False and
   ...  # INJECTED`): test_a_new_script_that_syncs_directly_is_refused went
   red.
+
+Added after the fresh-eyes review of Task B, and proven to fail the same
+day, each restored (the commit d9ec0b2 said "proven red 5 ways" before these
+four existed; disclosed in CHANGELOG):
+- the `if conn.in_transaction:` guard replaced by `if True:  # INJECTED`:
+  test_an_error_after_sqlite_ended_the_transaction_is_not_masked went red
+  (an OperationalError "no such savepoint" replaced the disk error);
+- `sprint9_f46_pending_facts.py` added to SYNC_FROZEN and
+  `sprint17_q29_q31_grades.py` removed (`# INJECTED`):
+  test_each_frozen_script_exists_and_still_calls_the_old_sync and
+  test_every_script_that_calls_the_old_sync_is_frozen_or_legacy both went
+  red, each naming its script.
 """
 from __future__ import annotations
 
@@ -100,6 +112,24 @@ def test_a_sync_from_no_open_transaction_still_leaves_the_commit_to_the_caller(c
     assert conn.in_transaction  # RELEASE did not commit on its own
     conn.rollback()
     assert _value(conn) == "a claim"
+
+
+def test_an_error_after_sqlite_ended_the_transaction_is_not_masked(conn, monkeypatch):
+    """Fresh-eyes review of Task B (finding L4): when SQLite rolls the whole transaction back on its own (a full
+    disk, an I/O error), the savepoint is gone. ROLLBACK TO would then raise "no such savepoint" and hide the first
+    error. Proven to fail by injection, 2026-11-21: with the `if conn.in_transaction:` guard replaced by
+    `if True:  # INJECTED`, an OperationalError replaced the disk error and the test went red. Restored."""
+    import sqlite3
+    from store import ingest
+
+    def disk_full(c, *rest):
+        c.execute("ROLLBACK")  # what SQLite does to the whole transaction on SQLITE_FULL
+        raise sqlite3.OperationalError("database or disk is full")
+
+    monkeypatch.setattr(ingest, "sync_verified_assertion", disk_full)
+    with pytest.raises(sqlite3.OperationalError, match="disk is full"):
+        _sync(conn, "a narrower claim", {"value"})
+    assert not conn.in_transaction
 
 
 def test_a_new_script_that_syncs_directly_is_refused():
