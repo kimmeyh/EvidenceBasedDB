@@ -15,6 +15,8 @@ this project keeps having to replace with a step.
 
 ### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
 
+- **process**: Sprint 18 Manual Validation handed over: full suite
+  1,744 passed, CI green on PR #183; q4 to q17 asked.
 - **process**: Sprint 18 enters Phase 5.1 (Tasks A to F done, #184 to
   #189 closed), set with `scripts/set_status.py`. A first hand edit set
   one of the two status fields; `tests/test_set_status.py` failed the
