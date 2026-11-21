@@ -15,6 +15,32 @@ this project keeps having to replace with a step.
 
 ### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
 
+- **feat**: F148 (Task F): `scripts/doc_counts.py` prints the counts a
+  document names (assertions by grade, HIGH and LOW by the basis each
+  started from, papers by tier, ledger groups read and reviewed) from the
+  store, read-only, and `--write` rewrites the one dated block between
+  markers in a document; it refuses a document with none or two.
+  INTAKE_WORKFLOW.md now holds the block at its top.
+  `tests/test_doc_counts.py`: 4 unit tests and a live_store test that the
+  block matches the store, each proven red by injection. The fresh-eyes
+  review found the basis pattern did not stop at the ":" that
+  `low_grade` writes before its why, so 9 LOW reasons fell into "other".
+- **feat**: F145 (Task E): qubit-lab.ch's Evidence page and its run file
+  entered (`scripts/sprint18_f145_intake.py`, INTAKE_WORKFLOW.md section
+  80): 1 source record and 16 assertions, all vendor claims at the
+  store's fixed vendor LOW, every quote checked verbatim with its figures;
+  no relation written, each candidate link named with its reason. The
+  fresh-eyes review before the apply found 1 wrong value (QL-ST-006
+  counted "won or reached kernel parity" as wins) and 4 that dropped a
+  condition; all fixed before the apply. The second review, after the
+  apply, found no critical defect: the "same" check now compares every
+  column the script writes, the context and the source's fields (it
+  compared 6 assertion fields, so a changed context would have passed
+  as "exists"); QL-ST-001's "0 of 96", which read as covering all 24
+  instances, is scoped to the real books and corrected in the store
+  through `sync_decided_assertion`; the live test opens the store
+  read-only; every test is proven red.
+
 - **feat**: F146 (Task C, #186): `scripts/f146_checks.py` builds the HIGH
   audit and the agreement map for Claude Code subagents (q1 = c: no API
   spend, no key). It opens the store read-only, writes each run's input,
