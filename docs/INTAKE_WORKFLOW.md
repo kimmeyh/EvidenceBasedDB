@@ -4493,4 +4493,70 @@ manifest at the next gate. The release is described here as it ran.
   before their groups' telemetry files existed, so their check and
   render steps were not recorded; each reader's tokens and minutes are
   recorded from its completion notice.
-- **Reads, reviews and apply**: recorded below when they are done.
+- **Five reader ids renamed after review.** g510's
+  `data-availability-on-request` and g352's `review-scope`,
+  `vqe-definition`, `qaoa-definition` and `schwinger-model-definition` were
+  already other sources' (stored, or new in g119, g099 and g351). Each
+  takes its paper's author and year as a prefix, as
+  `scripts/f117_build_groups.py` does before review; the decisions and
+  items were renamed with the read. The applier's ID_FIX cannot do this:
+  it is keyed by reader id across every group. The local read checker does
+  not yet look for an id another source holds.
+- **Reviews.** 28 groups, 30 papers, each first-pass read reviewed by a
+  Sonnet subagent under `REVIEW_PROMPT.md`; g512 (Garrigues 2026, an
+  appendix of 32 pages) split by page across two reviewers. Finalized
+  2026-11-21: 775 HIGH, and 288 theoretical results kept LOW with their
+  cause; every item was a new assertion, so no escalation.
+- **Applied 2026-11-21** after a verified backup
+  (`evidence-20261121T052359269600-sprint18-sprint-13-task-g-f113-and-sprint-14-task.db`).
+  First on two copies of the store: the applier before Task B (22c1b2b)
+  and after it wrote identical rows in every table, and a second apply
+  on the copy changed nothing. Live: 2,688 assertions entered from 30
+  papers; records 39,780 to 42,468; the live store matches the trial
+  copy table for table, and a second live apply checked 0 quotes and
+  changed nothing.
+
+## 79. The HIGH audit and the agreement map, by subagents (Sprint 18 Task C, F146)
+
+Every count is a snapshot as of 2026-11-21. Written before any run's input
+is handed out. **Nothing here writes the store**: results are proposals,
+kept outside git in `D:\Data\Harold\EvidenceBasedDB\work\f146\`, and none
+is applied without the team lead's decision (F146's card).
+
+- **How it runs (team lead q1 = c, 2026-11-19).** Claude Code Sonnet 5.5
+  subagents on the subscription; no API spend, no key read.
+  `scripts/f146_checks.py` opens the store read-only, writes each run's
+  input file, and checks each result file. Prompts:
+  `manifests/sprint18_f146/AUDIT_PROMPT.md` and `MAP_PROMPT.md`.
+- **F144's rules as they apply.** Dry run by default; a forecast before
+  any write; `--max-runs` caps the runs one write hands out; a saved
+  result is never run again (an item left out of its result is handed
+  out again); a failing result is kept and flagged, never dropped; each
+  input carries 3 control items whose answer is known, and a wrong
+  control flags the whole run. Not applicable under q1 = c: the dollar
+  cap, the stop date and the key. `tests/test_f146_checks.py` holds one
+  test per rule; its docstring lists the injection that turned each red.
+- **The HIGH audit's size.** 11,754 HIGH assertions; 5 have no quotes and
+  are listed, never sent; 11,749 in 59 runs of up to 200, about 8.6
+  million characters of input in all (about 146,000 a run: a run of 300
+  came near the 256 KB limit on one Read).
+- **Controls look like items.** An audit control's id is a real
+  assertion's id with a short suffix, and a map control's is a pair of real
+  ids; only the state file knows which they are. A map verdict of
+  supports or contradicts needs a quote of 15 characters or more from each
+  side, each verbatim in its side.
+- **The agreement map's screen (it replaces the Haiku screen).** Each
+  assertion's nearest neighbor from another paper that shares a context,
+  by idf-weighted overlap of words and numbers, at a cosine of 0.35 or
+  more: 492 pairs, in 5 runs of up to 100. **Its recall is 0**: of the
+  store's 24 judged relations between extracted assertions of two
+  different papers, the screen keeps none (a word-overlap screen at
+  every setting tried kept at most 11 of 42 relations in all, and the
+  ranked one 1 of 42 at its widest). Those relations link differently
+  worded claims; a lexical screen finds restatements. The map therefore
+  shows near-restatements across papers, many of one work under two
+  records, which is why each verdict carries an independence answer.
+  This limit goes to the team lead at Manual Validation.
+- **Pilot first.** One run of each part is handed out and checked before
+  the rest; the run size is set from the pilot.
+- **Runs and results**: recorded below when they are done.

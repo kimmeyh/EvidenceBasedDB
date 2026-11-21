@@ -15,6 +15,41 @@ this project keeps having to replace with a step.
 
 ### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
 
+- **feat**: F146 (Task C, #186): `scripts/f146_checks.py` builds the HIGH
+  audit and the agreement map for Claude Code subagents (q1 = c: no API
+  spend, no key). It opens the store read-only, writes each run's input,
+  and checks each result: dry run by default, a forecast, a cap on runs
+  handed out, no re-run of a saved result, a failing result kept and
+  flagged, and 3 known-answer controls in every run. Prompts in
+  `manifests/sprint18_f146/`. Intake section 79. The map's script screen
+  keeps 492 pairs and none of the store's 24 judged cross-paper
+  relations (recall 0), stated in section 79 for the team lead.
+  A fresh-eyes review found 6 defects before any run, all fixed: a
+  non-string quote crashed `check` before the run was flagged; two quotes
+  from one side passed; control ids named themselves ("control-a001-0");
+  a write that stopped part way blocked every later write; a control draw
+  could raise StopIteration; the screen test could not catch a lost
+  same-paper filter. Audit runs cut from 300 to 200 items (Read limit).
+  `tests/test_f146_checks.py`, 14 tests, proven red 12 ways
+- **fix**: F114 (Task D): 5 reader ids in g510 and g352 were already
+  another source's: 3 are new assertions in other groups too
+  (`data-availability-on-request` in g119, `qaoa-definition` in g099,
+  `schwinger-model-definition` in g351), and `review-scope` and
+  `vqe-definition` are stored for other papers. Each takes its paper's
+  author and year (`banuls-2019-vqe-definition`), as
+  `f117_build_groups.py` renames before review; here after review, so the
+  decision and item keys were renamed with the read (exact JSON strings,
+  each file still parsing to the same content). **Disclosed**: a sign-off
+  `id_fix` was tried first and withdrawn: the applier keys ID_FIX by
+  reader id across all groups, so it would have renamed g119's stored
+  assertion too; a gate run caught the clash (35 failures, all this one
+  cause). 28 groups finalized: 775 HIGH, 288 theoretical LOW
+- **feat**: F114 (Task D): the 30 papers applied to the live store,
+  2026-11-21, after a verified backup: 2,688 assertions, records 39,780
+  to 42,468. Trial first on two store copies: the applier before Task B
+  (22c1b2b) and after it wrote identical rows; a second apply, on the
+  copy and live, changed nothing. Intake section 78
+
 - **test**: F147 (Task B, #185) follow-up: d9ec0b2 said its review's
   findings were fixed and its tests proven red 5 ways, but 4 checks had
   no test or no red proof. Added and proven red: every undecided field

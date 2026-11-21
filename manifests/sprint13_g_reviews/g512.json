@@ -1,0 +1,156 @@
+{
+ "group": "g512",
+ "reviewed_on": "2026-11-21",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "qgf-definition-node-edge-features": [
+   "definition",
+   "Section 2.1, p.3: the paper defines QGFs as the entries of the connected correlation matrix, diagonal as node features, off-diagonal as edge features, with Eq. (2)."
+  ],
+  "qgf-extraction-protocol": [
+   "setup",
+   "Section 2, p.3: the paper states its own extraction protocol (graph-dependent Rydberg Hamiltonian, fixed product initial state, quench, occupation correlation). Consistent with App. A, p.16-17."
+  ],
+  "graph-register-embedding-rule": [
+   "setup",
+   "Section 2.2, p.3: the paper states the placement rule with Eq. (3); read with the whole paragraph."
+  ],
+  "datasets-mutag-zinc-subset": [
+   "setup",
+   "Section 2.2, p.3: dataset names and sizes (188, 12000) stated as the paper's own setup."
+  ],
+  "embeddability-coverage": [
+   "scope",
+   "Section 1, p.2: the paper states the coverage of its own datasets (100% MUTAG, 95% ZINCsubset). The Section 6 text on p.10 agrees (about 95%)."
+  ],
+  "purely-structural-embedding-limit": [
+   "stated limit",
+   "Section 6, p.10 (Conclusion): the authors list the 2D unit-disk restriction and the placement dependence (stable under small noise, not invariant under re-embedding) as current limitations. Section 2.2, p.4 says the same, with Spearman 0.82 at 2% noise."
+  ],
+  "fm-detuning-choice-field-balanced": [
+   "setup",
+   "Appendix C, p.19: the delta choices for the two settings are the paper's own parameters. The field-cancelling property follows from h_i^z = delta/2 - J_i/(4 hbar) in Eq. (6), p.16, and from delta_inf in Eq. (22)."
+  ],
+  "thermal-regime-classification": [
+   "scope",
+   "Appendix C, p.19 with App. B, p.18: the sign criterion (Eq. 20-21) is derived in the paper (monotonic thermal energy) and applied through Eq. (22)-(23). The AFM-like and FM-like labels are the authors' thermal interpretation. The value carries it as such, with the paper's own caveat that it does not imply thermalization for all (Omega, delta)."
+  ],
+  "thermal-approximation-not-assumed-everywhere": [
+   "stated limit",
+   "Appendix B, p.18: the authors state the canonical thermal approximation is only a diagnostic and is not assumed to hold throughout parameter space, and they name the obstructions."
+  ],
+  "afm-omega-working-point": [
+   "setup",
+   "Appendix C, p.20: the authors state how they chose delta = 0 and Omega = 0.3 J_NN/hbar. The value attributes the rationale to the authors. The working point matches Eq. (4) and (24). App. C, p.21 confirms it was chosen without task-level tuning."
+  ],
+  "fm-omega-working-point": [
+   "setup",
+   "Appendix C, p.20: the authors state the choice Omega = 0.5 J_NN/hbar and why (thermal maximum near 0.23, larger value for more robust relaxation). It is the paper's own parameter choice and rationale."
+  ],
+  "thermal-agreement-qualitative-only": [
+   "stated limit",
+   "Appendix C, p.19: the authors state the agreement with thermal values is qualitative, for the small graph of Fig. 2, naming finite-size effects and the Omega = 0 integrable limit. The value stays inside that scope. The reader typed it 'measured'; its true type is a stated limit."
+  ],
+  "afm-point-sensitivity-limit": [
+   "stated limit",
+   "Appendix C, p.21 ('Sensitivity to the AFM working point'): the authors state that the Fig. 4 scans do not establish stability of every intrinsic or downstream score across Omega, since that needs regenerating features and retraining. The reader typed it 'measured'; its true type is a stated limit."
+  ],
+  "emulation-time-grid-shots": [
+   "setup",
+   "Section 2.4, p.4: Nt = 20 equally spaced steps in [0.1, 4.0] us and 1000 shots per step. App. D.1, p.21 agrees (t1 = 100 ns, upper bound 4 us)."
+  ],
+  "emulation-backends-and-cost": [
+   "setup",
+   "Appendix D.1, p.21: backend split at N < 25 (state vector, else MPS) and about 800 GPU-days on an A100 for ZINCsubset (two pulses), about 14 for MUTAG. Reported as the paper's own run setup and cost."
+  ],
+  "hardware-run-scope-qpu-time": [
+   "setup",
+   "Section 2.4, p.5: Pasqal Fresnel QPU, all 188 MUTAG graphs, four time steps, about 7.5 QPU-days. App. D.3, p.24 derives the estimate from the cost formula."
+  ],
+  "summary-statistics-compression": [
+   "definition",
+   "Section 2.4, p.5: the paper defines the four-statistic summaries (mean, variance, min, max) and the labels AFMstat and FMstat. Table 6, p.26 gives d = 4."
+  ],
+  "classical-baselines-setup": [
+   "setup",
+   "Section 2.5, p.5: the baselines (RRWP kmax = 20, Laplacian with four eigenvectors) are the paper's own setup. Table 6, p.26 agrees (RRWP d = 20, Laplacian phi_2..phi_5)."
+  ],
+  "intrinsic-benchmark-design": [
+   "setup",
+   "Section 3.1, p.5 and App. F.1, p.31: 15 tasks (5 node, 5 edge, 5 graph) defined by the paper, probe design stated. The 'minimizing inductive bias' phrase is the authors' design aim, which the value attributes to them."
+  ],
+  "saturated-tasks-sanity-checks": [
+   "stated limit",
+   "Appendix F.2, p.32: both quotes are verbatim in context. The authors state that link prediction, bridge-edge and bridge-node detection are retained only as sanity checks and must not be used to rank descriptor families. That is a caveat on how their own benchmark may be used. The near-saturation itself is a measured result (Tables 1, 13, 14), but here it is the stated reason for the caveat, and the value is framed as what the authors state."
+  ],
+  "probe-graph-level-cross-validation": [
+   "setup",
+   "Appendix F.1, p.32: the paper states its own probe protocol. 5-fold cross-validation at graph level, all nodes and edges of a graph in one fold, stratified for classification. This is setup, not a result."
+  ],
+  "downstream-training-protocol-fixed": [
+   "setup",
+   "Section 4.1, p.7 and App. E.2, p.26: one set of hyperparameters per architecture-dataset pair (Table 7), reused across all feature configurations, no per-configuration search."
+  ],
+  "downstream-parameter-matching": [
+   "setup",
+   "Section 4.1, p.7: the paper states it approximately matches trainable parameters per dataset. The Table 7 caption, p.27, agrees."
+  ],
+  "sign-test-descriptive-only": [
+   "stated limit",
+   "Appendix G, p.35 and p.36: the authors state that they apply no multiple-comparison correction because the analyses answer distinct questions, and that the cells are not independent (the six architectures share train/validation splits), so they treat the sign-test p-values as descriptive evidence of directional consistency, not exact type-I error guarantees. The value states only this treatment, not the p = 0.019 result. It is a limit on their own statistical claim."
+  ],
+  "ladder-graphs-construction": [
+   "setup",
+   "Section 5, p.10: the paper states how the ladder family was built (label by relative parity of two diagonal crossings, RRWP/ring-identical opposite-label partners, 394 graphs, 18-26 atoms). The Table 5 caption, p.10, agrees (98 RRWP-2-blind groups). App. I.4 lies outside my pages."
+  ],
+  "ladder-label-definition": [
+   "definition",
+   "Appendix I.4, p.42: the paper defines its labels by crossing parity. Even separation gives pinned, y = 1; odd separation gives frustrated, y = 0, with labels computed exactly by a transfer-matrix recursion. The quote is verbatim in context. The ground-state consequences (unique versus degenerate) are stated as the rationale, not proved, but the value is framed as the definition of the labels, which the paper settles."
+  ],
+  "ladder-existence-statement-limit": [
+   "stated limit",
+   "Section 5 p.10 and Appendix I.4 p.43: both quotes are verbatim in context. The authors state the ladder family is synthetic and constructed to defeat these encodings, that its label is tied by construction to frustration and degeneracy, and that the result is an existence statement, not evidence of a generic advantage. This is a caveat on the scope of their own result, not a measurement. The result_type should be a stated limit on a measured result (F135); the reader kept it measured."
+  ],
+  "emulator-qpu-time-rescaling": [
+   "setup",
+   "Appendix D.4, p.24 and Fig. 6 caption, p.25: t_QPU = 940 ns and t_emu = 715 ns, rescaled with r_NN because the QPU's maximum amplitude was lower. The paper's own setup statement."
+  ],
+  "emulator-qpu-concordance-scope-limit": [
+   "stated limit",
+   "Appendix D.4, p.24 (last paragraph): the authors restrict the concordance study to one dataset (MUTAG) and one operating point (AFM, t4), and leave a full QPU run on ZINCsubset to future work. The text layer drops words but the value matches. The reader typed it 'measured'; its true type is a stated limit."
+  ],
+  "readout-error-calibration-values": [
+   "setup",
+   "Appendix D.3, p.23: calibrated false-Rydberg 0.025 and false-ground-state 0.1 for the employed QPU, with the confusion-matrix correction (Eq. 25-26)."
+  ],
+  "hardware-shots-budget-874": [
+   "setup",
+   "Appendix D.4, p.24 (Nshots = 874 for all 188 MUTAG graphs) and D.3, p.23-24: the CLT budget with Eq. (27)-(28), 874 at N = 18, and 734, 901, 983 at N = 10, 20, 28. The logarithmic growth follows from the paper's own formula. I recomputed 734 at N = 10 and 874 at N = 18 from it."
+  ],
+  "limitation-cost-too-high": [
+   "stated limit",
+   "Section 6, p.10: the authors state that hardware extraction is much slower than classical preprocessing and that the full pipeline's compute and QPU time is too high for practical use (see App. D.3, p.24, 7.5 QPU-days for MUTAG). The reader typed it 'setup'; its type is a stated limit."
+  ],
+  "limitation-downstream-gains-modest": [
+   "stated limit",
+   "Section 6, p.10: the authors state that downstream gains are modest and the extraction protocol is not yet optimized for learning. The reader typed it 'setup'; its type is a stated limit."
+  ],
+  "no-theoretical-results": [
+   "scope",
+   "NeurIPS Paper Checklist item 3, p.45: answer N/A, justification 'The paper does not include theoretical results.' Verbatim. The paper states its own scope. Pages 32 to 47 and the main text contain no stated theorem or proof; the thermalization and regression material is methodology and measurement."
+  ],
+  "funding-affiliation-disclosure": [
+   "setup",
+   "Acknowledgments, p.11: funded by Pasqal SAS, all authors are Pasqal employees, and Pasqal develops and commercialises the QPU used. The author line on p.1 agrees. A disclosure the paper makes about itself."
+  ],
+  "code-data-availability": [
+   "setup",
+   "Section 6, p.10: the paper gives the GitHub repository and Zenodo DOI as its code and data location."
+  ]
+ },
+ "theory_low": {},
+ "keep_stored": {},
+ "requote": {}
+}
