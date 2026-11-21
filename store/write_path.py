@@ -143,6 +143,22 @@ LEGACY = {
 # Reading scripts written before the grading rule: they have run, and stay
 # as they are. Every other script whose name says it reads is held to it.
 GRADING_LEGACY = {"sprint11_reading.py"}
+# F147 (Sprint 18 Task B, team lead q2 = a, 2026-11-19): a stored assertion is synced only through
+# store.ingest.sync_decided_assertion, which refuses a field no review decided before it is written. The one-time
+# appliers of Sprints 11 to 17 that call sync_verified_assertion have run, and are frozen as they are: this list is
+# closed. The 6 one-time appliers of Sprints 9 and 10 call sync_assertion and are LEGACY (above); the rule refuses
+# sync_assertion in every other script. A new script that names sync_verified_assertion is refused, so it cannot be
+# added here by copying an old applier. full_read_apply.py, the live applier, is not on it. tests/test_sync_decided.py
+# checks that each name here still calls sync_verified_assertion (fresh-eyes review of Task B: a frozen name that does
+# not would let a later edit add a direct sync unseen).
+SYNC_FROZEN = frozenset({
+    "sprint11_f91_magic_state.py", "sprint11_f92_qci_answers.py", "sprint11_f93_f108_ceiling.py",
+    "sprint11_reading.py", "sprint12_f101_corrections.py", "sprint12_f102_phase2_sprint28.py",
+    "sprint12_f103_intake.py", "sprint12_reading.py", "sprint13_f108_phase2.py", "sprint13_reading.py",
+    "sprint14_f119_reading.py", "sprint14_f120_phase2.py", "sprint15_f130_phase2.py", "sprint16_f51_cvqboost.py",
+    "sprint17_q23_corrections.py", "sprint17_q29_q31_grades.py",
+})
+_UNDECIDED_SYNC = re.compile(r"^sync_verified_assertion$")
 
 
 def script_problems(text: str, name: str = "") -> list[str]:
@@ -168,6 +184,9 @@ def script_problems(text: str, name: str = "") -> list[str]:
                        "low_grade, and holds no \"Started LOW\" text of its own)")
     if any(_DIRECT_WRITE.match(n) for n in named):
         out.append("writes an assertion without the quote check (use insert_verified_assertion)")
+    if name not in SYNC_FROZEN and any(_UNDECIDED_SYNC.match(n) for n in named):
+        out.append("syncs a stored assertion without the review's decided fields (use sync_decided_assertion, "
+                   "F147)")
     if any(_TOKEN_NAME.match(n) for n in named):
         out.append("names Verified (only require_verbatim makes one; pass on what it returns)")
     edit_basis = any(c == "require_edit_basis" or c.endswith(".require_edit_basis") for c in code.called)

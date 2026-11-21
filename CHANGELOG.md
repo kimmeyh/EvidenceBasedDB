@@ -15,6 +15,31 @@ this project keeps having to replace with a step.
 
 ### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
 
+- **feat**: F147 (Task B, #185): `store.ingest.sync_decided_assertion`
+  syncs a stored assertion only when every changed field is one its review
+  decided; otherwise it rolls back a savepoint and raises UndecidedField.
+  `scripts/full_read_apply.py` writes through it at both sync sites, and
+  an apply that meets an undecided field stops with nothing written (it
+  used to write the field and list it). `store.write_path.SYNC_FROZEN`
+  freezes the 24 one-time appliers (q2 = a; the plan said 23, corrected),
+  and refuses any other script that syncs directly.
+  `tests/test_sync_decided.py` and the reworked applier test, proven red 5
+  ways
+
+- **fix**: F114 (Task D): intake section 78 written for the list release,
+  after its apply (the rule is before; `tests/test_intake.py` caught it);
+  the release manifest's `carried_why` names Sprint 18 Task D, and a dry
+  run keeps the apply's route count (fresh-eyes review); telemetry files
+  for the 28 groups, the first readers' tokens and minutes recorded
+
+- **feat**: F114 (Task D, #187) set up: `scripts/sprint18_f114_roadmap.py`
+  enters Roadmap-to-QML's 3 new papers at 7113ded1df (applied after a
+  verified backup; a second apply on a store copy entered nothing);
+  `scripts/sprint18_f114_local.py` adds g510 to g513 (Huang 2023 linked
+  at read, and the 3) and writes 28 briefs for 30 papers;
+  `manifests/sprint18_f114_reads/` prompts, with the quotes-first rule
+  (q28 = a) added to the local reader prompt
+
 - **fix**: F149 (Task A, #184): `scripts/sprint13_g_ledger.py` names a new
   group from the highest gNNN number plus one, not the group count, and
   refuses a name that is not gNNN; `main()` names groups only through

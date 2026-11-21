@@ -104,6 +104,14 @@ any retrospective improvements that change code). Every other gate is
   723 and 730). One is the live applier, `scripts/full_read_apply.py` (its
   `decided_fields` at line 370). The other 23 are one-time sprint appliers,
   `sprint9_f46_pending_facts.py` to `sprint17_q29_q31_grades.py`.
+  **Corrected 2026-11-21 (Task B):** a text search counts comments too.
+  Counted from the parsed code, 22 one-time appliers call a sync function,
+  not 23: 6 of Sprints 9 and 10 call `sync_assertion` (already exempt as
+  `store.write_path.LEGACY`), and 16 of Sprints 11 to 17 call
+  `sync_verified_assertion` (`store.write_path.SYNC_FROZEN`).
+  `sprint9_f46_pending_facts.py` and `sprint15_mv_decisions.py` name it
+  only in a comment. q2 = a freezes all 22; the decision does not change.
+  (An earlier correction the same day said 24; it counted the comments.)
 - **F148's inventory**: `docs/INTAKE_WORKFLOW.md` has about 115 lines that
   state a count of assertions, papers, records, HIGH or LOW, across
   sections 1 to 77. Each section is dated; the counts are snapshots.
@@ -241,7 +249,7 @@ after; F's test compares the block with a fresh store read.
 ## Definition of Done
 
 - A: the next group named from the highest number plus one; its test proven red
-- B: the shared function with its test proven red; the live applier moved and the 23 one-time scripts frozen by a test proven red (q2 = a); D's trial apply writes the same as before B
+- B: the shared function with its test proven red; the live applier moved and the one-time scripts (22, corrected from 23 on 2026-11-21) frozen by a test proven red (q2 = a); D's trial apply writes the same as before B
 - C: both parts built, dry-run and forecast from the real counts; each rule tested and proven red; runs on Sonnet 5.5 subagents (q1 = c), each run's input and result saved, and the proposals counted and sampled for you; nothing written to the store without a decision
 - D: 30 papers read in full, reviewed and applied once through B's function; Huang 2023 linked; the 3 list papers entered and the list's commit recorded; the counts before and after; a second apply writes nothing
 - E: the source and its assertions entered with quotes checked and certainty graded; each link with its reason; the gated items listed; the note's proposals asked

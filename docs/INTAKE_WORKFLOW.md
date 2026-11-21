@@ -4441,3 +4441,56 @@ group keeps a dated "superseded" note. Nothing is deleted.
   nothing. `tests/test_sprint17_q20_split.py` guards the committed
   ledger: each record in one group, and each note pointing at its
   paper's own group. Each check was proven red.
+
+## 78. F114 at 30 papers, under Sprint 18's prompts (Sprint 18 Task D)
+
+Every count is a snapshot as of 2026-11-21. **This section was written
+after the list release was applied, not before it**: the rule (sections
+11 to 13) was missed, and `tests/test_intake.py` caught the unnamed
+manifest at the next gate. The release is described here as it ran.
+
+- **Roadmap-to-QML, 399b022651 to 7113ded1df** (Christophe Pere's list;
+  7113ded1df, 2026-11-10, was still the head on 2026-11-21).
+  `scripts/sprint18_f114_roadmap.py` runs Sprint 16's release code
+  (`scripts/sprint16_f114_roadmap.py`, itself F104's) at this release's
+  commits. The list's 13 files are saved under
+  `References\Roadmap-to-QML_7113ded1df\`, outside git, each with its
+  SHA-256 in the manifest (`manifests/sprint18_f114_roadmap.json`).
+  1,457 arXiv ids listed; 3 newly linked since 399b022651, all in
+  `2026/2026.md`, none in the store: arXiv 2611.08461 (Al-Sulaiti et
+  al.), 2611.08821 (Garrigues et al.) and 2611.10105 (Do et al.). Each
+  PDF was fetched once by the paced fetcher (arXiv stamp checked) and
+  enters at `seen` under `qml`. No new Quantum journal paper; 20 other
+  links carried to a later F114 release of the list; 0 routes added to
+  held papers.
+- **Applied 2026-11-21** after a verified backup
+  (`evidence-20261121T002232037690-sprint18-f114-roadmap-to-qml-release.db`).
+  Before the live apply, the release was applied twice to a copy of the
+  store: the second apply entered nothing, and the manifest kept its 3
+  entries. Papers in the store after it: 2,372.
+- **Huang 2023 is linked, not entered.** The PDF the team lead saved
+  into `Papers\` on 2026-11-07
+  (`2023_Huang_Noise-Resilient-Single-Pixel-Compressive-Sensing-with-Single-Photon.pdf`)
+  is the stored record `huang-2023-noise-resilient-single-pixel-compressive`
+  (at `seen`, access a Research Square DOI). The read's apply adds the
+  file to `access` with its SHA-256, as for every ledger download
+  (section 55).
+- **The 30, fixed by id** (`scripts/sprint18_f114_local.py`): g510 to
+  g513, four new one-paper ledger groups named by
+  `sprint13_g_ledger.new_groups` (F149, Task A), for Huang 2023 and the
+  3 list papers; g296-r1, a re-entry brief for the 3 records of g296
+  that Sprint 17 left unread (g296's own brief is Sprint 17's); and
+  g349 to g371, the first 23 one-paper groups of q20's split. g297 to
+  g329 are superseded; g335 to g347 hold F144's Batch API reads, not
+  applied, and are not this task's. Sprint 16's exclusions remove none
+  of the 26 ledger papers: each is one PDF. A second `--write` adds
+  nothing.
+- **Prompts.** `manifests/sprint18_f114_reads/READER_PROMPT.md` and
+  `REVIEW_PROMPT.md`: Sprint 17's, with every path set back to the main
+  checkout, and the quotes-first rule (team lead q28 = a, 2026-11-09)
+  added to the reader prompt. Telemetry stays in
+  `manifests/sprint16_f114_reads/telemetry/`. The first readers started
+  before their groups' telemetry files existed, so their check and
+  render steps were not recorded; each reader's tokens and minutes are
+  recorded from its completion notice.
+- **Reads, reviews and apply**: recorded below when they are done.

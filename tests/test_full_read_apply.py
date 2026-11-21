@@ -96,7 +96,7 @@ def test_a_confirmed_row_rebuilt_for_its_grade_keeps_its_other_fields(monkeypatc
         p = {"existing": [{"id": aid, "verdict": "confirmed"}]}
         monkeypatch.setattr(g, "verify", lambda conn=None: [(a, "src", p, Verified(aid, cc, row[0]))])
         monkeypatch.setattr(g, "load_groups", lambda: [])
-        monkeypatch.setattr(g, "write_anchor_moves", lambda c: [])
+        monkeypatch.setattr(g, "write_anchor_moves", lambda c, refused=None: [])
         g.apply_changes(conn)
         after = conn.execute("SELECT r.certainty, r.fidelity, f.claim_type, f.search_scope FROM records r JOIN "
                              "assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (aid,)).fetchone()
@@ -682,13 +682,17 @@ def test_a_row_decided_on_or_before_the_review_day_is_still_checked(monkeypatch,
         g.verify(conn)
 
 
-def test_a_field_no_review_item_names_is_listed(synthetic_store, monkeypatch):
+def test_a_field_no_review_item_names_is_refused(synthetic_store, monkeypatch):
     """Sprint 14 retrospective Q2: the reader's context replaced two stored contexts that no review decided, and the
-    trial on a copy did not show it. Every field the sync changes that no review item names is now a line of the
-    apply's log. Proven to fail by injection, 2026-10-31: with decided_fields naming every field, no line was
-    logged; with CONTEXT_FIX left out of it, the context the sign-off named was listed."""
+    trial on a copy did not show it. Until Sprint 18 every such field was a line of the apply's log, written anyway;
+    F147 (Sprint 18 Task B) refuses it before it is written, through store.ingest.sync_decided_assertion, so the
+    apply stops and names it. Proven to fail by injection, 2026-10-31 (as a log line): with decided_fields naming
+    every field, no line was logged; with CONTEXT_FIX left out of it, the context the sign-off named was listed.
+    Proven again, 2026-11-21: with apply_changes adding the value and the context to every decided set
+    (`| {"value", "context"}  # INJECTED`), the first case did not raise and went red. Restored."""
     from dataclasses import make_dataclass
-    from store import connect
+    from store import connect, ingest
+    from store.ingest import UndecidedField
     g = _script()
     # A dataclass, not a namespace: the applier rebuilds a confirmed row with dataclasses.replace (Sprint 15 MV)
     row = make_dataclass("Row", ["id", "context", "updated_reason", "updated", ("fidelity", object, None),
@@ -698,18 +702,20 @@ def test_a_field_no_review_item_names_is_listed(synthetic_store, monkeypatch):
     paper = {"record_id": "p", "existing": [{"id": "claim-one", "verdict": "confirmed"}]}
     monkeypatch.setattr(g, "load_groups", lambda: [])
     monkeypatch.setattr(g, "verify", lambda conn=None: [(a, "p", paper, None)])
-    monkeypatch.setattr(g, "sync_verified_assertion", lambda *args: ["value", "citation_context", "context"])
+    monkeypatch.setattr(ingest, "sync_verified_assertion", lambda *args: ["value", "citation_context", "context"])
     monkeypatch.setattr(g, "REQUOTE", {"claim-one": "fuller quotes"})
     monkeypatch.setattr(g, "CONTEXT_FIX", {"claim-one": "qml"})
     conn = connect(synthetic_store)
     try:
-        assert g.apply_changes(conn) == ["update claim-one [value, citation_context, context]",
-                                         "undecided claim-one [value]"]
+        with pytest.raises(UndecidedField, match=r"1 stored assertions with a field no review decided:\n"
+                                                 r"claim-one: no review decided value;"):
+            g.apply_changes(conn)
         monkeypatch.setattr(g, "VALUE_REPLACE", {"claim-one": "v2"})
         assert g.apply_changes(conn) == ["update claim-one [value, citation_context, context]"]
         paper["existing"][0]["verdict"] = "corrected"
         monkeypatch.setattr(g, "CONTEXT_FIX", {})
-        assert g.apply_changes(conn)[1:] == ["undecided claim-one [context]"]
+        with pytest.raises(UndecidedField, match=r"claim-one: no review decided context;"):
+            g.apply_changes(conn)
     finally:
         conn.close()
 
