@@ -4575,6 +4575,60 @@ is applied without the team lead's decision (F146's card).
 - **Pilot first.** One run of each part is handed out and checked before
   the rest; the run size is set from the pilot.
 - **Runs and results**: recorded below when they are done.
+- **Done, 2026-11-21** (counts from `f146_checks.py status` and a
+  read-only tally of the result files; a snapshot as of that date).
+  - **Size grew while it ran.** HIGH assertions went from 11,754 to
+    12,529 as Task D's papers were applied; the audit ran 63 runs, not
+    59, so that every one with quotes has a result: 12,524, plus the 5
+    with no quotes, listed and never sent. The map ran 6 runs over 490
+    pairs. Nothing was written to the store.
+  - **Controls: all right.** 189 of 189 audit controls came back "not
+    held" and 18 of 18 map controls "unrelated"; no run was flagged for a
+    control.
+  - **The audit**: 7,834 held, 4,672 held in part, 20 not held (12,526
+    answers; 2 sit under a mistyped id, below). "Held in part" means the
+    value says something its quotes do not: a named method, a condition,
+    a formula, or a quote cut off before its point. Readers' strictness
+    varied from about 50 to about 90 of each 200, so the count is a list
+    to review, not a defect rate.
+  - **The 20 "not held"**: in each, the quotes hold only a lead-in, a
+    title or a fragment, not the claim. 9 are one paper's lemmas (run
+    a034: `lemma-2-derivative-of-matrix-logarithm`,
+    `lemma-5-corollary-6-epsilon-universal-spoof`,
+    `lemma-9-walk-eigenvalues`, `lemma-10-bessel-truncation`,
+    `lemma-12-oblivious-amplitude-amplification-error`,
+    `lemma-13-error-decomposition`, `lemma-18-lagrange-gradient-error`,
+    `lemma-20-arcsin-fourier-approximation`,
+    `lemma-22-sampling-error-median`); the others are
+    `che-def3-nielsen-qcc`, `claim-1-derivative-of-inverse`,
+    `cyc-22-predicates-have-special-hl-support`,
+    `cyc-2009-thirteen-weighted-strategic-heuristics`,
+    `def-qubit-measurement-probability`, `def-qnn-hypothesis-space`,
+    `definition-weighted-squared-expectation`,
+    `gc-lemma-6-13-3-increasing-subsequence`, `pqc-spread-definition`,
+    `step-infidelity-definition` and
+    `yue-noisy-iteration-governed-by-master-equation`. Each is a
+    candidate for a re-quote or a lower grade, at the team lead's
+    decision.
+  - **The map**: 333 supports, 4 contradicts, 153 unrelated. Of the 333,
+    279 are not independent (one work under two records, a listing and
+    its paper, or one group's papers), as the screen's recall of 0
+    foretold; 54 are independent. The 4 contradictions: m002
+    `domingo-noise-fidelity-threshold-096` against
+    `table-i-optimal-gates-and-fidelity` (not independent); m004
+    `kmeans-datasets-setup` against `luca-dataset-wdbc` and against
+    `wang-ga-datasets-scope` (independent: 10 against 30 features for
+    one dataset); m005 `setup-crystal-and-focusing` against
+    `zhang19-ppln-crystal` (not independent: a 2 against 10 mm crystal).
+  - **Reader faults, disclosed.** Each reader was told to write once and
+    never edit. a008 edited its result once to fix a key. a018 shortened
+    one id and a030 mistyped one: each run is flagged, its other 199
+    answers kept, and the missed item was handed out again and answered.
+    Several readers ran a read-only key check by script after writing;
+    none judged an item by script.
+  - **Cost**: 69 runs, about 9.19 million subagent tokens and about 300
+    minutes of subagent time, on the subscription; no API spend. a063
+    took 36 minutes for 126 items, against about 3 for the others.
 
 ## 80. qubit-lab.ch's Evidence page (Sprint 18 Task E, F145)
 

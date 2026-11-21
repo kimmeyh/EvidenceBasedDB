@@ -15,6 +15,11 @@ this project keeps having to replace with a step.
 
 ### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
 
+- **docs**: F146 (Task C, #186) done: every HIGH assertion with quotes
+  (12,524) audited and every screened pair (490) mapped, by 69 subagent
+  runs; nothing written to the store. All 207 controls right. Audit:
+  7,834 held, 4,672 held in part, 20 not held. Map: 333 supports (279
+  not independent), 4 contradicts, 153 unrelated. Intake section 79.
 - **feat**: F148 (Task F): `scripts/doc_counts.py` prints the counts a
   document names (assertions by grade, HIGH and LOW by the basis each
   started from, papers by tier, ledger groups read and reviewed) from the
