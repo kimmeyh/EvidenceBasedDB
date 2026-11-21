@@ -15,14 +15,23 @@ this project keeps having to replace with a step.
 
 ### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
 
+- **feat**: F114 (Task D, #187): the 28 groups' first-pass reads (30
+  papers) in `manifests/sprint13_g_reads/`, each a byte copy of the
+  reader's work file and each checked with 0 problems against its brief;
+  reader telemetry recorded. g512 (Garrigues 2026, appendices on pages 16
+  to 47) is reviewed in two parts by page
+
 - **feat**: F147 (Task B, #185): `store.ingest.sync_decided_assertion`
   syncs a stored assertion only when every changed field is one its review
   decided; otherwise it rolls back a savepoint and raises UndecidedField.
   `scripts/full_read_apply.py` writes through it at both sync sites, and
-  an apply that meets an undecided field stops with nothing written (it
-  used to write the field and list it). `store.write_path.SYNC_FROZEN`
-  freezes the 24 one-time appliers (q2 = a; the plan said 23, corrected),
-  and refuses any other script that syncs directly.
+  an apply that meets an undecided field stops with nothing written and
+  names every such field at once (it used to write the field and list
+  it). `store.write_path.SYNC_FROZEN` freezes the 16 one-time appliers
+  that call `sync_verified_assertion`; the 6 of Sprints 9 and 10 that
+  call `sync_assertion` are LEGACY: 22 in all (q2 = a; the plan said 23,
+  and this entry said 24 at d9ec0b2, both counted from a text search that
+  included comments). Any other script that syncs directly is refused.
   `tests/test_sync_decided.py` and the reworked applier test, proven red 5
   ways
 
