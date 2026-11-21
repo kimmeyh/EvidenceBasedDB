@@ -13,7 +13,16 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-11-13 to 2026-11-19 (Sprint 18, in progress)
+### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
+
+- **fix**: F149 (Task A, #184): `scripts/sprint13_g_ledger.py` names a new
+  group from the highest gNNN number plus one, not the group count, and
+  refuses a name that is not gNNN; `main()` names groups only through
+  `new_groups`; `tests/test_g_ledger_next_group.py`, proven red 4 ways
+  (one added after the fresh-eyes review found the call site untested)
+
+- **process**: plan approved 2026-11-20 (q3 = a); issues #184 to #189;
+  status at Phase 4.1
 
 - **docs**: Sprint 18 plan records q1 = c (F146 runs on Claude Code
   subagents, no API spend, no key read) and q2 = a (F147 moves the live
