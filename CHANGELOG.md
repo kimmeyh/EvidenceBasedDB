@@ -15,6 +15,12 @@ this project keeps having to replace with a step.
 
 ### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
 
+- **docs**: F150 carded (team lead at Manual Validation): the full suite
+  runs once per sprint, before the Manual Validation hand-over; after
+  that, `run_suite.py --changed` per commit and CI on the PR. The rule
+  here was still "twice"; the card records how spamfilter-multi and
+  Phase 2 adapted, and why `--changed` stays the gate here (CI skips the
+  `live_store` tests).
 - **process**: Sprint 18 Manual Validation handed over: full suite
   1,744 passed, CI green on PR #183; q4 to q17 asked.
 - **process**: Sprint 18 enters Phase 5.1 (Tasks A to F done, #184 to

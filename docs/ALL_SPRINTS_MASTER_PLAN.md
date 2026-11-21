@@ -1093,6 +1093,64 @@ and in git. Remaining items below.
 - Acceptance: the script names a new group from the highest number plus one, with a test on a ledger with a gap, proven red.
 - Depends on: nothing. Target: the Sprint 18 plan.
 
+### Carded during Sprint 18 (2026-11-21)
+
+**F150. The full suite runs once per sprint, before the Manual Validation hand-over; after that, only the changed tests and CI (~30m) Priority 20** (NEW 2026-11-21, team lead at Sprint 18 Manual Validation: "all the other repositories have converted to only running the full suite once per sprint - once after development is complete and before the PR runs, prior to manual validation. At the end all that runs is a CI suite run. Have we adjusted to that and if not, can you write a sprint card for it")
+- Phase: Process (testing)
+- Value: this removes the second local full suite (about 6 minutes, and a
+  wait before `gh pr ready`) and gives this repository the same test rule
+  as spamfilter-multi and Phase 2.
+- Platform: `docs/SPRINT_EXECUTION_WORKFLOW.md` (the "full suite runs
+  twice per sprint" paragraph, line 78 on 2026-11-21);
+  `docs/SPRINT_CHECKLIST.md` (Phase 5 and Phase 7); `scripts/run_suite.py`
+  (module docstring, "the full suite runs twice a sprint", and
+  `full_run_already_passed`'s docstring); the sprint plan's "Full suite"
+  line (Sprint 12 to Sprint 18 plans copy it).
+- **Not adjusted yet (checked 2026-11-21).** The rule here is Sprint 11
+  retrospective I2 (team lead, 2026-10-23): twice, before the Manual
+  Validation hand-over and after the retrospective's improvements. F140 q7
+  (2026-11-07) only skips the second run when the tree and the store are
+  unchanged. No test pins "twice".
+- **How the other repositories adapted (read 2026-11-21):**
+  - spamfilter-multi: the full suite runs ONCE, at Phase 5.2, through
+    `scripts/run-full-suite.py` on an idle machine (Sprint 85 q6, F350
+    R-6); per change, only the changed files' tests plus the high risk
+    tier; "CI keeps the full suite". The origin is Sprint 64 IMP-6, team
+    lead 2026-09-03: "this only needs to be done once per sprint, more of
+    an integration test prior to manual validation as this kind of test is
+    time and token expensive". One leftover there: its 7.7.1 step still
+    says "analyzer + full suite green and push" after review fixes.
+  - hsbc-qfraud-phase2: at the push of the retrospective's improvement
+    commits, CI's full job starts (`gh workflow run ci.yml`), and after
+    `gh pr ready` the completion claim waits for that job
+    (`scripts/check_ci_status.py --wait --require-job full`;
+    `docs/SPRINT_CHECKLIST.md` Phase 7, F177 / Sprint 31 D17). No second
+    local full run.
+- **The difference here:** CI runs `-m "not live_store"` only, because the
+  store is not on CI. So "CI only at the end" would leave a store write
+  made after the hand-over (a Manual Validation regrade or a retrospective
+  apply) unchecked by CI. `run_suite.py --changed` already covers that: it
+  adds every `live_store` test file when the store's stamp changed since
+  the last passed run (Sprint 12 retrospective I1). So after the hand-over,
+  each commit is gated by `--changed`, and the end of the sprint is CI on
+  the PR.
+- The change: the workflow paragraph, the checklist and the runner's
+  docstrings say ONE full run per sprint, before the Manual Validation
+  hand-over; every later commit (Manual Validation fixes, the
+  retrospective's improvements) runs `python scripts/run_suite.py
+  --changed`; `gh pr ready` waits for CI green on the PR. A change to a
+  file every test depends on still makes `--changed` run the full suite,
+  as now. `full_run_already_passed` (F140 q7) stays: it still stops a
+  repeated full run on an unchanged tree.
+- Acceptance: the three places state the same rule; a test fails if
+  `docs/SPRINT_EXECUTION_WORKFLOW.md`, `docs/SPRINT_CHECKLIST.md` or
+  `scripts/run_suite.py` says the full suite runs twice, or if the
+  workflow stops naming `--changed` as the gate after the hand-over;
+  proven red by injection; the next sprint plan's "Full suite" line says
+  once.
+- Depends on: nothing. Target: Sprint 18's retrospective if the team lead
+  takes it now (q18), else the Sprint 19 plan.
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT
