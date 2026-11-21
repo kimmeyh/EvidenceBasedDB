@@ -15,6 +15,10 @@ this project keeps having to replace with a step.
 
 ### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
 
+- **process**: Sprint 18 enters Phase 5.1 (Tasks A to F done, #184 to
+  #189 closed), set with `scripts/set_status.py`. A first hand edit set
+  one of the two status fields; `tests/test_set_status.py` failed the
+  full suite on it, as built to.
 - **docs**: F146 (Task C, #186) done: every HIGH assertion with quotes
   (12,524) audited and every screened pair (490) mapped, by 69 subagent
   runs; nothing written to the store. All 207 controls right. Audit:
