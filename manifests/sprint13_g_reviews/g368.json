@@ -1,0 +1,156 @@
+{
+ "group": "g368",
+ "reviewed_on": "2026-11-21",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "local-hamiltonian-definition": [
+   "definition",
+   "Introduction p.1: the paper defines a local Hamiltonian and its norm and degree requirements in its own words."
+  ],
+  "z2-symmetry-definition": [
+   "definition",
+   "Introduction p.2: defines Z2-symmetric Hamiltonian and circuit (U X^n = X^n U) and says the symmetry is not imposed on individual gates."
+  ],
+  "z2-symmetric-state-definition": [
+   "definition",
+   "Introduction p.2: defines a Z2-symmetric state as X^n psi = +/- psi."
+  ],
+  "cheeger-expander-definition": [
+   "definition",
+   "Introduction p.2, Eq. (4): defines the Cheeger constant (min over 0<|S|<=n/2 of |boundary S|/|S|) and expander families (bounded degree, h(Gn) >= h > 0)."
+  ],
+  "nlts-property-definition": [
+   "definition",
+   "Introduction p.1: defines the NLTS property with both conditions (zero ground energy; energy > eps*n for depth-d circuits and n >= f(d)). Value matches the passage."
+  ],
+  "theorem1-ising-hamiltonian": [
+   "setup",
+   "p.2: the paper fixes degree-3 expanders (explicit constructions cited, but the value does not claim existence) and defines Hn as the ferromagnetic Ising model, Eq. (5). It checks each term acts on 2 qubits and each qubit is in 3 terms."
+  ],
+  "z2-symmetry-essential": [
+   "scope",
+   "p.2: the paper gives the reason. Hn is diagonal with product ground states |0^n> and |1^n>, so depth-0 non-symmetric circuits reach energy 0. The paper states the scope of Theorem 1 with its reason."
+  ],
+  "qaoa-circuit-depth": [
+   "proved result",
+   "p.3 states depth O(Dp); Lemma A.1 (p.6) proves d <= p(D+1) from an edge coloring (Vizing's theorem, a textbook graph result). The O(Dp) value matches."
+  ],
+  "lattice-limit-open": [
+   "stated limit",
+   "p.3: the paper states that for graphs without expansion, such as regular lattices, the arguments in the proof of Theorem 1 no longer apply. This is a limit of its own method."
+  ],
+  "lemma-a1-depth-general": [
+   "proved result",
+   "Lemma A.1, p.6: stated and proved by a (D+1)-edge-coloring (Vizing's theorem, textbook) with each color class a depth-1 layer of commuting ZZ rotations. Conditions match the quote."
+  ],
+  "lemma-a1-depth-bipartite": [
+   "proved result",
+   "Lemma A.1, p.6: D-regular bipartite graphs are D-edge-colorable (Konig's line coloring theorem, textbook), so depth <= pD. Stated and proved."
+  ],
+  "lemma-a2-gauge-invariance": [
+   "proved result",
+   "Lemma A.2, p.6: proved with H~ = X H X for X the product of X on L, X|+n> = |+n>, [X,B]=0. Maximum energies and expected energies match, so the ratios are equal. Checked."
+  ],
+  "range-definition": [
+   "definition",
+   "p.3: defines range R of a unitary on the cycle graph: U^dagger Z_j U supported on [j-R, j+R]."
+  ],
+  "theorem2-ring-bound": [
+   "proved result",
+   "Theorem 2, p.3: conditions (n even, Z2-symmetric U, range R < n/4) are stated and the bound (2R+1/2)/(2R+1) is proved on pp.3-4 (Eqs. 10-13). I checked Eq. (10), V = XU, Eq. (12) and the union-bound average. No cited theorem is used."
+  ],
+  "theorem2-tightness": [
+   "proved result",
+   "Tightness for n a multiple of 2R+1: proved in Lemma B.2, p.8 (built from Lemma B.1, p.7). I checked the segment count: each GHZ block gives 2p+1/2, times m blocks."
+  ],
+  "theorem2-proof-step-disagree": [
+   "proved result",
+   "p.3, Eq. (12): proved in the text. <+|V^dag Z_i V|+> = 0 by the X^n eigenvalue argument, and the disjoint supports of V^dag Z_j V and V^dag Z_k V for dist > 2R factor on the product state."
+  ],
+  "lemma-b1-ghz": [
+   "proved result",
+   "Lemma B.1, pp.7-8: stated with n = 2p+1 and proved by an explicit CNOT/CZ/RZ construction with a three-case range check. Checked the S-phase cancellation and the range cases."
+  ],
+  "theorem2-tight-circuit": [
+   "proved result",
+   "p.4 states the construction; Lemma B.2 (p.8) builds U = U1 U2 with GHZ blocks of 2p+1 qubits and proves it saturates the bound. The statement that U|+n> is a product of GHZ-like states on segments of 2R+1 matches."
+  ],
+  "rqaoa-proposal": [
+   "definition",
+   "p.4: the paper names and introduces its own algorithm RQAOA as a non-local modification of QAOA."
+  ],
+  "rqaoa-elimination-step": [
+   "definition",
+   "p.4, Eq. (15): the paper defines its own elimination step (largest |M_ij|, constraint Zj = sgn(M_ij) Zi, substitution)."
+  ],
+  "rqaoa-elimination-preserves-max": [
+   "proved result",
+   "p.4 states it; Appendix C.1 (pp.9-10, Eqs. C1-C7) derives it in general: the reduced problem's maximum equals the constrained maximum, with a map back. A short algebraic derivation in the paper."
+  ],
+  "rqaoa-recursion-stop": [
+   "definition",
+   "p.4: part of the paper's own algorithm design (one variable removed per step until nc variables remain)."
+  ],
+  "rqaoa-classical-finish": [
+   "definition",
+   "p.4 and Appendix C.3 (p.9): the paper defines the classical finish on nc variables and the role of nc. Algorithm design, not a result."
+  ],
+  "theorem3-local-classical": [
+   "proved result",
+   "Lemma D.1(ii), p.14: the 1-local uniform algorithm x_v = g(J_{v-1}, J_v) is given and the paper says 'easy to check'. I checked it: the pattern (s,s,1) gives x=1 only at 3a+1 when s_a=-1, and every edge is then satisfied (ratio 1). The printed '<x|H|x> = 1' is a normalized value, not the raw sum n."
+  ],
+  "theorem3-rqaoa-ratio-1": [
+   "proved result",
+   "Lemma D.2, pp.14-16, with Lemma C.1 (proved pp.11-12). I checked Eq. (D2) against Lemma C.1, the 1/2 versus 1/4 gap, the parity invariant (D9) and the induction. Family members have product J = 1, so they are unfrustrated. Caveats: the printed final counts read 'nc+1' and 'n+1' (a typo for nc and n; a ring cannot exceed nc), and the proof states no condition on nc for small rings. The conclusion C(x) = max is unaffected."
+  ],
+  "lemma-d2-rqaoa-optimal-1d": [
+   "proved result",
+   "Lemma D.2, pp.14-16: stated for any ring with J_k in {+1,-1} and proved by induction using Lemma C.1. Checked as for theorem3-rqaoa-ratio-1. Same typo in the final counts (nc+1 should be nc); the conclusion is unaffected."
+  ],
+  "rqaoa-optimal-1d-main-text": [
+   "proved result",
+   "p.4 states it; Lemma D.2 (pp.14-16) proves that level-1 RQAOA reaches the maximum cost for any ring of +/-1 couplings (ratio 1, the optimum). The quote and value match the lemma."
+  ],
+  "d2-more-examples-open": [
+   "stated limit",
+   "p.15: the authors say more general families where RQAOA ratios can be computed or bounded would be interesting. This states that their analytic RQAOA results cover only the families they treat (1D +/-1 rings). Judgment call: it is an open-problem sentence, not an explicit caveat."
+  ],
+  "c4-level1-two-point-formula": [
+   "proved result",
+   "Lemma C.1 (pp.11-12) states the explicit level-1 formula for <ZuZv> on general Ising Hamiltonians and proves it by identities (C10-C19). Evaluating it takes O(n) products. It generalizes Wang et al. [26], but the proof is in the paper and uses no theorem of theirs. Checked against Eq. (D2)."
+  ],
+  "sim-setup": [
+   "setup",
+   "Figure 1 caption, p.5: n = 32 (nc = 8) and n = 100 (nc = 30), 16 instances on random 3-regular graphs with random +/-1 couplings, level-1 QAOA and RQAOA. Matches the value."
+  ],
+  "sim-ratio-definition": [
+   "definition",
+   "Figure 1 caption, p.5: defines the approximation ratio as <z|Hn|z>/Emax with z the algorithm's output and Emax the maximum over z."
+  ]
+ },
+ "theory_low": {
+  "theorem1-nlts-z2": "Theorem 1, p.2, is stated with conditions, but its proof (p.2) takes Fact 1, Corollary 43 of Eldar and Harrow [8], as the key step (Eq. 2 to Eq. 3). A proof that uses a specific other paper's theorem is not a proved result here.",
+  "theorem1-appendix-restatement": "Appendix A restates Theorem 1 (p.6) with the energy bound garbled in the text layer. Its only proof is the p.2 argument, which rests on Fact 1 from Eldar and Harrow [8]. Not a proved result in this paper.",
+  "theorem1-intermediate-bound": "Eq. (3) follows from Fact 1 (Corollary 43 of Eldar and Harrow [8]) applied to S and S'. The step depends on that cited result.",
+  "theorem1-final-step": "The arithmetic is in the paper, but it combines Eq. (3), which rests on Fact 1 (Eldar and Harrow [8], Corollary 43). The conclusion 'This proves Theorem 1' depends on that cited result.",
+  "corollary1-qaoa-bound": "Corollary 1 (p.3, proof p.7) depends on Theorem 1 (which rests on Fact 1 of Eldar and Harrow [8]), on the existence of bipartite Ramanujan graphs [24,25], and on a cited bound h/D for Ramanujan graphs. The bound itself is garbled in the quotes.",
+  "corollary1-rhs-large-d": "Reading of Eq. (8) at large D (5/6 plus a term that vanishes). Eq. (8) is Corollary 1, which is not a proved result here (cited results as steps). This is an authors' remark on it.",
+  "corollary1-vs-goemans-williamson": "An authors' interpretation: it cites a conjecture [20] and the 0.878 figure for Goemans-Williamson [21], and rests on Corollary 1. Not settled by the paper itself.",
+  "bipartite-maxcut-ratio": "textbook, stated not proved (F129): that a bipartite graph has maximum cut |E| is stated without proof. The second quote is a reading of Eq. (8).",
+  "qaoa-geometrically-local": "p.3: an authors' claim stated without proof. It is not clear in what geometry the D-regular expander circuit has nearest-neighbor gates. Not a proved result.",
+  "corollary1-proof-ramanujan": "p.7: the existence of the infinite bipartite D-regular Ramanujan family is taken from [24,25], and the bound h/D for Ramanujan graphs is cited without proof. Cited results, not proved here.",
+  "theorem3-family": "The value covers items (i) to (iii). Item (ii) (Lemma D.1(i), p.14) takes the QAOA bound for the ring of disagrees from Mbeng et al. [22], a specific other paper's result. Graded by the weaker part. The count 2^(n/3) is right (2^(2r), n = 6r). Note: the printed gauge operator X-bar(s) in Lemma D.1 is a product over all a, which drops the s dependence (a slip; it should run over a with s_a = 1).",
+  "theorem3-qaoa-bound": "Lemma D.1(i), p.14: proved by Lemma A.2 plus the bound QAOA_p(ring MaxCut) <= (2p+1)/(2p+2), taken from Mbeng et al. [22]. A proof that uses a specific other paper's result is LOW. This paper's own Theorem 2 gives a weaker bound for QAOA at p=1.",
+  "d1-exponential-instances": "Appendix D.1 p.13 claims classical local algorithms beat QAOA on 2^(n/3) instances. The QAOA side (Lemma D.1(i)) rests on Mbeng et al. [22], a cited result. The sentence is also a preview, not a statement with conditions.",
+  "c4-simulation-cost": "p.11: an informal count (O(n^2) terms, O(n) each, about n steps). It does not account for optimizing the level-1 angles (beta, gamma). A bound argued informally is not a proved result.",
+  "c4-cost-independent-of-depth": "p.11: an authors' remark. The formula applies to level-1 QAOA on the current Hamiltonian, so it is plausible, but the paper gives no argument beyond the formula.",
+  "c4-level1-ising-simulable": "p.13: an authors' conclusion that rests on the informal cost count of p.11 (c4-simulation-cost). Not a proved result in this paper.",
+  "c4-quantum-advantage-open": "p.13: the value holds two claims. 'Not known to be classically simulable' is a statement about the state of knowledge in the field, and 'leaving room for a quantum advantage' is an authors' interpretation. Neither is a stated limit of the paper's own results.",
+  "c-nonlocality-complications": "p.13: the value holds two claims. 'Will typically increase the degree of non-locality' is an unproved authors' claim. 'Lack a simple analytic formula (as far as we know)' is a hedged knowledge statement. Graded by the weaker.",
+  "abstract-gw-vs-qaoa": "Abstract, p.1: an authors' summary of Corollary 1 ('a surprising consequence'). Corollary 1 rests on cited results, and the claim compares with the Goemans-Williamson algorithm, a cited result."
+ },
+ "keep_stored": {},
+ "requote": {}
+}

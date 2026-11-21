@@ -87,7 +87,7 @@ def test_a_later_review_of_the_row_keeps_the_team_leads_grade(monkeypatch, live_
     a = replace(a, updated="2026-12-01", updated_reason=f"2026-12-01 (a later review): {fra.FULL_READ_MARK}: regraded")
     monkeypatch.setattr(fra, "verify", lambda conn=None: [(a, rid, p, Verified(aid, a.citation_context, a.value))])
     monkeypatch.setattr(fra, "load_groups", lambda: [])
-    monkeypatch.setattr(fra, "write_anchor_moves", lambda c: [])
+    monkeypatch.setattr(fra, "write_anchor_moves", lambda c, refused=None: [])
     conn = connect(live_copy)
     try:
         fra.apply_changes(conn)

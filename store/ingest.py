@@ -727,6 +727,37 @@ def sync_verified_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, v
     return sync_assertion(conn, wanted, note, today)
 
 
+class UndecidedField(ValueError):
+    """A sync would change a stored field that no review decided (F147)."""
+
+
+def sync_decided_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, verified: Verified, note: str,
+                           today: str, decided: set[str]) -> list[str]:
+    """F147 (Sprint 18 Task B): `sync_verified_assertion`, refused when it would change a field not in `decided`.
+
+    `decided` is the set of field names the review decided for this assertion (the names `sync_assertion` returns).
+    The sync runs inside a savepoint; when any changed field is not decided, the savepoint is rolled back, so nothing
+    of this assertion is written, and UndecidedField names each undecided field. Before F147 the live applier wrote
+    such a field and only listed it afterwards ("undecided" in its log); the defect reached the store 4 times
+    (4d969d9, ed5ab01, aabdd49, d740d72). Every applier from Sprint 18 on writes a stored assertion through this
+    function; the one-time appliers of Sprints 9 to 17 are frozen by `tests/test_sync_decided.py`."""
+    if not conn.in_transaction:  # so RELEASE below never commits the caller's work on its own
+        conn.execute("BEGIN")
+    conn.execute("SAVEPOINT sync_decided")
+    try:
+        changed = sync_verified_assertion(conn, wanted, verified, note, today)
+        undecided = [c for c in changed if c not in decided]
+        if undecided:
+            raise UndecidedField(f"{wanted.id}: no review decided {', '.join(undecided)}; nothing written for it")
+    except BaseException:
+        if conn.in_transaction:  # SQLite may have rolled the whole transaction back itself (a full disk, an I/O
+            conn.execute("ROLLBACK TO sync_decided")  # error); then the savepoint is gone and the first error stands
+            conn.execute("RELEASE sync_decided")
+        raise
+    conn.execute("RELEASE sync_decided")
+    return changed
+
+
 def sync_assertion(conn: sqlite3.Connection, wanted: AssertionRecord, note: str, today: str) -> list[str]:
     """Bring a stored assertion to `wanted`, field by field; return the names
     of the fields that changed (empty when it already matched). The note,

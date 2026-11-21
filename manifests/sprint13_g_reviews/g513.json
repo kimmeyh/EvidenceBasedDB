@@ -1,0 +1,171 @@
+{
+ "group": "g513",
+ "reviewed_on": "2026-11-21",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "qnm-definition": [
+   "definition",
+   "Abstract p.1 and Section 1 p.2 define QNM as the value says; Section 3 and Algorithm 1 agree."
+  ],
+  "da-qnm-definition": [
+   "definition",
+   "Section 1 p.2 and Section 3.3 p.4 define DA-QNM and state the radius rule is not claimed as new. Read in context."
+  ],
+  "qnm-momentum-in-natural-gradient-space": [
+   "definition",
+   "Section 3.1 p.3, Equation 4 and Algorithm 1 steps 5 and 6 define the momentum on u_t. The quoted sentence is the authors' own framing of that definition."
+  ],
+  "qnm-solve-not-invert": [
+   "setup",
+   "Section 3.1 p.3 and Algorithm 1 step 5 state that G_t u_t = g_t is solved."
+  ],
+  "qnm-polar-mixing-definition": [
+   "definition",
+   "Section 3.2 p.4, Equations 8 and 9 and Algorithm 1 steps 13 and 14 define the mixed block and the Frobenius-matched scale c."
+  ],
+  "da-qnm-radius-rule": [
+   "definition",
+   "Section 3.3 p.4, Equation 11 defines r_t as the minimum of three terms. The role descriptions are the paper's own text for that definition."
+  ],
+  "qnm-block-choices-per-task": [
+   "setup",
+   "Section 3.1 p.3 states the block choice per task. Appendix C.1 p.22 adds that VQE also ran gate and global variants; this does not contradict the statement."
+  ],
+  "assumption-1-smoothness": [
+   "definition",
+   "Section 4 p.4 states Assumption 1 as the value says. It is the paper's own hypothesis, not a result."
+  ],
+  "assumption-2-damped-qfim-bounded": [
+   "definition",
+   "Section 4 p.4 states Assumption 2 with the quoted bounds. It is the paper's own hypothesis."
+  ],
+  "assumption-3-block-decomposition": [
+   "definition",
+   "Section 4 p.4 states Assumption 3. Appendix B.1 p.12 says it holds for a disjoint partition with reshape maps; that is an immediate norm identity, so the second clause adds no unproved claim."
+  ],
+  "assumption-4-alignment": [
+   "definition",
+   "Section 4 p.5 states Assumption 4 as the value says. It is the paper's own hypothesis."
+  ],
+  "prop-1-counterexample-proof": [
+   "proved result",
+   "Appendix B.3 p.14. Explicit 2x2 counterexample: A = diag(2,1), M = I, G^-1 = I (x) A. Checked: Polar(A) = I, A*Polar(I) = A, so the two orders differ. The paper notes the simplified operator is an instance of A_{t,s} for a block-diagonal metric."
+  ],
+  "theorem-1-polar-steepest-direction": [
+   "proved result",
+   "Theorem 1 p.5, proof Appendix B.2 p.13. The proof bounds <M,D> by trace(Sigma A) with |A_ii| <= 1, then shows UV^T attains it, and treats M = 0. Self-contained."
+  ],
+  "proposition-2-polar-active-spectrum": [
+   "proved result",
+   "Proposition 2 p.5, proof Appendix B.4 p.14. P P^T and P^T P are rank-r projectors, so active singular values equal one."
+  ],
+  "proposition-3-frobenius-matched-scaling": [
+   "proved result",
+   "Proposition 3 p.5, proof Appendix B.5 p.14 to p.15. Uses ||P||_F = sqrt(r) from Proposition 2, then ||cP||_F = ||M||_F and every active singular value of cP equals ||M||_F/sqrt(r). Both clauses of the value are proved. Condition M nonzero is in the statement."
+  ],
+  "proposition-4-spectral-floor": [
+   "proved result",
+   "Proposition 4 p.5, proof Appendix B.6 p.15. D = U((1-a)Sigma + a c I)V^T is a compact SVD, so the subspaces match and sigma_i >= a c. Conditions: M nonzero, alpha in [0,1]."
+  ],
+  "corollary-1-condition-number-improvement": [
+   "proved result",
+   "Corollary 1 p.5, proof Appendix B.7 p.15. Cross-multiplication reduces it to a c sigma_r <= a c sigma_1, strict when a > 0, c > 0, sigma_1 > sigma_r. Relies on Proposition 4, proved in the paper."
+  ],
+  "lemma-1-polar-mixing-perturbation": [
+   "proved result",
+   "Lemma 1 p.6, proof Appendix B.8 p.16. Triangle inequality and ||cP||_F = ||M||_F; M = 0 case covered."
+  ],
+  "theorem-2-descent-controlled-perturbation": [
+   "proved result",
+   "Theorem 2 p.6, proof Appendix B.9 p.16. Uses Assumptions 1 and 2, <g,u> >= mu||u||^2, ||g|| <= Lambda||u||, then the smoothness bound. The step-size bound is proved."
+  ],
+  "corollary-2-no-momentum-descent": [
+   "proved result",
+   "Corollary 2 p.6, proof Appendix B.10 p.17. Lemma 1 plus norm consistency gives epsilon <= 2 alpha; then Theorem 2 (proved in the paper) applies. Conditions: no momentum, single block, norm-consistent reshape."
+  ],
+  "corollary-3-momentum-descent": [
+   "proved result",
+   "Corollary 3 p.6, proof Appendix B.11 p.17. Blockwise Lemma 1 with Assumption 3 gives ||d-m|| <= 2 alpha||m||, then the triangle inequality; Theorem 2 closes it. All steps are in the paper."
+  ],
+  "corollary-4-alignment-of-normalized-direction": [
+   "proved result",
+   "Corollary 4 p.6, proof Appendix B.12 p.18. Checked: <g,d> >= (mu - zeta Lambda)||u||^2, ||d||+eps <= (1+zeta+tau)||u||, ||g|| <= Lambda||u||, giving chi = (mu - zeta Lambda)/(Lambda(1+zeta+tau)). The value carries the conditions (zeta < mu/Lambda, eps <= tau||u||). Complete proof, no cited result."
+  ],
+  "theorem-3-descent-normalized-update": [
+   "proved result",
+   "Theorem 3 p.6, proof Appendix B.13 p.18 to p.19. Smoothness, Assumption 4 and ||q|| <= 1 give C(theta+) <= C - r chi||g|| + (L/2) r^2; the bound 0 < r < 2 chi||g||/L follows. Complete."
+  ],
+  "theorem-4-stationarity-generated-radius": [
+   "proved result",
+   "Theorem 4 p.6, proof Appendix B.14 p.19 to p.20. The text layer garbles the statement, but the proof shows the conditions (eta b_m <= chi/L, Delta_0 and R_max >= eta a_m G_max) and the O(1/T) bound with constant 2(C(theta_0) - C*)/(chi eta a_m T). Uses Theorem 3 and Assumption 5, both in the paper. Complete."
+  ],
+  "theorem-5-natural-gradient-perturbation": [
+   "proved result",
+   "Theorem 5 p.6, proof Appendix B.15 p.20 to p.21. Weyl inequality, inverse-difference identity, triangle inequality. Each step checked. Condition delta_F < mu is stated. The damping remark follows from mu >= lambda."
+  ],
+  "theorem-6-fixed-scale-stationarity": [
+   "proved result",
+   "Theorem 6, Appendix B.16 p.21 to p.22. Proved by smoothness and telescoping, with conditions nu, B and gamma < 2 nu/(L B^2). The paper calls it auxiliary, as the value says."
+  ],
+  "vqe-setup-tfim-four-layer": [
+   "setup",
+   "Section 5.1 p.7 and Appendix C.1 p.22 state the Hamiltonian, ansatz, metric and exact diagonalization."
+  ],
+  "qaoa-setup-weighted-maxcut-instance": [
+   "setup",
+   "Section 5.2 p.7 and Appendix C.2 p.22 give n = 10, 23 edges, p = 3 and C* = 17.818521 by exhaustive enumeration."
+  ],
+  "qaoa-single-instance-stated-limit": [
+   "stated limit",
+   "Section 5.2 p.7 and Appendix C.2 p.22 to p.23 state it is a controlled component diagnostic on one instance, not a broad benchmark, and that no broad QAOA dominance is claimed."
+  ],
+  "qaoa-hyperparameters": [
+   "setup",
+   "Appendix C.6 p.27 lists the quoted hyperparameters for the DA-QNM QAOA run."
+  ],
+  "mechanism-diagnostic-metric-definitions": [
+   "definition",
+   "Section 5 p.7 defines kappa_act and effective rank on structured momentum blocks."
+  ],
+  "iris-setup-two-qubit-reuploading": [
+   "setup",
+   "Section 5.4 p.8 and Appendix C.4 p.24 state the classifier, 2x2x3 tensor, d = 12 and the empirical QGT/QFIM."
+  ],
+  "iris-setup-data-pipeline": [
+   "setup",
+   "Appendix C.4 p.23: the two tasks, stratified splits, PCA fit on the training split to two dimensions, scaling map fit on the training split. All clauses are in that passage."
+  ],
+  "iris-empirical-supervised-qfim-definition": [
+   "definition",
+   "Appendix C.4 p.25, Equations 139 to 141 define the mini-batch QFIM; the readout exclusion and the Diag-QNM definition are stated in the same passage."
+  ],
+  "iris-small-study-stated-limit": [
+   "stated limit",
+   "Section 5.4 p.8 and Appendix C.4 p.25 state the study is small and not a broad benchmark or state-of-the-art claim."
+  ],
+  "finite-shot-setup": [
+   "setup",
+   "Appendix C.5 p.26: 70 steps, five seeds, training on exact or sampled values, exact final evaluation. The isolation sentence follows from that protocol."
+  ],
+  "finite-shot-no-probabilistic-guarantee-stated-limit": [
+   "stated limit",
+   "Section 5.4 p.8 and Appendix C.5 p.26 state the results are empirical robustness evidence, not a shot-noise guarantee, and leave the analysis to future work."
+  ],
+  "implementation-statevector-simulation": [
+   "setup",
+   "Appendix C.6 p.27 states statevector simulation, sampled training observables, and matched instances, seeds and initialization where applicable."
+  ],
+  "future-work-stated-limits": [
+   "scope",
+   "Section 6 p.8 names what the work does not yet cover: scalable QFIM approximations, finite-shot theory, larger hardware-noisy settings. The reader typed it measured; the true type is scope."
+  ]
+ },
+ "theory_low": {
+  "damping-lower-bound-mu-equals-lambda": "Remark 2, Appendix B.1 p.12. The mu = lambda step is a one-line consequence of F >= 0, which is assumed, not proved. The upper-bound clause (natural for finite-dimensional circuits with bounded generators on compact domains) is an informal remark with no proof. It is a remark, not a theorem.",
+  "prop-1-noncommutativity": "Section 4 p.5 and Remark 1 p.4. The paper proves only that the two orders can differ (counterexample, Appendix B.3). The clause that equality would require restrictive compatibility, such as isotropic action, is stated without proof. Graded by the weaker clause. The existence claim alone is the item prop-1-counterexample-proof."
+ },
+ "keep_stored": {},
+ "requote": {}
+}

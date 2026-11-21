@@ -6,6 +6,21 @@ F12). Status: **in force** for papers, repositories and references;
 `scripts/intake.py`. Amend by dated section at the bottom, not by silent
 edit, once a design choice here has shipped records.
 
+**The store's current counts** (F148, Sprint 18 Task F). The block below is
+written by `scripts/doc_counts.py --write docs/INTAKE_WORKFLOW.md` and never
+typed; `tests/test_doc_counts.py` fails when it no longer matches the store.
+The counts in the dated sections below are snapshots as of their own dates.
+
+<!-- doc_counts: begin (written by scripts/doc_counts.py; do not edit by hand) -->
+Counts from the store as of 2026-11-21, printed by `scripts/doc_counts.py` (never typed):
+
+- Assertions: 40,112 (HIGH 12,529, MODERATE 97, LOW 27,483, VERY-LOW 1, UNGRADED 2).
+- HIGH by the basis it started from: the paper's own setup 3,845; the paper's own definition 2,717; the paper's own stated limit 2,308; the paper's own proved result 1,650; the paper's own scope 1,432; a result proved in the paper 384; other 193.
+- LOW by the basis it started from: an empirical result from one study 8,735; the authors' own claim 7,644; a claim the source cites from other work 5,459; a theoretical result 4,333; vendor primary documentation of its own product 757; a statement about the field 382; the authors' own claim or a claim they cite 133; other 40.
+- Papers and other sources: 2,373 (read 1,853, seen 520).
+- Ledger groups: 513; with a read file 205; with a review file 192.
+<!-- doc_counts: end -->
+
 ## 1. The one rule
 
 **Every source type converges on the same store-update step:**
@@ -4441,3 +4456,303 @@ group keeps a dated "superseded" note. Nothing is deleted.
   nothing. `tests/test_sprint17_q20_split.py` guards the committed
   ledger: each record in one group, and each note pointing at its
   paper's own group. Each check was proven red.
+
+## 78. F114 at 30 papers, under Sprint 18's prompts (Sprint 18 Task D)
+
+Every count is a snapshot as of 2026-11-21. **This section was written
+after the list release was applied, not before it**: the rule (sections
+11 to 13) was missed, and `tests/test_intake.py` caught the unnamed
+manifest at the next gate. The release is described here as it ran.
+
+- **Roadmap-to-QML, 399b022651 to 7113ded1df** (Christophe Pere's list;
+  7113ded1df, 2026-11-10, was still the head on 2026-11-21).
+  `scripts/sprint18_f114_roadmap.py` runs Sprint 16's release code
+  (`scripts/sprint16_f114_roadmap.py`, itself F104's) at this release's
+  commits. The list's 13 files are saved under
+  `References\Roadmap-to-QML_7113ded1df\`, outside git, each with its
+  SHA-256 in the manifest (`manifests/sprint18_f114_roadmap.json`).
+  1,457 arXiv ids listed; 3 newly linked since 399b022651, all in
+  `2026/2026.md`, none in the store: arXiv 2611.08461 (Al-Sulaiti et
+  al.), 2611.08821 (Garrigues et al.) and 2611.10105 (Do et al.). Each
+  PDF was fetched once by the paced fetcher (arXiv stamp checked) and
+  enters at `seen` under `qml`. No new Quantum journal paper; 20 other
+  links carried to a later F114 release of the list; 0 routes added to
+  held papers.
+- **Applied 2026-11-21** after a verified backup
+  (`evidence-20261121T002232037690-sprint18-f114-roadmap-to-qml-release.db`).
+  Before the live apply, the release was applied twice to a copy of the
+  store: the second apply entered nothing, and the manifest kept its 3
+  entries. Papers in the store after it: 2,372.
+- **Huang 2023 is linked, not entered.** The PDF the team lead saved
+  into `Papers\` on 2026-11-07
+  (`2023_Huang_Noise-Resilient-Single-Pixel-Compressive-Sensing-with-Single-Photon.pdf`)
+  is the stored record `huang-2023-noise-resilient-single-pixel-compressive`
+  (at `seen`, access a Research Square DOI). The read's apply adds the
+  file to `access` with its SHA-256, as for every ledger download
+  (section 55).
+- **The 30, fixed by id** (`scripts/sprint18_f114_local.py`): g510 to
+  g513, four new one-paper ledger groups named by
+  `sprint13_g_ledger.new_groups` (F149, Task A), for Huang 2023 and the
+  3 list papers; g296-r1, a re-entry brief for the 3 records of g296
+  that Sprint 17 left unread (g296's own brief is Sprint 17's); and
+  g349 to g371, the first 23 one-paper groups of q20's split. g297 to
+  g329 are superseded; g335 to g347 hold F144's Batch API reads, not
+  applied, and are not this task's. Sprint 16's exclusions remove none
+  of the 26 ledger papers: each is one PDF. A second `--write` adds
+  nothing.
+- **Prompts.** `manifests/sprint18_f114_reads/READER_PROMPT.md` and
+  `REVIEW_PROMPT.md`: Sprint 17's, with every path set back to the main
+  checkout, and the quotes-first rule (team lead q28 = a, 2026-11-09)
+  added to the reader prompt. Telemetry stays in
+  `manifests/sprint16_f114_reads/telemetry/`. The first readers started
+  before their groups' telemetry files existed, so their check and
+  render steps were not recorded; each reader's tokens and minutes are
+  recorded from its completion notice.
+- **Five reader ids renamed after review.** g510's
+  `data-availability-on-request` and g352's `review-scope`,
+  `vqe-definition`, `qaoa-definition` and `schwinger-model-definition` were
+  already other sources' (stored, or new in g119, g099 and g351). Each
+  takes its paper's author and year as a prefix, as
+  `scripts/f117_build_groups.py` does before review; the decisions and
+  items were renamed with the read. The applier's ID_FIX cannot do this:
+  it is keyed by reader id across every group. The local read checker does
+  not yet look for an id another source holds.
+- **Reviews.** 28 groups, 30 papers, each first-pass read reviewed by a
+  Sonnet subagent under `REVIEW_PROMPT.md`; g512 (Garrigues 2026, an
+  appendix of 32 pages) split by page across two reviewers. Finalized
+  2026-11-21: 775 HIGH, and 288 theoretical results kept LOW with their
+  cause; every item was a new assertion, so no escalation.
+- **Applied 2026-11-21** after a verified backup
+  (`evidence-20261121T052359269600-sprint18-sprint-13-task-g-f113-and-sprint-14-task.db`).
+  First on two copies of the store: the applier before Task B (22c1b2b)
+  and after it wrote identical rows in every table, and a second apply
+  on the copy changed nothing. Live: 2,688 assertions entered from 30
+  papers; records 39,780 to 42,468; the live store matches the trial
+  copy table for table, and a second live apply checked 0 quotes and
+  changed nothing.
+
+## 79. The HIGH audit and the agreement map, by subagents (Sprint 18 Task C, F146)
+
+Every count is a snapshot as of 2026-11-21. Written before any run's input
+is handed out. **Nothing here writes the store**: results are proposals,
+kept outside git in `D:\Data\Harold\EvidenceBasedDB\work\f146\`, and none
+is applied without the team lead's decision (F146's card).
+
+- **How it runs (team lead q1 = c, 2026-11-19).** Claude Code Sonnet 5.5
+  subagents on the subscription; no API spend, no key read.
+  `scripts/f146_checks.py` opens the store read-only, writes each run's
+  input file, and checks each result file. Prompts:
+  `manifests/sprint18_f146/AUDIT_PROMPT.md` and `MAP_PROMPT.md`.
+- **F144's rules as they apply.** Dry run by default; a forecast before
+  any write; `--max-runs` caps the runs one write hands out; a saved
+  result is never run again (an item left out of its result is handed
+  out again); a failing result is kept and flagged, never dropped; each
+  input carries 3 control items whose answer is known, and a wrong
+  control flags the whole run. Not applicable under q1 = c: the dollar
+  cap, the stop date and the key. `tests/test_f146_checks.py` holds one
+  test per rule; its docstring lists the injection that turned each red.
+- **The HIGH audit's size.** 11,754 HIGH assertions; 5 have no quotes and
+  are listed, never sent; 11,749 in 59 runs of up to 200, about 8.6
+  million characters of input in all (about 146,000 a run: a run of 300
+  came near the 256 KB limit on one Read).
+- **Controls look like items.** An audit control's id is a real
+  assertion's id with a short suffix, and a map control's is a pair of real
+  ids; only the state file knows which they are. A map verdict of
+  supports or contradicts needs a quote of 15 characters or more from each
+  side, each verbatim in its side.
+- **The agreement map's screen (it replaces the Haiku screen).** Each
+  assertion's nearest neighbor from another paper that shares a context,
+  by idf-weighted overlap of words and numbers, at a cosine of 0.35 or
+  more: 492 pairs, in 5 runs of up to 100. **Its recall is 0**: of the
+  store's 24 judged relations between extracted assertions of two
+  different papers, the screen keeps none (a word-overlap screen at
+  every setting tried kept at most 11 of 42 relations in all, and the
+  ranked one 1 of 42 at its widest). Those relations link differently
+  worded claims; a lexical screen finds restatements. The map therefore
+  shows near-restatements across papers, many of one work under two
+  records, which is why each verdict carries an independence answer.
+  This limit goes to the team lead at Manual Validation.
+- **Pilot first.** One run of each part is handed out and checked before
+  the rest; the run size is set from the pilot.
+- **Runs and results**: recorded below when they are done.
+- **Done, 2026-11-21** (counts from `f146_checks.py status` and a
+  read-only tally of the result files; a snapshot as of that date).
+  - **Size grew while it ran.** HIGH assertions went from 11,754 to
+    12,529 as Task D's papers were applied; the audit ran 63 runs, not
+    59, so that every one with quotes has a result: 12,524, plus the 5
+    with no quotes, listed and never sent. The map ran 6 runs over 490
+    pairs. Nothing was written to the store.
+  - **Controls: all right.** 189 of 189 audit controls came back "not
+    held" and 18 of 18 map controls "unrelated"; no run was flagged for a
+    control.
+  - **The audit**: 7,834 held, 4,672 held in part, 20 not held (12,526
+    answers; 2 sit under a mistyped id, below). "Held in part" means the
+    value says something its quotes do not: a named method, a condition,
+    a formula, or a quote cut off before its point. Readers' strictness
+    varied from about 50 to about 90 of each 200, so the count is a list
+    to review, not a defect rate.
+  - **The 20 "not held"**: in each, the quotes hold only a lead-in, a
+    title or a fragment, not the claim. 9 are one paper's lemmas (run
+    a034: `lemma-2-derivative-of-matrix-logarithm`,
+    `lemma-5-corollary-6-epsilon-universal-spoof`,
+    `lemma-9-walk-eigenvalues`, `lemma-10-bessel-truncation`,
+    `lemma-12-oblivious-amplitude-amplification-error`,
+    `lemma-13-error-decomposition`, `lemma-18-lagrange-gradient-error`,
+    `lemma-20-arcsin-fourier-approximation`,
+    `lemma-22-sampling-error-median`); the others are
+    `che-def3-nielsen-qcc`, `claim-1-derivative-of-inverse`,
+    `cyc-22-predicates-have-special-hl-support`,
+    `cyc-2009-thirteen-weighted-strategic-heuristics`,
+    `def-qubit-measurement-probability`, `def-qnn-hypothesis-space`,
+    `definition-weighted-squared-expectation`,
+    `gc-lemma-6-13-3-increasing-subsequence`, `pqc-spread-definition`,
+    `step-infidelity-definition` and
+    `yue-noisy-iteration-governed-by-master-equation`. Each is a
+    candidate for a re-quote or a lower grade, at the team lead's
+    decision.
+  - **The map**: 333 supports, 4 contradicts, 153 unrelated. Of the 333,
+    279 are not independent (one work under two records, a listing and
+    its paper, or one group's papers), as the screen's recall of 0
+    foretold; 54 are independent. The 4 contradictions: m002
+    `domingo-noise-fidelity-threshold-096` against
+    `table-i-optimal-gates-and-fidelity` (not independent); m004
+    `kmeans-datasets-setup` against `luca-dataset-wdbc` and against
+    `wang-ga-datasets-scope` (independent: 10 against 30 features for
+    one dataset); m005 `setup-crystal-and-focusing` against
+    `zhang19-ppln-crystal` (not independent: a 2 against 10 mm crystal).
+  - **Reader faults, disclosed.** Each reader was told to write once and
+    never edit. a008 edited its result once to fix a key. a018 shortened
+    one id and a030 mistyped one: each run is flagged, its other 199
+    answers kept, and the missed item was handed out again and answered.
+    Several readers ran a read-only key check by script after writing;
+    none judged an item by script.
+  - **Cost**: 69 runs, about 9.19 million subagent tokens and about 300
+    minutes of subagent time, on the subscription; no API spend. a063
+    took 36 minutes for 126 items, against about 3 for the others.
+
+## 80. qubit-lab.ch's Evidence page (Sprint 18 Task E, F145)
+
+Every count is a snapshot as of 2026-11-21. Written before the apply;
+the apply and the second review's corrections are recorded at the end.
+
+- **Saved once each** (UA "EvidenceBasedDB-fetcher/1.0") into
+  `References\qubit-lab_evidence_2026-11-21\`, outside git:
+  `evidence.html` (495,991 bytes) and `evidence-runs.json` (30,562
+  bytes, version 1.0, 13 records), each with its SHA-256 in the record's
+  `evidence`. Both read in full: about 83,000 characters of page text and
+  every field of the 13 records.
+- **One source record**, `qubit-lab-2026-evidence-method-studies-published-runs`,
+  kind `reference`, tier `read`, applicable to `qml`, `qc` and `method`. Its
+  disposition names the conflict of interest: qubit-lab.ch sells the RQP
+  platform whose runs the page reports.
+- **16 assertions, all `vendor-self-claim`, all LOW** with the store's
+  one fixed vendor reason (`low_grade("vendor claim")`, the text 657 of
+  the 754 stored vendor claims carried before this apply); each value
+  states its own scope
+  (simulator or device, data, one run). They are the 7 method studies
+  (QL-ST-001 to 006 and 009), the 5 sample runs (6 run records,
+  QL-EV-001 to 006; Run 5 holds two), the basket-call run's own
+  correction of 1 Nov 2026, the BAF fraud complementary-signal panel,
+  and the page's account of its method. Each quotes the saved page,
+  checked by `require_verbatim` with the value's figures.
+  `scripts/sprint18_f145_intake.py`; dry run by default; `--apply` takes
+  a verified backup. A record already stored is compared with the
+  script: for an assertion, every column the script writes and its
+  context; for the source, its tier, access, disposition, evidence and
+  applicability. The same is skipped. A difference in a field that the
+  script's `DECIDED` names for that record is a reviewed correction,
+  written through `sync_decided_assertion`; any other difference stops
+  the run with nothing written ("DIFFERS").
+- **Kept LOW, though several are against the vendor's interest** (the
+  power-price and BAF runs, the kernel atlas's vanished wins, the noise
+  ladder, its own 2.6 to 1.9 correction). ADR-0005 A4 (e) would allow an
+  upgrade for an admission against interest; it is withheld because the
+  page presents its candor as a selling point ("Published with the same
+  prominence as the wins"), so the admissions are not costly to it in
+  the sense A4 (e) means.
+- **The fresh-eyes review, before the apply**, found one value wrong
+  (QL-ST-006 counted "won or reached kernel parity" as wins, so 11 of 42
+  exceeded the 9 wins in total) and four that dropped a condition: the
+  sensitivity map's best of 27 configurations, the basket call's
+  correlation 0.5 and the vendor's later revision, the slopes' pairing,
+  and QL-ST-001's real books, n = 12. All five fixed; the grade moved to
+  the fixed vendor reason; a `method` applicability row added.
+- **Links to what the store holds: none written, each named with its
+  reason.** ADR-0004 A8 (b) links `supports` only when the whole claim is
+  confirmed, and none of these is:
+  - The basket call (QL-EV-006 and its correction) measures slopes of
+    0.87 against 0.43, near the theory's 1 and 0.5, on a simulator; it
+    bears on `orus-montanaro-near-quadratic-monte-carlo-speedup` and
+    `udaru-amplitude-estimation-quadratic-section2`, but its own
+    correction shrinks the gain to about 1.9 times and does not exclude a
+    zero shift. Consistent, not a confirmation.
+  - The kernel atlas's 4 apparent wins that vanish once the exact
+    classical twin joins the referee (QL-ST-005), and the power-price run
+    (QL-EV-004), show the effect of
+    `fourier-wall-incomplete-bar-manufactures-advantage`; the page names
+    its method as "inspired by" the Fourier Wall paper and "not
+    affiliated", so it is not independent of it in method.
+  - The BAF fraud panel (no complementary signal, blend weight 0.00) is
+    on the same question as Phase 2's
+    `f154-no-stored-model-better-on-a-ulb-subset` and
+    `f162-cvqboost-proxy-not-above-classical-in-spectra-pocket`
+    (different datasets and models; consistent).
+  - The VQC studies' local-cost trainability (QL-ST-004, 006) and the
+    global parity gradient that halves per qubit (QL-ST-006) are
+    consistent with `dqnn-shallow-local-cost-avoids-bp` and
+    `arrasmith-bp-causes-cited`.
+  - The noise ladder (QL-ST-002) names the same device as
+    `ballin-ibm-run-details-p-and-shots-not-recorded` (ibm_kingston,
+    Heron r2, 156 qubits); a fact about the device, not a result.
+- **Public, not read** (the plan's scope is the page and the run file):
+  the 7 study PDFs and the methodology paper
+  (`/QAOA_Concentration_Study_2026-08.pdf`,
+  `/QAOA_Noise_Ladder_Study_2026-08.pdf`,
+  `/QML_Advantage_Island_Study_2026-08.pdf`,
+  `/QML_Advantage_Island_VQC_Study_2026-08.pdf`,
+  `/QML_Configuration_Atlas_Study_2026-09.pdf`,
+  `/QML_Configuration_Atlas_VQC_Study_2026-09.pdf`,
+  `/QML_Sensitivity_Map_Study_2026-11.pdf`,
+  `/RQP_Evidence_Engine_2026-08.pdf`), 6 briefs under `/briefs/`, the
+  basket call's two reports, workbook, result files and charts under
+  `/evidence/`, and the Zenodo deposit (DOI 10.5281/zenodo.22498143).
+- **Gated, listed and not requested**: every sample run's certified PDF
+  report and the QML datasets ("in the RQP Resource Room", "gated
+  downloads"); three study sample reports marked "(resource room)" (the
+  ibm_kingston run, the QSVM island panel, the VQC fair-run fields);
+  QL-ST-001's raw results and design and QL-ST-002's raw results, design
+  and scripts ("on request").
+- **What this repository and Phase 2 could adopt** (each asked as its own
+  question at Manual Validation): a controlled verdict vocabulary printed
+  on every result; a design tagged in a public repository before the
+  first run; a machine-readable record per run with a fixed field order;
+  and corrections published beside the original figures, which stay as
+  published.
+- **Applied 2026-11-21**, after the review's fixes: backup
+  `evidence-20261121T060827682446-sprint18-f145-qubit-lab-ch-evidence-page.db`
+  (verified); 1 source and 16 assertions written (papers 2,372 to 2,373,
+  assertions 40,096 to 40,112). It was run three times; each run took a
+  backup (060827, 060829, 060832), and the second and third wrote
+  nothing. At that time the script checked only that each record was
+  present, not that it was the same (see below).
+- **The second fresh-eyes review, after the apply**, found no critical
+  defect and these, all fixed:
+  - The "same" check compared 6 of the assertion's fields and none of the
+    source's, so a later change to a context, a fidelity or the
+    source's disposition would have been skipped as "exists". It now
+    compares every column the script writes, the context, and the
+    source's fields, and compares the value as the store keeps it
+    (`with_common_names`), so a new common name cannot raise a false
+    DIFFERS.
+  - QL-ST-001 let "0 of 96" read as covering all 24 instances; the page
+    scopes it to the real books ("Wrong seed on real books: never
+    escaped"). Corrected through `sync_decided_assertion` with the value
+    and its quotes as the decided fields: backup
+    `evidence-20261121T065124606170-sprint18-f145-qubit-lab-ch-evidence-page.db`,
+    1 assertion corrected, counts unchanged; a second run (backup
+    065127) wrote nothing.
+  - The live test opened the store read-write; it now uses the
+    read-only `live_conn` fixture, and leaves to a later script any
+    record that script corrected.
+  - One test had no recorded red proof. `tests/test_sprint18_f145_intake.py`
+    now has 6 tests, each proven red by injection.
