@@ -15,6 +15,15 @@ this project keeps having to replace with a step.
 
 ### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
 
+- **fix**: Sprint 18 Manual Validation decisions applied (intake section
+  81). q7 = a: both of g361's device temperatures LOW, each naming the
+  contradiction (`scripts/sprint18_q7_grades.py`, through
+  `sync_decided_assertion`, backup first). q12: of the 54 independent
+  "supports" pairs, none has an experiment or a proof on both sides that
+  is not already HIGH, so nothing is upgraded. Cards F152 (q10), F153
+  (q11, as recommended), F154 (q13); q14 to q17 not carded (Phase 2
+  suggestions); F150 to Sprint 19 (q18 = b). Counts block rewritten.
+
 - **docs**: F151 carded (team lead at Manual Validation, for Sprint 19):
   every question, decision and improvement written in full to
   `docs/sprints/SPRINT_N_DECISIONS.md` before it is asked, its answer

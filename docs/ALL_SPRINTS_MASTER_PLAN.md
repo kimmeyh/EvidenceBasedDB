@@ -1148,8 +1148,8 @@ and in git. Remaining items below.
   workflow stops naming `--changed` as the gate after the hand-over;
   proven red by injection; the next sprint plan's "Full suite" line says
   once.
-- Depends on: nothing. Target: Sprint 18's retrospective if the team lead
-  takes it now (q18), else the Sprint 19 plan.
+- Depends on: nothing. Target: the Sprint 19 plan (team lead, q18 = b,
+  2026-11-22); Sprint 18 keeps its second full run after the retrospective.
 
 **F151. Every question, decision and improvement stored in full in one file per sprint, and re-asked from it in full (~60m [no-history] timebox) Priority 10** (NEW 2026-11-22, team lead at Sprint 18 Manual Validation: "Add to backlog for next sprint: please store all quesitons, decisions and Improvement in full. If you still need an answer to one and it has scrolled off the screen, always re-ask with the full contents every time (it is to hard to scroll back to find them).")
 - Phase: Process (presentation)
@@ -1206,6 +1206,62 @@ and in git. Remaining items below.
 - Depends on: nothing. Target: the Sprint 19 plan (team lead: "for next
   sprint"). Sprint 18's q4 to q18 are re-asked in full in each message
   until answered, under the current rule.
+
+**F152. Re-quote the 20 HIGH assertions whose quotes do not hold them, or grade each LOW (~60m) Priority 20** (NEW 2026-11-22, team lead at Sprint 18 Manual Validation, q10 = a)
+- Phase: Reading (corrections)
+- Value: this makes each of the 20 a HIGH its own quotes support, or a LOW
+  that says why, instead of a HIGH known to be unsupported.
+- Platform: F146's audit results (`D:\Data\Harold\EvidenceBasedDB\work\f146\audit\out\`,
+  verdict "not held"); `docs/INTAKE_WORKFLOW.md` section 79 lists them (9
+  are lemmas from one paper, run a034); `store.ingest.sync_decided_assertion`
+  (F147); `store/quotes.py`.
+- In each of the 20, the quotes hold only a lead-in, a title or a fragment.
+  Each item is re-read in its paper: new quotes that hold the value are
+  added (decided field: the quotes), or, where none can, the item is graded
+  LOW with the reason (decided fields: certainty and its reason).
+- Acceptance: all 20 decided, written through `sync_decided_assertion` with
+  a verified backup; a second apply writes nothing; the F146 checker's
+  audit, run again on the 20, gives "held" for every HIGH that remains.
+- Depends on: nothing.
+
+**F153. A sample triage of 100 "held in part" from the HIGH audit, to measure the real defect rate (~60m) Priority 30** (NEW 2026-11-22, Sprint 18 Manual Validation q11 = a, taken as recommended under the team lead's "just do as recommended")
+- Phase: Reading (quality)
+- Value: this tells whether the 4,672 "held in part" items are worth fixing
+  one by one, before anyone spends days on them.
+- Platform: F146's audit results; `scripts/f146_checks.py`.
+- In each "held in part" item the value says something its quotes do not
+  (a method name, a condition, a formula). The readers' strictness ran from
+  about 50 to about 90 of each 200, so 4,672 is a list to review, not a
+  defect rate.
+- A random sample of 100 (seeded, so it can be drawn again), stratified by
+  run so no one reader's strictness dominates, is classified by the
+  coordinator: a real overstatement, wording only, or the reader was
+  wrong. The rate, with its 95% interval, decides a next card or none.
+- Acceptance: the sample, each item's class with its why, and the rate,
+  recorded in `docs/INTAKE_WORKFLOW.md`; nothing written to the store.
+- Depends on: nothing.
+
+**F154. A semantic pair screen for the agreement map, measured against the 24 known relations before any run (~180m [no-history] timebox) Priority 30** (NEW 2026-11-22, team lead at Sprint 18 Manual Validation, q13 = a)
+- Phase: Reading (cross-paper analysis)
+- Value: this lets the map find agreement and conflict between papers that
+  word the same finding differently, which the word-overlap screen cannot
+  (recall 0 of 24 at every setting tried in Sprint 18).
+- Platform: `scripts/f146_checks.py` (`screen`, `known_pairs`, `map`); a
+  local embedding model (no API spend unless the team lead decides one);
+  `D:\Data\Harold\EvidenceBasedDB\work\f146\`.
+- The screen is chosen and tuned on recall against the store's 24 judged
+  relations between papers BEFORE any map run, and its precision is
+  sampled; the map runs only if recall is useful. Pairs the map judges
+  "supports" with both sides independent and both resting on an experiment
+  or a proof take the q12 rule (team lead, 2026-11-22): LOW to MODERATE,
+  MODERATE to HIGH; every other pair changes nothing. That rule changes a
+  grade for the first time only here (Sprint 18's 54 pairs gave none,
+  `docs/INTAKE_WORKFLOW.md` section 81), so the card adds its grading path
+  and a dated ADR-0004 amendment before any write.
+- Acceptance: recall on the 24 recorded, with the setting chosen; if a map
+  runs, its pairs checked by `f146_checks.py`, and any upgrade written
+  through `sync_decided_assertion` with a verified backup.
+- Depends on: nothing.
 
 ## Design documents governing this repository
 

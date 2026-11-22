@@ -12,11 +12,11 @@ typed; `tests/test_doc_counts.py` fails when it no longer matches the store.
 The counts in the dated sections below are snapshots as of their own dates.
 
 <!-- doc_counts: begin (written by scripts/doc_counts.py; do not edit by hand) -->
-Counts from the store as of 2026-11-21, printed by `scripts/doc_counts.py` (never typed):
+Counts from the store as of 2026-11-22, printed by `scripts/doc_counts.py` (never typed):
 
-- Assertions: 40,112 (HIGH 12,529, MODERATE 97, LOW 27,483, VERY-LOW 1, UNGRADED 2).
-- HIGH by the basis it started from: the paper's own setup 3,845; the paper's own definition 2,717; the paper's own stated limit 2,308; the paper's own proved result 1,650; the paper's own scope 1,432; a result proved in the paper 384; other 193.
-- LOW by the basis it started from: an empirical result from one study 8,735; the authors' own claim 7,644; a claim the source cites from other work 5,459; a theoretical result 4,333; vendor primary documentation of its own product 757; a statement about the field 382; the authors' own claim or a claim they cite 133; other 40.
+- Assertions: 40,112 (HIGH 12,528, MODERATE 97, LOW 27,484, VERY-LOW 1, UNGRADED 2).
+- HIGH by the basis it started from: the paper's own setup 3,844; the paper's own definition 2,717; the paper's own stated limit 2,308; the paper's own proved result 1,650; the paper's own scope 1,432; a result proved in the paper 384; other 193.
+- LOW by the basis it started from: an empirical result from one study 8,735; the authors' own claim 7,645; a claim the source cites from other work 5,459; a theoretical result 4,333; vendor primary documentation of its own product 757; a statement about the field 382; the authors' own claim or a claim they cite 133; other 40.
 - Papers and other sources: 2,373 (read 1,853, seen 520).
 - Ledger groups: 513; with a read file 205; with a review file 192.
 <!-- doc_counts: end -->
@@ -4756,3 +4756,63 @@ the apply and the second review's corrections are recorded at the end.
     record that script corrected.
   - One test had no recorded red proof. `tests/test_sprint18_f145_intake.py`
     now has 6 tests, each proven red by injection.
+
+## 81. Sprint 18 Manual Validation decisions (q4 to q18)
+
+Team lead, 2026-11-22, verbatim: "q4-q10 as recommended - you do not have
+to ask question in the future, just do as recommended"; "q12. for all 54
+independent: If there is an agreement between independent reviews and both
+are based on experiments or proofs, upgrade from low to medium or medium to
+high. for the rest of the 333 (in all other cases) do not change"; "q13. a";
+for q14 to q17: "Is this an HSBC phase 2 suggestion as we are not doing HSBC
+phase 2 suggestions in the EvidenceBasedDB repository (there was one
+exception - but not ongoing)?"; "q18. b". q11 was not answered; under the
+instruction to do as recommended, it takes its recommendation (a).
+
+- **q4 = a, q6 = a, q8 = a**: no change. The 21 F129 textbook LOWs stay LOW;
+  g511's two survey counts stay HIGH; g353's Corollary 7.4 stays LOW.
+- **q5 = a**: no change. Each of g364's open-question and caveat items
+  limits the authors' own result (noise-free quantum inputs, their m and
+  1/eps dependence, their low-rank measurements, their SDP input form, their
+  unworked sample bound), so all stay HIGH as "stated limit".
+- **q7 = a**: `scripts/sprint18_q7_grades.py` (test
+  `tests/test_sprint18_q7_grades.py`, each test proven red by injection).
+  `dw1-temperature-20mk-p9` HIGH to LOW, `dw1-temperature-17mk-p22` LOW with
+  a new reason; each reason names the contradiction (17 mK against 20 mK).
+  Written through `sync_decided_assertion` with certainty and its reason as
+  the only decided fields; backup
+  `evidence-20261122T153052216182-sprint18-sprint-18-q7-grades.db`; a second
+  apply wrote nothing. The counts block above was rewritten by
+  `scripts/doc_counts.py`.
+- **q9 = a**: the results stand; the reader and reviewer prompt fix goes to
+  the Sprint 18 retrospective.
+- **q10 = a**: card F152 (re-quote the 20 "not held" items, or grade each
+  LOW). **q11 = a** (by the do-as-recommended rule): card F153 (a sample
+  triage of 100 "held in part"). **q13 = a**: card F154 (a semantic pair
+  screen, measured against the 24 known relations first).
+- **q12**: applied to the 54 independent "supports" pairs; **no assertion
+  qualifies, so nothing is written.** Each pair's two sides were read by
+  value, reason and quotes, not only by the basis label (a label is not
+  enough: some dataset descriptions carry "a result proved in the paper").
+  The pairs in which both sides rest on an experiment or a proof are all
+  HIGH already (acae-fraud-proof-of-concept-scale,
+  dataset-and-simulation-setup, qgnn-fraud-dataset-and-undersampling). The
+  LOW sides nearest the rule fail it on the other side:
+  `transmon-reuploading-slow-training` (an empirical result) pairs with
+  `haug-intro-orders-slower`, an introduction's statement with no test;
+  `caro-no-distribution-independent-advantage` (a proof) pairs with a
+  survey's cited conclusion; `physical-hamiltonians-embed-universal` and
+  `albash-zzxx-zx-qma-complete` both rest on an earlier paper's proof;
+  `alarfaj-dataset-class-count-p8` describes a public dataset, not an
+  experiment. 46 of the 108 sides are claims the source cites from other
+  work. No pair is MODERATE. The other 279 "supports", 4 "contradicts" and
+  153 "unrelated" pairs are unchanged, as decided. No grading path or
+  ADR-0004 amendment was needed, since the rule changed no grade.
+- **q14 to q17, answered**: q15, q16 and q17 were Phase 2 suggestions only,
+  and q14 was for both repositories. Under the team lead's rule (no Phase 2
+  suggestions from this repository) none is carded for Phase 2 and no
+  prompt is written. q14 is not carded here either: this repository already
+  uses fixed vocabularies (the certainty grades, and F146's checker refuses
+  any verdict outside its list), so a card would add nothing.
+- **q18 = b**: F150 (the full suite once per sprint) goes to the Sprint 19
+  plan; Sprint 18 keeps its second full run after the retrospective.
