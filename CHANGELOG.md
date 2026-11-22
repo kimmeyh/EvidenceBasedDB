@@ -15,6 +15,9 @@ this project keeps having to replace with a step.
 
 ### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
 
+- **process**: Sprint 18 status set by `scripts/set_status.py`: Manual
+  Validation decisions applied, Phase 6 next.
+
 - **fix**: Sprint 18 Manual Validation decisions applied (intake section
   81). q7 = a: both of g361's device temperatures LOW, each naming the
   contradiction (`scripts/sprint18_q7_grades.py`, through
