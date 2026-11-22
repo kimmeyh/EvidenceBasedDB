@@ -1151,6 +1151,62 @@ and in git. Remaining items below.
 - Depends on: nothing. Target: Sprint 18's retrospective if the team lead
   takes it now (q18), else the Sprint 19 plan.
 
+**F151. Every question, decision and improvement stored in full in one file per sprint, and re-asked from it in full (~60m [no-history] timebox) Priority 10** (NEW 2026-11-22, team lead at Sprint 18 Manual Validation: "Add to backlog for next sprint: please store all quesitons, decisions and Improvement in full. If you still need an answer to one and it has scrolled off the screen, always re-ask with the full contents every time (it is to hard to scroll back to find them).")
+- Phase: Process (presentation)
+- Value: this makes every open question findable in one file, and makes
+  each re-ask an exact copy, so the team lead never scrolls back to find
+  a question or its options.
+- Platform: `docs/sprints/SPRINT_N_DECISIONS.md` (new, one per sprint);
+  `docs/SPRINT_RETROSPECTIVE.md` ("Presenting improvements, questions and
+  decisions (AUTHORITATIVE)"); `docs/SPRINT_EXECUTION_WORKFLOW.md`;
+  `docs/SPRINT_CHECKLIST.md` (Phase 1.4, 3, 5.3, 7);
+  `tests/test_sprint_documents.py`;
+  `.claude/hooks/block_procedural_question_stop.py`; `CLAUDE.md` ("Don't
+  point Harold back").
+- **What exists today (2026-11-22).** CLAUDE.md and the memory file
+  `feedback_represent_dont_reference.md` already say to re-present every
+  open item in full. Nothing stores the items: a q is written only in a
+  terminal message, so a re-ask is retyped from memory or from the
+  transcript, and can drift (in Sprint 18 the hand-over was re-sent after
+  the Stop hook blocked it, by copying from the transcript). Retrospective
+  i items are written to `SPRINT_N_RETROSPECTIVE.md`; q items are written
+  nowhere.
+- **How Phase 2 does it (read 2026-11-22):** its workflow rule 11 (team
+  lead, 2026-10-30, Sprint 29): "Every decision is written before it is
+  asked", in full, to `docs/sprints/SPRINT_n_DECISIONS.md`, with a stable
+  ID; "Re-ask by pasting the entry unchanged"; changed facts go in a dated
+  "Changed since asked" note under the entry, and the original is never
+  edited; the answer is recorded under each entry. Files exist for
+  Sprints 29 to 34. Its retrospective maps a decision's options to an
+  item's letters when one item is both.
+- The change:
+  - Every q and i is written in full, in the AUTHORITATIVE shape (title,
+    What it is, What it prevents and/or catches, Prevention or control,
+    Long-term value, Evidence, Extends, Effort, options a to z with pros
+    and cons, one "(Recommendation)"), to
+    `docs/sprints/SPRINT_N_DECISIONS.md` BEFORE it is shown. Retrospective
+    i items go there too (the retrospective file links to them), so one
+    file holds them all.
+  - Each entry records when it was asked, then the answer verbatim with
+    its date; facts that change after asking go in a dated "Changed since
+    asked" note, never an edit of the original.
+  - Every message that needs an answer re-shows EVERY open entry in full,
+    pasted from the file, never a reference and never a summary.
+  - The file's open entries are its single list: the Manual Validation
+    hand-over and the retrospective read it to know what is still open.
+- Acceptance:
+  - A test fails when a DECISIONS entry lacks a field, has not exactly
+    one "(Recommendation)", or reuses an ID; proven red by injection.
+  - The Stop hook (`block_procedural_question_stop.py`) blocks a reply
+    that asks a q or i which is not in the sprint's DECISIONS file, or
+    that leaves out an open entry, or whose text differs from the stored
+    entry; proven red by injection.
+  - The four process docs and CLAUDE.md name the file and the
+    paste-unchanged rule.
+- Depends on: nothing. Target: the Sprint 19 plan (team lead: "for next
+  sprint"). Sprint 18's q4 to q18 are re-asked in full in each message
+  until answered, under the current rule.
+
 ## Design documents governing this repository
 
 - `docs/adr/0004-evidence-based-db.md` -- ACCEPTED, early-innovation, does NOT

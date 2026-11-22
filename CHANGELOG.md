@@ -15,6 +15,12 @@ this project keeps having to replace with a step.
 
 ### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
 
+- **docs**: F151 carded (team lead at Manual Validation, for Sprint 19):
+  every question, decision and improvement written in full to
+  `docs/sprints/SPRINT_N_DECISIONS.md` before it is asked, its answer
+  recorded under it, and every open entry re-asked from it unchanged;
+  modeled on Phase 2's workflow rule 11.
+
 - **docs**: F150 carded (team lead at Manual Validation): the full suite
   runs once per sprint, before the Manual Validation hand-over; after
   that, `run_suite.py --changed` per commit and CI on the PR. The rule
