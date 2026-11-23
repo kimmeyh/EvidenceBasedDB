@@ -4816,3 +4816,6 @@ instruction to do as recommended, it takes its recommendation (a).
   any verdict outside its list), so a card would add nothing.
 - **q18 = b**: F150 (the full suite once per sprint) goes to the Sprint 19
   plan; Sprint 18 keeps its second full run after the retrospective.
+- **Confirmed, 2026-11-23** (team lead, verbatim: "q11. a q14 a"): q11 = a
+  (card F153, as applied) and q14 = a (no card for this repository, as
+  applied). No change follows.

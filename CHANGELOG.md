@@ -15,6 +15,9 @@ this project keeps having to replace with a step.
 
 ### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
 
+- **docs**: the team lead confirmed q11 = a (F153) and q14 = a (no card),
+  2026-11-23; recorded in intake section 81 and on F153.
+
 - **process**: Sprint 18 status set by `scripts/set_status.py`: Manual
   Validation decisions applied, Phase 6 next.
 

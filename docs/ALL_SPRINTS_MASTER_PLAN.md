@@ -1224,7 +1224,7 @@ and in git. Remaining items below.
   audit, run again on the 20, gives "held" for every HIGH that remains.
 - Depends on: nothing.
 
-**F153. A sample triage of 100 "held in part" from the HIGH audit, to measure the real defect rate (~60m) Priority 30** (NEW 2026-11-22, Sprint 18 Manual Validation q11 = a, taken as recommended under the team lead's "just do as recommended")
+**F153. A sample triage of 100 "held in part" from the HIGH audit, to measure the real defect rate (~60m) Priority 30** (NEW 2026-11-22, Sprint 18 Manual Validation q11 = a, taken as recommended under the team lead's "just do as recommended"; confirmed by the team lead 2026-11-23, "q11. a")
 - Phase: Reading (quality)
 - Value: this tells whether the 4,672 "held in part" items are worth fixing
   one by one, before anyone spends days on them.
