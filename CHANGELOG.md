@@ -13,7 +13,16 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
+### 2026-11-24 onward (Sprint 19, in progress)
+
+- **process**: Sprint 19 Phase 1: sprint-18 tagged on main's merge
+  commit (e85915d, PR #190); branch cut from Sprint 18's; status
+  advanced; CHANGELOG reconciled (every Sprint 18 day with commits has
+  entries: 2026-11-13, 19, 21, 22, 23 and 24; 2026-11-14 to 18 and 20
+  had none); Sprint 18's shipped cards pruned by hand; design-document
+  currency checked
+
+### 2026-11-13 to 2026-11-24 (Sprint 18, PR #183, merged to develop 2026-11-24 and to main via PR #190 the same day; tagged sprint-18)
 
 - **process**: Sprint 18 retrospective decisions confirmed by the team lead
   (2026-11-24): i1 = a, i2 = a, i3 = a, i4 = b, i5 = b. F155 revised: every
