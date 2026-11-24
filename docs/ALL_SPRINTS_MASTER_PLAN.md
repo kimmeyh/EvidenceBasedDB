@@ -28,9 +28,11 @@ repository exists. No other F# from either source repository applies here.
 - **Estimates**: minutes/hours from recorded actuals; `[no-history]` where
   uncalibrated. This repository has no recorded actuals yet; every Sprint 1
   estimate is `[no-history]` by construction.
-- `CHECKLIST-Phase2-pre.md` is the LIVE deliverable ledger; this document is
-  the sprint-scoping view over it. Keep them consistent; the checklist wins on
-  deliverable truth, this file wins on sprint sequencing.
+- `CHECKLIST-Phase2-pre.md` was the live deliverable ledger through Sprint
+  18 and is now FROZEN as history (team lead, Sprint 18 retrospective q19 =
+  a, 2026-11-24: "we can remove this from being updated in future sprints as
+  in the future hsbc phase 2 will read from here"). Each sprint's
+  deliverables are recorded in its SUMMARY doc and in this file.
 
 ## Past Sprint Summary
 
@@ -1286,26 +1288,35 @@ and in git. Remaining items below.
   through `sync_decided_assertion` with a verified backup.
 - Depends on: nothing.
 
-**F155. The read checker names an id another source already holds, and a near-miss id (~60m) Priority 20** (NEW 2026-11-23, Sprint 18 retrospective i3, applied under the team lead's do-as-recommended rule)
+**F155. Every new assertion id is unique when the reader chooses it, and the checkers name a near-miss id (~75m) Priority 20** (NEW 2026-11-23, Sprint 18 retrospective i3; revised 2026-11-24, team lead "i3. a" after asking "Is there a way to ensure ID's are unique when chosen (next_source_id or unique_source_id)?")
 - Phase: Reading (F114 reads; F152 and F153 checks)
-- Value: a reader's id that collides with another source's, or that is one
-  character off a given id, is named by the reader's own check before
-  review, instead of being found at review or by chance.
-- Platform: `scripts/sprint13_g_check.py` (the local read checker, run by
-  each reader); `scripts/f146_checks.py` (`problems`), read-only on the
-  store.
+- Value: a reader's id is free by construction when it is chosen, so no
+  rename has to follow it through the review's decisions; an id one
+  character off a given id is named at once.
+- What exists (2026-11-24): the store refuses a duplicate (`records.id` is
+  the PRIMARY KEY, `store/schema.sql`), and
+  `scripts/f117_build_groups.py` renames a taken id before review
+  (`prefixed`, `held_elsewhere`: the paper's author and year before the
+  id). Neither runs when the reader chooses the id.
+- Platform: one function, `unique_assertion_id(record_id, name)`, using
+  `prefixed`'s rule against the store and every group file;
+  `scripts/sprint13_g_check.py` (the local read checker, run by each
+  reader) prints the free id and refuses a taken one;
+  `scripts/f146_checks.py` (`problems`), read-only on the store.
 - Sprint 18 evidence (`docs/INTAKE_WORKFLOW.md` section 78): five reader
   ids in g510 and g352 (`data-availability-on-request`, `review-scope`,
   `vqe-definition`, `qaoa-definition`, `schwinger-model-definition`) were
   already other sources' and were renamed after review. Audit runs a018
   and a030 each mistyped one given id; it was found only when the item was
   handed out again.
-- The read checker reports a new assertion id already held by another
-  source (in the store, or new in another group of the same release). The
-  audit and map checkers name, for an answered id that was not given, the
-  given id at an edit distance of 1.
-- Acceptance: both checks proven red by injection; a Sprint 18 collision
-  (g352's `vqe-definition`) reproduced against a copy of its group file.
+- The read checker refuses a new assertion id already held by another
+  source (in the store, or new in another group of the same release) and
+  names the free id `unique_assertion_id` gives; the reader prompt tells
+  the reader to take it. The audit and map checkers name, for an answered
+  id that was not given, the given id at an edit distance of 1.
+- Acceptance: `unique_assertion_id` and both checks proven red by
+  injection; a Sprint 18 collision (g352's `vqe-definition`) reproduced
+  against a copy of its group file and given a free id.
 - Depends on: nothing.
 
 ## Design documents governing this repository

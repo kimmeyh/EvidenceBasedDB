@@ -15,6 +15,17 @@ this project keeps having to replace with a step.
 
 ### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
 
+- **process**: Sprint 18 retrospective decisions confirmed by the team lead
+  (2026-11-24): i1 = a, i2 = a, i3 = a, i4 = b, i5 = b. F155 revised: every
+  new assertion id unique when the reader chooses it (`unique_assertion_id`,
+  ~75m). q19 = a: `CHECKLIST-Phase2-pre.md` frozen as history after Sprint
+  18, since Phase 2 reads this repository directly; its reconcile and read
+  steps removed from `docs/SPRINT_EXECUTION_WORKFLOW.md`,
+  `docs/SPRINT_CHECKLIST.md`, `docs/SPRINT_PROCESS.md`,
+  `docs/SPRINT_STOPPING_CRITERIA.md`, `docs/SPRINT_RETROSPECTIVE.md`,
+  `docs/BACKLOG_REFINEMENT.md`, `docs/ALL_SPRINTS_MASTER_PLAN.md` and the
+  backlog-refinement skill.
+
 - **process**: Sprint 18 retrospective (`docs/sprints/SPRINT_18_RETROSPECTIVE.md`),
   the team lead's feedback verbatim: "Very Good" in every rated category,
   "none" for categories 13, 14 and 16. Improvements applied 2026-11-23 under

@@ -1,9 +1,15 @@
-# Checklist: Deliverable Ledger (LIVE)
+# Checklist: Deliverable Ledger (FROZEN 2026-11-24)
 
 Owners: **H** = Harold (only he can do it), **C** = Claude (I do it), **H+C** =
 decision or review done together.
 
-**STATUS: LIVE. Update this file as work progresses.**
+**STATUS: FROZEN after Sprint 18. Do not update this file.** Team lead,
+2026-11-24 (Sprint 18 retrospective, q19 = a): "we can remove this from being
+updated in future sprints as in the future hsbc phase 2 will read from here."
+Phase 2 reads this repository directly, and each sprint's deliverables are
+recorded in its `docs/sprints/SPRINT_N_SUMMARY.md` and in
+`docs/ALL_SPRINTS_MASTER_PLAN.md`. The sections below are kept as history,
+Sprint 1 to Sprint 18.
 
 Created 2026-09-15, adapted from hsbc-quantum-fraud-2026's
 `CHECKLIST-Phase2-pre.md`. That file tracked a "Phase 1 submitted, waiting on

@@ -39,7 +39,9 @@ snapshot as of the date it names.
 - Retrospective (2026-11-23): "Very Good" in every rated category; "none" for minor updates, backlog updates and open
   questions. i1 to i5 applied as recommended under the do-as-recommended rule: i1 (agents write results with the
   Write tool only, a test on every prompt from Sprint 19 on), i2 (`test_inventory.py --write` keeps the timings), i3
-  (F155 carded), i4 and i5 skipped and tracked.
+  (F155 carded), i4 and i5 skipped and tracked. 2026-11-24: the team lead confirmed "i1. a", "i5. b" and, after
+  questions, "i2. a i3. a i4. b"; F155 revised to make an id unique when chosen. q19 = a: `CHECKLIST-Phase2-pre.md`
+  frozen after Sprint 18 (Phase 2 reads this repository directly).
 
 Store: 37,408 assertions and 11,754 HIGH at the end of Sprint 17 (2026-11-10); 40,112 assertions, 12,528 HIGH,
 27,484 LOW, 97 MODERATE, 1 VERY LOW and 2 ungraded on 2026-11-22; 2,373 papers (read 1,853).

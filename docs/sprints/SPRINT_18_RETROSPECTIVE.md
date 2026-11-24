@@ -122,12 +122,22 @@ Validation complete". Counts are a snapshot as of the date each names.
 ## Improvement Decisions
 
 Applied 2026-11-23 under the team lead's do-as-recommended rule (2026-11-22: "you do not have to ask question in
-the future, just do as recommended"); each is reported in full so one letter reverses it.
+the future, just do as recommended"); each was reported in full so one letter could reverse it.
+
+The team lead, 2026-11-24 (verbatim): "i1. a", "i2. will multiple concurrent test be able to write at the same time,
+otherwise this becomes a bottleneck? If no then c, if yes then a", "i3. Is there a way to ensure ID's are unique when
+chosen (next_source_id or unique_source_id)?", "i4. What hook blocks a direct write to .claude/sprint_status.json?
+Could the hook be adjusted to allow a direct write to .claude/sprint_status.json? or can we build and python update
+script to update .claude/sprint_status.json?", "i5. b". The answers: no test writes the inventory (only the hand-run
+`--write` does), so it is no bottleneck; the store's PRIMARY KEY and `f117_build_groups.prefixed` already keep a
+duplicate out, but not when the reader chooses the id; no hook blocks the status file, and `scripts/set_status.py` is
+the Python update script. Then, 2026-11-24: "i2. a i3. a i4. b q19. a".
 
 | # | Title | Source | Type | Effort | Decision (now/backlog/skip) |
 |---|---|---|---|---|---|
 | i1 | Agents write a result file only with the Write tool, never by script, never edited | Dev Team, categories 1, 13 and 15 | Test + rule | 30m | Now (a): `tests/test_reader_prompts.py` fails a reader, reviewer or audit prompt from Sprint 19 on that lacks the rule; a Phase 4 line in `docs/SPRINT_EXECUTION_WORKFLOW.md` |
 | i2 | `scripts/test_inventory.py --write` keeps the recorded timings | Dev Team, categories 2 and 13 | Code | 25m | Now (a): without `--junit`, each listed file keeps its tests and seconds |
-| i3 | The read checker names an id another source holds, and a near-miss id | Dev Team, categories 13, 14 and 15 | Card | 60m | Backlog (a): F155, Sprint 19 candidate |
+| i3 | Every new assertion id is unique when the reader chooses it | Dev Team, categories 13, 14 and 15 | Card | 75m | Backlog (a): F155, revised 2026-11-24 (`unique_assertion_id`), Sprint 19 candidate |
 | i4 | The sprint status cannot be written by hand | Dev Team, category 9 | Hook | 30m | Skip, tracked (b): once this sprint, caught by `test_set_status`; a second time brings it back |
 | i5 | An intake section is written before its apply | Dev Team, category 8 | Process | 10m | Skip, tracked (b): once this sprint, caught by the intake test |
+| q19 | Stop updating `CHECKLIST-Phase2-pre.md` | Team lead, 2026-11-24 | Process | 20m | Now (a): frozen as history after Sprint 18 with a dated note; the reconcile step removed from the workflow, process, stopping-criteria, retrospective and refinement docs, the sprint checklist, the master plan and the backlog-refinement skill |

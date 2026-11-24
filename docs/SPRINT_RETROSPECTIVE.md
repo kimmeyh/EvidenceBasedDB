@@ -16,7 +16,7 @@ Adapted 2026-08-30 from spamfilter-multi's SPRINT_RETROSPECTIVE.md via hsbc-quan
 4. **Combine and display** in chat, both feedback sets together per category.
 5. **Propose improvements** from the combined feedback, each as `i1` to `iN` in the shape of "Presenting improvements, questions and decisions" below. Display; do NOT auto-apply.
 6. **Team lead disposes each**: "i1. a i2. c ..." or "all as recommended". Record in an "Improvement Decisions" section.
-7. **Apply**: now-items as commits on the sprint branch; backlog-items to ALL_SPRINTS_MASTER_PLAN.md; skips noted. Then the mandatory completion updates (master plan Last Completed Sprint, summary doc scheduling, CHECKLIST reconciliation). THEN `gh pr ready`.
+7. **Apply**: now-items as commits on the sprint branch; backlog-items to ALL_SPRINTS_MASTER_PLAN.md; skips noted. Then the mandatory completion updates (master plan Last Completed Sprint, summary doc scheduling; the CHECKLIST reconciliation ended after Sprint 18, team lead q19 = a, 2026-11-24). THEN `gh pr ready`.
 
 ## Presenting improvements, questions and decisions (AUTHORITATIVE)
 
