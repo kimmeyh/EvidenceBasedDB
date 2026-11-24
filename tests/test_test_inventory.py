@@ -49,3 +49,16 @@ def test_every_computed_field_matches_its_computation():
     drift = [f"{row['file']}: {field}" for row in script.inventory() if row["file"] in stored
              for field in script.COMPUTED if stored[row["file"]].get(field) != row[field]]
     assert drift == [], f"stale; run python scripts/test_inventory.py --junit FILE --write: {drift}"
+
+
+def test_a_write_without_junit_keeps_the_recorded_timings():
+    """Sprint 18 retrospective i2: a file already listed keeps its tests and seconds, a new file has none, and the
+    run the seconds came from is still named. Proven red 2026-11-23: with `keep_timings` returning without copying
+    (INJECTED), this test named the lost seconds; restored and green."""
+    script = _script()
+    old = {"timings_from": "a timed run", "rows": [{"file": "tests/test_a.py", "tests": 3, "seconds": 1.5}]}
+    rows = [{"file": "tests/test_a.py", "tests": None, "seconds": None},
+            {"file": "tests/test_new.py", "tests": None, "seconds": None}]
+    assert script.keep_timings(rows, old) == "a timed run"
+    assert rows == [{"file": "tests/test_a.py", "tests": 3, "seconds": 1.5},
+                    {"file": "tests/test_new.py", "tests": None, "seconds": None}], f"timings lost: {rows}"

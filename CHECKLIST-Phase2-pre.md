@@ -333,3 +333,17 @@ Evidence for each row is the commit named, on the sprint branch
 - [x] **H+C**: Manual Validation q20 to q31; one working folder (a0575a5); q23 (4ae56cd); q20 (301611f); q28 and F146 to F148 (7270922); q29 and q31 (a019078)
 - [x] **H+C**: Retrospective, 16 x 4 (18fd683); i1 and i4 applied, i2 as a checklist line, i3 skipped and tracked, F149 carded (this commit)
 - [x] **C**: Summary, master plan roll and this section (this commit); PR #174 ready after CI
+
+## Sprint 18: The Agreement Map and the HIGH Audit, 30 Papers, and Safer Applies (reconciled 2026-11-23 at Phase 7.7)
+
+Evidence for each row is the commit named, on the sprint branch
+(`feature/20261113_Sprint_18`, PR #183).
+
+- [x] **C**: Task A (F149) -- the ledger names a new group above the highest gNNN (22c1b2b)
+- [x] **C**: Task B (F147) -- one apply function (d9ec0b2); follow-up tests, each proven red (dfdca17)
+- [x] **C**: Task C (F146) -- the checker for the HIGH audit and the map (3265872); the results (c5d1557)
+- [x] **C**: Task D (F114) -- 30-paper set-up (d9ec0b2); first-pass reads (1127948); applied (3265872)
+- [x] **C**: Tasks E and F (F145, F148) -- qubit-lab.ch's Evidence page; counts printed from the store (64e7ef3)
+- [x] **H+C**: Manual Validation q4 to q18; F150 (85b5290) and F151 (3c22ee1) carded; decisions applied, F152 to F154 carded (5d9c7e3); q11 and q14 confirmed (9a46786)
+- [x] **H+C**: Retrospective, 16 x 4; i1 and i2 applied, F155 carded (i3), i4 and i5 skipped and tracked (this commit)
+- [x] **C**: Summary, master plan roll and this section (this commit); PR #183 ready after the full suite and CI

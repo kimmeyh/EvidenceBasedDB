@@ -53,10 +53,30 @@ repository exists. No other F# from either source repository applies here.
 | 15 | docs/sprints/SPRINT_15_SUMMARY.md | [OK] Complete | 2026-11-01 to 2026-11-05 |
 | 16 | docs/sprints/SPRINT_16_SUMMARY.md | [OK] Complete | 2026-11-05 to 2026-11-07 |
 | 17 | docs/sprints/SPRINT_17_SUMMARY.md | [OK] Complete | 2026-11-07 to 2026-11-10 |
+| 18 | docs/sprints/SPRINT_18_SUMMARY.md | [OK] Complete | 2026-11-13 to 2026-11-23 |
 
 ## Last Completed Sprint
 
-Sprint 17 is below; Sprint 16 follows it for continuity.
+Sprint 18 is below; Sprint 17 follows it for continuity.
+
+### Sprint 18: The Agreement Map and the HIGH Audit, 30 Papers, and Safer Applies (2026-11-13 to 2026-11-23, PR #183, merge to develop pending the team lead)
+
+Six tasks, six issues (#184-#189). **Apply**: one apply function that
+writes only the fields a review decided (F147); the ledger names a new
+group from the highest number (F149). **Audit and map** on Claude Code
+subagents, no API spend (F146): every HIGH assertion with quotes checked
+(12,524: 7,834 held, 4,672 held in part, 20 not held), and 490 pairs
+screened (54 independent supports, 4 contradicts); nothing written to the
+store. **Reading**: F114's 30 papers read in full and applied (2,688
+assertions entered); qubit-lab.ch's Evidence page entered (F145); the
+documents' counts printed from the store (F148). Store (snapshot
+2026-11-22): 37,408 -> 40,112 assertions (11,754 -> 12,528 HIGH); 2,373
+papers. Manual Validation: g361's two temperatures LOW (q7); q12's
+upgrade rule applied with no qualifying pair; F150 to F154 carded; the
+do-as-recommended rule. Retrospective: team lead all "Very Good"; i1
+(agents write results with the Write tool only), i2 (the inventory keeps
+its timings), F155 carded (i3). Full detail:
+`docs/sprints/SPRINT_18_SUMMARY.md`.
 
 ### Sprint 17: Test Faster, Then Read on the API Credit (2026-11-07 to 2026-11-10, PR #174, merge to develop pending the team lead)
 
@@ -386,8 +406,11 @@ F25 D1-D3 so it measures adjudication of corrected records.
 Sprint 17 carry-forward, after PR #174 merged to develop and PR #182 merged
 develop to main).
 
-- **Scope**: not yet selected (Phase 1.4 slate presented 2026-11-13).
-- **Plan**: none yet.
+- **Scope** (team lead, 2026-11-18): F146, F114 (30 papers), F149, F147,
+  F145, F148.
+- **Plan**: `docs/sprints/SPRINT_18_PLAN.md`, approved 2026-11-20 (q1 = c,
+  q2 = a, q3 = a). All six tasks done; Manual Validation complete
+  (2026-11-23); retrospective done (`docs/sprints/SPRINT_18_RETROSPECTIVE.md`).
 
 ## Next Sprint Candidates
 
@@ -1261,6 +1284,28 @@ and in git. Remaining items below.
 - Acceptance: recall on the 24 recorded, with the setting chosen; if a map
   runs, its pairs checked by `f146_checks.py`, and any upgrade written
   through `sync_decided_assertion` with a verified backup.
+- Depends on: nothing.
+
+**F155. The read checker names an id another source already holds, and a near-miss id (~60m) Priority 20** (NEW 2026-11-23, Sprint 18 retrospective i3, applied under the team lead's do-as-recommended rule)
+- Phase: Reading (F114 reads; F152 and F153 checks)
+- Value: a reader's id that collides with another source's, or that is one
+  character off a given id, is named by the reader's own check before
+  review, instead of being found at review or by chance.
+- Platform: `scripts/sprint13_g_check.py` (the local read checker, run by
+  each reader); `scripts/f146_checks.py` (`problems`), read-only on the
+  store.
+- Sprint 18 evidence (`docs/INTAKE_WORKFLOW.md` section 78): five reader
+  ids in g510 and g352 (`data-availability-on-request`, `review-scope`,
+  `vqe-definition`, `qaoa-definition`, `schwinger-model-definition`) were
+  already other sources' and were renamed after review. Audit runs a018
+  and a030 each mistyped one given id; it was found only when the item was
+  handed out again.
+- The read checker reports a new assertion id already held by another
+  source (in the store, or new in another group of the same release). The
+  audit and map checkers name, for an answered id that was not given, the
+  given id at an edit distance of 1.
+- Acceptance: both checks proven red by injection; a Sprint 18 collision
+  (g352's `vqe-definition`) reproduced against a copy of its group file.
 - Depends on: nothing.
 
 ## Design documents governing this repository

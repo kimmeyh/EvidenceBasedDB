@@ -125,10 +125,23 @@ def inventory(junit: Path | None = None) -> list[dict]:
     return rows
 
 
+def keep_timings(rows: list[dict], old: dict) -> str:
+    """Without a JUnit file, a file already listed keeps its recorded tests and seconds (Sprint 18 retrospective i2).
+
+    Before, `--write` without `--junit` wiped every row's timing, so each new test file needed a hand merge. Returns
+    the `timings_from` line to write: the old one, since the kept seconds are still that run's."""
+    before = {r["file"]: r for r in old.get("rows", [])}
+    for r in rows:
+        if r["file"] in before:
+            r["tests"], r["seconds"] = before[r["file"]].get("tests"), before[r["file"]].get("seconds")
+    return old.get("timings_from", "none")
+
+
 def main(argv: list[str] | None = None) -> int:
     args = list(sys.argv[1:] if argv is None else argv)
     junit = Path(args[args.index("--junit") + 1]) if "--junit" in args else None
     rows = inventory(junit)
+    kept = keep_timings(rows, json.loads(OUT.read_text(encoding="utf-8"))) if junit is None and OUT.exists() else None
     by_kind = defaultdict(lambda: [0, 0.0])
     for r in rows:
         by_kind[r["kind"]][0] += 1
@@ -139,7 +152,7 @@ def main(argv: list[str] | None = None) -> int:
           f"run on CI {sum(r['runs']['ci'] for r in rows)}")
     if "--write" in args:
         timings = (f"pytest --durations=0 --junitxml, full suite, {datetime.fromtimestamp(junit.stat().st_mtime):%Y-%m-%d}"
-                   f" (a snapshot: the seconds are that run's)" if junit else "none")
+                   f" (a snapshot: the seconds are that run's)" if junit else (kept or "none"))
         OUT.write_text(json.dumps({"generated_by": "scripts/test_inventory.py", "timings_from": timings, "rows": rows},
                                   indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
         print(f"wrote {OUT.relative_to(ROOT)}")

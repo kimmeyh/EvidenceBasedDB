@@ -15,6 +15,19 @@ this project keeps having to replace with a step.
 
 ### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
 
+- **process**: Sprint 18 retrospective (`docs/sprints/SPRINT_18_RETROSPECTIVE.md`),
+  the team lead's feedback verbatim: "Very Good" in every rated category,
+  "none" for categories 13, 14 and 16. Improvements applied 2026-11-23 under
+  the do-as-recommended rule: i1, every agent prompt from Sprint 19 on says a
+  result file is written with the Write tool only (`tests/test_reader_prompts.py`,
+  proven red; a Phase 4 line in `docs/SPRINT_EXECUTION_WORKFLOW.md`); i2,
+  `scripts/test_inventory.py --write` without `--junit` keeps each listed
+  file's tests and seconds (`tests/test_test_inventory.py`, proven red); i3,
+  F155 carded (the read checker names an id another source holds, and a
+  near-miss id); i4 and i5 skipped and tracked. Phase 7.7: the Sprint 18
+  summary, the master plan roll (Current sprint, Last Completed Sprint, Past
+  Sprint Summary) and the CHECKLIST section.
+
 - **process**: Sprint 18 Phase 6 done (PR #183 body updated, still draft);
   Phase 7 retrospective started: the Development Team's draft written
   (`docs/sprints/drafts/SPRINT_18_RETROSPECTIVE_claude_draft.md`), the
