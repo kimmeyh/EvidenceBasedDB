@@ -132,3 +132,31 @@ def test_every_reader_prompt_from_sprint_15_on_reads_figures_and_ocr_text():
     assert {p: sprint15_problems(instructions(p)) for p in found if sprint15_problems(instructions(p))} == {}
     old = sprint15_problems(instructions(ROOT / "manifests" / "sprint14_f114_reads" / "READER_PROMPT.md"))
     assert "every figure" in old and "ocr text" in old and "not `not_read` when its caption" in old, old
+
+
+# Sprint 18 retrospective i1 (2026-11-23): readers g350, g361 and g511 wrote their result files from a script, and
+# audit run a008 edited its result after writing it. Each was found and checked, but a result written by a script
+# is not the agent's own reply. Every agent prompt from Sprint 19 on carries this rule, in these words.
+WRITE_ONLY = ("with the write tool only", "never from a script", "never with the edit tool")
+
+
+def agent_prompts_from(sprint: int) -> list[Path]:
+    return sorted(p for p in (ROOT / "manifests").glob("sprint*_*/*_PROMPT.md")
+                  if (m := re.match(r"sprint(\d+)_", p.parent.name)) and int(m[1]) >= sprint)
+
+
+def write_only_problems(text: str) -> list[str]:
+    flat = " ".join(text.lower().split())
+    return [w for w in WRITE_ONLY if w not in flat]
+
+
+def test_every_agent_prompt_from_sprint_19_on_writes_results_only_with_the_write_tool():
+    """Every reader, reviewer, audit and map prompt from Sprint 19 on says: "Write every result file with the Write
+    tool only: never from a script or a shell command, and never with the Edit tool." Sprint 18's prompts ran before
+    the rule and lack it, which also shows the check can fail. Proven red 2026-11-23: with Sprint 18's prompts
+    counted as from Sprint 19 on (INJECTED, the 19 changed to 18), the test went red naming Sprint 18's prompts and the missing words."""
+    assert {p: write_only_problems(instructions(p)) for p in agent_prompts_from(19)
+            if write_only_problems(instructions(p))} == {}
+    sprint18 = [p for p in agent_prompts_from(18) if p.parent.name.startswith("sprint18_")]
+    assert len(sprint18) == 4, sprint18
+    assert all(write_only_problems(instructions(p)) for p in sprint18), "a Sprint 18 prompt already has the rule"

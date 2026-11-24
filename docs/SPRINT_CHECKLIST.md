@@ -7,7 +7,7 @@ Consult at EVERY phase boundary (open this file in the same turn; walk lines wit
 - [ ] 1.1 CHANGELOG reconciled for Sprint N-1 (from git history, never memory)
 - [ ] 1.2 Pass 1 sweep for N-1: issues closed, docs triad incl. SUMMARY (+ `## Actuals`), master plan rolled, shipped cards pruned BY HAND
 - [ ] 1.3 Design-document currency: ADR-0004/0005 still match schema and store; the due list (`probe_reference_fields.py --due`, no request) and, when anything is due, the re-check run (`--due --probe --apply`, ADR-0005 A7) and its lists handed to the team lead; `pytest -q` green
-- [ ] 1.4 Read ALL_SPRINTS_MASTER_PLAN.md + repo CHECKLIST-Phase2-pre.md; read BACKLOG_REFINEMENT.md "Backlog Presentation Format" THIS TURN; present "Sprint N Candidates at a glance" (Summary Index first: recommendation, then at most 20 by priority, then HOLD one-liners; details in the same order, no group headers; F# IDs, numeric priorities)
+- [ ] 1.4 Read ALL_SPRINTS_MASTER_PLAN.md; read BACKLOG_REFINEMENT.md "Backlog Presentation Format" THIS TURN; present "Sprint N Candidates at a glance" (Summary Index first: recommendation, then at most 20 by priority, then HOLD one-liners; details in the same order, no group headers; F# IDs, numeric priorities)
 - [ ] 1.5 Record team-lead selection; update master plan; commit
 
 ## Phase 2: Pre-Kickoff
@@ -42,7 +42,7 @@ Consult at EVERY phase boundary (open this file in the same turn; walk lines wit
 ## Phase 7: Retrospective (before ready)
 - [ ] 7-step protocol run in order (SPRINT_RETROSPECTIVE.md); 16 categories x 4 roles, verbatim, no placeholders
 - [ ] Improvements proposed + dispositioned; now-items committed; backlog-items -> master plan with F#s
-- [ ] Completion updates: master plan Last Completed Sprint; CHECKLIST-Phase2-pre.md reconciled; sprint_status updated
+- [ ] Completion updates: master plan Last Completed Sprint; sprint_status updated (`CHECKLIST-Phase2-pre.md` is frozen after Sprint 18, team lead q19 = a, 2026-11-24)
 - [ ] `gh pr ready` (ONLY here); final gate; team lead notified for approval
 
 ## Phase 8: Delivery hand-off (the finishing sprint's last phase)

@@ -1,0 +1,2844 @@
+{
+ "papers": [
+  {
+   "record_id": "badrinarayanan-2016-segnet-deep-convolutional-encoder-decoder",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2015-11_Badrinarayanan_SegNet-A-Deep-Convolutional-Encoder-Decoder-Architecture-for-Image.pdf",
+   "title_in_file": "SegNet: A Deep Convolutional Encoder-Decoder Architecture for Image Segmentation",
+   "version_note": "arXiv:1511.00561v3 (10 Oct 2016), the IEEE TPAMI-style version; the file name says 2015-11 but the text is the v3 revision.",
+   "pages": 14,
+   "read_extent": "full",
+   "not_read": "",
+   "sections_read": [
+    "Abstract",
+    "1 INTRODUCTION",
+    "2 LITERATURE REVIEW",
+    "3 ARCHITECTURE",
+    "3.1 Decoder Variants",
+    "3.2 Training",
+    "3.3 Analysis",
+    "4 BENCHMARKING",
+    "4.1 Road Scene Segmentation",
+    "4.2 SUN RGB-D Indoor Scenes",
+    "5 DISCUSSION AND FUTURE WORK",
+    "6 CONCLUSION",
+    "REFERENCES",
+    "Author biographies"
+   ],
+   "figure_count": 14,
+   "figures": [
+    {
+     "figure": "Figure 1",
+     "page": 2,
+     "kind": "other",
+     "shows": "Two rows of five photographs each (road scenes above, indoor scenes below), each followed by a colour-coded segmentation map predicted by SegNet; no axes; the colour legend is not printed.",
+     "confirmed_by": "Some example test results produced on randomly sampled road scene images from Google and indoor test scenes from the SUN RGB-D dataset",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 2",
+     "page": 4,
+     "kind": "block diagram",
+     "shows": "SegNet architecture: an RGB input image passes through a column chain of Conv+Batch Normalisation+ReLU blocks (blue) and Pooling blocks (green) in the encoder, then Upsampling (red) and Conv blocks in the decoder, then a Softmax layer (yellow) to the output segmentation; arrows labelled Pooling Indices run from each encoder pooling layer to the matching decoder upsampling layer; no fully connected layers.",
+     "confirmed_by": "The encoder network consists of 13 convolutional layers which correspond to the ﬁrst 13 convolutional layers in the VGG16 network",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 3",
+     "page": 6,
+     "kind": "block diagram",
+     "shows": "Left (SegNet): a 2 x 2 map of values a, b, c, d is upsampled using max-pooling indices into a 4 x 4 sparse map with zeros, then convolved with trainable decoder filters. Right (FCN): a 2 x 2 map is deconvolved for upsampling to a 4 x 4 map x1 to x16 and added element-wise to a dimensionality-reduced encoder feature map y1 to y16.",
+     "confirmed_by": "On the left in Fig. 3 is the decoding technique used by SegNet (also SegNet-Basic), where there is no learning involved in the upsampling step.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 1",
+     "page": 6,
+     "kind": "table",
+     "shows": "Eight decoder variants (rows: Bilinear-Interpolation, SegNet-Basic, SegNet-Basic-EncoderAddition, SegNet-Basic-SingleChannelDecoder, FCN-Basic, FCN-Basic-NoAddition, FCN-Basic-NoDimReduction, FCN-Basic-NoAddition-NoDimReduction); columns params (M), storage multiplier, inference time (ms), and G, C, mIoU, BF for test and G, C, mIoU for train under median frequency balancing, and the same under natural frequency balancing. Best values in bold.",
+     "confirmed_by": "In Table 1 we report the numerical results of our analysis.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 4",
+     "page": 9,
+     "kind": "other",
+     "shows": "Five CamVid day and dusk test images in columns; rows are the test sample, ground truth, SegNet, DeepLab-LargeFOV, DeepLab-LargeFOV-denseCRF, FCN, FCN (learn deconv) and DeconvNet, each a colour-coded segmentation map. No axes or numeric values.",
+     "confirmed_by": "The qualitative comparisons of SegNet predictions with other deep architectures can be seen in Fig. 4.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 2",
+     "page": 10,
+     "kind": "table",
+     "shows": "Per-class accuracy (Building, Tree, Sky, Car, Sign-Symbol, Road, Pedestrian, Fence, Column-Pole, Side-walk, Bicyclist), class average, global average, mIoU and BF for non-deep methods, SegNet trained on the 3.5K dataset for 140K iterations, and CRF based approaches on CamVid.",
+     "confirmed_by": "The results in Table 2 show SegNet-Basic, SegNet obtain competitive results when compared with methods which use CRFs.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 3",
+     "page": 11,
+     "kind": "table",
+     "shows": "CamVid test metrics G, C, mIoU, BF at 40K, 80K and more than 80K iterations plus the maximum iteration count, for SegNet, DeepLab-LargeFOV, DeepLab-LargeFOV-denseCRF, FCN, FCN (learnt deconv) and DeconvNet trained without class balancing on 3433 road scenes.",
+     "confirmed_by": "In Table 3 we compare SegNet’s performance with now widely adopted fully convolutional architectures for segmentation.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 4",
+     "page": 11,
+     "kind": "table",
+     "shows": "SUN RGB-D test metrics G, C, mIoU, BF at 80K, 140K and more than 140K iterations plus the maximum iteration count, for SegNet, DeepLab-LargeFOV, DeepLab-LargeFOV-denseCRF, FCN (learnt deconv) and DeconvNet, trained on indoor scenes with RGB only.",
+     "confirmed_by": "The quantitative results in Table 4 show that all the deep architectures share low mIoU and boundary metrics.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 5",
+     "page": 12,
+     "kind": "other",
+     "shows": "Five SUN RGB-D indoor test images in columns; rows are the test sample, ground truth, SegNet, DeepLab-LargeFOV, DeepLab-LargeFOV-denseCRF, FCN (learnt deconv) and DeconvNet, each a colour-coded segmentation map; black marks regions without ground truth labels. No axes or numeric values.",
+     "confirmed_by": "The qualitative results of SegNet on samples of indoor scenes of different types such as bedroom, living room, laboratory, meeting room, bathroom are shown in Fig. 5.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 5",
+     "page": 13,
+     "kind": "table",
+     "shows": "Class accuracy of SegNet on each of the 37 SUN RGB-D classes, from Wall (83.42) and Floor (93.43) down to Shower curtain (0.03) and Floor mat (0.00).",
+     "confirmed_by": "The accuracies reported in Table 5 clearly show that larger classes have reasonable accuracy and smaller classes have lower accuracies.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 6",
+     "page": 13,
+     "kind": "table",
+     "shows": "For SegNet, DeepLab-LargeFOV, FCN (learnt deconv) and DeconvNet: forward pass (ms), backward pass (ms), GPU training memory (MB), GPU inference memory (MB) and model size (MB). DeepLab-LargeFOV has the lowest times and training memory; SegNet has the lowest inference memory (1052 MB).",
+     "confirmed_by": "This can be seen from the compute statistics in Table 6.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "image on p.14 (author photograph 1)",
+     "page": 14,
+     "kind": "photograph",
+     "shows": "Portrait photograph of Vijay Badrinarayanan beside his biography; carries no result.",
+     "confirmed_by": "",
+     "no_text_confirms": true
+    },
+    {
+     "figure": "image on p.14 (author photograph 2)",
+     "page": 14,
+     "kind": "photograph",
+     "shows": "Portrait photograph of Alex Kendall beside his biography; carries no result.",
+     "confirmed_by": "",
+     "no_text_confirms": true
+    },
+    {
+     "figure": "image on p.14 (author photograph 3)",
+     "page": 14,
+     "kind": "photograph",
+     "shows": "Portrait photograph of Roberto Cipolla beside his biography; carries no result.",
+     "confirmed_by": "",
+     "no_text_confirms": true
+    }
+   ],
+   "what_it_is": "SegNet, a convolutional encoder-decoder network for pixel-wise semantic segmentation whose decoder upsamples with the encoder's max-pooling indices, analysed against FCN variants and benchmarked on CamVid road scenes and SUN RGB-D indoor scenes.",
+   "bears_on_context": "ml",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "encoder-matches-vgg16-13-conv",
+     "value": "The authors state that the SegNet encoder network is topologically identical to the 13 convolutional layers of the VGG16 network.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "The architecture of the encoder network is topologically identical to the 13 convolutional layers in the VGG16 network [1]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "encoder-drops-fc-params",
+     "value": "The authors state that discarding the fully connected layers reduces the SegNet encoder parameters from 134M to 14.7M.",
+     "anchor": "Section 3, p.4",
+     "quotes": [
+      "This also reduces the number of parameters in the SegNet encoder network signiﬁcantly (from 134M to 14.7M)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "decoder-13-layers",
+     "value": "The authors state that each encoder layer has a corresponding decoder layer, so the decoder network has 13 layers.",
+     "anchor": "Section 3, p.4",
+     "quotes": [
+      "Each encoder layer has a corresponding decoder layer and hence the decoder network has 13 layers."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "novelty-pooling-index-upsampling",
+     "value": "The authors state that the decoder uses the pooling indices computed in the max-pooling step of the corresponding encoder to perform non-linear upsampling.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "Speciﬁcally, the decoder uses pooling indices computed in the max-pooling step of the corresponding encoder to perform non-linear upsampling."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The abstract defines the SegNet decoder technique.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "no-need-to-learn-upsample",
+     "value": "The authors state that using the pooling indices eliminates the need for learning to upsample.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "This eliminates the need for learning to upsample."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "decoder-sparse-then-conv",
+     "value": "The authors state that the upsampled maps are sparse and are then convolved with trainable filters to produce dense feature maps.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "The upsampled maps are sparse and are then convolved with trainable ﬁlters to produce dense feature maps."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The abstract defines the decoder step.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "encoder-block-ops",
+     "value": "The authors state that each encoder convolves with a filter bank, applies batch normalization and ReLU, then max-pooling with a 2 x 2 window and stride 2 and sub-sampling by a factor of 2.",
+     "anchor": "Section 3, p.4",
+     "quotes": [
+      "Following that, max-pooling with a 2 × 2 window and stride 2 (non-overlapping window) is performed and the resulting output is sub-sampled by a factor of 2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its encoder block.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "index-storage-2-bits",
+     "value": "The authors state that storing only the max-pooling indices can in principle be done using 2 bits for each 2 x 2 pooling window.",
+     "anchor": "Section 3, p.4",
+     "quotes": [
+      "In principle, this can be done using 2 bits for each 2 × 2 pooling window and is thus much more efﬁcient to store as compared to memorizing feature map(s) in ﬂoat precision."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines what it stores.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "index-storage-slight-accuracy-loss",
+     "value": "The authors state that this lower memory storage results in a slight loss of accuracy but is still suitable for practical applications.",
+     "anchor": "Section 3, p.5",
+     "quotes": [
+      "this lower memory storage results in a slight loss of accuracy but is still suitable for practical applications."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "decoder-step-sparse-maps",
+     "value": "The authors state that the decoder upsamples its input using the memorized max-pooling indices, which produces sparse feature maps.",
+     "anchor": "Section 3, p.5",
+     "quotes": [
+      "The appropriate decoder in the decoder network upsamples its input feature map(s) using the memorized max-pooling indices from the corresponding encoder feature map(s). This step produces sparse feature map(s)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its decoder step.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "softmax-k-channel-output",
+     "value": "The authors state that the output of the soft-max classifier is a K channel image of probabilities, where K is the number of classes, and each pixel is classified independently.",
+     "anchor": "Section 3, p.5",
+     "quotes": [
+      "The output of the soft-max classiﬁer is a K channel image of probabilities where K is the number of classes.",
+      "This soft-max classiﬁes each pixel independently."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its output layer.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "unet-transfers-full-feature-map",
+     "value": "The authors state that U-Net does not reuse pooling indices but transfers the entire feature map to the corresponding decoders, at the cost of more memory.",
+     "anchor": "Section 3, p.5",
+     "quotes": [
+      "does not reuse pooling indices but instead transfers the entire feature map (at the cost of more memory) to the corresponding decoders"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "deconvnet-larger-fc-layers",
+     "value": "The authors state that DeconvNet has a much larger parameterization, needs more computational resources and is harder to train end-to-end, primarily due to its fully connected layers.",
+     "anchor": "Section 3, p.5",
+     "quotes": [
+      "DeconvNet has a much larger parameterization, needs more computational resources and is harder to train end-to-end (Table 6), primarily due to the use of fully connected layers"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "max-pool-index-three-advantages",
+     "value": "The authors list three practical advantages of reusing max-pooling indices in decoding: it improves boundary delineation, it reduces the number of parameters enabling end-to-end training, and the form of upsampling can be incorporated into any encoder-decoder architecture.",
+     "anchor": "Section 1, p.1; Section 1, p.2",
+     "quotes": [
+      "Reusing max-pooling indices in the decoding process has several practical",
+      "advantages; (i) it improves boundary delineation , (ii) it reduces the number of parameters enabling end-to-end training, and (iii) this form of upsampling can be incorporated into any encoder-decoder architecture"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sparsity-motivation-memory",
+     "value": "The authors state that if memory during inference is not constrained, all the encoder feature maps can be stored, but this is usually not the case in practical applications.",
+     "anchor": "Section 3, p.4",
+     "quotes": [
+      "If memory during inference is not constrained, then all the encoder feature maps (after subsampling) can be stored. This is usually not the case in practical applications"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "segnet-basic-4-enc-4-dec",
+     "value": "The authors define SegNet-Basic as a smaller version of SegNet with 4 encoders and 4 decoders, used to analyse decoder variants.",
+     "anchor": "Section 3.1, p.5",
+     "quotes": [
+      "we use a smaller version of SegNet, termed SegNet-Basic 1, which has 4 encoders and 4 decoders."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines SegNet-Basic.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "segnet-basic-kernel-7x7-context-106",
+     "value": "The authors state that SegNet-Basic uses a constant kernel size of 7 x 7 over all encoder and decoder layers, so a pixel in the layer 4 feature map traces back to a 106 x 106 pixel context window in the input image.",
+     "anchor": "Section 3.1, p.5",
+     "quotes": [
+      "a constant kernel size of 7 × 7 over all the encoder and decoder layers is chosen to provide a wide context for smooth labelling i.e. a pixel in the deepest layer feature map (layer 4) can be traced back to a context window in the input image of 106×106 pixels."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "segnet-basic-no-bias-no-decoder-relu",
+     "value": "The authors state that SegNet-Basic uses batch normalization after each convolutional layer, no biases after convolutions and no ReLU nonlinearity in the decoder network.",
+     "anchor": "Section 3.1, p.5",
+     "quotes": [
+      "Batch normalization is used after each convolutional layer in both the encoder and decoder network. No biases are used after convolutions and no ReLU nonlinearity is present in the decoder network."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcn-basic-definition",
+     "value": "The authors define FCN-Basic as a comparable version of FCN that shares the same encoder network as SegNet-Basic but uses the FCN decoding technique in all its decoders.",
+     "anchor": "Section 3.1, p.5",
+     "quotes": [
+      "shares the same encoder network as SegNet-Basic but with the FCN decoding technique (see Fig. 3) used in all its decoders."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines FCN-Basic.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcn-dim-reduction-and-kernel-8x8",
+     "value": "The authors state that the FCN decoder reduces the encoder feature maps of 64 channels by convolving with 1 x 1 x 64 x K trainable filters, where K is the number of classes, and sets the upsampling kernel size to 8 x 8.",
+     "anchor": "Section 3.1, p.5",
+     "quotes": [
+      "Dimensionality reduction of the encoder feature maps, say of 64 channels, is performed by convolving them with 1 × 1 × 64 × K trainable ﬁlters, where K is the number of classes.",
+      "We set the kernel size to 8 × 8."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the FCN decoder it compares against.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "singlechannel-decoder-variant",
+     "value": "The authors define SegNet-Basic-SingleChannelDecoder as a variant whose decoder filters are single channel, which they state reduces the number of trainable parameters and inference time significantly.",
+     "anchor": "Section 3.1, p.5",
+     "quotes": [
+      "This variant (SegNetBasic-SingleChannelDecoder) reduces the number of trainable parameters and inference time signiﬁcantly."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines this variant.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcn-variants-defined",
+     "value": "The authors define FCN-Basic-NoAddition as an FCN-Basic variant that discards the encoder feature map addition step and only learns the upsampling kernels.",
+     "anchor": "Section 3.1, p.5",
+     "quotes": [
+      "We can also create a variant of the FCN-Basic model which discards the encoder feature map addition step and only learns the upsampling kernels (FCN-Basic-NoAddition)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines this variant.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bilinear-interpolation-variant-defined",
+     "value": "The authors define a Bilinear-Interpolation variant that upsamples using fixed bilinear interpolation weights and therefore requires no learning for upsampling.",
+     "anchor": "Section 3.1, p.5",
+     "quotes": [
+      "we study upsampling using ﬁxed bilinear interpolation weights which therefore requires no learning for upsampling (Bilinear-Interpolation)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines this variant.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "segnet-encoderaddition-variant-defined",
+     "value": "The authors define SegNet-BasicEncoderAddition as a more memory intensive variant that adds 64 encoder feature maps at each layer to the output feature maps of the SegNet decoder.",
+     "anchor": "Section 3.1, p.5",
+     "quotes": [
+      "we can add 64 encoder feature maps at each layer to the corresponding output feature maps from the SegNet decoder to create a more memory intensive variant of SegNet (SegNet-BasicEncoderAddition)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines this variant.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcn-nodimreduction-variant-defined",
+     "value": "The authors define FCN-Basic-NoDimReduction as a more memory intensive FCN-Basic variant in which the final encoder feature map is not compressed to K channels, so the number of channels at the end of each decoder equals that of the corresponding encoder, 64.",
+     "anchor": "Section 3.1, p.5",
+     "quotes": [
+      "Another and more memory intensive FCN-Basic variant (FCN-Basic-NoDimReduction) is where there is no dimensionality reduction performed for the encoder feature maps.",
+      "Therefore, the number of channels at the end of each decoder is the same as the corresponding encoder (i.e 64)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines this variant.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcn-basic-feature-map-storage",
+     "value": "The authors report that storing 64 feature maps of the first layer of FCN-Basic at 180 x 240 resolution in 32 bit floating point precision takes 11MB, and that dimensionality reduction to 11 feature maps requires approximately 1.9MB.",
+     "anchor": "Section 3.1, p.5",
+     "quotes": [
+      "storing 64 feature maps of the ﬁrst layer of FCN-Basic at 180 × 240 resolution in 32 bit ﬂoating point precision takes 11MB.",
+      "This can be made smaller using dimensionality reduction to the 11 feature maps which requires ≈ 1.9MB storage."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own storage accounting for the FCN decoder (a computed figure, not an experiment).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "segnet-index-storage-017mb",
+     "value": "The authors report that SegNet requires almost negligible storage cost for the pooling indices, .17MB if stored using 2 bits per 2 x 2 pooling window.",
+     "anchor": "Section 3.1, p.5",
+     "quotes": [
+      "SegNet on the other hand requires almost negligible storage cost for the pooling indices (.17MB if stored using 2 bits per 2 × 2 pooling window)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own storage accounting (a computed figure, not an experiment).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "generic-upsampling-variants-poor",
+     "value": "The authors report that other generic variants, upsampling feature maps by replication or by using a fixed sparse array of indices, performed quite poorly in comparison to the variants above.",
+     "anchor": "Section 3.1, p.5; Section 3.1, p.6",
+     "quotes": [
+      "We also tried other generic variants where feature maps are simply upsampled by replication [7], or by using a ﬁxed (and",
+      "sparse) array of indices for upsampling. These performed quite poorly in comparison to the above variants."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The paper reports no numbers for these variants."
+    },
+    {
+     "id_suggestion": "no-pooling-variant-poor",
+     "value": "The authors report that a variant without max-pooling and sub-sampling in the encoder network consumes more memory, takes longer to converge and performs poorly.",
+     "anchor": "Section 3.1, p.6",
+     "quotes": [
+      "A variant without max-pooling and sub-sampling in the encoder network (decoders are redundant) consumes more memory, takes longer to converge and performs poorly."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "caffe-release-all-variants",
+     "value": "The authors state that they release the Caffe implementation of all the variants to encourage reproduction of their results.",
+     "anchor": "Section 3.1, p.6",
+     "quotes": [
+      "Finally, please note that to encourage reproduction of our results we release the Caffe implementation of all the variants"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "camvid-dataset-description",
+     "value": "The authors state that the CamVid dataset used for the decoder variants has 367 training and 233 testing RGB images (day and dusk scenes) at 360 x 480 resolution and 11 classes.",
+     "anchor": "Section 3.2, p.6",
+     "quotes": [
+      "This dataset is small, consisting of 367 training and 233 testing RGB images (day and dusk scenes) at 360 × 480 resolution.",
+      "The challenge is to segment 11 classes such as road, building, cars, pedestrians, signs, poles, side-walk etc."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "variant-training-sgd-lr-0p1",
+     "value": "The authors state that all decoder variants are trained with stochastic gradient descent with a fixed learning rate of 0.1 and momentum of 0.9, with mini-batches of 12 images, each image used only once in an epoch.",
+     "anchor": "Section 3.2, p.6",
+     "quotes": [
+      "To train all the variants we use stochastic gradient descent (SGD) with a ﬁxed learning rate of 0.1 and momentum of 0.9",
+      "each mini-batch (12 images) is then picked in order thus ensuring that each image is used only once in an epoch."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "variant-training-until-convergence-select-validation",
+     "value": "The authors state that they train the variants until the training loss converges and select the model that performs highest on a validation dataset.",
+     "anchor": "Section 3.2, p.6",
+     "quotes": [
+      "We select the model which performs highest on a validation dataset."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "median-frequency-balancing-definition",
+     "value": "The authors define median frequency balancing as weighting each class in the loss by the ratio of the median of class frequencies computed on the entire training set divided by the class frequency.",
+     "anchor": "Section 3.2, p.6",
+     "quotes": [
+      "where the weight assigned to a class in the loss function is the ratio of the median of class frequencies computed on the entire training set divided by the class frequency."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the weighting it uses.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cross-entropy-loss-summed",
+     "value": "The authors state that they use the cross-entropy loss as the training objective, summed over all the pixels in a mini-batch.",
+     "anchor": "Section 3.2, p.6",
+     "quotes": [
+      "The loss is summed up over all the pixels in a mini-batch."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "metrics-g-c-miou-definitions",
+     "value": "The authors define global accuracy (G) as the percentage of pixels correctly classified in the dataset, class average accuracy (C) as the mean of the predictive accuracy over all classes, and mean intersection over union (mIoU) over all classes as used in the Pascal VOC12 challenge.",
+     "anchor": "Section 3.3, p.6; Section 3.3, p.7",
+     "quotes": [
+      "global accuracy (G) which measures the percentage of pixels",
+      "correctly classiﬁed in the dataset, class average accuracy (C) is the mean of the predictive accuracy over all classes and mean intersection over union (mIoU) over all classes as used in the Pascal VOC12 challenge"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its metrics.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "miou-more-stringent",
+     "value": "The authors state that the mIoU metric is more stringent than class average accuracy since it penalizes false positive predictions.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "The mIoU metric is a more stringent metric than class average accuracy since it penalizes false positive predictions."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "csurka-miou-not-match-human",
+     "value": "The authors report that Csurka et al. note that the mIoU metric does not always correspond to human qualitative judgements (ranks) of good quality segmentation.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "note that this metric does not always correspond to human qualitative judgements (ranks) of good quality segmentation."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bf-metric-definition",
+     "value": "The authors define the boundary F1-measure (BF) as the F1-measure between predicted and ground truth class boundaries given a pixel tolerance distance, averaged per class into an image F1-measure and then over the test set.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "The F1measure for each class that is present in the ground truth test image is averaged to produce an image F1-measure.",
+      "Then we compute the whole test set average, denoted the boundary F1-measure (BF) by average the image F1 measures."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its boundary metric.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bf-tolerance-0p75-percent-diagonal",
+     "value": "The authors state that they used a value of 0.75% of the image diagonal as the tolerance distance for the boundary F1-measure.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "We used a value of 0.75% of the image diagonal as the tolerance distance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "variant-eval-every-1000-iterations",
+     "value": "The authors state that they test each variant after each 1000 iterations on the CamVid validation set, which with a mini-batch size of 12 is approximately every 33 epochs.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "We test each architectural variant after each 1000 iterations of optimization on the CamVid validation set until the training loss converges.",
+      "With a training mini-batch size of 12 this corresponds to testing approximately every 33 epochs (passes) through the training set."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "variant-select-iteration-by-global-accuracy",
+     "value": "The authors state that they select the iteration with the highest global accuracy on the validation set and report the three measures at this point on the held-out CamVid test set.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "We select the iteration wherein the global accuracy is highest amongst the evaluations on the validation set. We report all the three measures of performance at this point on the held-out CamVid test set."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "class-average-selection-noisy",
+     "value": "The authors state that they observed that reporting performance when class average is highest can often correspond to low global accuracy, indicating a perceptually noisy segmentation output.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "We also observed that reporting the numerical performance when class average is highest can often correspond to low global accuracy indicating a perceptually noisy segmentation output."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "timing-protocol-titan-cudnn",
+     "value": "The authors state that the average time for one forward pass was measured with their Caffe implementation, averaged over 50 measurements using a 360 x 480 input on an NVIDIA Titan GPU with cuDNN v3 acceleration.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "We show the average time for one forward pass with our Caffe implementation, averaged over 50 measurements using a 360 × 480 input on an NVIDIA Titan GPU with cuDNN v3 acceleration."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "upsampling-layers-not-cudnn-optimised",
+     "value": "The authors state that the upsampling layers in the SegNet variants are not optimised using cuDNN acceleration.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "We note that the upsampling layers in the SegNet variants are not optimised using cuDNN acceleration."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states a limit on its own timing measurement.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table1-segnet-basic-row",
+     "value": "Table 1 reports, for SegNet-Basic trained with median frequency balancing, an inference time of 52.6 ms and test global accuracy 82.7, class average 62.0, mIoU 47.7 and BF 35.78.",
+     "anchor": "Table 1, p.6",
+     "quotes": [
+      "52.6 82.7 62.0 47.7 35.78"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Row and column assignment read from the rendered table on p.6 and checked against the figure."
+    },
+    {
+     "id_suggestion": "table1-fcn-basic-row",
+     "value": "Table 1 reports, for FCN-Basic trained with median frequency balancing, an inference time of 24.2 ms and test global accuracy 81.7, class average 62.4, mIoU 47.3 and BF 38.11.",
+     "anchor": "Table 1, p.6",
+     "quotes": [
+      "24.2 81.7 62.4 47.3 38.11"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Row and column assignment read from the rendered table on p.6 and checked against the figure."
+    },
+    {
+     "id_suggestion": "bilinear-worst-all-measures",
+     "value": "The authors report that bilinear interpolation based upsampling without any learning performs the worst based on all the measures of accuracy.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "upsampling without any learning performs the worst based on all the measures of accuracy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "learned-decoders-significantly-better",
+     "value": "The authors report that the methods that use learning for upsampling (FCN-Basic and variants) or learn decoder filters after upsampling (SegNet-Basic and its variants) perform significantly better than bilinear interpolation.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "All the other methods which either use learning for upsampling (FCN-Basic and variants) or learning decoder ﬁlters after upsampling (SegNet-Basic and its variants) perform signiﬁcantly better."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The text does not give a significance test."
+    },
+    {
+     "id_suggestion": "segnet-basic-equals-fcn-basic",
+     "value": "The authors report that SegNet-Basic and FCN-Basic perform equally well on this test over all the measures of accuracy.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "When we compare SegNet-Basic and FCN-Basic we see that both perform equally well on this test over all the measures of accuracy."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcn-basic-11x-more-memory",
+     "value": "The authors report that SegNet uses less memory during inference since it only stores max-pooling indices, while FCN-Basic stores encoder feature maps in full, which consumes much more memory (11 times more).",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "The difference is that SegNet uses less memory during inference since it only stores max-pooling indices. On the other hand FCN-Basic stores encoder feature maps in full which consumes much more memory (11 times more)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcn-basic-faster-inference",
+     "value": "The authors report that FCN-Basic, which has 11 feature maps in each decoder layer against 64 in SegNet-Basic, is faster during inference.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "SegNet-Basic has a decoder with 64 feature maps in each decoder layer. In comparison FCN-Basic, which uses dimensionality reduction, has fewer (11) feature maps in each decoder layer.",
+      "hence FCN-Basic is faster during inference (forward pass)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "segnet-basic-higher-training-accuracy",
+     "value": "The authors report that SegNet-Basic achieves higher training accuracy than FCN-Basic for the same number of iterations.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "This endows it with more ﬂexibility and hence achieves higher training accuracy than FCN-Basic for the same number of iterations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "segnet-basic-advantage-memory-constrained",
+     "value": "The authors conclude that SegNet-Basic has an advantage over FCN-Basic when inference time memory is constrained but inference time can be compromised to some extent.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "Overall we see that SegNet-Basic has an advantage over FCN-Basic when inference time memory is constrained but where inference time can be compromised to some extent."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcn-noaddition-lower-than-fcn-basic-bf-drop",
+     "value": "The authors report that the accuracy of FCN-Basic-NoAddition is lower than that of FCN-Basic, with a large drop in the BF measure, and conclude that it is vital to capture the information present in the encoder feature maps.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "The accuracy of FCN-Basic-NoAddition is also lower as compared to FCN-Basic.",
+      "In particular, note the large drop in the BF measure between these two variants."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "segnet-basic-superior-to-fcn-noaddition",
+     "value": "The authors report that the performance of SegNet-Basic is superior to FCN-Basic-NoAddition, which they attribute in part to its larger decoder size.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "The performance of SegNet-Basic is superior, in part due to its larger decoder size."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcn-noadd-nodimred-poorer-than-segnet-basic",
+     "value": "The authors report that FCN-Basic-NoAddition-NoDimReduction performs poorer than SegNet-Basic on the test and that its training accuracy is lower for the same number of training epochs.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "The performance of this FCN variant is poorer than SegNet-Basic in test but also its training accuracy is lower for the same number of training epochs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "segnet-singlechannel-beats-fcn-noaddition",
+     "value": "The authors report that comparing FCN-Basic-NoAddition with SegNet-Basic-SingleChannelDecoder shows that using max-pooling indices for upsampling and an overall larger decoder leads to better performance.",
+     "anchor": "Section 3.3, p.7",
+     "quotes": [
+      "Another interesting comparison between FCN-BasicNoAddition and SegNet-Basic-SingleChannelDecoder shows that using max-pooling indices for upsampling and an overall larger decoder leads to better performance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "larger-models-best-when-unconstrained",
+     "value": "The authors report that when neither memory nor inference time is constrained, larger models such as FCN-Basic-NoDimReduction and SegNet-EncoderAddition are more accurate than the other variants.",
+     "anchor": "Section 3.3, p.7; Section 3.3, p.8",
+     "quotes": [
+      "In the best case, when both memory and inference time is not constrained, larger models such as FCN-Basic-NoDimReduction and SegNet-EncoderAddition are",
+      "both more accurate than the other variants."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcn-nodimreduction-best-fcn-variant",
+     "value": "The authors report that discarding dimensionality reduction in the FCN-Basic model leads to the best performance amongst the FCN-Basic variants, with a high BF score.",
+     "anchor": "Section 3.3, p.8",
+     "quotes": [
+      "discarding dimensionality reduction in the FCN-Basic model leads to the best performance amongst the FCN-Basic variants with a high BF score."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "natural-frequency-poorer",
+     "value": "The authors report that without class balancing (natural frequency) the results are poorer for all the variants, particularly for class average accuracy and the mIoU metric.",
+     "anchor": "Section 3.3, p.8",
+     "quotes": [
+      "Here, we can observe that without weighting the results are poorer for all the variants, particularly for class average accuracy and mIoU metric."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "natural-frequency-global-accuracy-highest",
+     "value": "The authors report that the global accuracy is the highest without weighting, since the majority of the scene is dominated by sky, road and building pixels.",
+     "anchor": "Section 3.3, p.8",
+     "quotes": [
+      "The global accuracy is the highest without weighting since the majority of the scene is dominated by sky, road and building pixels."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "natural-frequency-same-trends",
+     "value": "The authors report that apart from this, all the inferences from the comparative analysis of variants hold for natural frequency balancing too, including the trends for the BF measure.",
+     "anchor": "Section 3.3, p.8",
+     "quotes": [
+      "Apart from this all the inference from the comparative analysis of variants holds true for natural frequency balancing too, including the trends for the BF measure."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "analysis-point-1-full-encoder-maps-best",
+     "value": "The authors conclude from the decoder analysis that the best performance is achieved when encoder feature maps are stored in full, reflected most clearly in the semantic contour delineation metric (BF).",
+     "anchor": "Section 3.3, p.8",
+     "quotes": [
+      "The best performance is achieved when encoder feature maps are stored in full. This is reﬂected in the semantic contour delineation metric (BF) most clearly."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "analysis-point-2-compressed-maps-help",
+     "value": "The authors conclude that when memory during inference is constrained, compressed forms of encoder feature maps (dimensionality reduction, max-pooling indices) can be stored and used with an appropriate decoder (for example SegNet type) to improve performance.",
+     "anchor": "Section 3.3, p.8",
+     "quotes": [
+      "When memory during inference is constrained, then compressed forms of encoder feature maps (dimensionality reduction, max-pooling indices) can be stored and used with an appropriate decoder (e.g. SegNet type) to improve performance."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "analysis-point-3-larger-decoders",
+     "value": "The authors conclude that larger decoders increase performance for a given encoder network.",
+     "anchor": "Section 3.3, p.8",
+     "quotes": [
+      "Larger decoders increase performance for a given encoder network."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-inputs-360x480",
+     "value": "The authors state that the input RGB images for both benchmark tasks, road scenes and indoor scenes, were 360 x 480.",
+     "anchor": "Section 4, p.8",
+     "quotes": [
+      "The input RGB images for both tasks were 360 × 480."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-objective-end-to-end-same-data",
+     "value": "The authors state that the objective of the benchmark was to understand the performance of the architectures when trained end-to-end on the same datasets, and that they added batch normalization layers after each convolutional layer to enable this.",
+     "anchor": "Section 4, p.8",
+     "quotes": [
+      "Our objective was to understand the performance of these architectures when trained end-to-end on the same datasets.",
+      "To enable end-to-end training we added batch normalization"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "deeplab-modification-stride-45x60",
+     "value": "The authors state that for DeepLab-LargeFOV they changed the max pooling 3 stride to 1 to achieve a final predictive resolution of 45 x 60.",
+     "anchor": "Section 4, p.8",
+     "quotes": [
+      "For DeepLab-LargeFOV, we changed the max pooling 3 stride to 1 to achieve a ﬁnal predictive resolution of 45 × 60."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "deconvnet-fc-restricted-1024",
+     "value": "The authors state that they restricted the feature size in the fully connected layers of DeconvNet to 1024 so as to enable training with the same batch size as the other models.",
+     "anchor": "Section 4, p.8",
+     "quotes": [
+      "We restricted the feature size in the fully connnected layers of DeconvNet to 1024 so as to enable training with the same batch size as other models."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-solver-lr-1e-3",
+     "value": "The authors state that the controlled benchmark used the same SGD solver with a fixed learning rate of 10-3 and momentum of 0.9, optimized for more than 100 epochs until no further performance increase was observed.",
+     "anchor": "Section 4, p.8",
+     "quotes": [
+      "with a ﬁxed learning rate of 10−3 and momentum of 0.9.",
+      "The optimization was performed for more than 100 epochs through the dataset until no further performance increase was observed."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-dropout-0p5",
+     "value": "The authors state that dropout of 0.5 was added to the end of deeper convolutional layers in all models to prevent overfitting.",
+     "anchor": "Section 4, p.8",
+     "quotes": [
+      "Dropout of 0.5 was added to the end of deeper",
+      "convolutional layers in all models to prevent overﬁtting"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "benchmark-minibatch-5-and-4",
+     "value": "The authors state that for the road scenes, which have 11 classes, they used a mini-batch size of 5, and for indoor scenes with 37 classes a mini-batch size of 4.",
+     "anchor": "Section 4, p.8",
+     "quotes": [
+      "For the road scenes which have 11 classes we used a mini-batch size of 5 and for indoor scenes with 37 classes we used a mini-batch size of 4."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "camvid-ensemble-3433-images",
+     "value": "The authors state that they combined four road scene datasets to form an ensemble of 3433 images to train SegNet for an additional benchmark.",
+     "anchor": "Section 4.1, p.8",
+     "quotes": [
+      "to form an ensemble of 3433 images to train SegNet for an additional benchmark."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "cordts-benchmark-not-controlled",
+     "value": "The authors state that an independent road scene benchmark of SegNet and the competing architectures was not controlled, since each architecture was trained with a separate recipe with varying input resolutions and sometimes with a validation set included.",
+     "anchor": "Section 4.1, p.8",
+     "quotes": [
+      "However, the benchmark was not controlled, meaning that each architecture was trained with a separate recipe with varying input resolutions and sometimes with a validation set included."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "camvid-qualitative-segnet-superior",
+     "value": "The authors state that, under the controlled benchmark setting, SegNet shows superior performance as compared to some of the larger models, and that the qualitative results show it segments smaller classes in road scenes while producing a smooth segmentation of the overall scene.",
+     "anchor": "Section 4.1, p.8",
+     "quotes": [
+      "The qualitative results show the ability of the proposed architecture to segment smaller classes in road scenes while producing a smooth segmentation of the overall scene.",
+      "Indeed, under the controlled benchmark setting, SegNet shows superior performance as compared to some of the larger models."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "This is a qualitative judgement by the authors, stated before the quantitative tables."
+    },
+    {
+     "id_suggestion": "camvid-deeplab-efficient-crf-loses-small",
+     "value": "The authors report that DeepLab-LargeFOV is the most efficient model and, with CRF post-processing, can produce competitive results although smaller classes are lost.",
+     "anchor": "Section 4.1, p.8",
+     "quotes": [
+      "DeepLab-LargeFOV is the most efﬁcient model and with CRF post-processing can produce competitive results although smaller classes are lost."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "camvid-fcn-learned-deconv-better",
+     "value": "The authors report that FCN with learnt deconvolution is clearly better than with fixed bilinear upsampling.",
+     "anchor": "Section 4.1, p.8",
+     "quotes": [
+      "FCN with learnt deconvolution is clearly better than with ﬁxed bilinear upsampling."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "camvid-deconvnet-largest-loses-small",
+     "value": "The authors report that DeconvNet is the largest model and the most inefficient to train, and that its predictions do not retain small classes.",
+     "anchor": "Section 4.1, p.8",
+     "quotes": [
+      "DeconvNet is the largest model and the most inefﬁcient to train. Its predictions do not retain small classes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table2-segnet-3p5k-row",
+     "value": "Table 2 reports for SegNet trained on the 3.5K dataset for 140K iterations: class average 71.20, global average 90.40, mIoU 60.10 and BF 46.84 on the CamVid road class problem.",
+     "anchor": "Table 2, p.10",
+     "quotes": [
+      "SegNet (3.5K dataset training - 140K) 89.6 83.4 96.1 87.7 52.7 96.4 62.2 53.45 32.1 93.3 36.5 71.20 90.40 60.10 46.84"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Column assignment (class avg, global avg, mIoU, BF) read from the rendered table on p.10."
+    },
+    {
+     "id_suggestion": "table2-segnet-beats-crf-8-of-11",
+     "value": "The authors state that in comparison with the CRF based methods, SegNet predictions are more accurate in 8 out of the 11 classes, and that SegNet outperforms all the other methods on the majority of classes.",
+     "anchor": "Table 2, p.10",
+     "quotes": [
+      "In comparison with the CRF based methods SegNet predictions are more accurate in 8 out of the 11 classes.",
+      "SegNet outperforms all the other methods, including those using depth, video and/or CRF’s on the majority of classes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table2-10-percent-class-average-gain",
+     "value": "The authors state that SegNet shows a good improvement of approximately 10% in class average accuracy when trained on a large dataset of 3.5K images.",
+     "anchor": "Table 2, p.10",
+     "quotes": [
+      "It also shows a good ≈ 10% improvement in class average accuracy when trained on a large dataset of 3.5K images."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table2-competitive-with-crf-methods",
+     "value": "The authors state that the results in Table 2 show that SegNet-Basic and SegNet obtain competitive results when compared with methods which use CRFs.",
+     "anchor": "Section 4.1, p.8",
+     "quotes": [
+      "The results in Table 2 show SegNet-Basic, SegNet obtain competitive results when compared with methods which use CRFs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "large-training-set-big-improvement",
+     "value": "The authors state that the most interesting result is the large performance improvement in class average and mIoU metrics that is obtained when a large training dataset is used to train SegNet.",
+     "anchor": "Section 4.1, p.8",
+     "quotes": [
+      "The most interesting result here is the large performance improvement in class average and mIOU metrics that is obtained when a large training dataset"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "segnet-deployable-practical-applications",
+     "value": "The authors state that the percentage improvement obtained using a pre-trained encoder network and the larger training set indicates that the architecture can potentially be deployed for practical applications.",
+     "anchor": "Section 4.1, p.8; Section 4.1, p.9",
+     "quotes": [
+      "Although the fact that results improve with larger training sets is not surprising, the percentage improvement obtained using pre-trained encoder network and this training set indicates that this architecture can potentially be deployed for",
+      "practical applications."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "random-internet-images-generalize",
+     "value": "The authors state that random testing on urban and highway images from the internet demonstrates that SegNet can absorb a large training set and generalize well to unseen images, and indicates that the contribution of the CRF prior can be lessened when sufficient training data is available.",
+     "anchor": "Section 4.1, p.9",
+     "quotes": [
+      "Our random testing on urban and highway images from the internet (see Fig. 1) demonstrates that SegNet can absorb a large training set and generalize well to unseen images.",
+      "It also indicates the contribution of the prior (CRF) can be lessened when sufﬁcient amount of training data is made available."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The test is qualitative; no metric is reported for these internet images."
+    },
+    {
+     "id_suggestion": "table3-no-class-balancing",
+     "value": "The authors state that for the Table 3 comparison they did not use any class balancing for training any of the deep architectures including SegNet, because they found it difficult to train larger models such as DeconvNet with median frequency balancing.",
+     "anchor": "Section 4.1, p.9",
+     "quotes": [
+      "we did not use any class blancing for training any of the deep architectures including SegNet.",
+      "This is because we found it difﬁcult to train larger models such as DeconvNet with median frequency balancing."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table3-eval-points-40k-80k",
+     "value": "The authors state that they benchmark performance at 40K, 80K and more than 80K iterations, which approximately corresponds to 50, 100 and more than 100 epochs, and for the last test point also report the maximum number of iterations, at least 150 epochs.",
+     "anchor": "Section 4.1, p.9",
+     "quotes": [
+      "We benchmark performance at 40K, 80K and >80K iterations which given the mini-batch size and training set size approximately corresponds to 50, 100 and >100 epochs.",
+      "For the last test point we also report the maximum number of iterations (here atleast 150 epochs)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table3-batchnorm-statistics-protocol",
+     "value": "The authors state that for each evaluation they performed a complete run through the dataset to obtain batch norm statistics and then evaluated the test model with these statistics, and that because these evaluations are expensive they report metrics at only three time points.",
+     "anchor": "Section 4.1, p.9",
+     "quotes": [
+      "for each evaluation we performed a complete run through the dataset to obtain batch norm statistics and then evaluated the test model with this",
+      "statistic (see http://mi.eng.cam.ac.uk/projects/segnet/tutorial.html for code.). These evaluations are expensive to perform on large training sets and hence we only report metrics at three time points in the training phase."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table3-segnet-final-row",
+     "value": "Table 3 reports, at the last test point column, SegNet global 90.40, class average 71.20, mIoU 60.10 and BF 46.84.",
+     "anchor": "Table 3, p.11",
+     "quotes": [
+      "90.40 71.20 60.10 46.84"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Column assignment read from the rendered table on p.11."
+    },
+    {
+     "id_suggestion": "table3-deconvnet-final-row",
+     "value": "Table 3 reports, at the last test point column, DeconvNet global 89.58, class average 70.24, mIoU 59.77 and BF 52.23.",
+     "anchor": "Table 3, p.11",
+     "quotes": [
+      "89.58 70.24 59.77 52.23"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Column assignment read from the rendered table on p.11."
+    },
+    {
+     "id_suggestion": "table3-segnet-deconvnet-highest",
+     "value": "The authors report that from Table 3, SegNet and DeconvNet achieve the highest scores in all the metrics as compared to other models.",
+     "anchor": "Section 4.1, p.9",
+     "quotes": [
+      "From Table 3 we immediately see that SegNet, DeconvNet achieve the highest scores in all the metrics as compared to other models."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "deconvnet-higher-bf-segnet-more-efficient",
+     "value": "The authors report that DeconvNet has a higher boundary delineation accuracy but SegNet is much more efficient as compared to DeconvNet.",
+     "anchor": "Section 4.1, p.9",
+     "quotes": [
+      "DeconvNet has a higher boundary delineation accuracy but SegNet is much more efﬁcient as compared to DeconvNet."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table3-caption-smaller-learn-faster",
+     "value": "The authors state in the Table 3 caption that when end-to-end training is performed with the same and fixed learning rate, smaller networks like SegNet learn to perform better in a shorter time.",
+     "anchor": "Table 3, p.11",
+     "quotes": [
+      "When end-to-end training is performed with the same and ﬁxed learning rate, smaller networks like SegNet learn to perform better in a shorter time."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table3-caption-deconvnet-matches-cost",
+     "value": "The authors state in the Table 3 caption that DeconvNet matches the metrics for SegNet but at a much larger computational cost.",
+     "anchor": "Table 3, p.11",
+     "quotes": [
+      "DeconvNet matches the metrics for SegNet but at a much larger computational cost."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fc-models-train-slowly",
+     "value": "The authors report that FCN and DeconvNet, which have fully connected layers turned into convolutional layers, train much more slowly and have comparable or higher forward-backward pass time with reference to SegNet.",
+     "anchor": "Section 4.1, p.10",
+     "quotes": [
+      "DeconvNet which have fully connected layers (turned into convolutional layers) train much more slowly and have comparable or higher forward-backward pass time with reference to SegNet."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "larger-models-no-overfitting",
+     "value": "The authors report that over-fitting was not an issue in training the larger models, since at comparable iterations to SegNet their metrics showed an increasing trend.",
+     "anchor": "Section 4.1, p.10",
+     "quotes": [
+      "Here we note also that over-ﬁtting was not an issue in training these larger models, since at comparable iterations to SegNet their metrics showed an increasing trend."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcn-learned-deconv-improves-bf",
+     "value": "The authors report that for the FCN model, learning the deconvolutional layers as opposed to fixing them with bi-linear interpolation weights improves performance, particularly the BF score, and achieves higher metrics in far less time.",
+     "anchor": "Section 4.1, p.10",
+     "quotes": [
+      "For the FCN model learning the deconvolutional layers as opposed to ﬁxing them with bi-linear interpolation weights improves performance particularly the BF score. It also achieves higher metrics in a far lesser time."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "deeplab-competitive-smallest-poor-boundary",
+     "value": "The authors report that DeepLab-LargeFOV, trained to predict labels at a resolution of 45 x 60, produces competitive performance although it is the smallest model in parameterization, but its boundary accuracy is poorer and this is shared by the other architectures.",
+     "anchor": "Section 4.1, p.10",
+     "quotes": [
+      "Surprisingly, DeepLab-LargeFOV which is trained to predict labels at a resolution of 45×60 produces competitive performance given that it is the smallest model in terms of parameterization",
+      "However, the boundary accuracy is poorer and this is shared by the other architectures."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "deconvnet-bf-higher-long-training",
+     "value": "The authors report that DeconvNet's BF score is higher than the other networks when trained for a very long time.",
+     "anchor": "Section 4.1, p.10",
+     "quotes": [
+      "DeconvNet’s BF score is higher than the other networks when trained for a very long time."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "densecrf-global-miou-up-class-avg-down-bf-up",
+     "value": "The authors report that dense CRF post-processing on DeepLab-LargeFOV improves global accuracy and mIoU, class average diminishes, and a large improvement is obtained for the BF score.",
+     "anchor": "Section 4.1, p.10",
+     "quotes": [
+      "Both global and mIoU improve but class average diminshes. However a large improvement is obtained for the BF score."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "densecrf-hyperparameters-grid-search",
+     "value": "The authors state that the dense CRF hyperparameters were obtained by an expensive grid-search process on a subset of the training set since no validation set was available.",
+     "anchor": "Section 4.1, p.10",
+     "quotes": [
+      "Note here that the dense CRF hyperparameters were obtained by an expensive grid-search process on a subset of the training set since no validation set was available."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table6-forward-backward-times",
+     "value": "Table 6 reports forward pass times of 422.50, 110.06, 317.09 and 474.65 ms and backward pass times of 488.71, 160.73, 484.11 and 602.15 ms for SegNet, DeepLab-LargeFOV, FCN (learnt deconv) and DeconvNet respectively.",
+     "anchor": "Table 6, p.13",
+     "quotes": [
+      "422.50 110.06 317.09 474.65",
+      "488.71 160.73 484.11 602.15"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Row order read from the rendered table on p.13."
+    },
+    {
+     "id_suggestion": "table6-training-memory",
+     "value": "Table 6 reports GPU training memory of 6803, 5618, 9735 and 9731 MB for SegNet, DeepLab-LargeFOV, FCN (learnt deconv) and DeconvNet respectively.",
+     "anchor": "Table 6, p.13",
+     "quotes": [
+      "6803 5618 9735 9731"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Row order read from the rendered table on p.13."
+    },
+    {
+     "id_suggestion": "table6-segnet-most-memory-efficient-inference",
+     "value": "The authors state in the Table 6 caption that SegNet is most memory efficient during inference model.",
+     "anchor": "Table 6, p.13",
+     "quotes": [
+      "SegNet is most memory efﬁcient during inference model."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table6-inference-memory-and-model-size",
+     "value": "Read from Table 6: GPU inference memory is about 1052 MB for SegNet, about 1993 MB for DeepLab-LargeFOV, about 1806 MB for FCN (learnt deconv) and about 1872 MB for DeconvNet; the model sizes are listed in the same table.",
+     "anchor": "Table 6, p.13",
+     "quotes": [
+      "SegNet is most memory efﬁcient during inference model.",
+      "Model size was the size of the caffe models on disk."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": "Numbers read from the rendered table image on p.13; the text layer separates them from their labels."
+    },
+    {
+     "id_suggestion": "table6-measurement-protocol",
+     "value": "The authors state that the caffe time command was used to compute time requirement averaged over 10 iterations with mini batch size 1 and an image of 360 x 480 resolution.",
+     "anchor": "Table 6, p.13",
+     "quotes": [
+      "The caffe time command was used to compute time requirement averaged over 10 iterations with mini batch size 1 and an image of 360 × 480 resolution"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table6-memory-protocol",
+     "value": "The authors state that for training memory they used a mini-batch of size 4 and for inference memory the batch size was 1, with memory consumption computed using the nvidia-smi unix command.",
+     "anchor": "Table 6, p.13",
+     "quotes": [
+      "We used nvidia-smi unix command to compute memory consumption. For training memory computation we used a mini-batch of size 4 and for inference memory the batch",
+      "size was 1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sunrgbd-dataset-description",
+     "value": "The authors state that SUN RGB-D has 5285 training and 5050 testing images captured by different sensors, and the task is to segment 37 indoor scene classes.",
+     "anchor": "Section 4.2, p.10",
+     "quotes": [
+      "is a very challenging and large dataset of indoor scenes with 5285 training and 5050 testing images.",
+      "The task is to segment 37 indoor scene classes including wall, ﬂoor, ceiling, table, chair, sofa etc."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sunrgbd-training-set-size-discrepancy",
+     "value": "The authors state the SUN RGB-D training set size as 5285 images in the text and describe the training corpus as 5250 indoor scenes in the Table 4 caption.",
+     "anchor": "Section 4.2, p.10; Table 4, p.11",
+     "quotes": [
+      "is a very challenging and large dataset of indoor scenes with 5285 training and 5050 testing images.",
+      "Quantitative comparison of deep architectures on the SUNRGB-D dataset when trained on a corpus of 5250 indoor scenes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The two counts differ (5285 against 5250); the paper does not explain the difference."
+    },
+    {
+     "id_suggestion": "sunrgbd-rgb-only-no-depth",
+     "value": "The authors state that they only use the RGB modality for training and testing on SUN RGB-D, and that using depth merits a separate body of work that is not in the scope of the paper.",
+     "anchor": "Section 4.2, p.10",
+     "quotes": [
+      "We only use the RGB modality for our training and testing.",
+      "Therefore we believe using depth for segmentation merits a separate body of work which is not in the scope of this paper."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "indoor-scenes-hardest-challenge",
+     "value": "The authors state that they believe indoor scene segmentation is the hardest challenge for segmentation architectures and methods in computer vision.",
+     "anchor": "Section 4.2, p.10",
+     "quotes": [
+      "Therefore, we believe this is the hardest challenge for segmentation architectures and methods in computer vision."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sunrgbd-qualitative-large-classes-ok",
+     "value": "The authors report that SegNet obtains reasonable predictions when the classes are large under different view points, using only RGB, but that segmentation quality is clearly more noisy than for outdoor scenes and drops significantly when clutter is increased.",
+     "anchor": "Section 4.2, p.10; Section 4.2, p.11",
+     "quotes": [
+      "We see that SegNet obtains reasonable predictions when the size of the classes are large under different view points.",
+      "However as compared to outdoor scenes the segmentation quality",
+      "is clearly more noisy. The quality drops signiﬁcantly when clutter is increased (see the result sample in the middle column)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table4-all-architectures-low",
+     "value": "The authors report that in the quantitative results in Table 4 all the deep architectures share low mIoU and boundary metrics, and that the global and class averages are also small.",
+     "anchor": "Section 4.2, p.11",
+     "quotes": [
+      "The quantitative results in Table 4 show that all the deep architectures share low mIoU and boundary metrics. The global and class averages (correlates well with mIou) are also small."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table4-segnet-best-gcbf-slightly-lower-miou",
+     "value": "The authors report that SegNet outperforms all other methods in terms of the G, C and BF metrics and has a slightly lower mIoU than DeepLab-LargeFOV.",
+     "anchor": "Section 4.2, p.11",
+     "quotes": [
+      "SegNet outperforms all other methods in terms of G,C, BF metrics and has a slightly lower mIoU than DeepLab-LargeFOV."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table4-segnet-final-row",
+     "value": "Table 4 reports, at the last test point column, SegNet global 72.63, class average 44.76, mIoU 31.84 and BF 12.66.",
+     "anchor": "Table 4, p.11",
+     "quotes": [
+      "72.63 44.76 31.84 12.66"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Column assignment read from the rendered table on p.11."
+    },
+    {
+     "id_suggestion": "table4-deeplab-final-row",
+     "value": "Table 4 reports, at the last test point column, DeepLab-LargeFOV global 71.90, class average 42.21, mIoU 32.08 and BF 8.26.",
+     "anchor": "Table 4, p.11",
+     "quotes": [
+      "71.90 42.21 32.08 8.26"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Column assignment read from the rendered table on p.11."
+    },
+    {
+     "id_suggestion": "table4-segnet-median-frequency-balanced",
+     "value": "The authors report that when SegNet was trained with median frequency class balancing on SUN RGB-D it obtained 71.75, 44.85, 32.08 and 14.06 (180K) as the metrics.",
+     "anchor": "Table 4, p.11",
+     "quotes": [
+      "Also note that when SegNet was trained with median frequency class balancing it obtained 71.75, 44.85,",
+      "32.08, 14.06 (180K) as the metrics."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "The caption does not name the four metrics; they are presumably G, C, mIoU and BF in the order of the table."
+    },
+    {
+     "id_suggestion": "densecrf-worsens-indoor",
+     "value": "The authors report that using the grid search based optimal hyperparameters for the dense-CRF worsened all metrics except BF for DeepLab-LargeFOV-denseCRF on SUN RGB-D, and that more optimal settings could perhaps be found but the grid search was too expensive.",
+     "anchor": "Section 4.2, p.11",
+     "quotes": [
+      "Interestingly, using the grid search based optimal hyperparameters for the dense-CRF worsened all except the BF score metric for DeepLab-LargeFOVdenseCRF.",
+      "More optimal settings could perhaps be found but the grid search process was too expensive given the large inference time for dense-CRFs."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sunrgbd-poor-reason-many-small-classes",
+     "value": "The authors state that one reason for the overall poor performance is the large number of classes in this task, many of which occupy a small part of the image and appear infrequently.",
+     "anchor": "Section 4.2, p.11",
+     "quotes": [
+      "One reason for the overall poor performance is the large number of classes in this segmentation task, many of which occupy a small part of the image and appear infrequently."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table5-larger-classes-better",
+     "value": "The authors report that the accuracies in Table 5 clearly show that larger classes have reasonable accuracy and smaller classes have lower accuracies, and that performance correlates well with the size of the classes in indoor scenes.",
+     "anchor": "Section 4.2, p.11; Table 5, p.13",
+     "quotes": [
+      "The accuracies reported in Table 5 clearly show that larger classes have reasonable accuracy and smaller classes have lower accuracies.",
+      "The performance correlates well with size of the classes in indoor scenes."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "table5-extremes",
+     "value": "Read from Table 5: the highest class accuracies are for floor (about 93.43) and wall (about 83.42), and the lowest are for floor mat (about 0.00) and shower curtain (about 0.03).",
+     "anchor": "Table 5, p.13",
+     "quotes": [
+      "Class average accuracies of SegNet predictions for the 37 indoor scene classes in the SUN RGB-D benchmark dataset.",
+      "Note that class average accuracy has a strong correlation with mIoU metric."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": "Values read from the rendered table image on p.13."
+    },
+    {
+     "id_suggestion": "indoor-poor-conjecture-vgg-variability",
+     "value": "The authors offer as a conjecture that another reason for poor performance could lie in the inability of these VGG-based deep architectures to handle large variability in indoor scenes, based on the smallest model DeepLab-LargeFOV producing the best mIoU, and state that more controlled datasets are needed to verify this hypothesis.",
+     "anchor": "Section 4.2, p.11",
+     "quotes": [
+      "Another reason for poor performance could lie in the inability of these deep architectures",
+      "This conjecture on our part is based on the fact that the smallest model DeepLab-LargeFOV produces the best accuracy in terms of",
+      "are needed to verify this hypothesis."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The authors present it as an unverified conjecture.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "discussion-cannot-disentangle-model-solver",
+     "value": "The authors state that their controlled benchmarking approach cannot entirely disentangle the effects of model versus solver (optimization) in achieving a particular result.",
+     "anchor": "Section 5, p.12",
+     "quotes": [
+      "However, we note that this approach cannot entirely disentangle the effects of model versus solver (optimization) in achieving a particular result."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state a limit on their own measured benchmark.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "discussion-segnet-smaller-faster",
+     "value": "The authors state that SegNet is significantly smaller and faster than other competing architectures, and that they have shown it to be efficient for tasks such as road scene understanding.",
+     "anchor": "Section 5, p.11",
+     "quotes": [
+      "which is signiﬁcantly smaller and faster than other competing architectures, but which we have shown to be efﬁcient for tasks such as road scene understanding."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "discussion-less-attention-small-models",
+     "value": "The authors state that they feel less attention has been paid to smaller and more memory and time efficient models for real-time applications such as road scene understanding and AR.",
+     "anchor": "Section 5, p.11",
+     "quotes": [
+      "From an overall efﬁciency viewpoint, we feel less attention has been paid to smaller and more memory, time efﬁcient models for real-time applications such as road scene understanding and AR."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "discussion-outdoor-easier-than-indoor",
+     "value": "The authors state that it is clear from their experiments and other independent benchmarks that outdoor scene images captured from a moving car are easier to segment and deep architectures perform robustly.",
+     "anchor": "Section 5, p.11",
+     "quotes": [
+      "that outdoor scene images captured from a moving car are easier to segment and deep architectures perform robustly."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "discussion-bf-metric-complements-region",
+     "value": "The authors state that they chose the boundary F1-measure (BF) to complement the existing metrics, which are more biased towards region accuracies.",
+     "anchor": "Section 5, p.11",
+     "quotes": [
+      "like the boundary F1-measure (BF) was done to complement the existing metrics which are more biased towards region accuracies."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "discussion-future-work-uncertainty",
+     "value": "The authors state that for the future they would like to design more efficient architectures for real-time applications and are interested in estimating the model uncertainty for predictions from deep segmentation architectures.",
+     "anchor": "Section 5, p.12",
+     "quotes": [
+      "For the future, we would like to exploit our understanding of segmentation architectures gathered from our analysis to design more efﬁcient architectures for real-time applications.",
+      "We are also interested in estimating the model uncertainty for predictions from deep segmentation architectures"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state their own open directions.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-full-maps-best-segnet-efficient",
+     "value": "The authors conclude that architectures that store the encoder feature maps in full perform best but consume more memory during inference, while SegNet is more efficient since it only stores the max-pooling indices and uses them in its decoder network to achieve good performance.",
+     "anchor": "Section 6, p.12; Section 6, p.13",
+     "quotes": [
+      "Those architectures which",
+      "store the encoder network feature maps in full perform best but consume more memory during inference time.",
+      "SegNet on the other hand is more efﬁcient since it only stores the max-pooling indices of the feature maps and uses them in its decoder network to achieve good performance."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-competitive-large-datasets",
+     "value": "The authors conclude that on large and well known datasets SegNet performs competitively, achieving high scores for road scene understanding.",
+     "anchor": "Section 6, p.13",
+     "quotes": [
+      "On large and well known datasets SegNet performs competitively, achieving high scores for road scene understanding."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-end-to-end-harder-challenge",
+     "value": "The authors state that end-to-end learning of deep segmentation architectures is a harder challenge and hope to see more attention paid to this problem.",
+     "anchor": "Section 6, p.13",
+     "quotes": [
+      "End-to-end learning of deep segmentation architectures is a harder challenge and we hope to see more attention paid to this important problem."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcn-param-split-134m-0p5m",
+     "value": "The authors state that FCN has a large number of trainable parameters in its encoder network (134M) but a very small decoder network (0.5M), which makes the overall network hard to train end-to-end and leads to a stage-wise training process.",
+     "anchor": "Section 2, p.3",
+     "quotes": [
+      "It is an architecture which has a large number of trainable parameters in the encoder network (134M) but a very small decoder network (0.5M).",
+      "The overall large size of this network makes it hard to train end-to-end on a relevant task."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fcn-memory-intensive-test-time",
+     "value": "The authors state that the need to reuse the encoder feature maps in the decoder makes FCN memory intensive at test time.",
+     "anchor": "Section 2, p.3",
+     "quotes": [
+      "the need to reuse the encoder feature maps in the decoder makes it memory intensive in test time."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "deconvnet-fc-90-percent-params",
+     "value": "The authors state that the DeconvNet encoder network consists of the fully connected layers of VGG-16, which comprise about 90% of the parameters of the entire network, making training very difficult and requiring aids such as region proposals.",
+     "anchor": "Section 2, p.4",
+     "quotes": [
+      "However, their encoder network consists of the fully connected layers from the VGG-16 network which consists of about 90% of the parameters of their entire network.",
+      "This makes training of their network very difﬁcult and thus require additional aids such as the use of region proposals to enable training."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "crf-gain-due-to-weak-decoders",
+     "value": "The authors state that they believe the perceived performance increase obtained by using a CRF is due to the lack of good decoding techniques in the core feed-forward segmentation engine.",
+     "anchor": "Section 2, p.3",
+     "quotes": [
+      "We believe the perceived performance increase obtained by using a CRF is due to the lack of good decoding techniques in their core feed-forward segmentation engine."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "segnet-inspired-by-ranzato",
+     "value": "The authors state that their work was inspired by the unsupervised feature learning architecture proposed by Ranzato et al., and that SegNet differs in that the deep encoder-decoder network is trained jointly for a supervised learning task so the decoders are an integral part of the network at test time.",
+     "anchor": "Section 2, p.4",
+     "quotes": [
+      "Our work was inspired by the unsupervised feature learning architecture proposed by Ranzato et al.",
+      "Here, SegNet differs from these architectures as the deep encoder-decoder network is trained jointly for a supervised learning task and hence the decoders are an integral part of the network in test time."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "segnet-motivation-road-scenes",
+     "value": "The authors state that SegNet is primarily motivated by road scene understanding applications, which require modelling appearance, shape and the spatial relationship between classes, and efficiency in both memory and computation time during inference.",
+     "anchor": "Section 1, p.1",
+     "quotes": [
+      "It is primarily motivated by road scene understanding applications which require the ability to model appearance (road, building), shape (cars,"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "segnet-end-to-end-sgd-benefit",
+     "value": "The authors state that the ability to train end-to-end to jointly optimise all the weights in the network using an efficient weight update technique such as stochastic gradient descent is an additional benefit since it is more easily repeatable.",
+     "anchor": "Section 1, p.1",
+     "quotes": [
+      "The ability to train end-to-end in order to jointly optimise all the weights in the network using an efﬁcient weight update technique such as stochastic gradient descent (SGD)"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pascal-voc-favours-detection",
+     "value": "The authors state that Pascal VOC12 mostly has one or two foreground classes surrounded by a highly varied background, which implicitly favours techniques used for detection.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "However, the majority of this task has one or two foreground",
+      "classes surrounded by a highly varied background. This implicitly favours techniques used for detection"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "online-demo-11-classes",
+     "value": "The authors state that they present a real-time online demo of road scene segmentation into 11 classes of interest for autonomous driving.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "we present a real-time online demo of road scene segmentation into 11 classes of interest for autonomous driving"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own demo scope.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "abstract-memory-versus-accuracy-tradeoff",
+     "value": "The authors state that comparing SegNet with FCN, DeepLab-LargeFOV and DeconvNet reveals the memory versus accuracy trade-off involved in achieving good segmentation performance.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "This comparison reveals the memory versus accuracy trade-off involved in achieving good segmentation performance."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "abstract-segnet-most-efficient-inference-memory",
+     "value": "The authors state that the quantitative assessments show that SegNet provides good performance with competitive inference time and is the most efficient inference memory-wise as compared to other architectures.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "These quantitative assessments show that SegNet provides good performance with competitive inference time and most efﬁcient inference memory-wise as compared to other architectures."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "abstract-fewer-trainable-parameters",
+     "value": "The authors state that SegNet is significantly smaller in the number of trainable parameters than other competing architectures and can be trained end-to-end using stochastic gradient descent.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "It is also signiﬁcantly smaller in the number of trainable parameters than other competing architectures and can be trained end-to-end using stochastic gradient descent."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim; the paper gives no separate proof at this point.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fig4-read-segnet-keeps-thin-structures",
+     "value": "Read from Figure 4: in the five CamVid test samples, the SegNet row shows thin vertical pole-like structures that the ground truth row also shows, and the DeepLab-LargeFOV rows show smoother regions with fewer thin structures.",
+     "anchor": "Figure 4, p.9",
+     "quotes": [
+      "SegNet shows superior performance, particularly with its ability to delineate boundaries, as",
+      "DeepLab-LargeFOV is the most efﬁcient model and with CRF post-processing can produce competitive results although smaller classes are lost."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": "A visual reading of a 100 dpi page image; the paper gives no numeric score for these samples."
+    },
+    {
+     "id_suggestion": "fig5-read-indoor-noisy-when-cluttered",
+     "value": "Read from Figure 5: SegNet predictions on the five SUN RGB-D test scenes show large uniform regions for bed, sofa and table scenes and visibly mixed small regions on the cluttered third scene, and the caption states that parts of an image without ground truth labels are shown in black.",
+     "anchor": "Figure 5, p.12",
+     "quotes": [
+      "Overall rhe segmentation quality is better when object classes are reasonably sized but is very noisy when the scene is more cluttered.",
+      "Note that often parts of an image of a scene do not have ground truth labels and these are shown in black colour."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": "A visual reading of a 100 dpi page image; the paper gives no numeric score for these samples."
+    },
+    {
+     "id_suggestion": "fig1-read-demo-predictions",
+     "value": "Read from Figure 1: the figure shows five road scene images and five indoor scene images, each with a colour-coded segmentation below it, and the text states that the road scene images come from Google and the indoor scenes from the SUN RGB-D dataset.",
+     "anchor": "Figure 1, p.2",
+     "quotes": [
+      "Some example test results produced on randomly sampled road scene images from Google and indoor test scenes from the SUN RGB-D dataset"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Single-study result reported by the authors.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": "Qualitative figure only; the paper reports no metric for these images."
+    }
+   ]
+  }
+ ]
+}

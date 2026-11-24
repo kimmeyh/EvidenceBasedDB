@@ -1,0 +1,1310 @@
+{
+ "papers": [
+  {
+   "record_id": "brandao-2019-quantum-sdp-solvers-large-speed",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2017-10_Brandao_Quantum-SDP-Solvers-Large-Speed-ups-Optimality-and-Applications.pdf",
+   "title_in_file": "Quantum SDP Solvers: Large Speed-ups, Optimality, and Applications to Quantum Learning",
+   "version_note": "arXiv:1710.02581v3 (22 Apr 2019), the 40-page version with the proofs in Appendices A to G; the first page text layer scrambles the abstract equations, which were read from the rendered page.",
+   "pages": 40,
+   "read_extent": "full",
+   "not_read": "",
+   "sections_read": [
+    "Abstract",
+    "1 Introduction",
+    "1.1 Quantum SDP solvers with optimal dependence on m and n",
+    "1.2 Quantum SDP solvers with quantum inputs",
+    "1.3 Related works on quantum SDP solvers",
+    "1.4 Techniques",
+    "1.5 Application: Efficient learnability of quantum states",
+    "1.6 Open questions",
+    "Acknowledgements",
+    "References",
+    "A Feasibility of SDPs",
+    "B Fast quantum OR lemma",
+    "C Quantum SDP solver in the plain model",
+    "D Quantum SDP solver with quantum inputs",
+    "D.1 The quantum input model",
+    "D.2 Implementation of Oracle A.1 - searching a violated constraint",
+    "D.3 Quantum SDP solvers with quantum inputs",
+    "D.4 Trace estimation",
+    "D.5 Gibbs state preparation",
+    "D.6 Lower bound for quantum SDP solvers with quantum inputs",
+    "E Application: efficient learnability of quantum states",
+    "F Gibbs sampling of low-rank Hamiltonians",
+    "G Proof for Gibbs sampling of low-rank states"
+   ],
+   "figure_count": 0,
+   "figures": [],
+   "what_it_is": "A theory paper giving two quantum SDP feasibility solvers (a plain-oracle one with optimal dependence on m and n, and a quantum-input one polylogarithmic in n) plus an application to learning a quantum state from measurements.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "sdp-feasibility-problem-defined",
+     "value": "The paper defines the SDP approximate feasibility problem: given a positive error, m real numbers and m Hermitian n by n matrices bounded between minus the identity and the identity, the convex region S-epsilon is the set of density matrices X with each trace inequality satisfied up to the error; approximate feasibility testing asks for output of fail in one case and an X in S-epsilon in the other, as the paper prints the two cases.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "Given an ǫ > 0, m real numbers a1, . . . , am ∈ R, and Hermitian n × n matrices A1, . . . , Am where −I Ai I, ∀ j ∈ [m], deﬁne the convex region Sǫ as all X such that",
+      "For approximate feasibility testing, it is required that either (1) If S0 = ∅, output fail; or (2) If Sǫ = ∅, output an X ∈ Sǫ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the problem it solves in Section 1 and Appendix A Definition 1.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The second case as printed reads S-epsilon equal to the empty set, which appears to be a typographical slip for the non-empty case."
+    },
+    {
+     "id_suggestion": "sdp-optimization-to-feasibility-reduction",
+     "value": "The authors state that a general SDP optimization problem reduces to feasibility by guessing a candidate objective value and adding it as a constraint, with the value found by binary search at a cost that is logarithmic in one over epsilon overhead when the objective lies in the interval from minus 1 to 1.",
+     "anchor": "Section 1, footnote 2, p.3",
+     "quotes": [
+      "convert it into a constraint (e.g., Tr(CX) ≥ c0). Hence one ends up with a feasibility problem and the candidate value c0 can then be found via binary search with O(log(1/ǫ)) overhead when Tr(CX) ∈ [−1, 1]."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A footnote explanation of a routine reduction, stated without a proof in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "feasibility-conversion-epsilon-rescaling",
+     "value": "The authors state that converting a general feasible solution with a trace bound R to the trace-one form changes epsilon to epsilon over R, and that using an approximate feasibility solver to find a strictly feasible solution changes epsilon to epsilon over RR-tilde.",
+     "anchor": "Section 1, p.3",
+     "quotes": [
+      "Note, however, the change of ǫ to ǫ/R in this conversion.",
+      "Also note one can use an approximate feasibility solver to ﬁnd a strictly feasible solution, by changing ǫ to ǫ/RR˜ (see Lemma 18 of Ref. [9])."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A remark on how the error parameter degrades under conversion, citing earlier work for the second rescaling.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "plain-oracle-defined",
+     "value": "The paper defines the plain input model as a quantum oracle P_A that, given the matrix index j, row index k and a position l among the s non-zero entries, returns a bit string for the l-th non-zero element of the k-th row of the matrix A_j.",
+     "anchor": "Section 1.1, Oracle 1.1, p.3",
+     "quotes": [
+      "A quantum oracle, denoted PA, such that given the indices j ∈ [m], k ∈ [n] and l ∈ [s], computes a bit string representation of the l-th non-zero",
+      "element of the k-th row of Aj, i.e. the oracle performs the following map:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the input model that the plain-model results depend on.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "plain-model-primitives-from-prior-work",
+     "value": "The authors state that their plain-model result is combined with results on trace estimation from Ref. [9] and results on Gibbs sampling from Ref. [26] to obtain the concrete parameters.",
+     "anchor": "Section 1.1, p.4",
+     "quotes": [
+      "we directly make use of results on STr(s, Γ, ǫ) and TTr(s, Γ, ǫ) from Ref. [9], and results on TGibbs(s, Γ, ǫ) from Ref. [26]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The primitives are results cited from other papers.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "plain-model-sdp-solver-corollary",
+     "value": "The paper proves (Corollary 6, Appendix C) that, given Oracle 1.1 and s-sparse matrices A_j for all j, feasibility of the SDP can be tested by Algorithm 4 with success probability at least 0.96 and O-tilde of s squared times (square root of m over epsilon to the 10th plus square root of n over epsilon to the 12th) quantum gates and queries to Oracle 1.1.",
+     "anchor": "Corollary 6, Appendix C, p.20",
+     "quotes": [
+      "Corollary 6. Assume we are given Oracle 1.1. Furthermore, assume that Aj is s-sparse for all j ∈ [m].",
+      "can be tested by Algorithm 4 with success probability at least 0.96 and O˜ (s2( m ǫ10 + n ǫ12 )) quantum gates and queries to Oracle 1.1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Corollary 6 is proved in Appendix C from Theorem 3 and Lemmas 4 and 5, with its conditions quoted.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The text layer drops the square-root signs over m and n and prints exponents flat; the formula was read from the rendered abstract and the proof's equation (C.4)."
+    },
+    {
+     "id_suggestion": "plain-model-m-n-dependence-optimal",
+     "value": "The authors state that their contribution is to decouple the dependence on m and n, and that the square-root-m plus square-root-n dependence is optimal due to the quantum lower bound proven in Ref. [9].",
+     "anchor": "Section 1.1, p.4",
+     "quotes": [
+      "Note that the ( m + n) dependence is optimal due to the quantum lower bound proven in Ref. [9]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "Optimality rests on a lower bound the paper attributes to Ref. [9].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "plain-model-decouples-cost-via-fast-or",
+     "value": "The authors state that the fast OR lemma speed-up lets them decouple the cost of m times n in [9, 5] to the sum of the two square roots, and that it leads to the optimal bound for solving SDPs when other parameters are constants.",
+     "anchor": "Appendix B, p.17",
+     "quotes": [
+      "This speed-up enables us to decouple the cost of m · n in [9, 5] to ( m + n) (see Appendix C and Appendix D for more details); in particular, it leads to the optimal bound for solving SDPs when other parameters are constants."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A summary statement of an improvement over cited earlier solvers.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "plain-model-nontrivial-speedup-combinatorial",
+     "value": "The authors state that it is nontrivial to obtain quantum speed-ups by directly applying their solvers to SDP instances from classical combinatorial problems, because of the poly dependence on 1/epsilon, which is linear in n for instances such as Max-Cut.",
+     "anchor": "Remark 1.5, Section 1.1, p.4",
+     "quotes": [
+      "it is nontrivial to obtain quantum speed-ups by directly applying our quantum SDP solvers to SDP instances from classical combinatorial problems.",
+      "The major obstacle is the polydependence on 1/ǫ, whereas, for interesting SDP instances such as Max-Cut, 1/ǫ is linear in n."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit on the scope of their own result in Remark 1.5.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "specialized-solvers-hard-to-quantize",
+     "value": "The authors state that extending specialized classical SDP solver designs to the quantum setting seems challenging, because known classical approaches require explicit information of intermediate states, which requires Omega of n time and space even to store.",
+     "anchor": "Remark 1.5, Section 1.1, p.4",
+     "quotes": [
+      "Extending this idea to quantum seems challenging.",
+      "One difﬁculty is that known classical approaches require explicit information of intermediate states, which requires Ω(n) time and space even to store."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this obstacle to extending their approach in Remark 1.5.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mild-epsilon-instances-speedup-claim",
+     "value": "The authors state that their solvers suffice for instances with mild 1/epsilon, which are natural in quantum information such as the learnability of quantum states, and that for those cases they establish a quantum speed-up since any classical algorithm needs at least linear time in n and/or m.",
+     "anchor": "Remark 1.5, Section 1.1, p.4",
+     "quotes": [
+      "However, our quantum SDP solvers are sufﬁcient for instances with mild 1/ǫ, which are natural in the context of quantum information",
+      "For those cases, we do establish a quantum speed-up as any classical algorithm needs at least linear time in n and/or m."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim about applicability, without a worked instance beyond the learning application.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-input-model-motivation-scope",
+     "value": "The authors state that, since they consider a non-standard input model, their results in the quantum input model are incomparable to those in the plain input model.",
+     "anchor": "Section 1.2, p.5",
+     "quotes": [
+      "Note that since we consider a non-standard input model in this section, our results are incomparable to those in the plain input model."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of the comparison between its two models.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "earlier-quantum-input-construction-incorrect",
+     "value": "The authors state that a proposal of this quantum input model was mentioned in an earlier version of Ref. [9], whose precise mathematical form and construction of quantum SDP solvers were incorrect and later removed.",
+     "anchor": "Section 1.2, p.5",
+     "quotes": [
+      "We note that such proposal was mentioned in an earlier version of Ref. [9], whose precise mathematical form and construction of quantum SDP solvers were unfortunately incorrect, and later removed."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement about another paper's earlier version, not checked here.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-input-model-decomposition-setup",
+     "value": "The paper sets up the quantum input model by giving each A_j as a difference of two positive semidefinite matrices, assuming rank at most r for each A_j, and a bound B on the sum of the two traces, which is an upper bound to the trace-norm of all input matrices and is given as an input of the problem.",
+     "anchor": "Section 1.2, p.5",
+     "quotes": [
+      "Consider a speciﬁc setting in which we are given decompositions of each Aj: Aj = A+j − A−j , where A+j , A−j 0.",
+      "Throughout the paper, let us assume that Aj has rank at most r for all j ∈ [m] and Tr[A+j ] + Tr[A−j ] ≤ B.",
+      "The parameter B is therefore an upper bound to the trace-norm of all input matrices which we assume is given as an input of the problem."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the setup of its quantum input model in Section 1.2.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-input-sdp-dependence",
+     "value": "The paper proves (the quantum-input corollary of Appendix D) a feasibility test for the quantum input model, given the three input oracles, matrices of rank at most r and trace sums bounded by B; the authors state that the solver has a polylogarithmic dependence on n (but polynomial in r) and a square-root dependence on m.",
+     "anchor": "Corollary 5, Appendix D.3, p.24; Section 1.2, p.6",
+     "quotes": [
+      "Assume we are given Oracle D.1, Oracle D.2, and Oracle D.3. Furthermore, assume Tr[A+j ] + Tr[A−j ] ≤ B for some bound B, and Aj have rank at most r for all j ∈ [m].",
+      "our quantum SDP solver has a polylogarithmic dependence on n (but polynomial in r) and a square-root depend"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The conditions are quoted, but the text layer scrambles the corollary's own gate-count formula, so the statement could not be quoted in full.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The full bound, read from the rendered abstract, is square root of m plus poly of r, times poly of log m, log n, B and 1/epsilon."
+    },
+    {
+     "id_suggestion": "quantum-input-no-sparsity-assumption",
+     "value": "The authors state that their quantum SDP solver in the quantum input model does not assume the sparsity of the matrices A_i, which is crucial for the quantum SDP solvers with the plain model.",
+     "anchor": "Section 1.2, p.6",
+     "quotes": [
+      "our quantum SDP solver in Corollary 9 does not assume the sparsity of Ai’s, which are crucial for the quantum SDP solvers with the plain model"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A descriptive comparison by the authors between their two models.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-input-lower-bound-sqrt-m",
+     "value": "The paper states (Theorem 10) that there exists an SDP feasibility testing problem with B, r and epsilon all of constant order such that solving it requires Omega of square root of m calls to Oracle 1.2, Oracle 1.3 and Oracle 1.4.",
+     "anchor": "Theorem 10, Section 1.2, p.6",
+     "quotes": [
+      "Theorem 10 (lower bound on Corollary 9). There exists",
+      "SDP feasibility testing problem such that B, r, ǫ = Θ(1), and solving the problem requires Ω( m) calls to Oracle 1.2, Oracle 1.3, and Oracle 1.4."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The theorem is stated with its conditions and proved in Appendix D.6 by reduction to Grover search.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "lower-bound-instance-construction",
+     "value": "The authors describe two instances with B and r equal to 1, in which the first is not feasible and the second is always feasible, and state that Oracle D.2 provides no information for distinguishing them, so only Oracle D.1 can be used.",
+     "anchor": "Appendix D.6, proof of Theorem 13, p.27",
+     "quotes": [
+      "Note that the ﬁrst problem is not feasible because there is no X such that X 0 and Tr[Aj∗ X] ≤ −1/2 + 1/4 < 0; the second problem is always feasible.",
+      "For both problems, we have B = r = 1",
+      "D.2 provides no information for distinguishing between the two problems, and we should only rely on Oracle D.1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A proof step of the lower bound, entered as a construction description.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-input-optimal-up-to-polylog",
+     "value": "The authors state that combining Theorem 4 and Theorem 13 gives the optimal bound on SDP feasibility testing using Oracle D.1 and Oracle D.2, up to poly-logarithmic factors.",
+     "anchor": "Appendix D.6, p.27",
+     "quotes": [
+      "Combining Theorem 4 and Theorem 13, we obtain the optimal bound on SDP feasibility testing using Oracle D.1 and Oracle D.2, up to poly-logarithmic factors."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A summary claim of optimality that depends on the two theorems it combines.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fast-or-lemma-statement",
+     "value": "The paper proves (Lemma 2, Appendix B) that for projections and a state that is either in the first case, with some projection having expectation at least 1 minus epsilon, or in the second case, with the average expectation at most phi, there is a test using one copy of the state that in the first case accepts with probability at least (1 − ε)2/4 − ξ and in the second case accepts with probability at most 3ϕm + ξ.",
+     "anchor": "Lemma 2, Appendix B, p.17",
+     "quotes": [
+      "Let Λ1, . . . , Λm be projections, and ﬁx parameters 0 < ε ≤ 1/2 and ϕ.",
+      "test that uses one copy of ρ and: in the former case, accepts with probability at least (1 − ε)2/4 − ξ;",
+      "in the latter case, accepts with probability at most 3ϕm + ξ"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Lemma 2 is stated with its parameter conditions and proved in Appendix B from Lemma 3 and Algorithm 3.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "Whether the first-case probability is squared over 4 is read from the printed (1 minus epsilon) squared over 4."
+    },
+    {
+     "id_suggestion": "fast-or-lemma-gate-improvement",
+     "value": "The authors state that Ref. [15] has focused on using a single copy of the state, with gate complexity O(m) for m projections, and that their fast quantum OR lemma gives a quadratic improvement in gate complexity over that construction.",
+     "anchor": "Abstract, p.1; Section 1.4, p.9",
+     "quotes": [
+      "ratic improvement in gate complexity over the construction of Harrow et al. [15].",
+      "Ref. [15] has only been focusing on the use of a single copy of ρ, while its gate complexity is O(m) for m projections."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A comparison with an earlier construction, stated in summary form.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fast-or-lemma-sqrt-m-tight",
+     "value": "The authors state that the dependence on m in the fast OR lemma is tight, as one can embed Grover search into the problem, and in Remark B.5 that deciding the case needs at least Omega of square root of m gates due to the hardness of Grover search.",
+     "anchor": "Section 1.4, p.9; Remark B.5, Appendix B, p.18",
+     "quotes": [
+      "The dependence on m is also tight, as one can easily embed Grover search into this problem.",
+      "deciding this requires at least Ω( m) gates due to the hardness of Grover search [8]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A tightness remark whose full conditions are scrambled in the text layer.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "master-algorithm-query-bound",
+     "value": "The paper proves (Theorem 3, the Master Algorithm), given Oracle A.1, that for any epsilon above zero the feasibility of the SDP can be tested by Algorithm 2 with at most 16 ln n over epsilon squared queries to the oracle.",
+     "anchor": "Theorem 3, Appendix A, p.15",
+     "quotes": [
+      "Theorem 3 (Master Algorithm). Assume we are given Oracle A.1. Then for any ǫ > 0, feasibility of the SDP in (A.1), (A.2), and (A.3) can be tested by Algorithm 2 with at most 16 ln n ǫ2 queries to the oracle."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The theorem is stated with its oracle assumption and proved by contradiction from the matrix multiplicative weights guarantee.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "oracle-a1-search-for-violation-defined",
+     "value": "The paper defines Oracle A.1 as taking a density matrix X and outputting an index i for which the constraint is violated, or outputting FEASIBLE if no such i exists.",
+     "anchor": "Oracle A.1, Appendix A, p.14",
+     "quotes": [
+      "Input a density matrix X, output an i ∈ [m] such that Eq. (A.1) is violated. If no such i exists, output \"FEASIBLE\"."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the oracle that the master algorithm uses.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mmw-guarantee-cited",
+     "value": "The paper cites as Proposition 2 (Corollary 4 of Ref. [19]) a guarantee of the matrix multiplicative weights algorithm after T rounds, for gain matrices that are either positive semidefinite or negative semidefinite in every round, and applies it to test the feasibility of SDPs.",
+     "anchor": "Proposition 2, Appendix A, p.15",
+     "quotes": [
+      "Proposition 2 (Corollary 4 of [19]). Assume that for all t ∈ [T], either M(t) 0 or M(t) 0. Then Algorithm 1 guarantees that after T rounds, for any density matrix ρ, we have",
+      "We use Algorithm 1 and Proposition 2 to test the feasibility of SDPs."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The proposition is a result the paper attributes to Ref. [19].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "zero-sum-game-framework-no-dual",
+     "value": "The authors state that the zero-sum game approach does not make use of the dual program of SDPs, so there is no dependence on the size of any dual solution.",
+     "anchor": "Section 1.4, p.8",
+     "quotes": [
+      "Another example is that the zero-sum game approach does not make use of the dual program of SDPs and thus there is no dependence on the size of any dual solution."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author claim about an advantage of their framework.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "game-framework-not-efficiency-restricted",
+     "value": "The authors state, citing the independent work of van Apeldoorn and Gilyen that reached the same complexity by both the primal-dual and zero-sum approaches, that the simplicity of the zero-sum framework does not restrict the efficiency of SDP solvers, at least up to their current knowledge.",
+     "anchor": "Section 1.4, p.8",
+     "quotes": [
+      "we conclude that it is not the case at least up to our current knowledge."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conclusion hedged by the authors and resting on independent work they cite.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "plain-model-gibbs-trace-primitives-lemma4",
+     "value": "The paper cites as a lemma from earlier work that for an s-sparse Hermitian matrix with norm at most 1 and a density matrix, one can compute the trace of their product with additive error epsilon in time O(s epsilon to the minus 2 times log to the 4th of ns over p-e epsilon), using O(epsilon to the minus 2 log(1/p-e)) copies of the state.",
+     "anchor": "Lemma 4, Appendix C, p.20",
+     "quotes": [
+      "Given an s-sparse n × n Hermitian matrix H with H ≤ 1 and a density matrix ρ, with probability larger than 1 − pe, one can compute Tr[Hρ] with additive error ǫ in time O(sǫ−2 log4(ns/peǫ)) using O(ǫ−2 log(1/pe)) copies of ρ."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. [9].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "oracle-a1-via-fast-or-lemma",
+     "value": "The paper states that Oracle A.1 can be implemented in the quantum input model by a lemma that uses the fast quantum OR lemma, given Oracle D.1, Oracle D.2 and Oracle D.3.",
+     "anchor": "Appendix D.2, p.22",
+     "quotes": [
+      "Using Oracle D.1, Oracle D.2, and Oracle D.3, Oracle A.1 can be implemented by the following lemma, using our fast quantum OR lemma (Lemma 2):"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A framing statement whose lemma cost formula is scrambled in the text layer, so the statement could not be quoted in full.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "trace-estimation-swap-test-lemma",
+     "value": "The paper proves (the trace-estimation lemma of Appendix D) that, given Oracle D.1, Oracle D.2, Oracle D.3 and about B squared times log m over epsilon squared copies of a state, Algorithm 6 distinguishes whether the trace of A_j times the state exceeds a_j plus epsilon or is at most a_j with success probability at least 1 minus O of 1 over poly(m), so that the sample and gate complexity of trace estimation are B squared times log m over epsilon squared.",
+     "anchor": "Lemma 10, Appendix D.4, p.25",
+     "quotes": [
+      "Assume we are given Oracle D.1, Oracle D.2, Oracle D.3, and O(B2 log m/ǫ2) copies of a state ρ ∈ Cn×n, where Tr[A+j ] + Tr[A−j ] ≤ B for some bound B for all j ∈ [m].",
+      "Algorithm 6 distinguishes whether Tr(Ajρ) > aj + ǫ or Tr(Ajρ) ≤ aj with success probability at least 1 − O(1/ poly(m)).",
+      "In other words, STr(B, ǫ) = TTr(B, ǫ) = O(B2 log m/ǫ2)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The lemma is stated with its conditions and proved by a Chernoff bound on SWAP-test frequencies.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gibbs-input-state-preparation-lemma",
+     "value": "The paper proves (the state-preparation lemma of Appendix D) that the normalized state K-sign over its trace can be prepared by |S| samples to Oracle D.1 and one sample to Oracle D.2, for both the plus and minus sign.",
+     "anchor": "Lemma 11, Appendix D.5, p.26",
+     "quotes": [
+      "Ksgn/ Tr[Ksgn] can be prepared by |S| samples to Oracle D.1 and one sample to Oracle D.2, for both sgn = + and sgn = −."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated with its construction and proved in Appendix D.5 by an explicit sampling protocol.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gibbs-sampler-quantum-input-lemma",
+     "value": "The paper proves (the Gibbs-sampler lemma of Appendix D) that, when the trace sum of K-plus and K-minus is at most B-K and both have rank at most r-K, the Gibbs state exp(-K) over its trace can be prepared to epsilon precision in trace distance with |S| times poly(log n, r-K, B-K, 1/epsilon) quantum gates and queries to Oracle D.1 and Oracle D.2.",
+     "anchor": "Lemma 12, Appendix D.5, p.26",
+     "quotes": [
+      "Moreover, assume that Tr(K+) + Tr(K−) ≤ BK for some bound BK, and that K+, K− have rank at most rK.",
+      "Then it is possible to prepare the Gibbs state ρG = exp(−K)/ Tr(exp(−K)) to ǫ precision in trace distance, with |S| · poly(log n, rK, BK, ǫ−1) quantum gates and queries to Oracle D.1 and Oracle D.2."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated with its rank and trace conditions; it follows from Lemma 11 and Theorem 4, whose proof is in Appendix G.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gibbs-sampler-theorem-low-rank",
+     "value": "The paper proves (Theorem 4, full proof in Appendix G.3) that, for K equal to K-plus minus K-minus with positive semidefinite parts, given a quantum oracle that prepares copies of the two normalized states and an oracle for the two traces, with the trace sum at most B and ranks at most r-K, the Gibbs state exp(-K) over its trace can be prepared up to error epsilon in trace distance with poly(log n, r-K, B, 1/epsilon) quantum gates.",
+     "anchor": "Theorem 4, Appendix G.3, p.38",
+     "quotes": [
+      "Theorem 4. Suppose K = K+ − K−, where K+ and K− are n × n PSD matrices, and there is a quantum oracle that prepares copies of the states ρ+ = K+/ Tr(K+), ρ− = K−/ Tr(K−), and an oracle for the numbers Tr(K+), Tr(K−).",
+      "Moreover, assume that Tr(K+) + Tr(K−) ≤ B for some bound B, and that K+, K− have rank at most rK.",
+      "Then it is possible to prepare the Gibbs state ρG = exp(−K)/ Tr(exp(−K)) up to error ǫ in trace distance, with poly(log n, rK, B, ǫ−1) quantum gates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The theorem is stated with its conditions and proved in Appendix G.3 using consistent phase estimation.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gibbs-sampler-technique-qpca",
+     "value": "The authors state that, because copies of the two states are available, they rely on efficient Hamiltonian simulation techniques developed in quantum principal component analysis [23] and its follow-up work in [20].",
+     "anchor": "Section 1.4, p.9",
+     "quotes": [
+      "Because of the existence of copies of ρ+ and ρ−, we rely on efﬁcient Hamiltonian simulation techniques developed in quantum principle component analysis (PCA) [23] and its followup work in [20]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A description of the technique the proof draws on, with the cited techniques from other papers.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gibbs-sampler-drops-sparsity",
+     "value": "The authors state that, as a result of this approach, they can also get rid of the sparsity assumption that is crucial for invoking efficient Hamiltonian simulation in the Gibbs sampling used in [26, 12].",
+     "anchor": "Section 1.4, p.9",
+     "quotes": [
+      "As a result, we can also get rid of the sparsity assumption which is crucial for evoking results about efﬁcient Hamiltonian simulation into the Gibbs sampling used in [26, 12]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement about the scope of their construction relative to cited samplers.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sample-hamiltonian-simulation-lemma-cited",
+     "value": "The paper cites from earlier work on quantum principal component analysis that, given a quantum oracle preparing copies of two unknown states and the Hamiltonian H equal to a-plus times the first state minus a-minus times the second, one can implement exp(iHt) up to diamond-norm error delta using O(a squared t squared over delta) copies and O(l a squared t squared over delta) other 1- or 2-qubit gates, with a equal to a-plus plus a-minus.",
+     "anchor": "Lemma 1, Appendix F, p.30",
+     "quotes": [
+      "Then we can approximately implement the unitary exp(iHt) up to diamond-norm error δ, using O(a2t2/δ) copies of ρ+ and ρ− and O(la2t2/δ) other 1- or 2-qubit gates, where a = a+ + a−."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A lemma the paper attributes to quantum principal component analysis and its follow-up.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sample-eigenvalue-estimation-lemma",
+     "value": "The paper states, from phase estimation on exp(iHt), that given an eigenstate of H one can estimate its eigenvalue to precision epsilon with probability 1 minus xi using O(a squared epsilon to the minus 2 xi to the minus 2) copies of the two states and O(l a squared epsilon to the minus 2 xi to the minus 2) other 1- or 2-qubit gates.",
+     "anchor": "Lemma 2, Appendix F, p.30",
+     "quotes": [
+      "we can perform eigenvalue estimation of H: given an eigenstate of H, we can estimate its eigenvalue up to precision ǫ, with probability 1 − ξ, using O(a2ǫ−2ξ−2) copies of ρ+ and ρ− and O(la2ǫ−2ξ−2) other 1- or 2-qubit gates"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A corollary of a cited lemma stated without a separate proof in the paper.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "gibbs-sketch-idealized-phase-estimation",
+     "value": "The authors state that the proof in Appendix F assumes that eigenvalue estimation of H can be done exactly, that this assumption is not true but simplifies the exposition, and that the assumption will be removed in Appendix G.",
+     "anchor": "Appendix F, p.30",
+     "quotes": [
+      "In the following proof, we instead assume that eigenvalue estimation of H can be done exactly. This assumption is not true, but it helps to simplify the exposition; the assumption will be removed in Appendix G."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of the idealization used in its proof sketch.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "partition-function-estimation-lemma",
+     "value": "The paper proves (the partition-function lemma of Appendix G) that, under the oracle, trace bound B and rank bound r-K assumptions of the Gibbs sampler, the partition function Z equal to the trace of exp(-K) can be estimated to multiplicative error epsilon with success probability at least 1 minus xi using poly(log n, r-K, B, 1/epsilon, 1/xi) quantum gates.",
+     "anchor": "Lemma 3, Appendix G.2, p.36; Appendix F.1, p.30",
+     "quotes": [
+      "Moreover, assume that Tr(K+) + Tr(K−) ≤ B for some bound B, and that K+, K− have rank at most rK.",
+      "Then it is possible to estimate the partition function Z = Tr(exp(−K)) to multiplicative error ǫ with success probability at least 1 − ξ, with poly(log n, rK, B, ǫ−1, ξ−1) quantum gates."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Stated with its conditions; proved in Appendix G.2 with consistent phase estimation.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "partition-function-ideal-use-count",
+     "value": "The authors state that, with perfect phase estimation, O(B squared epsilon to the minus 4 plus r-K epsilon to the minus 2) uses of phase estimation of e to the 2 pi i K suffice to get an O(epsilon)-error multiplicative estimate of Z.",
+     "anchor": "Appendix F.1, p.32",
+     "quotes": [
+      "Putting everything together, we see that O(B2ǫ−4 + rKǫ−2) uses of (perfect) phase estimation of e2πiK sufﬁces to get a O(ǫ)-error multiplicative estimate of Z, completing the proof."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A use count derived under the idealized perfect phase estimation that the paper says it later removes.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "consistent-phase-estimation-cited",
+     "value": "The paper uses Ta-Shma's consistent phase estimation algorithm instead of the naive protocol, because plain phase estimation may not decide consistently whether an eigenvalue near the cutoff is above or below it.",
+     "anchor": "Appendix G.1, p.35",
+     "quotes": [
+      "To overcome this problem, in the proofs below we use Ta-Shma’s consistent phase estimation algorithm instead:",
+      "This algorithm requires poly(ξ−1, δ−1) uses of the controlled-U operation and other quantum gates."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The algorithm is a result the paper attributes to Ref. [27].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "consistent-eigenvalue-estimation-lemma",
+     "value": "The paper states that for the Hamiltonian H equal to a-plus rho-plus minus a-minus rho-minus with ranks at most r, an algorithm requires poly(a-plus plus a-minus, 1/xi, 1/delta) copies and poly(n, a-plus plus a-minus, 1/xi, 1/delta) 1- and 2-qubit gates, so that eigenvalues of K can be consistently estimated using poly(log n, B, 1/xi, 1/delta) operations in total.",
+     "anchor": "Lemma 2, Appendix G.1, p.35",
+     "quotes": [
+      "deﬁne the Hamiltonian H = a+ρ+ − a−ρ−. Also assume the ranks of ρ+ and ρ− are upper bounded by r.",
+      "This algorithm requires poly(a+ + a−, ξ−1, δ−1) copies of ρ+ and ρ−, and poly(n, a+ + a−, ξ−1, δ−1) 1- and 2-qubit quantum gates.",
+      "This, in particular, allows us to consistently estimate eigenvalues of K = K+ − K− using poly(log n, B, ξ−1, δ−1) operations in total."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The success-probability clause of the statement is scrambled in the text layer, so the statement could not be quoted in full.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-input-priority-claims-gibbs",
+     "value": "The authors state that they construct the first Gibbs state sampler with quantum inputs (Lemma 12).",
+     "anchor": "Section 1.3, p.7",
+     "quotes": [
+      "Moreover, we construct the ﬁrst Gibbs state sampler with quantum inputs (Lemma 12)."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A priority claim by the authors.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-input-priority-claims-formulation",
+     "value": "The authors state that they provide the first rigorous mathematical formulation of the quantum input model and its justification in the context of learning quantum states.",
+     "anchor": "Section 1.3, p.7",
+     "quotes": [
+      "We provide the ﬁrst rigorous mathematical formulation of the quantum input model and its justiﬁcation in the context of learning quantum states"
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A priority claim by the authors.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "prior-quantum-sdp-vs-classical-solvers",
+     "value": "The authors state that a prior quantum algorithm gives a polynomial speed-up in m and n compared to the two state-of-the-art classical SDP solvers [22, 7].",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "This is a polynomial speed-up in m",
+      "and n comparing to the two state-of-the-art classical SDP-solvers [22, 7]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statement about earlier quantum and classical solvers attributed to other papers.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-comparison-harrow-observation",
+     "value": "The authors state, citing a personal communication from Aram Harrow, that if a classical algorithm were given all inner products between all eigenvectors of the input matrices, it could solve the problem classically in time poly(r, m, 1/epsilon), and that they have not formalized this approach.",
+     "anchor": "Section 1.2, p.6",
+     "quotes": [
+      "we could consider a classical setting in which we get as input all inner products between all eigenvectors of the input matrices.",
+      "Then in that case one could solve the problem classically in time poly(r, m, 1/ǫ)",
+      "We have not formalized this approach, and there seems to be some technical problems doing so when the input matrices have close-by eigenvalues."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An informal observation from a personal communication that the authors state is not formalized.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-input-incomparable-with-classical-solvers",
+     "value": "The authors state that one has to be cautious about the polylogarithmic dependence on n, because the input model they consider is inherently quantum and so incomparable to classical SDP solvers.",
+     "anchor": "Section 1.2, p.6",
+     "quotes": [
+      "However one has to be cautious as the input model we consider is inherently quantum, so it is incomparable to classical SDP solvers."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit on how their speed-up should be read.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-inspired-classical-sdp-solver",
+     "value": "The authors state that Ref. [11] recently gave a classical SDP solver for the feasibility problem with complexity O(m times poly(log n, r, 1/epsilon)) given sampling access to the matrices A_1 to A_m.",
+     "anchor": "Section 1.2, p.7",
+     "quotes": [
+      "we notice that Ref. [11] recently gave a classical SDP solver for (1.1) with complexity O(m · poly(log n, r, ǫ−1)), given the above sampling access to A1, . . . , Am."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. [11].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "quantum-inspired-result-incomparable",
+     "value": "The authors state that the classical result of the cited sampling-based solver is incomparable to their quantum-input result in Corollary 9 because the sampling access and their quantum state model are incomparable.",
+     "anchor": "Section 1.2, p.7",
+     "quotes": [
+      "We point out that this result is incomparable to Corollary 9 because the sampling access"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author comparison of two input models.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vanapeldoorn-gilyen-improvement",
+     "value": "The authors state that an independent result by van Apeldoorn and Gilyen [4] has improved the complexity of trace estimation and Gibbs sampling, and that the improved quantum-input complexity has no explicit dependence on the rank r, though rank may be implicitly included in the parameter B.",
+     "anchor": "Section 1.3, p.7",
+     "quotes": [
+      "an independent interesting result by van Apeldoorn and Gilyén [4] has improved the complexity of trace-estimation and Gibbs sampling.",
+      "Note there is no explicit dependence on the rank r, which is an important advance (though it can be argued that rank r is implicitly included in the parameter B)."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. [4].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "full-tomography-copy-requirement",
+     "value": "The authors state that to tomograph an l-qubit state with dimension n the optimal procedure [25, 14] requires n squared copies of the state, which is impractical already for relatively small l.",
+     "anchor": "Section 1.5, p.9",
+     "quotes": [
+      "the optimal procedure [25, 14] requires n2 number of copies of ρ, which is impractical already for relatively small ℓ."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Refs. [25, 14].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "jaynes-principle-gibbs-form",
+     "value": "The authors state, citing Jaynes' principle, that there is always a Gibbs state with Hamiltonian given by a linear combination of the measurement operators that gives the same expectation values as the original state.",
+     "anchor": "Section 1.5, p.9-10",
+     "quotes": [
+      "there is always a Gibbs state with Hamiltonian given by a linear combination of the Ei’s which gives the same expectation values as the state described by ρ."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A principle the paper attributes to Jaynes [18].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "learning-reduction-to-feasibility",
+     "value": "The authors state that, to estimate the expectation of each measurement on an unknown state, it suffices to find a state satisfying an SDP feasibility problem, and that the key observation is that their solver relies only on Oracle A.1, which does not need the knowledge of each expectation value explicitly.",
+     "anchor": "Appendix E.1, p.27-28",
+     "quotes": [
+      "in order to estimate Tr[ρEi], it sufﬁces to ﬁnd a state σ that is the solution to the following SDP feasibility problem:",
+      "The key observation is that our SDP solver only relies on the implementation of Oracle A.1, which does not need the knowledge of Tr[ρEi] for each i explicitly."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A description of the reduction by the authors, not a separately proved statement.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "question1-shadow-tomography-defined",
+     "value": "The paper defines Question 1: for an unknown state in an n-dimensional Hilbert space, known two-outcome POVMs and an error between 0 and 1, and given independent copies of the state, obtain an explicit quantum circuit for a state sigma such that with probability at least 2/3 the expectation values differ by at most epsilon for all i.",
+     "anchor": "Question 1, Appendix E, p.27",
+     "quotes": [
+      "Let ρ be an unknown quantum state in an n-dimensional Hilbert space, E1, . . . , Em be known two-outcome POVMs, and 0 < ǫ < 1.",
+      "with probability at least 2/3, | Tr[σEi] − Tr[ρEi]| ≤ ǫ ∀ i ∈ [m]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "Definition of the learning problem the application solves.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "low-rank-measurement-oracle-construction",
+     "value": "The authors state that, when each measurement operator has rank at most r and is a polylogarithmic-time circuit applied to a projector, the preparation oracle can be implemented efficiently in time r poly log(n) by first creating a maximally entangled state between the subspace spanned by the projector and a purification.",
+     "anchor": "Section 1.5, p.10",
+     "quotes": [
+      "Let the rank of Ei’s bounded by r and suppose the measurement operators Ei’s are of the form",
+      "for polynomial (in log(n)) time circuits Vi, and projectors Pi of the form",
+      "Oracle 1.3 can be implemented efﬁciently (in time r poly log(n)) by ﬁrst creating a maximally entangled state between the subspace spanned by Pi and a puriﬁcation and"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A construction described in the introduction without a separate proof.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "learning-state-corollary-copies-and-gates",
+     "value": "The paper proves (the learning corollary of Appendix E) that, given Oracle D.1 and Oracle D.2, Question 1 can be solved with success probability at least 0.96, using at most polynomially many copies in log m, log n, r and 1/epsilon and a number of gates and queries that the authors state has a square-root dependence on m and an n to the O(1) dependence on n for arbitrary E_i.",
+     "anchor": "Corollary 3, Appendix E.3, p.28; Section 1.5, p.11",
+     "quotes": [
+      "Assume we are given Oracle D.1 and Oracle D.2. Then for any ǫ > 0, Question 1 can be",
+      "with success probability at least 0.96, using at most poly(log m, log n, r,",
+      "It gives a quantum procedure with a square-root dependence on m and nO(1) dependence on n for arbitrary Ei’s."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The corollary's gate-count formula is scrambled in the text layer, so its statement could not be quoted in full.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The text layer of the corollary gives copies of rho as at most poly(log m, log n, r, 1/epsilon) and gates as square root of m times poly(log m, log n, r, 1/epsilon)."
+    },
+    {
+     "id_suggestion": "learning-state-output-description",
+     "value": "The authors state that their algorithm also outputs each of the lambda_i parameters, as well as a circuit description of the Gibbs state in Eq. (1.6) achieving the same expectation values as the unknown state up to error epsilon.",
+     "anchor": "Section 1.5, p.10",
+     "quotes": [
+      "as well as a circuit description of the Gibbs state in Eq. (1.6) achieving the same expectation values as ρ up to error ε."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author statement of what the algorithm outputs, tied to the Jaynes form.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "learning-state-sqrt-m-lower-bound-remark",
+     "value": "The authors state, in Remark E.4, that there exists a shadow tomography problem with r and epsilon of constant order such that solving it requires Omega of square root of m calls to Oracle D.1 and Oracle D.2, so that Corollary 3 is optimal up to poly-logarithmic factors.",
+     "anchor": "Remark E.4, Appendix E.3, p.30",
+     "quotes": [
+      "a shadow tomography problem such that r, ǫ = Θ(1), and solving the problem requires Ω( m) calls to Oracle D.1 and Oracle D.2.",
+      "Therefore Corollary 3 is also optimal up to poly-logarithmic factors."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The remark says it can be proved by the same idea as Theorem 13, but gives no proof.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aaronson-shadow-tomography-sample-complexity",
+     "value": "The authors state that Aaronson designed a quantum procedure for the shadow tomography problem with O-tilde of l times log to the 4th of m over epsilon to the 5th copies of the state.",
+     "anchor": "Section 1.5, p.11",
+     "quotes": [
+      "He has further designed a quantum procedure for the shadow tomography problem with O˜ (ℓ · log4 m/ǫ5) 5 copies of ρ."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Aaronson [2].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "aaronson-approach-high-gate-complexity",
+     "value": "The authors state that a drawback of Aaronson's post-selection approach is that its gate complexity is high, scaling linearly in m and as n to the O(log log n) power.",
+     "anchor": "Section 1.5, p.11",
+     "quotes": [
+      "A drawback of this approach is that its gate complexity is high, scaling linearly in m and as nO(log log n)"
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A characterization of another paper's procedure, attributed to that work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "followup-sample-complexity-vanapeldoorn",
+     "value": "The authors state that the authors of [4] followed their approach with more sophisticated techniques and obtained a sample complexity of O-tilde of l times log to the 4th of m over epsilon to the 4th, improving on the bound from [2].",
+     "anchor": "Section 1.5, p.12",
+     "quotes": [
+      "the authors of [4] followed our approach with more sophisticated techniques and obtained a sample complexity of O˜ (ℓ · log4 m/ǫ4), improving on the bound from [2]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to Ref. [4].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "followup-sample-complexity-aaronson-et-al",
+     "value": "The authors state that Aaronson et al. claimed the same sample complexity, O-tilde of l times log to the 4th of m over epsilon to the 4th, in [3].",
+     "anchor": "Section 1.5, p.12",
+     "quotes": [
+      "Aaronson et al. claimed the same sample complexity (i.e., O˜ (ℓ · log4 m/ǫ4)) in [3]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A claim the paper attributes to Ref. [3].",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "no-explicit-sample-bound-worked-out",
+     "value": "The authors state that they have not worked out an explicit bound of the sample complexity of their procedure.",
+     "anchor": "Section 1.5, p.12",
+     "quotes": [
+      "Although we have not worked out an explicit bound of the sample complexity of our procedure"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit on their result.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "learning-applicability-limited-low-rank",
+     "value": "The authors state that most measurements of interest, such as local measurements, are not low rank, and therefore the practical applicability of the present result is limited.",
+     "anchor": "Section 1.6, p.12",
+     "quotes": [
+      "We note that most measurements of interest are not low rank (e.g. local measurements) and therefore the practical applicability of the present result is limited."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limit on the scope of the learning result.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "open-question-more-sdp-examples-ml",
+     "value": "The authors pose as open questions whether there are more examples of interesting SDPs where the quantum input form is meaningful, in particular SDP instances where the constraints are much simpler than the solution space, and whether there is such an example in the context of big data and/or machine learning.",
+     "anchor": "Section 1.6, p.12",
+     "quotes": [
+      "Are there more examples of interesting SDPs where our form of input is meaningful?",
+      "Is there any such example in the context of big data and/or machine learning?"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "An open question the authors state, so the paper itself settles that the matter is not known to it.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "open-question-noise-on-quantum-inputs",
+     "value": "The authors pose as an open question what the effect of potential noise on quantum inputs is in practice, for any reasonable quantum input setting.",
+     "anchor": "Section 1.6, p.12",
+     "quotes": [
+      "For any reasonable quantum input setting, what is the effect of potential noises on quantum inputs in practice?"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "An open question the authors state about the noise-free assumption of their input model.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "open-question-improve-epsilon-dependence",
+     "value": "The authors pose as open questions whether the dependence on m and 1/epsilon can be improved, in particular whether the error dependence can be improved to poly log(1/epsilon), which they state probably implies a quantum version of the interior point method.",
+     "anchor": "Section 1.6, p.12",
+     "quotes": [
+      "Can we improve further on other parameters (e.g., the dependence on m and 1/ǫ)?",
+      "In particular, is it possible to improve the error dependence to poly log(1/ǫ)? This probably implies that we have to consider a quantum version of the interior point method."
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "An open question the authors state, with the authors' own conjecture on what it requires.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "open-question-other-measurement-classes",
+     "value": "The authors pose as an open question whether there are other classes of measurements, beyond the low-rank measurements considered, for which the quantum learning problem can be solved in a computationally efficient way.",
+     "anchor": "Section 1.6, p.12",
+     "quotes": [
+      "Are there other classes of measurements for which the quantum learning problem can solved in a computationally efﬁcient way beyond the low-rank measurements we consider in this work?"
+     ],
+     "kind": "claimed",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "An open question the authors state on the scope of the learning result.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

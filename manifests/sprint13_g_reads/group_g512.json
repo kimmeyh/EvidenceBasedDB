@@ -1,0 +1,2036 @@
+{
+ "papers": [
+  {
+   "record_id": "garrigues-2026-neutral-atom-quantum-features-as",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2026-11_Garrigues_Neutral-atom-quantum-features-as-complementary-structural-encodings-for_2611.08821.pdf",
+   "title_in_file": "Neutral-atom quantum features as complementary structural encodings for graph learning",
+   "version_note": "",
+   "pages": 47,
+   "read_extent": "full",
+   "not_read": "",
+   "sections_read": [
+    "Abstract",
+    "1 Introduction",
+    "2 Quantum graph feature extraction",
+    "2.1 Rydberg Hamiltonian",
+    "2.2 Graph embedding",
+    "2.3 Quench-parameter selection: AFM and FM regimes",
+    "2.4 Quantum graph feature pipeline: emulation and hardware",
+    "2.5 Classical baselines for graph structural features",
+    "3 Intrinsic Information Benchmark",
+    "3.1 Predicting graph properties",
+    "3.2 A ceiling on quantum feature reconstruction with classical descriptors",
+    "4 Downstream evaluation across GNN backbones",
+    "4.1 Architectures, feature injection and results",
+    "4.2 Classical-quantum feature fusion",
+    "5 Quantum graph features beyond classical structural encodings",
+    "6 Conclusion",
+    "Acknowledgments and Disclosure of Funding",
+    "References",
+    "A Equivalence between Rydberg and Ising Hamiltonian",
+    "B Thermalization",
+    "C Quench-parameter selection",
+    "D Emulation and QPU execution",
+    "D.1 Emulation budget and measurement-time window",
+    "D.2 PCA analysis of quantum correlation features",
+    "D.3 Details on hardware runs",
+    "D.4 Emulator-QPU concordance at t4",
+    "E GNN Methods",
+    "E.1 Features notations",
+    "E.2 GNN details",
+    "E.3 Graph Transformer architecture",
+    "E.4 Ablation: diagonal and off-diagonal quantum features",
+    "E.5 Hardware versus emulation per backbone",
+    "F Intrinsic benchmark",
+    "F.1 Intrinsic benchmark: targets and probe",
+    "F.2 Intrinsic benchmark: full results",
+    "F.2.1 Compression variants",
+    "F.3 MUTAG corroborating results",
+    "F.3.1 Hardware AFM analysis",
+    "G Statistical analysis of the GNN benchmark",
+    "H Linear and nonlinear regression of quantum features",
+    "H.1 Regression results",
+    "I Quantum graph features beyond classical structural encodings: details",
+    "I.1 Expanded reconstruction basis and residual",
+    "I.2 Geometry-augmented baselines",
+    "I.3 Placement sensitivity",
+    "I.4 Ladder graphs",
+    "I.5 Non-unit-disk couplings",
+    "NeurIPS Paper Checklist"
+   ],
+   "figure_count": 35,
+   "figures": [
+    {
+     "figure": "Figure 1",
+     "page": 2,
+     "kind": "block diagram",
+     "shows": "Four-stage pipeline: (1) molecular graph embedded as an atom register; (2) quench in the AFM or FM regime (a detuning-versus-Rabi-frequency diagram with an FM star at 2 delta-infinity and an AFM star at delta = 0) and measurement of correlations, diagonal C_ii to node features and C_ij to edge features, with CPU or QPU and the note QPU approximately equal to emulator; (3) hybrid features combining classical RRWP with quantum AFM, FM; (4) training of GNN or transformer backbones (6 backbones plus ESA) on MUTAG (mutagenicity) and ZINC (solubility).",
+     "confirmed_by": "The complete workflow is presented in Fig. 1.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 2",
+     "page": 4,
+     "kind": "line plot",
+     "shows": "Four panels of time evolution (x, t from 0 to about 4 microseconds) for one small ZINC-subset molecule. (a) FM diagonal C_ii (y, about 0 to 0.25) and (b) FM off-diagonal C_ij (y, about 0 to 0.1+): traces fluctuate around positive time-average values; (c) AFM diagonal C_ii and (d) AFM off-diagonal C_ij (y, about 0 down to -0.2): AFM off-diagonal values are negative. Dashed lines mark diagonal-ensemble values, squares the finite-time average, triangles the thermal values. The legend names pairs (i,i) = (1,1), (10,10), (0,0), (3,3) and (i,j) = (0,3), (3,8), (0,1), (3,4), (10,11). The molecule graph is drawn in panel (a).",
+     "confirmed_by": "Figure 2 in the main text confirms the expected qualitative behavior on a small molecular graph.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 3",
+     "page": 7,
+     "kind": "line plot",
+     "shows": "Pooled R2 (y, 0 to 1) against time t (x, 0 to about 400 ns) for a toy dataset of 2 graphs. Panel (a) AFM, panel (b) FM. Series: K = 1, 3, 7, 21 (colors), solid for adjacency powers and dashed for RRWP. All curves start near 1.0 at early times. In AFM, the K = 1 curves fall to about 0.3 at about 250 to 300 ns while K = 21 curves dip to about 0.5 and recover to about 0.8 near 400 ns. In FM, the curves fall faster, K = 1 to near 0 by about 100 ns and K = 21 to about 0.1 to 0.4 afterwards.",
+     "confirmed_by": "For both physical regimes (AFM and FM), Figure 3 illustrates on a toy dataset (Ndata = 2) that quantum features at early times are well approximated by linear combination of powers of RRWP or",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 4",
+     "page": 20,
+     "kind": "heat map",
+     "shows": "Exploration of the (Omega, delta) parameter space for one molecular graph. Panels (a),(b): off-diagonal correlation weight per node (y) against Omega/J_NN (x, 0 to 1) at delta = 2 delta-infinity (FM, a) and delta = 0 (AFM, b), with curves for the diagonal-ensemble, finite-time average and thermal values and vertical lines at the selected Omega. Panels (c),(d): color maps of the diagonal-ensemble (c) and thermal (d) correlation weight over Omega/J_NN (x, 0 to 1) and delta/delta-infinity (y, -1 to 3), with the line delta = delta-infinity separating the AFM-like and FM-like regimes and a bright band near delta/delta-infinity about 2. Panel (e): absolute effective inverse temperature |beta| J_NN (color scale 0 to about 40), with the two chosen working points marked.",
+     "confirmed_by": "As predicted by Eq. (23), the line δ = δ∞ separates the AFM-like regime at positive temperature from the FM-like regime at negative temperature.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 5",
+     "page": 22,
+     "kind": "bar chart",
+     "shows": "PCA of quantum features on ZINC-subset in four rows: AFM 1-body, FM 1-body, AFM 2-body, FM 2-body. Left of each row: scree bar chart of variance explained (%) against principal component k (1 to 19) with a cumulative line (0 to 100%). Right: heat map of loadings (timestep 1 to 19 against component 1 to 10). PC1 explains about 80% (1-body) and about 60% (AFM 2-body) to about 77% (FM 2-body); the cumulative line passes 90% within a few components for 1-body and more slowly for 2-body. PC1 loads with one sign across all timesteps while PC2 and PC3 alternate in sign.",
+     "confirmed_by": "A dominant static component (PC1), capturing the time-averaged correlation strength of each node or edge.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 6",
+     "page": 25,
+     "kind": "heat map",
+     "shows": "Emulator versus QPU on MUTAG at t4 (AFM, t_emu = 715 ns, t_QPU = 940 ns). (a) Normalized correlation matrices for four graphs (#0 N=17, #50 N=26, #100 N=23, #150 N=12), emulation row above QPU row, with the same diagonal and off-diagonal patterns. (b) Histogram of per-graph one-body Spearman rho (about 0.55 to 1.0; median 0.924, mean 0.912 as labeled). (c) Histogram of two-body Spearman rho (about 0.65 to 0.97; median 0.870, mean 0.861 as labeled). (d),(e) Pooled scatter of QPU C against emulation C for one-body (rho_s = 0.928) and two-body (rho_s = 0.863), points near y = x with contraction toward zero at large values, one-body cloud near about 0.55 QPU for emulation about 0.3 to 0.5, and a small off-diagonal cluster near emulation about 0.8 with QPU about 0.55.",
+     "confirmed_by": "Panels (d,e) pool every correlation entry across the 188 graphs into a single scatter: the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 7",
+     "page": 30,
+     "kind": "bar chart",
+     "shows": "Grouped bar charts for the GT model on ZINC-subset: (a) test MAE (y, about 0.10 to 0.125) and (b) test RMSE (y, about 0.19 to 0.215) for three feature configurations (RRWP only (20,20); RRWP + AFMstat (24,24); RRWP + AFM (40,40)), each at three capacities (about 500k, 1M, 2M parameters) with error bars over 5 seeds. RRWP only is about 0.113 MAE at all three capacities; RRWP + AFMstat is about 0.111; RRWP + AFM is about 0.122 at 500k and falls to about 0.107 at 2M.",
+     "confirmed_by": "In Fig. 7, we show the error metrics used for selection of the graph transformer (GT) model with the best capacity for our benchmarking experiments.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 8",
+     "page": 38,
+     "kind": "heat map",
+     "shows": "Four heat maps of pooled OLS R2 of C_ij(t) on classical features for 11368 ZINC-subset graphs, y = K (1 to 50), x = time t (100 to 6000 ns, 10 columns), color 0 to 1. Panels: AFM adjacency, AFM RRWP, FM adjacency, FM RRWP. K = 1 row is lowest. AFM values are about 0.8 to 0.9 at t = 100 ns and about 0.8 plateau afterwards for K >= 3; FM adjacency values fall from about 0.9 to about 0.76 and FM RRWP from about 0.83 to about 0.70 at the largest K.",
+     "confirmed_by": "Linear probe (OLS). At t ≤ 30 ns we observe R2 = 1.000 on both pools.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 9",
+     "page": 39,
+     "kind": "heat map",
+     "shows": "Four heat maps of pooled OLS R2 of C_ij(t) on classical features for the 188 MUTAG graphs, y = K (1 to 50), x = time t (100 to 6000 ns), color 0 to 1. Panels: AFM adjacency, AFM RRWP, FM adjacency, FM RRWP. AFM values are about 0.94 at t = 100 ns and plateau at about 0.83 to 0.86 for large K; FM adjacency falls from about 0.92 to about 0.67 to 0.69; FM RRWP is about 0.55 to 0.57 at long times.",
+     "confirmed_by": "Linear probe (OLS). At t ≤ 30 ns we observe R2 = 1.000 on both pools.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 10",
+     "page": 40,
+     "kind": "line plot",
+     "shows": "Explained variance R2 (y, 0.70 to 0.95) of off-diagonal correlations on MUTAG along nine cumulative classical bases (x: Walk, + RRWP, + Laplacian, + ring, + heat/geodesic/resistance, + r_ij J_ij, + dTWA, + two-atom, + mean-field chi). Solid: random forest held-out; dashed: in-sample OLS. AFM random forest rises from about 0.907 to the end value 0.917 (8.3% unexplained); FM rises from about 0.78 to about 0.85 at + Laplacian and ends at 0.860 (14.0% unexplained).",
+     "confirmed_by": "process is shown in Fig. 10. The register geometry adds nothing once the graph descriptors are",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 11",
+     "page": 42,
+     "kind": "line plot",
+     "shows": "Spearman rho between AFM correlations of a perturbed and the reference layout. (a) Against Gaussian placement noise sigma (x, 2 to 50 percent of d_min, log scale): mean falls from about 0.82 at 2% to about 0.61 at 5%, about 0.24 at 10% and about 0 at 20% and above (dotted line: random node permutation); gray band marks QPU jitter. (b) Ten re-embeddings per graph, raw (mean about 0.23) and quality-selected (mean about 0.56) with large spreads from about 0 to about 0.9.",
+     "confirmed_by": "At hardware-level noise (σ = 2%) the Spearman correlation is 0.82 ± 0.07, and 0.61 ± 0.10 at σ = 5%;",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 12",
+     "page": 43,
+     "kind": "block diagram",
+     "shows": "(a) A ladder graph with a diagonal crossing (rail/rung edges in black, crossing in blue). (b) A partner pair of ladders that differ by the shift of one crossing: Delta = 4 (even) labeled y = 1 and Delta = 3 (odd) labeled y = 0, with the annotation identical RRWP.",
+     "confirmed_by": "a ladder with m rungs (Ti, Bi) has two alternating configurations of the blockade (maximum independent set) ground state,",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 1",
+     "page": 6,
+     "kind": "table",
+     "shows": "Intrinsic information benchmark on ZINC-subset, 15 tasks (node, edge, graph level) by ten feature sets (R, L, R+L, Fstat, F, Astat, A, R+F, R+A, R+F+A); 5-fold means; best and second best marked; entries with a dagger tied with best. For example degree MAE x10^-2: R 14.4, L 46.7, R+L 6.98, A 1.26, R+A 1.18, R+F+A 1.25.",
+     "confirmed_by": "Quantum correlations carry strong local information and complement RRWP;",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 2",
+     "page": 8,
+     "kind": "table",
+     "shows": "MUTAG mean macro F1 +- std over 10 folds x 5 seeds for six backbones (GT, GCN, GAT, GINE, Transformer, General) by feature sets in groups: baseline (No Data), classical, quantum, hybrid and hardware. No Data F1 ranges 0.652 (GCN) to 0.823 (General); RRWP+AFM+FM and other hybrids lie about 0.85 to 0.88; hardware hybrids RRWP+HW-AFMstat are 0.849 to 0.877.",
+     "confirmed_by": "Hardware. We repeat the MUTAG benchmark with AFM features obtained by executing the",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 3",
+     "page": 8,
+     "kind": "table",
+     "shows": "ZINC-subset test MAE +- std over 10 seeds for the same backbones and feature sets (except hardware). GT: No Data 0.317, RRWP 0.113, RRWP+Laplacian 0.112, hybrids about 0.108 to 0.120.",
+     "confirmed_by": "As demonstrated in the tables, standalone quantum features do not substitute for RRWP in this setup.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 4",
+     "page": 9,
+     "kind": "table",
+     "shows": "ESA on MUTAG, binary F1 +- std, concatenation versus gated fusion. Baseline RWSE* 0.905 +- 0.045; emulated hybrids 0.888 to 0.913 concatenated and 0.911 to 0.922 gated; hardware hybrids RWSE*+HW-AFM 0.907 (concat) and 0.920 (gated), RWSE*+HW-AFMstat 0.899 and 0.909.",
+     "confirmed_by": "Table 4 shows that direct concatenation is not consistently beneficial, with most hybrids remaining close to the RWSE∗",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 5",
+     "page": 10,
+     "kind": "table",
+     "shows": "Ladder graphs, pinned versus frustrated ground state: accuracy, F1 and AUC (+- std over 15 folds) for RRWP, Geometry, Classical-All, FM, AFM, AFM+FM and Classical-All+AFM+FM. AFM+FM accuracy 0.875 and AUC 0.941; Classical-All accuracy 0.641 and AUC 0.680.",
+     "confirmed_by": "With a logisticregression probe, AFM+FM reach 0.875 ± 0.043 accuracy (ROC-AUC 0.941), versus 0.641 ± 0.077 (ROC-AUC 0.680) for the combined classical baseline (Tab. 5);",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 6",
+     "page": 26,
+     "kind": "table",
+     "shows": "Feature sets and dimensions: RRWP d = 20; Laplacian d = 4; AFM/FM d = 20 (Nt = 20 times); AFM+FM d = 40; AFMstat/FMstat d = 4; RRWP + X d = 20 + dX; HW-AFM 20 from QPU measurements; HW-AFMstat 4.",
+     "confirmed_by": "E.1 Features notations Table 6 summarizes all feature sets, their origin, and dimensionality.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 7",
+     "page": 27,
+     "kind": "table",
+     "shows": "GT hyperparameters for ZINC-subset and MUTAG: hidden dimension 256 and 32, heads 16 and 4, layers 4 and 3, FFN 512 and 64, dropout 0.1 and 0.3, AdamW, learning rates 5e-4 and 1e-3, batch sizes 128 and 32, max epochs 1000 and 300, MAE or cross-entropy loss, 10 or 5 seeds, 10 folds for MUTAG.",
+     "confirmed_by": "We fix one set of training hyperparameters per architecture–dataset pair (Table 7) and reuse it across every feature configuration;",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 8",
+     "page": 29,
+     "kind": "table",
+     "shows": "Model size configurations for GCN and GAT: eight sizes from Tiny (2 layers, width 16) to Giant (5 layers, width 512), listing backbone and prediction-head layer counts and widths.",
+     "confirmed_by": "The model sizes are given in Table 8.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 9",
+     "page": 29,
+     "kind": "table",
+     "shows": "Quantum feature ablation on ZINC-tiny, MAE +- std over 10 seeds, GCN and GAT. GCN: No PE 0.520, FM1b 0.512, FM2b 0.478, FM 0.493, AFM1b 0.443, AFM2b 0.532, AFM 0.446. GAT: No PE 0.480, FM1b 0.473, FM2b 0.456, FM 0.482, AFM1b 0.454, AFM2b 0.449, AFM 0.450.",
+     "confirmed_by": "Results in Table 9 show that quantum features consistently improve over classical features when",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 10",
+     "page": 30,
+     "kind": "table",
+     "shows": "Model-size ablation for GCN on ZINC-tiny, MAE by eight model sizes (Tiny to Giant) for baseline and FM/AFM one-body, two-body and combined features; AFM1b and AFM are best in most sizes (about 0.43 to 0.46) against baseline about 0.49 to 0.55.",
+     "confirmed_by": "Tables 10 and 11 show that the large configuration has",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 11",
+     "page": 30,
+     "kind": "table",
+     "shows": "Model-size ablation for GAT on ZINC-tiny, MAE by eight model sizes; baseline about 0.46 to 0.52; best entries about 0.42 to 0.46 for AFM variants at Large to Giant.",
+     "confirmed_by": "Tables 10 and 11 show that the large configuration has",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 12",
+     "page": 31,
+     "kind": "table",
+     "shows": "MUTAG F1 of RRWP+AFM, RRWP+HW-AFM and the difference (full), and RRWP+AFMstat, RRWP+HW-AFMstat and the difference (stat), per backbone. Full deltas: GT -0.001, GCN -0.041, GAT -0.010, GINE -0.007, Transformer -0.014, General -0.008. Stat deltas: -0.005, +0.000, -0.007, +0.006, +0.009, +0.004.",
+     "confirmed_by": "Table 12 lists, per backbone, the MUTAG F1 of the RRWP hybrids with emulated and hardware AFM features.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 13",
+     "page": 33,
+     "kind": "table",
+     "shows": "Full ZINC-subset intrinsic benchmark: 15 tasks by Random, RRWP, Laplacian, RRWP+Lap., FM, FMmean, FMstat, AFM, AFMmean, AFMstat, FM+AFM and hybrids; for example degree MAE x10^-2: Random 56.43, AFMmean 9.07, AFMstat 1.26 (reported in the column labelled AFM in the text), FM+AFM 1.09.",
+     "confirmed_by": "Link prediction, bridge-edge detection, and, to a lesser extent, bridge-node detection are close to saturation for many non-random feature sets.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 14",
+     "page": 34,
+     "kind": "table",
+     "shows": "Intrinsic benchmark on MUTAG (5-fold), same feature columns plus HW-AFM and RRWP+HW-AFM. For example degree MAE x10^-2: RRWP 14.2, HW-AFM 7.79, RRWP+HW-AFM 7.91, AFM 4.13 (dagger tie).",
+     "confirmed_by": "Table 14 reports the same intrinsic-benchmark protocol on MUTAG.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 15",
+     "page": 37,
+     "kind": "table",
+     "shows": "Pooled OLS R2 of C_ij on walk-power features at K = 1, 7, 21, 50: MUTAG 0.59, 0.78, 0.83, 0.83; ZINC 0.59, 0.76, 0.78, 0.78.",
+     "confirmed_by": "Linear probe (OLS). At t ≤ 30 ns we observe R2 = 1.000 on both pools.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 16",
+     "page": 37,
+     "kind": "table",
+     "shows": "OLS pool, kernel ridge (RBF), random forest R2 and residual for MUTAG K = 21, t = 1536 ns. AFM walk: OLS 0.83, KR 0.895, RF 0.906, residual about 9%; AFM RRWP: 0.898, 0.909, about 9%; FM walk: OLS 0.70, KR 0.753, RF 0.779, about 22%; FM RRWP: 0.693, 0.751, about 25%.",
+     "confirmed_by": "The OLS-to-KR/RF gap is the nonlinear content of C(ij2)that walk-powers carry",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 17",
+     "page": 38,
+     "kind": "table",
+     "shows": "MUTAG random forest 5-fold R2 (K = 21, t = 1536 ns) for walk, walk+Laplacian, RRWP, RRWP+Laplacian: AFM connected 0.906, 0.912, 0.909, 0.913; FM connected 0.779, 0.847, 0.751, 0.840.",
+     "confirmed_by": "Augmenting the design with normalized-Laplacian eigenpairs (App. H) localizes where the residual lives.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 18",
+     "page": 39,
+     "kind": "table",
+     "shows": "Random forest R2 on MUTAG off-diagonal correlations for four cumulative classical bases. AFM: 0.915, 0.917, 0.917, 0.917 (+- 0.005); FM: 0.848, 0.856, 0.855, 0.860 (+- 0.041 to 0.031). Unexplained variance of the full basis 8.3% (AFM) and 14.0% (FM).",
+     "confirmed_by": "Table 18 extends the reconstruction of App. H with a cumulatively expanded basis.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 19",
+     "page": 41,
+     "kind": "table",
+     "shows": "Structure of the unexplained residual on ZINC-subset: (a) cumulative spectral energy below Laplacian eigenvalues 0.04, 0.54, 1.04, 1.54, 1.88 (AFM initial 0.050 to 0.527; AFM residual 0.018 to 0.888; FM initial 0.737 to 0.964; FM residual 0.493 to 0.997); (b) mean |4C_ij| versus distance d = 1, 3, 5, 10; (c) retention of probe performance by the residual: graph-level 97.4%, node-level 82.5%, edge-level 42.4%.",
+     "confirmed_by": "",
+     "no_text_confirms": true
+    },
+    {
+     "figure": "Table 20",
+     "page": 41,
+     "kind": "table",
+     "shows": "ZINC-subset intrinsic benchmark with the geometry-augmented baseline: columns RRWP+Laplacian, Base, Base+AFM+FM, Base+residuals for 15 tasks. For degree x10^-2: 6.98, 0.84, 0.86, 0.83; for betweenness x10^-2: 4.76, 2.01, 1.79, 1.74.",
+     "confirmed_by": "",
+     "no_text_confirms": true
+    },
+    {
+     "figure": "Table 21",
+     "page": 42,
+     "kind": "table",
+     "shows": "Spearman rho of AFM correlations versus the reference layout over four ZINC-subset graphs x 10 runs: sigma 2% 0.819, 5% 0.607, 10% 0.236, 20% -0.017; 10 re-embeddings raw 0.233, quality-selected 0.558; random node permutation -0.001.",
+     "confirmed_by": "At hardware-level noise (σ = 2%) the Spearman correlation is 0.82 ± 0.07, and 0.61 ± 0.10 at σ = 5%;",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 22",
+     "page": 43,
+     "kind": "table",
+     "shows": "Ladder graphs (394 graphs, 98 RRWP-2-blind groups): accuracy, F1, ROC-AUC for RRWP 0.557/0.559/0.612, Geometry 0.503/0.495/0.501, RRWP+Lap+Ring+Geom 0.641/0.643/0.680, FM 0.622/0.620/0.670, AFM 0.847/0.849/0.914, AFM+FM 0.875/0.875/0.941, all plus quantum 0.882/0.884/0.941.",
+     "confirmed_by": "Table 22 shows that random-walk and geometric descriptors, alone or combined with spectral and ring descriptors, remain far below the quantum features,",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Table 23",
+     "page": 44,
+     "kind": "table",
+     "shows": "MUTAG, 173 graphs with N <= 24, five backbones: baseline versus +AFM+FM emulated, exact C6/r^6 and exact J_NN A. Means 0.850, 0.853, 0.861, 0.859.",
+     "confirmed_by": "performs on par with the register couplings. This gain is not robust to the choice of backbones:",
+     "no_text_confirms": false
+    }
+   ],
+   "what_it_is": "A Pasqal paper (NeurIPS 2026 format) that uses connected occupation correlations from quenched graph-encoded Rydberg Hamiltonians, emulated and run on a neutral-atom QPU for MUTAG, as quantum graph features for GNNs, with an intrinsic probing benchmark, a classical-reconstruction analysis, downstream GNN tests and a synthetic ladder-graph study.",
+   "bears_on_context": "qml",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "qgf-definition-node-edge-features",
+     "value": "The authors define quantum graph features (QGFs) as the entries of the occupation-based connected correlation matrix: diagonal entries serve as node-level features and off-diagonal entries as pairwise edge-level features.",
+     "anchor": "Section 2.1, p.3",
+     "quotes": [
+      "The QGFs are defined by the entries of the correlation matrices: diagonal entries provide node-level features, whereas off-diagonal entries provide pairwise edge-level features for the models studied here."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper states its own definition of QGFs in Section 2.1.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "qgf-extraction-protocol",
+     "value": "The authors state that each graph is encoded into a graph-dependent Rydberg Hamiltonian, a fixed initial product state evolves under it for a chosen time, and the occupation-based correlation is then measured.",
+     "anchor": "Section 2, p.3",
+     "quotes": [
+      "To obtain QGFs, we encode each graph into a graph-dependent Rydberg Hamiltonian, let a fixed initial product state evolve under this Hamiltonian for a chosen time, after which we measure the desired observable: the occupation-based correlation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own feature-extraction setup in Section 2.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "graph-register-embedding-rule",
+     "value": "The authors place atoms so that pairs corresponding to graph edges interact strongly, while non-edge pairs are separated far enough that their residual van der Waals interactions are weak.",
+     "anchor": "Section 2.2, p.3",
+     "quotes": [
+      "The atomic positions are chosen such that pairs of atoms corresponding to graph edges interact strongly, while non-edge pairs are separated far enough that their residual van der Waals interactions are weak."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own embedding setup in Section 2.2.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "datasets-mutag-zinc-subset",
+     "value": "The authors study molecular graphs from two benchmarks: MUTAG with 188 graphs for binary mutagenicity and ZINCsubset with 12'000 graphs for constrained solubility regression.",
+     "anchor": "Section 2.2, p.3",
+     "quotes": [
+      "We focus on molecular graphs drawn from two established benchmark datasets: MUTAG (188 graphs, binary mutagenicity) and ZINCsubset(12’000 graphs, constrained solubility regression)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "Dataset scope stated by the paper in Section 2.2.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "embeddability-coverage",
+     "value": "The authors report that two-dimensional unit-disk embeddings cover 100% of MUTAG and 95% of ZINCsubset in their datasets.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "In our datasets this covers 100% of MUTAG and 95% of ZINCsubset."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of the datasets that its protocol covers.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Graphs that need a third dimension are dropped, so ZINC results hold for the embeddable 95% only."
+    },
+    {
+     "id_suggestion": "purely-structural-embedding-limit",
+     "value": "The authors state that the encoding is restricted to two-dimensional unit-disk embeddings and that the features depend on the chosen atom placement: they are stable under small positional noise but not invariant under re-embedding.",
+     "anchor": "Section 6, p.10",
+     "quotes": [
+      "The current limitations are clear. The encoding",
+      "features also depend on the chosen placement: they are stable under small positional noise but not",
+      "invariant under re-embedding, and canonical or placement-invariant quantum encodings remain an"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limitation in Section 6.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fm-detuning-choice-field-balanced",
+     "value": "The authors state that the choice of the FM detuning at twice the infinite-temperature detuning cancels the spatially averaged longitudinal field, and that the AFM detuning of zero lies below the infinite-temperature detuning, in the positive-temperature regime.",
+     "anchor": "Appendix C, p.19",
+     "quotes": [
+      "The choice δ = 0 places the AFM setting below δ∞ and hence in the positive-temperature regime of Eq. (23).",
+      "The choice δ = 2δ∞ places the FM setting in the negative-temperature regime and it has an additional useful interpretation: it cancels the spatially averaged longitudinal field."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own quench-parameter setup and its rationale in Appendix C.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thermal-regime-classification",
+     "value": "The authors state that increasing the detuning moves the thermal interpretation from an AFM-like positive-temperature regime through infinite temperature into an FM-like negative-temperature regime, and that this classification does not imply thermalization for all values of the pulse parameters.",
+     "anchor": "Appendix C, p.19",
+     "quotes": [
+      "Thus, increasing the detuning moves the thermal interpretation from an AFM-like positive-temperature regime through infinite temperature into an FM-like negative-temperature regime.",
+      "This classification does not imply that the system thermalizes for all values of (Ω, δ);"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The authors state the scope of their thermal argument.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The criterion follows from the monotonicity of thermal energy shown in Appendix B (Eqs. 20 and 21), which the paper derives without naming a theorem."
+    },
+    {
+     "id_suggestion": "thermal-approximation-not-assumed-everywhere",
+     "value": "The authors state that the canonical thermal approximation is used as a diagnostic tool for selecting quench parameters and is not assumed to hold throughout the full parameter space.",
+     "anchor": "Appendix B, p.18",
+     "quotes": [
+      "This approximation is used in Sec. 2.3 and App. C as a diagnostic tool for selecting quench parameters (Ω, δ). It is not assumed to hold throughout the full parameter space."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit of their thermalization argument.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "afm-omega-working-point",
+     "value": "The authors state that the AFM setting is chosen more empirically, with detuning zero, and that the Rabi frequency 0.3 J_NN/hbar yields a similar effective temperature scale and lies in a region with pronounced negative off-diagonal correlations.",
+     "anchor": "Appendix C, p.20",
+     "quotes": [
+      "The AFM setting is chosen more empirically.",
+      "We then choose Ω = 0.3 JNN/ℏ, which yields a similar effective temperature scale and lies in a region with pronounced negative off-diagonal correlations, as shown in Fig. 4(c)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states how its own AFM working point was chosen.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fm-omega-working-point",
+     "value": "The authors state that they select the Rabi frequency 0.5 J_NN/hbar for the FM setting, slightly above the thermal-maximum value, because it remains in a regime of enhanced correlations while producing more robust dynamical relaxation.",
+     "anchor": "Appendix C, p.20",
+     "quotes": [
+      "We therefore select the slightly larger value Ω = 0.5 JNN/ℏ [cf. Eq. (4) or (24)], which remains in a regime of enhanced correlations while producing more robust dynamical relaxation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states how its own FM working point was chosen.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thermal-crossover-location-fig4",
+     "value": "The authors report that for the molecular graph of Figure 4 the thermal correlation maximum appears near a Rabi frequency of about 0.23 J_NN/hbar and a detuning of about 2.1 times the infinite-temperature detuning, which they interpret as a finite-size thermal crossover.",
+     "anchor": "Appendix C, p.20",
+     "quotes": [
+      "For the graph considered in Fig. 4, the thermal correlation maximum appears near Ω/(JNN/ℏ) ≈ 0.23 and δ/δ∞ ≈ 2.1, which we interpret as a finite-size thermal crossover."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A single-graph numerical scan whose interpretation is the authors' own.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "afm-fm-correlation-signs",
+     "value": "The authors report, on a small molecular graph, that in the FM setting neighboring atoms develop positive off-diagonal correlations while in the AFM setting the corresponding correlations are negative.",
+     "anchor": "Appendix C, p.19",
+     "quotes": [
+      "FM setting, neighboring atoms develop positive off-diagonal correlations, while in the AFM setting",
+      "the corresponding correlations are negative. The molecule is small enough for exact diagonalization,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on one small molecular graph.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "thermal-agreement-qualitative-only",
+     "value": "The authors state that, for the small graph of Figure 2, agreement of the long-time correlations with the thermal values is qualitative rather than quantitative.",
+     "anchor": "Appendix C, p.19",
+     "quotes": [
+      "The agreement with the thermal values is qualitative rather than quantitative, which is not surprising for such a small system, where finite-size effects, and the"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit of the thermal picture on their measured graph.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "afm-point-sensitivity-limit",
+     "value": "The authors state that the scans of Figure 4 do not establish that every intrinsic or downstream score is stable across the Rabi frequency, because that would require regenerating the features and retraining all models.",
+     "anchor": "Appendix C, p.21",
+     "quotes": [
+      "These scans do not establish that every intrinsic or downstream score is stable across Ω; this would require regenerating the features and retraining all models."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state what their parameter scans do not cover.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emulation-time-grid-shots",
+     "value": "The authors state that the emulated benchmark records the correlation elements at 20 equally spaced time steps between 0.1 and 4.0 microseconds and samples the observables 1000 times at each step.",
+     "anchor": "Section 2.4, p.4",
+     "quotes": [
+      "For the emulated benchmark, we record the correlation elements Ci,j(t) [Eq. (2)] at Nt = 20 equally spaced time steps tν ∈ [0.1, 4.0] µs.",
+      "At each time step, the observables are sampled Nshots = 1000 times,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own emulation setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emulation-backends-and-cost",
+     "value": "The authors state that the emulator uses a state-vector backend for graphs with fewer than 25 atoms and a matrix-product-state backend for larger graphs, at a total cost of about 800 GPU-days on an NVIDIA A100 for ZINCsubset.",
+     "anchor": "Appendix D.1, p.21",
+     "quotes": [
+      "The emulator (Sec. 2.4) uses a state-vector backend for graphs with N < 25 atoms (numerically",
+      "and the matrix-product-state backend",
+      "Total cost: ∼800 GPU-days on an"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own emulation setup and compute cost.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hardware-run-scope-qpu-time",
+     "value": "The authors state that the full pipeline was executed on a Pasqal Fresnel neutral-atom QPU for all 188 MUTAG graphs at four selected time steps, requiring about 7.5 QPU-days of wall time.",
+     "anchor": "Section 2.4, p.5",
+     "quotes": [
+      "Pasqal Fresnel neutral-atom QPU [38] for all 188 MUTAG graphs at four selected time steps due to",
+      "The required QPU wall time for the chosen setting is ∼ 7.5 QPU-days."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the scope of its own hardware run.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The hardware run covers AFM only and MUTAG only; ZINC and FM were not run on the QPU."
+    },
+    {
+     "id_suggestion": "summary-statistics-compression",
+     "value": "The authors state that, besides the full time series, they train on four-dimensional summary statistics (mean, variance, minimal value, maximal value) of the correlations, labeled AFMstat and FMstat.",
+     "anchor": "Section 2.4, p.5",
+     "quotes": [
+      "statistics (mean, variance, minimal value, maximal value), indicated later via AFMstat and FMstat, respectively."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its AFMstat and FMstat feature sets.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "classical-baselines-setup",
+     "value": "The authors state that their main classical baselines are RRWP with transition-matrix powers up to order 20 and a Laplacian encoding with four leading eigenvectors.",
+     "anchor": "Section 2.5, p.5",
+     "quotes": [
+      "We mainly use two classical baselines: (i) RRWP [5] involving transition-matrix powers up to order kmax = 20 to match Nt = 20 and (ii) Laplacian [39] with four leading eigenvectors to match dimension of the summary statistics, e.g. AFMstat."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own baseline setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "intrinsic-benchmark-design",
+     "value": "The authors state that the intrinsic probing benchmark spans 15 tasks and is designed to measure graph-theoretic information encoded in each descriptor while minimizing model-specific inductive biases.",
+     "anchor": "Section 3.1, p.5",
+     "quotes": [
+      "We design a lightweight probing benchmark to measure graph-theoretic information encoded in each descriptor while minimizing model-specific inductive biases. It spans 15 tasks, formally defined in App. F.1:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own benchmark design.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "intrinsic-degree-afm-alone",
+     "value": "The authors report that on degree prediction, AFM alone reaches 1.26 (×10−2 MAE), ahead of RRWP+Laplacian (6.98) and far ahead of RRWP (14.4).",
+     "anchor": "Section 3.1, p.6",
+     "quotes": [
+      "on degree prediction, AFM alone reaches 1.26 (×10−2 MAE), clearly ahead of RRWP+Laplacian (6.98) and far ahead of RRWP (14.4)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured result from one probing benchmark on ZINC-subset.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 13 labels the 1.26 entry in the AFMstat column, so the text's 'AFM alone' may refer to the compressed four-statistic set; Table 1 prints 1.26 in the column headed A (full time series) at degree, but Table 13 prints 1.26 under AFMstat and 11.81 under AFM. The paper is not consistent between these two tables."
+    },
+    {
+     "id_suggestion": "intrinsic-degree-hybrid-gain",
+     "value": "The authors report that adding AFM to RRWP improves degree prediction from 14.4 to 1.18 (×10−2 MAE), and adding FM and AFM gives 1.25, statistically tied.",
+     "anchor": "Section 3.1, p.6",
+     "quotes": [
+      "Combined with RRWP, this signal yields clear hybrid gains: degree prediction improves from 14.4 to 1.18 and 1.25 (×10−2 MAE, statistically tied) when AFM and then FM+AFM are added."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured result from one probing benchmark on ZINC-subset.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "intrinsic-monotone-hybrid-pattern",
+     "value": "The authors report a monotone pattern on three more tasks when AFM and then FM+AFM are added to RRWP: local connectivity 10.0 to 6.07 to 5.14, smallest cycle through a node 0.73 to 0.36 to 0.28, and Wiener index 10.8 to 8.81 to 7.24 (×10−2).",
+     "anchor": "Section 3.1, p.6",
+     "quotes": [
+      "A monotone pattern holds for local connectivity (10.0 → 6.07 → 5.14), smallest cycle through a node (0.73 → 0.36 → 0.28), and Wiener index (10.8 → 8.81 → 7.24, ×10−2)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured result from one probing benchmark on ZINC-subset.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "afm-stronger-local-tasks",
+     "value": "The authors report that RRWP+AFM is stronger than RRWP+FM on local neighbourhood and cycle-related tasks, for example node cycle 0.36 versus 0.48 and edge cycle 7.62 versus 10.0 (×10−2).",
+     "anchor": "Section 3.1, p.6",
+     "quotes": [
+      "RRWP+AFM is stronger than RRWP+FM on local neighbourhood and cycle-related tasks, including degree, betweenness, and smallest cycle through a node or edge (e.g., node cycle: 0.36 vs. 0.48; edge cycle: 7.62 vs. 10.0, ×10−2)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured result from one probing benchmark on ZINC-subset.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fm-stronger-global-distance",
+     "value": "The authors report that RRWP+FM is stronger on global-distance targets, reaching 1.48 MAE on eccentricity against 1.77 for RRWP+AFM, and is close to RRWP+AFM on diameter.",
+     "anchor": "Section 3.1, p.6",
+     "quotes": [
+      "Conversely, RRWP+FM is stronger on global-distance targets, reaching 1.48 MAE on eccentricity against 1.77 for RRWP+AFM, and close to RRWP+AFM on diameter."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured result from one probing benchmark on ZINC-subset.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 1 prints 1.48 for R+F and 1.77 for R+A on eccentricity, matching the text."
+    },
+    {
+     "id_suggestion": "afm-fm-interpretation-not-established",
+     "value": "The authors suggest, without formally establishing it, that AFM-like dynamics are more sensitive to local frustration and cycle structure, whereas FM-like dynamics capture more coherent graph-scale correlation propagation.",
+     "anchor": "Section 3.1, p.6",
+     "quotes": [
+      "This suggests, without formally establishing, that AFM-like dynamics are more sensitive to local frustration and cycle structure, whereas FM-like dynamics capture more coherent graph-scale correlation propagation."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An interpretation the authors say they do not formally establish.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "saturated-tasks-sanity-checks",
+     "value": "The authors state that link prediction, bridge-edge detection and, to a lesser extent, bridge-node detection are close to saturation for many non-random feature sets, and are retained as sanity checks that should not be used to rank descriptor families.",
+     "anchor": "Appendix F.2, p.32",
+     "quotes": [
+      "Link prediction, bridge-edge detection, and, to a lesser extent, bridge-node detection are close to saturation for many non-random feature sets.",
+      "They are retained as sanity checks, but they should not be used to rank descriptor families."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state what these tasks cannot show.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "stat-compression-degradation",
+     "value": "The authors report that the degradation from AFM to AFMstat is systematic on informative regression tasks except density, typically increasing MAE by a factor of roughly 1.1 to 1.7, and by 7.2 on degree.",
+     "anchor": "Appendix F.2.1, p.33",
+     "quotes": [
+      "The degradation from AFM to AFMstat is nevertheless systematic on informative regression tasks except density, typically increasing MAE by a factor of roughly 1.1–1.7, and by 7.2 on degree."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured result on ZINC-subset probes.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "This sentence treats 'AFM' as the full series and 'AFMstat' as the compressed set; with the text's earlier statement that AFM alone reaches 1.26, the two passages disagree about which column holds 1.26. The factor 7.2 on degree is consistent with 1.26 (full AFM) versus about 9 (AFMstat) in Table 13."
+    },
+    {
+     "id_suggestion": "mean-only-compression-loses-information",
+     "value": "The authors report that AFMmean gives 13.50 × 10−2 MAE on degree prediction compared with 1.26 × 10−2 for full AFM, and FMmean gives 2.36 MAE on smallest-cycle-through-node compared with 1.42 for full FM, and conclude that the temporal profile carries additional structural information.",
+     "anchor": "Appendix F.2.1, p.33",
+     "quotes": [
+      "For example, AFMmean gives 13.50 × 10−2 MAE on degree prediction, compared with 1.26 × 10−2 for full AFM, and FMmean gives 2.36 MAE on smallest-cycle-through-node prediction, compared with 1.42 for full FM.",
+      "Thus, the full descriptors do not owe their advantage only to average correlation amplitude; the temporal profile of the dynamics carries additional structural information."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured result on ZINC-subset probes.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "probe-graph-level-cross-validation",
+     "value": "The authors state that the intrinsic probes use 5-fold cross-validation at the graph level, so all nodes and edges of a given graph belong to the same fold, which prevents leakage between train and test.",
+     "anchor": "Appendix F.1, p.32",
+     "quotes": [
+      "5-fold cross-validation is performed at the graph level: all nodes and edges of a given graph belong to the same fold, which prevents leakage between train and test when probing node- or edge-level quantities."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own probe protocol.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "mutag-hw-afm-intrinsic-caveat",
+     "value": "The authors report that on the MUTAG intrinsic benchmark RRWP+HW-AFM is second on betweenness (4.24 × 10−2 MAE versus 3.89 × 10−2 for RRWP) and ties the best on smallest cycle through a node (0.71 MAE), and state that these hardware results should not be read as a stable ranking against noiseless simulated descriptors.",
+     "anchor": "Appendix F.3.1, p.34",
+     "quotes": [
+      "RRWP+HWAFM is consistently competitive with the simulated hybrids, is second on betweenness (4.24 × 10−2 MAE vs. 3.89 × 10−2 for RRWP) and ties the best on smallest cycle through a node (0.71 MAE).",
+      "These hardware results should not be interpreted as a stable ranking against noiseless simulated descriptors, since several MUTAG differences are within fold-level variability."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured result on 188 MUTAG graphs with differences the authors call within fold variability.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "reconstruction-pooled-ols-ceiling",
+     "value": "The authors report that the pooled OLS R2 of the off-diagonal correlations on walk-power features reaches 0.83 on MUTAG at K=21 and K=50, and that K-saturation is sharp (at most 1% from K=7 to K=50).",
+     "anchor": "Appendix H.1, Table 15, p.37",
+     "quotes": [
+      "Table 15: Pooled OLS R2 of Ci(j2)on walk-power features. K-saturation is sharp (≤ 1% from K=7 to K=50).",
+      "RK 2 =1 RK 2 =7 RK 2 =21 RK 2 =50",
+      "MUTAG 0.59 0.78 0.83"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A measured result on one dataset and one time window.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The row text '0.59 0.78 0.83' lists three of the four K values; the fourth value 0.83 is on a separate line."
+    },
+    {
+     "id_suggestion": "reconstruction-nonlinear-residual",
+     "value": "The authors report that kernel ridge and random forest close at most 7-8 percent points of the linear gap for walk powers on MUTAG, leaving a residual of about 9% on AFM and about 22% on FM that is not recovered by any nonlinear function of adjacency or RRWP.",
+     "anchor": "Section 3.2, p.7; Table 16, p.37",
+     "quotes": [
+      "leaving a residual of ∼ 9% on AFM and ∼ 22% on FM that is not recovered by any nonlinear function of adjacency or RRWP (see Table 16).",
+      "Table 16: Nonlinear probes close at most 7–8% of the linear gap for walk powers (OLS at the same time; graph-level folds, fold standard deviations ≤ 0.008 for AFM and ≤ 0.033 for FM)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from fitted regressors at one time (t = 1536 ns) on MUTAG.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "'Not recovered by any nonlinear function' is stated for the two regressors tried (kernel ridge and random forest), not for all functions."
+    },
+    {
+     "id_suggestion": "reconstruction-laplacian-fm-partly-spectral",
+     "value": "The authors report that adding the first Laplacian eigenpairs lifts the FM result to 0.85, which they take to show the FM beyond-walk content is partly spectral, while the AFM residual is nearly unchanged (at most 1%).",
+     "anchor": "Section 3.2, p.7",
+     "quotes": [
+      "Augmenting the design with the first K Laplacian eigenpairs additionally lifts the FM result to 0.85, identifying the FM beyond-walk content as partly spectral, while the AFM residual is nearly unchanged (≤ 1%) and remains beyond any walk- or spectrum-derived feature we tested (see Table 17)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on MUTAG at one time.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The Table 17 caption says the AFM residual is 'mostly walk-content under nonlinearity', while Section 3.2 says it remains beyond any walk- or spectrum-derived feature tested; the paper's own wording differs between the two places."
+    },
+    {
+     "id_suggestion": "expanded-basis-residual-8-14-percent",
+     "value": "The authors report that with the full expanded classical and physical basis the random forest leaves 8.3% (AFM) and 14.0% (FM) of the variance unexplained, and they describe this as information not captured by the tested classical, geometric and restricted physical descriptors, rather than as purely quantum information.",
+     "anchor": "Section 3.2, p.7; Appendix I.1, p.38",
+     "quotes": [
+      "With the full basis, the random forest leaves 8.3% (AFM) and 14.0% (FM) of the variance unexplained.",
+      "We therefore describe it as information not captured by the tested classical, geometric and restricted",
+      "physical descriptors, rather than as purely quantum information."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit of what the residual shows: it is not claimed as purely quantum information.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The residual depends on the regressors and descriptors tried; a richer classical model could shrink it."
+    },
+    {
+     "id_suggestion": "register-geometry-adds-nothing-residual",
+     "value": "The authors report that register geometry adds nothing to the reconstruction once the graph descriptors are present, and that the restricted physical approximations add at most 0.5 percentage points (FM).",
+     "anchor": "Appendix I.1, Figure 10 caption, p.40",
+     "quotes": [
+      "register geometry adds nothing and the physical controls add at most 0.5 percentage points (FM)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on MUTAG at one reference time.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "residual-probe-retention",
+     "value": "The authors report that, used as a standalone input to the intrinsic probe, the AFM+FM residual retains 97.4% of the full-feature performance on graph-level tasks, 82.5% on node-level tasks and 42.4% on edge-level tasks.",
+     "anchor": "Appendix I.1, p.39",
+     "quotes": [
+      "the intrinsic probe, the AFM+FM residual retains 97.4% of the performance of the full features on",
+      "graph-level tasks and 82.5% on node-level tasks, against 42.4% on edge-level tasks, which mostly"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on ZINC-subset.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fm-residual-low-lambda-modes",
+     "value": "The authors report that the FM residual is concentrated in global, low-eigenvalue Laplacian modes (49% of its energy below 0.04), whereas the AFM residual is spread across the spectrum.",
+     "anchor": "Appendix I.1, p.39",
+     "quotes": [
+      "the FM residual is concentrated in global, low-λ modes (49% of its energy below",
+      "λ = 0.04), whereas the AFM residual is spread across the spectrum."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on ZINC-subset.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "residual-no-single-invariant",
+     "value": "The authors state that no single graph invariant explains the residual.",
+     "anchor": "Appendix I.1, p.39",
+     "quotes": [
+      "No single graph invariant explains it: controlling for graph size,"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation limited to the invariants tested.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Supported by correlations of at most about 0.57 in absolute value with benchmark targets, per the same paragraph."
+    },
+    {
+     "id_suggestion": "downstream-ten-of-twelve-sign-test",
+     "value": "The authors report that the fixed hybrid champion ties or improves on the classical champion in ten of twelve (architecture, dataset) cells, with the two losses within 0.5 sigma of equality, and a one-sided sign test gives p = 0.019.",
+     "anchor": "Section 4.1, p.8; Appendix G, p.34-35",
+     "quotes": [
+      "The hybrid champion ties or improves on the classical champion in ten of twelve (architecture, dataset) cells; the two losses (Transformer and GeneralConv on ZINC) sit within 0.5σ of equality.",
+      "and p = 0.019 under a binomial null with p0 = 0.5 [46]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one benchmark; the champions were chosen by the authors by best average performance across the sweep.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The champions are selected on the same sweep that is then tested, which the paper acknowledges as a free parameter in per-cell selection but not for the fixed champions."
+    },
+    {
+     "id_suggestion": "downstream-small-amplitude",
+     "value": "The authors report that most per-cell gaps lie inside the cross-fold noise band, with only GAT on ZINC reaching a 3 sigma effect (0.209 versus 0.223 MAE).",
+     "anchor": "Section 4.1, p.9",
+     "quotes": [
+      "most per-cell gaps lie inside the cross-fold noise band, with only GAT on ZINC reaching a 3σ effect (0.209 vs 0.223 MAE)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result across a benchmark grid.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The paper's own framing is a sign-consistent but small-amplitude signal."
+    },
+    {
+     "id_suggestion": "downstream-top-two-eight-of-twelve",
+     "value": "The authors report that no single feature set dominates uniformly, but the hybrids that pool both quench settings, RRWP+AFM+FM and RRWP+AFMstat+FMstat, rank in the top two in eight of the twelve cells.",
+     "anchor": "Section 4.1, p.9",
+     "quotes": [
+      "Altogether, no single feature set dominates uniformly, but pooling with both quench settings combined, RRWP+AFM+FM and RRWP+AFMstat+FMstat, ranks in the top two in eight of the twelve cells,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result across a benchmark grid.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "downstream-standalone-not-substitute",
+     "value": "The authors report that standalone quantum features do not substitute for RRWP in their downstream setup, yet the column-best entry is always attained by a quantum-RRWP hybrid.",
+     "anchor": "Section 4.1, p.8",
+     "quotes": [
+      "As demonstrated in the tables, standalone quantum features do not substitute for RRWP in this setup.",
+      "Yet, the column-best entry is always attained by a quantum–RRWP hybrid,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result across a benchmark grid.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "downstream-training-protocol-fixed",
+     "value": "The authors state that they keep the training protocol fixed across all feature configurations and do not perform per-feature hyperparameter tuning, prioritizing a clean feature comparison over peak predictive performance.",
+     "anchor": "Section 4.1, p.7",
+     "quotes": [
+      "We keep the training protocol fixed across all feature configurations and do not perform per-feature hyperparameter tuning, thereby prioritizing a clean comparison of features over peak predictive performance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "downstream-parameter-matching",
+     "value": "The authors state that they approximately match the number of trainable parameters across backbones separately for each dataset to control for model capacity.",
+     "anchor": "Section 4.1, p.7",
+     "quotes": [
+      "To control for model capacity, we approximately match the number of trainable parameters across backbones separately for each dataset."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own capacity control.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "sign-test-descriptive-only",
+     "value": "The authors state that they treat the cell-level sign-test p-values as descriptive evidence of directional consistency rather than as exact type-I error guarantees, and that they apply no multiple-comparison correction because the analyses answer distinct questions.",
+     "anchor": "Appendix G, p.35-36",
+     "quotes": [
+      "We do not apply a multiplecomparison correction because the analyses answer distinct questions;",
+      "We therefore treat the sign-test p-values as descriptive evidence of directional consistency rather than as exact type-I error guarantees;"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit of their significance claims.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bayes-cell-level-sign-test",
+     "value": "The authors report that a Bayesian sign test on the twelve cell-level differences gives posterior probabilities of 0.018 for the hybrid, 0.982 for practical equivalence and 0.000 for the classical champion.",
+     "anchor": "Appendix G, p.35",
+     "quotes": [
+      "Phybrid, Prope, Pclassical = 0.018, 0.982, 0.000 , with 95% bootstrap intervals"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statistical result from one analysis on the benchmark grid.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "Almost all mass lies in the region of practical equivalence, so the cell-level amplitude is small."
+    },
+    {
+     "id_suggestion": "bayes-signed-rank-mutag",
+     "value": "The authors report that a Bayesian signed-rank test on the 300 pooled MUTAG trials gives posterior probabilities of 0.907 for the hybrid, 0.000 for practical equivalence and 0.093 for the classical champion, and they note that treating the trials as exchangeable over-counts evidence.",
+     "anchor": "Appendix G, p.35",
+     "quotes": [
+      "Phybrid, Prope, Pclassical = 0.907, 0.000, 0.093 , with 95% bootstrap intervals [0.281, 1.000], [0.000, 0.000], and [0.000, 0.720] respectively.",
+      "This pooled analysis treats the n = 300 paired trials as exchangeable, which over-counts evidence"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statistical result the authors themselves call fragile.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "bayes-hierarchical-mutag",
+     "value": "The authors report that a hierarchical Bayesian test gives a posterior median of +0.005 F1 for the global mean difference with 95% HDI [−0.009, +0.019], and that every per-architecture 95% HDI includes zero.",
+     "anchor": "Appendix G, p.36",
+     "quotes": [
+      "The associated posterior over the global mean F1 difference has median +0.005 with 95% HDI [−0.009, +0.019],",
+      "the per-architecture posteriors all assign 95% HDIs to mean F1 differences that include zero,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A statistical result from one analysis on MUTAG.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "The authors call this the most defensible amplitude statement available."
+    },
+    {
+     "id_suggestion": "hw-vs-emulation-afm-differences",
+     "value": "The authors report that HW-AFM differs from AFM by at most 0.046 F1 across the six backbones, while HW-AFMstat stays within 0.028 F1 and even exceeds the emulator on GAT and GINE.",
+     "anchor": "Section 4.1, p.9",
+     "quotes": [
+      "by at most 0.046 F1 across the six backbones, while HW-AFMstat stays within 0.028 F1 and even exceeds the emulator on GAT and GINE."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on MUTAG with one hardware run.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hw-hybrid-matches-emulation",
+     "value": "The authors report that RRWP+HW-AFM is within 0.014 F1 of RRWP+AFM on five of six backbones, with GCN the only larger deviation (0.837 versus 0.878), and that RRWP+HW-AFMstat matches RRWP+AFMstat within 0.01 F1 on all six backbones and reaches the MUTAG column best on GeneralConv (0.877).",
+     "anchor": "Section 4.1, p.9",
+     "quotes": [
+      "RRWP+HW-AFM is within 0.014 F1 of RRWP+AFM on five of six backbones, with GCN the only larger deviation (0.837 vs 0.878).",
+      "In contrast, RRWP+HW-AFMstat matches RRWP+AFMstat within 0.01 F1 on all six backbones and reaches the MUTAG column best on GeneralConv (0.877);"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on MUTAG with one hardware run, AFM only.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The hardware comparison is AFM only and MUTAG only; differences of 0.01 F1 sit well inside the fold standard deviations of about 0.06 to 0.09 in Table 2."
+    },
+    {
+     "id_suggestion": "hw-per-backbone-deviation-e5",
+     "value": "The authors report that for the compressed features hardware agreement holds on all six backbones with a maximum absolute deviation of 0.009, and for the full time-resolved features five backbones are within 0.014 while GCN deviates by 0.041.",
+     "anchor": "Appendix E.5, p.29",
+     "quotes": [
+      "For the compressed features, agreement holds on all six backbones, with a maximum absolute deviation of 0.009. For the full time-resolved features, five backbones are within 0.014, while GCN deviates by 0.041."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on MUTAG with one hardware run.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 12 gives a GCN full deviation of -0.041 (0.878 to 0.837) and the largest stat deviation +0.009 (Transformer), consistent with this text."
+    },
+    {
+     "id_suggestion": "esa-gated-fusion-best",
+     "value": "The authors report that with the ESA model gated fusion reaches the best score with RWSE*+AFM+FM at 0.922 ± 0.042 binary F1 and that the best hardware hybrid, RWSE*+HW-AFM with gating, reaches a comparable 0.920 ± 0.044.",
+     "anchor": "Section 4.2, p.9",
+     "quotes": [
+      "counterparts and reaches the best score with RWSE∗+AFM+FM, at 0.922 ± 0.042 binary F1. The best hardware hybrid, RWSE∗+HW-AFM with gating, reaches a comparable 0.920 ± 0.044."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on MUTAG for one architecture.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The RWSE* baseline in Table 4 is 0.905 ± 0.045, so the gain of about 0.017 is under half a fold standard deviation."
+    },
+    {
+     "id_suggestion": "esa-concatenation-not-beneficial",
+     "value": "The authors report that with ESA, direct concatenation of QGFs is not consistently beneficial, with most hybrids remaining close to the RWSE* baseline, and that the gains of gated fusion remain modest relative to the cross-validation variance.",
+     "anchor": "Section 4.2, p.9",
+     "quotes": [
+      "Table 4 shows that direct concatenation is not consistently beneficial, with most hybrids remaining close to the RWSE∗",
+      "gains remain modest relative to the cross-validation variance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on MUTAG for one architecture.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "esa-learned-gate-values",
+     "value": "The authors report that learned gates start from an initial value of 0.88 and stay near it for compressed statistics (0.887 for AFMstat, 0.855 for FMstat), decrease more for FM-containing full features (0.816 for FM, 0.830 for AFM+FM), and stay near initialization for full AFM (0.862).",
+     "anchor": "Section 4.2, p.9",
+     "quotes": [
+      "from an initial value of 0.88, they stay close to initialization for compressed statistics (0.887 for AFMstat, 0.855 for FMstat) and decrease more for FM-containing full features (0.816 for FM, 0.830 for AFM+FM), whereas full AFM stays close to initialization (0.862)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical observation from one architecture on MUTAG.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ladder-graphs-construction",
+     "value": "The authors state that they construct ladder graphs whose label depends only on the relative parity of two diagonal crossings and keep only graphs whose opposite-label partners share identical RRWP and ring features, giving 394 graphs with 18 to 26 atoms.",
+     "anchor": "Section 5, p.10",
+     "quotes": [
+      "We construct ladder graphs whose label depends only on the relative parity of two diagonal crossings—a global combinatorial property—and keep only graphs whose opposite-label partners share identical RRWP and ring features (394 graphs, 18–26 atoms, exact unit-disk registers; App. I.4)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own construction of the synthetic family.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ladder-label-definition",
+     "value": "The authors define the ladder labels: if two crossings are separated by an even number of cells they exclude the same configuration and leave a unique ground state (pinned, y = 1), and if separated by an odd number of cells they exclude opposite configurations and leave a degenerate ground-state manifold (frustrated, y = 0).",
+     "anchor": "Appendix I.4, p.42",
+     "quotes": [
+      "If two crossings are separated by an even number of cells ∆, they exclude the same configuration and leave a unique ground state (pinned, y = 1); if they are separated by an odd number of cells, they exclude opposite configurations and leave a degenerate ground-state manifold (frustrated, y = 0)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines its own label.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ladder-afm-fm-vs-classical",
+     "value": "The authors report that on the ladder family a logistic-regression probe on AFM+FM reaches 0.875 ± 0.043 accuracy (ROC-AUC 0.941) versus 0.641 ± 0.077 (ROC-AUC 0.680) for the combined classical baseline, a gap of 0.23 that is roughly three times the larger cross-fold standard deviation.",
+     "anchor": "Section 5, p.10",
+     "quotes": [
+      "With a logisticregression probe, AFM+FM reach 0.875 ± 0.043 accuracy (ROC-AUC 0.941), versus 0.641 ± 0.077 (ROC-AUC 0.680) for the combined classical baseline (Tab. 5); the gap of 0.23 is roughly three times the larger cross-fold standard deviation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on a synthetic family constructed to defeat the classical encodings.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ladder-afm-alone-auc",
+     "value": "The authors report that on the ladder family AFM alone reaches 0.914 ROC-AUC and AFM+FM 0.941, that adding all classical features to AFM+FM changes little, and that random-walk and geometric descriptors remain far below the quantum features.",
+     "anchor": "Appendix I.4, p.43",
+     "quotes": [
+      "remain far below the quantum features, whereas AFM alone reaches 0.914 ROCAUC and AFM+FM 0.941; adding all classical features to AFM+FM changes little."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on a synthetic family.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ladder-permutation-test",
+     "value": "The authors report that a label-permutation test with 100 shuffles gives p = 0.010, the minimum, for all feature sets on the ladder family except RRWP (p = 0.020) and Geometry (p = 0.446).",
+     "anchor": "Appendix I.4, Table 22, p.43",
+     "quotes": [
+      "Label-permutation test (100 shuffles): p = 0.010, the minimum, for all feature sets except RRWP (p = 0.020) and Geometry (p = 0.446)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical statistical result on a synthetic family.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "ladder-existence-statement-limit",
+     "value": "The authors state that the ladder result is on a synthetic family constructed to defeat these encodings and is not evidence of a generic practical advantage for graph learning, and that it is an existence statement, not evidence of a generic advantage on molecular benchmarks.",
+     "anchor": "Section 5, p.10; Appendix I.4, p.43",
+     "quotes": [
+      "This is a result on a synthetic family constructed to defeat these encodings, not evidence of a generic practical advantage for graph learning.",
+      "the result is therefore an existence statement, not evidence of a generic advantage on molecular benchmarks."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state what their ladder result does not show.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "geometry-augmented-baseline-result",
+     "value": "The authors report that on the geometry-augmented baseline both the AFM+FM correlations and their residuals improve betweenness, bridge-node detection, edge betweenness and local connectivity with disjoint standard-error bars, and that the geometry accounts for a substantial part of the signal but not for all of it.",
+     "anchor": "Appendix I.2, p.40",
+     "quotes": [
+      "improve betweenness, bridge-node detection, edge betweenness and local connectivity with disjoint",
+      "substantial part of the signal, but not for all of it."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on ZINC-subset probes.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "placement-noise-spearman",
+     "value": "The authors report that at hardware-level placement noise (sigma = 2%) the Spearman correlation of the AFM correlations with the reference layout is 0.82 ± 0.07 and 0.61 ± 0.10 at sigma = 5%, and above sigma = 20% it falls to the level of a random node permutation.",
+     "anchor": "Appendix I.3, p.41",
+     "quotes": [
+      "At hardware-level noise (σ = 2%) the Spearman correlation is 0.82 ± 0.07, and 0.61 ± 0.10 at σ = 5%; above σ = 20% it falls to the level of a random node permutation."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on four ZINC-subset graphs.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "re-embedding-spearman",
+     "value": "The authors report that ten alternative layouts from re-running the force-based placement agree less with the reference, with Spearman correlations of 0.56 ± 0.25 after selecting embeddings of good quality and 0.23 ± 0.29 without selection, and conclude QGFs are not invariant under re-embedding.",
+     "anchor": "Appendix I.3, p.41",
+     "quotes": [
+      "Ten alternative layouts obtained by re-running the force-based placement agree less (0.56 ± 0.25 after selecting embeddings of good quality, 0.23 ± 0.29 without selection).",
+      "QGFs are thus robust to small positional noise around a fixed layout but not invariant under re-embedding:"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on four ZINC-subset graphs.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "Table 21 prints 0.558 ± 0.247 and 0.233 ± 0.287, matching the rounded text values."
+    },
+    {
+     "id_suggestion": "non-unit-disk-couplings-result",
+     "value": "The authors report that on the 173 MUTAG graphs with N at most 24, exact features slightly improve over the geometry-augmented baseline (+0.011 and +0.009 mean F1, p about 0.01 to 0.02), but the gain is not robust to the choice of backbones, and with two further backbones none of the paired differences is significant (p > 0.08).",
+     "anchor": "Appendix I.5, p.43-44",
+     "quotes": [
+      "The exact features slightly improve over the baseline (+0.011 and +0.009 mean F1, p ≈ 0.01–0.02), and the ideal graph Hamiltonian",
+      "This gain is not robust to the choice of backbones: including the two further backbones of the original run (GATv2 and GEN), none of the paired differences is significant (p > 0.08).",
+      "Table 23: MUTAG, the 173 graphs with N ≤ 24: geometry-augmented baseline"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on MUTAG whose significance the authors say is not robust.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "non-unit-disk-emulated-not-significant",
+     "value": "The authors report paired Wilcoxon tests over 250 (backbone, fold, seed) trials against the geometry-augmented baseline: emulated +0.004 (p = 0.31), exact register couplings +0.011 (p = 0.014), exact ideal graph Hamiltonian +0.009 (p = 0.021).",
+     "anchor": "Appendix I.5, Table 23, p.44",
+     "quotes": [
+      "tests over the 250 (backbone, fold, seed) trials, against the baseline: emulated +0.004 (p = 0.31);",
+      "exact C6/r6 +0.011 (p = 0.014); exact JNNA +0.009 (p = 0.021)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical statistical result on MUTAG.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "The emulated (1000-shot) features, the ones the main paper uses, show no significant gain on this geometry-augmented baseline."
+    },
+    {
+     "id_suggestion": "emulator-qpu-spearman-per-graph",
+     "value": "The authors report that the per-graph Spearman correlation between QPU and emulation at t4 has median 0.924 and mean 0.912 for the one-body channel and median 0.870 and mean 0.861 for the two-body channel.",
+     "anchor": "Appendix D.4, p.24",
+     "quotes": [
+      "the one-body channel concentrates above ρs = 0.9 (median 0.924, mean 0.912). The two-body channel concentrates lower (median 0.870, mean 0.861),"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one hardware run on MUTAG at one time and operating point.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emulator-qpu-pooled-spearman",
+     "value": "The authors report that pooling every correlation entry across the 188 graphs gives a Spearman correlation of 0.928 for the one-body channel and 0.863 for the two-body channel between QPU and emulation.",
+     "anchor": "Appendix D.4, p.24; Figure 6 caption, p.25",
+     "quotes": [
+      "(d,e) Pooled scatter of every QPU entry against its emulation counterpart, for one-body (d, ρs = 0.928) and two-body (e, ρs = 0.863);",
+      "Panels (d,e) pool every correlation entry across the 188 graphs into a single scatter: the"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one hardware run.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emulator-qpu-time-rescaling",
+     "value": "The authors state that the QPU and emulator sampling times differ, 940 ns for the QPU and 715 ns for the emulator, because the available maximum amplitude was lower on the QPU and sampling times and the nearest-neighbor distance had to be rescaled.",
+     "anchor": "Appendix D.4, p.24",
+     "quotes": [
+      "The reported times, tQPU = 940 ns and temu = 715 ns are different because, as the available max amplitude was lower in the QPU than in emulation, sampling times have to be rescaled accordingly (along with rNN )."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own hardware setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "emulator-qpu-concordance-scope-limit",
+     "value": "The authors state that the concordance study is restricted to a single dataset, MUTAG, and a single operating point (AFM at t4), and that a full QPU run on ZINC-subset is left for future work.",
+     "anchor": "Appendix D.4, p.24",
+     "quotes": [
+      "We emphasize that this concordance study single dataset (MUTAG); a full QPU run on is left for future work.",
+      "to a single operating point (AFM, t4) on a"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the scope limit of their hardware concordance study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The text layer is garbled for this sentence; the quote is copied as the layer prints it."
+    },
+    {
+     "id_suggestion": "readout-error-calibration-values",
+     "value": "The authors state that readout errors are corrected in post-processing using pre-calibrated false-Rydberg-detection probability 0.025 and false-ground-state-detection probability 0.1 for the employed QPU.",
+     "anchor": "Appendix D.3, p.23",
+     "quotes": [
+      "for the employed QPU the values are ϵ = 0.025 and ϵ′ = 0.1."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own hardware calibration setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "hardware-shots-budget-874",
+     "value": "The authors state that all 188 MUTAG graphs were measured on the QPU under the shot budget of Appendix D.3 with 874 shots, and that the required shot count grows only logarithmically with graph size.",
+     "anchor": "Appendix D.4, p.24; Appendix D.3, p.24",
+     "quotes": [
+      "All 188 MUTAG graphs admitting a 2D unit-disk embedding (Sec. 2.2) were measured under the shot budget of App. D.3 (Nshots = 874).",
+      "The shot count grows only logarithmically with graph size"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own hardware shot budget.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "Section 2.4 gives 1000 shots for emulation and Appendix D.4 gives 874 shots for hardware; the paper does not say the two differ in the main text."
+    },
+    {
+     "id_suggestion": "pca-one-body-components",
+     "value": "The authors report that for one-body features the first principal component explains approximately 80 to 83% of the variance and that reaching 90% explained variance requires 4 to 5 components.",
+     "anchor": "Appendix D.2, p.21",
+     "quotes": [
+      "approximately 80–83% for",
+      "level across timesteps, reflecting the time-averaged structural signature of each node. Reaching 90%",
+      "explained variance requires 4–5 components, and 95% requires 9–10 components."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on ZINC-subset and MUTAG features.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The 80 to 83% figure is in a garbled line: 'approximately 80–83% for' appears separately; the 5 and 4 component counts are quoted here."
+    },
+    {
+     "id_suggestion": "pca-two-body-components",
+     "value": "The authors report that for two-body features the second and third components contribute 7 to 9% and 5 to 7% respectively, and reaching 90% explained variance requires 9 to 10 components and 95% requires 14 components.",
+     "anchor": "Appendix D.2, p.23",
+     "quotes": [
+      "with the second and third components contributing 7–9% and 5–7% respectively. Reaching 90% explained variance requires 9–10 components, and 95% requires 14 components."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result on ZINC-subset and MUTAG features.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "pca-static-component-interpretation",
+     "value": "The authors state that the dominant first component captures the time-averaged correlation strength of each node or edge, which they say explains why the summary-statistics reduction retains most of the performance in the positional-encoding benchmark.",
+     "anchor": "Appendix D.2, p.23",
+     "quotes": [
+      "A dominant static component (PC1), capturing the time-averaged correlation strength of each node or edge."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An interpretation of a PCA result.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The causal claim about the stat reduction is the authors' interpretation, not tested by an ablation in this appendix."
+    },
+    {
+     "id_suggestion": "ablation-table9-quantum-improve",
+     "value": "The authors state that Table 9 shows quantum features consistently improve over classical features when averaged across six model sizes and five seeds, on the ZINCtiny ablation.",
+     "anchor": "Appendix E.4, p.29",
+     "quotes": [
+      "Results in Table 9 show that quantum features consistently improve over classical features when",
+      "averaged across six model sizes and five seeds."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical claim from a small ablation on ZINCtiny with two architectures.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The text says six model sizes and five seeds, but Table 8 lists eight sizes and the Table 9 to 11 captions say 10 seeds. Table 9 also shows GCN AFM2b at 0.532 above the no-PE value 0.520, so the word consistently does not hold for every entry."
+    },
+    {
+     "id_suggestion": "ablation-table9-gcn-afm2b-worse",
+     "value": "The authors' Table 9 for GCN on ZINCtiny lists a no-PE baseline MAE of 0.520±0.050, AFM1b at 0.443±0.031 and AFM2b at 0.532±0.025.",
+     "anchor": "Appendix E.4, Table 9, p.29",
+     "quotes": [
+      "0.520±0.050",
+      "AFM1b 0.443±0.031",
+      "AFM2b 0.532±0.025"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from a small ablation.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The two-body-only AFM features gave a higher MAE than the no-quantum baseline for GCN, while the one-body-only AFM features gave a lower MAE."
+    },
+    {
+     "id_suggestion": "ablation-model-size-large",
+     "value": "The authors state that the large backbone configuration has better performance overall and that larger models provide no systematic further improvement, so they select the large configuration for the emulated benchmark and QPU validation.",
+     "anchor": "Appendix E.4, p.29",
+     "quotes": [
+      "better performance overall, while larger models provide no systematic further improvement. Hence,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from a small ablation.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fig7-capacity-gap-epoch-on-test",
+     "value": "The authors state that for the GT model on ZINCsubset the reported epoch in the Figure 7 study was selected on the test split, and that increasing model capacity consistently reduces the gap between feature configurations, suggesting the lower performance of RRWP plus AFM at low capacity is a capacity bottleneck.",
+     "anchor": "Appendix E.4, Figure 7 caption, p.30",
+     "quotes": [
+      "deviation over 5 independent random seeds; in this study the reported epoch was selected on the test split. Increasing model capacity consistently reduces the gap between feature configurations,"
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state a limit on the Figure 7 measurement: the epoch was chosen on the test split.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": "Epoch selection on the test split biases test numbers optimistically for every configuration in that study."
+    },
+    {
+     "id_suggestion": "fig7-gt-zinc-capacity-values",
+     "value": "Read from Figure 7: for the GT on ZINCsubset, test MAE for RRWP alone is about 0.113 at all three capacities, for RRWP plus AFMstat about 0.111, and for RRWP plus AFM about 0.122 at about 500k parameters falling to about 0.107 at about 2M parameters.",
+     "anchor": "Appendix E.4, Figure 7, p.30",
+     "quotes": [
+      "Increasing model capacity consistently reduces the gap between feature configurations,"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read only from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "ml",
+     "reader_inference": "Error bars of about 0.004 to 0.005 overlap between configurations at 1M and 2M parameters."
+    },
+    {
+     "id_suggestion": "fig3-toy-linear-recovery",
+     "value": "Read from Figure 3: on a toy dataset of two graphs, early-time quantum features are recovered by linear combinations of adjacency or RRWP powers with pooled R2 about 1, and at later times the recovery falls: for AFM to about 0.3 for the smallest order and recovering to about 0.8 for the largest order near about 400 ns, and for FM to near about 0 for the smallest order after about 100 ns.",
+     "anchor": "Section 3.2, Figure 3, p.7",
+     "quotes": [
+      "quantum features at early times are well approximated by linear combination of powers of RRWP or",
+      "adjacency (R2 ≈ 1), whereas at later times",
+      "(t ≳ 200 ns for AFM and t ≳ 100 ns for FM)"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure on a two-graph toy dataset.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "fig11-placement-noise-curve",
+     "value": "Read from Figure 11: the Spearman correlation of the AFM correlations with the reference layout falls from about 0.82 at about 2% placement noise to about 0.61 at about 5%, about 0.24 at about 10% and about 0 at about 20%, with re-embeddings giving a mean of about 0.23 without selection and about 0.56 with quality selection.",
+     "anchor": "Appendix I.3, Figure 11, p.42",
+     "quotes": [
+      "Hardware-level jitter (σ ≈ 2–4%, i.e., 0.1–0.2 µm) is already present in our QPU run, so the hardware results of Sec. 4 partly validate the robustness to it."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qml",
+     "reader_inference": "The text values (0.82, 0.61) and Table 21 give the same numbers; this entry records the figure's trend."
+    },
+    {
+     "id_suggestion": "intro-rrwp-limitation-cited",
+     "value": "The authors state, citing earlier work, that even expressive relative encodings such as RRWP fail on certain adversarial graph families, including non-isomorphic strongly regular graphs.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "even expressive relative encodings such as RRWP fail on certain adversarial graph families, including non-isomorphic strongly regular graphs [5, 9–11]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "ml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "intro-thabet-expressivity-cited",
+     "value": "The authors state that Thabet et al. showed that quantum correlation-based encodings can be strictly more expressive than RRWP on selected graph families.",
+     "anchor": "Section 1, p.2",
+     "quotes": [
+      "In particular, Thabet et al. [10] showed that quantum correlation-based encodings can be strictly more expressive than RRWP on selected graph families,"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "conclusion-complementary-not-replace",
+     "value": "The authors conclude that QGFs do not replace classical structural encodings, but provide complementary information that is most useful when concatenated with RRWP.",
+     "anchor": "Section 6, p.10",
+     "quotes": [
+      "QGFs do not replace classical structural encodings, but provide complementary information that is most useful when concatenated with RRWP."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author conclusion drawn from the paper's benchmarks.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "limitation-cost-too-high",
+     "value": "The authors state that hardware extraction remains much slower than classical preprocessing and that the current compute and QPU sampling time of the full pipeline is too high for practical use.",
+     "anchor": "Section 6, p.10",
+     "quotes": [
+      "A further, more practical limitation is cost: hardware extraction remains much slower",
+      "than classical preprocessing, and the current compute and QPU sampling time of the full pipeline is",
+      "too high for practical use (see App. D.3)."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limitation in Section 6.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "limitation-downstream-gains-modest",
+     "value": "The authors state that the downstream gains are modest and that the feature-extraction protocol is not yet optimized for learning.",
+     "anchor": "Section 6, p.10",
+     "quotes": [
+      "Finally, the downstream gains are modest, and the",
+      "feature-extraction protocol is not yet optimized for learning."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state this limitation in Section 6.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "no-theoretical-results",
+     "value": "The authors state in the paper checklist that the paper does not include theoretical results.",
+     "anchor": "NeurIPS Paper Checklist, item 3, p.45",
+     "quotes": [
+      "Justification: The paper does not include theoretical results."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states its own scope: no theorems or proofs.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The derivations in Appendices B and C (thermal criterion, readout correction) are standard arguments, not stated as theorems."
+    },
+    {
+     "id_suggestion": "funding-affiliation-disclosure",
+     "value": "The authors disclose that the work was funded by Pasqal SAS and that all authors are employees of Pasqal, which develops and commercialises the neutral-atom quantum computer used in this work.",
+     "anchor": "Acknowledgments and Disclosure of Funding, p.11",
+     "quotes": [
+      "All authors are employees of Pasqal, which develops and commercialises the neutral-atom quantum computer used in this work."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own funding and affiliation setup.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The hardware-validated claims come from the hardware vendor's own employees, so the hardware results are vendor-run."
+    },
+    {
+     "id_suggestion": "code-data-availability",
+     "value": "The authors state that code and data are available on GitHub and Zenodo.",
+     "anchor": "Section 6, p.10",
+     "quotes": [
+      "Code and data: github.com/pasqal-io/Quantum-Graph-Features, doi:10.5281/zenodo.23099924."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own data and code release.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}
