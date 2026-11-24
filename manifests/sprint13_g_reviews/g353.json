@@ -1,0 +1,159 @@
+{
+ "group": "g353",
+ "reviewed_on": "2026-11-21",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "abstract-gate-count-bounds-scope": [
+   "scope",
+   "Abstract, p.1: states what the paper derives and what it only observes ('make some observations about ... arbitrary n-bit unitary operations'). The paper's own scope."
+  ],
+  "setup-quantum-state-and-unitary-evolution": [
+   "definition",
+   "Section 1, p.2: the paper states its own model, state vector as superposition and evolution by a unitary operator, with the bijective and length-preserving gloss."
+  ],
+  "setup-gate-array-model": [
+   "definition",
+   "Section 1, p.4: the paper defines its gate array (gates, wires, no fanout or feedback, n-input gate carries U(2^n)). The 2^n is printed as 2n in the text layer; the value flags 'as printed'."
+  ],
+  "scope-no-physical-realization": [
+   "stated limit",
+   "Section 1, p.5: 'We will not touch at all on the great difficulties ... physical realization'. A limit the paper states about its own coverage. The reader kept result_type setup; scope is the right type."
+  ],
+  "definition-controlled-u-gate-lambda-m": [
+   "definition",
+   "Section 2, p.6: defines the (m+1)-bit operator wedge_m(U), equates wedge_0(U) with U, and names the Toffoli case. A definition."
+  ],
+  "definition-basic-operation-and-xor": [
+   "definition",
+   "Section 3, p.8: 'when we refer to a basic operation, we mean either a wedge_0(U) gate or this 2-bit XOR gate', plus the left-to-right time convention. Definitions."
+  ],
+  "lemma-4-1-unitary-2x2-decomposition": [
+   "proved result",
+   "Lemma 4.1, Section 4, p.8: proved on p.8 to p.9 from orthonormality of rows and columns. Statement and the SU(2) case (det = 1 forces e^{i delta} = +-1, absorbed into the second factor) are both argued. Conditions (real-valued parameters) are in the quotes."
+  ],
+  "definition-rotation-phase-matrices": [
+   "definition",
+   "Section 4, p.9: 'Definition: In view of the above lemma, we define the following.' Ry, Rz, Ph, sigma_x, I are defined by explicit matrices."
+  ],
+  "lemma-4-3-su2-abc-decomposition": [
+   "proved result",
+   "Lemma 4.3, Section 4, p.9 to p.10: proved by explicit construction of A, B, C from Lemma 4.1. I checked the algebra: A.B.C = Rz(alpha).Rz(-alpha) = I, and the sigma_x conjugations give Rz(alpha).Ry(theta).Rz(beta) = W. Uses only the paper's Lemmas 4.1 and 4.2."
+  ],
+  "lemma-5-1-controlled-w-su2-iff": [
+   "proved result",
+   "Lemma 5.1, Section 5.1, p.10 to p.11: both directions proved. 'If' uses Lemma 4.3 with a case check on the control bit. 'Only if' uses det(A.sigma_x.B.sigma_x.C) = 1 since the two sigma_x determinants cancel."
+  ],
+  "lemma-5-2-controlled-phase-single-gate": [
+   "proved result",
+   "Lemma 5.2, p.11: E = Rz(-delta).Ph(delta/2) = diag(1, e^{i delta}); the proof compares the 4x4 matrices of both networks. I checked: both equal diag(1,1,e^{i delta},e^{i delta})."
+  ],
+  "corollary-5-3-controlled-u-six-gates": [
+   "proved result",
+   "Corollary 5.3, p.11: follows from Lemma 5.1, Lemma 5.2, the composition wedge_1(S).wedge_1(W) = wedge_1(S.W), and U = Ph(delta).W with W in SU(2). The argument is in the text just before the corollary. Count: A, B, C, E plus two XOR = six."
+  ],
+  "lemma-5-4-two-gate-controlled-w-iff-form": [
+   "proved result",
+   "Lemma 5.4, Section 5.2, p.12 to p.13: 'if' by Lemma 5.1 with beta = alpha (C = I, B = A-dagger); 'only if' from B = A-dagger (control 0) and the trace and determinant of A.sigma_x.A-dagger, then Lemma 4.1. Both directions are argued. I checked the 'if' parameters."
+  ],
+  "lemma-5-5-controlled-v-one-xor-iff-form": [
+   "proved result",
+   "Lemma 5.5, p.13: proved by appending a wedge_1(sigma_x) to the Lemma 5.4 network, since wedge_1(sigma_x) is an involution and wedge_1(W).wedge_1(sigma_x) = wedge_1(W.sigma_x). A short reduction to Lemma 5.4; the step from SU(2) to unitary A, B is not spelled out (the phase cancels because B = A-dagger). I checked the sigma_y and sigma_z examples."
+  ],
+  "corollary-5-6-controlled-u-six-gates-v-form": [
+   "proved result",
+   "Corollary 5.6, p.14: 'Lemma 5.5 permits an immediate generalization of Corollary 5.3'. True because sigma_x is itself of the form V (alpha = theta = 0), so it follows from Corollary 5.3. The paper's justification is one line."
+  ],
+  "lemma-6-1-controlled-controlled-u-five-gates": [
+   "proved result",
+   "Lemma 6.1, Section 6.1, p.14: proof by cases on the two control bits with V^2 = U (control 00/01/10 gives I or V.V-dagger = I; 11 gives V.V = U). Condition V unitary with V^2 = U is in the quotes."
+  ],
+  "corollary-6-2-toffoli-controlled-u-sixteen-gates": [
+   "proved result",
+   "Corollary 6.2, p.15: the text before it combines Lemma 6.1 with Corollary 5.3 and states which one-bit gates merge (C with C-dagger, A with A-dagger). I checked: 3x6 + 2 XOR = 20 gates, minus 4 merged = 16 (eight one-bit, eight XOR)."
+  ],
+  "toffoli-three-bit-special-case": [
+   "proved result",
+   "p.15: the U = sigma_x case of Corollary 6.2, proved. That the Toffoli gate is primitive for classical reversible logic [4] is textbook background and not the reason for LOW."
+  ],
+  "lemma-7-3-split-controlled-xor": [
+   "proved result",
+   "Lemma 7.3, p.19 to p.20: proof 'By inspection' of the drawn network. I viewed the figure (p.20): bit 8 gets x1..x5, bit 9 gets x6.x7.(x8 xor P), undo, then x6.x7.x8; the two terms leave x1..x7 on bit 9. Valid for the drawn case. Short proof, but the paper gives one."
+  ],
+  "section-7-1-needs-extra-bit": [
+   "stated limit",
+   "p.20: 'requires at least one extra bit, in that an n-bit network is required to simulate the (n-1)-bit gate'. The paper states the limit of its own construction."
+  ],
+  "lemma-7-5-quadratic-controlled-u-network": [
+   "proved result",
+   "Lemma 7.5, Section 7.2, p.21: 'The proof is very similar to that of Lemma 6.1, setting V so that V^2 = U.' Proof by analogy to a proved lemma in the same paper, applied to the drawn network. Condition (V unitary, V^2 = U) is in the quotes."
+  ],
+  "corollary-7-6-quadratic-n-bit-controlled-u": [
+   "proved result",
+   "Corollary 7.6, p.21 to p.22: recursion C(n-1) = C(n-2) + Theta(n) from Lemma 7.5, Corollary 5.3 and the Theta(n) cost of the two wedge_(n-2)(sigma_x) gates; Theta(n^2) follows. The Theta(n) part rests on Corollary 7.4's Toffoli count, which holds."
+  ],
+  "lemma-7-7-linear-lower-bound": [
+   "proved result",
+   "Lemma 7.7, p.22: proved. Fewer than n-1 XOR gates leaves the bits partitioned into two unconnected sets, so the network's unitary is A tensor B, which wedge_(n-1)(U) is not (for nonscalar U). The statement prints 'where U = Ph(delta).I' for nonscalar, which looks like a typo for 'not'; the value says only 'nonscalar'."
+  ],
+  "open-problem-subquadratic-linear-simulation": [
+   "stated limit",
+   "Section 7.2, p.22: 'the question remains as to whether a subquadratic simulation is possible' and 'Although we cannot show this presently'. The paper states what its own results do not settle."
+  ],
+  "definition-network-approximates-within-epsilon": [
+   "definition",
+   "Definition, Section 7.3, p.22 to p.23: 'We say that one network approximates another one within epsilon if ...'. A definition."
+  ],
+  "lemma-7-8-approximate-linear-log-one-over-epsilon": [
+   "proved result",
+   "Lemma 7.8, p.23 to p.24: proof applies Lemma 7.5 recursively with V_{k+1}^2 = V_k, V_k = P-dagger D_k P, ||V_k - I|| <= pi/2^k, and stops at k = ceil(log2(pi/epsilon)). The proof says 'Lemma 7.3' where 7.5 is meant, and gives the upper bound only, but it is argued in the paper."
+  ],
+  "lemma-7-9-linear-su2-controlled-w": [
+   "proved result",
+   "Lemma 7.9, p.24: proof by analogy to Lemma 5.1 with Lemma 4.3, both proved in the paper. I viewed the figure: wedge_(n-2)(sigma_x) gates onto bit n-1, with controlled A, B, C on the target, as Lemma 5.1."
+  ],
+  "corollary-7-10-linear-su2-n-minus-2": [
+   "proved result",
+   "Corollary 7.10, p.24 to p.25: Lemma 7.9 plus Corollary 7.4 (Theta(n) Toffoli count). Note the index: Lemma 7.9's figure gives wedge_(n-1)(W), and the Toffoli remark needs wedge_(n-1); the corollary prints wedge_(n-2)(W), a weaker statement that also holds. The sigma_y relation and det = 1 for W check out."
+  ],
+  "lemma-7-11-one-fixed-bit-controlled-u": [
+   "proved result",
+   "Lemma 7.11, p.25: proof 'By inspection'. I viewed the figure: wedge_(n-2)(sigma_x) onto the 0-bit, controlled-U from it, then the same gate again; the 0-bit returns to 0. Correct and checkable from the drawn network."
+  ],
+  "corollary-7-12-linear-with-fixed-bit": [
+   "proved result",
+   "Corollary 7.12, p.25: Lemma 7.11 with Corollary 7.4 (Theta(n) cost of wedge_(n-2)(sigma_x) on an n-bit network). Condition (one bit fixed, no net change) is in the quotes."
+  ],
+  "section-8-limit-reck-no-poly-for-special-unitaries": [
+   "stated limit",
+   "Section 8, p.28 to p.29: 'A serious problem with this procedure ...' and 'It still remains to find a truly efficient and useful design methodology'. A caveat the paper states about its own general construction. Hedged ('extremely unlikely, so far as we can tell'), and the value keeps the hedge."
+  ]
+ },
+ "theory_low": {
+  "abstract-universal-set-one-bit-plus-xor": "Abstract summary. The paper proves it only in Section 8, p.26 to p.29, 'In outline, the procedure is as follows', via the Reck decomposition cited from [15]. A sketch, not a full proof.",
+  "claim-no-workspace-quantum-constructions": "Section 2, p.7: an introductory summary. Toffoli's work-bit result is cited from [4]. The no-workspace claim is carried by Lemma 7.5 and Corollary 7.6, which are separate items. Authors' claim in the introduction.",
+  "claim-one-workspace-bit-quadratic-to-linear": "Section 2, p.7: introductory summary. The paper shows an upper bound of O(m^2) without workspace (Cor. 7.6) and O(m) with one extra bit (Cor. 7.4). It proves no matching lower bound, so the Theta(m^2) to Theta(m) reduction is not settled here.",
+  "lemma-4-2-rotation-algebra": "textbook, stated not proved (F129). Lemma 4.2, p.9: six matrix identities given with no proof at all.",
+  "lemma-5-4-rx-not-of-the-form": "p.13: 'However, Rx(theta) is not of this form' is stated with no argument. Not a proved result in the paper.",
+  "lemma-6-1-parity-identity-intuition": "p.14 to p.15: the paper gives it as 'some of the intuition', not as a proof. The arithmetic identity x1 + x2 - (x1 xor x2) = 2(x1 and x2) is stated without derivation.",
+  "toffoli-congruent-modulo-phase-shifts-danger": "Section 6.2, p.15 to p.16: a remark with no derivation. The sentence also looks misattributed: 'the latter gate' (wedge_2(sigma_x)) does not map |111> to -|110>; it is wedge_2(W), with W = [[0,1],[-1,0]], that carries the minus sign (on |110>). Authors' remark.",
+  "toffoli-mod-phase-simulation-ry-pi4": "Section 6.2, p.16: a network and its stated equivalence modulo phases, given with no derivation. The sign detail is stated without check.",
+  "toffoli-mod-phase-alternative-with-sigma-z": "Section 6.2, p.16: an alternative network stated to have identical phase shifts, with no derivation.",
+  "section-7-controlled-3-construction": "Section 7, p.17: a worked example. The paper says 'it can be verified' by comparing the sequence with the identity; no verification is shown.",
+  "section-7-gray-code-parity": "Section 7, p.17: an observation ('Note also that the parity ... determines') with no proof.",
+  "lemma-7-1-exponential-gate-count": "Lemma 7.1, p.17 to p.18: 'We omit the proof of Lemma 7.1'. Only a pointer to the n = 4 example and the generalized identity. Not proved in the paper.",
+  "section-7-exponential-count-with-mergers": "p.18: the count 3.2^(n-1) - 4 XOR and 2.2^(n-1) one-bit gates is stated without derivation (it matches n = 3 by my check, but no general argument is given). 'The most efficient technique that we are aware of' is an authors' claim.",
+  "lemma-7-2-linear-toffoli-extra-bit": "Lemma 7.2, p.18 to p.19: the proof argues only the single illustrated case n = 9, m = 5 (first 7 gates, last 5 reset). It does not argue general n and m. The drawn network is not shown for general parameters.",
+  "corollary-7-4-linear-toffoli-count": "Corollary 7.4, p.20: the value holds two claims. The 8(n-5) Toffoli count follows from Lemmas 7.2 and 7.3 (4(m1-2) + 4(m2-2) = 4(n-5), doubled). The 48n - 204 basic-operation count rests on 'a careful accounting of the mergers' that is not shown, and the printed proof counts (4 exact + 8n - 36 others) do not sum to 8(n-5). The condition n >= 7 also fails Lemma 7.2 (m >= 3) at n = 7, where m2 = 2. Weaker claim governs.",
+  "corollary-7-4-proof-gate-accounting": "p.20: the printed counts 4 + (8n - 36) = 8n - 32 differ from 8(n - 5) = 8n - 40, so the accounting is internally inconsistent (8n - 44 would fit). The merger count is not shown.",
+  "section-7-2-quadratic-count-48n2": "p.22: 'we find that ... 48n^2 + O(n)' stated without derivation, resting on Corollary 7.4's 48n - 204 count, whose accounting is not shown.",
+  "section-8-two-bit-gate-counts-toffoli": "Section 8, p.26: 5 operations follows from Lemma 6.1, but the 3 (Section 6.2 'we permit a merging') and 13 (Lemma 7.1, proof omitted) counts are restated without derivation.",
+  "section-8-conjectured-lower-bound-dimension-counting": "Section 8, p.27: the authors call it a conjecture 'just based on dimension counting' and 'preliminary tests on four-bit operations'. Not proved.",
+  "section-8-exact-simulation-n3-4n-gates-no-work-bits": "Section 8, p.27 to p.28: 'In outline, the procedure is as follows'. Relies on the Reck decomposition of [15], cited. A sketch, not a proof.",
+  "section-8-t-x1-x2-grey-code-cost": "Section 8, p.28: accounting inside the outline, using Corollary 7.6 and the Reck decomposition [15]; steps such as m <= n + 1 and the modified gates are stated, not proved.",
+  "section-8-upper-bound-vs-lower-bound-polynomial-factor": "Section 8, p.28: compares the outlined upper bound to the conjectured lower bound ('expected lower bound'); 'likely can be made better than n^3' is speculation."
+ },
+ "keep_stored": {},
+ "requote": {}
+}

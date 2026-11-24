@@ -28,9 +28,11 @@ repository exists. No other F# from either source repository applies here.
 - **Estimates**: minutes/hours from recorded actuals; `[no-history]` where
   uncalibrated. This repository has no recorded actuals yet; every Sprint 1
   estimate is `[no-history]` by construction.
-- `CHECKLIST-Phase2-pre.md` is the LIVE deliverable ledger; this document is
-  the sprint-scoping view over it. Keep them consistent; the checklist wins on
-  deliverable truth, this file wins on sprint sequencing.
+- `CHECKLIST-Phase2-pre.md` was the live deliverable ledger through Sprint
+  18 and is now FROZEN as history (team lead, Sprint 18 retrospective q19 =
+  a, 2026-11-24: "we can remove this from being updated in future sprints as
+  in the future hsbc phase 2 will read from here"). Each sprint's
+  deliverables are recorded in its SUMMARY doc and in this file.
 
 ## Past Sprint Summary
 
@@ -53,10 +55,30 @@ repository exists. No other F# from either source repository applies here.
 | 15 | docs/sprints/SPRINT_15_SUMMARY.md | [OK] Complete | 2026-11-01 to 2026-11-05 |
 | 16 | docs/sprints/SPRINT_16_SUMMARY.md | [OK] Complete | 2026-11-05 to 2026-11-07 |
 | 17 | docs/sprints/SPRINT_17_SUMMARY.md | [OK] Complete | 2026-11-07 to 2026-11-10 |
+| 18 | docs/sprints/SPRINT_18_SUMMARY.md | [OK] Complete | 2026-11-13 to 2026-11-23 |
 
 ## Last Completed Sprint
 
-Sprint 17 is below; Sprint 16 follows it for continuity.
+Sprint 18 is below; Sprint 17 follows it for continuity.
+
+### Sprint 18: The Agreement Map and the HIGH Audit, 30 Papers, and Safer Applies (2026-11-13 to 2026-11-23, PR #183, merge to develop pending the team lead)
+
+Six tasks, six issues (#184-#189). **Apply**: one apply function that
+writes only the fields a review decided (F147); the ledger names a new
+group from the highest number (F149). **Audit and map** on Claude Code
+subagents, no API spend (F146): every HIGH assertion with quotes checked
+(12,524: 7,834 held, 4,672 held in part, 20 not held), and 490 pairs
+screened (54 independent supports, 4 contradicts); nothing written to the
+store. **Reading**: F114's 30 papers read in full and applied (2,688
+assertions entered); qubit-lab.ch's Evidence page entered (F145); the
+documents' counts printed from the store (F148). Store (snapshot
+2026-11-22): 37,408 -> 40,112 assertions (11,754 -> 12,528 HIGH); 2,373
+papers. Manual Validation: g361's two temperatures LOW (q7); q12's
+upgrade rule applied with no qualifying pair; F150 to F154 carded; the
+do-as-recommended rule. Retrospective: team lead all "Very Good"; i1
+(agents write results with the Write tool only), i2 (the inventory keeps
+its timings), F155 carded (i3). Full detail:
+`docs/sprints/SPRINT_18_SUMMARY.md`.
 
 ### Sprint 17: Test Faster, Then Read on the API Credit (2026-11-07 to 2026-11-10, PR #174, merge to develop pending the team lead)
 
@@ -382,26 +404,25 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 ## Current sprint
 
-**Sprint 17** (branch `feature/20261107_Sprint_17`, cut 2026-11-07 at the
-Sprint 16 carry-forward, after PR #164 merged to develop and PR #173 merged
+**Sprint 18** (branch `feature/20261113_Sprint_18`, cut 2026-11-13 at the
+Sprint 17 carry-forward, after PR #174 merged to develop and PR #182 merged
 develop to main).
 
-- **Scope** (DEFINED, team lead 2026-11-07): F140 (first, "and complete
-  it so that any other testing in the sprint uses this newly implemented
-  testing methodology"), F144, F114 (10 papers this sprint, none of them
-  F144's; the two PDFs saved into `Papers\` on 2026-11-07 among them),
-  F142, F141, F143. F39 not selected.
-- **Plan**: `docs/sprints/SPRINT_17_PLAN.md` (drafted 2026-11-07, waiting
-  for approval; Q1 and Q2 open).
+- **Scope** (team lead, 2026-11-18): F146, F114 (30 papers), F149, F147,
+  F145, F148.
+- **Plan**: `docs/sprints/SPRINT_18_PLAN.md`, approved 2026-11-20 (q1 = c,
+  q2 = a, q3 = a). All six tasks done; Manual Validation complete
+  (2026-11-23); retrospective done (`docs/sprints/SPRINT_18_RETROSPECTIVE.md`).
 
 ## Next Sprint Candidates
 
-Refined 2026-11-07 after Sprint 16 (Sprint 17 Phase 1.2); Sprint 16's
-shipped cards (F51, F134, F135, F136, F137 and F139) pruned BY HAND (Edit
-tool, card by card) the same day. F114 and F57 stay: Sprint 16 read 20 of
-F114's papers and F57's two named papers, and both still have records to
-read. Sprint 16's retrospective Category 13 became F142 (Sprint 17 plan)
-and Category 14 became F143 (team lead, "1. 1 2. 1, 3. 1 4. 1 5. 1").
+Refined 2026-11-13 after Sprint 17 (Sprint 18 Phase 1.2); Sprint 17's
+shipped cards F140, F141, F142 and F143 pruned BY HAND (Edit tool, card by
+card) the same day. F144 shipped too but stays as the record of the
+Batch API reader's rules, which F146 depends on; it is pruned when F146
+ships. F114 stays: Sprint 17 read 10 of its papers and split 161 more
+into one-paper groups (q20). Sprint 17's retrospective Category 13 became
+F149 (team lead, "i1. a i2. b i3. b i4. a").
 Shipped and pruned per convention: F1 (Sprint 1); F3, F4, F75, F76 (Sprint
 2); F2 Phase 1, F6, F7-F10, F13, F14 (Sprint 3); F11, F15-F18, F20, F25,
 F26, F27 (Sprint 4); F5, F28, F30, F31 (Sprint 5); F32-F38, F40-F43, F47
@@ -420,7 +441,7 @@ F112 (Sprint 13; F113's unread groups carried as F114); F117, F118, F119,
 F120 and the released copies F122 and F123 (Sprint 14; F114's first
 release shipped there, and the card stays for the rest); F115, F116,
 F124 to F130 and the released copies F131 to F133 (Sprint 15); F51,
-F134 to F137 and F139 (Sprint 16). F121 (a spike
+F134 to F137 and F139 (Sprint 16); F140 to F143 (Sprint 17). F121 (a spike
 carded 2026-10-30) merged into F118 the same day, team lead: "Update
 card F118 and sit this in sprint 14 after F117 completes". F39 and F57
 are permanent and stay; F95 and F98 were permanent until 2026-11-05,
@@ -723,160 +744,6 @@ and in git. Remaining items below.
   Stays HOLD.
 - Depends on: the team lead's downloads
 
-### Carded during Sprint 16 (2026-11-05)
-
-**F140. Testing: risk-based, effective, and as fast as reasonably possible (~150m [no-history] timebox) Priority 10** (NEW 2026-11-06, team lead during Sprint 16 Phase 4: "Card for next sprint - improve the testing efficiency while being risk-based effective", with Phase 2's F180 as a reference, not to be copied; card approved as written the same day, Q1 = 1)
-- Phase: Tooling and process
-- Value: this prevents hours of local test time per sprint, and the
-  gates that cannot run while a reader works, while every guard still
-  catches what it was written to catch.
-- Platform: every file under `tests/`, `scripts/run_suite.py` and its
-  selection rules, the hooks, CI, and the sprint workflow's test points.
-- Why, measured (every count a snapshot as of 2026-11-06):
-  - The local full suite took 199 s warm in Sprint 12 (F100) and
-    4,124 s (1:08:43, 1,578 tests) before Sprint 16's Manual
-    Validation: about 20 times slower, cause not yet known.
-  - CI's test job (`-m "not live_store"`, no store) takes 45 s.
-  - `--changed` falls back to large sets: Sprint 16 Task A's change to
-    `store/__init__.py` ran the full suite (1,550 tests); the Task F
-    gate ran 82 files (1,097 tests, 45:49) because the store had changed.
-  - Every reader check writes telemetry into the repository, so no gate
-    could run while a reader worked (Sprint 16 Task F, INVALID verdicts).
-  - The full suite before Manual Validation failed 1 of 1,578: an intake
-    test pinned tier "seen", which the planned reads changed to "read".
-- Scope:
-  1. Inventory, generated by a script so it can be reproduced: per test
-     file, what it guards; its kind (unit, guard, live-store data check,
-     document check, hook check); its local time from
-     `pytest --durations=0`; where it runs (`--changed`, full suite, CI);
-     its proof record ("Proven red" docstring); and the last time it
-     caught a real defect (git history, retrospectives).
-  2. Why local is slow: per-test durations; store queries without an
-     index; fixtures that open or hash the store per test instead of
-     per session; pdftotext calls not served by F136's text cache;
-     interpreter start; antivirus or the D: disk. Fix the top causes.
-     Target: the full suite back under 10 minutes.
-  3. Effectiveness: guards that cannot fail or duplicate another; tests
-     that pin a value the planned work changes (they go red for a reason
-     that is not a defect); defect classes found by reviews in Sprints 13
-     to 16 that no test caught, and the cheapest test that would have.
-  4. A risk tier per test file. Risk is likelihood times impact (ISTQB
-     CTFL v4.0.1, section 5.2). High impact: a missed defect damages the
-     store or a boundary (the appliers with their backup and second-apply
-     checks, `store/merges.py`, the certainty grading and escalation in
-     `f117_review.py`, provenance, and the sibling-write, commit-verdict
-     and `--no-verify` hooks). High likelihood: code changed this sprint
-     or changed often (Memon et al., ICSE-SEIP 2017). High-tier tests
-     run on every gate; the others when their files change.
-  5. Selection (test impact analysis): `--changed` made import-aware, not
-     name-match only; last failures first (`--ff`) and new tests; the
-     `store/__init__.py` fallback narrowed to its importers if the
-     inventory shows that is safe. The full suite stays the backstop at
-     its two fixed points.
-  6. Store-data checks apart from code checks: a `live_store` test checks
-     data, not code. Decide whether the store's checks run once after each
-     apply, keyed by the store stamp `run_suite` already records, and not
-     inside each code gate (extends F139's "a store write triggers only
-     the tests that read the rows written"). Move telemetry writes out of
-     the repository during a read, or out of the tree fingerprint, so a
-     reader no longer blocks a gate.
-  7. Red proofs: here a proof runs once, by hand, and its docstring
-     records it (`test_guard_discipline.py`; F139's "red-test once").
-     Decide when a proof is stale (its test, the guarded code or a shared
-     fixture changed) and whether `--changed` names the stale proofs to
-     repeat. Outside practice: mutation analysis on changed lines only
-     (Petrovic and Ivankovic, ICSE-SEIP 2018).
-  8. Which full runs, and where: the local full suite runs twice a sprint
-     (Sprint 11 I2); CI runs the non-store set and cannot replace the
-     local run, since it has no store. Measure whether a faster local run
-     (part 2) plus store checks after each apply (part 6) makes the
-     second full run unnecessary when the retrospective changes no code.
-  9. Not applied: learned test selection (Machalica et al., ICSE-SEIP
-     2019); this repository has too few test failures to train on.
-     Recorded so it is not proposed again without that history.
-- Deliverable: `docs/F140_TESTING_ANALYSIS.md` with the generated
-  inventory, the findings, and recommendations that each state what they
-  give up, each asked as its own numbered question. Taken recommendations
-  land in the sprint if small, or as new cards.
-- Acceptance: a test fails when a test file is missing from the
-  inventory; every timing measured; the 20x cause named with its
-  evidence; the full suite under 10 minutes, or the reason it is not;
-  Sprint 16's gate timeline rebuilt from `sprint_status.json`, the
-  verdict records and the commit times; target stated: an approved small
-  change verified and committed in its development time plus about 15
-  minutes.
-- Depends on: nothing. Informs: F100's runner, Phases 4 to 7 of every
-  sprint, F114's reads.
-
-**F141. The paper view prints each assertion in full (~15m) Priority 40** (NEW 2026-11-06, team lead at Sprint 16 Manual Validation: "this seems to cut off the assertion(s), is there a way to get the full assertion?"; Q3 = 2, carded for Sprint 17)
-- Phase: Tooling (the store viewer)
-- Value: the team lead reads a paper's assertions in full from one
-  command, without a PowerShell pipe over `--json`.
-- Platform: `scripts/view.py`.
-- Today `python scripts/view.py paper <id>` cuts each assertion to its
-  first 100 characters (and each `contexts` line to 80). The full text is
-  in `--json` and in `view.py assertion <id>`. Until this ships:
-  `python scripts/view.py paper <id> --json | ConvertFrom-Json |
-  Select-Object -ExpandProperty yields | Format-List id, certainty,
-  value, provenance, citation_context`.
-- Scope: a `--full` option on `paper` that prints each yielded
-  assertion's id, certainty, full value, provenance and quotes; the
-  default output unchanged.
-- Acceptance: a test, proven red, that `--full` prints a value longer
-  than 100 characters whole.
-- Depends on: nothing.
-
-**F142. Four small pipeline fixes from the Sprint 16 retrospective (~105m) Priority 12** (NEW 2026-11-07, Sprint 16 retrospective Category 13, proposals 1 to 4; team lead "1. 1 2. 1, 3. 1 4. 1": each into the Sprint 17 plan)
-- Phase: Tooling (the read pipeline and the sprint status)
-- Value: no gate waits for a reader, a split is a recorded decision and
-  not a hand edit, no reviewer is sent back for a long appendix, and the
-  footer always shows the true phase.
-- Platform: `scripts/read_telemetry.py`, `scripts/run_suite.py`,
-  `scripts/f117_review.py`, `manifests/sprint16_f114_reads/REVIEW_PROMPT.md`
-  (or its Sprint 17 copy), `.claude/sprint_status.json`.
-- Parts:
-  1. Reader telemetry written outside the repository, or left out of the
-     tree fingerprint, so a reader never turns a gate INVALID (30m).
-     Sprint 16 measured the cost: every gate run while a reader worked
-     came back INVALID. F140 part 6 names the same fix; this part does
-     it, and F140 records it as done.
-  2. A sign-off table to add or split an assertion (`f117_review.SIGNOFF_TABLES`),
-     so a split such as Sprint 16's `he-simulation-scope` (MV Q1 = 3)
-     never edits a reader's read file by hand and never needs the built
-     manifest deleted and rebuilt (45m).
-  3. The review prompt splits any proof appendix over 30 pages across
-     reviewers by page from the start (15m). Sprint 16: Monaco's 70-page
-     supplement was graded from statements, and two fresh reviewers then
-     changed 13 of 94 decisions; Heimann's 7 appendices were left unread
-     on the first pass.
-  4. One step sets `status` and `current_sprint.status` together at each
-     phase change (15m). Sprint 16 needed a second commit (8d16500)
-     because the footer reads `current_sprint.status`.
-- Acceptance: each part with a test proven red (part 3 through
-  `tests/test_reader_prompts.py` or its review-prompt equivalent).
-- Depends on: nothing. Sequence after F140 in Sprint 17 if F140 is
-  selected, since part 1 changes what F140 measures.
-
-**F143. Why the agents' cost per page rose, measured per paper kind (~90m [no-history] timebox) Priority 30** (NEW 2026-11-07, Sprint 16 retrospective Category 14, proposal 5; team lead Q5 = 1: backlog)
-- Phase: Reading (cost)
-- Value: an answer to where the reading time goes before the next large
-  release, so a fix targets the true cause.
-- Platform: `scripts/read_telemetry.py` and its files in
-  `manifests/sprint16_f114_reads/telemetry/`, the Sprint 15 baseline.
-- Background (snapshot 2026-11-06, INTAKE section 73): over Sprint 16's
-  20 papers (531 pages) readers spent 4,633 tokens and 0.75 minutes per
-  page, against Sprint 15's 3,645 and 0.44; reviewers 3,224 and 0.24,
-  against 1,676 and 0.14. F139 removed the repeated script work (0
-  text-cache misses; every second apply checked no quote), so the rise is
-  in the agents' own reading.
-- Scope: split the per-page cost by paper kind (proof-heavy, figure-heavy,
-  experiment, survey), by pages viewed as images, and by re-reviews;
-  name the cause with its evidence, and propose a fix each as its own
-  numbered question.
-- Acceptance: each Sprint 16 group's cost split by those measures; the
-  cause named, or the reason it cannot be from the data held.
-- Depends on: F139's telemetry (shipped Sprint 16).
-
 ### Carded during Sprint 13 (2026-10-26 to 2026-10-28)
 
 **F114. Read in full the new papers (Papers folder, Christophe Pere's list) and the Task G ledger's papers, 30 per sprint, books excluded (no estimate: as long as the reads take) Priority 10** (NEW 2026-10-26, team lead at Sprint 13 Task G: "pause after the 5 current agents complete and backlog the remaining for the next sprint"; F95 and F98 folded in, 30 per sprint, books moved to F138, team lead 2026-11-05)
@@ -1005,6 +872,21 @@ and in git. Remaining items below.
   or later; 880 do not, in 187 groups. Sprint 16's rate (telemetry):
   20 papers, 531 pages, 397 reader minutes and 129 reviewer minutes,
   read, reviewed and applied in about 2 days.
+- **Snapshot as of 2026-11-13** (Sprint 18 Phase 1.2, after Sprint 17's
+  10 and the q20 split): the ledger holds 1,676 records in 515 groups
+  (298 not started, 171 applied, 33 superseded, 13 read but not
+  applied); 792 have a `full` read row, 884 do not, in 326 groups
+  (corrected 2026-11-18 at Sprint 18 planning: the first figures, 725
+  and 951, counted only read rows dated 2026-10-26 or later, which drops
+  the full reads of groups g001 to g042 made before that date). Step (1): `Papers\` holds 172 PDFs that no record's `access`
+  names; 171 are ledger downloads, and 1 is new
+  (`2023_Huang_Noise-Resilient-Single-Pixel-Compressive-Sensing-with-Single-Photon.pdf`,
+  saved 2026-11-07; it is the stored record
+  `huang-2023-noise-resilient-single-pixel-compressive`, at `seen`, so it
+  is linked, not entered). Step (2): the list moved from 399b022651 to
+  7113ded1df (2026-11-10) and adds 3 papers: arXiv 2611.08461,
+  2611.10105 and 2611.08821. Sprint 17's rate: 10 papers read, reviewed
+  and applied by local readers inside Tasks A to F.
 
 ### Carded during Sprint 17 (2026-11-07)
 
@@ -1235,6 +1117,207 @@ and in git. Remaining items below.
 - `sprint13_g_ledger.py` names a new group `g{len(groups) + 1}`. Today the names g001 to g509 are contiguous, so the next is g510, which is right; one deleted or skipped name would make it reuse a name. `scripts/batch_read.py`'s `next_group` already uses the highest number plus one.
 - Acceptance: the script names a new group from the highest number plus one, with a test on a ledger with a gap, proven red.
 - Depends on: nothing. Target: the Sprint 18 plan.
+
+### Carded during Sprint 18 (2026-11-21)
+
+**F150. The full suite runs once per sprint, before the Manual Validation hand-over; after that, only the changed tests and CI (~30m) Priority 20** (NEW 2026-11-21, team lead at Sprint 18 Manual Validation: "all the other repositories have converted to only running the full suite once per sprint - once after development is complete and before the PR runs, prior to manual validation. At the end all that runs is a CI suite run. Have we adjusted to that and if not, can you write a sprint card for it")
+- Phase: Process (testing)
+- Value: this removes the second local full suite (about 6 minutes, and a
+  wait before `gh pr ready`) and gives this repository the same test rule
+  as spamfilter-multi and Phase 2.
+- Platform: `docs/SPRINT_EXECUTION_WORKFLOW.md` (the "full suite runs
+  twice per sprint" paragraph, line 78 on 2026-11-21);
+  `docs/SPRINT_CHECKLIST.md` (Phase 5 and Phase 7); `scripts/run_suite.py`
+  (module docstring, "the full suite runs twice a sprint", and
+  `full_run_already_passed`'s docstring); the sprint plan's "Full suite"
+  line (Sprint 12 to Sprint 18 plans copy it).
+- **Not adjusted yet (checked 2026-11-21).** The rule here is Sprint 11
+  retrospective I2 (team lead, 2026-10-23): twice, before the Manual
+  Validation hand-over and after the retrospective's improvements. F140 q7
+  (2026-11-07) only skips the second run when the tree and the store are
+  unchanged. No test pins "twice".
+- **How the other repositories adapted (read 2026-11-21):**
+  - spamfilter-multi: the full suite runs ONCE, at Phase 5.2, through
+    `scripts/run-full-suite.py` on an idle machine (Sprint 85 q6, F350
+    R-6); per change, only the changed files' tests plus the high risk
+    tier; "CI keeps the full suite". The origin is Sprint 64 IMP-6, team
+    lead 2026-09-03: "this only needs to be done once per sprint, more of
+    an integration test prior to manual validation as this kind of test is
+    time and token expensive". One leftover there: its 7.7.1 step still
+    says "analyzer + full suite green and push" after review fixes.
+  - hsbc-qfraud-phase2: at the push of the retrospective's improvement
+    commits, CI's full job starts (`gh workflow run ci.yml`), and after
+    `gh pr ready` the completion claim waits for that job
+    (`scripts/check_ci_status.py --wait --require-job full`;
+    `docs/SPRINT_CHECKLIST.md` Phase 7, F177 / Sprint 31 D17). No second
+    local full run.
+- **The difference here:** CI runs `-m "not live_store"` only, because the
+  store is not on CI. So "CI only at the end" would leave a store write
+  made after the hand-over (a Manual Validation regrade or a retrospective
+  apply) unchecked by CI. `run_suite.py --changed` already covers that: it
+  adds every `live_store` test file when the store's stamp changed since
+  the last passed run (Sprint 12 retrospective I1). So after the hand-over,
+  each commit is gated by `--changed`, and the end of the sprint is CI on
+  the PR.
+- The change: the workflow paragraph, the checklist and the runner's
+  docstrings say ONE full run per sprint, before the Manual Validation
+  hand-over; every later commit (Manual Validation fixes, the
+  retrospective's improvements) runs `python scripts/run_suite.py
+  --changed`; `gh pr ready` waits for CI green on the PR. A change to a
+  file every test depends on still makes `--changed` run the full suite,
+  as now. `full_run_already_passed` (F140 q7) stays: it still stops a
+  repeated full run on an unchanged tree.
+- Acceptance: the three places state the same rule; a test fails if
+  `docs/SPRINT_EXECUTION_WORKFLOW.md`, `docs/SPRINT_CHECKLIST.md` or
+  `scripts/run_suite.py` says the full suite runs twice, or if the
+  workflow stops naming `--changed` as the gate after the hand-over;
+  proven red by injection; the next sprint plan's "Full suite" line says
+  once.
+- Depends on: nothing. Target: the Sprint 19 plan (team lead, q18 = b,
+  2026-11-22); Sprint 18 keeps its second full run after the retrospective.
+
+**F151. Every question, decision and improvement stored in full in one file per sprint, and re-asked from it in full (~60m [no-history] timebox) Priority 10** (NEW 2026-11-22, team lead at Sprint 18 Manual Validation: "Add to backlog for next sprint: please store all quesitons, decisions and Improvement in full. If you still need an answer to one and it has scrolled off the screen, always re-ask with the full contents every time (it is to hard to scroll back to find them).")
+- Phase: Process (presentation)
+- Value: this makes every open question findable in one file, and makes
+  each re-ask an exact copy, so the team lead never scrolls back to find
+  a question or its options.
+- Platform: `docs/sprints/SPRINT_N_DECISIONS.md` (new, one per sprint);
+  `docs/SPRINT_RETROSPECTIVE.md` ("Presenting improvements, questions and
+  decisions (AUTHORITATIVE)"); `docs/SPRINT_EXECUTION_WORKFLOW.md`;
+  `docs/SPRINT_CHECKLIST.md` (Phase 1.4, 3, 5.3, 7);
+  `tests/test_sprint_documents.py`;
+  `.claude/hooks/block_procedural_question_stop.py`; `CLAUDE.md` ("Don't
+  point Harold back").
+- **What exists today (2026-11-22).** CLAUDE.md and the memory file
+  `feedback_represent_dont_reference.md` already say to re-present every
+  open item in full. Nothing stores the items: a q is written only in a
+  terminal message, so a re-ask is retyped from memory or from the
+  transcript, and can drift (in Sprint 18 the hand-over was re-sent after
+  the Stop hook blocked it, by copying from the transcript). Retrospective
+  i items are written to `SPRINT_N_RETROSPECTIVE.md`; q items are written
+  nowhere.
+- **How Phase 2 does it (read 2026-11-22):** its workflow rule 11 (team
+  lead, 2026-10-30, Sprint 29): "Every decision is written before it is
+  asked", in full, to `docs/sprints/SPRINT_n_DECISIONS.md`, with a stable
+  ID; "Re-ask by pasting the entry unchanged"; changed facts go in a dated
+  "Changed since asked" note under the entry, and the original is never
+  edited; the answer is recorded under each entry. Files exist for
+  Sprints 29 to 34. Its retrospective maps a decision's options to an
+  item's letters when one item is both.
+- The change:
+  - Every q and i is written in full, in the AUTHORITATIVE shape (title,
+    What it is, What it prevents and/or catches, Prevention or control,
+    Long-term value, Evidence, Extends, Effort, options a to z with pros
+    and cons, one "(Recommendation)"), to
+    `docs/sprints/SPRINT_N_DECISIONS.md` BEFORE it is shown. Retrospective
+    i items go there too (the retrospective file links to them), so one
+    file holds them all.
+  - Each entry records when it was asked, then the answer verbatim with
+    its date; facts that change after asking go in a dated "Changed since
+    asked" note, never an edit of the original.
+  - Every message that needs an answer re-shows EVERY open entry in full,
+    pasted from the file, never a reference and never a summary.
+  - The file's open entries are its single list: the Manual Validation
+    hand-over and the retrospective read it to know what is still open.
+- Acceptance:
+  - A test fails when a DECISIONS entry lacks a field, has not exactly
+    one "(Recommendation)", or reuses an ID; proven red by injection.
+  - The Stop hook (`block_procedural_question_stop.py`) blocks a reply
+    that asks a q or i which is not in the sprint's DECISIONS file, or
+    that leaves out an open entry, or whose text differs from the stored
+    entry; proven red by injection.
+  - The four process docs and CLAUDE.md name the file and the
+    paste-unchanged rule.
+- Depends on: nothing. Target: the Sprint 19 plan (team lead: "for next
+  sprint"). Sprint 18's q4 to q18 are re-asked in full in each message
+  until answered, under the current rule.
+
+**F152. Re-quote the 20 HIGH assertions whose quotes do not hold them, or grade each LOW (~60m) Priority 20** (NEW 2026-11-22, team lead at Sprint 18 Manual Validation, q10 = a)
+- Phase: Reading (corrections)
+- Value: this makes each of the 20 a HIGH its own quotes support, or a LOW
+  that says why, instead of a HIGH known to be unsupported.
+- Platform: F146's audit results (`D:\Data\Harold\EvidenceBasedDB\work\f146\audit\out\`,
+  verdict "not held"); `docs/INTAKE_WORKFLOW.md` section 79 lists them (9
+  are lemmas from one paper, run a034); `store.ingest.sync_decided_assertion`
+  (F147); `store/quotes.py`.
+- In each of the 20, the quotes hold only a lead-in, a title or a fragment.
+  Each item is re-read in its paper: new quotes that hold the value are
+  added (decided field: the quotes), or, where none can, the item is graded
+  LOW with the reason (decided fields: certainty and its reason).
+- Acceptance: all 20 decided, written through `sync_decided_assertion` with
+  a verified backup; a second apply writes nothing; the F146 checker's
+  audit, run again on the 20, gives "held" for every HIGH that remains.
+- Depends on: nothing.
+
+**F153. A sample triage of 100 "held in part" from the HIGH audit, to measure the real defect rate (~60m) Priority 30** (NEW 2026-11-22, Sprint 18 Manual Validation q11 = a, taken as recommended under the team lead's "just do as recommended"; confirmed by the team lead 2026-11-23, "q11. a")
+- Phase: Reading (quality)
+- Value: this tells whether the 4,672 "held in part" items are worth fixing
+  one by one, before anyone spends days on them.
+- Platform: F146's audit results; `scripts/f146_checks.py`.
+- In each "held in part" item the value says something its quotes do not
+  (a method name, a condition, a formula). The readers' strictness ran from
+  about 50 to about 90 of each 200, so 4,672 is a list to review, not a
+  defect rate.
+- A random sample of 100 (seeded, so it can be drawn again), stratified by
+  run so no one reader's strictness dominates, is classified by the
+  coordinator: a real overstatement, wording only, or the reader was
+  wrong. The rate, with its 95% interval, decides a next card or none.
+- Acceptance: the sample, each item's class with its why, and the rate,
+  recorded in `docs/INTAKE_WORKFLOW.md`; nothing written to the store.
+- Depends on: nothing.
+
+**F154. A semantic pair screen for the agreement map, measured against the 24 known relations before any run (~180m [no-history] timebox) Priority 30** (NEW 2026-11-22, team lead at Sprint 18 Manual Validation, q13 = a)
+- Phase: Reading (cross-paper analysis)
+- Value: this lets the map find agreement and conflict between papers that
+  word the same finding differently, which the word-overlap screen cannot
+  (recall 0 of 24 at every setting tried in Sprint 18).
+- Platform: `scripts/f146_checks.py` (`screen`, `known_pairs`, `map`); a
+  local embedding model (no API spend unless the team lead decides one);
+  `D:\Data\Harold\EvidenceBasedDB\work\f146\`.
+- The screen is chosen and tuned on recall against the store's 24 judged
+  relations between papers BEFORE any map run, and its precision is
+  sampled; the map runs only if recall is useful. Pairs the map judges
+  "supports" with both sides independent and both resting on an experiment
+  or a proof take the q12 rule (team lead, 2026-11-22): LOW to MODERATE,
+  MODERATE to HIGH; every other pair changes nothing. That rule changes a
+  grade for the first time only here (Sprint 18's 54 pairs gave none,
+  `docs/INTAKE_WORKFLOW.md` section 81), so the card adds its grading path
+  and a dated ADR-0004 amendment before any write.
+- Acceptance: recall on the 24 recorded, with the setting chosen; if a map
+  runs, its pairs checked by `f146_checks.py`, and any upgrade written
+  through `sync_decided_assertion` with a verified backup.
+- Depends on: nothing.
+
+**F155. Every new assertion id is unique when the reader chooses it, and the checkers name a near-miss id (~75m) Priority 20** (NEW 2026-11-23, Sprint 18 retrospective i3; revised 2026-11-24, team lead "i3. a" after asking "Is there a way to ensure ID's are unique when chosen (next_source_id or unique_source_id)?")
+- Phase: Reading (F114 reads; F152 and F153 checks)
+- Value: a reader's id is free by construction when it is chosen, so no
+  rename has to follow it through the review's decisions; an id one
+  character off a given id is named at once.
+- What exists (2026-11-24): the store refuses a duplicate (`records.id` is
+  the PRIMARY KEY, `store/schema.sql`), and
+  `scripts/f117_build_groups.py` renames a taken id before review
+  (`prefixed`, `held_elsewhere`: the paper's author and year before the
+  id). Neither runs when the reader chooses the id.
+- Platform: one function, `unique_assertion_id(record_id, name)`, using
+  `prefixed`'s rule against the store and every group file;
+  `scripts/sprint13_g_check.py` (the local read checker, run by each
+  reader) prints the free id and refuses a taken one;
+  `scripts/f146_checks.py` (`problems`), read-only on the store.
+- Sprint 18 evidence (`docs/INTAKE_WORKFLOW.md` section 78): five reader
+  ids in g510 and g352 (`data-availability-on-request`, `review-scope`,
+  `vqe-definition`, `qaoa-definition`, `schwinger-model-definition`) were
+  already other sources' and were renamed after review. Audit runs a018
+  and a030 each mistyped one given id; it was found only when the item was
+  handed out again.
+- The read checker refuses a new assertion id already held by another
+  source (in the store, or new in another group of the same release) and
+  names the free id `unique_assertion_id` gives; the reader prompt tells
+  the reader to take it. The audit and map checkers name, for an answered
+  id that was not given, the given id at an edit distance of 1.
+- Acceptance: `unique_assertion_id` and both checks proven red by
+  injection; a Sprint 18 collision (g352's `vqe-definition`) reproduced
+  against a copy of its group file and given a free id.
+- Depends on: nothing.
 
 ## Design documents governing this repository
 

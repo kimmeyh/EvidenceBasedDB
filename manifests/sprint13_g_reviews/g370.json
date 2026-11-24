@@ -1,0 +1,129 @@
+{
+ "group": "g370",
+ "reviewed_on": "2026-11-21",
+ "tag": "Sprint 15 Task H, F114 (local read)",
+ "reader": "Claude Sonnet 5.5 (F114 local reader, manifests/sprint15_f114_reads/READER_PROMPT.md)",
+ "coordinator_note": "",
+ "graded_high": {
+  "iqp-definition": [
+   "definition",
+   "Section 1.1, p.2: the paper defines an IQP circuit in this sentence. Quote is verbatim and in context."
+  ],
+  "iqp-sampling-problem": [
+   "definition",
+   "Section 1.1, p.2: the paper defines the IQP sampling problem in the sentence after the circuit definition."
+  ],
+  "sparse-iqp-gate-probability": [
+   "definition",
+   "Section 2, p.9: the first bullet defines the random sparse IQP distribution; 'Call an IQP circuit picked from this distribution sparse' names it."
+  ],
+  "sparse-iqp-gate-sets": [
+   "definition",
+   "Section 2, p.9: the second and third bullets define the 2-qubit and 1-qubit gate sets exactly as the value says."
+  ],
+  "lemma-9-max-degree": [
+   "proved result",
+   "Lemma 9, Section 2.1, p.10: statement with its condition, proved on the same page by a union bound and a Chernoff bound from a textbook [17]. Both are textbook tools, so the proof stands."
+  ],
+  "noise-model-definition": [
+   "setup",
+   "Section 1.2, p.8 (The noise model): the paper states its own noise model as a perfect circuit followed by independent depolarising noise on each qubit."
+  ],
+  "noise-equals-bitflip-sampling": [
+   "proved result",
+   "Section 1.1, pp.3-4: the paper shows M(D(rho)) = D(M(rho)) and that D maps |0><0| to a bit flip with probability eps/2, which proves the equivalence."
+  ],
+  "noise-at-start-equivalent": [
+   "proved result",
+   "Section 1.1, p.4: the paper argues that start noise replaces |0^n> with |y>, y a noisy version of 0^n, and that <x|C|y> = <x+y|C|0>. This gives the same shifted distribution. The argument is short but present."
+  ],
+  "theorem-4-noisy-simulation": [
+   "proved result",
+   "Theorem 4, Section 1.1, p.4: statement with its conditions, proved in Section 3 (pp.12-14) and Appendix B (pp.19-21). The proof uses Parseval, textbook Fourier facts [32], a Chernoff argument [17], and the paper's own Lemmas 10 to 12. No step takes a specific other paper's theorem."
+  ],
+  "fourier-coefficient-estimation-cost": [
+   "proved result",
+   "Section 3.1, p.13: the paper gives the estimator (average f(x)f(x+s) over random x) and the cost from a standard Chernoff bound [17], a textbook tool. The argument is in the paper."
+  ],
+  "fourier-coefficients-time": [
+   "proved result",
+   "Section 3.1, p.13: the paper derives it from the Chernoff step, the median of repetitions, and n^O(log(alpha/delta)/eps) coefficients, ending with 'failure probability o(1)'. This is part of the Theorem 4 proof."
+  ],
+  "marginals-computed-exactly": [
+   "proved result",
+   "Section 3.1, pp.13-14: the paper derives S_y = 2^(n-k) times a sum over the N nonzero coefficients of q, so each S_y costs N poly(n). The derivation is displayed."
+  ],
+  "sampling-procedure-at-most-one-negative": [
+   "proved result",
+   "Section 3.2, p.14: the paper gives the argument (two negative children would make S_y < 0, so y would not have been picked). It is short but complete for the stated procedure."
+  ],
+  "lemma-10-alg-error": [
+   "proved result",
+   "Lemma 10, p.14, proved on p.21 using Lemmas 11 and 12, both proved in Appendix B. I checked the final chain: 2d/(1-d) + d/(1-d) + d/(1-d) = 4d/(1-d). The condition d < 1 is quoted."
+  ],
+  "lemma-11-fix-alg": [
+   "proved result",
+   "Lemma 11, Appendix B, pp.19-20: statement with conditions, proved by induction on n from the definitions of Fix and Alg."
+  ],
+  "lemma-12-fix-distance": [
+   "proved result",
+   "Lemma 12, Appendix B, p.20: statement with conditions, proved from three claims. The claims are each justified (sign preserved, negatives zeroed, sum preserved by induction), and the reduction to the l1 formula is displayed."
+  ],
+  "qaoa-not-handled": [
+   "stated limit",
+   "Section 4.1, p.15: the authors say the amplitudes can be approximated 'but not to a sufficiently high level of accuracy for the above approach to work'. This is a limit on their own method. The value places the variant H gate in 'the second step', which loosely reads the passage (the gate e^(-i beta B) is in the state preparation), but the limit is stated."
+  ],
+  "ft-repetition-code-overhead": [
+   "proved result",
+   "Section 5, p.17: the paper bounds the per-bit error by (eps(2-eps))^(r/2), which I re-derived and checked, and it is below 1 for eps < 1. A union bound over n bits then gives r = O(log n). The bound is in the paper."
+  ],
+  "limit-noise-between-gates": [
+   "stated limit",
+   "Section 1.2, p.8: the authors say it is 'not clear that more general noise models ... can be made correctable within IQP'. This is a limit on their own fault-tolerance result."
+  ],
+  "limit-simulation-not-practical": [
+   "stated limit",
+   "Section 1.2, pp.8-9: the authors say their algorithm is 'not remotely efficient in practice' at eps about 0.01, because the runtime exponent is linear in 1/eps. This matches the n^O(log(alpha/delta)/eps) form of Theorem 4 and is a limit on their own algorithm."
+  ],
+  "open-problem-remove-log-factor": [
+   "stated limit",
+   "Section 1.1, p.3: 'The challenge remains to remove a factor of log n from the depth while maintaining the anticoncentration requirements'. This states what the paper's depth bound does not achieve."
+  ],
+  "no-new-data": [
+   "scope",
+   "Acknowledgements, p.18: 'No new data were created during this study.' The paper states this about its own work, and the paper is theoretical."
+  ]
+ },
+ "theory_low": {
+  "prior-work-all-to-all-interactions": "Section 1, p.2: shortcoming 2 is a statement about the results of the cited work [11], not a limit on this paper's own results. A claim about another paper is a cited result, not a stated limit.",
+  "theorem-3-informal": "Theorem 3 (informal), p.3: an informal statement. It carries a 'sparse version of Conjecture 1' and the constants are lost. It is proved only through the formal restatement, which is graded separately.",
+  "theorem-3-restated": "Section 2.2, p.11: the proof of the hardness half uses Corollary 7, 'a result from [11] (slightly rephrased)', p.9, and Toda's theorem [43]. The lattice-depth half uses the sorting network of [37] and the argument of [5]. A proof that uses another paper's result as a step is not a proved result.",
+  "theorem-3-hardness-part": "Theorem 3 restated, p.11: the hardness conclusion comes from Corollary 7, taken from [11] (p.9), plus Toda [43] and the unproved Conjecture 8. The condition is quoted correctly, but the proof rests on a specific cited result.",
+  "sparse-iqp-gate-count": "Section 2, p.9: the O(n log n) gate count is asserted in one clause with no concentration argument. Not proved in the paper.",
+  "lemma-6-anticoncentration": "Lemma 6, p.9, proof in Appendix A, p.18-19: the proof is in the paper, but it takes E|<0|C|0>|^2 = 2^-n 'from symmetry arguments [11]' and takes the key 4th-moment formula from 'the last appendix of [11]'. These are specific results of [11] used as steps, so it is not a proved result.",
+  "lemma-6-proof-conclusion": "Appendix A, p.19: the closing bound is the end of the Lemma 6 proof, which starts from the formula taken from the last appendix of [11] (p.18). Same cited-step cause as Lemma 6.",
+  "anticoncentration-paley-zygmund": "Section 2, p.9: the arithmetic is right ((1-a)^2 E[R]^2/E[R^2] with E[R^2] <= 5 E[R]^2). But it rests on Lemma 6, whose proof uses the formula from [11], so it inherits LOW.",
+  "sparse-iqp-parallelised-depth": "Section 2.1, pp.10-11: the O(log n) depth follows from Lemma 9 and Vizing, but only with high probability and for large enough gamma, which the value drops. The value also repeats 'which is optimal', an authors' claim with no argument.",
+  "dephasing-equivalence": "Section 1.2, p.8: an informal prose argument (dephasing maps compose and commute with diagonal gates). No formal statement or proof, so it is a bound argued informally.",
+  "theorem-4-polynomial-for-average-circuit": "Section 1.1, p.4: the polynomial runtime for an average circuit needs 'it is shown in [11] that the expected value of alpha is O(1)'. That is a cited result and is not proved here.",
+  "hard-circuits-become-easy-with-noise": "Section 1.1, p.4: alpha = O(1) for the circuits proved hard comes from [11]. The 'precisely those circuits' conclusion is the authors' interpretation of Theorem 4 plus a cited property.",
+  "theorem-4-no-threshold-noise-rate": "Section 1.2, p.7: 'a rare case' is the authors' comparison with other work. The value also drops the anticoncentration condition (alpha) that Theorem 4 needs, so 'any noise rate' overstates.",
+  "theorem-4-proof-method": "Section 1.1, p.4: a one-sentence summary of the proof method. It is the authors' description, not a result with a basis; the detail is in Section 3.",
+  "iqp-output-probability-fourier": "textbook, stated not proved (F129). Section 3, p.12: 'indeed, the probability of receiving outcome s ... is precisely |f^(s)|^2' is stated with no derivation from C = H D H. The p.13 display starts from the same identity without deriving it.",
+  "simon-algorithm-noisy-simulable": "Section 1.1, p.4 and Section 4.1, p.15: only a sketch. The paper says 'the ideas behind Theorem 4 can also be used', but it gives no proof and does not treat the ancilla and oracle cost of f.",
+  "simon-output-anticoncentrated-alpha-2": "textbook, stated not proved (F129). Section 4.1, p.15: the uniform output on x.t = 0 is Simon's known property, taken from [42] without proof, and alpha = 2 is stated with no computation. Only the Fourier calculation is displayed. Graded by the weaker parts.",
+  "sparse-example-cz-pairs": "Section 4.2, p.16: the sparsity and sum-of-squares claims are stated without derivation. 'Neither method gives an efficient algorithm' is the authors' claim and is not proved for the method of [38].",
+  "ft-linear-code-map": "Section 5, p.17: the sentence is the authors' framing of what the construction enables. The statement has no stated conditions (full row rank M, efficient decoding). The proved piece is the f_M identity on p.16, which is a different statement.",
+  "ft-intro-claim-new-circuit": "textbook, stated not proved (F129), in part. Section 1.1, p.5 and Section 5, p.17: the O(n) qubit overhead rests on Shannon's channel coding theorem and on explicit LDPC codes with efficient decoding, taken from the textbook [36] without proof. The only full argument in the paper is the repetition code, which uses O(n log n) qubits.",
+  "theorem-5-noisy-hardness": "Theorem 5, Section 1.1, p.5: no proof of Theorem 5 appears in the paper. Section 5 shows noise tolerance only. The hardness step is one sentence saying the tolerance 'can be combined' with the result of [11], which is a cited result.",
+  "ft-any-noise-rate-below-one": "Section 1.1, p.5: this is a result about the noise rate range, together with the authors' contrast with fault-tolerance thresholds. The contrast is an interpretation, and the range comes from the Section 5 construction, not a scope statement.",
+  "ft-general-local-noise": "Section 1.1, p.5: the claim about general local noise is said to be shown in Section 5, but Section 5 only treats independent bit-flip noise. No theorem or proof for general local noise.",
+  "noisy-iqp-far-from-noise-free": "Section 1.2, p.7: a remark that the distance 'could be as high as Omega(n eps)', stated with no proof.",
+  "fujii-tamate-no-conflict": "Section 1.2, p.6: the first half is a cited result of Fujii and Tamate [21]. The second half is the authors' comparison with Theorem 4.",
+  "table-1-noisy-additive-cell": "Table 1, p.7: the 'hard' half of the cell is Theorem 5, which the paper does not prove (see theorem-5). The 'polynomial-time' half needs the anticoncentration condition. A summary table is not a basis.",
+  "conclusion-noise-simulable-without-ft": "Section 1.2, p.8: a summary of Theorem 4 in the authors' words. It drops the anticoncentration condition, and 'very small amount of noise' is loose.",
+  "conclusion-classical-ideas-correct-noise": "Section 1.2, p.8: the authors' summary and interpretation of the Section 5 result. 'Only a small increase' is not stated as a theorem."
+ },
+ "keep_stored": {},
+ "requote": {}
+}

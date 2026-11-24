@@ -20,7 +20,7 @@ generalize them into.
 5. **REVIEW REQUEST** -- the team lead asks for early review. Stabilize, commit, go to Phase 7.
 6. **SPRINT REVIEW COMPLETE** -- Phase 7 done, PR ready, team lead notified. Wait for approval; on merge, execute 6.6 carry-forward immediately.
 7. **FUNDAMENTAL DESIGN FAILURE** -- evidence the approach cannot work (for this project also: a discovered defect that invalidates a set of records already exported). Takes precedence over Criterion 4 whenever both could apply. Action: document, propose 2-3 alternatives, wait. If the fix would amend an ACCEPTED ADR's spine, that is Class 1 and requires explicit approval as a dated amendment (CLAUDE.md "Early innovation: expect revision").
-8. **CONTEXT LIMIT** -- near the window's end: commit everything, reconcile CHECKLIST-Phase2-pre.md, update sprint status, write a clean handoff so the next session resumes from the repo alone.
+8. **CONTEXT LIMIT** -- near the window's end: commit everything, update sprint status, write a clean handoff so the next session resumes from the repo alone.
 9. **TIME LIMIT** -- wall-clock hours are NOT a stop signal by themselves. This repository has no fixed deadline (SPRINT_1_PLAN.md: "No deadline"). Do not wrap up early "concerned about hours"; do not defer approved scope on time intuition (Class 3).
 10. **NOT A STOPPING CRITERION: implementation decisions.** Method A vs B, refactor vs extend, signature changes needed to meet acceptance criteria, single test failures, style warnings, approach uncertainty: make the best engineering judgment, document it, continue. Decision rule: "Does this decision enable the acceptance criteria?" YES -> decide and continue. NO -> it is scope change (Criterion 3).
 

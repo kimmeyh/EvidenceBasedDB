@@ -13,7 +13,208 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-11-07 onward (Sprint 17, in progress)
+### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
+
+- **process**: Sprint 18 retrospective decisions confirmed by the team lead
+  (2026-11-24): i1 = a, i2 = a, i3 = a, i4 = b, i5 = b. F155 revised: every
+  new assertion id unique when the reader chooses it (`unique_assertion_id`,
+  ~75m). q19 = a: `CHECKLIST-Phase2-pre.md` frozen as history after Sprint
+  18, since Phase 2 reads this repository directly; its reconcile and read
+  steps removed from `docs/SPRINT_EXECUTION_WORKFLOW.md`,
+  `docs/SPRINT_CHECKLIST.md`, `docs/SPRINT_PROCESS.md`,
+  `docs/SPRINT_STOPPING_CRITERIA.md`, `docs/SPRINT_RETROSPECTIVE.md`,
+  `docs/BACKLOG_REFINEMENT.md`, `docs/ALL_SPRINTS_MASTER_PLAN.md` and the
+  backlog-refinement skill.
+
+- **process**: Sprint 18 retrospective (`docs/sprints/SPRINT_18_RETROSPECTIVE.md`),
+  the team lead's feedback verbatim: "Very Good" in every rated category,
+  "none" for categories 13, 14 and 16. Improvements applied 2026-11-23 under
+  the do-as-recommended rule: i1, every agent prompt from Sprint 19 on says a
+  result file is written with the Write tool only (`tests/test_reader_prompts.py`,
+  proven red; a Phase 4 line in `docs/SPRINT_EXECUTION_WORKFLOW.md`); i2,
+  `scripts/test_inventory.py --write` without `--junit` keeps each listed
+  file's tests and seconds (`tests/test_test_inventory.py`, proven red); i3,
+  F155 carded (the read checker names an id another source holds, and a
+  near-miss id); i4 and i5 skipped and tracked. Phase 7.7: the Sprint 18
+  summary, the master plan roll (Current sprint, Last Completed Sprint, Past
+  Sprint Summary) and the CHECKLIST section.
+
+- **process**: Sprint 18 Phase 6 done (PR #183 body updated, still draft);
+  Phase 7 retrospective started: the Development Team's draft written
+  (`docs/sprints/drafts/SPRINT_18_RETROSPECTIVE_claude_draft.md`), the
+  team lead's feedback asked.
+
+- **docs**: the team lead confirmed q11 = a (F153) and q14 = a (no card),
+  2026-11-23; recorded in intake section 81 and on F153.
+
+- **process**: Sprint 18 status set by `scripts/set_status.py`: Manual
+  Validation decisions applied, Phase 6 next.
+
+- **fix**: Sprint 18 Manual Validation decisions applied (intake section
+  81). q7 = a: both of g361's device temperatures LOW, each naming the
+  contradiction (`scripts/sprint18_q7_grades.py`, through
+  `sync_decided_assertion`, backup first). q12: of the 54 independent
+  "supports" pairs, none has an experiment or a proof on both sides that
+  is not already HIGH, so nothing is upgraded. Cards F152 (q10), F153
+  (q11, as recommended), F154 (q13); q14 to q17 not carded (Phase 2
+  suggestions); F150 to Sprint 19 (q18 = b). Counts block rewritten.
+
+- **docs**: F151 carded (team lead at Manual Validation, for Sprint 19):
+  every question, decision and improvement written in full to
+  `docs/sprints/SPRINT_N_DECISIONS.md` before it is asked, its answer
+  recorded under it, and every open entry re-asked from it unchanged;
+  modeled on Phase 2's workflow rule 11.
+
+- **docs**: F150 carded (team lead at Manual Validation): the full suite
+  runs once per sprint, before the Manual Validation hand-over; after
+  that, `run_suite.py --changed` per commit and CI on the PR. The rule
+  here was still "twice"; the card records how spamfilter-multi and
+  Phase 2 adapted, and why `--changed` stays the gate here (CI skips the
+  `live_store` tests).
+- **process**: Sprint 18 Manual Validation handed over: full suite
+  1,744 passed, CI green on PR #183; q4 to q17 asked.
+- **process**: Sprint 18 enters Phase 5.1 (Tasks A to F done, #184 to
+  #189 closed), set with `scripts/set_status.py`. A first hand edit set
+  one of the two status fields; `tests/test_set_status.py` failed the
+  full suite on it, as built to.
+- **docs**: F146 (Task C, #186) done: every HIGH assertion with quotes
+  (12,524) audited and every screened pair (490) mapped, by 69 subagent
+  runs; nothing written to the store. All 207 controls right. Audit:
+  7,834 held, 4,672 held in part, 20 not held. Map: 333 supports (279
+  not independent), 4 contradicts, 153 unrelated. Intake section 79.
+- **feat**: F148 (Task F): `scripts/doc_counts.py` prints the counts a
+  document names (assertions by grade, HIGH and LOW by the basis each
+  started from, papers by tier, ledger groups read and reviewed) from the
+  store, read-only, and `--write` rewrites the one dated block between
+  markers in a document; it refuses a document with none or two.
+  INTAKE_WORKFLOW.md now holds the block at its top.
+  `tests/test_doc_counts.py`: 4 unit tests and a live_store test that the
+  block matches the store, each proven red by injection. The fresh-eyes
+  review found the basis pattern did not stop at the ":" that
+  `low_grade` writes before its why, so 9 LOW reasons fell into "other".
+- **feat**: F145 (Task E): qubit-lab.ch's Evidence page and its run file
+  entered (`scripts/sprint18_f145_intake.py`, INTAKE_WORKFLOW.md section
+  80): 1 source record and 16 assertions, all vendor claims at the
+  store's fixed vendor LOW, every quote checked verbatim with its figures;
+  no relation written, each candidate link named with its reason. The
+  fresh-eyes review before the apply found 1 wrong value (QL-ST-006
+  counted "won or reached kernel parity" as wins) and 4 that dropped a
+  condition; all fixed before the apply. The second review, after the
+  apply, found no critical defect: the "same" check now compares every
+  column the script writes, the context and the source's fields (it
+  compared 6 assertion fields, so a changed context would have passed
+  as "exists"); QL-ST-001's "0 of 96", which read as covering all 24
+  instances, is scoped to the real books and corrected in the store
+  through `sync_decided_assertion`; the live test opens the store
+  read-only; every test is proven red.
+
+- **feat**: F146 (Task C, #186): `scripts/f146_checks.py` builds the HIGH
+  audit and the agreement map for Claude Code subagents (q1 = c: no API
+  spend, no key). It opens the store read-only, writes each run's input,
+  and checks each result: dry run by default, a forecast, a cap on runs
+  handed out, no re-run of a saved result, a failing result kept and
+  flagged, and 3 known-answer controls in every run. Prompts in
+  `manifests/sprint18_f146/`. Intake section 79. The map's script screen
+  keeps 492 pairs and none of the store's 24 judged cross-paper
+  relations (recall 0), stated in section 79 for the team lead.
+  A fresh-eyes review found 6 defects before any run, all fixed: a
+  non-string quote crashed `check` before the run was flagged; two quotes
+  from one side passed; control ids named themselves ("control-a001-0");
+  a write that stopped part way blocked every later write; a control draw
+  could raise StopIteration; the screen test could not catch a lost
+  same-paper filter. Audit runs cut from 300 to 200 items (Read limit).
+  `tests/test_f146_checks.py`, 14 tests, proven red 12 ways
+- **fix**: F114 (Task D): 5 reader ids in g510 and g352 were already
+  another source's: 3 are new assertions in other groups too
+  (`data-availability-on-request` in g119, `qaoa-definition` in g099,
+  `schwinger-model-definition` in g351), and `review-scope` and
+  `vqe-definition` are stored for other papers. Each takes its paper's
+  author and year (`banuls-2019-vqe-definition`), as
+  `f117_build_groups.py` renames before review; here after review, so the
+  decision and item keys were renamed with the read (exact JSON strings,
+  each file still parsing to the same content). **Disclosed**: a sign-off
+  `id_fix` was tried first and withdrawn: the applier keys ID_FIX by
+  reader id across all groups, so it would have renamed g119's stored
+  assertion too; a gate run caught the clash (35 failures, all this one
+  cause). 28 groups finalized: 775 HIGH, 288 theoretical LOW
+- **feat**: F114 (Task D): the 30 papers applied to the live store,
+  2026-11-21, after a verified backup: 2,688 assertions, records 39,780
+  to 42,468. Trial first on two store copies: the applier before Task B
+  (22c1b2b) and after it wrote identical rows; a second apply, on the
+  copy and live, changed nothing. Intake section 78
+
+- **test**: F147 (Task B, #185) follow-up: d9ec0b2 said its review's
+  findings were fixed and its tests proven red 5 ways, but 4 checks had
+  no test or no red proof. Added and proven red: every undecided field
+  named in one run, `main()`'s refusal writing nothing, the
+  `in_transaction` guard not masking SQLite's own rollback, and the two
+  frozen-list tests (each injection named in its docstring)
+
+- **feat**: F114 (Task D, #187): the 28 groups' first-pass reads (30
+  papers) in `manifests/sprint13_g_reads/`, each a byte copy of the
+  reader's work file and each checked with 0 problems against its brief;
+  reader telemetry recorded. g512 (Garrigues 2026, appendices on pages 16
+  to 47) is reviewed in two parts by page
+
+- **feat**: F147 (Task B, #185): `store.ingest.sync_decided_assertion`
+  syncs a stored assertion only when every changed field is one its review
+  decided; otherwise it rolls back a savepoint and raises UndecidedField.
+  `scripts/full_read_apply.py` writes through it at both sync sites, and
+  an apply that meets an undecided field stops with nothing written and
+  names every such field at once (it used to write the field and list
+  it). `store.write_path.SYNC_FROZEN` freezes the 16 one-time appliers
+  that call `sync_verified_assertion`; the 6 of Sprints 9 and 10 that
+  call `sync_assertion` are LEGACY: 22 in all (q2 = a; the plan said 23,
+  and this entry said 24 at d9ec0b2, both counted from a text search that
+  included comments). Any other script that syncs directly is refused.
+  `tests/test_sync_decided.py` and the reworked applier test, proven red 5
+  ways
+
+- **fix**: F114 (Task D): intake section 78 written for the list release,
+  after its apply (the rule is before; `tests/test_intake.py` caught it);
+  the release manifest's `carried_why` names Sprint 18 Task D, and a dry
+  run keeps the apply's route count (fresh-eyes review); telemetry files
+  for the 28 groups, the first readers' tokens and minutes recorded
+
+- **feat**: F114 (Task D, #187) set up: `scripts/sprint18_f114_roadmap.py`
+  enters Roadmap-to-QML's 3 new papers at 7113ded1df (applied after a
+  verified backup; a second apply on a store copy entered nothing);
+  `scripts/sprint18_f114_local.py` adds g510 to g513 (Huang 2023 linked
+  at read, and the 3) and writes 28 briefs for 30 papers;
+  `manifests/sprint18_f114_reads/` prompts, with the quotes-first rule
+  (q28 = a) added to the local reader prompt
+
+- **fix**: F149 (Task A, #184): `scripts/sprint13_g_ledger.py` names a new
+  group from the highest gNNN number plus one, not the group count, and
+  refuses a name that is not gNNN; `main()` names groups only through
+  `new_groups`; `tests/test_g_ledger_next_group.py`, proven red 4 ways
+  (one added after the fresh-eyes review found the call site untested)
+
+- **process**: plan approved 2026-11-20 (q3 = a); issues #184 to #189;
+  status at Phase 4.1
+
+- **docs**: Sprint 18 plan records q1 = c (F146 runs on Claude Code
+  subagents, no API spend, no key read) and q2 = a (F147 moves the live
+  applier, freezes the 23 one-time scripts); plan approval still open
+
+- **process**: status at Phase 3.7 with draft PR #183; full suite 1,698
+  passed on the planning tree
+
+- **docs**: Sprint 18 plan drafted (`docs/sprints/SPRINT_18_PLAN.md`):
+  scope F146, F114, F149, F147, F145, F148 (team lead, 2026-11-18);
+  q1 (F146's sends, since the credit's stop date has passed) and q2
+  (which appliers F147 moves) asked. The master plan's 2026-11-13 F114
+  ledger snapshot corrected (792 read in full and 884 not, in 326
+  groups; the first figures counted only read rows from 2026-10-26),
+  and the Huang 2023 PDF named as a stored record
+
+- **process**: Sprint 18 Phase 1: sprint-17 tagged on main's merge
+  commit (125cb9d, PR #182); branch cut from Sprint 17's; status
+  advanced; CHANGELOG reconciled (every Sprint 17 day with commits has
+  entries; 2026-11-11 and 2026-11-12 had none); Sprint 17's shipped
+  cards pruned by hand; design-document currency checked
+
+### 2026-11-07 to 2026-11-10 (Sprint 17, PR #174, merged to develop 2026-11-13 and to main via PR #182 the same day; tagged sprint-17)
 
 - **process**: Sprint 17 retrospective applied (team lead, 2026-11-10,
   "i1. a i2. b i3. b i4. a"): i1, no second working folder without

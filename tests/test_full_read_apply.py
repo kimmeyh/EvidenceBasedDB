@@ -96,7 +96,7 @@ def test_a_confirmed_row_rebuilt_for_its_grade_keeps_its_other_fields(monkeypatc
         p = {"existing": [{"id": aid, "verdict": "confirmed"}]}
         monkeypatch.setattr(g, "verify", lambda conn=None: [(a, "src", p, Verified(aid, cc, row[0]))])
         monkeypatch.setattr(g, "load_groups", lambda: [])
-        monkeypatch.setattr(g, "write_anchor_moves", lambda c: [])
+        monkeypatch.setattr(g, "write_anchor_moves", lambda c, refused=None: [])
         g.apply_changes(conn)
         after = conn.execute("SELECT r.certainty, r.fidelity, f.claim_type, f.search_scope FROM records r JOIN "
                              "assertion_fields f ON f.record_id = r.id WHERE r.id = ?", (aid,)).fetchone()
@@ -682,13 +682,17 @@ def test_a_row_decided_on_or_before_the_review_day_is_still_checked(monkeypatch,
         g.verify(conn)
 
 
-def test_a_field_no_review_item_names_is_listed(synthetic_store, monkeypatch):
+def test_a_field_no_review_item_names_is_refused(synthetic_store, monkeypatch):
     """Sprint 14 retrospective Q2: the reader's context replaced two stored contexts that no review decided, and the
-    trial on a copy did not show it. Every field the sync changes that no review item names is now a line of the
-    apply's log. Proven to fail by injection, 2026-10-31: with decided_fields naming every field, no line was
-    logged; with CONTEXT_FIX left out of it, the context the sign-off named was listed."""
+    trial on a copy did not show it. Until Sprint 18 every such field was a line of the apply's log, written anyway;
+    F147 (Sprint 18 Task B) refuses it before it is written, through store.ingest.sync_decided_assertion, so the
+    apply stops and names it. Proven to fail by injection, 2026-10-31 (as a log line): with decided_fields naming
+    every field, no line was logged; with CONTEXT_FIX left out of it, the context the sign-off named was listed.
+    Proven again, 2026-11-21: with apply_changes adding the value and the context to every decided set
+    (`| {"value", "context"}  # INJECTED`), the first case did not raise and went red. Restored."""
     from dataclasses import make_dataclass
-    from store import connect
+    from store import connect, ingest
+    from store.ingest import UndecidedField
     g = _script()
     # A dataclass, not a namespace: the applier rebuilds a confirmed row with dataclasses.replace (Sprint 15 MV)
     row = make_dataclass("Row", ["id", "context", "updated_reason", "updated", ("fidelity", object, None),
@@ -698,18 +702,77 @@ def test_a_field_no_review_item_names_is_listed(synthetic_store, monkeypatch):
     paper = {"record_id": "p", "existing": [{"id": "claim-one", "verdict": "confirmed"}]}
     monkeypatch.setattr(g, "load_groups", lambda: [])
     monkeypatch.setattr(g, "verify", lambda conn=None: [(a, "p", paper, None)])
-    monkeypatch.setattr(g, "sync_verified_assertion", lambda *args: ["value", "citation_context", "context"])
+    monkeypatch.setattr(ingest, "sync_verified_assertion", lambda *args: ["value", "citation_context", "context"])
     monkeypatch.setattr(g, "REQUOTE", {"claim-one": "fuller quotes"})
     monkeypatch.setattr(g, "CONTEXT_FIX", {"claim-one": "qml"})
     conn = connect(synthetic_store)
     try:
-        assert g.apply_changes(conn) == ["update claim-one [value, citation_context, context]",
-                                         "undecided claim-one [value]"]
+        with pytest.raises(UndecidedField, match=r"1 stored assertions with a field no review decided:\n"
+                                                 r"claim-one: no review decided value;"):
+            g.apply_changes(conn)
         monkeypatch.setattr(g, "VALUE_REPLACE", {"claim-one": "v2"})
         assert g.apply_changes(conn) == ["update claim-one [value, citation_context, context]"]
         paper["existing"][0]["verdict"] = "corrected"
         monkeypatch.setattr(g, "CONTEXT_FIX", {})
-        assert g.apply_changes(conn)[1:] == ["undecided claim-one [context]"]
+        with pytest.raises(UndecidedField, match=r"claim-one: no review decided context;"):
+            g.apply_changes(conn)
+    finally:
+        conn.close()
+
+
+def test_every_undecided_field_is_named_in_one_run(synthetic_store, monkeypatch):
+    """F147 fresh-eyes review (Sprint 18 Task B, finding M1): the first undecided field stopped the apply, so a trial
+    named one refusal per run. Every assertion is now tried and all refusals are named together. Proven to fail by
+    injection, 2026-11-21: with apply_changes re-raising the first
+    UndecidedField (`raise  # INJECTED` in its except), the message named claim-one only and went red. Restored."""
+    from dataclasses import make_dataclass
+    from store import connect, ingest
+    from store.ingest import UndecidedField
+    g = _script()
+    row = make_dataclass("Row", ["id", "context", "updated_reason", "updated", ("fidelity", object, None),
+                                 ("claim_type", object, None), ("search_scope", object, None),
+                                 ("certainty", object, None), ("certainty_reasons", object, None)])
+    rows = [row(id=i, context="qml", updated_reason="n", updated="2026-11-21") for i in ("claim-one", "claim-two")]
+    verified = [(a, "p", {"record_id": "p", "existing": [{"id": a.id, "verdict": "confirmed"}]}, None) for a in rows]
+    synced = []
+    monkeypatch.setattr(g, "load_groups", lambda: [])
+    monkeypatch.setattr(g, "verify", lambda conn=None: verified)
+    monkeypatch.setattr(ingest, "sync_verified_assertion",
+                        lambda conn, wanted, *rest: synced.append(wanted.id) or ["value"])
+    conn = connect(synthetic_store)
+    try:
+        with pytest.raises(UndecidedField, match=r"2 stored assertions with a field no review decided:\n"
+                                                 r"claim-one: no review decided value;.*\nclaim-two: no review "
+                                                 r"decided value;"):
+            g.apply_changes(conn)
+        assert synced == ["claim-one", "claim-two"]
+    finally:
+        conn.close()
+
+
+def test_main_refuses_an_undecided_field_and_writes_nothing(synthetic_store, monkeypatch, capsys):
+    """F147 fresh-eyes review (Sprint 18 Task B, finding L5): main() must roll back what the apply wrote before the
+    refusal and return 1. Proven to fail by injection, 2026-11-21: with main()'s `conn.rollback()` replaced by
+    `conn.commit()  # INJECTED`, the row written before the refusal stayed and the test went red. Restored."""
+    from store.ingest import UndecidedField
+    g = _script()
+    monkeypatch.setattr(g, "DB_PATH", synthetic_store)
+    monkeypatch.setattr(g, "assertions", lambda refused: [])
+    monkeypatch.setattr(g, "grades_not_written", lambda conn: [])
+    monkeypatch.setattr(g, "anchor_moves", lambda conn: [])
+    monkeypatch.setattr(g, "backup_before_write", lambda *a, **k: None)
+
+    def apply_then_refuse(conn):
+        conn.execute("INSERT INTO contexts (id, description) VALUES ('f147-probe', 'written before the refusal')")
+        raise UndecidedField("claim-one: no review decided value; nothing written for it")
+
+    monkeypatch.setattr(g, "apply_changes", apply_then_refuse)
+    assert g.main(["--apply"]) == 1
+    assert "REFUSED, nothing written: claim-one: no review decided value" in capsys.readouterr().out
+    from store import connect
+    conn = connect(synthetic_store)
+    try:
+        assert not conn.execute("SELECT 1 FROM contexts WHERE id = 'f147-probe'").fetchone()
     finally:
         conn.close()
 

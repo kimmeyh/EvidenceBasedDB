@@ -42,7 +42,7 @@ Surface with the template phrasing; wait.
 ## Standing rules
 
 - `--no-verify` is banned.
-- Repo-root `CHECKLIST-Phase2-pre.md` is the live deliverable ledger, reconciled at every sprint close; ALL_SPRINTS_MASTER_PLAN.md is the sprint-scoping view.
+- ALL_SPRINTS_MASTER_PLAN.md is the sprint-scoping view, and each sprint's SUMMARY doc records what it delivered. Repo-root `CHECKLIST-Phase2-pre.md` was the live deliverable ledger through Sprint 18; it is frozen as history (team lead, Sprint 18 retrospective q19 = a, 2026-11-24: Phase 2 reads this repository directly).
 - Every record's `provenance` field is set before commit; determinate facts resolve rather than being stored (CLAUDE.md).
 - Team-lead `0*` working files at repo root: commit neutrally, never read.
 - **`spamfilter-multi` and `hsbc-quantum-fraud-2026` are READ-ONLY from this repository** (team lead, 2026-09-15): research freely, never write. Hook-enforced by `block_sibling_repo_writes.py`.

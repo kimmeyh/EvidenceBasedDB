@@ -70,7 +70,8 @@ done before Pass 2, or do them first.
 ### Step 3: gather the inputs
 
 Read `docs/ALL_SPRINTS_MASTER_PLAN.md` (Next Sprint Candidates and the
-item details) and the repo-root `CHECKLIST-Phase2-pre.md`. Gather
+item details); `CHECKLIST-Phase2-pre.md` is frozen after Sprint 18
+(team lead q19 = a, 2026-11-24) and is not read. Gather
 velocity actuals from the previous sprint's `SPRINT_{N-1}_SUMMARY.md`
 `## Actuals` section, never from memory. Identify stale or obsolete
 items (anything three or more sprints old gets re-read, not re-listed).

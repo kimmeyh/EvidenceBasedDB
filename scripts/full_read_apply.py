@@ -59,9 +59,11 @@ back unless --update-reads names the rewrite as intended (Sprint 13
 retrospective I1).
 
 The dry run reports every refusal at once, not the first (Sprint 14
-retrospective Q4). Every apply, the trial on a copy first, lists each field
-it changed on a stored assertion that no review item names, as "undecided"
-lines and a count (Sprint 14 retrospective Q2: the reader's context label
+retrospective Q4). A stored assertion is written only through
+`store.ingest.sync_decided_assertion` (F147, Sprint 18 Task B): a field no
+review item names is refused before it is written, and the apply stops,
+naming it. Until Sprint 18 such a field was written and then listed as
+"undecided" (Sprint 14 retrospective Q2: the reader's context label
 replaced two stored contexts, and only the live suite found it).
 """
 from __future__ import annotations
@@ -80,8 +82,8 @@ from store import DEFAULT_STORE_DIR, connect, recheck, script_paths  # noqa: E40
 from store.backup import backup_before_write  # noqa: E402
 from store.grading import grade, high_grades, low_grade  # noqa: E402
 from store.ingest import (FULL_READ_MARK, AssertionRecord, add_read, append_updated_reason,  # noqa: E402
-                          checked_when_stored, decided_day, insert_verified_assertion, set_tier,
-                          sync_verified_assertion, validate_assertion)
+                          UndecidedField, checked_when_stored, decided_day, insert_verified_assertion, set_tier,
+                          sync_decided_assertion, validate_assertion)
 from store.merges import holder, promotes  # noqa: E402
 from store.ocr import IMAGE_SUFFIXES  # noqa: E402
 from store.quotes import (QUOTE, ocr_only_quotes, plain, read_from_figure, require_edit_basis, require_verbatim,  # noqa: E402
@@ -696,10 +698,17 @@ def anchor_moves(conn) -> list[tuple[AssertionRecord, object]]:
     return out
 
 
-def write_anchor_moves(conn) -> list[str]:
+def write_anchor_moves(conn, refused: list[str] | None = None) -> list[str]:
     log = []
     for a, verified in anchor_moves(conn):
-        changed = sync_verified_assertion(conn, a, verified, a.updated_reason, a.updated)
+        try:
+            changed = sync_decided_assertion(conn, a, verified, a.updated_reason, a.updated,
+                                             decided_fields(a.id, "confirmed"))
+        except UndecidedField as e:
+            if refused is None:
+                raise
+            refused.append(str(e))
+            continue
         # sync's date guard writes nothing when the row changed after the fix's day; the dry run listed the move, so
         # a skip is said, not dropped (fresh-eyes review, 2026-11-02)
         stored = conn.execute("SELECT citation_context FROM assertion_fields WHERE record_id = ?", (a.id,)).fetchone()
@@ -708,15 +717,13 @@ def write_anchor_moves(conn) -> list[str]:
                              "ANCHOR_FIX_ON or rebuild it through REQUOTE")
         if changed:
             log.append(f"anchor {a.id} [{', '.join(changed)}]")
-            undecided = [c for c in changed if c not in decided_fields(a.id, "confirmed")]
-            if undecided:
-                log.append(f"undecided {a.id} [{', '.join(undecided)}]")
     return log
 
 
 def apply_changes(conn) -> list[str]:
     checked = verify(conn)
     log = []
+    refused: list[str] = []
     contexts = {r[0] for r in conn.execute("SELECT id FROM contexts")}
     for g, p in load_groups():
         rid, detail, day = p["record_id"], read_detail(g, p), REVIEWED_ON[g]
@@ -791,12 +798,17 @@ def apply_changes(conn) -> list[str]:
             # A grade the team lead decided after the review stands until a review records a decision of its own; a
             # rerun's date alone must not decide it (fresh-eyes review of the Sprint 15 Manual Validation apply)
             a = replace(a, certainty=held, certainty_reasons=held_why)
-        changed = sync_verified_assertion(conn, a, verified, a.updated_reason, a.updated)
+        try:
+            changed = sync_decided_assertion(conn, a, verified, a.updated_reason, a.updated,
+                                             decided_fields(a.id, verdict))
+        except UndecidedField as e:  # its savepoint undid it; the others still run, so one trial names them all
+            refused.append(str(e))
+            continue
         log.append(f"update {a.id} [{', '.join(changed)}]" if changed else f"exists {a.id}")
-        undecided = [c for c in changed if c not in decided_fields(a.id, verdict)]
-        if undecided:
-            log.append(f"undecided {a.id} [{', '.join(undecided)}]")
-    return log + write_anchor_moves(conn)
+    log += write_anchor_moves(conn, refused)
+    if refused:  # every refusal at once (Sprint 14 retrospective Q4; fresh-eyes review of Task B)
+        raise UndecidedField(f"{len(refused)} stored assertions with a field no review decided:\n" + "\n".join(refused))
+    return log
 
 
 class ReadRowsRewritten(Exception):
@@ -863,15 +875,13 @@ def main(argv: list[str] | None = None) -> int:
     conn.execute("PRAGMA busy_timeout = 120000")
     try:
         log = commit_apply(conn, "--update-reads" in args)
-    except ReadRowsRewritten as e:
-        print(e)
+    except (ReadRowsRewritten, UndecidedField) as e:
+        conn.rollback()
+        print(f"REFUSED, nothing written: {e}")
         return 1
     finally:
         conn.close()
     print("\n".join(log))
-    undecided = [x for x in log if x.startswith("undecided ")]
-    print(f"{len(undecided)} stored assertions with a field changed that no review item names"
-          f"{'; read each before the live apply' if undecided else ''}")
     print(verify_counts())
     if "--telemetry" in args:  # a store other than the live one is a trial on a copy
         step = "apply" if Path(DB_PATH).resolve() == (Path(DEFAULT_STORE_DIR) / "evidence.db").resolve() else "trial"

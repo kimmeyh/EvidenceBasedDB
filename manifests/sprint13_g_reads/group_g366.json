@@ -1,0 +1,1868 @@
+{
+ "papers": [
+  {
+   "record_id": "bravo-prieto-2023-variational-quantum-linear-solver",
+   "file": "D:\\Data\\Harold\\EvidenceBasedDB\\Papers\\2019-09_Bravo_Variational-Quantum-Linear-Solver.pdf",
+   "title_in_file": "Variational Quantum Linear Solver",
+   "version_note": "arXiv:1909.05820v4 (21 Nov 2023), the version accepted in Quantum 2023-11-15; the main text is pages 1 to 19 and the Supplemental Material is pages 20 to 24.",
+   "pages": 24,
+   "read_extent": "full",
+   "not_read": "",
+   "sections_read": [
+    "Abstract",
+    "1 Introduction",
+    "2 Results",
+    "2.1 VQLS Algorithm",
+    "2.1.1 Overview",
+    "2.1.2 Cost functions",
+    "2.1.3 Operational meaning of cost functions",
+    "2.1.4 Cost evaluation",
+    "2.1.5 Classical hardness of computing the cost functions",
+    "2.1.6 Ansatz",
+    "2.1.7 Training algorithm",
+    "2.1.8 Resilience to noise",
+    "2.2 Heuristic Scaling",
+    "2.2.1 Ising-inspired QLSP",
+    "2.2.2 Randomly generated QLSP",
+    "2.3 Implementation on quantum hardware",
+    "3 Discussion",
+    "A Sparse Matrices",
+    "B Faithfulness of the cost functions",
+    "C Cost evaluation circuits",
+    "C.1 Hadamard Test",
+    "C.2 Hadamard-Overlap Test",
+    "D Proof of Proposition 1",
+    "E Variable ansatz optimization",
+    "F Gradient-based optimization",
+    "G Resilience to simple noise models",
+    "G.1 Global Cost",
+    "G.2 Local Cost",
+    "G.2.1 Global depolarizing noise",
+    "G.2.2 Measurement noise",
+    "Acknowledgements",
+    "References",
+    "Supplemental Material A Supplementary Note 1 Additional Implementations",
+    "A.1 Scaling Heuristics for 8 x 8 Systems",
+    "A.2 Implementation with QAOA Ansatz",
+    "A.3 Implementations on Rigetti's quantum computer"
+   ],
+   "figure_count": 22,
+   "figures": [
+    {
+     "figure": "Figure 1",
+     "page": 2,
+     "kind": "block diagram",
+     "shows": "Schematic of the VQLS loop: a quantum computer block (ancilla Hadamard, ansatz V(alpha), state-preparation U, box F(A), measurements) returns the cost C(alpha) to a classical computer block that minimizes it and sends parameters alpha back; if C is at most gamma the loop ends and outputs alpha_opt. Input box: A as a sum of unitaries A_l and U with U|0> = |b>. Output box: circuit V(alpha_opt) prepares |x>.",
+     "confirmed_by": "The output of VQLS is a quantum state |x⟩ that is approximately proportional to the solution of the linear system Ax = b.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 2",
+     "page": 3,
+     "kind": "line plot",
+     "shows": "Cost function (y, log scale from about 0.001 to 1) against number of cost function evaluations (x, 0 to about 5 x 10^4) for kappa = 20. Blue curves are the local cost CL and red curves the global cost CG, for n = 10, 20, 30, 40 and 50 (legend labels at the right edge). The local cost for n = 10 reaches about 0.001 at about 3 x 10^4 evaluations; the n = 50 local cost ends near 0.01 to 0.02; the global cost for n = 50 stays near 1 and the global cost falls more slowly as n grows.",
+     "confirmed_by": "At n = 50, our optimization cannot significantly lower CG below a value of one.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 3",
+     "page": 5,
+     "kind": "circuit diagram",
+     "shows": "Layered Hardware-Efficient Ansatz on n = 10 qubit wires with four layers: columns of single-qubit Ry gates alternating with controlled-Z gates on alternating pairs of neighboring qubits; a dashed box marks one layer.",
+     "confirmed_by": "The number of variational parameters and gates scales linearly with n: for n = 50, four layers of this ansatz consist of 640 gates and 440 variational parameters.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 4",
+     "page": 7,
+     "kind": "line plot",
+     "shows": "Time-to-solution (y, 0 to about 5 x 10^4) against condition number kappa (x, about 20 to 200) for the Ising-inspired QLSP; solid lines epsilon = 0.002, dashed lines epsilon = 0.01; blue n = 10, red n = 20, green n = 30. All curves rise slowly with kappa. At kappa = 200 the epsilon = 0.002 curves reach about 1.5 x 10^4 (n = 10), about 3.2 x 10^4 (n = 20) and about 4.7 x 10^4 (n = 30).",
+     "confirmed_by": "Figure 4 shows that as the condition number κ is increased, the time-to-solution needed to achieve a given ϵ increases with a scaling that appears to be sub-linear.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 5",
+     "page": 7,
+     "kind": "line plot",
+     "shows": "Time-to-solution (y, 1 to 5 x 10^4) against 1/epsilon (x, about 100 to 900) for the Ising-inspired QLSP, n = 10, 20, 30 (blue, red, green), kappa = 60 (solid) or 200 (dashed); an inset shows the same data with a logarithmic x axis, where the curves are close to straight lines. Growth is slow and concave on the linear axis.",
+     "confirmed_by": "These results show that as 1/ϵ grows, the time-to-solution exhibits a logarithmic growth.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 6",
+     "page": 8,
+     "kind": "line plot",
+     "shows": "Time-to-solution (y, about 0.5 x 10^4 to about 3 x 10^4) against number of qubits n (x, 6 to 30) for epsilon = 0.01 and kappa = 60 (blue), 120 (red), 200 (green) for the Ising-inspired QLSP; the curves rise close to linearly with n. At n = 30 the values are about 1.9 x 10^4, about 2.4 x 10^4 and about 3.1 x 10^4.",
+     "confirmed_by": "As the number of qubits increases the time-to-solution needed to guarantee a particular ϵ with κ fixed appears to increase linearly with n.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 7",
+     "page": 9,
+     "kind": "line plot",
+     "shows": "Three panels for random matrices. a) log-log time-to-solution (y, about 4 x 10^5 to 3 x 10^7) against kappa (x, 10 to about 160) for n = 4 with epsilon = 0.01, 0.03, 0.1, 0.3 and power-law fits labeled about kappa^0.94, kappa^0.97, kappa^0.98 and kappa^0.81. b) time-to-solution (y, 0 to 3.5 x 10^7) against 1/epsilon (x, log scale 3 to 10^4) for kappa = 10, 20, 40, 80, 160 with linear fits. c) log-log time-to-solution (y, about 10^3 to 10^7) against n (x, 2 to 7) for epsilon = 0.3 and kappa = 10, with a fit labeled n^8.5.",
+     "confirmed_by": "In all cases we found m < 1, indicating that the scaling in κ for these examples is at worst linear.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 8",
+     "page": 9,
+     "kind": "line plot",
+     "shows": "Cost CG (y, 0 to 1) against iteration (x, 0 to about 150) for a simulator curve labeled QVM (black) and two hardware runs labeled Aspen-7-10Q-B Run 1 (red) and Run 2 (green). All start near 1 and fall noisily to about 0.05 or below by about 70 iterations; the hardware runs level off at about 0.03 to 0.05 while the QVM run falls to near 0.",
+     "confirmed_by": "As shown, the cost function data obtained by training in a quantum computer closely matches the one obtained from training on a noiseless",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 9",
+     "page": 12,
+     "kind": "circuit diagram",
+     "shows": "Three circuits. a) Hadamard Test on an ancilla and n system qubits with V(alpha), controlled A_l and controlled A_l'-dagger, with an optional phase gate. b) Hadamard-Overlap Test on an ancilla and registers S1 and S2 (V on S1, U on S2, controlled A_l and A_l'-dagger, Overlap circuit in a dashed box, Bell-basis measurements), with an optional Rz gate. c) Hadamard Test for the delta term with a Z on qubit j (shown for j = 1).",
+     "confirmed_by": "Consider the circuit in Fig. 9(b), which we refer to as the Hadamard-Overlap Test.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Figure 10",
+     "page": 13,
+     "kind": "circuit diagram",
+     "shows": "Circuit with a qubit register S1 (one qubit), S2 and S3 (n qubits each): Hadamards, a controlled-W gate with S1 as control and S2 as target, an entangling gate E on S2 and S3 in a dashed box, an optional phase gate on S1, and a final Hadamard and measurement of S1.",
+     "confirmed_by": "Consider first the case when j = 1 and we measure the qubit in S1.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure S1",
+     "page": 20,
+     "kind": "circuit diagram",
+     "shows": "Three-qubit Hardware-Efficient Ansatz with nine Ry(alpha_1 to alpha_9) rotations in three columns of three, with controlled-Z gates between columns.",
+     "confirmed_by": "For this purpose we employed the ansatz of Fig. S1 (with randomly initialized parameters)",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure S2",
+     "page": 21,
+     "kind": "line plot",
+     "shows": "Three panels (matrices A1, A2, A3, epsilon = 0.01): time-to-solution (y) against condition number kappa (x, 0 to 800) for the four cost functions. A1: rises from about 1000 at small kappa to about 5000 to 5500 for the best-performing curves and about 3300 for the others at kappa = 800. A2: rises from about 500 to about 3400 (two upper curves) and about 2300 (two lower curves). A3: all four curves nearly coincide, rising to about 7500 at kappa = 800.",
+     "confirmed_by": "These results show that the κ scaling is efficient for the problems considered (regardless of the value of g considered).",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure S3",
+     "page": 21,
+     "kind": "heat map",
+     "shows": "a) and b) heat maps of the QAOA cost landscape (p = 1) over alpha_1 and alpha_2 (both about -pi to pi); colorbar about 0.12 to 0.24 in a) and about 0.05 to 0.25 in b), where alpha_1 is scaled by kappa. c) runs-per-success (y, 0 to 80) against kappa (x, 0 to 1000) for epsilon^2 = 0.1, 0.02 and 0.01; epsilon^2 = 0.01 reaches about 60 to 75 near kappa = 1000, epsilon^2 = 0.02 about 25, epsilon^2 = 0.1 about 3; an inset shows the data on a logarithmic scale.",
+     "confirmed_by": "As shown in Fig. S3(a) and (b), this scaling can indeed transform the cost landscape such that it contains more regions of low cost and thus makes optimization more likely to be successful.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure S4",
+     "page": 22,
+     "kind": "line plot",
+     "shows": "Cost CL (y, 0 to about 1.1) against optimization step (x, 0 to about 65) for four Rigetti hardware runs (colors red, blue, yellow, green) for the 32 x 32 problem; all runs fall in steps from between about 0.4 and 1.1 to a plateau of about 0.07 by about 55 to 65 steps.",
+     "confirmed_by": "For every run, the local cost function CL of (6) achieved a value of ∼ 7 × 10−2 (hardware noise prevented further cost reduction).",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Figure S5",
+     "page": 24,
+     "kind": "line plot",
+     "shows": "Six panels (a to f) of cost (y) against optimization step (x) for the 2x2, 2x2, 4x4, 4x4, 8x8 and 32x32 systems, with four or five runs each. Panels a, c, d, e, f end at about 0.03 to 0.08 after about 10 to 65 steps, with occasional spikes. Panel b (A = 1 + 0.25 Z, b = X|0>) levels at about 0.45 and does not go below about 0.4.",
+     "confirmed_by": "It is worth mentioning that the cost function is reduced to values ≲ 0.1 for every example, except for the case depicted in panel (b).",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Table S1",
+     "page": 21,
+     "kind": "table",
+     "shows": "Observable Z for the 2x2 system A = H, b = X|0>: exact expectation 0, measured 0.04 +- 0.02, D(M)^2 = 0.002 +- 0.002.",
+     "confirmed_by": "Supplementary Table S1: Expectation value of an observable",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Table S2",
+     "page": 21,
+     "kind": "table",
+     "shows": "Observable Z for the 2x2 system A = 1 + 0.25 Z, b = X|0>: exact -1, measured -0.819 +- 0.005, D(M)^2 = 0.032 +- 0.002.",
+     "confirmed_by": "Supplementary Table S2: Expectation value of an observable",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Table S3",
+     "page": 22,
+     "kind": "table",
+     "shows": "Observables Z2, Z1, Z1Z2 for the 4x4 system A = X1 H2, b = H1 H2|0>: exact 1, 0, 0; measured 0.943 +- 0.003, 0.02 +- 0.04, 0.02 +- 0.04; D(M)^2 = 0.0032 +- 0.0003, 0.000 +- 0.002, 0.000 +- 0.002.",
+     "confirmed_by": "Supplementary Table S3: Expectation value of observables M computed with the exact solution, and with the output solution of VQLS.",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Table S4",
+     "page": 22,
+     "kind": "table",
+     "shows": "Observables Z2, Z1, Z1Z2 for the 4x4 system A = 1 + 0.25 Z2, b = H1|0>: exact 1, 0, 0; measured 0.930 +- 0.004, 0.00 +- 0.02, 0.00 +- 0.02; D(M)^2 = 0.0047 +- 0.0005 and values at or near 0 for the other two.",
+     "confirmed_by": "Supplementary Table S4: Expectation value of observables",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Table S5",
+     "page": 22,
+     "kind": "table",
+     "shows": "Seven observables for the 8x8 system A = 1 + 0.25 Z3, b = H1 H2|0>: exact Z3 = 1, all others 0; measured Z3 = 0.88 +- 0.01, others within about 0.05 of 0; D(M)^2 for Z3 = 0.013 +- 0.002, others at or below 0.002.",
+     "confirmed_by": "Supplementary Table S5: Expectation value of observables",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Table S6",
+     "page": 22,
+     "kind": "table",
+     "shows": "Thirty-one Pauli-Z observables for the 32x32 system A = 1 + 0.25 X5, b = H^(x5)|0>: exact value 0 for all; the largest measured values are Z5 = 0.180 +- 0.030 and Z2 = 0.100 +- 0.020; the largest D(M)^2 is 0.03 +- 0.01 for Z5.",
+     "confirmed_by": "Supplementary Table S6: Expectation value of observables",
+     "no_text_confirms": false
+    },
+    {
+     "figure": "Supplementary Table S7",
+     "page": 23,
+     "kind": "table",
+     "shows": "Thirty-one Pauli-Z observables for the 32x32 system A = 1 + 0.2 X1 Z2 + 0.2 X1, b = H1 H3 H4 H5|0>: exact value 1 for the fourth listed observable and 0 for all others; the measured value for the observable with exact value 1 is 0.971 +- 0.002 with D(M)^2 = 0.0008 +- 0.0001; the other measured values are within about 0.1 of 0.",
+     "confirmed_by": "Supplementary Table S7: Expectation value of observables",
+     "no_text_confirms": false
+    }
+   ],
+   "what_it_is": "A hybrid quantum-classical algorithm (VQLS) for the quantum linear systems problem, with cost functions, a proved precision bound, a DQC1-hardness result, noise-resilience proofs, numerical scaling studies up to 50 qubits and Rigetti hardware runs up to 10 qubits.",
+   "bears_on_context": "qc",
+   "why_not": "",
+   "existing": [],
+   "assertions": [
+    {
+     "id_suggestion": "vqls-abstract-hardware-1024",
+     "value": "The authors report that, using Rigetti's quantum computer, they successfully implement VQLS up to a problem size of 1024 × 1024.",
+     "anchor": "Abstract, p.1",
+     "quotes": [
+      "Using Rigetti’s quantum computer, we successfully implement VQLS up to a problem size of 1024 × 1024."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical hardware result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The 1024 x 1024 run uses a very structured matrix and a product-state ansatz of single-qubit Ry gates (Section 2.3), so it shows the cost can be trained on hardware for that case, not a general solver at that size."
+    },
+    {
+     "id_suggestion": "vqls-cost-lower-bound-theorem",
+     "value": "The paper proves that the global cost function CG is at least epsilon squared divided by kappa squared, where epsilon is the trace distance to the exact solution and kappa is the condition number of A, assuming the first excited state of the effective Hamiltonian is non-degenerate (the authors state the same proof approach works for the degenerate case).",
+     "anchor": "Section 2.1.3, p.4; Abstract, p.1",
+     "quotes": [
+      "Inserting this into (13) yields CG ⩾ ϵ2/κ2.",
+      "By construction |x0⟩ is the ground state of HG with E0 = 0. In what follows we assume for simplicity that |x1⟩ is non-degenerate, although the same proof approach works for the degenerate case.",
+      "Additionally, we assume κ < ∞",
+      "and ||A|| ⩽ 1, and that the Al unitaries can be implemented with efficient quantum circuits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper proves the bound in Section 2.1.3, p.4, and the conditions are quoted from Section 2.1.1 and the proof; the proof uses a cited lower bound on the first excited energy (see the separate assertion).",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The degenerate case is stated to follow by the same approach but is not written out."
+    },
+    {
+     "id_suggestion": "vqls-first-excited-energy-cited",
+     "value": "The paper uses, citing Ref. [8], that the first excited state energy of the effective Hamiltonian is at least 1/κ squared, where κ is the condition number.",
+     "anchor": "Section 2.1.3, p.4",
+     "quotes": [
+      "and that the first excited state energy satisfies E1 ⩾ 1/κ2 (which was shown in Ref. [8])"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The precision bound of the preceding theorem depends on this cited result."
+    },
+    {
+     "id_suggestion": "vqls-other-cost-bounds-follow",
+     "value": "The authors state that the remaining inequalities of the precision bound, for the local and the unnormalized cost functions, follow from the bound relating local and global costs and from the inner product of A applied to x with itself being at most 1.",
+     "anchor": "Section 2.1.3, p.4",
+     "quotes": [
+      "The remaining inequalities in (9) follow from (8) and from the fact that ⟨ψ|ψ⟩ ⩽ 1, which"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The paper derives these bounds in Section 2.1.3, p.4, from the proved relation in Appendix B.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-termination-criterion-claim",
+     "value": "The authors state that the operational meaning of the cost functions as upper bounds gives a termination criterion for VQLS that guarantees a desired precision epsilon.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "This is crucial since it gives a termination criterion for VQLS that guarantees a desired precision ϵ."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A summary statement of the authors that rests on the bound entered separately; no limit of its own.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The criterion needs the cost value, and its guarantee is only as tight as the bound allows: the hardware runs in the supplement reach a cost that gives a trivial bound."
+    },
+    {
+     "id_suggestion": "vqls-epsilon-definition",
+     "value": "The paper defines the error tolerance epsilon as the trace distance between the exact solution state and the approximate solution state prepared with the optimal parameters.",
+     "anchor": "Section 2.1.1, p.3",
+     "quotes": [
+      "is the trace distance between the exact solution |x0⟩ and the approximate solution |x(αopt)⟩."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines epsilon in Section 2.1.1, p.3.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-observable-error-bound-cited",
+     "value": "The authors state, citing the operational meaning of the trace distance, that for any POVM element M the trace-distance error epsilon is at least the difference D(M) of expectation values on the approximate and exact solutions.",
+     "anchor": "Section 2.1.3, p.4",
+     "quotes": [
+      "Furthermore, one can employ the operational meaning of the trace distance [39] to note that, for any POVM element M , we have ϵ ⩾ D(M ), where"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The paper states this as a cited property of trace distance without a proof of its own.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-cost-faithfulness-proof",
+     "value": "The paper proves that all four VQLS cost functions are faithful: they are non-negative and vanish if and only if A applied to |x⟩ equals |b⟩.",
+     "anchor": "Section 2.1.2, p.3; Appendix B, p.11",
+     "quotes": [
+      "Therefore, all four cost functions are faithful, vanishing if and only if A|x⟩ = |b⟩.",
+      "We assume that κ is not infinite (i.e., that A is full rank) and hence that ⟨ψ|ψ⟩ ̸= 0."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix B, p.11, with the full-rank condition quoted from Section 2.1.2, p.3.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The paper writes the vanishing condition as equality in Appendix B and as proportionality (A applied to x proportional to b) in Section 2.1.2; the normalization differs between the cost functions."
+    },
+    {
+     "id_suggestion": "vqls-local-global-cost-bounds",
+     "value": "The paper proves that each local cost function is at most the corresponding global cost function, and each global cost function is at most n times the corresponding local cost function, where n is the number of qubits.",
+     "anchor": "Appendix B, p.11",
+     "quotes": [
+      "This implies that CG ⩾ CL and CG ⩾ CL.",
+      "Hence we have nHL ⩾ HG, which implies nCL ⩾ CG and nCL ⩾ CG."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix B, p.11, with both directions quoted.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-global-cost-barren-plateau-cited",
+     "value": "The authors state, citing Ref. [38], that global cost functions can exhibit barren plateaus, meaning cost function gradients that vanish exponentially in the number of qubits n.",
+     "anchor": "Section 2.1.2, p.3",
+     "quotes": [
+      "We emphasize that global cost functions such as those in (3) and (5) can exhibit barren plateaus, i.e., cost function gradients that vanish exponentially in the number of qubits n, see Ref. [38]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-local-cost-trainable-50-qubits",
+     "value": "The authors report that they are able to train the local cost function for systems of size up to 250 × 250 as the text layer prints it (two raised to the 50th power by two raised to the 50th power), that is, with 50 qubits.",
+     "anchor": "Section 2.1.2, p.3",
+     "quotes": [
+      "On the other hand, the local cost function CL performs significantly better, as we are able to train CL for systems of size up to 250 × 250 (i.e., with 50 qubits)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study, from simulation.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-global-cost-untrainable-n50",
+     "value": "The authors report that for the Ising-inspired QLSP with condition number 20, at n = 50 their optimization cannot significantly lower the global cost CG below a value of one.",
+     "anchor": "Figure 2 caption, p.3",
+     "quotes": [
+      "In all cases κ = 20.",
+      "At n = 50, our optimization cannot significantly lower CG below a value of one."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The result is for one optimizer (random-direction line search) and one problem family."
+    },
+    {
+     "id_suggestion": "vqls-fig2-cost-curves",
+     "value": "Read from Figure 2: for kappa = 20 the local cost at n = 10 falls to about 0.001 within about 30000 cost function evaluations, while the global cost at n = 50 stays near one through about 50000 evaluations.",
+     "anchor": "Figure 2, p.3",
+     "quotes": [
+      "As n increases it becomes increasingly hard to train to global cost function.",
+      "At n = 50, our optimization cannot significantly lower CG below a value of one.",
+      "In all cases κ = 20.",
+      "For each n ∈ {10, . . . , 50}, we plot the cost value versus the number of cost function evaluations."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-input-assumptions",
+     "value": "The authors assume that the condition number is finite, that the norm of A is at most 1, and that the unitaries in the decomposition of A can be implemented with efficient quantum circuits.",
+     "anchor": "Section 2.1.1, p.2",
+     "quotes": [
+      "Additionally, we assume κ < ∞",
+      "and ||A|| ⩽ 1, and that the Al unitaries can be implemented with efficient quantum circuits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own input assumptions in Section 2.1.1, p.2.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-input-form",
+     "value": "The paper states the input to VQLS as an efficient gate sequence U that prepares a state proportional to the vector b, and a decomposition of the matrix A into a linear combination of L unitaries.",
+     "anchor": "Section 2.1.1, p.2",
+     "quotes": [
+      "The input to VQLS is: (1) an efficient gate sequence U that prepares a quantum state |b⟩ that is proportional to the vector b, and (2) a decomposition of the matrix A into a linear combination of L unitaries of the form"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Section 2.1.1, p.2.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-heuristic-scope",
+     "value": "The authors state that all variational hybrid quantum-classical algorithms are heuristic algorithms, which makes rigorous complexity analysis difficult.",
+     "anchor": "Introduction, p.2",
+     "quotes": [
+      "It is important to emphasize that all VHQCAs are heuristic algorithms, making rigorous complexity analysis difficult."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "scope",
+     "certainty_reason": "The paper states the scope of its own scaling claims in the Introduction, p.2.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-hadamard-test-term-count",
+     "value": "The authors state that the quantity of the inner product of A applied to x with itself needs L(L − 1)/2 different beta terms to be estimated, which can be measured with Hadamard Tests.",
+     "anchor": "Section 2.1.4, p.4",
+     "quotes": [
+      "There are L(L − 1)/2 different βll′ terms that one needs to estimate, and which can be measured with Hadamard Tests."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's count stated without a separate derivation.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-hadamard-overlap-test-properties",
+     "value": "The authors state that the Hadamard-Overlap Test needs only one application of each of U and V, which do not need to be controlled, and that the circuit requires 2n + 1 qubits.",
+     "anchor": "Appendix C.2, p.11",
+     "quotes": [
+      "A nice feature of the Hadamard-Overlap Test is that it only requires one application of both U and V , and these unitaries do not need to be controlled, in contrast to the Hadamard Test.",
+      "This circuit requires 2n + 1 qubits and classical post-processing (which scales linearly with n) similar to that of the Overlap circuit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines the circuit and states its resource use in Appendix C.2, p.11.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The main text, Section 2.1.4, p.4, says the saving is at the expense of doubling the number of qubits."
+    },
+    {
+     "id_suggestion": "vqls-hadamard-overlap-real-part",
+     "value": "The paper derives that the real part of the coefficient gamma is twice the difference of the two measured quantities C(0) and C(1) obtained from the Hadamard-Overlap Test.",
+     "anchor": "Appendix C.2, Eq. (42), p.12",
+     "quotes": [
+      "Then, combining (40) and (41) yields",
+      "Re[γll′ ] = 2(C(0) − C(1)) ."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix C.2, p.12, from Eqs. (40) and (41).",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-dqc1-hardness-proposition",
+     "value": "The paper proves (Proposition 1) that the problem of estimating the VQLS cost functions to within precision of inverse polynomial in n is DQC1-hard.",
+     "anchor": "Proposition 1, Section 2.1.5, p.5; Appendix D, p.13",
+     "quotes": [
+      "to within precision ±δ = 1/ poly(n) is DQC1-hard.",
+      "Moreover, it is known that approximating ∆HS to within inverse polynomial precision is DQC1hard [33], and hence the result follows."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix D, p.13, by reduction; the statement and its precision condition are quoted from p.5 and the reduction relies on a cited DQC1-hardness result [33].",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The hardness is for estimation to inverse-polynomial additive precision on specific instances built from the reduction (A equal to the identity), not for every VQLS problem instance."
+    },
+    {
+     "id_suggestion": "vqls-dqc1-no-classical-simulation-cited",
+     "value": "The authors state that classically simulating DQC1 is impossible unless the polynomial hierarchy collapses to the second level, citing other work.",
+     "anchor": "Section 2.1.5, p.5",
+     "quotes": [
+      "classically simulating DQC1 is impossible unless the polynomial hierarchy collapses to the second level"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-cost-not-classically-simulable-claim",
+     "value": "The authors state that Proposition 1 strongly suggests that a classical algorithm cannot efficiently estimate the VQLS cost functions, and hence that VQLS cannot be efficiently simulated classically.",
+     "anchor": "Section 2.1.5, p.5",
+     "quotes": [
+      "Hence, Proposition 1 strongly suggests that a classical algorithm cannot efficiently estimate the VQLS cost functions, and hence VQLS cannot be efficiently simulated classically."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's inference that rests on a complexity-theoretic assumption; the paper says it strongly suggests, not proves.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The hardness covers estimation of the cost for worst-case instances; the heuristic scaling runs in the paper are simulated classically for up to 50 qubits for structured problems."
+    },
+    {
+     "id_suggestion": "vqls-ansatz-fixed-structure-640-gates",
+     "value": "The authors state that for n = 50, four layers of the Hardware-Efficient Ansatz consist of 640 gates and 440 variational parameters, and that the numbers of parameters and gates scale linearly with n.",
+     "anchor": "Figure 3 caption, p.5",
+     "quotes": [
+      "The number of variational parameters and gates scales linearly with n: for n = 50, four layers of this ansatz consist of 640 gates and 440 variational parameters."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states the size of its own ansatz in the Figure 3 caption, p.5.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-ansatz-trainability-issue-limit",
+     "value": "The authors state, citing Refs. [38, 44], that the fixed-structure Hardware-Efficient Ansatz can have trainability issues for large-scale problems.",
+     "anchor": "Section 2.1.6, p.5",
+     "quotes": [
+      "Let us remark that this ansatz can have trainability issues [38, 44] for large-scale problems."
+     ],
+     "kind": "cited",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A caveat the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-qaoa-universal-cited",
+     "value": "The authors state, citing Refs. [48, 50], that the QAOA ansatz is known to be universal as the number of layers p tends to infinity.",
+     "anchor": "Section 2.1.6, p.5",
+     "quotes": [
+      "We note that QAOA is known to be universal as the number of layers p tends to infinity [48, 50]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-hhl-prep-cited",
+     "value": "The authors state that Ref. [6] showed it is possible to efficiently generate an accurate approximation to the true solution with a number of gates polynomial in n, assuming certain constraints on A and b.",
+     "anchor": "Section 2.1.6, p.5",
+     "quotes": [
+      "Let us remark that Ref. [6] showed that it is possible to efficiently generate an accurate approximation to the true solution |x0⟩, i.e., with a number of gates that is polynomial in n, assuming certain constraints on A and b."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-ising-optimizer-setup",
+     "value": "The authors state that the Ising-inspired heuristics use an optimizer that, at each iteration, chooses a random direction in parameter space and performs a line search along it.",
+     "anchor": "Section 2.1.7, p.6",
+     "quotes": [
+      "chooses a random direction w in the parameter space along which to perform a line search"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training setup in Section 2.1.7, p.6.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-random-matrix-optimizer-setup",
+     "value": "The authors state that for the randomly generated matrices all parameters are independently optimized at each iteration.",
+     "anchor": "Section 2.1.7, p.6",
+     "quotes": [
+      "we perform an optimization where all the parameters in α are independently optimized at each iteration"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own training setup in Section 2.1.7, p.6.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-opr-definition",
+     "value": "The paper defines Optimal Parameter Resilience (OPR): a cost function exhibits OPR to a noise model if the noise does not shift the global minima in parameter space, so the optimal parameters are not changed by the noise.",
+     "anchor": "Appendix G, p.15",
+     "quotes": [
+      "A cost function exhibits OPR to a given noise model if this noise does not shift the global minima in parameter space, i.e., if the optimal parameters are not changed by the noise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper states the definition it uses in Appendix G, p.15 (taken from Ref. [60]).",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-opr-global-cost-depolarizing",
+     "value": "The paper proves that the normalized global cost function has the same minimizing parameters with and without global depolarizing noise, that is, it exhibits OPR, under the assumptions that noise affects the real and imaginary parts to an equal extent and that circuit depth is dominated by the ansatz.",
+     "anchor": "Appendix G.1, p.15",
+     "quotes": [
+      "Let us first consider global depolarizing noise, which",
+      "We assume noise affects the estimation of the real and imaginary parts of",
+      "the depth of the circuit will likely be dominated by",
+      "This proves our desired statement of OPR, since it shows that the optimal parameters are unaffected by the noise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix G.1, p.15, with the noise model and the assumptions quoted.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The proof assumes the number of circuit layers is the same for all terms of the cost and that the maximally mixed state gives zero expectation; real devices may violate these."
+    },
+    {
+     "id_suggestion": "vqls-opr-local-cost-noise",
+     "value": "The paper proves OPR for the normalized local cost function under global depolarizing noise, and states that the normalized local cost also exhibits OPR for noise that includes both global depolarizing noise and symmetric measurement noise.",
+     "anchor": "Appendix G.2, p.16",
+     "quotes": [
+      "Hence we have proven OPR for C˜L under global depolarizing noise.",
+      "This means that C˜L exhibits OPR to a noise model that includes both global depolarizing as well as symmetric measurement noise."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Proved in Appendix G.2, p.16, under the stated assumptions; the statement is quoted.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The proof notes the faithfulness property corresponds to OPR assuming the ansatz can express the true solution."
+    },
+    {
+     "id_suggestion": "vqls-noise-models-limit",
+     "value": "The authors state that they consider only relatively simple noise models, global depolarizing noise and measurement noise, and leave more complicated noise models for future work.",
+     "anchor": "Appendix G, p.15",
+     "quotes": [
+      "We leave the analysis of more complicated noise models for future work."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The paper states the limit on its own noise analysis in Appendix G, p.15.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-pec-certification-overhead",
+     "value": "The authors state that the procedure based on probabilistic error cancellation shows that, with polynomial overhead, one can verify whether the solution is optimal by satisfying the termination conditions.",
+     "anchor": "Section 2.1.8, p.6",
+     "quotes": [
+      "The above procedure based on PEC shows that, with polynomial overhead, we can verify if the solution is optimal by satisfying the termination conditions."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "The statement rests on a cited sampling result and a short argument, with no experiment.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The argument also requires the gates of the device to form a basis for the unitary operations (quoted on p.6) and the overhead includes the negativity gamma, whose size is not bounded in the paper."
+    },
+    {
+     "id_suggestion": "vqls-pec-sample-count-cited",
+     "value": "The authors state, citing other work, that to achieve a given precision delta one can take a number of samples equal to the square of the ratio of the negativity gamma to delta.",
+     "anchor": "Section 2.1.8, p.6",
+     "quotes": [
+      "one can take M = (γβ/δ)2 samples."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-ising-qlsp-setup",
+     "value": "The authors set J = 0.1 for the Ising-inspired QLSP and choose the parameters zeta and eta so that the smallest eigenvalue of A is 1/κ and its largest eigenvalue is 1.",
+     "anchor": "Section 2.2.1, p.7",
+     "quotes": [
+      "Here, we set J = 0.1.",
+      "The parameters ζ and η are chosen such that the smallest eigenvalue of A is 1/κ and its largest eigenvalue is 1"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own simulation setup in Section 2.2.1, p.7.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-heuristics-no-finite-sampling",
+     "value": "The authors state that the heuristic scaling simulations are done without finite sampling, and that the time-to-solution is the number of exact cost function evaluations needed to guarantee that epsilon is below a specified value.",
+     "anchor": "Section 2.2, p.7",
+     "quotes": [
+      "and we simulate VQLS without finite sampling.",
+      "we quantify the run time of VQLS with the time-to-solution, which refers to the number of exact cost function evaluations during the optimization needed to guarantee that ϵ is below a specified value."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "definition",
+     "certainty_reason": "The paper defines time-to-solution and states its simulation setting in Section 2.2, p.7.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "Time-to-solution counts exact cost evaluations, so it is not a count of circuit shots on a device."
+    },
+    {
+     "id_suggestion": "vqls-heuristics-epsilon-from-cost",
+     "value": "The authors state that in all their heuristics they use the value of the cost, combined with the precision bound, to determine the worst-case epsilon, and that computing epsilon directly from the unknown exact solution would be cheating.",
+     "anchor": "Section 2.2, p.7",
+     "quotes": [
+      "we use the value of the cost, combined with (9), to determine the worstcase ϵ.",
+      "this is essentially cheating since |x0⟩ is unknown"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own evaluation method in Section 2.2, p.7.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-ising-kappa-scaling",
+     "value": "The authors report that for the Ising-inspired QLSP, averaged over 30 runs with four layers of the layered Hardware-Efficient Ansatz and the local cost, the time-to-solution needed to achieve a given epsilon increases with kappa with a scaling that appears to be sub-linear.",
+     "anchor": "Section 2.2.1, p.7; Figure 4 caption, p.7",
+     "quotes": [
+      "Figure 4 shows that as the condition number κ is increased, the time-to-solution needed to achieve a given ϵ increases with a scaling that appears to be sub-linear.",
+      "In each case we averaged over 30 runs of the VQLS algorithm with four layers"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-ising-kappa-scaling-limit",
+     "value": "The authors state that they expect the sub-linear scaling in kappa observed for the Ising-inspired example to be specific to that example, and that the random-matrix example shows scaling closer to linear.",
+     "anchor": "Section 2.2.1, p.7",
+     "quotes": [
+      "Hence we expect that the scaling observed here is specific to this example, and indeed the example in the next subsection shows scaling that is closer to linear."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit on their own measured result in Section 2.2.1, p.7.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-linear-kappa-optimal-cited",
+     "value": "The authors state, citing Ref. [6], that linear scaling in kappa is known to be optimal in general.",
+     "anchor": "Figure 4 caption, p.7",
+     "quotes": [
+      "it is known that linear scaling is optimal in general [6]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-fig4-values-read",
+     "value": "Read from Figure 4: for epsilon = 0.002 and n = 30 the time-to-solution rises from about 23000 at kappa about 20 to about 47000 at kappa about 200.",
+     "anchor": "Figure 4, p.7",
+     "quotes": [
+      "The time-to-solution is the number of executions needed to guarantee a precision of ϵ = 0.002 (solid line) and ϵ = 0.01 (dashed line).",
+      "Curves are shown for n = 10, 20, 30 qubits."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qc",
+     "reader_inference": "A rise of about a factor of two over a tenfold increase in kappa is consistent with the sub-linear scaling the text states."
+    },
+    {
+     "id_suggestion": "vqls-ising-epsilon-scaling",
+     "value": "The authors report that for the Ising-inspired QLSP, as 1/epsilon grows, the time-to-solution exhibits a logarithmic growth.",
+     "anchor": "Section 2.2.1, p.8; Figure 5 caption, p.7",
+     "quotes": [
+      "These results show that as 1/ϵ grows, the time-to-solution exhibits a logarithmic growth.",
+      "The dependence on 1/ϵ appears to be logarithmic, i.e., linear on a logarithmic scale."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-ising-n-scaling",
+     "value": "The authors report that for the Ising-inspired QLSP with n = 6, 8, . . . , 30 and kappa = 60, 120, 200, the time-to-solution needed to guarantee a particular epsilon with kappa fixed appears to increase linearly with n, which they state corresponds to logarithmic scaling in the linear system size N.",
+     "anchor": "Section 2.2.1, p.8; Figure 6 caption, p.8",
+     "quotes": [
+      "Here we implemented VQLS with n = 6, 8, . . . , 30 and for κ = 60, 120, 200",
+      "As the number of qubits increases the time-to-solution needed to guarantee a particular ϵ with κ fixed appears to increase linearly with n.",
+      "This corresponds to logarithmic scaling in the linear system size N , analogous to that of the HHL algorithm [6]."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-fig6-values-read",
+     "value": "Read from Figure 6: for epsilon = 0.01 and kappa = 200 the time-to-solution rises from about 6000 at n about 6 to about 31000 at n = 30.",
+     "anchor": "Figure 6, p.8",
+     "quotes": [
+      "Curves are shown for ϵ = 0.01 and for κ = 60, 120, 200.",
+      "Here we implemented VQLS with n = 6, 8, . . . , 30 and for κ = 60, 120, 200"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-random-matrix-setup",
+     "value": "The authors state that for each random matrix they ran four independent instances of VQLS, repeated the procedure for 10 independent random matrices, and obtained the time-to-solution as the average over matrices of the best run for each matrix.",
+     "anchor": "Section 2.2.2, p.8",
+     "quotes": [
+      "For a given number of qubits n, we randomly created a matrix A according to (27), and we ran four independent instances of VQLS.",
+      "This procedure was then repeated for 10 independent random matrices A, and the time-to-solution was obtained as the average of the best run for each matrix."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own simulation setup in Section 2.2.2, p.8.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "Taking the best of four runs per matrix lowers the reported time-to-solution compared with a single run."
+    },
+    {
+     "id_suggestion": "vqls-random-kappa-scaling",
+     "value": "The authors report that for randomly generated matrices with n = 4, in all cases the fitted power function kappa to the m has m below 1, which they say indicates that the scaling in kappa is at worst linear.",
+     "anchor": "Section 2.2.2, p.8; Figure 7 caption, p.9",
+     "quotes": [
+      "Fig. 7(a) we show the timeto-solution versus κ for matrices randomly generated according to (27), and for n = 4.",
+      "In all cases we found m < 1, indicating that the scaling in κ for these examples is at worst linear."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study at one qubit count.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The result is for 4 qubits only, a small system."
+    },
+    {
+     "id_suggestion": "vqls-fig7a-exponents",
+     "value": "Read from Figure 7(a): the fitted power-law exponents in kappa are labeled about 0.94, about 0.97, about 0.98 and about 0.81 for four values of epsilon, with time-to-solution of about a million to about thirty million executions at four qubits.",
+     "anchor": "Figure 7(a), p.9",
+     "quotes": [
+      "For each value of ϵ the data were fitted with a power function κm and in all cases m < 1, suggesting that the κ scaling appears to be sub-linear."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qc",
+     "reader_inference": "The random-matrix time-to-solution at 4 qubits is in the millions of executions, far above the tens of thousands in the Ising-inspired runs at 10 to 30 qubits; the paper does not compare these."
+    },
+    {
+     "id_suggestion": "vqls-random-epsilon-scaling",
+     "value": "The authors report that for randomly generated matrices with n = 4, all curves of time-to-solution against epsilon were fitted with a linear function on a logarithmic x axis, so the dependence on 1/epsilon appears to be logarithmic, and that the apparent scaling with kappa and log(1/epsilon) seems to exhibit a multiplicative behavior.",
+     "anchor": "Section 2.2.2, p.8",
+     "quotes": [
+      "All curves were fitted with a linear function, and since the x axis is in a logarithmic scale, the dependence on 1/ϵ appears to be logarithmic.",
+      "the apparent scaling of the timeto-solution with κ and log(1/ϵ) seems to exhibit a multiplicative behavior.",
+      "Figure 7(b) depicts the timeto-solution versus ϵ for matrices randomly generated according to (27), and for n = 4."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-random-n-scaling",
+     "value": "The authors report that for randomly generated matrices with n = 2, . . . , 7, kappa = 10 and epsilon = 0.3, a fitted power function gives the relation y ~ n to the 8.5, which they state corresponds to polylogarithmic scaling in N.",
+     "anchor": "Section 2.2.2, p.8",
+     "quotes": [
+      "needed to guarantee ϵ = 0.3 for QLSPs with n = 2, . . . , 7.",
+      "All matrices A had condition number κ = 10.",
+      "we obtained the relation y ∼ n8.5."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study over six qubit counts.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "A fit with exponent 8.5 in n over only n = 2 to 7 is a polynomial in n; the paper's polylogarithmic reading in N is an extrapolation."
+    },
+    {
+     "id_suggestion": "vqls-hardware-setup-1024",
+     "value": "The authors state that they ran a 1024 × 1024 (10-qubit) implementation on Rigetti's 16Q Aspen-4 quantum computer for the Ising-inspired QLSP with zeta = eta = 1 and b the all-zero state, using Ry gates on each qubit as the ansatz and computing the global cost by expanding the effective Hamiltonian in Pauli operators.",
+     "anchor": "Section 2.3, p.8",
+     "quotes": [
+      "Here we present the results of a 1024 × 1024 (i.e., 10qubit) implementation of VQLS using Rigetti’s 16Q Aspen-4 quantum computer.",
+      "with ζ = η = 1, and where the vector |b⟩ = |0⟩ was the all zero state.",
+      "The ansatz consisted of Ry(αi) gates acting on each qubit."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own hardware setup in Section 2.3, p.8.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "Figure 8's legend names the hardware runs Aspen-7-10Q-B while the text and the supplement name the 16Q Aspen-4; the paper does not reconcile the two names."
+    },
+    {
+     "id_suggestion": "vqls-hardware-result-1024",
+     "value": "The authors report that in the 1024 × 1024 hardware runs, the cost function data obtained by training on the quantum computer closely matches the data from a noiseless simulator, and that for each run on the quantum processor the value of the cost function approaches zero, indicating that a good solution was found.",
+     "anchor": "Section 2.3, p.8; p.9",
+     "quotes": [
+      "As shown, the cost function data obtained by training in a quantum computer closely matches the one obtained from training on a noiseless",
+      "simulator. For each run on the QPU, the value of the cost function approaches zero, indicating that a good solution to the linear system was found.",
+      "Here we present the results of a 1024 × 1024 (i.e., 10qubit) implementation of VQLS using Rigetti’s 16Q Aspen-4 quantum computer."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical hardware result from two representative runs.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "Only the cost is reported for the 1024 x 1024 case; no observable is compared with the exact solution there, unlike the smaller systems in the supplement. Figure 8 shows the hardware cost levelling at a nonzero value."
+    },
+    {
+     "id_suggestion": "vqls-fig8-hardware-cost-limit",
+     "value": "The authors state that in Figure 8 the cost function is reduced to a value below 10^-1 for each quantum processor run, and that due to noise present in the device the cost does not go to zero.",
+     "anchor": "Figure 8 caption, p.9",
+     "quotes": [
+      "One can observe that for each QPU run the cost function is reduced to a value below 10−1.",
+      "Due to noise present in the quantum device the cost does not go to zero."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit on their own measured hardware result in the Figure 8 caption, p.9.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-fig8-cost-curve-read",
+     "value": "Read from Figure 8: the hardware runs' cost falls from about 1 to a plateau of about 0.03 to about 0.05 by about 70 iterations, while the simulator curve falls to about 0 by about 100 iterations.",
+     "anchor": "Figure 8, p.9",
+     "quotes": [
+      "Cost function CG is plotted against the number of optimization steps, where A is defined in (26)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-conclusion-scaling-efficient",
+     "value": "The authors report that, for the examples considered, they found VQLS to scale efficiently: at worst linearly in kappa, logarithmically in 1/epsilon, and polylogarithmically in the linear system size N.",
+     "anchor": "Section 3, p.9; Abstract, p.1",
+     "quotes": [
+      "we found VQLS to scale efficiently, namely, at worst linearly in κ, logarithmically in 1/ϵ, and polylogarithmically in the linear system size N",
+      "For the specific examples that we consider, we heuristically find that the time complexity of VQLS scales efficiently in ϵ, κ, and the system size N."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A conclusion from simulations of specific examples, which the authors call heuristic.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The scaling is shown for particular matrices and without finite sampling; it is not a proven complexity."
+    },
+    {
+     "id_suggestion": "vqls-finite-sampling-limit",
+     "value": "The authors state that it remains to be seen how VQLS training is affected by finite sampling, which is not accounted for in their heuristics.",
+     "anchor": "Section 3, p.9",
+     "quotes": [
+      "It remains to be seen how the VQLS training is affected by finite sampling, which is not accounted for in our heuristics."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit on their own measured scaling results in Section 3, p.9.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-shots-scaling-estimate",
+     "value": "The authors state that the number of shots would need to scale as (κ/ϵ) to the fourth power, although this complexity might be reduced if one does not require solution verification.",
+     "anchor": "Section 3, p.9",
+     "quotes": [
+      "Namely, the number of shots would need to scale as (κ/ϵ)4, although this complexity might be reduced if one does not require solution verification."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's estimate stated without a derivation in the paper.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "This shot estimate is much steeper than the time-to-solution scaling reported from exact cost evaluations."
+    },
+    {
+     "id_suggestion": "vqls-largest-hardware-linear-system-claim",
+     "value": "The authors state that, to their knowledge, their 1024 × 1024 implementation is the largest implementation of a linear system on quantum hardware.",
+     "anchor": "Section 3, p.9",
+     "quotes": [
+      "Furthermore, we utilized Rigetti’s Quantum Cloud Services to implement VQLS for a particular problem up to a size of 1024 × 1024, which to our knowledge is the largest implementation of a linear system on quantum hardware."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's claim about the state of the field, limited by the phrase to our knowledge.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The claim is dated to the 2019 submission; the paper is on arXiv v4 of 2023."
+    },
+    {
+     "id_suggestion": "vqls-hardware-noise-resilience-observed",
+     "value": "The authors state that with their Rigetti hardware implementation they noticed some preliminary evidence of noise resilience, namely optimal parameter resilience, where VQLS learned the correct optimal parameters despite measurement noise, decoherence and gate infidelity acting during cost evaluation.",
+     "anchor": "Section 3, p.9",
+     "quotes": [
+      "we noticed some preliminary evidence of noise resilience, along the same lines",
+      "Namely, we noticed optimal parameter resilience, where VQLS learned the correct optimal parameters despite various noise sources"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A preliminary empirical observation from one study, called preliminary by the authors.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-tradeoff-gate-complexity-iterations",
+     "value": "The authors state that their variational approach trades the gate complexity of non-variational algorithms for the number of iterations at a fixed circuit depth, and that the condition number dependence enters through the stopping criterion.",
+     "anchor": "Section 3, p.10",
+     "quotes": [
+      "In effect, our variational approach trades the gate complexity of non-variational algorithms with the number of iterations for a fixed circuit depth.",
+      "As the condition number increases, the cost has to be lowered further in order to guarantee an error of ϵ."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's interpretation without a dedicated result.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-prior-hhl-experiments-size-cited",
+     "value": "The authors state that prior implementations of HHL on superconducting, NMR and photonic devices were limited to a 2 × 2 problem, and that an NMR implementation of an adiabatic-inspired algorithm for an 8 × 8 problem appears to be the record for a gate-based quantum computer, citing Ref. [18].",
+     "anchor": "Section 1, p.1",
+     "quotes": [
+      "but these experiments were limited to a problem size of 2 × 2.",
+      "this appears to be the current record for the largest linear system solved with a gate-based quantum computer [18].",
+      "was implemented with NMR for an 8 × 8 problem"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-hhl-complexity-cited",
+     "value": "The authors state that for sparse A and b and a fixed precision, the complexity of HHL scales polynomially in log N and κ, and that later improvements reduced it to linear κ scaling and polylogarithmic scaling in 1/epsilon.",
+     "anchor": "Section 1, p.1",
+     "quotes": [
+      "the complexity of HHL scales polynomially in log N and κ",
+      "Further improvements to HHL have reduced the complexity to linear κ scaling [7, 8] and polylogarithmic scaling in 1/ϵ [9, 10]"
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-no-fast-forwarding-cited",
+     "value": "The authors state, citing Refs. [63, 64], that preparing a state epsilon-close to the correct answer by time evolution can in general only be achieved with a quantum circuit of size linear in kappa, per the no fast-forwarding theorem.",
+     "anchor": "Section 3, p.9",
+     "quotes": [
+      "In general, this can only be achieved with a quantum circuit of size linear in κ as per the “no fast-forwarding theorem” [63, 64]."
+     ],
+     "kind": "cited",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A result the paper attributes to other work.",
+     "result_type": "cited",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-sparse-decomposition-four-unitaries",
+     "value": "The paper states that Eq. (31) is a decomposition of a d-sparse matrix A as a linear combination of 4 unitaries with equal weights of d/4.",
+     "anchor": "Appendix A, p.10",
+     "quotes": [
+      "Equation (31) is a decomposition of A as a linear combination of 4 unitaries with equal weights of d/4."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "The decomposition is constructed in Appendix A, p.10, from a construction attributed to Ref. [8].",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-sparse-oracle-queries",
+     "value": "The authors state that both Ux and Uy use 3 queries to the oracle OA, so each unitary in the decomposition uses 6 queries.",
+     "anchor": "Appendix A, p.11",
+     "quotes": [
+      "Since both Ux and Uy use 3 queries to OA, each unitary uses 6 queries."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A resource count stated without a separate derivation.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-sparse-prefactor-limit",
+     "value": "The authors state that the sparse-matrix decomposition has a prefactor proportional to d, so each unitary's expectation value must be estimated with precision inversely proportional to d, and that the approach can only be used for sparse matrices where d is much smaller than N.",
+     "anchor": "Appendix A, p.11",
+     "quotes": [
+      "For this reason we can only use this approach for sparse matrices where d ≪ N .",
+      "we have to estimate the expectation value of each unitary with a precision that is inversely proportional to d."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit on their own construction in Appendix A, p.11.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-variable-ansatz-method",
+     "value": "The authors state that for the random-matrix heuristics the variable-structure ansatz is randomly initialized and optimized in alternating inner and outer loops, where the outer loop randomly grows the circuit by inserting parametrized gates that compile to identity.",
+     "anchor": "Appendix E, p.14",
+     "quotes": [
+      "Then, the optimization is performed in two alternating loops: an inner loop and an outer loop.",
+      "the circuit is randomly grown by inserting into V (θ) a sequence of parametrized gates which compile to identity"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own optimization method in Appendix E, p.14.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-gradients-same-circuits",
+     "value": "The authors state that analytical gradients of the cost functions can be computed with the same circuits as the cost functions, the Hadamard-Overlap Test and the Hadamard Test, which enables gradient-descent optimization.",
+     "anchor": "Appendix F, p.14",
+     "quotes": [
+      "Here we derive analytical expressions for the gradients",
+      "ents can be computed with the same circuits as those",
+      "Hence the gradient of the local cost functions, CL and CL, can also be computed with the circuits in Sec. C."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "proved result",
+     "certainty_reason": "Derived in Appendix F, p.14, with the gradient formulas.",
+     "result_type": "theoretical",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": "The gradients are derived but no gradient-based training run is reported."
+    },
+    {
+     "id_suggestion": "vqls-8x8-setup",
+     "value": "The authors state that for the 8 × 8 scaling study the three matrices A1, A2 and A3 have minimum-eigenvalue degeneracy g = 1, 2, 4 respectively, each data point is averaged over 1000 runs, and the ansatz uses randomly initialized parameters.",
+     "anchor": "Supplemental Section A.1, p.20",
+     "quotes": [
+      "The degeneracy of each matrix is g = 1, 2, 4, respectively.",
+      "For each data point in Fig. S2, we implemented and averaged over 1000 runs of VQLS.",
+      "Here we study the scaling of the VQLS algorithm for 8 × 8 systems."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Supplemental Section A.1, p.20.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-8x8-kappa-scaling",
+     "value": "The authors report that for the 8 × 8 systems the kappa scaling is efficient for the problems considered, regardless of the degeneracy g, and for all four cost functions.",
+     "anchor": "Supplemental Section A.1, p.20",
+     "quotes": [
+      "These results show that the κ scaling is efficient for the problems considered (regardless of the value of g considered).",
+      "It is worth noting that this efficient scaling holds for all of our cost functions.",
+      "Here we study the scaling of the VQLS algorithm for 8 × 8 systems."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-8x8-cost-function-comparison",
+     "value": "The authors report that the unnormalized cost functions have slightly better performance for the A1 and A2 matrices, although all four cost functions perform similarly for A3, which they say indicates that the performance of different cost functions is problem dependent.",
+     "anchor": "Supplemental Section A.1, p.20",
+     "quotes": [
+      "The unnormalized cost functions have slightly better performance for the A1 and A2 matrices, although all four cost functions perform similarly for A3, indicating that the performances of different cost functions is problem dependent."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The main text, Section 2.1.2, p.3, says the normalized and unnormalized global costs have similar performance for the problems considered."
+    },
+    {
+     "id_suggestion": "vqls-qaoa-kappa-scaling",
+     "value": "The authors report that for the QAOA ansatz with p = 1 on a three-qubit QLSP, for each of the three values of epsilon considered the scaling with kappa is sub-exponential, so VQLS with QAOA also scales efficiently in the condition number.",
+     "anchor": "Supplemental Section A.2, p.20; Figure S3 caption, p.21",
+     "quotes": [
+      "For each of the three values of ϵ considered, the scaling with κ is sub-exponential.",
+      "Finally, we emphasize that these results were obtained with only p = 1 round of QAOA, and remark that additional rounds p > 1 may lead to better performance."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical simulation result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "Sub-exponential is a weaker statement than the sub-linear or linear scaling reported for the hardware-efficient ansatz."
+    },
+    {
+     "id_suggestion": "vqls-qaoa-setup-100-runs",
+     "value": "The authors state that the QAOA time-to-solution is obtained by exactly computing epsilon, with VQLS implemented 100 times with randomly initialized parameters for each kappa, and kappa varied over a range the text layer prints as 100 to 103 (a range of powers of ten).",
+     "anchor": "Supplemental Section A.2, p.20",
+     "quotes": [
+      "For this small scaleimplementation we obtained the time-to-solution be exactly computing ϵ.",
+      "The condition number was varied from κ = 100 to κ = 103.",
+      "For each κ, VQLS was implemented 100 times with the parameters randomly initialized."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own setup in Supplemental Section A.2, p.20.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "method",
+     "reader_inference": "Here epsilon is computed from the exact solution, unlike the main-text heuristics that use the cost bound."
+    },
+    {
+     "id_suggestion": "vqls-qaoa-scaling-driver-time",
+     "value": "The authors state that for the QAOA ansatz they expect the number of layers p to need to increase with kappa for fixed epsilon, and that evolving with the driver Hamiltonian for a longer time, by scaling the odd-indexed parameters by a value that grows with kappa, can alleviate this issue.",
+     "anchor": "Supplemental Section A.2, p.20",
+     "quotes": [
+      "we expect that for fixed ϵ the number of layers p must increase with κ.",
+      "we can also alleviate this issue by evolving with the driver Hamiltonian HD for a longer time."
+     ],
+     "kind": "claimed",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An author's expectation supported by landscape plots, not a result.",
+     "result_type": "claim",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-rigetti-32x32-cost-plateau",
+     "value": "The authors report that for every run of the 32 × 32 Rigetti implementation, the local cost function achieved a value of about 7 × 10 to the minus 2, and that hardware noise prevented further cost reduction.",
+     "anchor": "Supplemental Section A.3, p.20; p.21; Figure S4 caption, p.22",
+     "quotes": [
+      "For every run, the local cost function CL of (6) achieved a value of ∼ 7 × 10−2 (hardware noise prevented further cost reduction).",
+      "to 32 × 32. We additionally recall that the matrices A"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical hardware result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-rigetti-32x32-trivial-bound",
+     "value": "The authors state that the cost value reached on the 32 × 32 hardware runs led to a trivial bound on epsilon through the precision bound, and that they instead verified solution quality by measuring expectation values of Hermitian observables, finding D(M) squared no larger than 0.01 for all observables considered.",
+     "anchor": "Supplemental Section A.3, p.20; p.21",
+     "quotes": [
+      "While this cost value led to a trivial bound on ϵ via (9), we nevertheless found the solution |x⟩ to be of high quality.",
+      "For all M we considered, D(M )2 was no larger than 0.01, and hence the results have a good agreement with the exact solution.",
+      "to 32 × 32. We additionally recall that the matrices A"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical hardware result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "On hardware the certification bound of the main text gave no guarantee here, so quality rests on the observable comparison; the precision-bound termination criterion was not demonstrated on hardware."
+    },
+    {
+     "id_suggestion": "vqls-rigetti-2x2-relaxation-failure",
+     "value": "The authors state that in the one hardware example in which the cost was not reduced to the low values of the other examples (the 2 × 2 system whose solution is |1⟩), the effect of relaxation to the state |0⟩ in the quantum device likely significantly affected the result quality.",
+     "anchor": "Supplemental Section A.3, p.21",
+     "quotes": [
+      "In this particular case, the solution of the 2 × 2 linear system is |x0⟩ = |1⟩. Therefore, one may note the effect of relaxation to the state |0⟩ in the quantum device, which likely significantly affected the result quality."
+     ],
+     "kind": "shown",
+     "claim_type": "absence",
+     "fidelity": "exact",
+     "certainty_suggestion": "high",
+     "high_basis": "stated limit",
+     "certainty_reason": "The authors state the limit on their own measured hardware result in Supplemental Section A.3, p.21.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The relaxation explanation is the authors' likely cause, not a tested one."
+    },
+    {
+     "id_suggestion": "vqls-rigetti-cost-below-0.1-except-b",
+     "value": "The authors report that across the hardware examples of Figure S5 the cost function is reduced to values of about 0.1 or less for every example, except for the case depicted in panel (b).",
+     "anchor": "Supplemental Section A.3, p.21; Figure S5 caption, p.24",
+     "quotes": [
+      "It is worth mentioning that the cost function is reduced to values ≲ 0.1 for every example, except for the case depicted in panel (b)."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical hardware result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-figS5-optimizer-spikes",
+     "value": "The authors state that the classical optimizer in the Figure S5 hardware runs is the Powell method, an unconstrained bi-directional search, and that its randomization occasionally leads to spikes in the cost function that quickly deteriorate as the optimizer reverts towards better parameters.",
+     "anchor": "Supplementary Figure S5 caption, p.24",
+     "quotes": [
+      "The classical optimization algorithm",
+      "employed is the Powell method which uses an unconstrained bi-directional search.",
+      "Randomization in this algorithm occasionally"
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "high",
+     "high_basis": "setup",
+     "certainty_reason": "The paper states its own optimizer in the Figure S5 caption, p.24.",
+     "result_type": "setup",
+     "from_figure": false,
+     "context": "qml",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-figS5b-cost-plateau-read",
+     "value": "Read from Figure S5 panel (b): for the 2 × 2 system A = 1 + 0.25 Z with b = X|0>, all five runs level at a cost of about 0.45 and do not fall below about 0.4 over about 60 optimization steps.",
+     "anchor": "Supplementary Figure S5(b), p.24",
+     "quotes": [
+      "(b) A2×2 = 1+0.25Z, and |b⟩ = X|0⟩."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "A value read from a figure.",
+     "result_type": "measured",
+     "from_figure": true,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-table-s1-2x2-h",
+     "value": "The authors report, in Supplementary Table S1 for the 2 × 2 system A = H with b = X|0>, a measured expectation value of 0.04 ± 0.02 for the observable Z against an exact value of 0, with D(M) squared of 0.002 ± 0.002.",
+     "anchor": "Supplementary Table S1, p.21",
+     "quotes": [
+      "0.04 ± 0.02 0.002 ± 0.002",
+      "The linear system considered is A2×2 = H, and |b⟩ = X|0⟩."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical hardware result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-table-s2-2x2-z",
+     "value": "The authors report, in Supplementary Table S2 for the 2 × 2 system A = 1 + 0.25 Z with b = X|0>, a measured expectation value of -0.819 ± 0.005 for the observable Z against an exact value of -1, with D(M) squared of 0.032 ± 0.002.",
+     "anchor": "Supplementary Table S2, p.21",
+     "quotes": [
+      "-0.819 ± 0.005 0.032 ± 0.002",
+      "The linear system considered is A2×2 = 1",
+      "+ 0.25 Z, and |b⟩ = X|0⟩."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical hardware result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "This is the case of Figure S5(b), whose cost stayed near 0.45; its D(M) squared of 0.032 is above the 0.01 level that the text reports for the 32 x 32 system."
+    },
+    {
+     "id_suggestion": "vqls-table-s3-4x4-x1h2",
+     "value": "The authors report, in Supplementary Table S3 for the 4 × 4 system A = X1 H2 with b = H1 H2|0>, a measured expectation value of 0.943 ± 0.003 for the observable Z2 (exact value 1), with D(M) squared of 0.0032 ± 0.0003, and measured values of 0.02 ± 0.04 for Z1 and for Z1Z2 (exact value 0).",
+     "anchor": "Supplementary Table S3, p.22",
+     "quotes": [
+      "⟨M ⟩exp 0.943 ± 0.003 0.02 ± 0.04 0.02 ± 0.04",
+      "D(M )2 0.0032 ± 0.0003 0.000 ± 0.002 0.000 ± 0.002",
+      "⟨M ⟩exact 1 0 0",
+      "M Z2 Z1 Z1Z2",
+      "The linear system considered is A4×4 = X1H2, and |b⟩ = H1H2|0⟩."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "exact",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical hardware result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-table-s4-4x4-z2",
+     "value": "The authors report, in Supplementary Table S4 for the 4 × 4 system A = 1 + 0.25 Z2 with b = H1|0>, a measured expectation value of 0.930 ± 0.004 for the observable Z2 (exact value 1), with D(M) squared of 0.0047 ± 0.0005.",
+     "anchor": "Supplementary Table S4, p.22",
+     "quotes": [
+      "⟨M ⟩exp 0.930 ± 0.004 0.00 ± 0.02 0.00 ± 0.02",
+      "D(M )2 0.0047 ± 0.0005 0.00000 ± 0.00006 0.00000 ± 0.00009",
+      "⟨M ⟩exact 1 0 0",
+      "M Z2 Z1 Z1Z2",
+      "these two results. The linear system considered is A4×4 =",
+      "1 + 0.25Z2, and |b⟩ = H1|0⟩."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical hardware result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-table-s5-8x8-z3",
+     "value": "The authors report, in Supplementary Table S5 for the 8 × 8 system A = 1 + 0.25 Z3 with b = H1 H2|0>, a measured expectation value of 0.88 ± 0.01 for the observable Z3 (exact value 1), with D(M) squared of 0.013 ± 0.002.",
+     "anchor": "Supplementary Table S5, p.22",
+     "quotes": [
+      "⟨M ⟩exp 0.88 ± 0.01 0.00 ± 0.04 0.00 ± 0.03",
+      "D(M )2 0.013 ± 0.002 0.0000 ± 0.0001 0.0000 ± 0.0002",
+      "⟨M ⟩exact 1 0 0 0 0 0 0",
+      "M Z3 Z2 Z2Z3 Z1 Z1Z3 Z1Z2 Z1Z2Z3",
+      "these two results. The linear system considered is A8×8 =",
+      "1 + 0.25Z3, and |b⟩ = H1H2|0⟩."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical hardware result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    },
+    {
+     "id_suggestion": "vqls-table-s6-32x32-x5",
+     "value": "The authors report, in Supplementary Table S6 for the 32 × 32 system A = 1 + 0.25 X5 with b = H to the tensor power 5 on |0>, a measured expectation value of 0.180 ± 0.030 for the first listed observable Z5 against an exact value of 0, with D(M) squared of 0.030000 ± 0.01000.",
+     "anchor": "Supplementary Table S6, p.22",
+     "quotes": [
+      "0.180 ± 0.030 0.000 ± 0.100",
+      "0.030000 ± 0.01000 0.000000 ± 0.00400",
+      "these two results. The linear system considered is A32×32 =",
+      "1 + 0.25X5, and |b⟩ = H⊗5|0⟩."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical hardware result from one study; this entry is the largest deviation in the table.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": "The 0.03 deviation for Z5 is above the 0.01 level the text reports for the other 32 x 32 system (Table S7); the text's claim of 0.01 or less refers to the Table S7 system."
+    },
+    {
+     "id_suggestion": "vqls-table-s7-32x32-x1z2",
+     "value": "The authors report, in Supplementary Table S7 for the 32 × 32 system A = 1 + 0.2 X1 Z2 + 0.2 X1 with b = H1 H3 H4 H5|0>, a measured expectation value of 0.971 ± 0.002 for the one observable whose exact value is 1, with D(M) squared of 0.0008 ± 0.0001.",
+     "anchor": "Supplementary Table S7, p.23",
+     "quotes": [
+      "0.971 ± 0.002",
+      "0.0008 ± 0.0001",
+      "⟨M ⟩exact 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+      "these two results. The linear system considered is A32×32 =",
+      "1 + 0.2X1Z2 + 0.2X1, and |b⟩ = H1H3H4H5|0⟩."
+     ],
+     "kind": "shown",
+     "claim_type": "positive",
+     "fidelity": "scoped",
+     "certainty_suggestion": "low",
+     "high_basis": "",
+     "certainty_reason": "An empirical hardware result from one study.",
+     "result_type": "measured",
+     "from_figure": false,
+     "context": "qc",
+     "reader_inference": ""
+    }
+   ]
+  }
+ ]
+}

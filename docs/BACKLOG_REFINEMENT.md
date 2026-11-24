@@ -13,7 +13,7 @@ A pass can be SHORT when little needs correcting or selecting; short is not skip
 
 ## Session structure (timeboxed, 30-60 minutes total)
 
-Prepare (read master plan + repo CHECKLIST, gather velocity actuals) -> Review (stale/obsolete items) -> Prioritize (value x effort x risk; team lead makes the final call) -> Estimate (minutes, calibrated from recorded actuals, never remembered totals; unknowns tagged `[no-history]` and timeboxed) -> Add new items -> Cleanup -> Commit (`docs: Backlog refinement - <date> - <summary>`).
+Prepare (read master plan, gather velocity actuals) -> Review (stale/obsolete items) -> Prioritize (value x effort x risk; team lead makes the final call) -> Estimate (minutes, calibrated from recorded actuals, never remembered totals; unknowns tagged `[no-history]` and timeboxed) -> Add new items -> Cleanup -> Commit (`docs: Backlog refinement - <date> - <summary>`).
 
 ## Item identification
 

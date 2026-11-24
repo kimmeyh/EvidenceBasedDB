@@ -24,6 +24,7 @@ Usage:
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -39,6 +40,37 @@ WORK = Path(r"C:\Users\kimme\AppData\Local\Temp\claude\D--Data-Harold-github-Evi
 # The briefs moved out of Temp with F114's work folder (Sprint 14 Task E, 2026-10-30), where f114_cloud reads them.
 BRIEFS = Path(r"D:\Data\Harold\EvidenceBasedDB\work\f114\briefs")
 GROUP_SIZE = 5
+
+
+def highest_group_number(groups: dict) -> int:
+    """The highest N among the ledger's gNNN names, 0 for an empty ledger (F149, Sprint 18 Task A).
+
+    A new group is named from this plus one, never from the group count: with a gap (g001, g003), the count (2)
+    would name the next group g003 and overwrite a group a reader already answers. `batch_read.next_group` uses
+    the same max rule (it skips a non-gNNN name; this refuses one). A name that is not gNNN is refused rather than skipped, so a hand-named group cannot hide.
+    """
+    numbers = []
+    for name in groups:
+        m = re.fullmatch(r"g(\d+)", name)
+        if not m:
+            raise ValueError(f"a ledger group name is not gNNN: {name!r}")
+        numbers.append(int(m[1]))
+    return max(numbers, default=0)
+
+
+def new_groups(groups: dict, rows: list[dict]) -> list[str]:
+    """Add `rows` to `groups` in new groups of GROUP_SIZE, named above the highest gNNN; return the new names.
+
+    `main()` names groups only through this function, so its test covers the line that names them (the fresh-eyes
+    review of Task A: a test of `highest_group_number` alone stayed green with `main()` back on the count).
+    """
+    start = highest_group_number(groups)
+    names = []
+    for i in range(0, len(rows), GROUP_SIZE):
+        name = f"g{start + i // GROUP_SIZE + 1:03d}"
+        groups[name] = {"records": [{"record_id": r["record_id"], "file": r["file"]} for r in rows[i:i + GROUP_SIZE]]}
+        names.append(name)
+    return names
 
 
 def stored_assertions(conn, rid: str) -> list[dict]:
@@ -72,12 +104,7 @@ def main(argv: list[str] | None = None) -> int:
     groups = json.loads(LEDGER.read_text(encoding="utf-8"))["groups"] if LEDGER.exists() else {}
     already = {r["record_id"] for g in groups.values() for r in g["records"]}
     rows = sorted((r for r in rows if r["record_id"] not in already), key=rank)
-    start = len(groups)
-    new_names = []
-    for i in range(0, len(rows), GROUP_SIZE):
-        name = f"g{start + i // GROUP_SIZE + 1:03d}"
-        groups[name] = {"records": [{"record_id": r["record_id"], "file": r["file"]} for r in rows[i:i + GROUP_SIZE]]}
-        new_names.append(name)
+    new_names = new_groups(groups, rows)
     held = [r["record_id"] for g in groups.values() for r in g["records"]]
     if len(held) != len(set(held)):
         print("a record is held twice; nothing written")
