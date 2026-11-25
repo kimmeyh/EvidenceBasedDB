@@ -237,22 +237,30 @@ def ends_in_procedural_question(message: str) -> bool:
 DECISIONS_FROM_SPRINT = 19
 ENTRY_HEADING = re.compile(r"(?m)^## ([qi]\d+)\.\s+\S.*$")
 ANSWER_LINE = re.compile(r"(?m)^- \*\*Answer\b")
-ASKED_ITEM = re.compile(r"(?m)^[ \t]*(?:#{1,6}[ \t]*)?\**[ \t]*([qi]\d+)\.[ \t]+\S")
+# An item title at a line start: "q1. Title", "## q1.", "**q1. Title**", "**q1**. Title", "- q1. Title",
+# "1. q1. Title", any case (the fresh-eyes review of f5f0e58 found the bullet, numbered and bold-id forms missed).
+ASKED_ITEM = re.compile(r"(?im)^[ \t]*(?:(?:-|\d+[.)])[ \t]+)?(?:#{1,6}[ \t]*)?\**[ \t]*([qi]\d+)\**\.[ \t]*\**[ \t]*\S")
+RECOMMENDATION = re.compile(r"\((?:Recommendation|Recommended)\)", re.IGNORECASE)
 
 
 def decisions_entries(text: str) -> dict[str, tuple[str, bool]]:
-    """id -> (the entry's full text, open?) for each "## q1. Title" entry of a DECISIONS file. An entry is open
-    until a "- **Answer" line is written under it."""
-    heads = list(ENTRY_HEADING.finditer(text))
-    out = {}
-    for i, m in enumerate(heads):
-        end = heads[i + 1].start() if i + 1 < len(heads) else len(text)
-        body = text[m.start():end]
-        first = body.find("\n") + 1 or len(body)
-        nxt = re.compile(r"(?m)^#{1,2} ").search(body, first)  # a later "# " or "## " section ends the entry
-        if nxt:
-            body = body[:nxt.start()]
-        out[m.group(1)] = (body.strip(), not ANSWER_LINE.search(body))
+    """id -> (the entry's full text, open?) for each "## q1. Title" entry of a DECISIONS file. An entry is the
+    heading and the list lines under it ("- ..." or indented); the first other non-blank line (a later heading,
+    a note after the last entry) ends it. An entry is open until a "- **Answer" line is written under it."""
+    lines = text.splitlines()
+    out, i = {}, 0
+    while i < len(lines):
+        m = ENTRY_HEADING.match(lines[i])
+        if not m:
+            i += 1
+            continue
+        body = [lines[i]]
+        i += 1
+        while i < len(lines) and (not lines[i].strip() or lines[i][:1] in ("-", " ", "\t")):
+            body.append(lines[i])
+            i += 1
+        entry = "\n".join(body).strip()
+        out[m.group(1)] = (entry, not ANSWER_LINE.search(entry))
     return out
 
 
@@ -263,20 +271,25 @@ def _flat(text: str) -> str:
 def decisions_error(message: str, repo: Path, sprint: int) -> str | None:
     """A reason when the message asks an item that is not stored, leaves out an open entry, or shows an entry
     changed; None when it asks nothing, or for a sprint before DECISIONS_FROM_SPRINT."""
-    if sprint < DECISIONS_FROM_SPRINT or "(Recommendation)" not in message:
+    if sprint < DECISIONS_FROM_SPRINT or not RECOMMENDATION.search(message):
         return None
-    asked = sorted(set(ASKED_ITEM.findall(message)))
+    asked = sorted({i.lower() for i in ASKED_ITEM.findall(message)})
     if not asked:
         return None
     path = repo / "docs" / "sprints" / f"SPRINT_{sprint}_DECISIONS.md"
     if not path.exists():
         return f"it asks {', '.join(asked)}, and {path.name} does not exist; write each item there first"
-    entries = decisions_entries(path.read_text(encoding="utf-8"))
+    try:
+        entries = decisions_entries(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError) as ex:
+        return f"{path.name} cannot be read ({type(ex).__name__}), so no item can be checked against it"
     flat = _flat(message)
     problems = [f"{i} is not stored in {path.name}" for i in asked if i not in entries]
     problems += [f"open entry {i} is left out" for i, (_, open_) in entries.items() if open_ and i not in asked]
-    problems += [f"{i} differs from its stored text" for i, (body, open_) in entries.items()
-                 if i in asked and _flat(body) not in flat]
+    # Only an open entry must be pasted whole: a line that reports an answered item ("q1. a, applied") is not a
+    # re-ask (the fresh-eyes review of f5f0e58).
+    problems += [f"{i} differs from its stored text (a 'Changed since asked' line is part of it)"
+                 for i, (body, open_) in entries.items() if open_ and i in asked and _flat(body) not in flat]
     return "; ".join(problems) or None
 
 

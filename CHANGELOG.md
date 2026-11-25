@@ -15,6 +15,14 @@ this project keeps having to replace with a step.
 
 ### 2026-11-24 onward (Sprint 19, in progress)
 
+- **fix**: Task A's fresh-eyes review (f5f0e58), each finding verified:
+  a line reporting an answered item no longer counts as a re-ask (only
+  open entries must be pasted whole); a bullet, numbered, bold-id or
+  upper-case title and "(Recommended)" now count as asking; a note after
+  the last entry no longer joins it; an unreadable DECISIONS file blocks
+  with its reason instead of failing silently. New tests, proven red with
+  the old pattern (4 of 4)
+
 - **process**: Task B (F150, #193): the full suite runs once per sprint,
   before the Manual Validation hand-over; every later commit is gated by
   `run_suite.py --changed`, and `gh pr ready` waits for CI. The workflow,

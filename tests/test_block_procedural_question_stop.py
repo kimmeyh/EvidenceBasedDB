@@ -428,12 +428,29 @@ def test_blocks_a_question_when_the_sprint_has_no_decisions_file(tmp_path):
     assert proc.returncode == 2 and "does not exist" in proc.stderr
 
 
+@pytest.mark.parametrize("message", [
+    "Done.\n\n- **q3.** A new question\n  - a. (Recommendation) Yes\n",
+    "Done.\n\n1. q3. A new question (Recommendation)\n",
+    "Done.\n\n**q3**. A new question\n- a. (Recommended) Yes\n",
+    "Done.\n\nQ3. A new question\n- a. (Recommendation) Yes\n",
+])
+def test_blocks_an_unstored_item_in_every_title_form(tmp_path, message):
+    """The fresh-eyes review of f5f0e58: a bullet, a numbered line, a bold id, an upper-case Q and
+    "(Recommended)" each slipped past the first pattern. Proven red: with the first ASKED_ITEM pattern restored,
+    all four allowed the stop."""
+    repo = _decisions_repo(tmp_path, OPEN_Q1 + "\n" + ANSWERED_Q2)
+    proc = _run_hook(repo, S19_BRANCH, _shown(OPEN_Q1) + "\n" + message)
+    assert proc.returncode == 2 and "q3 is not stored" in proc.stderr, proc.stderr
+
+
 @pytest.mark.parametrize("branch, message", [
     (S19_BRANCH, "Task A is done.\n\n" + _shown(OPEN_Q1)),             # the open entry, pasted unchanged
+    (S19_BRANCH, "q2. a was applied.\n\n" + _shown(OPEN_Q1)),          # a line reporting an answered item
     (S19_BRANCH, "Task A is done. q2 was answered a."),                 # asks nothing
     ("feature/20261113_Sprint_18", "Done.\n\n**q9. Old**\n- **a. (Recommendation)** Yes"),  # before Sprint 19
 ])
 def test_allows_an_entry_pasted_unchanged_or_no_question(tmp_path, branch, message):
-    repo = _decisions_repo(tmp_path, OPEN_Q1 + "\n" + ANSWERED_Q2)
+    # A note after the last entry is not part of it (the fresh-eyes review of f5f0e58).
+    repo = _decisions_repo(tmp_path, ANSWERED_Q2 + "\n" + OPEN_Q1 + "\nA note added later.\n")
     proc = _run_hook(repo, branch, message)
     assert proc.returncode == 0, proc.stderr
