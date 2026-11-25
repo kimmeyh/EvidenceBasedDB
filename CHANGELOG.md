@@ -15,6 +15,14 @@ this project keeps having to replace with a step.
 
 ### 2026-11-24 onward (Sprint 19, in progress)
 
+- **process**: Sprint 19 plan approved as amended (team lead, 2026-11-25):
+  q1 to q7 absorbed. F57's 151 papers and the 306 read only in part join
+  F114's ledger; F57 folded into F114; one combined list computed by
+  `scripts/reading_list.py`, ranked by F57's ranking (context, then
+  citations); 60 papers read this sprint in place of 40 + 30; a 4-sprint
+  card for papers with no abstract and no citation count. Tasks A to F,
+  issues #192 to #197
+
 - **docs**: Sprint 19 plan drafted (`docs/sprints/SPRINT_19_PLAN.md`),
   Tasks A to G (F151, F150, F155, F114 at 40, F57 at 30, F152, F153),
   with q1 to q4 for the team lead: where the 306 papers read only in
