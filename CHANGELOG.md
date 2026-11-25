@@ -15,6 +15,13 @@ this project keeps having to replace with a step.
 
 ### 2026-11-24 onward (Sprint 19, in progress)
 
+- **docs**: Sprint 19 scope selected by the team lead (2026-11-24): F151,
+  F114 at 40 papers, F150 (a one-time change to the standard process),
+  F155, F152, F153 and F57 (the highest-priority 30). F57's card
+  refreshed with a 2026-11-24 snapshot: 151 papers are F57's to read, 29
+  with a free copy (fetcher dry run); 306 papers read only in part sit on
+  no card
+
 - **process**: Sprint 19 Phase 1: sprint-18 tagged on main's merge
   commit (e85915d, PR #190); branch cut from Sprint 18's; status
   advanced; CHANGELOG reconciled (every Sprint 18 day with commits has

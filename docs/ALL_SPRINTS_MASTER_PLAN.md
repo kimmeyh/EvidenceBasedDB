@@ -408,8 +408,18 @@ F25 D1-D3 so it measures adjudication of corrected records.
 Sprint 18 carry-forward, after PR #183 merged to develop and PR #190 merged
 develop to main).
 
-- **Scope**: not yet selected (Phase 1.4 slate presented 2026-11-24).
-- **Plan**: none yet.
+- **Scope** (selected by the team lead 2026-11-24, Phase 1.4; defined,
+  never additive): F151, F114 at 40 papers this sprint ("do 40 papers
+  this sprint"), F150, F155, F152, F153 and F57 (a release of the
+  highest-priority 30). F150 is a one-time change to the standard
+  process: the team lead, "This changes the standard process so that
+  F150 does not need to be included in future sprints". F57: "Update the
+  list in case any have been read since F57 was originally created and
+  don't overlap the F114 40 papers for this sprint. Let me know how many
+  total papers still need to be read. Read in full the highest priority
+  30 papers."
+- **Plan**: `docs/sprints/SPRINT_19_PLAN.md` (Phase 3, drafted
+  2026-11-24).
 
 ## Next Sprint Candidates
 
@@ -660,6 +670,23 @@ and in git. Remaining items below.
     none (Sprint 16's 8 new papers entered with their reads); 36,209
     assertions (11,491 `high`, 97 `moderate`, 24,618 `low`). Sprint 16
     read F57's two named papers inside F114.
+  - **Snapshot as of 2026-11-24** (Sprint 19 planning; the team lead
+    asked for the list to be refreshed): 2,373 papers (1,853 at `read`,
+    520 at `seen`, none at `screened`). Of the 520: 177 are F114 ledger
+    records (F114's, not F57's); 173 are GitHub repository records; 2
+    have a read row (read and refused); 168 have no read row and name
+    an arXiv id or a DOI. Of the 168: 6 withdrawn and 2 retracted (kept
+    as records only), 2 books (F138), and F90's other 7 (HOLD, no free
+    copy), so **151 papers are F57's to read**. None has a local copy.
+    A dry run of the free-copy fetcher on 2026-11-24 (OpenAlex lookups,
+    nothing downloaded): 29 of the 151 have a free copy OpenAlex knows
+    of, 122 have none (96 closed, the rest with no PDF link). Sprint
+    17's F144 slice (`manifests/sprint17_f144_slice.json`) holds F57's
+    order for them: `qml`, `qc`, `ml`, `world`, then most cited.
+  - **Not on any card (found 2026-11-24)**: 306 papers at `read` whose
+    only reads are partial (Sprints 9 to 12, before the 2026-10-25
+    full-read rule), outside F114's ledger; 279 have a local copy. The
+    Sprint 19 plan asks where they belong.
   - Known limit (Sprint 10 finding): a record with no free copy, or one
     refused at reading, cannot reach `read`. Each release reports those
     separately, so the count that closes the item is visible.
