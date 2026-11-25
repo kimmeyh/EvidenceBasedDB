@@ -15,6 +15,22 @@ this project keeps having to replace with a step.
 
 ### 2026-11-24 onward (Sprint 19, in progress)
 
+- **feat**: Task D steps 1 and 2 (F114, F57 folded in, #195). Snapshot as
+  of 2026-11-25. `scripts/sprint19_f114_ledger.py` added 456 papers to
+  F114's ledger as one-paper groups g514 to g969: F57's 151 never read,
+  and 305 read in part (303 of the planned 306; the other 3 are GitHub
+  repositories; plus 2 at `seen` read by a subagent, which no list held).
+  Each record's `file` is its local copy (a PDF, saved page or document),
+  or "" until a copy is fetched. A second run adds nothing.
+  `scripts/reading_list.py` (q6 = a, read only on the store) lists the
+  1,305 papers to read in full, ranked by q5 = b: `first`, then context
+  (hsbc-2026, the Dirac platforms, qml, qc, ml, world, method), then
+  citation count, no count last. Counts in
+  `manifests/sprint19_reading_ranking.json`, never in the store: OpenAlex
+  548, Semantic Scholar 712 (arXiv papers OpenAlex does not count, as in
+  Sprint 9), no count 45. `tests/test_reading_list.py` fails on a paper
+  twice or a paper to read missing; proven red
+
 - **fix**: Task C fresh-eyes review of e0904f1. The free id the read
   checker names is now free of every id in the same file and of every
   id it already suggested (it had said "take smith-2020-vqe" when that id

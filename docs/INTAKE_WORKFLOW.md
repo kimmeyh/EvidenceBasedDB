@@ -12,13 +12,13 @@ typed; `tests/test_doc_counts.py` fails when it no longer matches the store.
 The counts in the dated sections below are snapshots as of their own dates.
 
 <!-- doc_counts: begin (written by scripts/doc_counts.py; do not edit by hand) -->
-Counts from the store as of 2026-11-22, printed by `scripts/doc_counts.py` (never typed):
+Counts from the store as of 2026-11-25, printed by `scripts/doc_counts.py` (never typed):
 
 - Assertions: 40,112 (HIGH 12,528, MODERATE 97, LOW 27,484, VERY-LOW 1, UNGRADED 2).
 - HIGH by the basis it started from: the paper's own setup 3,844; the paper's own definition 2,717; the paper's own stated limit 2,308; the paper's own proved result 1,650; the paper's own scope 1,432; a result proved in the paper 384; other 193.
 - LOW by the basis it started from: an empirical result from one study 8,735; the authors' own claim 7,645; a claim the source cites from other work 5,459; a theoretical result 4,333; vendor primary documentation of its own product 757; a statement about the field 382; the authors' own claim or a claim they cite 133; other 40.
 - Papers and other sources: 2,373 (read 1,853, seen 520).
-- Ledger groups: 513; with a read file 205; with a review file 192.
+- Ledger groups: 969; with a read file 205; with a review file 192.
 <!-- doc_counts: end -->
 
 ## 1. The one rule
@@ -4819,3 +4819,53 @@ instruction to do as recommended, it takes its recommendation (a).
 - **Confirmed, 2026-11-23** (team lead, verbatim: "q11. a q14 a"): q11 = a
   (card F153, as applied) and q14 = a (no card for this repository, as
   applied). No change follows.
+
+## 82. F114 at 60 papers from one list, F57 folded in (Sprint 19 Task D)
+
+Every count is a snapshot as of 2026-11-25. This section is written
+before any of its manifests is applied (sections 11 to 13), and is
+added to as the release runs.
+
+- **The ledger takes every paper still to read** (q1, and the team
+  lead's "Add the 306 to F114 list before updating the combined list
+  with re-calculated priorities using the F114 method").
+  `scripts/sprint19_f114_ledger.py` adds, as one-paper groups g514 to
+  g969 named by `sprint13_g_ledger.new_groups`: F57's 151 papers that
+  were never read (no read row, an arXiv id or a DOI, not withdrawn or
+  retracted, not a book (F138), not F90's 7), then 305 papers read in
+  part outside the ledger. 303 of these are the planned 306 (the other 3
+  are GitHub repositories); 2 are records at `seen` that a first-pass
+  subagent read in part and no list held. A record's `file` is its local
+  copy, a PDF, a saved page or a document (`store.quotes.source_text`
+  reads each), or "" until a copy is fetched; the script fills it in when
+  one is. A second `--write` adds nothing.
+- **One list** (q6 = a): `scripts/reading_list.py`, read only on the
+  store, lists the 1,305 papers in the ledger not read in full: each
+  with its group, contexts, citation count, what it needs (never read,
+  read in part, or read and not applied) and its copy (1,003 local, 86
+  on arXiv, 213 with a DOI only, 3 with none). Not listed, each with its
+  reason in the script: papers read in full, GitHub repositories (8 of
+  them in the ledger), withdrawn and retracted papers, the books (F138)
+  and F90's 7.
+- **The order** (q5 = b): F114's steps 1 to 3 first (the manifest's
+  `first` list), then F57's ranking across the whole list: context
+  (`hsbc-2026`, the Dirac platforms, `qml`, `qc`, `ml`, `world`,
+  `method`), then the citation count, most cited first, a paper with no
+  count after the counted ones, then the record id.
+- **The counts** (`manifests/sprint19_reading_ranking.json`, never the
+  store): OpenAlex by DOI, an arXiv id as its DataCite DOI, in batches
+  of 50 with the key in the request header only; then Semantic Scholar's
+  batch endpoint for each arXiv paper OpenAlex does not count, as
+  `scripts/sprint9_f80_slice.py` did in Sprint 9. The plan named OpenAlex
+  only; OpenAlex counted 548 of the 1,305, so without the second source
+  most arXiv papers would have ranked last for want of a count.
+  Semantic Scholar counted 712; 45 have no count (`null`, which is not
+  0). User agent "EvidenceBasedDB-fetcher/1.0".
+  `tests/test_reading_list.py` fails if a paper is in two groups or twice
+  in the list, or if a paper to read is missing from it.
+- **The 60** (q2, q3): the one new paper on Christophe Pere's list (arXiv
+  2611.27815, through the intake door, the list's new commit recorded)
+  is first; then the top of the list. A paper whose copy cannot be had
+  (no free copy, a refused download, a book) is noted here and the next
+  one is taken, until 60 are read. The selection is saved as `selected`
+  in the ranking manifest.
