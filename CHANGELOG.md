@@ -15,6 +15,19 @@ this project keeps having to replace with a step.
 
 ### 2026-11-24 onward (Sprint 19, in progress)
 
+- **feat**: Task C (F155, #194): `store/assertion_ids.py` with
+  `unique_assertion_id(record_id, name, taken)` (`prefixed`'s rule: the
+  record id's author and year, then more, before the name, until free).
+  `scripts/sprint13_g_check.py --free-ids` refuses a new assertion id that
+  the store, another group's file or saved papers of the release, an
+  earlier paper of the same file, or the record's own stored assertions
+  hold, and names the free id; a missing store is a problem, never a pass.
+  `scripts/f146_checks.py` names the given id one character from an
+  answered id that was not given. Sprint 18's g352 `vqe-definition`
+  collision reproduced (`live_store`) and given the free id review chose.
+  Proven red by injection (4 tests). Sprint 19's reader prompts run the
+  checker with `--free-ids` (Task D)
+
 - **fix**: Task A's fresh-eyes review (f5f0e58), each finding verified:
   a line reporting an answered item no longer counts as a re-ask (only
   open entries must be pasted whole); a bullet, numbered, bold-id or

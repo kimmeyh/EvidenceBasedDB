@@ -6,7 +6,7 @@ quote verbatim in the source's text layer, every figure in a value held by
 its own quotes, no stray quote mark), plus the shape this task's prompt asks
 for: a verdict on every stored assertion given to the reader, a full read or
 a reason for each part not read, and the grading fields. Read-only: it
-writes nothing and never opens the store.
+writes nothing, and opens the store (read only) only for `--free-ids`.
 
 Usage:
   python scripts/sprint13_g_check.py <group file> <group brief>
@@ -21,6 +21,10 @@ With --partial the file need not hold every record of the brief.
                                  its anchor names
   ... --telemetry                F139: add this run's quote checks and text-cache misses to the group's telemetry
                                  file (scripts/read_telemetry.py; the group is the brief's file name), when it has one
+  ... --free-ids                 F155 (Sprint 19): refuse a new assertion id that a record in the store, another
+                                 group's file of the release, an earlier paper of this file or one of the record's own
+                                 stored assertions already holds, and print the free id `unique_assertion_id` gives.
+                                 This one reads the store, read only; a missing store is a problem, never a pass
 """
 from __future__ import annotations
 
@@ -237,6 +241,38 @@ def paper_problems(p: dict, given: set[str], brief_file: str = "", text_file: st
     return out
 
 
+LOCAL = Path(r"D:\Data\Harold\EvidenceBasedDB\work\f114\local")
+GROUP_FILE_DIRS = (LOCAL / "reads", ROOT / "manifests" / "sprint13_g_reads")
+
+
+def other_groups_ids(own_file: Path, group: str, local: Path = LOCAL, dirs=GROUP_FILE_DIRS) -> set[str]:
+    """The new assertion ids in every other group's file and in every other group's saved papers (a reader's
+    `tmp_<group>/done/*.json`), so two readers of one release never choose one id."""
+    from store.assertion_ids import group_file_ids
+    files = [f for d in dirs for f in Path(d).glob("group_*.json")
+             if f.resolve() != Path(own_file).resolve() and f.stem != f"group_{group}"]
+    files += [f for t in Path(local).glob("tmp_*") if t.name != f"tmp_{group}" for f in (t / "done").glob("*.json")]
+    return group_file_ids(files)
+
+
+def id_problems(data: dict, given: dict[str, set[str]], taken: set[str]) -> list[str]:
+    """F155: each new assertion id that is already held, with the free id to take instead."""
+    from store.assertion_ids import unique_assertion_id
+    out, seen = [], set()
+    for p in data.get("papers", []):
+        rid = p.get("record_id", "?")
+        for a in p.get("assertions", []):
+            aid = a.get("id_suggestion") or a.get("id")
+            if not aid:
+                continue
+            held = taken | seen | given.get(rid, set())
+            if aid in held:
+                out.append(f"{rid}/{aid}: id {aid} is already held (store, another group, this file or a stored "
+                           f"assertion of this record); take {unique_assertion_id(rid, aid, held)}")
+            seen.add(aid)
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     args = list(sys.argv[1:] if argv is None else argv)
     text_file = ""
@@ -258,6 +294,16 @@ def main(argv: list[str] | None = None) -> int:
                  for x in paper_problems(p, given.get(p.get("record_id"), set()), files.get(p.get("record_id"), ""),
                                          text_file,
                                          contexts.get(p.get("record_id"), {}) if "--sprint15" in args else None)]
+    if "--free-ids" in args:
+        from store import script_paths
+        from store.assertion_ids import store_ids
+        try:
+            taken = store_ids(script_paths(__file__)[1])
+        except FileNotFoundError as ex:
+            problems.append(f"--free-ids: {ex}")
+        else:
+            taken |= other_groups_ids(Path(args[0]), Path(args[1]).stem)
+            problems += id_problems(data, given, taken)
     for x in problems:
         print(x)
     print(f"{len(problems)} problems")
