@@ -35,8 +35,9 @@ requirements files) runs the full suite, and so does a change no test
 names: an empty pick is not proof that nothing reads it. The changes are
 the working tree's against HEAD, plus the commits since `--since REF`
 when given. CI's set
-(`-m "not live_store"`) still runs on the PR; the full suite runs twice a
-sprint.
+(`-m "not live_store"`) still runs on the PR. The full suite runs once a
+sprint, before the Manual Validation hand-over (F150, Sprint 19); every
+later commit is gated by `--changed`, and `gh pr ready` waits for CI.
 
 A store write changes no repository file, so `--changed` alone never saw
 one (Sprint 12 retrospective I1). The verdict file also records the
@@ -266,7 +267,7 @@ def verdict(rc: int, before: str, after: str, summary: str = "") -> str:
 
 def full_run_already_passed(last: dict | None, tree: str, stamp: str | None) -> bool:
     """F140 q7 (team lead, 2026-11-07: a): a full run is not repeated when this tree, and this store, already passed
-    the full suite: the second full run of a sprint whose retrospective changed nothing proves nothing new."""
+    the full suite: a repeated full run of an unchanged tree and store proves nothing new."""
     return bool(last and last.get("verdict") == "PASSED" and last.get("args") == [] and last.get("tree") == tree
                 and last.get("tree_after") == tree and stamp is not None and last.get("store_checked") == stamp)
 

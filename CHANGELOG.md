@@ -15,6 +15,15 @@ this project keeps having to replace with a step.
 
 ### 2026-11-24 onward (Sprint 19, in progress)
 
+- **process**: Task B (F150, #193): the full suite runs once per sprint,
+  before the Manual Validation hand-over; every later commit is gated by
+  `run_suite.py --changed`, and `gh pr ready` waits for CI. The workflow,
+  the checklist (Phases 5 and 7) and `scripts/run_suite.py` say once;
+  `tests/test_full_suite_once.py` fails on "twice" or on a workflow that
+  stops naming `--changed` as the gate, proven red by injection. The
+  checklist's Phase 5 line no longer names the export check retired in
+  ADR-0004 A7
+
 - **feat**: Task A (F151, #192): every q and i stored in full in
   `docs/sprints/SPRINT_N_DECISIONS.md` before it is shown;
   `SPRINT_19_DECISIONS.md` holds q1 to q7 with the team lead's answers.

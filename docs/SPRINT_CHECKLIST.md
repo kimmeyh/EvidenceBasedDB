@@ -31,7 +31,7 @@ Consult at EVERY phase boundary (open this file in the same turn; walk lines wit
 - [ ] Provenance discipline: every record's `provenance` field set before commit
 
 ## Phase 5: Review & Validation
-- [ ] Full suite green; committed export matches a fresh regeneration from the store (`tests/test_export_currency.py`)
+- [ ] Full suite green (`python scripts/run_suite.py`), run once this sprint, before the hand-over (F150); after it, every commit is gated by `python scripts/run_suite.py --changed`
 - [ ] Plan acceptance criteria walked line by line WITH EVIDENCE
 - [ ] Handed to team lead for manual validation (questions correct from here); every hand-over decision stored in `SPRINT_N_DECISIONS.md` first, and every open entry re-shown from it in each message that needs an answer (F151)
 - [ ] Manual Validation list contains ONLY end-user functionality and team-lead decisions; no test run, dry run, byte-identity check or data spot-check appears in it (those are done before hand-over; state in one line that they passed)
@@ -45,6 +45,7 @@ Consult at EVERY phase boundary (open this file in the same turn; walk lines wit
 - [ ] 7-step protocol run in order (SPRINT_RETROSPECTIVE.md); 16 categories x 4 roles, verbatim, no placeholders
 - [ ] Improvements proposed + dispositioned (each i stored in `SPRINT_N_DECISIONS.md` first, F151); now-items committed; backlog-items -> master plan with F#s
 - [ ] Completion updates: master plan Last Completed Sprint; sprint_status updated (`CHECKLIST-Phase2-pre.md` is frozen after Sprint 18, team lead q19 = a, 2026-11-24)
+- [ ] Improvement commits gated by `python scripts/run_suite.py --changed` (no second full suite, F150); CI green on the PR
 - [ ] `gh pr ready` (ONLY here); final gate; team lead notified for approval
 
 ## Phase 8: Delivery hand-off (the finishing sprint's last phase)
