@@ -15,6 +15,12 @@ this project keeps having to replace with a step.
 
 ### 2026-11-24 onward (Sprint 19, in progress)
 
+- **docs**: Sprint 19 plan drafted (`docs/sprints/SPRINT_19_PLAN.md`),
+  Tasks A to G (F151, F150, F155, F114 at 40, F57 at 30, F152, F153),
+  with q1 to q4 for the team lead: where the 306 papers read only in
+  part belong, how F57's 30 are filled when at most 29 have a free copy,
+  which ledger papers F114's 39 are, and the plan. Full suite: once
+
 - **docs**: Sprint 19 scope selected by the team lead (2026-11-24): F151,
   F114 at 40 papers, F150 (a one-time change to the standard process),
   F155, F152, F153 and F57 (the highest-priority 30). F57's card
