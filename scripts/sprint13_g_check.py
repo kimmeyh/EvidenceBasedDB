@@ -6,7 +6,7 @@ quote verbatim in the source's text layer, every figure in a value held by
 its own quotes, no stray quote mark), plus the shape this task's prompt asks
 for: a verdict on every stored assertion given to the reader, a full read or
 a reason for each part not read, and the grading fields. Read-only: it
-writes nothing and never opens the store.
+writes nothing, and opens the store (read only) only for `--free-ids`.
 
 Usage:
   python scripts/sprint13_g_check.py <group file> <group brief>
@@ -21,6 +21,10 @@ With --partial the file need not hold every record of the brief.
                                  its anchor names
   ... --telemetry                F139: add this run's quote checks and text-cache misses to the group's telemetry
                                  file (scripts/read_telemetry.py; the group is the brief's file name), when it has one
+  ... --free-ids                 F155 (Sprint 19): refuse a new assertion id that a record in the store, another
+                                 group's file of the release, an earlier paper of this file or one of the record's own
+                                 stored assertions already holds, and print the free id `unique_assertion_id` gives.
+                                 This one reads the store, read only; a missing store is a problem, never a pass
 """
 from __future__ import annotations
 
@@ -237,6 +241,61 @@ def paper_problems(p: dict, given: set[str], brief_file: str = "", text_file: st
     return out
 
 
+LOCAL = Path(r"D:\Data\Harold\EvidenceBasedDB\work\f114\local")
+GROUP_FILE_DIRS = (LOCAL / "reads", ROOT / "manifests" / "sprint13_g_reads")
+
+
+REVIEW_DIRS = (ROOT / "manifests" / "sprint13_g_reviews", Path(r"D:\Data\Harold\EvidenceBasedDB\work\f114\review\signoff"))
+
+
+def review_ids(dirs=REVIEW_DIRS) -> set[str]:
+    """The ids a review's `id_fix` moves an assertion to, and the ids a sign-off's `add` enters: held before they
+    reach the store (`f117_build_groups.written_ids`; fresh-eyes review of e0904f1)."""
+    out = set()
+    for d in dirs:
+        for f in Path(d).glob("g*.json"):
+            try:
+                data = json.loads(f.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                continue
+            out |= set((data.get("id_fix") or {}).values()) | set(data.get("add") or {})
+    return out
+
+
+def other_groups_ids(own_file: Path, group: str, local: Path = LOCAL, dirs=GROUP_FILE_DIRS) -> set[str]:
+    """The new assertion ids in every other group's file and in every other group's saved papers (a reader's
+    `tmp_<group>/done/*.json`), so two readers of one release never choose one id. Compared by name, not by
+    resolved path (fresh-eyes review of e0904f1: resolving 323 paths took about 6 seconds a run)."""
+    from store.assertion_ids import group_file_ids
+    own = Path(own_file).name
+    files = [f for d in dirs for f in Path(d).glob("group_*.json") if f.name not in (own, f"group_{group}.json")]
+    files += [f for t in Path(local).glob("tmp_*") if t.name != f"tmp_{group}" for f in (t / "done").glob("*.json")]
+    return group_file_ids(files)
+
+
+def id_problems(data: dict, given: dict[str, set[str]], taken: set[str]) -> list[str]:
+    """F155: each new assertion id that is already held, with the free id to take instead. The free id is also free
+    of every id in this file and of every id already suggested in this run (fresh-eyes review of e0904f1: a later
+    id of the same file, or two papers given one suggestion)."""
+    from store.assertion_ids import unique_assertion_id
+    out, seen, suggested = [], set(), set()
+    in_file = {a.get("id_suggestion") or a.get("id") for p in data.get("papers", []) for a in p.get("assertions", [])}
+    for p in data.get("papers", []):
+        rid = p.get("record_id", "?")
+        for a in p.get("assertions", []):
+            aid = a.get("id_suggestion") or a.get("id")
+            if not aid:
+                continue
+            held = taken | seen | given.get(rid, set())
+            if aid in held:
+                free = unique_assertion_id(rid, aid, held | in_file | suggested)
+                suggested.add(free)
+                out.append(f"{rid}/{aid}: id {aid} is already held (store, another group, this file or a stored "
+                           f"assertion of this record); take {free}")
+            seen.add(aid)
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     args = list(sys.argv[1:] if argv is None else argv)
     text_file = ""
@@ -258,6 +317,16 @@ def main(argv: list[str] | None = None) -> int:
                  for x in paper_problems(p, given.get(p.get("record_id"), set()), files.get(p.get("record_id"), ""),
                                          text_file,
                                          contexts.get(p.get("record_id"), {}) if "--sprint15" in args else None)]
+    if "--free-ids" in args:
+        from store import script_paths
+        from store.assertion_ids import store_ids
+        try:
+            taken = store_ids(script_paths(__file__)[1])
+        except FileNotFoundError as ex:
+            problems.append(f"--free-ids: {ex}")
+        else:
+            taken |= other_groups_ids(Path(args[0]), Path(args[1]).stem) | review_ids()
+            problems += id_problems(data, given, taken)
     for x in problems:
         print(x)
     print(f"{len(problems)} problems")

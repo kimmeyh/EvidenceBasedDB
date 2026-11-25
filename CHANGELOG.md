@@ -13,7 +13,114 @@ this project keeps having to replace with a step.
 
 ## [Unreleased]
 
-### 2026-11-13 to 2026-11-21 (Sprint 18, in progress)
+### 2026-11-24 onward (Sprint 19, in progress)
+
+- **feat**: Task D step 3 (F114, #195). Roadmap-to-QML 7113ded1df to
+  24853a7acb applied (`scripts/sprint19_f114_roadmap.py`, verified backup
+  first; a second apply entered nothing): arXiv 2611.27815 enters at
+  `seen` and joins the ledger as g970, first in the list.
+  `scripts/sprint19_f114_local.py` selects the 60 from the top of the
+  list, skipping 4 with their reasons (3 menus-only saved pages, 1
+  package archive), and writes one brief per paper with its telemetry
+  file. Sprint 19's reader and review prompts: Sprint 18's with the
+  Write-tool-only sentence and `--free-ids`. Selection tests proven red.
+  Snapshot as of 2026-11-25
+
+- **feat**: Task D steps 1 and 2 (F114, F57 folded in, #195). Snapshot as
+  of 2026-11-25. `scripts/sprint19_f114_ledger.py` added 456 papers to
+  F114's ledger as one-paper groups g514 to g969: F57's 151 never read,
+  and 305 read in part (303 of the planned 306; the other 3 are GitHub
+  repositories; plus 2 at `seen` read by a subagent, which no list held).
+  Each record's `file` is its local copy (a PDF, saved page or document),
+  or "" until a copy is fetched. A second run adds nothing.
+  `scripts/reading_list.py` (q6 = a, read only on the store) lists the
+  1,305 papers to read in full, ranked by q5 = b: `first`, then context
+  (hsbc-2026, the Dirac platforms, qml, qc, ml, world, method), then
+  citation count, no count last. Counts in
+  `manifests/sprint19_reading_ranking.json`, never in the store: OpenAlex
+  548, Semantic Scholar 712 (arXiv papers OpenAlex does not count, as in
+  Sprint 9), no count 45. `tests/test_reading_list.py` fails on a paper
+  twice or a paper to read missing; proven red
+
+- **fix**: Task C fresh-eyes review of e0904f1. The free id the read
+  checker names is now free of every id in the same file and of every
+  id it already suggested (it had said "take smith-2020-vqe" when that id
+  came later in the file, and given two papers one suggestion; proven
+  red). The checker also holds review `id_fix` targets and sign-off `add`
+  ids, as `f117_build_groups.written_ids` does. Other groups' files are
+  compared by name, not by resolved path: a run takes about 10 seconds,
+  down from 13 to 23
+
+- **feat**: Task C (F155, #194): `store/assertion_ids.py` with
+  `unique_assertion_id(record_id, name, taken)` (`prefixed`'s rule: the
+  record id's author and year, then more, before the name, until free).
+  `scripts/sprint13_g_check.py --free-ids` refuses a new assertion id that
+  the store, another group's file or saved papers of the release, an
+  earlier paper of the same file, or the record's own stored assertions
+  hold, and names the free id; a missing store is a problem, never a pass.
+  `scripts/f146_checks.py` names the given id one character from an
+  answered id that was not given. Sprint 18's g352 `vqe-definition`
+  collision reproduced (`live_store`) and given the free id review chose.
+  Proven red by injection (4 tests). Sprint 19's reader prompts run the
+  checker with `--free-ids` (Task D)
+
+- **fix**: Task A's fresh-eyes review (f5f0e58), each finding verified:
+  a line reporting an answered item no longer counts as a re-ask (only
+  open entries must be pasted whole); a bullet, numbered, bold-id or
+  upper-case title and "(Recommended)" now count as asking; a note after
+  the last entry no longer joins it; an unreadable DECISIONS file blocks
+  with its reason instead of failing silently. New tests, proven red with
+  the old pattern (4 of 4)
+
+- **process**: Task B (F150, #193): the full suite runs once per sprint,
+  before the Manual Validation hand-over; every later commit is gated by
+  `run_suite.py --changed`, and `gh pr ready` waits for CI. The workflow,
+  the checklist (Phases 5 and 7) and `scripts/run_suite.py` say once;
+  `tests/test_full_suite_once.py` fails on "twice" or on a workflow that
+  stops naming `--changed` as the gate, proven red by injection. The
+  checklist's Phase 5 line no longer names the export check retired in
+  ADR-0004 A7
+
+- **feat**: Task A (F151, #192): every q and i stored in full in
+  `docs/sprints/SPRINT_N_DECISIONS.md` before it is shown;
+  `SPRINT_19_DECISIONS.md` holds q1 to q7 with the team lead's answers.
+  `tests/test_sprint_documents.py` fails on a missing field, a count of
+  "(Recommendation)" other than one, fewer than two options or a reused id;
+  the Stop hook blocks a reply that asks an unstored item, leaves out an
+  open entry, or changes an entry's text (from Sprint 19 on). Both proven
+  red by injection. The checklist, retrospective doc, workflow and
+  `CLAUDE.md` name the file
+
+- **process**: Sprint 19 plan approved as amended (team lead, 2026-11-25):
+  q1 to q7 absorbed. F57's 151 papers and the 306 read only in part join
+  F114's ledger; F57 folded into F114; one combined list computed by
+  `scripts/reading_list.py`, ranked by F57's ranking (context, then
+  citations); 60 papers read this sprint in place of 40 + 30; a 4-sprint
+  card for papers with no abstract and no citation count. Tasks A to F,
+  issues #192 to #197
+
+- **docs**: Sprint 19 plan drafted (`docs/sprints/SPRINT_19_PLAN.md`),
+  Tasks A to G (F151, F150, F155, F114 at 40, F57 at 30, F152, F153),
+  with q1 to q4 for the team lead: where the 306 papers read only in
+  part belong, how F57's 30 are filled when at most 29 have a free copy,
+  which ledger papers F114's 39 are, and the plan. Full suite: once.
+  Draft PR #191 opened; status at Phase 3.7 Plan Approval
+
+- **docs**: Sprint 19 scope selected by the team lead (2026-11-24): F151,
+  F114 at 40 papers, F150 (a one-time change to the standard process),
+  F155, F152, F153 and F57 (the highest-priority 30). F57's card
+  refreshed with a 2026-11-24 snapshot: 151 papers are F57's to read, 29
+  with a free copy (fetcher dry run); 306 papers read only in part sit on
+  no card
+
+- **process**: Sprint 19 Phase 1: sprint-18 tagged on main's merge
+  commit (e85915d, PR #190); branch cut from Sprint 18's; status
+  advanced; CHANGELOG reconciled (every Sprint 18 day with commits has
+  entries: 2026-11-13, 19, 21, 22, 23 and 24; 2026-11-14 to 18 and 20
+  had none); Sprint 18's shipped cards pruned by hand; design-document
+  currency checked
+
+### 2026-11-13 to 2026-11-24 (Sprint 18, PR #183, merged to develop 2026-11-24 and to main via PR #190 the same day; tagged sprint-18)
 
 - **process**: Sprint 18 retrospective decisions confirmed by the team lead
   (2026-11-24): i1 = a, i2 = a, i3 = a, i4 = b, i5 = b. F155 revised: every

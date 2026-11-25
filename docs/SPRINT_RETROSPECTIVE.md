@@ -27,6 +27,22 @@ serves: effective long-term, as efficient as reasonably possible, and in
 line with this repository's architecture, its agile practice and its
 risk-based, automated testing.
 
+**Stored in full before it is shown (F151, Sprint 19; team lead
+2026-11-22: "please store all quesitons, decisions and Improvement in
+full ... always re-ask with the full contents every time").** From Sprint
+19 on, every item is written first to `docs/sprints/SPRINT_N_DECISIONS.md`
+as a `## qN.` or `## iN.` entry, with an `- Asked:` date and every field
+below. The answer goes under it, verbatim, as `- **Answer** (team lead,
+YYYY-MM-DD): "..."`, the date read from the clock; a fact that changes
+after asking goes in a dated `- Changed since asked` line, never an edit.
+Every message that needs an answer re-shows EVERY open entry, pasted from
+the file unchanged. `tests/test_sprint_documents.py` fails on an entry
+without a field, without exactly one "(Recommendation)", or with a reused
+id; the Stop hook blocks a reply that asks an unstored item, leaves out an
+open entry, or changes an entry's text. A retrospective's i items are
+stored there too; the retrospective's Improvement Decisions table names
+them.
+
 Each item:
 
 ```

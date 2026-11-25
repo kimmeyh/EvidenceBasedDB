@@ -47,6 +47,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from store import script_paths  # noqa: E402
+from store.assertion_ids import near_miss  # noqa: E402
 
 _, DB_PATH, _ = script_paths(__file__)
 WORK = Path(r"D:\Data\Harold\EvidenceBasedDB\work\f146")
@@ -331,7 +332,10 @@ def problems(part: str, given: list[dict], result, controls: dict[str, str]) -> 
     if not isinstance(result, dict):
         return ["the result is not a JSON object keyed by item id"], set()
     by_id = {x["id"]: x for x in given}
-    out = [f"{k}: not an item of this run" for k in sorted(set(result) - set(by_id))]
+    # F155: an answered id one character off a given id is named (Sprint 18's a018 and a030 each mistyped one)
+    out = [f"{k}: not an item of this run" + (f"; one character from the given id {g}" if (g := near_miss(k, by_id))
+                                              else "")
+           for k in sorted(set(result) - set(by_id))]
     vocab = AUDIT_VERDICTS if part == "audit" else MAP_VERDICTS
     for k in sorted(set(result) & set(by_id)):
         r = result[k]

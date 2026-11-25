@@ -61,7 +61,7 @@ repository exists. No other F# from either source repository applies here.
 
 Sprint 18 is below; Sprint 17 follows it for continuity.
 
-### Sprint 18: The Agreement Map and the HIGH Audit, 30 Papers, and Safer Applies (2026-11-13 to 2026-11-23, PR #183, merge to develop pending the team lead)
+### Sprint 18: The Agreement Map and the HIGH Audit, 30 Papers, and Safer Applies (2026-11-13 to 2026-11-23, PR #183, merged to develop and to main via PR #190 on 2026-11-24; tagged sprint-18)
 
 Six tasks, six issues (#184-#189). **Apply**: one apply function that
 writes only the fields a review decided (F147); the ledger names a new
@@ -80,7 +80,7 @@ do-as-recommended rule. Retrospective: team lead all "Very Good"; i1
 its timings), F155 carded (i3). Full detail:
 `docs/sprints/SPRINT_18_SUMMARY.md`.
 
-### Sprint 17: Test Faster, Then Read on the API Credit (2026-11-07 to 2026-11-10, PR #174, merge to develop pending the team lead)
+### Sprint 17: Test Faster, Then Read on the API Credit (2026-11-07 to 2026-11-10, PR #174, merged to develop and to main via PR #182 on 2026-11-13; tagged sprint-17)
 
 Six tasks, six issues (#175-#180). **Tooling**: the full suite from about
 69 minutes to 7 to 11, with a test inventory and last failures first
@@ -404,25 +404,32 @@ F25 D1-D3 so it measures adjudication of corrected records.
 
 ## Current sprint
 
-**Sprint 18** (branch `feature/20261113_Sprint_18`, cut 2026-11-13 at the
-Sprint 17 carry-forward, after PR #174 merged to develop and PR #182 merged
+**Sprint 19** (branch `feature/20261124_Sprint_19`, cut 2026-11-24 at the
+Sprint 18 carry-forward, after PR #183 merged to develop and PR #190 merged
 develop to main).
 
-- **Scope** (team lead, 2026-11-18): F146, F114 (30 papers), F149, F147,
-  F145, F148.
-- **Plan**: `docs/sprints/SPRINT_18_PLAN.md`, approved 2026-11-20 (q1 = c,
-  q2 = a, q3 = a). All six tasks done; Manual Validation complete
-  (2026-11-23); retrospective done (`docs/sprints/SPRINT_18_RETROSPECTIVE.md`).
+- **Scope** (selected by the team lead 2026-11-24, Phase 1.4; defined,
+  never additive): F151, F114 at 40 papers this sprint ("do 40 papers
+  this sprint"), F150, F155, F152, F153 and F57 (a release of the
+  highest-priority 30). F150 is a one-time change to the standard
+  process: the team lead, "This changes the standard process so that
+  F150 does not need to be included in future sprints". F57: "Update the
+  list in case any have been read since F57 was originally created and
+  don't overlap the F114 40 papers for this sprint. Let me know how many
+  total papers still need to be read. Read in full the highest priority
+  30 papers."
+- **Plan**: `docs/sprints/SPRINT_19_PLAN.md` (Phase 3, drafted
+  2026-11-24).
 
 ## Next Sprint Candidates
 
-Refined 2026-11-13 after Sprint 17 (Sprint 18 Phase 1.2); Sprint 17's
-shipped cards F140, F141, F142 and F143 pruned BY HAND (Edit tool, card by
-card) the same day. F144 shipped too but stays as the record of the
-Batch API reader's rules, which F146 depends on; it is pruned when F146
-ships. F114 stays: Sprint 17 read 10 of its papers and split 161 more
-into one-paper groups (q20). Sprint 17's retrospective Category 13 became
-F149 (team lead, "i1. a i2. b i3. b i4. a").
+Refined 2026-11-24 after Sprint 18 (Sprint 19 Phase 1.2); Sprint 18's
+shipped cards F145, F146, F147, F148 and F149 pruned BY HAND (Edit tool,
+card by card) the same day, and F144 with them, since F146, the card that
+depended on its rules, has shipped (the rules live on in
+`scripts/batch_read.py`, its tests and intake section 79). F114 stays:
+Sprint 18 read 30 of its papers. Sprint 18's retrospective i3 became F155
+(team lead, "i2. a i3. a i4. b q19. a").
 Shipped and pruned per convention: F1 (Sprint 1); F3, F4, F75, F76 (Sprint
 2); F2 Phase 1, F6, F7-F10, F13, F14 (Sprint 3); F11, F15-F18, F20, F25,
 F26, F27 (Sprint 4); F5, F28, F30, F31 (Sprint 5); F32-F38, F40-F43, F47
@@ -441,7 +448,8 @@ F112 (Sprint 13; F113's unread groups carried as F114); F117, F118, F119,
 F120 and the released copies F122 and F123 (Sprint 14; F114's first
 release shipped there, and the card stays for the rest); F115, F116,
 F124 to F130 and the released copies F131 to F133 (Sprint 15); F51,
-F134 to F137 and F139 (Sprint 16); F140 to F143 (Sprint 17). F121 (a spike
+F134 to F137 and F139 (Sprint 16); F140 to F143 (Sprint 17); F144 to F149
+(Sprint 18). F121 (a spike
 carded 2026-10-30) merged into F118 the same day, team lead: "Update
 card F118 and sit this in sprint 14 after F117 completes". F39 and F57
 are permanent and stay; F95 and F98 were permanent until 2026-11-05,
@@ -662,6 +670,23 @@ and in git. Remaining items below.
     none (Sprint 16's 8 new papers entered with their reads); 36,209
     assertions (11,491 `high`, 97 `moderate`, 24,618 `low`). Sprint 16
     read F57's two named papers inside F114.
+  - **Snapshot as of 2026-11-24** (Sprint 19 planning; the team lead
+    asked for the list to be refreshed): 2,373 papers (1,853 at `read`,
+    520 at `seen`, none at `screened`). Of the 520: 177 are F114 ledger
+    records (F114's, not F57's); 173 are GitHub repository records; 2
+    have a read row (read and refused); 168 have no read row and name
+    an arXiv id or a DOI. Of the 168: 6 withdrawn and 2 retracted (kept
+    as records only), 2 books (F138), and F90's other 7 (HOLD, no free
+    copy), so **151 papers are F57's to read**. None has a local copy.
+    A dry run of the free-copy fetcher on 2026-11-24 (OpenAlex lookups,
+    nothing downloaded): 29 of the 151 have a free copy OpenAlex knows
+    of, 122 have none (96 closed, the rest with no PDF link). Sprint
+    17's F144 slice (`manifests/sprint17_f144_slice.json`) holds F57's
+    order for them: `qml`, `qc`, `ml`, `world`, then most cited.
+  - **Not on any card (found 2026-11-24)**: 306 papers at `read` whose
+    only reads are partial (Sprints 9 to 12, before the 2026-10-25
+    full-read rule), outside F114's ledger; 279 have a local copy. The
+    Sprint 19 plan asks where they belong.
   - Known limit (Sprint 10 finding): a record with no free copy, or one
     refused at reading, cannot reach `read`. Each release reports those
     separately, so the count that closes the item is visible.
@@ -887,236 +912,17 @@ and in git. Remaining items below.
   7113ded1df (2026-11-10) and adds 3 papers: arXiv 2611.08461,
   2611.10105 and 2611.08821. Sprint 17's rate: 10 papers read, reviewed
   and applied by local readers inside Tasks A to F.
-
-### Carded during Sprint 17 (2026-11-07)
-
-**F144. A Batch API reader on the $100 API credit: build it and pilot 5 papers (~240m [no-history] timebox) Priority 10** (NEW 2026-11-07, team lead at Sprint 17 Phase 1, before the slate: "add this as a backlog item - a special way to read several papers using the api token budget", with the full brief pasted; Q1 = 1 and Q2 = 1 decided in it)
-- Phase: Reading (pipeline, metered)
-- Value: this enables papers with no read row to be read in full on the
-  team lead's $100 promotional API credit before it expires on
-  2026-11-18, without local reader time, and with results the existing
-  pipeline reviews and applies.
-- Platform: the Anthropic Message Batches API (`claude-sonnet-5-5`), the
-  `ANTHROPIC_API_KEY` environment variable; `manifests/sprint13_g_ledger.json`
-  and its group builder, the brief builder, the reader prompts
-  (`manifests/sprint16_f114_reads/READER_PROMPT.md` and Sprint 15's),
-  `scripts/f114_cloud.py` (`paper_text`, briefs),
-  `scripts/sprint13_g_check.py`, `scripts/full_read_apply.py`,
-  `store/quotes.py`, `store/ocr.py`, `tests/test_reader_prompts.py`,
-  `store/write_path.py`.
-- **Facts given by the team lead (verified by them 2026-11-07; re-check
-  on platform.claude.com, pricing and batch-processing pages, before
-  building)**: the credit is $100 of promotional credit for the Agent SDK,
-  API, Batch API, Playground and Managed Agents, not Claude Code; it
-  expires 2026-11-18; no payment method is on file, so spending stops at
-  $0. Batch prices are 50% of standard: Sonnet 5.5 at $1 per MTok input
-  and $5 per MTok output. Most batches finish within 1 hour; results stay
-  29 days. The `output-300k-2026-03-24` beta raises `max_tokens` to
-  300,000 for batch requests on Sonnet 5.5 and Opus 5.5. No Batch API
-  script exists in the repository (searched 2026-11-07). The team lead's
-  forecast: $0.15 to $0.30 per paper (a forecast, not a limit).
-- **Decided (team lead, 2026-11-07)**: Q1 = 1: Batch API, Sonnet 5.5,
-  one request per paper, no tools. Q2 = 1: the records with no read row
-  (522 on 2026-11-07), in F57's relevance-ranking order; a record with no
-  local or free copy goes on the hand-download list, not into a batch.
-- **Where results go**: in the repository, in the shape the pipeline
-  already consumes (ledger groups, briefs, reader group files that
-  `sprint13_g_check.py` checks), for a later sprint's coordinator review
-  and `full_read_apply.py`. This work writes NOTHING to the store.
-- **What to build**:
-  1. Read the current pipeline first (the files under Platform).
-  2. An API version of the reader prompt: change only what a no-tool
-     request cannot do (no scripts, saved files, pushes or progress
-     files); keep every page, no cap, every verdict and rule word for
-     word; it passes `tests/test_reader_prompts.py`.
-  3. A script (for example `scripts/batch_read.py`), dry run by default,
-     that:
-     - takes the next N records in ranking order and gives them ledger
-       groups as earlier sprints did;
-     - sends one request per paper with the reader prompt, the brief and
-       the extracted text with its page markers; a page with no text
-       layer or with figures gets its page image if that fits the
-       pipeline, else is listed as not read with its reason;
-     - sets `max_tokens` high (the 300k beta) so no read is cut short,
-       never as a budget;
-     - reads the key only from `ANTHROPIC_API_KEY`, never prints it, and
-       never writes it to a file, log or commit;
-     - saves each batch's id and state to a resumable state file outside
-       git before it polls; never sends a record again once its result is
-       saved;
-     - when a batch ends, saves each raw result at once, writes each as a
-       reader group file where the pipeline reads it, runs
-       `sprint13_g_check.py` on it, and records pass or fail (a failing
-       result is kept and flagged, never dropped);
-     - records each request's input and output tokens from the API's
-       usage, computes the cost from the pricing page, and prints the
-       running total against $100;
-     - refuses a batch whose estimated cost would take the total past a
-       cap (default $95), and stops before 2026-11-18.
-  4. Tests for the rules (no resend, the spend cap, no key in output,
-     the result location), each proven red by injection; a CHANGELOG
-     entry; an INTAKE_WORKFLOW.md section if a manifest is added.
-- **Pilot**: on a new branch from the sprint branch, with a draft PR
-  (never merged by Claude). 5 papers from the top of the ranking, then
-  STOP and report as bullets: each paper's pages, tokens in and out, and
-  cost; each check result and where its files are; the total spent; the
-  measured cost per page and per paper, and how many more papers $100
-  covers at that rate; anything the no-tool read lost (figures, OCR
-  pages) against a local read.
-- **After the pilot**: (a) a recommended batch size, small enough that
-  each batch's results are saved and checked before the next goes, so a
-  lost session loses at most one batch; (b) one short prompt the team
-  lead pastes into a new session to run the next X papers in batches of
-  that size, resume from the state file, and stop at the spend cap.
-- Process: every decision question in the shape of
-  `docs/SPRINT_RETROSPECTIVE.md`, "Presenting improvements, questions and
-  decisions" (team lead, 2026-11-07; the card first said a numbered list
-  with a "Recommend N" line); the requirement echoed back before more
-  than one file is touched (CLAUDE.md).
-- Acceptance: the API reader prompt passes `tests/test_reader_prompts.py`;
-  the four rule tests exist, each proven red; 5 pilot papers sent, each
-  result saved in the repository as a reader group file with its check
-  result recorded; the spend recorded from the API's usage and under the
-  cap; the store unchanged (its stamp before and after); the pilot report,
-  the batch size and the paste-in prompt given to the team lead.
-- Depends on: nothing. Time-bound: the credit expires 2026-11-18, so the
-  build and the follow-on batches must run before then.
-
-**F145. What qubit-lab.ch's Evidence pages teach about quantum computing, and about how to show evidence (~120m [no-history] timebox) Priority 20** (NEW 2026-11-07, team lead during Sprint 17 planning: "add to backlog for next sprint - what can we learn from this site: https://qubit-lab.ch/evidence#qmc-correlation-0 about Quantum Computing", with a screenshot of the page's menu)
-- Phase: Sourcing / extraction (web source) and method review
-- Value: this enables the store to hold a practitioner's published,
-  pre-registered quantum results with their own verdicts and limits, and
-  shows this repository and Phase 2 a way of presenting evidence that a
-  reader can check.
-- Platform: https://qubit-lab.ch/evidence (read only, the UA
-  "EvidenceBasedDB-fetcher/1.0"); its public files only (for example
-  `/evidence-runs.json` and the Zenodo design, DOI
-  10.5281/zenodo.22498143); the intake door; the store.
-- What the page holds (read 2026-11-07, a summary, not yet checked
-  against the page): qubit-lab.ch, a Swiss firm offering PQC readiness
-  and quantum prototyping for financial services, publishes "Evidence,
-  not promises":
-  - Six method studies (August to September 2026): "Which method" (QAOA
-    concentration over 12,397 certified runs), "Noise & hardware" (a
-    noise ladder ending on IBM ibm_kingston, Heron r2, 156 qubits,
-    20,000 shots, unmitigated), "QSVM island", "VQC island", "Kernel
-    atlas" and "VQC atlas".
-  - Five sample runs: Quantum Monte Carlo, Portfolio, Collateral, Index
-    replication and QML classification.
-  - Its verdicts are mostly "Parity" or "No advantage demonstrated". The
-    Monte Carlo run (simulator, model evaluations) shows amplitude
-    estimation converging faster, with advantage not claimed. The
-    correlation-0 follow-up (the link the team lead gave) reports the
-    slopes unchanged and a crossover shift that does not exclude zero at
-    200 and 400 repetitions.
-  - It cites arXiv 2607.15815, "The Fourier Wall", already in the store
-    as `mancilla-2026-fourier-wall-spectra` (read), for its
-    classification method.
-  - Several studies' raw results and scripts are "on request" or gated in
-    a "Resource Room"; designs were tagged in a public repository before
-    the runs.
-- Scope:
-  1. Read the public Evidence pages and public files in full; enter
-     qubit-lab.ch as a source record (a vendor, with its conflict of
-     interest named) and each study's and run's stated result as an
-     assertion with its own limits, quotes checked. Gated or "on request"
-     material is listed, not requested.
-  2. Link each result to what the store already holds on the same
-     question (QAOA, quantum kernels and VQC, amplitude estimation, The
-     Fourier Wall, Phase 2's CVQBoost and SPECTRA results), as
-     corroborating or contradicting where it bears.
-  3. A short note on what this repository and Phase 2 could adopt from
-     the presentation: the verdict vocabulary, pre-registration tags,
-     certified run records in machine-readable form, and published
-     corrections. Each adoption is asked as its own numbered question.
-- Acceptance: the source and its assertions entered with quotes checked
-  and certainty graded (a vendor's own result, single source); each link
-  to existing assertions with its reason; the gated items listed; the
-  note's proposals asked.
-- Depends on: nothing. Target: Sprint 18 (team lead, "for next sprint").
-
-**F146. The agreement map, then the HIGH audit, on the API credit before it expires (~240m [no-history] timebox) Priority 10** (NEW 2026-11-09, team lead at Sprint 17 Manual Validation, q26 = a: "What the API credit does in Sprint 18 - option a")
-- Phase: Certainty (metered, Message Batches API)
-- Value: this enables the store to say, for each assertion, which
-  assertions from other papers support or contradict it, and to show
-  that each HIGH value is held by its own quotes. Both are judged by a
-  model, recorded with provenance, and decided by the team lead, never
-  written to a grade by the script.
-- Platform: the Anthropic Message Batches API, `ANTHROPIC_API_KEY` (read
-  only from the environment, never printed or written);
-  `scripts/batch_read.py`'s state, cap and stop rules; `store.grading`;
-  the `assertion_relations` table (42 links as of 2026-11-09: 35
-  supports, 7 contradicts).
-- Facts (a snapshot as of 2026-11-09): 37,408 assertions; 11,753 HIGH.
-  The team lead gives the credit as $97, expiring 2026-11-18; F144 had
-  spent $3.00 of its $95 cap by 2026-11-07. Batch prices, from the
-  claude-api skill's cache of 2026-11-03 (re-check on the pricing page
-  before sending): Haiku 5.5 $0.05 / $0.25 per MTok in and out, Sonnet
-  5.5 $1 / $5.
-- Scope:
-  1. The agreement map. Haiku 5.5 screens pairs of assertions from
-     different papers that share a context and a topic. Sonnet 5.5 judges
-     each pair the screen keeps: supports, contradicts or unrelated, with
-     the quotes that decide it. Results are saved as proposals, outside
-     the store.
-  2. The HIGH audit. Sonnet 5.5 checks each HIGH value against its own
-     quotes: held, held in part, or not held, with why.
-  3. Both reuse F144's rules: dry run by default, a cost forecast and a
-     worst case before each send, the cap (the credit left, less a
-     margin), nothing sent on or after 2026-11-18, a saved result never
-     sent again, a failing result kept and flagged.
-- Asked of the team lead in Sprint 18, before anything is written to the
-  store: whether "corroborated by an independent study" becomes an ADR
-  basis for HIGH (ADR-0004 amendment), and which proposals are applied.
-- Acceptance: both batches collected, the spend recorded per request,
-  the proposals counted and sampled for the team lead, nothing written
-  to the store without a decision, each rule tested and proven red.
-- Depends on: F144 (its state file and rules). Before 2026-11-18.
-
-**F147. One apply function that writes only the fields a review decided (~120m [no-history] timebox) Priority 20** (NEW 2026-11-09, team lead at Sprint 17 Manual Validation, q11 = a)
-- Phase: Store integrity (prevention)
-- Value: this enables every future applier to be safe by construction:
-  a field no review decided cannot be written, so the defect never
-  reaches the store.
-- Platform: `store/ingest.py` (`sync_assertion`,
-  `sync_verified_assertion`), `scripts/full_read_apply.py`
-  (`decided_fields`), the sprint applier scripts.
-- Evidence: an applier wrote an undecided field 4 times (4d969d9,
-  ed5ab01, aabdd49, d740d72), each needing a fix and a re-apply.
-- Scope: appliers write through one shared function that takes the
-  review's decided fields and refuses any other field, naming it. The
-  existing appliers move to it.
-- Acceptance: an applier that tries an undecided field is refused, by a
-  test proven red; the existing appliers pass through it unchanged.
-- Already done (Sprint 17): the card-template line "lists every field
-  this applier writes" in `docs/BACKLOG_REFINEMENT.md`.
-- Depends on: nothing.
-
-**F148. Counts in documents written from the store, never typed (~90m [no-history] timebox) Priority 20** (NEW 2026-11-09, team lead at Sprint 17 Manual Validation, q13 = a)
-- Phase: Documentation integrity (prevention)
-- Value: this enables a count in INTAKE_WORKFLOW.md or a sprint summary
-  to be right when written, since a script prints it from the store with
-  its date.
-- Platform: a new `scripts/doc_counts.py`; `docs/INTAKE_WORKFLOW.md`;
-  the sprint summaries.
-- Evidence: 5 or more wrong counts (5e10948, bb82d0a, 80fcbb9, 6e4bfb7,
-  6d5bcec, f1257c1).
-- Scope: `scripts/doc_counts.py` prints, or writes into a dated block,
-  the counts a document names (assertions, papers, HIGH and LOW by
-  basis, group states). ADR amendments keep their dated snapshots, as
-  CLAUDE.md requires.
-- Acceptance: the generator's block in INTAKE_WORKFLOW.md and the next
-  summary, a test that a block it wrote matches the store (live_store),
-  proven red.
-- Depends on: nothing.
-
-**F149. The ledger script names a new group from the highest number, not the count (~15m) Priority 20** (NEW 2026-11-10, Sprint 17 retrospective Category 13, the Development Team, from the fresh-eyes review of the q20 split)
-- Phase: Reading (pipeline)
-- Value: this prevents a new ledger group from reusing an existing group's name when the ledger has a gap.
-- Platform: `scripts/sprint13_g_ledger.py`; `manifests/sprint13_g_ledger.json`.
-- `sprint13_g_ledger.py` names a new group `g{len(groups) + 1}`. Today the names g001 to g509 are contiguous, so the next is g510, which is right; one deleted or skipped name would make it reuse a name. `scripts/batch_read.py`'s `next_group` already uses the highest number plus one.
-- Acceptance: the script names a new group from the highest number plus one, with a test on a ledger with a gap, proven red.
-- Depends on: nothing. Target: the Sprint 18 plan.
+- **Snapshot as of 2026-11-24** (Sprint 19 Phase 1.2, after Sprint 18's
+  30): the ledger holds 1,680 records in 513 groups; 822 have a `full`
+  read row, 858 do not, in 302 groups. Step (1): `Papers\` holds 413
+  PDFs; 145 are named by no record's `access`, and every one of them is a
+  ledger download, so none is new. Step (2): the list moved from
+  7113ded1df to 24853a7acb (2026-11-23) and adds 1 paper, not in the
+  store: arXiv 2611.27815 (Srimahajariyapong et al. 2026, "Autonomous
+  quantum machine learning via Riemannian gradient-based optimization").
+  Sprint 18's rate: 30 papers in 28 groups read in full, reviewed and
+  applied by local readers inside Tasks A to F (2,688 assertions
+  entered).
 
 ### Carded during Sprint 18 (2026-11-21)
 
