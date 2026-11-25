@@ -7,7 +7,8 @@ and were renamed after review; audit runs a018 and a030 each mistyped one given 
 Proven red by injection, 2026-11-25, with three injections at once (`unique_assertion_id` returning `name`
 unchanged, `id_problems` returning [], and the near-miss suffix removed from `f146_checks.problems`): four tests
 failed (the taken name, the read checker, the audit checker, and the g352 reproduction); the three pure helpers'
-tests stayed green, as they must. Restored, 7 passed.
+tests stayed green, as they must. Restored, 7 passed. The fresh-eyes review of e0904f1 added two tests (the free
+id free of the file and of other suggestions, proven red; review and sign-off ids held).
 """
 from __future__ import annotations
 
@@ -60,6 +61,24 @@ def test_the_read_checker_refuses_a_held_id_and_names_the_free_one():
     assert "smith-2020-x/new-one" in out[2] and "take smith-2020-new-one" in out[2]
     assert check.id_problems({"papers": [{"record_id": RID, "assertions": [{"id_suggestion": "free"}]}]},
                              {}, {"review-scope"}) == []
+
+
+def test_the_free_id_is_free_of_this_file_and_of_other_suggestions():
+    """Fresh-eyes review of e0904f1: "take smith-2020-vqe" when that id comes later in the same file, and two papers
+    each told "take smith-2020-qaoa". Proven red 2026-11-25 with the suggestion checked against `held` alone."""
+    data = {"papers": [
+        {"record_id": "smith-2020-a", "assertions": [{"id_suggestion": "vqe"}, {"id_suggestion": "smith-2020-vqe"},
+                                                     {"id_suggestion": "qaoa"}]},
+        {"record_id": "smith-2020-b", "assertions": [{"id_suggestion": "qaoa"}]},
+    ]}
+    out = check.id_problems(data, {}, {"vqe", "qaoa"})
+    frees = [p.rsplit("take ", 1)[1] for p in out]
+    assert frees == ["smith-2020-a-vqe", "smith-2020-qaoa", "smith-2020-b-qaoa"], out
+
+
+def test_review_ids_holds_id_fix_targets_and_signoff_adds(tmp_path):
+    (tmp_path / "g900.json").write_text(json.dumps({"id_fix": {"old": "moved-to"}, "add": {"added-one": {}}}))
+    assert check.review_ids((tmp_path,)) == {"moved-to", "added-one"}
 
 
 def test_other_groups_ids_reads_other_groups_and_their_saved_papers(tmp_path):

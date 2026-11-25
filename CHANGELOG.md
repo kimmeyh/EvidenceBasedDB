@@ -15,6 +15,15 @@ this project keeps having to replace with a step.
 
 ### 2026-11-24 onward (Sprint 19, in progress)
 
+- **fix**: Task C fresh-eyes review of e0904f1. The free id the read
+  checker names is now free of every id in the same file and of every
+  id it already suggested (it had said "take smith-2020-vqe" when that id
+  came later in the file, and given two papers one suggestion; proven
+  red). The checker also holds review `id_fix` targets and sign-off `add`
+  ids, as `f117_build_groups.written_ids` does. Other groups' files are
+  compared by name, not by resolved path: a run takes about 10 seconds,
+  down from 13 to 23
+
 - **feat**: Task C (F155, #194): `store/assertion_ids.py` with
   `unique_assertion_id(record_id, name, taken)` (`prefixed`'s rule: the
   record id's author and year, then more, before the name, until free).
