@@ -372,3 +372,68 @@ def test_a_stop_that_cites_a_criterion_reports_a_ci_failure(tmp_path, message):
     repo = _scratch_repo(tmp_path, _status(status="Phase 5.3 Manual Validation"))
     proc = _run_ci(repo, [{"name": "test", "bucket": "fail"}], message=message)
     assert proc.returncode == 0, proc.stderr
+
+
+# F151 (Sprint 19 Task A): from Sprint 19 on, a message that asks a q or an i re-shows every open entry of
+# docs/sprints/SPRINT_N_DECISIONS.md, pasted unchanged, and asks nothing that is not stored there.
+S19_BRANCH = "feature/20261124_Sprint_19"
+OPEN_Q1 = ("## q1. Which list comes first\n"
+           "- Asked: 2026-11-25\n"
+           "- What it is: the order of the reading list.\n"
+           "- Options:\n"
+           "  - **a. (Recommendation)** Never-read first.\n"
+           "    - Pro: new claims.\n"
+           "  - **b.** Read in part first.\n"
+           "    - Pro: fewer gaps.\n")
+ANSWERED_Q2 = ("## q2. Where the list lives\n"
+               "- Asked: 2026-11-25\n"
+               "- Options:\n"
+               "  - **a. (Recommendation)** A script.\n"
+               "  - **b.** A page.\n"
+               '- **Answer** (team lead, 2026-11-25): "a"\n')
+
+
+def _decisions_repo(tmp_path: Path, text: str | None) -> Path:
+    repo = _scratch_repo(tmp_path, _status(number=19, status="Phase 3.7 Plan Approval", pr=None,
+                                           plan_doc="docs/sprints/SPRINT_4_PLAN.md"))
+    if text is not None:
+        (repo / "docs" / "sprints" / "SPRINT_19_DECISIONS.md").write_text(text, encoding="utf-8")
+    return repo
+
+
+def _shown(entry: str) -> str:
+    """The entry as a message shows it: the heading in bold instead of "##"."""
+    head, rest = entry.split("\n", 1)
+    return f"**{head[3:]}**\n{rest}"
+
+
+@pytest.mark.parametrize("message, why", [
+    ("Done.\n\n" + _shown(OPEN_Q1).replace("Never-read first", "Never read first"), "differs"),
+    ("Done.\n\n" + _shown(ANSWERED_Q2), "open entry q1 is left out"),
+    ("Done.\n\n" + _shown(OPEN_Q1) + "\n**q3. A new question**\n- Options:\n  - **a. (Recommendation)** Yes\n",
+     "q3 is not stored"),
+])
+def test_blocks_a_question_not_pasted_from_the_decisions_file(tmp_path, message, why):
+    """Proven to fail by injection, 2026-11-25: with `return None` as the first statement of decisions_error,
+    all four blocking cases here allowed the stop (exit 0)."""
+    repo = _decisions_repo(tmp_path, OPEN_Q1 + "\n" + ANSWERED_Q2)
+    proc = _run_hook(repo, S19_BRANCH, message)
+    assert proc.returncode == 2, f"expected a block ({why})"
+    assert why in proc.stderr
+
+
+def test_blocks_a_question_when_the_sprint_has_no_decisions_file(tmp_path):
+    repo = _decisions_repo(tmp_path, None)
+    proc = _run_hook(repo, S19_BRANCH, "Done.\n\n" + _shown(OPEN_Q1))
+    assert proc.returncode == 2 and "does not exist" in proc.stderr
+
+
+@pytest.mark.parametrize("branch, message", [
+    (S19_BRANCH, "Task A is done.\n\n" + _shown(OPEN_Q1)),             # the open entry, pasted unchanged
+    (S19_BRANCH, "Task A is done. q2 was answered a."),                 # asks nothing
+    ("feature/20261113_Sprint_18", "Done.\n\n**q9. Old**\n- **a. (Recommendation)** Yes"),  # before Sprint 19
+])
+def test_allows_an_entry_pasted_unchanged_or_no_question(tmp_path, branch, message):
+    repo = _decisions_repo(tmp_path, OPEN_Q1 + "\n" + ANSWERED_Q2)
+    proc = _run_hook(repo, branch, message)
+    assert proc.returncode == 0, proc.stderr

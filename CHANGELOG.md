@@ -15,6 +15,16 @@ this project keeps having to replace with a step.
 
 ### 2026-11-24 onward (Sprint 19, in progress)
 
+- **feat**: Task A (F151, #192): every q and i stored in full in
+  `docs/sprints/SPRINT_N_DECISIONS.md` before it is shown;
+  `SPRINT_19_DECISIONS.md` holds q1 to q7 with the team lead's answers.
+  `tests/test_sprint_documents.py` fails on a missing field, a count of
+  "(Recommendation)" other than one, fewer than two options or a reused id;
+  the Stop hook blocks a reply that asks an unstored item, leaves out an
+  open entry, or changes an entry's text (from Sprint 19 on). Both proven
+  red by injection. The checklist, retrospective doc, workflow and
+  `CLAUDE.md` name the file
+
 - **process**: Sprint 19 plan approved as amended (team lead, 2026-11-25):
   q1 to q7 absorbed. F57's 151 papers and the 306 read only in part join
   F114's ledger; F57 folded into F114; one combined list computed by

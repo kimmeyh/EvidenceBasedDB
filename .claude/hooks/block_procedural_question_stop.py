@@ -37,8 +37,19 @@ or still running (`gh pr checks`). Checks that cannot be read allow the stop,
 and so does a message citing a stopping criterion, a "STOP:" line or BLOCKED.
 Payload key ci_checks_override supplies the checks for tests.
 
-Outside the window the hook is silent: pre-approval and Phase 5+ questions
-are correct, and a message that cites a criterion is a legitimate stop.
+And on a sprint branch from Sprint 19 on, in every phase (F151, Sprint 19
+Task A; team lead 2026-11-22: "store all quesitons, decisions and Improvement
+in full ... always re-ask with the full contents every time"): when the last
+message asks an item (a "q1." or "i1." title and a "(Recommendation)"), every
+item it asks must be stored in `docs/sprints/SPRINT_N_DECISIONS.md`, every
+open entry of that file must be in the message, and each one's text must be
+the stored text pasted unchanged (compared with `*`, `#` and runs of
+whitespace ignored, so a heading may be shown in bold). The window and a
+cited criterion do not change this check.
+
+Outside the window the auto-advance check is silent: pre-approval and Phase
+5+ questions are correct, and a message that cites a criterion is a
+legitimate stop.
 
 Exit 0 = allow stop. Exit 2 = block with guidance on stderr.
 Bypass: branch name containing allow_stop_hook_bypass (same token as
@@ -222,6 +233,53 @@ def ends_in_procedural_question(message: str) -> bool:
     return any(p.search(joined) for p in QUESTION_PATTERNS)
 
 
+# F151 (Sprint 19 Task A): every q and i is stored in full before it is shown, and re-asked from the file.
+DECISIONS_FROM_SPRINT = 19
+ENTRY_HEADING = re.compile(r"(?m)^## ([qi]\d+)\.\s+\S.*$")
+ANSWER_LINE = re.compile(r"(?m)^- \*\*Answer\b")
+ASKED_ITEM = re.compile(r"(?m)^[ \t]*(?:#{1,6}[ \t]*)?\**[ \t]*([qi]\d+)\.[ \t]+\S")
+
+
+def decisions_entries(text: str) -> dict[str, tuple[str, bool]]:
+    """id -> (the entry's full text, open?) for each "## q1. Title" entry of a DECISIONS file. An entry is open
+    until a "- **Answer" line is written under it."""
+    heads = list(ENTRY_HEADING.finditer(text))
+    out = {}
+    for i, m in enumerate(heads):
+        end = heads[i + 1].start() if i + 1 < len(heads) else len(text)
+        body = text[m.start():end]
+        first = body.find("\n") + 1 or len(body)
+        nxt = re.compile(r"(?m)^#{1,2} ").search(body, first)  # a later "# " or "## " section ends the entry
+        if nxt:
+            body = body[:nxt.start()]
+        out[m.group(1)] = (body.strip(), not ANSWER_LINE.search(body))
+    return out
+
+
+def _flat(text: str) -> str:
+    return " ".join(re.sub(r"[*#]", "", text).split())
+
+
+def decisions_error(message: str, repo: Path, sprint: int) -> str | None:
+    """A reason when the message asks an item that is not stored, leaves out an open entry, or shows an entry
+    changed; None when it asks nothing, or for a sprint before DECISIONS_FROM_SPRINT."""
+    if sprint < DECISIONS_FROM_SPRINT or "(Recommendation)" not in message:
+        return None
+    asked = sorted(set(ASKED_ITEM.findall(message)))
+    if not asked:
+        return None
+    path = repo / "docs" / "sprints" / f"SPRINT_{sprint}_DECISIONS.md"
+    if not path.exists():
+        return f"it asks {', '.join(asked)}, and {path.name} does not exist; write each item there first"
+    entries = decisions_entries(path.read_text(encoding="utf-8"))
+    flat = _flat(message)
+    problems = [f"{i} is not stored in {path.name}" for i in asked if i not in entries]
+    problems += [f"open entry {i} is left out" for i, (_, open_) in entries.items() if open_ and i not in asked]
+    problems += [f"{i} differs from its stored text" for i, (body, open_) in entries.items()
+                 if i in asked and _flat(body) not in flat]
+    return "; ".join(problems) or None
+
+
 def _current_sprint(repo: Path) -> dict:
     """current_sprint from sprint_status.json, or {} when it cannot be read."""
     try:
@@ -307,8 +365,28 @@ def main() -> int:
         return 0
     if "allow_stop_hook_bypass" in branch:
         return 0
-    if not BRANCH_PATTERN.match(branch):
+    sprint_match = BRANCH_PATTERN.match(branch)
+    if not sprint_match:
         return 0
+
+    stored = decisions_error(message, repo, int(sprint_match.group(1)))
+    if stored:
+        print(
+            "[BLOCKED by block_procedural_question_stop hook: DECISIONS file]\n"
+            "\n"
+            f"This message asks for a decision, and {stored}.\n"
+            "\n"
+            "F151 (team lead, 2026-11-22): every q and i is written in full to\n"
+            "docs/sprints/SPRINT_N_DECISIONS.md BEFORE it is shown, and every message\n"
+            "that needs an answer re-shows EVERY open entry, pasted from the file\n"
+            "unchanged. A fact that changed goes in a dated \"Changed since asked\"\n"
+            "note under the entry, never an edit of the entry.\n"
+            "\n"
+            "Bypass (team-lead-sanctioned only): rename the branch to include\n"
+            "allow_stop_hook_bypass.",
+            file=sys.stderr,
+        )
+        return 2
 
     status = _current_sprint(repo)
     pr = status.get("pr")

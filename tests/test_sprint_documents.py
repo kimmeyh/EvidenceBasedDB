@@ -25,6 +25,7 @@ exemption covers the live sprint only, not the rule.
 """
 from __future__ import annotations
 
+import importlib.util
 import json
 import re
 from pathlib import Path
@@ -205,3 +206,62 @@ def test_the_live_status_is_in_the_footer_format():
         "the footer cannot read its phase")
     assert "updated" not in json.loads(STATUS.read_text(encoding="utf-8")), (
         "'updated' is a stored copy of what git log answers; it was removed in Sprint 7 (I6)")
+
+
+# F151 (Sprint 19 Task A): every q and i is stored in full in docs/sprints/SPRINT_N_DECISIONS.md before it is
+# shown. The entry parser is the Stop hook's own (`decisions_entries`), so the file and the hook read one shape.
+_spec = importlib.util.spec_from_file_location(
+    "qstop", ROOT / ".claude" / "hooks" / "block_procedural_question_stop.py")
+qstop = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(qstop)
+
+DECISION_FIELDS = ("- Asked:", "- What it is:", "- What it prevents and/or catches:", "- Prevention or control:",
+                   "- Long-term value:", "- Evidence:", "- Extends:", "- Effort:", "- Options:")
+LETTERED_OPTION = re.compile(r"(?m)^\s*- \*\*([a-z])\.")
+
+
+def decisions_problems(text: str) -> list[str]:
+    """Each entry's missing fields, a count of "(Recommendation)" other than one, fewer than two lettered
+    options, and any id used twice."""
+    ids = [m.group(1) for m in qstop.ENTRY_HEADING.finditer(text)]
+    problems = [f"{i} is used {ids.count(i)} times" for i in sorted(set(ids)) if ids.count(i) > 1]
+    for i, (body, _) in qstop.decisions_entries(text).items():
+        problems += [f"{i} lacks {f!r}" for f in DECISION_FIELDS if f not in body]
+        if body.count("(Recommendation)") != 1:
+            problems.append(f"{i} has {body.count('(Recommendation)')} '(Recommendation)', not exactly one")
+        if len(LETTERED_OPTION.findall(body)) < 2:
+            problems.append(f"{i} has fewer than two lettered options")
+    return problems
+
+
+def decisions_files() -> list[Path]:
+    return sorted(f for f in SPRINTS.glob("SPRINT_*_DECISIONS.md")
+                  if int(re.match(r"SPRINT_(\d+)_", f.name).group(1)) >= qstop.DECISIONS_FROM_SPRINT)
+
+
+def test_every_decisions_entry_is_stored_in_full():
+    """F151: every field of the AUTHORITATIVE shape, exactly one "(Recommendation)", at least two lettered
+    options, and no id used twice. Proven red by injection, 2026-11-25, on SPRINT_19_DECISIONS.md: q1's
+    "- Extends:" renamed ("q1 lacks '- Extends:'"), a second "(Recommendation)" on q2 ("q2 has 2"), and q4
+    retitled "## q3." ("q3 is used 2 times") each turned it red; restored, green."""
+    assert decisions_files(), "no SPRINT_N_DECISIONS.md from Sprint 19 on"
+    bad = {f.name: p for f in decisions_files() if (p := decisions_problems(f.read_text(encoding="utf-8")))}
+    assert not bad, f"DECISIONS entries not stored in full: {bad}"
+
+
+def test_the_checker_names_each_kind_of_defect():
+    good = (SPRINTS / "SPRINT_19_DECISIONS.md").read_text(encoding="utf-8")
+    assert decisions_problems(good) == []
+    assert any("lacks '- Extends:'" in p for p in decisions_problems(good.replace("- Extends:", "- Extra:", 1)))
+    assert any("not exactly one" in p for p in decisions_problems(good.replace("(Recommendation)", "", 1)))
+    assert any("used 2 times" in p for p in decisions_problems(good + "\n## q1. Again\n- Asked: x\n"))
+
+
+def test_the_current_sprint_keeps_a_decisions_file_from_planning_on():
+    """From Sprint 19's Phase 3 on, the sprint in flight has its DECISIONS file: the plan's questions are stored
+    there before they are shown."""
+    st = _current_status()
+    n = _current_sprint()
+    if not st or n is None or n < qstop.DECISIONS_FROM_SPRINT or not status_requires_plan_doc(st):
+        pytest.skip("before Sprint 19's planning")
+    assert (SPRINTS / f"SPRINT_{n}_DECISIONS.md").exists(), f"SPRINT_{n}_DECISIONS.md is missing"

@@ -204,6 +204,11 @@ once for exactly that reason.
   over once and then followed by hours of review and fixes before he
   actually validates: re-present the full validation plan every time, not a
   reference to it.
+  **From Sprint 19 on, every q and i is written in full to
+  `docs/sprints/SPRINT_N_DECISIONS.md` BEFORE it is shown, and each re-ask
+  pastes every open entry from that file unchanged** (F151, team lead
+  2026-11-22). The Stop hook blocks a reply that asks an item not in the
+  file, leaves out an open entry, or changes an entry's text.
 - **Don't touch more than one file/surface on a request without echoing the
   requirement back first.** One sentence: "I understand you want X to happen
   on Y, with Z behavior. Correct?" Wait for confirmation, then proceed

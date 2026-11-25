@@ -8,6 +8,7 @@ Consult at EVERY phase boundary (open this file in the same turn; walk lines wit
 - [ ] 1.2 Pass 1 sweep for N-1: issues closed, docs triad incl. SUMMARY (+ `## Actuals`), master plan rolled, shipped cards pruned BY HAND
 - [ ] 1.3 Design-document currency: ADR-0004/0005 still match schema and store; the due list (`probe_reference_fields.py --due`, no request) and, when anything is due, the re-check run (`--due --probe --apply`, ADR-0005 A7) and its lists handed to the team lead; `pytest -q` green
 - [ ] 1.4 Read ALL_SPRINTS_MASTER_PLAN.md; read BACKLOG_REFINEMENT.md "Backlog Presentation Format" THIS TURN; present "Sprint N Candidates at a glance" (Summary Index first: recommendation, then at most 20 by priority, then HOLD one-liners; details in the same order, no group headers; F# IDs, numeric priorities)
+- [ ] Every q or i asked here is written in full to `docs/sprints/SPRINT_N_DECISIONS.md` FIRST, and re-shown from it unchanged (F151)
 - [ ] 1.5 Record team-lead selection; update master plan; commit
 
 ## Phase 2: Pre-Kickoff
@@ -21,6 +22,7 @@ Consult at EVERY phase boundary (open this file in the same turn; walk lines wit
 - [ ] Plan verified against branch state (already-shipped work marked, stale paths corrected); re-estimated if findings
 - [ ] Branch exists (usually via prior 6.6 carry-forward); DRAFT PR created/updated (STAYS DRAFT until 7.7)
 - [ ] One GitHub issue per task (`sprint` label) BEFORE first task file is touched; all OPEN
+- [ ] The plan's questions stored in full in `SPRINT_N_DECISIONS.md` before they are shown; each answer recorded there verbatim with its clock date (F151)
 - [ ] Explicit team-lead approval obtained; PR body updated to approved plan
 
 ## Phase 4: Execution (auto-advance window: no permission-asking)
@@ -31,7 +33,7 @@ Consult at EVERY phase boundary (open this file in the same turn; walk lines wit
 ## Phase 5: Review & Validation
 - [ ] Full suite green; committed export matches a fresh regeneration from the store (`tests/test_export_currency.py`)
 - [ ] Plan acceptance criteria walked line by line WITH EVIDENCE
-- [ ] Handed to team lead for manual validation (questions correct from here)
+- [ ] Handed to team lead for manual validation (questions correct from here); every hand-over decision stored in `SPRINT_N_DECISIONS.md` first, and every open entry re-shown from it in each message that needs an answer (F151)
 - [ ] Manual Validation list contains ONLY end-user functionality and team-lead decisions; no test run, dry run, byte-identity check or data spot-check appears in it (those are done before hand-over; state in one line that they passed)
 - [ ] Every amendment to an existing ADR presented as `ADR-<n> <adr-name>`, then What changed and Why, then the specific language quoted for review; ADR reviews first, functional steps after
 
@@ -41,7 +43,7 @@ Consult at EVERY phase boundary (open this file in the same turn; walk lines wit
 
 ## Phase 7: Retrospective (before ready)
 - [ ] 7-step protocol run in order (SPRINT_RETROSPECTIVE.md); 16 categories x 4 roles, verbatim, no placeholders
-- [ ] Improvements proposed + dispositioned; now-items committed; backlog-items -> master plan with F#s
+- [ ] Improvements proposed + dispositioned (each i stored in `SPRINT_N_DECISIONS.md` first, F151); now-items committed; backlog-items -> master plan with F#s
 - [ ] Completion updates: master plan Last Completed Sprint; sprint_status updated (`CHECKLIST-Phase2-pre.md` is frozen after Sprint 18, team lead q19 = a, 2026-11-24)
 - [ ] `gh pr ready` (ONLY here); final gate; team lead notified for approval
 
