@@ -75,6 +75,36 @@ def test_the_ledger_script_adds_one_paper_per_group_and_a_second_run_adds_nothin
     assert s19.add(L, P) == []
 
 
+def test_the_selection_skips_each_unreadable_copy_with_why_and_takes_the_next(tmp_path, monkeypatch):
+    """q3: a paper that cannot be read is noted and the next is taken. Proven red 2026-11-25: with `unreadable`
+    returning None, the archive and the menus-only page were selected and the count of skips was 0."""
+    import sprint19_f114_local as s19l
+    monkeypatch.setattr(s19l, "source_text", lambda f: Path(f).read_text(encoding="utf-8"))  # a source read is guarded
+    pdf = tmp_path / "a.pdf"
+    pdf.write_bytes(b"%PDF-1.4")
+    menus = tmp_path / "menus.html"
+    menus.write_text("<html><body>Products Contact us</body></html>", encoding="utf-8")
+    archive = tmp_path / "pkg.tar.gz"
+    archive.write_bytes(b"\x1f\x8b")
+    P = {"ok1": _p(access=str(pdf)), "menus": _p(access=str(menus)), "pkg": _p(access=str(archive)),
+         "nocopy": _p(access="doi:10.1/x"), "batch": _p(access=str(pdf)), "ok2": _p(access=str(pdf))}
+    rows = [{"record_id": r, "group": "g1", "needs": "read, not applied" if r == "batch" else "read in part"}
+            for r in ("ok1", "menus", "pkg", "nocopy", "batch", "ok2")]
+    chosen, skipped = s19l.select(rows, P, total=2)
+    assert [x["record_id"] for x in chosen] == ["ok1", "ok2"]
+    assert [s["record_id"] for s in skipped] == ["menus", "pkg", "nocopy", "batch"]
+    assert "menus" in skipped[0]["why"] and "not a document" in skipped[1]["why"]
+
+
+def test_brief_names_one_paper_groups_keep_their_name_others_get_the_next_re_entry(tmp_path):
+    import sprint19_f114_local as s19l
+    (tmp_path / "g251-r1.json").write_text("{}")
+    L = _ledger({"g251": ["a", "b", "c"], "g900": ["d"]})
+    got = s19l.brief_names([{"record_id": r, "group": g} for r, g in (("a", "g251"), ("d", "g900"), ("b", "g251"))],
+                           L, briefs=tmp_path)
+    assert got == {"a": "g251-r2", "d": "g900", "b": "g251-r3"}
+
+
 @pytest.mark.live_store
 def test_the_live_list_holds_every_paper_to_read_once():
     L = json.loads(rl.LEDGER.read_text(encoding="utf-8"))

@@ -15,6 +15,17 @@ this project keeps having to replace with a step.
 
 ### 2026-11-24 onward (Sprint 19, in progress)
 
+- **feat**: Task D step 3 (F114, #195). Roadmap-to-QML 7113ded1df to
+  24853a7acb applied (`scripts/sprint19_f114_roadmap.py`, verified backup
+  first; a second apply entered nothing): arXiv 2611.27815 enters at
+  `seen` and joins the ledger as g970, first in the list.
+  `scripts/sprint19_f114_local.py` selects the 60 from the top of the
+  list, skipping 4 with their reasons (3 menus-only saved pages, 1
+  package archive), and writes one brief per paper with its telemetry
+  file. Sprint 19's reader and review prompts: Sprint 18's with the
+  Write-tool-only sentence and `--free-ids`. Selection tests proven red.
+  Snapshot as of 2026-11-25
+
 - **feat**: Task D steps 1 and 2 (F114, F57 folded in, #195). Snapshot as
   of 2026-11-25. `scripts/sprint19_f114_ledger.py` added 456 papers to
   F114's ledger as one-paper groups g514 to g969: F57's 151 never read,

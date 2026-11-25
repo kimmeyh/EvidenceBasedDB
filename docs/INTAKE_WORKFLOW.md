@@ -17,8 +17,8 @@ Counts from the store as of 2026-11-25, printed by `scripts/doc_counts.py` (neve
 - Assertions: 40,112 (HIGH 12,528, MODERATE 97, LOW 27,484, VERY-LOW 1, UNGRADED 2).
 - HIGH by the basis it started from: the paper's own setup 3,844; the paper's own definition 2,717; the paper's own stated limit 2,308; the paper's own proved result 1,650; the paper's own scope 1,432; a result proved in the paper 384; other 193.
 - LOW by the basis it started from: an empirical result from one study 8,735; the authors' own claim 7,645; a claim the source cites from other work 5,459; a theoretical result 4,333; vendor primary documentation of its own product 757; a statement about the field 382; the authors' own claim or a claim they cite 133; other 40.
-- Papers and other sources: 2,373 (read 1,853, seen 520).
-- Ledger groups: 969; with a read file 205; with a review file 192.
+- Papers and other sources: 2,374 (read 1,853, seen 521).
+- Ledger groups: 970; with a read file 205; with a review file 192.
 <!-- doc_counts: end -->
 
 ## 1. The one rule
@@ -4869,3 +4869,41 @@ added to as the release runs.
   (no free copy, a refused download, a book) is noted here and the next
   one is taken, until 60 are read. The selection is saved as `selected`
   in the ranking manifest.
+- **Roadmap-to-QML, 7113ded1df to 24853a7acb** (Christophe Pere's list;
+  24853a7acb, 2026-11-23, was still the head on 2026-11-25).
+  `scripts/sprint19_f114_roadmap.py` runs Sprint 18's release code at
+  this release's commits. The list's 13 files are saved under
+  `References\Roadmap-to-QML_24853a7acb\`, outside git, each with its
+  SHA-256 in the manifest (`manifests/sprint19_f114_roadmap.json`).
+  1,458 arXiv ids listed; 1 newly linked since 7113ded1df, in
+  `2026/2026.md`, not in the store: arXiv 2611.27815 (Srimahajariyapong
+  et al. 2026), record
+  `srimahajariyapong-2026-autonomous-quantum-machine-learning-riemannian`.
+  Its PDF was fetched once by the paced fetcher (arXiv stamp checked), and
+  it enters at `seen` under `qml`. No new Quantum journal paper; 20 other
+  links carried to a later F114 release of the list. It is then the first
+  paper of the 60 (`first` in the ranking manifest), in its own ledger
+  group.
+- **Applied 2026-11-25** after a verified backup
+  (`evidence-20261125T032632522679-sprint19-f114-roadmap-to-qml-release.db`).
+  A second apply entered nothing. The paper joined the ledger as g970.
+- **The selection** (`scripts/sprint19_f114_local.py`, saved as
+  `selected` and `skipped` in the ranking manifest): the 60 are the top
+  of the list, 4 skipped, each with why:
+  `qci-applications-quantum-assisted-space-logistics-mission-planning`,
+  `qci-package-eqc-direct` and `qci-package-qci-client` (saved pages of
+  about 1,100 characters, the site's menus and no article, as Sprint 15's
+  g069 and g072), and `qci-package-eqc-models` (its copy is a package
+  archive, `eqc_models-0.21.0.tar.gz`, not a document). Two Dirac papers
+  (Nguyen 2025 and Huang 2025) have their copies in `QMLPapers\`, found
+  by arXiv id, so nothing was fetched (no re-download of a local copy,
+  team lead 2026-10-28). A paper in a ledger group of several gets a
+  re-entry brief `<g>-rN` holding it alone; a one-paper group keeps its
+  name. Each brief's telemetry file is written with it.
+- **Prompts.** `manifests/sprint19_f114_reads/READER_PROMPT.md` and
+  `REVIEW_PROMPT.md`: Sprint 18's, with the Write-tool-only sentence
+  (Sprint 18 retrospective i1), and the reader's check run with
+  `--free-ids` (F155): it refuses a new assertion id another source holds
+  and the reader takes the id it prints. The g919 reader used the Edit
+  tool once on its saved paper, then wrote both result files again whole
+  with the Write tool, and said so.
